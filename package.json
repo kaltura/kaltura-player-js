@@ -1,0 +1,83 @@
+{
+  "name": "KalturaPlayerJS",
+  "version": "0.1.0",
+  "main": "dist/kaltura-player.js",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "prebuild": "npm run clean",
+    "build": "webpack",
+    "dev": "webpack --progress --colors --watch",
+    "test": "NODE_ENV=test ./node_modules/.bin/karma start --single-run",
+    "test:watch": "NODE_ENV=test ./node_modules/.bin/karma start --auto-watch",
+    "start": "webpack-dev-server",
+    "release": "NODE_ENV=production npm run build -- -p && git add --all dist && git commit -m'Update dist' && standard-version",
+    "eslint": "eslint . --color",
+    "flow": "flow check",
+    "prepush": "npm run eslint & npm run test & npm run flow"
+  },
+  "dependencies": {
+    "hls.js": "^0.7.9",
+    "playkit-js": "https://github.com/kaltura/playkit-js.git#develop",
+    "playkit-js-dash": "https://github.com/kaltura/playkit-js-dash.git#develop",
+    "playkit-js-hls": "https://github.com/kaltura/playkit-js-hls.git#develop",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#develop",
+    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#develop",
+    "shaka-player": "^2.1.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.7",
+    "babel-plugin-istanbul": "^4.0.0",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-register": "^6.23.0",
+    "chai": "^3.5.0",
+    "cross-env": "^3.1.4",
+    "css-loader": "^0.28.4",
+    "eslint": "^3.10.0",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-flowtype": "^2.30.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-mocha-no-only": "^0.0.5",
+    "expose-loader": "^0.7.3",
+    "flow-bin": "latest",
+    "imports-loader": "^0.7.1",
+    "istanbul": "^0.4.5",
+    "karma": "^1.5.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
+    "karma-coverage": "^1.1.1",
+    "karma-mocha": "^1.3.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.2",
+    "mocha": "^3.2.0",
+    "mocha-cli": "^1.0.1",
+    "nyc": "^10.1.2",
+    "sinon": "^2.0.0",
+    "sinon-chai": "^2.8.0",
+    "source-map-loader": "^0.2.1",
+    "standard-version": "^4.0.0",
+    "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^0.4.3",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaltura/KalturaPlayerJS"
+  },
+  "keywords": [
+    "kaltura",
+    "player",
+    "html5 player"
+  ],
+  "license": "AGPLV3",
+  "bugs": {
+    "url": "https://github.com/kaltura/KalturaPlayerJS/issues"
+  },
+  "homepage": "https://github.com/kaltura/KalturaPlayerJS"
+}
