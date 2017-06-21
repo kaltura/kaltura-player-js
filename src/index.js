@@ -1,9 +1,20 @@
-import Provider from 'playkit-js-providers/dist/ovpProvider';
+// @flow
+
+// Import core
 import * as Playkit from 'playkit-js';
-import PlaykitUI from 'playkit-js-ui/dist/playkit-js-ui';
+
+// Import OVP and OTT providers
+import OvpProvider from 'playkit-js-providers/dist/ovpProvider';
+
+// Import UI
+import PlaykitUI from 'playkit-js-ui';
 import '../node_modules/playkit-js-ui/src/styles/style.css';
+
+// Import media source adapters
 import 'playkit-js-hls';
 import 'playkit-js-dash';
 
-export {Playkit, Provider, PlaykitUI};
+// TODO: Import plugins
+
+export {Playkit, OvpProvider, PlaykitUI};
 
