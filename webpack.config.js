@@ -2,50 +2,48 @@
 
 const webpack = require("webpack");
 const path = require("path");
-const libraryName = "KalturaPlayer";
 const PROD = (process.env.NODE_ENV === 'production');
 
-let plugins = 1 ? [
-  new webpack.optimize.UglifyJsPlugin({sourceMap: true})
-] : [];
-const sourceMaps = 'source-map';
 module.exports = {
   context: __dirname + "/src",
-  entry: {
-    "Kaltura-player": "index.js"
-  },
+  entry: PROD ? {"kaltura-player.min": "index.js"} : {"kaltura-player": "index.js"},
   output: {
     path: __dirname + "/dist",
     filename: '[name].js',
-    library: libraryName,
+    library: 'KalturaPlayer',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
-  devtool: sourceMaps,
-  plugins: plugins,
+  devtool: 'source-map',
+  plugins: PROD ? [new webpack.optimize.UglifyJsPlugin({sourceMap: true})] : [],
   module: {
     rules: [{
       test: /\.js$/,
       use: [{
-        loader: "babel-loader",
-        // options: { presets: ["es2015"] }
+        loader: "babel-loader"
       }],
       exclude: [/node_modules/]
     }, {
       test: /\.js$/,
-      use: ["source-map-loader"],
+      use: [
+        "source-map-loader"
+      ],
       enforce: "pre"
-    },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
+    }, {
+      test: /\.css$/,
+      use: [
+        'style-loader',
+        'css-loader'
+      ]
+    }]
   },
   devServer: {
     contentBase: __dirname + "/src"
   },
   resolve: {
-    modules: [path.resolve(__dirname, "src"), "node_modules"]
+    modules: [
+      path.resolve(__dirname, "src"),
+      "node_modules"
+    ]
   }
 };
