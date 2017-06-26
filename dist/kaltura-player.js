@@ -33633,6 +33633,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+/**
+ *
+ * @param {Object} config - contains partnerId and entryID
+ * @return {Promise<*>} - player promise
+ */
 function create(config) {
   var player = Playkit.playkit();
   player.addEventListener(player.Event.SOURCE_SELECTED, function (event) {
@@ -33650,7 +33655,6 @@ function create(config) {
     return Promise.resolve(player);
   }
 }
-
 exports.default = create;
 
 /***/ }),
@@ -33663,13 +33667,24 @@ exports.default = create;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+/**
+ * @return {string} - GUID
+ * @private
+ */
 function _generateGUID() {
-  function S4() {
+  var S4 = function S4() {
     return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
   };
   return S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4();
 }
 
+/**
+ * @param {Object} selectedSource - selected source
+ * @param {Player} player - player
+ * @return {void}
+ * @private
+ */
 function _addSessionId(selectedSource, player) {
   var delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
   var primaryGUID = _generateGUID();
@@ -33679,6 +33694,13 @@ function _addSessionId(selectedSource, player) {
   player.sessionId = sessionId;
 }
 
+/**
+ * @param {Object} selectedSource - selected source
+ * @param {string} sessionId - session id
+ * @param {Player} player - player
+ * @return {void}
+ * @private
+ */
 function _replaceSecondGUID(selectedSource, sessionId, player) {
   var secondGUIDRegex = /:((?:[a-z0-9]|-)*)/i;
   var secondGUID = secondGUIDRegex.exec(sessionId);
@@ -33689,6 +33711,12 @@ function _replaceSecondGUID(selectedSource, sessionId, player) {
   }
 }
 
+/**
+ * @param {Object} selectedSource - selected source
+ * @param {Player} player - player
+ * @return {void}
+ * @public
+ */
 function handleSessionId() {
   var selectedSource = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var player = arguments[1];
