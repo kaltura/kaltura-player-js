@@ -14,7 +14,8 @@ import '../node_modules/playkit-js-ui/src/styles/style.css';
 import 'playkit-js-hls';
 import 'playkit-js-dash';
 
+import create from './create'
 // TODO: Import plugins
 
-export {Playkit, OvpProvider, PlaykitUI};
+export {Playkit, OvpProvider, PlaykitUI, create};
 

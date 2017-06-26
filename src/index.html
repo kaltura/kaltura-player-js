@@ -9,11 +9,17 @@
 <div id="root"></div>
 <script>
   window.setupPlayer = function () {
-    let ovpProvider = new KalturaPlayer.OvpProvider(2196781);
-    ovpProvider.getConfig("1_afvj3z0u").then((data) => {
-      window.player = KalturaPlayer.Playkit.playkit(data);
-      window.uiManager = new KalturaPlayer.PlaykitUI(player, data);
+    let config = {
+      partnerId: 2196781, entryID: '1_h14v9eug'
+    };
+    KalturaPlayer.create(config).then(player => {
+      window.player = player;
+      window.uiManager = new KalturaPlayer.PlaykitUI(player, player.config);
       uiManager.buildDefaultUI();
+      player.play()
+    }).catch(error => {
+      window.player = player;
+      console.error(error);
     });
   };
 </script>
