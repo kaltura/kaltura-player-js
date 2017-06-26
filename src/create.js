@@ -1,7 +1,13 @@
+//@flow
 import * as Playkit from 'playkit-js';
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider';
 import handleSessionId from './session-id'
 
+/**
+ *
+ * @param {Object} config - contains partnerId and entryID
+ * @return {Promise<*>} - player promise
+ */
 function create(config: Object): Promise<*> {
   let player = Playkit.playkit();
   player.addEventListener(player.Event.SOURCE_SELECTED, (event) => {

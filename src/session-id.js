@@ -1,11 +1,22 @@
+//@flow
+/**
+ * @return {string} - GUID
+ * @private
+ */
 function _generateGUID(): string {
-  function S4() {
+  let S4 = () => {
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
   };
   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 }
 
-function _addSessionId(selectedSource: Object, player): void {
+/**
+ * @param {Object} selectedSource - selected source
+ * @param {Player} player - player
+ * @return {void}
+ * @private
+ */
+function _addSessionId(selectedSource: Object, player: Player): void {
   let delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
   let primaryGUID = _generateGUID();
   let secondGUID = _generateGUID();
@@ -14,7 +25,14 @@ function _addSessionId(selectedSource: Object, player): void {
   player.sessionId = sessionId;
 }
 
-function _replaceSecondGUID(selectedSource: Object, sessionId: string, player): void {
+/**
+ * @param {Object} selectedSource - selected source
+ * @param {string} sessionId - session id
+ * @param {Player} player - player
+ * @return {void}
+ * @private
+ */
+function _replaceSecondGUID(selectedSource: Object, sessionId: string, player: Player): void {
   let secondGUIDRegex = /:((?:[a-z0-9]|-)*)/i;
   let secondGUID = secondGUIDRegex.exec(sessionId);
   if (secondGUID && secondGUID[1]) {
@@ -24,7 +42,13 @@ function _replaceSecondGUID(selectedSource: Object, sessionId: string, player): 
   }
 }
 
-function handleSessionId(selectedSource: Object = {}, player): void {
+/**
+ * @param {Object} selectedSource - selected source
+ * @param {Player} player - player
+ * @return {void}
+ * @public
+ */
+function handleSessionId(selectedSource: Object = {}, player: Player): void {
   if (typeof selectedSource.url === 'string' && selectedSource.url.toLowerCase().indexOf('playmanifest/') !== -1) {
     let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
     let sessionId = sessionIdRegex.exec(selectedSource.url);
