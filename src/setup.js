@@ -8,7 +8,7 @@ import handleSessionId from './session-id'
  * @param {Object} config - contains partnerId and entryID
  * @return {Promise<*>} - player promise
  */
-function create(config: Object): Promise<*> {
+export default function setup(config: Object): Promise<*> {
   let player = Playkit.playkit();
   player.addEventListener(player.Event.SOURCE_SELECTED, (event) => {
     handleSessionId(event.payload.selectedSource, player);
@@ -26,5 +26,3 @@ function create(config: Object): Promise<*> {
     return Promise.resolve(player);
   }
 }
-
-export default create;

@@ -12,7 +12,7 @@
     let config = {
       partnerId: 2196781, entryID: '1_h14v9eug'
     };
-    KalturaPlayer.create(config).then(player => {
+    KalturaPlayer.setup(config).then(player => {
       window.player = player;
       window.uiManager = new KalturaPlayer.PlaykitUI(player, player.config);
       uiManager.buildDefaultUI();
