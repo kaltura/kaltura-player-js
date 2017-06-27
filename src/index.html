@@ -5,20 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Title</title>
   <style>
+    /* demo styles */
     body {
       background-color: #212121;
       padding: 0; margin: 0;
       text-align: center;
     }
-    .player {
-      margin: auto;
-    }
+    .player { margin: auto; }
   </style>
-  <div id="player1"></div>
-  <div id="player2"></div>
-  <script src="./Kaltura-player.js" type="text/javascript"></script>
+  <script src="./kaltura-player.js" type="text/javascript"></script>
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
+<div id="root"></div>
+<script>
+  window.setupPlayer = function () {
+    let ovpProvider = new KalturaPlayer.OvpProvider(1914121);
+    ovpProvider.getConfig("1_umer46fd").then((data) => {
+      data.target = "root";
+      window.player = KalturaPlayer.Playkit.playkit(data);
+      window.uiManager = new KalturaPlayer.PlaykitUI(player, data);
+      uiManager.buildDefaultUI();
+
+      player.play();
+    });
+  };
+  setupPlayer();
+</script>
 </body>
 </html>
