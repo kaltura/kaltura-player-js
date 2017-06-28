@@ -25,7 +25,7 @@ describe('setup', function () {
   });
 
   after(function () {
-    TestUtils.removeElemenet(targetId);
+    TestUtils.removeElement(targetId);
   });
 
   it('should create a full player', function (done) {
