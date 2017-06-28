@@ -1,5 +1,5 @@
 {
-  "name": "kaltura-player",
+  "name": "kaltura-player-js",
   "version": "0.1.0",
   "main": "dist/kaltura-player.js",
   "scripts": {
@@ -88,7 +88,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kaltura/KalturaPlayerJS"
+    "url": "https://github.com/kaltura/kaltura-player-js"
   },
   "keywords": [
     "kaltura",
@@ -97,7 +97,7 @@
   ],
   "license": "AGPLV3",
   "bugs": {
-    "url": "https://github.com/kaltura/KalturaPlayerJS/issues"
+    "url": "https://github.com/kaltura/kaltura-player-js/issues"
   },
-  "homepage": "https://github.com/kaltura/KalturaPlayerJS"
+  "homepage": "https://github.com/kaltura/kaltura-player-js"
 }
