@@ -35535,27 +35535,25 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 /**
  * Setup the kaltura player.
  * @param {string} targetId - The target id of the dom element which we append the player to.
- * @param {Object} config - Fully config which includes partnerId and entryId.
+ * @param {Object} providerConfig - Optional config which includes partnerId and an optional entryId.
  * @return {Promise<*>} - The player promise.
  */
-function setup(targetId, config) {
+function setup(targetId, providerConfig) {
   var response = {};
   return new Promise(function (resolve, reject) {
     response.player = Playkit.loadPlayer(targetId);
     response.player.addEventListener(response.player.Event.SOURCE_SELECTED, function (event) {
       (0, _sessionId2.default)(event.payload.selectedSource, response.player);
     });
-    if (config) {
-      if (config.partnerId) {
-        response.provider = new _ovpProvider2.default(config.partnerId);
-        if (config.entryId) {
-          return response.provider.getConfig(config.entryId).then(function (data) {
-            response.player.configure(data);
-            resolve(response);
-          }).catch(function (error) {
-            reject(error);
-          });
-        }
+    if (providerConfig && providerConfig.partnerId) {
+      response.provider = new _ovpProvider2.default(providerConfig.partnerId);
+      if (providerConfig.entryId) {
+        return response.provider.getConfig(providerConfig.entryId).then(function (playerConfig) {
+          response.player.configure(playerConfig);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
       }
     }
     resolve(response);
