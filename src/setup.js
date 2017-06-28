@@ -16,7 +16,8 @@ const CONTAINER_CLASS_NAME: string = 'kalturaplayer-container';
 export default function setup(targetId: string, config: Object): Promise<*> {
   let el = createKalturaPlayerContainer(targetId);
   let player = Playkit.loadPlayer(el.id);
-  let playerUIManager = new PlaykitUI(player, Object.assign({}, config, {targetId: el.id}));
+  Object.assign(config, {targetId: el.id});
+  let playerUIManager = new PlaykitUI(player, config);
   playerUIManager.buildDefaultUI();
   player.addEventListener(player.Event.SOURCE_SELECTED, (event) => {
     handleSessionId(event.payload.selectedSource, player);
@@ -37,7 +38,7 @@ export default function setup(targetId: string, config: Object): Promise<*> {
 
 function createKalturaPlayerContainer(targetId: string){
   let el = document.createElement("div");
-  el.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  el.id = Math.random().toString(36).substring(2, 10);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
 
