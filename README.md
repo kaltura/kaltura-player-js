@@ -1,1 +1,1 @@
-# kaltura-player
+# kaltura-player-js
