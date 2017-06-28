@@ -3,8 +3,10 @@ import * as Playkit from 'playkit-js';
 import PlaykitUI from 'playkit-js-ui';
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider';
 import handleSessionId from './session-id'
+import './style.css'
 
 const CONTAINER_CLASS_NAME: string = 'kalturaplayer-container';
+
 /**
  * Setup the kaltura player.
  * @param {string} targetId - The target id of the dom element which we append the player to.
@@ -38,9 +40,6 @@ function createKalturaPlayerContainer(targetId: string){
   el.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
-  el.style.width = "100%";
-  el.style.height= "100%";
-  el.style.position = "relative";
 
   let parentNode = document.getElementById(targetId);
   if ((parentNode != null) && (el != null)) {
