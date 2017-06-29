@@ -35430,6 +35430,7 @@ else this.shaka=g.shaka;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.createKalturaPlayerContainer = exports.extractPlayerConfig = exports.extractProviderConfig = undefined;
 exports.default = setup;
 
 var _playkitJs = __webpack_require__(0);
@@ -35457,33 +35458,32 @@ var CONTAINER_CLASS_NAME = 'kaltura-player-container';
 /**
  * Setup the kaltura player.
  * @param {string} targetId - The target id of the dom element which we append the player to.
- * @param {Object} providerConfig - Optional config which includes partnerId and an optional entryId.
- * @return {Promise<*>} - The player promise.
+ * @param {Object} userConfig - Optional fully user config which should include also partnerId and entryId.
+ * @return {Promise<*>} - The response promise.
  */
 
-function setup(targetId, providerConfig) {
+function setup(targetId, userConfig) {
   var response = {};
+  var playerConfig = extractPlayerConfig(userConfig);
+  var providerConfig = extractProviderConfig(userConfig);
   return new Promise(function (resolve, reject) {
     // Create player container
     var containerId = createKalturaPlayerContainer(targetId);
     // Create player and handle session id
-    response.player = (0, _playkitJs2.default)(containerId);
+    response.player = (0, _playkitJs2.default)(containerId, playerConfig);
     response.player.addEventListener(response.player.Event.SOURCE_SELECTED, function (event) {
       (0, _sessionId2.default)(event.payload.selectedSource, response.player);
     });
     // Prepare config for the ui manager
-    if (providerConfig) {
-      Object.assign(providerConfig, { targetId: containerId });
-    } else {
-      providerConfig = { targetId: containerId };
-    }
+    Object.assign(playerConfig, { targetId: containerId });
     // Build UI
-    buildUI(response.player, providerConfig);
+    buildUI(response.player, playerConfig);
     // Handle provider config
     if (providerConfig.partnerId) {
       response.provider = new _ovpProvider2.default(providerConfig.partnerId);
       if (providerConfig.entryId) {
-        return response.provider.getConfig(providerConfig.entryId).then(function (playerConfig) {
+        return response.provider.getConfig(providerConfig.entryId).then(function (data) {
+          Object.assign(playerConfig, data);
           response.player.configure(playerConfig);
           resolve(response);
         }).catch(function (error) {
@@ -35522,6 +35522,42 @@ function buildUI(player, config) {
   var playerUIManager = new _playkitJsUi2.default(player, config);
   playerUIManager.buildDefaultUI();
 }
+
+/**
+ * Extracts the player configuration.
+ * @param {Object} config - The fully user configuration.
+ * @returns {Object} - The player configuration.
+ */
+function extractPlayerConfig(config) {
+  var playerConfig = {};
+  Object.assign(playerConfig, config);
+  delete playerConfig.partnerId;
+  delete playerConfig.entryId;
+  return playerConfig;
+}
+
+/**
+ * Extracts the provider configuration.
+ * @param {Object} config - The fully user configuration.
+ * @returns {Object} - The provider configuration.
+ */
+function extractProviderConfig(config) {
+  var providerConfig = {};
+  if (config) {
+    if (config.partnerId) {
+      providerConfig.partnerId = config.partnerId;
+    }
+    if (config.entryId) {
+      providerConfig.entryId = config.entryId;
+    }
+  }
+  return providerConfig;
+}
+
+// Export those functions for automation testing
+exports.extractProviderConfig = extractProviderConfig;
+exports.extractPlayerConfig = extractPlayerConfig;
+exports.createKalturaPlayerContainer = createKalturaPlayerContainer;
 
 /***/ }),
 /* 14 */
