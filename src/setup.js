@@ -1,5 +1,5 @@
 //@flow
-import loadPlayer from 'playkit-js'
+import {loadPlayer, Utils} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import handleSessionId from './session-id'
@@ -26,7 +26,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
       handleSessionId(event.payload.selectedSource, response.player);
     });
     // Prepare config for the ui manager
-    Object.assign(playerConfig, {targetId: containerId});
+    Utils.mergeDeep(playerConfig, {targetId: containerId});
     // Build UI
     buildUI(response.player, playerConfig);
     // Handle provider config
@@ -35,7 +35,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
       if (providerConfig.entryId) {
         return response.provider.getConfig(providerConfig.entryId)
           .then(data => {
-            Object.assign(playerConfig, data);
+            Utils.mergeDeep(playerConfig, data);
             response.player.configure(playerConfig);
             resolve(response);
           }).catch(error => {
@@ -54,7 +54,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
  */
 function createKalturaPlayerContainer(targetId: string): string {
   let el = document.createElement("div");
-  el.id = Math.random().toString(36).substring(2, 10);
+  el.id = Utils.uniqueId(5);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
   let parentNode = document.getElementById(targetId);
@@ -82,7 +82,7 @@ function buildUI(player: Player, config: Object): void {
  */
 function extractPlayerConfig(config: ?Object): Object {
   let playerConfig = {};
-  Object.assign(playerConfig, config);
+  Utils.mergeDeep(playerConfig, config);
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   return playerConfig;
