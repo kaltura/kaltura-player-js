@@ -25,12 +25,17 @@
 <body>
 <div id="player-placeholder"></div>
 <script>
-  let config = {partnerId: 1914121, entryId: '1_umer46fd'};
+  let config = {
+    partnerId: 1914121,
+    entryId: '1_umer46fd',
+    playback: {
+      autoplay: true
+    }
+  };
   KalturaPlayer.setup('player-placeholder', config)
     .then((response) => {
       window.player = response.player;
       window.provider = response.provider;
-      window.player.load();
     });
 </script>
 </body>
