@@ -71,6 +71,12 @@ describe('extractProviderConfig', function () {
     config = {
       partnerId: 1914121,
       entryId: '1_umer46fd',
+      uiConfId: '12345',
+      ks: 'sdsf87s8f7s8fjsf',
+      env: {
+        beUrl: 'http://some/be/url',
+        baseUrl: 'http://some/base/url'
+      },
       playback: {
         autoplay: true,
         muted: true,
@@ -96,24 +102,69 @@ describe('extractProviderConfig', function () {
     };
   });
 
-  it('should extract provider config - both partner and entry ids', function () {
+  it('should extract all provider config', function () {
     extractProviderConfig(config).should.deep.equals({
       partnerId: 1914121,
-      entryId: '1_umer46fd'
+      entryId: '1_umer46fd',
+      uiConfId: '12345',
+      ks: 'sdsf87s8f7s8fjsf',
+      env: {
+        beUrl: 'http://some/be/url',
+        baseUrl: 'http://some/base/url'
+      }
     });
   });
 
-  it('should extract provider config - only partner id', function () {
+  it('should extract all provider config except entry id', function () {
     delete config.entryId;
     extractProviderConfig(config).should.deep.equals({
-      partnerId: 1914121
+      partnerId: 1914121,
+      entryId: undefined,
+      uiConfId: '12345',
+      ks: 'sdsf87s8f7s8fjsf',
+      env: {
+        beUrl: 'http://some/be/url',
+        baseUrl: 'http://some/base/url'
+      }
     });
   });
 
-  it('should extract provider config - only entry id', function () {
+  it('should extract all provider config except partner id', function () {
     delete config.partnerId;
     extractProviderConfig(config).should.deep.equals({
-      entryId: '1_umer46fd'
+      partnerId: undefined,
+      entryId: '1_umer46fd',
+      uiConfId: '12345',
+      ks: 'sdsf87s8f7s8fjsf',
+      env: {
+        beUrl: 'http://some/be/url',
+        baseUrl: 'http://some/base/url'
+      }
+    });
+  });
+
+  it('should extract all provider config except ks', function () {
+    delete config.ks;
+    extractProviderConfig(config).should.deep.equals({
+      partnerId: 1914121,
+      entryId: '1_umer46fd',
+      uiConfId: '12345',
+      ks: undefined,
+      env: {
+        beUrl: 'http://some/be/url',
+        baseUrl: 'http://some/base/url'
+      }
+    });
+  });
+
+  it('should extract all provider config except env', function () {
+    delete config.env;
+    extractProviderConfig(config).should.deep.equals({
+      partnerId: 1914121,
+      entryId: '1_umer46fd',
+      uiConfId: '12345',
+      ks: 'sdsf87s8f7s8fjsf',
+      env: undefined
     });
   });
 
