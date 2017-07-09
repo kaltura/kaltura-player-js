@@ -31,17 +31,15 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
     buildUI(response.player, playerConfig);
     // Handle provider config
     if (providerConfig.partnerId) {
-      response.provider = new OvpProvider(providerConfig.partnerId);
-      if (providerConfig.entryId) {
-        return response.provider.getConfig(providerConfig.entryId)
-          .then(data => {
-            Utils.mergeDeep(playerConfig, data);
-            response.player.configure(playerConfig);
-            resolve(response);
-          }).catch(error => {
-            reject(error);
-          });
-      }
+      response.provider = new OvpProvider(providerConfig.partnerId, providerConfig.ks, providerConfig.env);
+      return response.provider.getConfig(providerConfig.entryId, providerConfig.uiConfId)
+        .then(data => {
+          Utils.mergeDeep(playerConfig, data);
+          response.player.configure(playerConfig);
+          resolve(response);
+        }).catch(error => {
+          reject(error);
+        });
     }
     resolve(response);
   });
@@ -85,6 +83,9 @@ function extractPlayerConfig(config: ?Object): Object {
   Utils.mergeDeep(playerConfig, config);
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
+  delete playerConfig.uiConfId;
+  delete playerConfig.env;
+  delete playerConfig.ks;
   return playerConfig;
 }
 
@@ -96,12 +97,11 @@ function extractPlayerConfig(config: ?Object): Object {
 function extractProviderConfig(config: ?Object): Object {
   let providerConfig = {};
   if (config) {
-    if (config.partnerId) {
-      providerConfig.partnerId = config.partnerId;
-    }
-    if (config.entryId) {
-      providerConfig.entryId = config.entryId;
-    }
+    providerConfig.partnerId = config.partnerId;
+    providerConfig.entryId = config.entryId;
+    providerConfig.uiConfId = config.uiConfId;
+    providerConfig.env = config.env;
+    providerConfig.ks = config.ks;
   }
   return providerConfig;
 }
