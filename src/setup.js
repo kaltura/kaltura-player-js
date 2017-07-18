@@ -26,7 +26,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
       handleSessionId(event.payload.selectedSource, response.player);
     });
     // Prepare config for the ui manager
-    Utils.mergeDeep(playerConfig, {targetId: containerId});
+    Utils.Object.mergeDeep(playerConfig, {targetId: containerId});
     // Build UI
     buildUI(response.player, playerConfig);
     // Handle provider config
@@ -34,7 +34,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
       response.provider = new OvpProvider(providerConfig.partnerId, providerConfig.ks, providerConfig.env);
       return response.provider.getConfig(providerConfig.entryId, providerConfig.uiConfId)
         .then(data => {
-          Utils.mergeDeep(playerConfig, data);
+          Utils.Object.mergeDeep(playerConfig, data);
           response.player.configure(playerConfig);
           resolve(response);
         }).catch(error => {
@@ -52,7 +52,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
  */
 function createKalturaPlayerContainer(targetId: string): string {
   let el = document.createElement("div");
-  el.id = Utils.uniqueId(5);
+  el.id = Utils.Generator.uniqueId(5);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
   let parentNode = document.getElementById(targetId);
@@ -80,7 +80,7 @@ function buildUI(player: Player, config: Object): void {
  */
 function extractPlayerConfig(config: ?Object): Object {
   let playerConfig = {};
-  Utils.mergeDeep(playerConfig, config);
+  Utils.Object.mergeDeep(playerConfig, config);
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   delete playerConfig.uiConfId;
