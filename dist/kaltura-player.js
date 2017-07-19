@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 121);
+/******/ 	return __webpack_require__(__webpack_require__.s = 120);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -448,7 +448,7 @@ var ctx      = __webpack_require__(25)
   , IObject  = __webpack_require__(45)
   , toObject = __webpack_require__(9)
   , toLength = __webpack_require__(8)
-  , asc      = __webpack_require__(212);
+  , asc      = __webpack_require__(211);
 module.exports = function(TYPE, $create){
   var IS_MAP        = TYPE == 1
     , IS_FILTER     = TYPE == 2
@@ -9418,7 +9418,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
     /******/)
   );
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(118)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(307)(module)))
 
 /***/ }),
 /* 49 */
@@ -10597,7 +10597,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(305);
+var _jsLogger = __webpack_require__(304);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -10645,11 +10645,11 @@ exports.LOG_LEVEL = LOG_LEVEL;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-__webpack_require__(122);
+__webpack_require__(121);
+
+__webpack_require__(299);
 
 __webpack_require__(300);
-
-__webpack_require__(301);
 
 if (global._babelPolyfill) {
   throw new Error("only one instance of babel-polyfill is allowed");
@@ -11463,4292 +11463,3854 @@ exports.default = PolyfillManager;
 
 /***/ }),
 /* 118 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(true)
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["PlaykitJsProviders"] = factory();
+	else
+		root["PlaykitJsProviders"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Request builder
+ * @classdesc
+ */
+var RequestBuilder = function () {
+
+  /**
+   * @constructor
+   * @param {Map<string, string>} headers The request headers
+   */
+
+  /**
+   * @member - Service method (POST,GET,DELETE etc..)
+   * @type {string}
+   */
+
+  /**
+   * @member - Service headers
+   * @type {Map<string, string>}
+   */
+
+  /**
+   * @member - Service action
+   * @type {string}
+   */
+  function RequestBuilder() {
+    var headers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Map();
+
+    _classCallCheck(this, RequestBuilder);
+
+    this.headers = headers;
+    this.headers.set("Content-Type", "application/json");
+  }
+
+  /**
+   * Builds restful service URL
+   * @function getUrl
+   * @returns {string} The service URL
+   */
+
+  /**
+   * @member - Service tag
+   * @type {string}
+   */
+
+  /**
+   * @member - Service base url
+   * @type {Map<string, string>}
+   */
+
+  /**
+   * @member - Service params
+   * @type {any}
+   */
+
+
+  /**
+   * @member - Service name
+   * @type {string}
+   */
+
+
+  _createClass(RequestBuilder, [{
+    key: "getUrl",
+    value: function getUrl() {
+      if (!this.baseUrl) {
+        throw new Error("baseUrl is mandatory for request builder");
+      }
+      var url = this.baseUrl + '/service/' + this.service + (this.action ? '/action/' + this.action : '');
+      return url;
+    }
+
+    /**
+     * Executes service
+     * @function doHttpRequest
+     * @returns {Promise.<any>} Service response as promise
+     */
+
+  }, {
+    key: "doHttpRequest",
+    value: function doHttpRequest() {
+      var _this = this;
+
+      var request = new XMLHttpRequest();
+      return new Promise(function (resolve, reject) {
+        request.onreadystatechange = function () {
+          if (request.readyState === 4) {
+            if (request.status === 200) {
+              var jsonResponse = JSON.parse(request.responseText);
+              if (jsonResponse && (typeof jsonResponse === "undefined" ? "undefined" : _typeof(jsonResponse)) === 'object' && jsonResponse.code && jsonResponse.message) reject(jsonResponse);else resolve(jsonResponse);
+            } else {
+              reject(request.responseText);
+            }
+          }
+        };
+        request.open(_this.method, _this.getUrl());
+        _this.headers.forEach(function (value, key) {
+          request.setRequestHeader(key, value);
+        });
+        request.send(_this.params);
+      });
+    }
+  }]);
+
+  return RequestBuilder;
+}();
+
+exports.default = RequestBuilder;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var defaultConfig = {
+  beUrl: "http://www.kaltura.com/api_v3",
+  baseUrl: "https://cdnapisec.kaltura.com",
+  serviceParams: {
+    clientTag: "playkit-js",
+    apiVersion: '3.3.0',
+    format: 1
+  }
 };
+
+var Configuration = function () {
+  function Configuration() {
+    _classCallCheck(this, Configuration);
+  }
+
+  _createClass(Configuration, null, [{
+    key: "set",
+    value: function set(clientConfig) {
+      if (clientConfig) {
+        Object.assign(defaultConfig, clientConfig);
+      }
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      return defaultConfig;
+    }
+  }]);
+
+  return Configuration;
+}();
+
+exports.default = Configuration;
+exports.Configuration = Configuration;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Base service result
+ * @classdesc
+ */
+var ServiceResult =
+
+/**
+ * @constructor
+ * @param {Object} response - Service response
+ */
+
+/**
+ * @member - The service error
+ * @type {ServiceError}
+ */
+
+/**
+ * @member - The service result data
+ * @type {Object}
+ */
+function ServiceResult(response) {
+  _classCallCheck(this, ServiceResult);
+
+  this.hasError = false;
+
+  if (response.objectType === "KalturaAPIException") {
+    this.hasError = true;
+    this.error = new ServiceError(response.code, response.message);
+  } else {
+    this.data = response;
+  }
+}
+
+/**
+ * @member - Is service returned an error
+ * @type {boolean}
+ */
+;
+
+/**
+ * Service error
+ * @classdesc
+ */
+
+
+exports.default = ServiceResult;
+
+var ServiceError =
+
+/**
+ * @constructor
+ * @param {string} code - The result code
+ * @param {string} message - The result message
+ */
+
+/**
+ * @member - The error code
+ * @type {string}
+ */
+function ServiceError(code, message) {
+  _classCallCheck(this, ServiceError);
+
+  this.code = code;
+  this.message = message;
+}
+/**
+ * @member - The error message
+ * @type {string}
+ */
+;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _multiRequestBuilder = __webpack_require__(6);
+
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+var SERVICE_NAME = "multirequest";
+
+/**
+ * Base for all ovp services
+ * @classdesc
+ */
+
+var OvpService = function () {
+  function OvpService() {
+    _classCallCheck(this, OvpService);
+  }
+
+  _createClass(OvpService, null, [{
+    key: 'getMultirequest',
+
+    /**
+     * Gets a new instance of MultiRequestBuilder with ovp params
+     * @function getMultirequest
+     * @param {string} ks The ks
+     * @param {string} partnerId The partner ID
+     * @returns {MultiRequestBuilder} The multi request builder
+     * @static
+     */
+    value: function getMultirequest(ks, partnerId) {
+      var ovpParams = config.serviceParams;
+      Object.assign(ovpParams, { ks: ks });
+      if (partnerId) {
+        Object.assign(ovpParams, { partnerId: partnerId });
+      }
+      var multiReq = new _multiRequestBuilder2.default();
+      multiReq.method = "POST";
+      multiReq.service = SERVICE_NAME;
+      multiReq.baseUrl = config.beUrl;
+      multiReq.params = ovpParams;
+      return multiReq;
+    }
+  }]);
+
+  return OvpService;
+}();
+
+exports.default = OvpService;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LOG_LEVEL = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jsLogger = __webpack_require__(7);
+
+var JsLogger = _interopRequireWildcard(_jsLogger);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LoggerFactory = function () {
+  function LoggerFactory(options) {
+    _classCallCheck(this, LoggerFactory);
+
+    JsLogger.useDefaults(options || {});
+  }
+
+  _createClass(LoggerFactory, [{
+    key: "get",
+    value: function get(name) {
+      if (!name) {
+        return JsLogger;
+      }
+      return JsLogger.get(name);
+    }
+  }]);
+
+  return LoggerFactory;
+}();
+
+var Logger = new LoggerFactory({ defaultLevel: JsLogger.DEBUG });
+var LOG_LEVEL = {
+  "DEBUG": JsLogger.DEBUG,
+  "INFO": JsLogger.INFO,
+  "TIME": JsLogger.TIME,
+  "WARN": JsLogger.WARN,
+  "ERROR": JsLogger.ERROR,
+  "OFF": JsLogger.OFF
+};
+
+exports.default = Logger;
+exports.LOG_LEVEL = LOG_LEVEL;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Scheme = exports.Scheme = function Scheme() {
+  _classCallCheck(this, Scheme);
+};
+
+Scheme.PLAYREADY_CENC = "drm.PLAYREADY_CENC";
+Scheme.WIDEVINE_CENC = "drm.WIDEVINE_CENC";
+Scheme.FAIRPLAY = "fairplay.FAIRPLAY";
+Scheme.PLAYREADY = "playReady.PLAYREADY";
+Scheme.WIDEVINE = "widevine.WIDEVINE";
+
+var KalturaRuleActionTypes = exports.KalturaRuleActionTypes = function KalturaRuleActionTypes() {
+  _classCallCheck(this, KalturaRuleActionTypes);
+};
+
+KalturaRuleActionTypes.DRM_POLICY = "drm.DRM_POLICY";
+KalturaRuleActionTypes.BLOCK = 1;
+KalturaRuleActionTypes.PREVIEW = 2;
+KalturaRuleActionTypes.LIMIT_FLAVORS = 3;
+KalturaRuleActionTypes.ADD_TO_STORAGE = 4;
+KalturaRuleActionTypes.LIMIT_DELIVERY_PROFILES = 5;
+KalturaRuleActionTypes.SERVE_FROM_REMOTE_SERVER = 6;
+KalturaRuleActionTypes.REQUEST_HOST_REGEX = 7;
+KalturaRuleActionTypes.LIMIT_THUMBNAIL_CAPTURE = 8;
+
+var Status = exports.Status = function Status() {
+  _classCallCheck(this, Status);
+};
+
+Status.ERROR = -1;
+Status.QUEUED = 0;
+Status.CONVERTING = 1;
+Status.READY = 2;
+Status.DELETED = 3;
+Status.NOT_APPLICABLE = 4;
+Status.TEMP = 5;
+Status.WAIT_FOR_CONVERT = 6;
+Status.IMPORTING = 7;
+Status.VALIDATING = 8;
+Status.EXPORTING = 9;
+
+var MetadataObjectTypes = exports.MetadataObjectTypes = function MetadataObjectTypes() {
+  _classCallCheck(this, MetadataObjectTypes);
+};
+
+MetadataObjectTypes.AD_CUE_POINT = "adCuePointMetadata.AdCuePoint";
+MetadataObjectTypes.ANNOTATION = "annotationMetadata.Annotation";
+MetadataObjectTypes.CODE_CUE_POINT = "codeCuePointMetadata.CodeCuePoint";
+MetadataObjectTypes.THUMB_CUE_POINT = "thumbCuePointMetadata.thumbCuePoint";
+MetadataObjectTypes.ENTRY = 1;
+MetadataObjectTypes.CATEGORY = 2;
+MetadataObjectTypes.USER = 3;
+MetadataObjectTypes.PARTNER = 4;
+MetadataObjectTypes.DYNAMIC_OBJECT = 5;
+
+var MetadataStatuses = exports.MetadataStatuses = function MetadataStatuses() {
+  _classCallCheck(this, MetadataStatuses);
+};
+
+MetadataStatuses.VALID = 1;
+MetadataStatuses.INVALID = 2;
+MetadataStatuses.DELETED = 3;
+
+var EntryStatuses = exports.EntryStatuses = function EntryStatuses() {
+  _classCallCheck(this, EntryStatuses);
+};
+
+EntryStatuses.ERROR_IMPORTING = -2;
+EntryStatuses.ERROR_CONVERTING = -1;
+EntryStatuses.SCAN_FAILURE = "virusScan.ScanFailure";
+EntryStatuses.IMPORT = 0;
+EntryStatuses.INFECTED = "virusScan.Infected";
+EntryStatuses.PRECONVERT = 1;
+EntryStatuses.READY = 2;
+EntryStatuses.DELETED = 3;
+EntryStatuses.PENDING = 4;
+EntryStatuses.MODERATE = 5;
+EntryStatuses.BLOCKED = 6;
+EntryStatuses.NO_CONTENT = 7;
+
+var EntryModerationStatuses = exports.EntryModerationStatuses = function EntryModerationStatuses() {
+  _classCallCheck(this, EntryModerationStatuses);
+};
+
+EntryModerationStatuses.PENDING_MODERATION = 1;
+EntryModerationStatuses.APPROVED = 2;
+EntryModerationStatuses.REJECTED = 3;
+EntryModerationStatuses.FLAGGED_FOR_REVIEW = 4;
+EntryModerationStatuses.MODERATE = 5;
+EntryModerationStatuses.AUTO_APPROVED = 6;
+
+var EntryTypes = exports.EntryTypes = function EntryTypes() {
+  _classCallCheck(this, EntryTypes);
+};
+
+EntryTypes.AUTOMATIC = { value: -1 };
+EntryTypes.EXTERNAL_MEDIA = { value: "externalMedia.externalMedia" };
+EntryTypes.MEDIA_CLIP = { value: 1 };
+EntryTypes.MIX = { value: 2 };
+EntryTypes.PLAYLIST = { value: 5 };
+EntryTypes.DATA = { value: 6 };
+EntryTypes.LIVE_STREAM = { value: 7 };
+EntryTypes.LIVE_CHANNEL = { value: 8 };
+EntryTypes.DOCUMENT = { value: 10 };
+
+var MediaTypes = exports.MediaTypes = function MediaTypes() {
+  _classCallCheck(this, MediaTypes);
+};
+
+MediaTypes.VIDEO = { value: 1 };
+MediaTypes.IMAGE = { value: 2 };
+MediaTypes.AUDIO = { value: 5 };
+MediaTypes.LIVE_STREAM_FLASH = { value: 201 };
+MediaTypes.LIVE_STREAM_WINDOWS_MEDIA = { value: 202 };
+MediaTypes.LIVE_STREAM_REAL_MEDIA = { value: 203 };
+MediaTypes.LIVE_STREAM_QUICKTIME = { value: 204 };
+
+var MediaEntryTypes = exports.MediaEntryTypes = function MediaEntryTypes() {
+  _classCallCheck(this, MediaEntryTypes);
+};
+
+MediaEntryTypes.Vod = 'Vod';
+MediaEntryTypes.Live = 'Live';
+MediaEntryTypes.Image = 'Image';
+MediaEntryTypes.Audio = 'Audio';
+MediaEntryTypes.Unknown = 'Unknown';
+
+var UIConfTypes = exports.UIConfTypes = function UIConfTypes() {
+  _classCallCheck(this, UIConfTypes);
+};
+
+UIConfTypes.PLAYER = 1;
+UIConfTypes.CONTRIBUTION_WIZARD = 2;
+UIConfTypes.SIMPLE_EDITOR = 3;
+UIConfTypes.ADVANCED_EDITOR = 4;
+UIConfTypes.PLAYLIST = 5;
+UIConfTypes.APP_STUDIO = 6;
+UIConfTypes.KRECORD = 7;
+UIConfTypes.PLAYER_V3 = 8;
+UIConfTypes.KMC_ACCOUNT = 9;
+UIConfTypes.KMC_ANALYTICS = 10;
+UIConfTypes.KMC_CONTENT = 11;
+UIConfTypes.KMC_DASHBOARD = 12;
+UIConfTypes.KMC_LOGIN = 13;
+UIConfTypes.PLAYER_SL = 14;
+UIConfTypes.CLIENTSIDE_ENCODER = 15;
+UIConfTypes.KMC_GENERAL = 16;
+UIConfTypes.KMC_ROLES_AND_PERMISSIONS = 17;
+UIConfTypes.CLIPPER = 18;
+UIConfTypes.KSR = 19;
+UIConfTypes.KUPLOAD = 20;
+UIConfTypes.WEBCASTING = 21;
+
+var UIConfCreationModes = exports.UIConfCreationModes = function UIConfCreationModes() {
+  _classCallCheck(this, UIConfCreationModes);
+};
+
+UIConfCreationModes.WIZARD = 2;
+UIConfCreationModes.ADVANCED = 3;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MultiRequestResult = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * Multi Request builder
+ * @classdesc
+ */
+
+var MultiRequestBuilder = function (_RequestBuilder) {
+  _inherits(MultiRequestBuilder, _RequestBuilder);
+
+  /**
+   * @constructor
+   */
+  function MultiRequestBuilder() {
+    _classCallCheck(this, MultiRequestBuilder);
+
+    var _this = _possibleConstructorReturn(this, (MultiRequestBuilder.__proto__ || Object.getPrototypeOf(MultiRequestBuilder)).call(this));
+
+    _this.requests = [];
+    return _this;
+  }
+
+  /**
+   * Adds request to requests array
+   * @function add
+   * @param {RequestBuilder} request The request
+   * @returns {MultiRequestBuilder} The multiRequest
+   */
+
+
+  /**
+   * @member - Array of requests
+   * @type {Array<RequestBuilder>}
+   */
+
+
+  _createClass(MultiRequestBuilder, [{
+    key: 'add',
+    value: function add(request) {
+      this.requests.push(request);
+      var requestParams = {};
+      var serviceDef = { service: request.service, action: request.action };
+      Object.assign(requestParams, _defineProperty({}, this.requests.length, Object.assign(serviceDef, request.params)));
+      Object.assign(requestParams, this.params);
+      this.params = requestParams;
+      return this;
+    }
+
+    /**
+     * Executes a multi request
+     * @function execute
+     * @returns {Promise} The multirequest execution promisie
+     */
+
+  }, {
+    key: 'execute',
+    value: function execute() {
+      var _this2 = this;
+
+      try {
+        this.params = JSON.stringify(this.params);
+      } catch (err) {
+        logger.error('' + err.message);
+      }
+      return new Promise(function (resolve, reject) {
+        _this2.doHttpRequest().then(function (data) {
+          resolve(new MultiRequestResult(data));
+        }, function (err) {
+          var errorText = 'Error on multiRequest execution, error <' + err + '>.';
+          reject(errorText);
+        });
+      });
+    }
+  }]);
+
+  return MultiRequestBuilder;
+}(_requestBuilder2.default);
+
+/**
+ * Multi Request result object
+ * @classdesc
+ */
+
+
+exports.default = MultiRequestBuilder;
+
+var MultiRequestResult =
+
+/**
+ * @constructor
+ * @param {Object}  response data
+ */
+
+
+/**
+ * @member - Is success
+ * @type {boolean}
+ */
+exports.MultiRequestResult = function MultiRequestResult(response) {
+  var _this3 = this;
+
+  _classCallCheck(this, MultiRequestResult);
+
+  this.results = [];
+
+  this.success = true;
+  response.forEach(function (result) {
+    var serviceResult = new _baseServiceResult2.default(result);
+    _this3.results.push(serviceResult);
+    if (serviceResult.hasError) {
+      logger.error('Service returned an error with error code: ' + serviceResult.error.code + ' and message: ' + serviceResult.error.message + '.');
+      _this3.success = false;
+      return;
+    }
+  });
+}
+/**
+ * @member - Multi request response data
+ * @type {Object}
+ */
+;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * js-logger - http://github.com/jonnyreeves/js-logger
+ * Jonny Reeves, http://jonnyreeves.co.uk/
+ * js-logger may be freely distributed under the MIT license.
+ */
+(function (global) {
+	"use strict";
+
+	// Top level module for the global, static logger instance.
+	var Logger = { };
+
+	// For those that are at home that are keeping score.
+	Logger.VERSION = "1.3.0";
+
+	// Function which handles all incoming log messages.
+	var logHandler;
+
+	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
+	var contextualLoggersByNameMap = {};
+
+	// Polyfill for ES5's Function.bind.
+	var bind = function(scope, func) {
+		return function() {
+			return func.apply(scope, arguments);
+		};
+	};
+
+	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
+	var merge = function () {
+		var args = arguments, target = args[0], key, i;
+		for (i = 1; i < args.length; i++) {
+			for (key in args[i]) {
+				if (!(key in target) && args[i].hasOwnProperty(key)) {
+					target[key] = args[i][key];
+				}
+			}
+		}
+		return target;
+	};
+
+	// Helper to define a logging level object; helps with optimisation.
+	var defineLogLevel = function(value, name) {
+		return { value: value, name: name };
+	};
+
+	// Predefined logging levels.
+	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
+	Logger.INFO = defineLogLevel(2, 'INFO');
+	Logger.TIME = defineLogLevel(3, 'TIME');
+	Logger.WARN = defineLogLevel(4, 'WARN');
+	Logger.ERROR = defineLogLevel(8, 'ERROR');
+	Logger.OFF = defineLogLevel(99, 'OFF');
+
+	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
+	// of each other.
+	var ContextualLogger = function(defaultContext) {
+		this.context = defaultContext;
+		this.setLevel(defaultContext.filterLevel);
+		this.log = this.info;  // Convenience alias.
+	};
+
+	ContextualLogger.prototype = {
+		// Changes the current logging level for the logging instance.
+		setLevel: function (newLevel) {
+			// Ensure the supplied Level object looks valid.
+			if (newLevel && "value" in newLevel) {
+				this.context.filterLevel = newLevel;
+			}
+		},
+
+		// Is the logger configured to output messages at the supplied level?
+		enabledFor: function (lvl) {
+			var filterLevel = this.context.filterLevel;
+			return lvl.value >= filterLevel.value;
+		},
+
+		debug: function () {
+			this.invoke(Logger.DEBUG, arguments);
+		},
+
+		info: function () {
+			this.invoke(Logger.INFO, arguments);
+		},
+
+		warn: function () {
+			this.invoke(Logger.WARN, arguments);
+		},
+
+		error: function () {
+			this.invoke(Logger.ERROR, arguments);
+		},
+
+		time: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'start' ]);
+			}
+		},
+
+		timeEnd: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'end' ]);
+			}
+		},
+
+		// Invokes the logger callback if it's not being filtered.
+		invoke: function (level, msgArgs) {
+			if (logHandler && this.enabledFor(level)) {
+				logHandler(msgArgs, merge({ level: level }, this.context));
+			}
+		}
+	};
+
+	// Protected instance which all calls to the to level `Logger` module will be routed through.
+	var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
+
+	// Configure the global Logger instance.
+	(function() {
+		// Shortcut for optimisers.
+		var L = Logger;
+
+		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
+		L.debug = bind(globalLogger, globalLogger.debug);
+		L.time = bind(globalLogger, globalLogger.time);
+		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
+		L.info = bind(globalLogger, globalLogger.info);
+		L.warn = bind(globalLogger, globalLogger.warn);
+		L.error = bind(globalLogger, globalLogger.error);
+
+		// Don't forget the convenience alias!
+		L.log = L.info;
+	}());
+
+	// Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
+	// object with the supplied log messages and the second being a context object which contains a hash of stateful
+	// parameters which the logging function can consume.
+	Logger.setHandler = function (func) {
+		logHandler = func;
+	};
+
+	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+	// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
+	Logger.setLevel = function(level) {
+		// Set the globalLogger's level.
+		globalLogger.setLevel(level);
+
+		// Apply this level to all registered contextual loggers.
+		for (var key in contextualLoggersByNameMap) {
+			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
+				contextualLoggersByNameMap[key].setLevel(level);
+			}
+		}
+	};
+
+	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
+	// default context and log handler.
+	Logger.get = function (name) {
+		// All logger instances are cached so they can be configured ahead of use.
+		return contextualLoggersByNameMap[name] ||
+			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
+	};
+
+	// CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
+	// write to the window's console object (if present); the optional options object can be used to customise the
+	// formatter used to format each log message.
+	Logger.createDefaultHandler = function (options) {
+		options = options || {};
+
+		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
+			// Prepend the logger's name to the log message for easy identification.
+			if (context.name) {
+				messages.unshift("[" + context.name + "]");
+			}
+		};
+
+		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+		// that don't offer a native console method.
+		var timerStartTimeByLabelMap = {};
+
+		// Support for IE8+ (and other, slightly more sane environments)
+		var invokeConsoleMethod = function (hdlr, messages) {
+			Function.prototype.apply.call(hdlr, console, messages);
+		};
+
+		// Check for the presence of a logger.
+		if (typeof console === "undefined") {
+			return function () { /* no console */ };
+		}
+
+		return function(messages, context) {
+			// Convert arguments object to Array.
+			messages = Array.prototype.slice.call(messages);
+
+			var hdlr = console.log;
+			var timerLabel;
+
+			if (context.level === Logger.TIME) {
+				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
+				if (messages[1] === 'start') {
+					if (console.time) {
+						console.time(timerLabel);
+					}
+					else {
+						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
+					}
+				}
+				else {
+					if (console.timeEnd) {
+						console.timeEnd(timerLabel);
+					}
+					else {
+						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
+					}
+				}
+			}
+			else {
+				// Delegate through to custom warn/error loggers if present on the console.
+				if (context.level === Logger.WARN && console.warn) {
+					hdlr = console.warn;
+				} else if (context.level === Logger.ERROR && console.error) {
+					hdlr = console.error;
+				} else if (context.level === Logger.INFO && console.info) {
+					hdlr = console.info;
+				}
+
+				options.formatter(messages, context);
+				invokeConsoleMethod(hdlr, messages);
+			}
+		};
+	};
+
+	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
+	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
+	Logger.useDefaults = function(options) {
+		Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
+		Logger.setHandler(Logger.createDefaultHandler(options));
+	};
+
+	// Export to popular environments boilerplate.
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (Logger),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Logger;
+	}
+	else {
+		Logger._prevLogger = global.Logger;
+
+		Logger.noConflict = function () {
+			global.Logger = Logger._prevLogger;
+			return Logger;
+		};
+
+		global.Logger = Logger;
+	}
+}(this));
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mediaSource = __webpack_require__(13);
+
+var _mediaSource2 = _interopRequireDefault(_mediaSource);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Container for the media sources aggregated by stream format.
+ * @classdesc
+ */
+var MediaSources = function () {
+
+  /**
+   * @constructor
+   */
+
+  /**
+   * Dash media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+  function MediaSources() {
+    _classCallCheck(this, MediaSources);
+
+    this.progressive = [];
+    this.dash = [];
+    this.hls = [];
+  }
+
+  /**
+   * Maps the source to one of the containers according to his media format.
+   * @param {MediaSource} source - The source to add to one of the containers.
+   * @param {MediaFormat} mediaFormat - The media format of the source.
+   * @returns {void}
+   */
+
+  /**
+   * Hls media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+
+  /**
+   * Progressive download media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+
+
+  _createClass(MediaSources, [{
+    key: 'map',
+    value: function map(source, mediaFormat) {
+      if (mediaFormat) {
+        switch (mediaFormat.name) {
+          case 'mp4':
+            this.progressive.push(source);
+            break;
+          case 'dash':
+            this.dash.push(source);
+            break;
+          case 'hls':
+            this.hls.push(source);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }]);
+
+  return MediaSources;
+}();
+
+exports.default = MediaSources;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _kalturaDrmPlaybackPluginData = __webpack_require__(17);
+
+var _kalturaDrmPlaybackPluginData2 = _interopRequireDefault(_kalturaDrmPlaybackPluginData);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE playback source
+ * @classdesc
+ */
+var KalturaPlaybackSource = function () {
+
+  /**
+   * @constructor
+   * @param {Object} source The response
+   */
+
+  /**
+   * @member - comma separated string of flavor ids
+   * @type {string}
+   */
+
+  /**
+   * @member - The source URL
+   * @type {string}
+   */
+
+  /**
+   * @member - source format according to delivery profile streamer type (applehttp, mpegdash etc.)
+   * @type {string}
+   */
+  function KalturaPlaybackSource(source) {
+    var _this = this;
+
+    _classCallCheck(this, KalturaPlaybackSource);
+
+    this.drm = [];
+
+    this.format = source.format;
+    this.deliveryProfileId = source.deliveryProfileId;
+    this.url = source.url;
+    this.protocols = source.protocols;
+    this.flavorIds = source.flavorIds;
+
+    if (source.drm) {
+      source.drm.map(function (drm) {
+        return _this.drm.push(new _kalturaDrmPlaybackPluginData2.default(drm));
+      });
+    }
+  }
+
+  /**
+   * Checks if source has DRM data
+   * @function hasDrmData
+   * @returns {boolean} Is source has DRM
+   */
+
+  /**
+   * @member - drm data object containing relevant license url ,scheme name and certificate
+   * @type {Array<KalturaDrmPlaybackPluginData>}
+   */
+
+  /**
+   * @member - comma separated string according to deliveryProfile media protocols ('http,https' etc.)
+   * @type {string}
+   */
+
+  /**
+   * @member - delivery profile Id
+   * @type {string}
+   */
+
+
+  _createClass(KalturaPlaybackSource, [{
+    key: "hasDrmData",
+    value: function hasDrmData() {
+      return this.drm && this.drm.length > 0;
+    }
+
+    /**
+     * Checks if source has flavor IDs
+     * @function hasFlavorIds
+     * @returns {boolean} Is source ha flavor IDs
+     */
+
+  }, {
+    key: "hasFlavorIds",
+    value: function hasFlavorIds() {
+      return !!this.flavorIds && this.flavorIds.length > 0;
+    }
+
+    /**
+     * Returns source desired protocol if supported
+     * @param {string} protocol - the desired protocol for the source (base play url protocol)
+     * @returns {string} - protocol if protocol is in the protocols list - if not empty string returned
+     */
+
+  }, {
+    key: "getProtocol",
+    value: function getProtocol(protocol) {
+      var returnValue = "";
+      if (this.protocols && this.protocols.length > 0) {
+        var protocolsArr = this.protocols.split(",");
+        protocolsArr.forEach(function (p) {
+          if (p == protocol) {
+            returnValue = p;
+          }
+        });
+      } else if (protocol == "http") {
+        return protocol;
+      }
+      return returnValue;
+    }
+  }]);
+
+  return KalturaPlaybackSource;
+}();
+
+exports.default = KalturaPlaybackSource;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE FlavorAsset
+ * @classdesc
+ */
+var KalturaFlavorAsset =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The language of the flavor asset
+ * @type {Status}
+ */
+
+/**
+ *@member - The video codec
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is playable in KDP
+ * @type {boolean}
+ */
+
+/**
+ * @member - The frame rate (in FPS) of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The width of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member -The file extension
+ * @type {string}
+ */
+
+/**
+ * @member - The ID of the Flavor Asset
+ * @type {string}
+ */
+function KalturaFlavorAsset(data) {
+  _classCallCheck(this, KalturaFlavorAsset);
+
+  this.id = data.id;
+  this.flavorParamsId = data.flavorParamsId;
+  this.fileExt = data.fileExt;
+  this.bitrate = data.bitrate;
+  this.width = data.width;
+  this.height = data.height;
+  this.id = data.id;
+  this.frameRate = data.frameRate;
+  this.isOriginal = data.isOriginal;
+  this.isWeb = data.isWeb;
+  this.containerFormat = data.containerFormat;
+  this.videoCodecId = data.videoCodecId;
+  this.status = data.status;
+  this.language = data.language;
+  this.label = data.label;
+}
+/**
+ * @member - The label of the flavor asset
+ * @type {string}
+ */
+
+/**
+ * @member - The status of the Flavor Asset
+ * @type {string}
+ */
+
+/**
+ * @member - The container format
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is the original source
+ * @type {number}
+ */
+
+/**
+ * @member - The height of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The overall bitrate (in KBits) of the Flavor Asset
+ *  @type {string}
+ */
+
+/**
+ * @member -The Flavor Params used to create this Flavor Asset
+ * @type {string}
+ */
+;
+
+exports.default = KalturaFlavorAsset;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMetadata = __webpack_require__(18);
+
+var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Metadata list response
+ * @classdesc
+ */
+var KalturaMetadataListResponse = function (_ServiceResult) {
+  _inherits(KalturaMetadataListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The response
+   */
+  function KalturaMetadataListResponse(responseObj) {
+    _classCallCheck(this, KalturaMetadataListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.metas = [];
+        responseObj.objects.map(function (meta) {
+          return _this.metas.push(new _kalturaMetadata2.default(meta));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member -The mata data array
+   * @type {Array<KalturaMetadata>}
+   */
+
+
+  return KalturaMetadataListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaMetadataListResponse;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+var _mediaSources = __webpack_require__(8);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media entry
+ * @classdesc
+ */
+var MediaEntry =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - entry type
+ * @type {MediaEntryType}
+ */
+
+/**
+ * @member - entry sources
+ * @type {MediaSources}
+ */
+function MediaEntry() {
+  _classCallCheck(this, MediaEntry);
+
+  this.metaData = new Map();
+  this.type = _enums.MediaEntryTypes.Unknown;
+}
+/**
+ * @member - entry metadata
+ * @type {Map<string,string>}
+ */
+
+/**
+ * @member - entry duration
+ * @type {number}
+ */
+
+
+/**
+ * @member - entry ID
+ * @type {string}
+ */
+;
+
+exports.default = MediaEntry;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _drm = __webpack_require__(14);
+
+var _drm2 = _interopRequireDefault(_drm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media source
+ * @classdesc
+ */
+var MediaSource =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - media source height
+ * @type {number}
+ */
+
+/**
+ * @member - media source bandwidth
+ * @type {number}
+ */
+
+/**
+ * @member - media source mimetype
+ * @type {string}
+ */
+
+/**
+ * @member - media source ID
+ * @type {string}
+ */
+function MediaSource() {
+  _classCallCheck(this, MediaSource);
+}
+/**
+ * @member - media source label
+ * @type {string}
+ */
+
+/**
+ * @member - media source width
+ * @type {number}
+ */
+
+/**
+ * @member - media source drm data
+ * @type {Array<Drm>}
+ */
+
+/**
+ * @member - media source URL
+ * @type {string}
+ */
+;
+
+exports.default = MediaSource;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Drm data
+ * @classdesc
+ */
+var Drm =
+
+/**
+ * @constructor
+ * @param {string} licenseUrl - the license URL
+ * @param {Scheme} scheme - the drm scheme
+ */
+
+
+/**
+ * @member - license URL
+ * @type {string}
+ */
+function Drm(licenseUrl, scheme) {
+  _classCallCheck(this, Drm);
+
+  this.licenseUrl = licenseUrl;
+  this.scheme = scheme;
+}
+/**
+ * @member - drm scheme
+ * @type {Scheme}
+ */
+;
+
+exports.default = Drm;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.OvpProvider = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _providerParser = __webpack_require__(16);
+
+var _providerParser2 = _interopRequireDefault(_providerParser);
+
+var _dataLoaderManager = __webpack_require__(22);
+
+var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
+
+var _mediaEntryLoader = __webpack_require__(23);
+
+var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
+
+var _sessionLoader = __webpack_require__(31);
+
+var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
+
+var _uiConfigLoader = __webpack_require__(33);
+
+var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _mediaEntry = __webpack_require__(12);
+
+var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
+
+var _mediaSources = __webpack_require__(8);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * Ovp provider
+ * @classdesc
+ */
+var OvpProvider = exports.OvpProvider = function () {
+
+  /**
+   * @constructor
+   * @param {number} partnerID The partner ID
+   * @param {string} [ks=""]  The provider ks (has empty string as default value)
+   * @param {Object} [config]  The provider config(optional)
+   */
+
+  /**
+   * @member - uiConf ID
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * @member - partner ID
+   * @type {number}
+   */
+  function OvpProvider(partnerID) {
+    var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+    var config = arguments[2];
+
+    _classCallCheck(this, OvpProvider);
+
+    this.partnerID = partnerID;
+    this.ks = ks;
+    this._isAnonymous = !this.ks;
+    _config2.default.set(config);
+  }
+
+  /**
+   * Returns player json configuration
+   * @function getConfig
+   * @param {string} entryId The entry ID
+   * @param {number} uiConfId The uiConf ID
+   * @returns {Promise} The provider config object as promise
+   */
+
+  /**
+   * @member - Data loader
+   * @type {DataLoaderManager}
+   * @private
+   */
+
+  /**
+   * @member - is anonymous
+   * @type {boolean}
+   * @private
+   */
+
+  /**
+   * @member - ks
+   * @type {string}
+   */
+
+
+  _createClass(OvpProvider, [{
+    key: 'getConfig',
+    value: function getConfig(entryId, uiConfId) {
+      var _this = this;
+
+      if (uiConfId != null) {
+        this._uiConfId = uiConfId;
+      }
+      this._dataLoader = new _dataLoaderManager2.default(this.partnerID, this.ks);
+      return new Promise(function (resolve, reject) {
+        if (_this.validateParams(entryId, uiConfId)) {
+          var ks = _this.ks;
+          if (_this._isAnonymous) {
+            ks = "{1:result:ks}";
+            _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
+          }
+          _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
+          _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
+          _this._dataLoader.fetchData().then(function (response) {
+            resolve(_this.parseDataFromResponse(response));
+          }, function (err) {
+            reject(err);
+          });
+        } else {
+          reject({ success: false, data: "Missing mandatory parameter" });
+        }
+      });
+    }
+
+    /**
+     * Parses BE data to json configuration object
+     * @function parseDataFromResponse
+     * @param {Map<string,Function>} data The data to parse
+     * @returns {Object} The parsed config object
+     */
+
+  }, {
+    key: 'parseDataFromResponse',
+    value: function parseDataFromResponse(data) {
+      logger.debug("Data parsing started");
+      var config = {
+        id: "",
+        session: {
+          partnerID: this.partnerID,
+          uiConfID: this._uiConfId
+        },
+        sources: new _mediaSources2.default(),
+        duration: 0,
+        type: "Unknown",
+        metadata: {},
+        plugins: {}
+      };
+      if (data != null) {
+        if (data.has(_sessionLoader2.default.name)) {
+          var sessionLoader = data.get(_sessionLoader2.default.name);
+          if (sessionLoader != null && sessionLoader.response != null) {
+            this.ks = sessionLoader.response;
+            this._isAnonymous = !this.ks;
+            config.session.ks = this.ks;
+          }
+        }
+        if (data.has(_uiConfigLoader2.default.name)) {
+          var uiConfLoader = data.get(_uiConfigLoader2.default.name);
+          var pluginsJson = {};
+          if (uiConfLoader != null) {
+            pluginsJson = uiConfLoader.response;
+          }
+          config.plugins = pluginsJson;
+        }
+        if (data.has(_mediaEntryLoader2.default.name)) {
+          var mediaLoader = data.get(_mediaEntryLoader2.default.name);
+          if (mediaLoader != null && mediaLoader.response != null) {
+            var mediaEntry = _providerParser2.default.getMediaEntry(this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
+            config.id = mediaEntry.id;
+            config.sources = mediaEntry.sources;
+            config.duration = mediaEntry.duration;
+            config.type = mediaEntry.type;
+            config.metadata = mediaEntry.metaData;
+          }
+        }
+      }
+      logger.debug("Data parsing finished", config);
+      return config;
+    }
+
+    /**
+     * Parameters validation function
+     * @param {string} entryId The entry ID
+     * @param {number} uiConfId The uiConfID
+     * @returns {boolean} Is valid params
+     */
+
+  }, {
+    key: 'validateParams',
+    value: function validateParams(entryId, uiConfId) {
+      return !!entryId || !!uiConfId;
+    }
+  }]);
+
+  return OvpProvider;
+}();
+
+exports.default = OvpProvider;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _kalturaPlaybackSource = __webpack_require__(9);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaFlavorAsset = __webpack_require__(10);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+var _kalturaMetadataListResponse = __webpack_require__(11);
+
+var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+
+var _playSourceUrlBuilder = __webpack_require__(19);
+
+var _playSourceUrlBuilder2 = _interopRequireDefault(_playSourceUrlBuilder);
+
+var _xmlParser = __webpack_require__(20);
+
+var _xmlParser2 = _interopRequireDefault(_xmlParser);
+
+var _enums = __webpack_require__(5);
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _mediaFormat = __webpack_require__(21);
+
+var _mediaEntry = __webpack_require__(12);
+
+var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
+
+var _drm = __webpack_require__(14);
+
+var _drm2 = _interopRequireDefault(_drm);
+
+var _mediaSource = __webpack_require__(13);
+
+var _mediaSource2 = _interopRequireDefault(_mediaSource);
+
+var _mediaSources = __webpack_require__(8);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * @constant
+ * @type {Map<string, MediaFormat>}
+ */
+var SUPPORTED_FORMATS = new Map([["mpegdash", _mediaFormat.MediaFormats.dash], ["applehttp", _mediaFormat.MediaFormats.hls], ["url", _mediaFormat.MediaFormats.mp4]]);
+
+/**
+ * Ovp provider parser
+ * @classdesc
+ */
+
+var ProviderParser = function () {
+  function ProviderParser() {
+    _classCallCheck(this, ProviderParser);
+  }
+
+  _createClass(ProviderParser, null, [{
+    key: 'getMediaEntry',
+
+
+    /**
+     * Returns parsed media entry by given OVP response objects
+     * @function getMediaEntry
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {any} mediaEntryResponse - The media entry response
+     * @returns {MediaEntry} - The media entry
+     * @static
+     * @public
+     */
+    value: function getMediaEntry(ks, partnerID, uiConfId, mediaEntryResponse) {
+      var mediaEntry = new _mediaEntry2.default();
+      var entry = mediaEntryResponse.entry;
+      var playbackContext = mediaEntryResponse.playBackContextResult;
+      var metadataList = mediaEntryResponse.metadataListResult;
+      var kalturaSources = playbackContext.sources;
+      var sources = ProviderParser._getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext);
+
+      mediaEntry.sources = sources;
+
+      var metadata = this._parseMetaData(metadataList);
+      mediaEntry.metaData = metadata;
+      mediaEntry.id = entry.id;
+      mediaEntry.duration = entry.duration;
+
+      var type = _enums.MediaEntryTypes.Unknown;
+
+      switch (entry.entryType) {
+        case _enums.MediaTypes.IMAGE.value:
+          type = _enums.MediaEntryTypes.Image;
+          break;
+        case _enums.MediaTypes.AUDIO.value:
+          type = _enums.MediaEntryTypes.Audio;
+          break;
+        default:
+          switch (entry.type) {
+            case _enums.EntryTypes.MEDIA_CLIP.value:
+              type = _enums.MediaEntryTypes.Vod;
+              break;
+            case _enums.EntryTypes.LIVE_STREAM.value:
+            case _enums.EntryTypes.LIVE_CHANNEL.value:
+              type = _enums.MediaEntryTypes.Live;
+              break;
+            default:
+              type = _enums.MediaEntryTypes.Unknown;
+          }
+      }
+      mediaEntry.type = type;
+
+      return mediaEntry;
+    }
+
+    /**
+     * Returns the parsed sources
+     * @function _getParsedSources
+     * @param {Array<KalturaPlaybackSource>} kalturaSources - The kaltura sources
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {Object} entry - The entry
+     * @param {Object} playbackContext - The playback context
+     * @return {MediaSources} - A media sources
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_getParsedSources',
+    value: function _getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext) {
+      var sources = new _mediaSources2.default();
+
+      var addAdaptiveSource = function addAdaptiveSource(source) {
+        var parsedSource = ProviderParser._parseAdaptiveSource(source, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
+        var sourceFormat = SUPPORTED_FORMATS.get(source.format);
+        sources.map(parsedSource, sourceFormat);
+      };
+
+      var parseAdaptiveSources = function parseAdaptiveSources() {
+        kalturaSources.filter(function (source) {
+          return !ProviderParser._isProgressiveSource(source);
+        }).forEach(addAdaptiveSource);
+      };
+
+      var parseProgressiveSources = function parseProgressiveSources() {
+        var progressiveSource = kalturaSources.find(ProviderParser._isProgressiveSource);
+        sources.progressive = ProviderParser._parseProgressiveSources(progressiveSource, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
+      };
+
+      if (kalturaSources && kalturaSources.length > 0) {
+        parseAdaptiveSources();
+        parseProgressiveSources();
+      }
+
+      return sources;
+    }
+
+    /**
+     * Returns a parsed adaptive source
+     * @function _parseAdaptiveSource
+     * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
+     * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {string} entryId - The entry id
+     * @returns {MediaSource} - The parsed adaptive kalturaSource
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_parseAdaptiveSource',
+    value: function _parseAdaptiveSource(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
+      var mediaSource = new _mediaSource2.default();
+      if (kalturaSource) {
+        var playUrl = "";
+        var mediaFormat = SUPPORTED_FORMATS.get(kalturaSource.format);
+        // in case playbackSource doesn't have flavors we don't need to build the url and we'll use the provided one.
+        if (kalturaSource.hasFlavorIds()) {
+          var extension = "";
+          if (!mediaFormat) {
+            if (flavorAssets && flavorAssets.length > 0) {
+              extension = flavorAssets[0].fileExt;
+            }
+          } else {
+            extension = mediaFormat.pathExt;
+            mediaSource.mimetype = mediaFormat.mimeType;
+          }
+
+          playUrl = _playSourceUrlBuilder2.default.build({
+            entryId: entryId,
+            flavorIds: kalturaSource.flavorIds,
+            format: kalturaSource.format,
+            ks: ks,
+            partnerId: partnerID,
+            uiConfId: uiConfId,
+            extension: extension,
+            protocol: kalturaSource.getProtocol(this._getBaseProtocol())
+          });
+        } else {
+          playUrl = kalturaSource.url;
+        }
+
+        if (playUrl == "") {
+          logger.error('failed to create play url from source, discarding source: (' + entryId + '_' + kalturaSource.deliveryProfileId + '), ' + kalturaSource.format + '.');
+          return mediaSource;
+        }
+
+        mediaSource.url = playUrl;
+        mediaSource.id = entryId + "_" + kalturaSource.deliveryProfileId + "," + kalturaSource.format;
+        if (kalturaSource.hasDrmData()) {
+          var drmParams = [];
+          kalturaSource.drm.forEach(function (drm) {
+            drmParams.push(new _drm2.default(drm.licenseURL, drm.scheme));
+          });
+          mediaSource.drmData = drmParams;
+        }
+      }
+      return mediaSource;
+    }
+
+    /**
+     * Returns parsed progressive sources
+     * @function _parseProgressiveSources
+     * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
+     * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {string} entryId - The entry id
+     * @returns {Array<MediaSource>} - The parsed progressive kalturaSources
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_parseProgressiveSources',
+    value: function _parseProgressiveSources(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
+      var sources = [];
+      if (kalturaSource) {
+        var protocol = kalturaSource.getProtocol(this._getBaseProtocol());
+        var format = kalturaSource.format;
+        var sourceId = kalturaSource.deliveryProfileId + "," + kalturaSource.format;
+        flavorAssets.map(function (flavor) {
+          if (flavor.height && flavor.width) {
+            var mediaSource = new _mediaSource2.default();
+            mediaSource.id = flavor.id + sourceId;
+            mediaSource.mimetype = 'video/mp4';
+            mediaSource.height = flavor.height;
+            mediaSource.width = flavor.width;
+            mediaSource.bandwidth = flavor.bitrate * 1024;
+            mediaSource.label = flavor.label || flavor.language;
+            mediaSource.url = _playSourceUrlBuilder2.default.build({
+              entryId: entryId,
+              flavorIds: flavor.id,
+              format: format,
+              ks: ks,
+              partnerId: partnerID,
+              uiConfId: uiConfId,
+              extension: 'mp4',
+              protocol: protocol
+            });
+            sources.push(mediaSource);
+          }
+        });
+      }
+      return sources;
+    }
+
+    /**
+     * @function _isProgressiveSource
+     * @param {KalturaPlaybackSource} source - The kaltura source
+     * @return {boolean} - Is progressive source
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_isProgressiveSource',
+    value: function _isProgressiveSource(source) {
+      var sourceFormat = SUPPORTED_FORMATS.get(source.format);
+      return !!sourceFormat && sourceFormat.name === 'mp4';
+    }
+
+    /**
+     * Ovp metadata parser
+     * @function _parseMetaData
+     * @param {KalturaMetadataListResponse} metadataList The metadata list
+     * @returns {Map<string,string>} Parsed metadata
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_parseMetaData',
+    value: function _parseMetaData(metadataList) {
+      var metadata = {};
+      if (metadataList && metadataList.metas && metadataList.metas.length > 0) {
+        metadataList.metas.forEach(function (meta) {
+          var metaXml = void 0;
+          var domParser = new DOMParser();
+          meta.xml = meta.xml.replace(/\r?\n|\r/g, "");
+          meta.xml = meta.xml.replace(/>\s*/g, '>');
+          meta.xml = meta.xml.replace(/>\s*/g, '>');
+          metaXml = domParser.parseFromString(meta.xml, 'text/xml');
+          var metasObj = _xmlParser2.default.xmlToJson(metaXml);
+          var metaKeys = Object.keys(metasObj.metadata);
+          metaKeys.forEach(function (key) {
+            metadata[key] = metasObj.metadata[key]["#text"];
+          });
+        });
+      }
+      return metadata;
+    }
+
+    /**
+     * Returns the base protocol
+     * @function _getBaseProtocol
+     * @returns {string} - The base protocol
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_getBaseProtocol',
+    value: function _getBaseProtocol() {
+      var splittedUrl = config.baseUrl.split("/");
+      var baseProtocol = void 0;
+      if (splittedUrl && splittedUrl.length > 0) {
+        baseProtocol = splittedUrl[0].substring(0, splittedUrl[0].length - 1);
+      } else {
+        baseProtocol = "http";
+      }
+      return baseProtocol;
+    }
+  }]);
+
+  return ProviderParser;
+}();
+
+exports.default = ProviderParser;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE DrmPlaybackPluginData
+ * @classdesc
+ */
+var KalturaDrmPlaybackPluginData =
+
+/**
+ * @constructor
+ * @param {Object} drm The json response
+ */
+
+/**
+ * @member - The drm scheme
+ * @type {Scheme}
+ */
+function KalturaDrmPlaybackPluginData(drm) {
+  _classCallCheck(this, KalturaDrmPlaybackPluginData);
+
+  this.scheme = drm.scheme;
+  this.licenseURL = drm.licenseURL;
+}
+
+/**
+ * @member - The license URL
+ * @type {string}
+ */
+;
+
+exports.default = KalturaDrmPlaybackPluginData;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE Metadata
+ * @classdesc
+ */
+var KalturaMetadata =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaMetadata(data) {
+  _classCallCheck(this, KalturaMetadata);
+
+  this.id = data.id;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataProfileVersion = data.metadataProfileVersion;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataObjectType = data.metadataObjectType;
+  this.objectId = data.objectId;
+  this.version = data.version;
+  this.created = new Date(0);
+  this.created.setUTCSeconds(data.createdAt);
+  this.updated = new Date(0);
+  this.updated.setUTCSeconds(data.updatedAt);
+  this.status = data.status;
+  this.xml = data.xml;
+}
+/**
+ * @member - The Metadata xml - represented as XML string
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMetadata;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+/**
+ * Media source url builder
+ * @classdesc
+ */
+
+var PlaySourceUrlBuilder = function () {
+  function PlaySourceUrlBuilder() {
+    _classCallCheck(this, PlaySourceUrlBuilder);
+  }
+
+  _createClass(PlaySourceUrlBuilder, null, [{
+    key: "build",
+
+
+    /**
+     * Returns source url by given url params
+     * @function build
+     * @param {Object} urlParams The params
+     * @returns {string} The URL
+     * @static
+     */
+    value: function build(urlParams) {
+      var baseUrl = config.baseUrl;
+      var partnerId = urlParams.partnerId;
+      var entryId = urlParams.entryId;
+      var ks = urlParams.ks;
+      var uiConfId = urlParams.uiConfId;
+      var format = urlParams.format;
+      var protocol = urlParams.protocol;
+      var extension = urlParams.extension;
+      var flavorIds = urlParams.flavorIds;
+
+      if (baseUrl == "" && partnerId == "" && entryId == "" && extension == "" && format == "") {
+        return "";
+      }
+
+      var playUrl = baseUrl;
+      if (!baseUrl.endsWith("/")) {
+        playUrl += "/";
+      }
+      playUrl += "p/" + partnerId + "/sp/" + partnerId + "00" + "/playManifest/entryId/" + entryId + "/protocol/" + protocol + "/format/" + format;
+
+      if (flavorIds != "") {
+        playUrl += "/flavorIds/" + flavorIds;
+      } else if (uiConfId != "") {
+        playUrl += "/uiConfId/" + uiConfId;
+      }
+
+      if (this.ks != "") {
+        playUrl += "/ks/" + ks;
+      }
+
+      playUrl += "/a." + extension;
+
+      if (uiConfId && flavorIds != "") {
+        playUrl += "?uiConfId=." + uiConfId;
+      }
+
+      return playUrl;
+    }
+  }]);
+
+  return PlaySourceUrlBuilder;
+}();
+
+exports.default = PlaySourceUrlBuilder;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Xml parser
+ * @classdesc
+ */
+var XmlParser = function () {
+  function XmlParser() {
+    _classCallCheck(this, XmlParser);
+  }
+
+  _createClass(XmlParser, null, [{
+    key: "xmlToJson",
+
+    /**
+     * Parses xml string to json object
+     * @param {string} xml The xml to parse
+     * @returns {{}} The parsed xml as Json object
+     * @static
+     */
+    value: function xmlToJson(xml) {
+      var obj = {};
+      if (xml.nodeType == 1) {
+        if (xml.attributes.length > 0) {
+          obj["@attributes"] = {};
+          for (var j = 0; j < xml.attributes.length; j++) {
+            var attribute = xml.attributes.item(j);
+            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+          }
+        }
+      } else if (xml.nodeType == 3) {
+        obj = xml.nodeValue;
+      }
+      if (xml.hasChildNodes()) {
+        for (var i = 0; i < xml.childNodes.length; i++) {
+          var item = xml.childNodes.item(i);
+          var nodeName = item.nodeName;
+          if (typeof obj[nodeName] == "undefined") {
+            obj[nodeName] = this.xmlToJson(item);
+          } else {
+            if (typeof obj[nodeName].push == "undefined") {
+              var old = obj[nodeName];
+              obj[nodeName] = [];
+              obj[nodeName].push(old);
+            }
+            obj[nodeName].push(this.xmlToJson(item));
+          }
+        }
+      }
+      return obj;
+    }
+  }]);
+
+  return XmlParser;
+}();
+
+exports.default = XmlParser;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MediaFormats = exports.MediaFormats = function MediaFormats() {
+  _classCallCheck(this, MediaFormats);
+};
+
+MediaFormats.dash = {
+  name: 'dash',
+  mimeType: "application/dash+xml",
+  pathExt: "mpd"
+};
+MediaFormats.hls = {
+  name: 'hls',
+  mimeType: "application/x-mpegURL",
+  pathExt: "m3u8"
+};
+MediaFormats.wvm = {
+  name: 'wvm',
+  mimeType: "video/wvm",
+  pathExt: "wvm"
+};
+MediaFormats.mp4 = {
+  name: 'mp4',
+  mimeType: "video/mp4",
+  pathExt: "mp4"
+};
+MediaFormats.mp3 = {
+  name: 'mp3',
+  mimeType: "audio/mpeg",
+  pathExt: "mp3"
+};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _multiRequestBuilder = __webpack_require__(6);
+
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Data loaders manager
+ * @classdesc
+ */
+var DataLoaderManager = function () {
+
+  /**
+   * @constructor
+   * @param {string} partnerID Then partner ID
+   * @param {string} ks The ks
+   */
+
+  /**
+   * @member - Lodaers response map index
+   * @type {Map<string,Array<number>>}
+   * @private
+   * @static
+   */
+  function DataLoaderManager(partnerID) {
+    var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+    _classCallCheck(this, DataLoaderManager);
+
+    this._loaders = new Map();
+
+    this._multiRequest = _ovpService2.default.getMultirequest(ks, partnerID);
+  }
+
+  /**
+   * Add loader too execution loaders map
+   * @function
+   * @param {Function} loader Loader to add
+   * @param {Object} params Loader params
+   * @returns {void}
+   */
+
+  /**
+   * @member - Loaders to execute
+   * @type {Map<string,Function>}
+   * @private
+   */
+
+  /**
+   * @member - Loaders multi request
+   * @type {MultiRequestBuilder}
+   * @private
+   */
+
+  /**
+   * @member - Loaders multi response
+   * @type {MultiRequestResult}
+   * @private
+   */
+
+
+  _createClass(DataLoaderManager, [{
+    key: 'add',
+    value: function add(loader, params) {
+      var _this = this;
+
+      var execution_loader = new loader(params);
+      if (execution_loader.isValid()) {
+        this._loaders.set(loader.name, execution_loader);
+        //Get the start index from the multiReqeust before adding current execution_loader requests
+        var startIndex = this._multiRequest.requests.length;
+        //Get the requests
+        var requests = execution_loader.requests;
+        //Add requests to muktiRequest queue
+        requests.forEach(function (request) {
+          _this._multiRequest.add(request);
+        });
+        //Create range array of current execution_loader requests
+        var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
+          return index + startIndex;
+        });
+        //Add to map
+        DataLoaderManager._loadersResponseMap.set(loader.name, executionLoaderResponseMap);
+      }
+    }
+
+    /**
+     * Get data from all loaders using multi request
+     * @function
+     * @returns {Promise} Promise
+     */
+
+  }, {
+    key: 'fetchData',
+    value: function fetchData() {
+      var _this2 = this;
+
+      return new Promise(function (resolve, reject) {
+        _this2._multiRequest.execute().then(function (response) {
+          _this2._multiResponse = response;
+          if (!response.success) {
+            reject(response);
+          } else {
+            var preparedData = _this2.prepareData(response);
+            if (preparedData.success) {
+              resolve(_this2._loaders);
+            } else {
+              reject({ success: false, data: preparedData.error });
+            }
+          }
+        }, function (err) {
+          reject(err);
+        });
+      });
+    }
+  }, {
+    key: 'prepareData',
+    value: function prepareData(response) {
+      this._loaders.forEach(function (loader, name) {
+        var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
+        try {
+          if (loaderDataIndexes != null) {
+            loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
+          }
+        } catch (err) {
+          return { success: false, error: err };
+        }
+      });
+      return { success: true, data: this._loaders };
+    }
+  }]);
+
+  return DataLoaderManager;
+}();
+
+DataLoaderManager._loadersResponseMap = new Map();
+exports.default = DataLoaderManager;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+var _baseEntryService = __webpack_require__(24);
+
+var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
+
+var _metaDataService = __webpack_require__(25);
+
+var _metaDataService2 = _interopRequireDefault(_metaDataService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _kalturaPlaybackContext = __webpack_require__(26);
+
+var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
+
+var _kalturaMetadataListResponse = __webpack_require__(11);
+
+var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+
+var _kalturaBaseEntryListResponse = __webpack_require__(29);
+
+var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var MediaEntryLoader = function () {
+  _createClass(MediaEntryLoader, null, [{
+    key: 'name',
+    get: function get() {
+      return "media";
+    }
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function MediaEntryLoader(params) {
+    _classCallCheck(this, MediaEntryLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._entryId = params.entryId;
+  }
+
+  _createClass(MediaEntryLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
+      requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
+      requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._entryId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
+      this._response.entry = mediaEntryResponse.entries[0];
+      this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
+      this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
+    },
+    get: function get() {
+      return this._response;
+    }
+  }]);
+
+  return MediaEntryLoader;
+}();
+
+exports.default = MediaEntryLoader;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "baseEntry";
+
+/**
+ * Ovp BaseEntry service methods
+ * @classdesc
+ */
+
+var BaseEntryService = function (_OvpService) {
+  _inherits(BaseEntryService, _OvpService);
+
+  function BaseEntryService() {
+    _classCallCheck(this, BaseEntryService);
+
+    return _possibleConstructorReturn(this, (BaseEntryService.__proto__ || Object.getPrototypeOf(BaseEntryService)).apply(this, arguments));
+  }
+
+  _createClass(BaseEntryService, null, [{
+    key: 'getPlaybackContext',
+
+
+    /**
+     * Creates an instance of RequestBuilder for baseentry.getPlaybackContext
+     * @function getPlaybackContext
+     * @param {string} baseUrl The service base URL
+     * @param {string} ks The ks
+     * @param {string} entryId The entry ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function getPlaybackContext(baseUrl, ks, entryId) {
+      var request = new _requestBuilder2.default();
+      request.service = SERVICE_NAME;
+      request.action = "getPlaybackContext";
+      request.method = "POST";
+      request.baseUrl = baseUrl;
+      request.tag = "baseEntry-getPlaybackContext";
+      var contextDataParams = { objectType: "KalturaContextDataParams", flavorTags: "all" };
+      var params = { entryId: entryId, ks: ks, contextDataParams: contextDataParams };
+      request.params = params;
+      return request;
+    }
+
+    /**
+     * Creates an instance of RequestBuilder for baseentry.list
+     * @function list
+     * @param {string} baseUrl The base URL
+     * @param {string} ks The ks
+     * @param {string} entryId The entry ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+
+  }, {
+    key: 'list',
+    value: function list(baseUrl, ks, entryId) {
+      var request = new _requestBuilder2.default();
+      request.service = SERVICE_NAME;
+      request.action = "list";
+      request.method = "POST";
+      request.baseUrl = baseUrl;
+      request.tag = "list";
+      request.params = BaseEntryService.getEntryListReqParams(entryId, ks);
+      return request;
+    }
+
+    /**
+     * Gets  baseentry.list service params
+     * @function getEntryListReqParams
+     * @param {string} entryId The entry ID
+     * @param {string} ks The ks
+     * @returns {{ks: string, filter: {redirectFromEntryId: string}, responseProfile: {fields: string, type: number}}} The service params object
+     * @static
+     */
+
+  }, {
+    key: 'getEntryListReqParams',
+    value: function getEntryListReqParams(entryId, ks) {
+      var filterParams = { redirectFromEntryId: entryId };
+      var responseProfileParams = {
+        fields: "id,name,dataUrl,duration,msDuration,flavorParamsIds,mediaType,type,tags",
+        type: 1
+      };
+      return { ks: ks, filter: filterParams, responseProfile: responseProfileParams };
+    }
+  }]);
+
+  return BaseEntryService;
+}(_ovpService2.default);
+
+exports.default = BaseEntryService;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "metadata_metadata";
+
+/**
+ * Ovp metadata_metadata service methods
+ * @classdesc
+ */
+
+var MetaDataService = function (_OvpService) {
+  _inherits(MetaDataService, _OvpService);
+
+  function MetaDataService() {
+    _classCallCheck(this, MetaDataService);
+
+    return _possibleConstructorReturn(this, (MetaDataService.__proto__ || Object.getPrototypeOf(MetaDataService)).apply(this, arguments));
+  }
+
+  _createClass(MetaDataService, null, [{
+    key: 'list',
+
+    /**
+     * Creates an instance of RequestBuilder for metadata_metadata.list
+     * @function getPlaybackContext
+     * @param {string} baseUrl The service base URL
+     * @param {string} ks The ks
+     * @param {string} entryId The entry ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function list(baseUrl, ks, entryId) {
+      var request = new _requestBuilder2.default();
+      request.service = SERVICE_NAME;
+      request.action = "list";
+      request.method = "POST";
+      request.baseUrl = baseUrl;
+      request.tag = "metadata_metadata-list";
+      var filter = { objectType: "KalturaMetadataFilter", objectIdEqual: entryId, metadataObjectTypeEqual: "1" };
+      var params = { filter: filter, ks: ks };
+      request.params = params;
+      return request;
+    }
+  }]);
+
+  return MetaDataService;
+}(_ovpService2.default);
+
+exports.default = MetaDataService;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaAccessControlMessage = __webpack_require__(27);
+
+var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
+
+var _kalturaPlaybackSource = __webpack_require__(9);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaRuleAction = __webpack_require__(28);
+
+var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
+
+var _kalturaFlavorAsset = __webpack_require__(10);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE playback context response
+ * @classdesc
+ */
+var KalturaPlaybackContext = function (_ServiceResult) {
+  _inherits(KalturaPlaybackContext, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} response The response
+   */
+
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaAccessControlMessage>}
+   */
+
+  /**
+   * @member - The playback sources
+   * @type {Array<KalturaPlaybackSource>}
+   */
+  function KalturaPlaybackContext(response) {
+    _classCallCheck(this, KalturaPlaybackContext);
+
+    var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
+
+    _this.sources = [];
+    _this.actions = [];
+    _this.messages = [];
+    _this.flavorAssets = [];
+
+    if (!_this.hasError) {
+
+      var messages = response.messages;
+      if (messages) {
+        messages.map(function (message) {
+          return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
+        });
+      }
+
+      var actions = response.actions;
+      if (actions) {
+        actions.map(function (action) {
+          return _this.actions.push(new _kalturaRuleAction2.default(action));
+        });
+      }
+
+      var sources = response.sources;
+      if (sources) {
+        sources.map(function (source) {
+          return _this.sources.push(new _kalturaPlaybackSource2.default(source));
+        });
+      }
+
+      var flavorAssets = response.flavorAssets;
+      if (flavorAssets) {
+        flavorAssets.map(function (flavor) {
+          return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
+        });
+      }
+    }
+
+    return _this;
+  }
+  /**
+   * @member - The flavor assets
+   * @type {Array<KalturaFlavorAsset>}
+   */
+
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaRuleAction>}
+   */
+
+
+  return KalturaPlaybackContext;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaPlaybackContext;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE access control message
+ * @classdesc
+ */
+var KalturaAccessControlMessage =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The access control message
+ * @type {string}
+ */
+function KalturaAccessControlMessage(data) {
+  _classCallCheck(this, KalturaAccessControlMessage);
+
+  this.message = data.message;
+  this.code = data.code;
+}
+/**
+ *  @member - The access control message code
+ * @@type {string}
+ */
+;
+
+exports.default = KalturaAccessControlMessage;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE rule action
+ * @classdesc
+ */
+var KalturaRuleAction =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaRuleAction(data) {
+  _classCallCheck(this, KalturaRuleAction);
+
+  this.type = data.type;
+}
+/**
+ * @member - The type of the action
+ * @type {KalturaRuleActionType}
+ */
+;
+
+exports.default = KalturaRuleAction;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMediaEntry = __webpack_require__(30);
+
+var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE BaseEntryList service response
+ * @classdesc
+ */
+var KalturaBaseEntryListResponse = function (_ServiceResult) {
+  _inherits(KalturaBaseEntryListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The json response
+   */
+
+  /**
+   * @member - The total count
+   * @type {number}
+   */
+  function KalturaBaseEntryListResponse(responseObj) {
+    _classCallCheck(this, KalturaBaseEntryListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.entries = [];
+        responseObj.objects.map(function (entry) {
+          return _this.entries.push(new _kalturaMediaEntry2.default(entry));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member - The entries
+   * @type {Array<KalturaMediaEntry>}
+   */
+
+
+  return KalturaBaseEntryListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaBaseEntryListResponse;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE MediaEntry
+ * @classdesc
+ */
+var KalturaMediaEntry =
+
+/**
+ * @constructor
+ * @param {Object} entry The json response
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object
+ * @type {EntryType}
+ */
+
+/**
+ * @member - Comma separated flavor params ids that exists for this media entry
+ * @type {string}
+ */
+
+/**
+ * @member - Entry name (Min 1 chars)
+ * @type {string}
+ */
+function KalturaMediaEntry(entry) {
+  _classCallCheck(this, KalturaMediaEntry);
+
+  this.id = entry.id;
+  this.name = entry.name;
+  this.dataUrl = entry.dataUrl;
+  this.type = entry.type;
+  this.entryType = entry.mediaType;
+  this.flavorParamsIds = entry.flavorParamsIds;
+  this.duration = entry.duration;
+}
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
+ * @type {MediaType}
+ */
+
+/**
+ * @member - The entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - The URL used for playback. This is not the download URL.
+ * @type {string}
+ */
+
+/**
+ * @member - The entry id
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMediaEntry;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _sessionService = __webpack_require__(32);
+
+var _sessionService2 = _interopRequireDefault(_sessionService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var SessionLoader = function () {
+  _createClass(SessionLoader, null, [{
+    key: 'name',
+    get: function get() {
+      return "session";
+    }
+
+    /**
+     * @member - partner ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function SessionLoader(params) {
+    _classCallCheck(this, SessionLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._partnerId = params.partnerId;
+  }
+
+  _createClass(SessionLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._partnerId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.ks = response[0].data.ks;
+    },
+    get: function get() {
+      return this._response.ks;
+    }
+  }]);
+
+  return SessionLoader;
+}();
+
+exports.default = SessionLoader;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "session";
+
+/**
+ * Ovp session service methods
+ * @classdesc
+ */
+
+var SessionService = function (_OvpService) {
+  _inherits(SessionService, _OvpService);
+
+  function SessionService() {
+    _classCallCheck(this, SessionService);
+
+    return _possibleConstructorReturn(this, (SessionService.__proto__ || Object.getPrototypeOf(SessionService)).apply(this, arguments));
+  }
+
+  _createClass(SessionService, null, [{
+    key: 'anonymousSession',
+
+    /**
+     * Creates an instance of RequestBuilder for session.startWidgetSession
+     * @function anonymousSession
+     * @param {string} baseUrl The service base URL
+     * @param {string} partnerId The partner ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function anonymousSession(baseUrl, partnerId) {
+      var request = new _requestBuilder2.default();
+      request.service = SERVICE_NAME;
+      request.action = "startWidgetSession";
+      request.method = "POST";
+      request.baseUrl = baseUrl;
+      request.tag = "session-startWidget";
+      request.params = { widgetId: "_" + partnerId };
+      return request;
+    }
+  }]);
+
+  return SessionService;
+}(_ovpService2.default);
+
+exports.default = SessionService;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _uiConfService = __webpack_require__(34);
+
+var _uiConfService2 = _interopRequireDefault(_uiConfService);
+
+var _kalturaUiConfResponse = __webpack_require__(35);
+
+var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+var UiConfigLoader = function () {
+  _createClass(UiConfigLoader, null, [{
+    key: 'name',
+    get: function get() {
+      return "uiConf";
+    }
+
+    /**
+     * @member - uiConf ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function UiConfigLoader(params) {
+    _classCallCheck(this, UiConfigLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._uiConfId = params.uiConfId;
+  }
+
+  _createClass(UiConfigLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._uiConfId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
+    },
+    get: function get() {
+      if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
+        return JSON.parse(this._response.uiConf.config).plugins;
+      } catch (err) {
+        return null;
+      } else return null;
+    }
+  }]);
+
+  return UiConfigLoader;
+}();
+
+exports.default = UiConfigLoader;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "uiconf";
+
+/**
+ * Ovp uiconf service methods
+ * @classdesc
+ */
+
+var UiConfService = function (_OvpService) {
+  _inherits(UiConfService, _OvpService);
+
+  function UiConfService() {
+    _classCallCheck(this, UiConfService);
+
+    return _possibleConstructorReturn(this, (UiConfService.__proto__ || Object.getPrototypeOf(UiConfService)).apply(this, arguments));
+  }
+
+  _createClass(UiConfService, null, [{
+    key: 'get',
+
+    /**
+     * Creates an instance of RequestBuilder for uiconf.get
+     * @function get
+     * @param {string} baseUrl The service base URL
+     * @param {string} ks The ks
+     * @param {string} uiConfID The uiConf ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function get(baseUrl, ks, uiConfID) {
+      var request = new _requestBuilder2.default();
+      request.service = SERVICE_NAME;
+      request.action = "get";
+      request.method = "POST";
+      request.baseUrl = baseUrl;
+      request.tag = "uiconf-get";
+      var responseProfileParams = {
+        fields: "config",
+        type: 1
+      };
+      request.params = { id: uiConfID, responseProfile: responseProfileParams, ks: ks };
+      return request;
+    }
+  }]);
+
+  return UiConfService;
+}(_ovpService2.default);
+
+exports.default = UiConfService;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Ui config response
+ * @classdesc
+ */
+var KalturaUiConfResponse = function (_ServiceResult) {
+  _inherits(KalturaUiConfResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} data The json response
+   */
+
+  /**
+   * @member -plugins configuration represented as Json string
+   * @type {string}
+   */
+
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+  function KalturaUiConfResponse(data) {
+    _classCallCheck(this, KalturaUiConfResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
+
+    if (!_this.hasError) {
+      _this.name = data.name;
+
+      _this.description = data.description;
+      _this.objTypeAsString = data.objTypeAsString;
+      _this.width = data.width;
+      _this.height = data.height;
+      _this.htmlParams = data.htmlParams;
+      _this.swfUrl = data.swfUrl;
+      _this.confFilePath = data.confFilePath;
+      _this.confFile = data.confFile;
+      _this.confFileFeatures = data.confFileFeatures;
+      _this.config = data.config;
+      _this.confVars = data.confVars;
+      _this.useCdn = data.useCdn;
+      _this.tags = data.tags;
+      _this.swfUrlVersion = data.swfUrlVersion;
+      _this.created = new Date(0);
+      _this.created.setUTCSeconds(data.createdAt);
+      _this.updated = new Date(0);
+      _this.updated.setUTCSeconds(data.updatedAt);
+      _this.html5Url = data.description;
+      _this.version = data.description;
+      _this.partnerTags = data.description;
+      _this.objType = data.description;
+      _this.creationMode = data.description;
+    }
+    return _this;
+  }
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+
+
+  return KalturaUiConfResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaUiConfResponse;
+
+/***/ })
+/******/ ]);
+});
 
 
 /***/ }),
 /* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-(function webpackUniversalModuleDefinition(root, factory) {
-  if (( false ? 'undefined' : _typeof2(exports)) === 'object' && ( false ? 'undefined' : _typeof2(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else if ((typeof exports === 'undefined' ? 'undefined' : _typeof2(exports)) === 'object') exports["PlaykitJsProviders"] = factory();else root["PlaykitJsProviders"] = factory();
-})(undefined, function () {
-  return (/******/function (modules) {
-      // webpackBootstrap
-      /******/ // The module cache
-      /******/var installedModules = {};
-      /******/
-      /******/ // The require function
-      /******/function __webpack_require__(moduleId) {
-        /******/
-        /******/ // Check if module is in cache
-        /******/if (installedModules[moduleId]) {
-          /******/return installedModules[moduleId].exports;
-          /******/
-        }
-        /******/ // Create a new module (and put it into the cache)
-        /******/var module = installedModules[moduleId] = {
-          /******/i: moduleId,
-          /******/l: false,
-          /******/exports: {}
-          /******/ };
-        /******/
-        /******/ // Execute the module function
-        /******/modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-        /******/
-        /******/ // Flag the module as loaded
-        /******/module.l = true;
-        /******/
-        /******/ // Return the exports of the module
-        /******/return module.exports;
-        /******/
-      }
-      /******/
-      /******/
-      /******/ // expose the modules object (__webpack_modules__)
-      /******/__webpack_require__.m = modules;
-      /******/
-      /******/ // expose the module cache
-      /******/__webpack_require__.c = installedModules;
-      /******/
-      /******/ // define getter function for harmony exports
-      /******/__webpack_require__.d = function (exports, name, getter) {
-        /******/if (!__webpack_require__.o(exports, name)) {
-          /******/Object.defineProperty(exports, name, {
-            /******/configurable: false,
-            /******/enumerable: true,
-            /******/get: getter
-            /******/ });
-          /******/
-        }
-        /******/
-      };
-      /******/
-      /******/ // getDefaultExport function for compatibility with non-harmony modules
-      /******/__webpack_require__.n = function (module) {
-        /******/var getter = module && module.__esModule ?
-        /******/function getDefault() {
-          return module['default'];
-        } :
-        /******/function getModuleExports() {
-          return module;
-        };
-        /******/__webpack_require__.d(getter, 'a', getter);
-        /******/return getter;
-        /******/
-      };
-      /******/
-      /******/ // Object.prototype.hasOwnProperty.call
-      /******/__webpack_require__.o = function (object, property) {
-        return Object.prototype.hasOwnProperty.call(object, property);
-      };
-      /******/
-      /******/ // __webpack_public_path__
-      /******/__webpack_require__.p = "";
-      /******/
-      /******/ // Load entry module and return exports
-      /******/return __webpack_require__(__webpack_require__.s = 15);
-      /******/
-    }(
-    /************************************************************************/
-    /******/[
-    /* 0 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
-        return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-      } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-      };
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Request builder
-       * @classdesc
-       */
-      var RequestBuilder = function () {
-
-        /**
-         * @constructor
-         * @param {Map<string, string>} headers The request headers
-         */
-
-        /**
-         * @member - Service method (POST,GET,DELETE etc..)
-         * @type {string}
-         */
-
-        /**
-         * @member - Service headers
-         * @type {Map<string, string>}
-         */
-
-        /**
-         * @member - Service action
-         * @type {string}
-         */
-        function RequestBuilder() {
-          var headers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Map();
-
-          _classCallCheck(this, RequestBuilder);
-
-          this.headers = headers;
-          this.headers.set("Content-Type", "application/json");
-        }
-
-        /**
-         * Builds restful service URL
-         * @function getUrl
-         * @returns {string} The service URL
-         */
-
-        /**
-         * @member - Service tag
-         * @type {string}
-         */
-
-        /**
-         * @member - Service base url
-         * @type {Map<string, string>}
-         */
-
-        /**
-         * @member - Service params
-         * @type {any}
-         */
-
-        /**
-         * @member - Service name
-         * @type {string}
-         */
-
-        _createClass(RequestBuilder, [{
-          key: "getUrl",
-          value: function getUrl() {
-            if (!this.baseUrl) {
-              throw new Error("baseUrl is mandatory for request builder");
-            }
-            var url = this.baseUrl + '/service/' + this.service + (this.action ? '/action/' + this.action : '');
-            return url;
-          }
-
-          /**
-           * Executes service
-           * @function doHttpRequest
-           * @returns {Promise.<any>} Service response as promise
-           */
-
-        }, {
-          key: "doHttpRequest",
-          value: function doHttpRequest() {
-            var _this = this;
-
-            var request = new XMLHttpRequest();
-            return new Promise(function (resolve, reject) {
-              request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                  if (request.status === 200) {
-                    var jsonResponse = JSON.parse(request.responseText);
-                    if (jsonResponse && (typeof jsonResponse === "undefined" ? "undefined" : _typeof(jsonResponse)) === 'object' && jsonResponse.code && jsonResponse.message) reject(jsonResponse);else resolve(jsonResponse);
-                  } else {
-                    reject(request.responseText);
-                  }
-                }
-              };
-              request.open(_this.method, _this.getUrl());
-              _this.headers.forEach(function (value, key) {
-                request.setRequestHeader(key, value);
-              });
-              request.send(_this.params);
-            });
-          }
-        }]);
-
-        return RequestBuilder;
-      }();
-
-      exports.default = RequestBuilder;
-
-      /***/
-    },
-    /* 1 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var defaultConfig = {
-        beUrl: "http://www.kaltura.com/api_v3",
-        baseUrl: "https://cdnapisec.kaltura.com",
-        serviceParams: {
-          clientTag: "playkit-js",
-          apiVersion: '3.3.0',
-          format: 1
-        }
-      };
-
-      var Configuration = function () {
-        function Configuration() {
-          _classCallCheck(this, Configuration);
-        }
-
-        _createClass(Configuration, null, [{
-          key: "set",
-          value: function set(clientConfig) {
-            if (clientConfig) {
-              Object.assign(defaultConfig, clientConfig);
-            }
-          }
-        }, {
-          key: "get",
-          value: function get() {
-            return defaultConfig;
-          }
-        }]);
-
-        return Configuration;
-      }();
-
-      exports.default = Configuration;
-      exports.Configuration = Configuration;
-
-      /***/
-    },
-    /* 2 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Base service result
-       * @classdesc
-       */
-      var ServiceResult =
-
-      /**
-       * @constructor
-       * @param {Object} response - Service response
-       */
-
-      /**
-       * @member - The service error
-       * @type {ServiceError}
-       */
-
-      /**
-       * @member - The service result data
-       * @type {Object}
-       */
-      function ServiceResult(response) {
-        _classCallCheck(this, ServiceResult);
-
-        this.hasError = false;
-
-        if (response.objectType === "KalturaAPIException") {
-          this.hasError = true;
-          this.error = new ServiceError(response.code, response.message);
-        } else {
-          this.data = response;
-        }
-      }
-
-      /**
-       * @member - Is service returned an error
-       * @type {boolean}
-       */
-      ;
-
-      /**
-       * Service error
-       * @classdesc
-       */
-
-      exports.default = ServiceResult;
-
-      var ServiceError =
-
-      /**
-       * @constructor
-       * @param {string} code - The result code
-       * @param {string} message - The result message
-       */
-
-      /**
-       * @member - The error code
-       * @type {string}
-       */
-      function ServiceError(code, message) {
-        _classCallCheck(this, ServiceError);
-
-        this.code = code;
-        this.message = message;
-      }
-      /**
-       * @member - The error message
-       * @type {string}
-       */
-      ;
-
-      /***/
-    },
-    /* 3 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _multiRequestBuilder = __webpack_require__(6);
-
-      var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-      var SERVICE_NAME = "multirequest";
-
-      /**
-       * Base for all ovp services
-       * @classdesc
-       */
-
-      var OvpService = function () {
-        function OvpService() {
-          _classCallCheck(this, OvpService);
-        }
-
-        _createClass(OvpService, null, [{
-          key: 'getMultirequest',
-
-          /**
-           * Gets a new instance of MultiRequestBuilder with ovp params
-           * @function getMultirequest
-           * @param {string} ks The ks
-           * @param {string} partnerId The partner ID
-           * @returns {MultiRequestBuilder} The multi request builder
-           * @static
-           */
-          value: function getMultirequest(ks, partnerId) {
-            var ovpParams = config.serviceParams;
-            Object.assign(ovpParams, { ks: ks });
-            if (partnerId) {
-              Object.assign(ovpParams, { partnerId: partnerId });
-            }
-            var multiReq = new _multiRequestBuilder2.default();
-            multiReq.method = "POST";
-            multiReq.service = SERVICE_NAME;
-            multiReq.baseUrl = config.beUrl;
-            multiReq.params = ovpParams;
-            return multiReq;
-          }
-        }]);
-
-        return OvpService;
-      }();
-
-      exports.default = OvpService;
-
-      /***/
-    },
-    /* 4 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.LOG_LEVEL = undefined;
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _jsLogger = __webpack_require__(7);
-
-      var JsLogger = _interopRequireWildcard(_jsLogger);
-
-      function _interopRequireWildcard(obj) {
-        if (obj && obj.__esModule) {
-          return obj;
-        } else {
-          var newObj = {};if (obj != null) {
-            for (var key in obj) {
-              if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-            }
-          }newObj.default = obj;return newObj;
-        }
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var LoggerFactory = function () {
-        function LoggerFactory(options) {
-          _classCallCheck(this, LoggerFactory);
-
-          JsLogger.useDefaults(options || {});
-        }
-
-        _createClass(LoggerFactory, [{
-          key: "get",
-          value: function get(name) {
-            if (!name) {
-              return JsLogger;
-            }
-            return JsLogger.get(name);
-          }
-        }]);
-
-        return LoggerFactory;
-      }();
-
-      var Logger = new LoggerFactory({ defaultLevel: JsLogger.DEBUG });
-      var LOG_LEVEL = {
-        "DEBUG": JsLogger.DEBUG,
-        "INFO": JsLogger.INFO,
-        "TIME": JsLogger.TIME,
-        "WARN": JsLogger.WARN,
-        "ERROR": JsLogger.ERROR,
-        "OFF": JsLogger.OFF
-      };
-
-      exports.default = Logger;
-      exports.LOG_LEVEL = LOG_LEVEL;
-
-      /***/
-    },
-    /* 5 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var Scheme = exports.Scheme = function Scheme() {
-        _classCallCheck(this, Scheme);
-      };
-
-      Scheme.PLAYREADY_CENC = "drm.PLAYREADY_CENC";
-      Scheme.WIDEVINE_CENC = "drm.WIDEVINE_CENC";
-      Scheme.FAIRPLAY = "fairplay.FAIRPLAY";
-      Scheme.PLAYREADY = "playReady.PLAYREADY";
-      Scheme.WIDEVINE = "widevine.WIDEVINE";
-
-      var KalturaRuleActionTypes = exports.KalturaRuleActionTypes = function KalturaRuleActionTypes() {
-        _classCallCheck(this, KalturaRuleActionTypes);
-      };
-
-      KalturaRuleActionTypes.DRM_POLICY = "drm.DRM_POLICY";
-      KalturaRuleActionTypes.BLOCK = 1;
-      KalturaRuleActionTypes.PREVIEW = 2;
-      KalturaRuleActionTypes.LIMIT_FLAVORS = 3;
-      KalturaRuleActionTypes.ADD_TO_STORAGE = 4;
-      KalturaRuleActionTypes.LIMIT_DELIVERY_PROFILES = 5;
-      KalturaRuleActionTypes.SERVE_FROM_REMOTE_SERVER = 6;
-      KalturaRuleActionTypes.REQUEST_HOST_REGEX = 7;
-      KalturaRuleActionTypes.LIMIT_THUMBNAIL_CAPTURE = 8;
-
-      var Status = exports.Status = function Status() {
-        _classCallCheck(this, Status);
-      };
-
-      Status.ERROR = -1;
-      Status.QUEUED = 0;
-      Status.CONVERTING = 1;
-      Status.READY = 2;
-      Status.DELETED = 3;
-      Status.NOT_APPLICABLE = 4;
-      Status.TEMP = 5;
-      Status.WAIT_FOR_CONVERT = 6;
-      Status.IMPORTING = 7;
-      Status.VALIDATING = 8;
-      Status.EXPORTING = 9;
-
-      var MetadataObjectTypes = exports.MetadataObjectTypes = function MetadataObjectTypes() {
-        _classCallCheck(this, MetadataObjectTypes);
-      };
-
-      MetadataObjectTypes.AD_CUE_POINT = "adCuePointMetadata.AdCuePoint";
-      MetadataObjectTypes.ANNOTATION = "annotationMetadata.Annotation";
-      MetadataObjectTypes.CODE_CUE_POINT = "codeCuePointMetadata.CodeCuePoint";
-      MetadataObjectTypes.THUMB_CUE_POINT = "thumbCuePointMetadata.thumbCuePoint";
-      MetadataObjectTypes.ENTRY = 1;
-      MetadataObjectTypes.CATEGORY = 2;
-      MetadataObjectTypes.USER = 3;
-      MetadataObjectTypes.PARTNER = 4;
-      MetadataObjectTypes.DYNAMIC_OBJECT = 5;
-
-      var MetadataStatuses = exports.MetadataStatuses = function MetadataStatuses() {
-        _classCallCheck(this, MetadataStatuses);
-      };
-
-      MetadataStatuses.VALID = 1;
-      MetadataStatuses.INVALID = 2;
-      MetadataStatuses.DELETED = 3;
-
-      var EntryStatuses = exports.EntryStatuses = function EntryStatuses() {
-        _classCallCheck(this, EntryStatuses);
-      };
-
-      EntryStatuses.ERROR_IMPORTING = -2;
-      EntryStatuses.ERROR_CONVERTING = -1;
-      EntryStatuses.SCAN_FAILURE = "virusScan.ScanFailure";
-      EntryStatuses.IMPORT = 0;
-      EntryStatuses.INFECTED = "virusScan.Infected";
-      EntryStatuses.PRECONVERT = 1;
-      EntryStatuses.READY = 2;
-      EntryStatuses.DELETED = 3;
-      EntryStatuses.PENDING = 4;
-      EntryStatuses.MODERATE = 5;
-      EntryStatuses.BLOCKED = 6;
-      EntryStatuses.NO_CONTENT = 7;
-
-      var EntryModerationStatuses = exports.EntryModerationStatuses = function EntryModerationStatuses() {
-        _classCallCheck(this, EntryModerationStatuses);
-      };
-
-      EntryModerationStatuses.PENDING_MODERATION = 1;
-      EntryModerationStatuses.APPROVED = 2;
-      EntryModerationStatuses.REJECTED = 3;
-      EntryModerationStatuses.FLAGGED_FOR_REVIEW = 4;
-      EntryModerationStatuses.MODERATE = 5;
-      EntryModerationStatuses.AUTO_APPROVED = 6;
-
-      var EntryTypes = exports.EntryTypes = function EntryTypes() {
-        _classCallCheck(this, EntryTypes);
-      };
-
-      EntryTypes.AUTOMATIC = { value: -1 };
-      EntryTypes.EXTERNAL_MEDIA = { value: "externalMedia.externalMedia" };
-      EntryTypes.MEDIA_CLIP = { value: 1 };
-      EntryTypes.MIX = { value: 2 };
-      EntryTypes.PLAYLIST = { value: 5 };
-      EntryTypes.DATA = { value: 6 };
-      EntryTypes.LIVE_STREAM = { value: 7 };
-      EntryTypes.LIVE_CHANNEL = { value: 8 };
-      EntryTypes.DOCUMENT = { value: 10 };
-
-      var MediaTypes = exports.MediaTypes = function MediaTypes() {
-        _classCallCheck(this, MediaTypes);
-      };
-
-      MediaTypes.VIDEO = { value: 1 };
-      MediaTypes.IMAGE = { value: 2 };
-      MediaTypes.AUDIO = { value: 5 };
-      MediaTypes.LIVE_STREAM_FLASH = { value: 201 };
-      MediaTypes.LIVE_STREAM_WINDOWS_MEDIA = { value: 202 };
-      MediaTypes.LIVE_STREAM_REAL_MEDIA = { value: 203 };
-      MediaTypes.LIVE_STREAM_QUICKTIME = { value: 204 };
-
-      var MediaEntryTypes = exports.MediaEntryTypes = function MediaEntryTypes() {
-        _classCallCheck(this, MediaEntryTypes);
-      };
-
-      MediaEntryTypes.Vod = 'Vod';
-      MediaEntryTypes.Live = 'Live';
-      MediaEntryTypes.Image = 'Image';
-      MediaEntryTypes.Audio = 'Audio';
-      MediaEntryTypes.Unknown = 'Unknown';
-
-      var UIConfTypes = exports.UIConfTypes = function UIConfTypes() {
-        _classCallCheck(this, UIConfTypes);
-      };
-
-      UIConfTypes.PLAYER = 1;
-      UIConfTypes.CONTRIBUTION_WIZARD = 2;
-      UIConfTypes.SIMPLE_EDITOR = 3;
-      UIConfTypes.ADVANCED_EDITOR = 4;
-      UIConfTypes.PLAYLIST = 5;
-      UIConfTypes.APP_STUDIO = 6;
-      UIConfTypes.KRECORD = 7;
-      UIConfTypes.PLAYER_V3 = 8;
-      UIConfTypes.KMC_ACCOUNT = 9;
-      UIConfTypes.KMC_ANALYTICS = 10;
-      UIConfTypes.KMC_CONTENT = 11;
-      UIConfTypes.KMC_DASHBOARD = 12;
-      UIConfTypes.KMC_LOGIN = 13;
-      UIConfTypes.PLAYER_SL = 14;
-      UIConfTypes.CLIENTSIDE_ENCODER = 15;
-      UIConfTypes.KMC_GENERAL = 16;
-      UIConfTypes.KMC_ROLES_AND_PERMISSIONS = 17;
-      UIConfTypes.CLIPPER = 18;
-      UIConfTypes.KSR = 19;
-      UIConfTypes.KUPLOAD = 20;
-      UIConfTypes.WEBCASTING = 21;
-
-      var UIConfCreationModes = exports.UIConfCreationModes = function UIConfCreationModes() {
-        _classCallCheck(this, UIConfCreationModes);
-      };
-
-      UIConfCreationModes.WIZARD = 2;
-      UIConfCreationModes.ADVANCED = 3;
-
-      /***/
-    },
-    /* 6 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.MultiRequestResult = undefined;
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      var _baseServiceResult = __webpack_require__(2);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _logger = __webpack_require__(4);
-
-      var _logger2 = _interopRequireDefault(_logger);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _defineProperty(obj, key, value) {
-        if (key in obj) {
-          Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
-        } else {
-          obj[key] = value;
-        }return obj;
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * @constant
-       */
-      var logger = _logger2.default.get("OvpProvider");
-
-      /**
-       * Multi Request builder
-       * @classdesc
-       */
-
-      var MultiRequestBuilder = function (_RequestBuilder) {
-        _inherits(MultiRequestBuilder, _RequestBuilder);
-
-        /**
-         * @constructor
-         */
-        function MultiRequestBuilder() {
-          _classCallCheck(this, MultiRequestBuilder);
-
-          var _this = _possibleConstructorReturn(this, (MultiRequestBuilder.__proto__ || Object.getPrototypeOf(MultiRequestBuilder)).call(this));
-
-          _this.requests = [];
-          return _this;
-        }
-
-        /**
-         * Adds request to requests array
-         * @function add
-         * @param {RequestBuilder} request The request
-         * @returns {MultiRequestBuilder} The multiRequest
-         */
-
-        /**
-         * @member - Array of requests
-         * @type {Array<RequestBuilder>}
-         */
-
-        _createClass(MultiRequestBuilder, [{
-          key: 'add',
-          value: function add(request) {
-            this.requests.push(request);
-            var requestParams = {};
-            var serviceDef = { service: request.service, action: request.action };
-            Object.assign(requestParams, _defineProperty({}, this.requests.length, Object.assign(serviceDef, request.params)));
-            Object.assign(requestParams, this.params);
-            this.params = requestParams;
-            return this;
-          }
-
-          /**
-           * Executes a multi request
-           * @function execute
-           * @returns {Promise} The multirequest execution promisie
-           */
-
-        }, {
-          key: 'execute',
-          value: function execute() {
-            var _this2 = this;
-
-            try {
-              this.params = JSON.stringify(this.params);
-            } catch (err) {
-              logger.error('' + err.message);
-            }
-            return new Promise(function (resolve, reject) {
-              _this2.doHttpRequest().then(function (data) {
-                resolve(new MultiRequestResult(data));
-              }, function (err) {
-                var errorText = 'Error on multiRequest execution, error <' + err + '>.';
-                reject(errorText);
-              });
-            });
-          }
-        }]);
-
-        return MultiRequestBuilder;
-      }(_requestBuilder2.default);
-
-      /**
-       * Multi Request result object
-       * @classdesc
-       */
-
-      exports.default = MultiRequestBuilder;
-
-      var MultiRequestResult =
-
-      /**
-       * @constructor
-       * @param {Object}  response data
-       */
-
-      /**
-       * @member - Is success
-       * @type {boolean}
-       */
-      exports.MultiRequestResult = function MultiRequestResult(response) {
-        var _this3 = this;
-
-        _classCallCheck(this, MultiRequestResult);
-
-        this.results = [];
-
-        this.success = true;
-        response.forEach(function (result) {
-          var serviceResult = new _baseServiceResult2.default(result);
-          _this3.results.push(serviceResult);
-          if (serviceResult.hasError) {
-            logger.error('Service returned an error with error code: ' + serviceResult.error.code + ' and message: ' + serviceResult.error.message + '.');
-            _this3.success = false;
-            return;
-          }
-        });
-      }
-      /**
-       * @member - Multi request response data
-       * @type {Object}
-       */
-      ;
-
-      /***/
-    },
-    /* 7 */
-    /***/function (module, exports, __webpack_require__) {
-
-      var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__; /*!
-                                                                         * js-logger - http://github.com/jonnyreeves/js-logger
-                                                                         * Jonny Reeves, http://jonnyreeves.co.uk/
-                                                                         * js-logger may be freely distributed under the MIT license.
-                                                                         */
-      (function (global) {
-        "use strict";
-
-        // Top level module for the global, static logger instance.
-
-        var Logger = {};
-
-        // For those that are at home that are keeping score.
-        Logger.VERSION = "1.3.0";
-
-        // Function which handles all incoming log messages.
-        var logHandler;
-
-        // Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
-        var contextualLoggersByNameMap = {};
-
-        // Polyfill for ES5's Function.bind.
-        var bind = function bind(scope, func) {
-          return function () {
-            return func.apply(scope, arguments);
-          };
-        };
-
-        // Super exciting object merger-matron 9000 adding another 100 bytes to your download.
-        var merge = function merge() {
-          var args = arguments,
-              target = args[0],
-              key,
-              i;
-          for (i = 1; i < args.length; i++) {
-            for (key in args[i]) {
-              if (!(key in target) && args[i].hasOwnProperty(key)) {
-                target[key] = args[i][key];
-              }
-            }
-          }
-          return target;
-        };
-
-        // Helper to define a logging level object; helps with optimisation.
-        var defineLogLevel = function defineLogLevel(value, name) {
-          return { value: value, name: name };
-        };
-
-        // Predefined logging levels.
-        Logger.DEBUG = defineLogLevel(1, 'DEBUG');
-        Logger.INFO = defineLogLevel(2, 'INFO');
-        Logger.TIME = defineLogLevel(3, 'TIME');
-        Logger.WARN = defineLogLevel(4, 'WARN');
-        Logger.ERROR = defineLogLevel(8, 'ERROR');
-        Logger.OFF = defineLogLevel(99, 'OFF');
-
-        // Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
-        // of each other.
-        var ContextualLogger = function ContextualLogger(defaultContext) {
-          this.context = defaultContext;
-          this.setLevel(defaultContext.filterLevel);
-          this.log = this.info; // Convenience alias.
-        };
-
-        ContextualLogger.prototype = {
-          // Changes the current logging level for the logging instance.
-          setLevel: function setLevel(newLevel) {
-            // Ensure the supplied Level object looks valid.
-            if (newLevel && "value" in newLevel) {
-              this.context.filterLevel = newLevel;
-            }
-          },
-
-          // Is the logger configured to output messages at the supplied level?
-          enabledFor: function enabledFor(lvl) {
-            var filterLevel = this.context.filterLevel;
-            return lvl.value >= filterLevel.value;
-          },
-
-          debug: function debug() {
-            this.invoke(Logger.DEBUG, arguments);
-          },
-
-          info: function info() {
-            this.invoke(Logger.INFO, arguments);
-          },
-
-          warn: function warn() {
-            this.invoke(Logger.WARN, arguments);
-          },
-
-          error: function error() {
-            this.invoke(Logger.ERROR, arguments);
-          },
-
-          time: function time(label) {
-            if (typeof label === 'string' && label.length > 0) {
-              this.invoke(Logger.TIME, [label, 'start']);
-            }
-          },
-
-          timeEnd: function timeEnd(label) {
-            if (typeof label === 'string' && label.length > 0) {
-              this.invoke(Logger.TIME, [label, 'end']);
-            }
-          },
-
-          // Invokes the logger callback if it's not being filtered.
-          invoke: function invoke(level, msgArgs) {
-            if (logHandler && this.enabledFor(level)) {
-              logHandler(msgArgs, merge({ level: level }, this.context));
-            }
-          }
-        };
-
-        // Protected instance which all calls to the to level `Logger` module will be routed through.
-        var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
-
-        // Configure the global Logger instance.
-        (function () {
-          // Shortcut for optimisers.
-          var L = Logger;
-
-          L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
-          L.debug = bind(globalLogger, globalLogger.debug);
-          L.time = bind(globalLogger, globalLogger.time);
-          L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
-          L.info = bind(globalLogger, globalLogger.info);
-          L.warn = bind(globalLogger, globalLogger.warn);
-          L.error = bind(globalLogger, globalLogger.error);
-
-          // Don't forget the convenience alias!
-          L.log = L.info;
-        })();
-
-        // Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
-        // object with the supplied log messages and the second being a context object which contains a hash of stateful
-        // parameters which the logging function can consume.
-        Logger.setHandler = function (func) {
-          logHandler = func;
-        };
-
-        // Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
-        // (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
-        Logger.setLevel = function (level) {
-          // Set the globalLogger's level.
-          globalLogger.setLevel(level);
-
-          // Apply this level to all registered contextual loggers.
-          for (var key in contextualLoggersByNameMap) {
-            if (contextualLoggersByNameMap.hasOwnProperty(key)) {
-              contextualLoggersByNameMap[key].setLevel(level);
-            }
-          }
-        };
-
-        // Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
-        // default context and log handler.
-        Logger.get = function (name) {
-          // All logger instances are cached so they can be configured ahead of use.
-          return contextualLoggersByNameMap[name] || (contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
-        };
-
-        // CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
-        // write to the window's console object (if present); the optional options object can be used to customise the
-        // formatter used to format each log message.
-        Logger.createDefaultHandler = function (options) {
-          options = options || {};
-
-          options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
-            // Prepend the logger's name to the log message for easy identification.
-            if (context.name) {
-              messages.unshift("[" + context.name + "]");
-            }
-          };
-
-          // Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
-          // that don't offer a native console method.
-          var timerStartTimeByLabelMap = {};
-
-          // Support for IE8+ (and other, slightly more sane environments)
-          var invokeConsoleMethod = function invokeConsoleMethod(hdlr, messages) {
-            Function.prototype.apply.call(hdlr, console, messages);
-          };
-
-          // Check for the presence of a logger.
-          if (typeof console === "undefined") {
-            return function () {/* no console */};
-          }
-
-          return function (messages, context) {
-            // Convert arguments object to Array.
-            messages = Array.prototype.slice.call(messages);
-
-            var hdlr = console.log;
-            var timerLabel;
-
-            if (context.level === Logger.TIME) {
-              timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
-
-              if (messages[1] === 'start') {
-                if (console.time) {
-                  console.time(timerLabel);
-                } else {
-                  timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
-                }
-              } else {
-                if (console.timeEnd) {
-                  console.timeEnd(timerLabel);
-                } else {
-                  invokeConsoleMethod(hdlr, [timerLabel + ': ' + (new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms']);
-                }
-              }
-            } else {
-              // Delegate through to custom warn/error loggers if present on the console.
-              if (context.level === Logger.WARN && console.warn) {
-                hdlr = console.warn;
-              } else if (context.level === Logger.ERROR && console.error) {
-                hdlr = console.error;
-              } else if (context.level === Logger.INFO && console.info) {
-                hdlr = console.info;
-              }
-
-              options.formatter(messages, context);
-              invokeConsoleMethod(hdlr, messages);
-            }
-          };
-        };
-
-        // Configure and example a Default implementation which writes to the `window.console` (if present).  The
-        // `options` hash can be used to configure the default logLevel and provide a custom message formatter.
-        Logger.useDefaults = function (options) {
-          Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
-          Logger.setHandler(Logger.createDefaultHandler(options));
-        };
-
-        // Export to popular environments boilerplate.
-        if (true) {
-          !(__WEBPACK_AMD_DEFINE_FACTORY__ = Logger, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? __WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module) : __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-        } else if (typeof module !== 'undefined' && module.exports) {
-          module.exports = Logger;
-        } else {
-          Logger._prevLogger = global.Logger;
-
-          Logger.noConflict = function () {
-            global.Logger = Logger._prevLogger;
-            return Logger;
-          };
-
-          global.Logger = Logger;
-        }
-      })(this);
-
-      /***/
-    },
-    /* 8 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _mediaSource = __webpack_require__(13);
-
-      var _mediaSource2 = _interopRequireDefault(_mediaSource);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Container for the media sources aggregated by stream format.
-       * @classdesc
-       */
-      var MediaSources = function () {
-
-        /**
-         * @constructor
-         */
-
-        /**
-         * Dash media sources container.
-         * @type {Array<MediaSource>}
-         * @public
-         */
-        function MediaSources() {
-          _classCallCheck(this, MediaSources);
-
-          this.progressive = [];
-          this.dash = [];
-          this.hls = [];
-        }
-
-        /**
-         * Maps the source to one of the containers according to his media format.
-         * @param {MediaSource} source - The source to add to one of the containers.
-         * @param {MediaFormat} mediaFormat - The media format of the source.
-         * @returns {void}
-         */
-
-        /**
-         * Hls media sources container.
-         * @type {Array<MediaSource>}
-         * @public
-         */
-
-        /**
-         * Progressive download media sources container.
-         * @type {Array<MediaSource>}
-         * @public
-         */
-
-        _createClass(MediaSources, [{
-          key: 'map',
-          value: function map(source, mediaFormat) {
-            if (mediaFormat) {
-              switch (mediaFormat.name) {
-                case 'mp4':
-                  this.progressive.push(source);
-                  break;
-                case 'dash':
-                  this.dash.push(source);
-                  break;
-                case 'hls':
-                  this.hls.push(source);
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
-        }]);
-
-        return MediaSources;
-      }();
-
-      exports.default = MediaSources;
-
-      /***/
-    },
-    /* 9 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _kalturaDrmPlaybackPluginData = __webpack_require__(17);
-
-      var _kalturaDrmPlaybackPluginData2 = _interopRequireDefault(_kalturaDrmPlaybackPluginData);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE playback source
-       * @classdesc
-       */
-      var KalturaPlaybackSource = function () {
-
-        /**
-         * @constructor
-         * @param {Object} source The response
-         */
-
-        /**
-         * @member - comma separated string of flavor ids
-         * @type {string}
-         */
-
-        /**
-         * @member - The source URL
-         * @type {string}
-         */
-
-        /**
-         * @member - source format according to delivery profile streamer type (applehttp, mpegdash etc.)
-         * @type {string}
-         */
-        function KalturaPlaybackSource(source) {
-          var _this = this;
-
-          _classCallCheck(this, KalturaPlaybackSource);
-
-          this.drm = [];
-
-          this.format = source.format;
-          this.deliveryProfileId = source.deliveryProfileId;
-          this.url = source.url;
-          this.protocols = source.protocols;
-          this.flavorIds = source.flavorIds;
-
-          if (source.drm) {
-            source.drm.map(function (drm) {
-              return _this.drm.push(new _kalturaDrmPlaybackPluginData2.default(drm));
-            });
-          }
-        }
-
-        /**
-         * Checks if source has DRM data
-         * @function hasDrmData
-         * @returns {boolean} Is source has DRM
-         */
-
-        /**
-         * @member - drm data object containing relevant license url ,scheme name and certificate
-         * @type {Array<KalturaDrmPlaybackPluginData>}
-         */
-
-        /**
-         * @member - comma separated string according to deliveryProfile media protocols ('http,https' etc.)
-         * @type {string}
-         */
-
-        /**
-         * @member - delivery profile Id
-         * @type {string}
-         */
-
-        _createClass(KalturaPlaybackSource, [{
-          key: "hasDrmData",
-          value: function hasDrmData() {
-            return this.drm && this.drm.length > 0;
-          }
-
-          /**
-           * Checks if source has flavor IDs
-           * @function hasFlavorIds
-           * @returns {boolean} Is source ha flavor IDs
-           */
-
-        }, {
-          key: "hasFlavorIds",
-          value: function hasFlavorIds() {
-            return !!this.flavorIds && this.flavorIds.length > 0;
-          }
-
-          /**
-           * Returns source desired protocol if supported
-           * @param {string} protocol - the desired protocol for the source (base play url protocol)
-           * @returns {string} - protocol if protocol is in the protocols list - if not empty string returned
-           */
-
-        }, {
-          key: "getProtocol",
-          value: function getProtocol(protocol) {
-            var returnValue = "";
-            if (this.protocols && this.protocols.length > 0) {
-              var protocolsArr = this.protocols.split(",");
-              protocolsArr.forEach(function (p) {
-                if (p == protocol) {
-                  returnValue = p;
-                }
-              });
-            } else if (protocol == "http") {
-              return protocol;
-            }
-            return returnValue;
-          }
-        }]);
-
-        return KalturaPlaybackSource;
-      }();
-
-      exports.default = KalturaPlaybackSource;
-
-      /***/
-    },
-    /* 10 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _enums = __webpack_require__(5);
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE FlavorAsset
-       * @classdesc
-       */
-      var KalturaFlavorAsset =
-
-      /**
-       * @constructor
-       * @param {Object} data The json response
-       */
-
-      /**
-       * @member - The language of the flavor asset
-       * @type {Status}
-       */
-
-      /**
-       *@member - The video codec
-       * @type {boolean}
-       */
-
-      /**
-       * @member - True if this Flavor Asset is playable in KDP
-       * @type {boolean}
-       */
-
-      /**
-       * @member - The frame rate (in FPS) of the Flavor Asset
-       * @type {number}
-       */
-
-      /**
-       * @member - The width of the Flavor Asset
-       * @type {number}
-       */
-
-      /**
-       * @member -The file extension
-       * @type {string}
-       */
-
-      /**
-       * @member - The ID of the Flavor Asset
-       * @type {string}
-       */
-      function KalturaFlavorAsset(data) {
-        _classCallCheck(this, KalturaFlavorAsset);
-
-        this.id = data.id;
-        this.flavorParamsId = data.flavorParamsId;
-        this.fileExt = data.fileExt;
-        this.bitrate = data.bitrate;
-        this.width = data.width;
-        this.height = data.height;
-        this.id = data.id;
-        this.frameRate = data.frameRate;
-        this.isOriginal = data.isOriginal;
-        this.isWeb = data.isWeb;
-        this.containerFormat = data.containerFormat;
-        this.videoCodecId = data.videoCodecId;
-        this.status = data.status;
-        this.language = data.language;
-        this.label = data.label;
-      }
-      /**
-       * @member - The label of the flavor asset
-       * @type {string}
-       */
-
-      /**
-       * @member - The status of the Flavor Asset
-       * @type {string}
-       */
-
-      /**
-       * @member - The container format
-       * @type {boolean}
-       */
-
-      /**
-       * @member - True if this Flavor Asset is the original source
-       * @type {number}
-       */
-
-      /**
-       * @member - The height of the Flavor Asset
-       * @type {number}
-       */
-
-      /**
-       * @member - The overall bitrate (in KBits) of the Flavor Asset
-       *  @type {string}
-       */
-
-      /**
-       * @member -The Flavor Params used to create this Flavor Asset
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaFlavorAsset;
-
-      /***/
-    },
-    /* 11 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(2);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _kalturaMetadata = __webpack_require__(18);
-
-      var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE Metadata list response
-       * @classdesc
-       */
-      var KalturaMetadataListResponse = function (_ServiceResult) {
-        _inherits(KalturaMetadataListResponse, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} responseObj The response
-         */
-        function KalturaMetadataListResponse(responseObj) {
-          _classCallCheck(this, KalturaMetadataListResponse);
-
-          var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
-
-          if (!_this.hasError) {
-            _this.totalCount = responseObj.totalCount;
-            if (_this.totalCount > 0) {
-              _this.metas = [];
-              responseObj.objects.map(function (meta) {
-                return _this.metas.push(new _kalturaMetadata2.default(meta));
-              });
-            }
-          }
-          return _this;
-        }
-        /**
-         * @member -The mata data array
-         * @type {Array<KalturaMetadata>}
-         */
-
-        return KalturaMetadataListResponse;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaMetadataListResponse;
-
-      /***/
-    },
-    /* 12 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _enums = __webpack_require__(5);
-
-      var _mediaSources = __webpack_require__(8);
-
-      var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Media entry
-       * @classdesc
-       */
-      var MediaEntry =
-
-      /**
-       * @constructor
-       */
-
-      /**
-       * @member - entry type
-       * @type {MediaEntryType}
-       */
-
-      /**
-       * @member - entry sources
-       * @type {MediaSources}
-       */
-      function MediaEntry() {
-        _classCallCheck(this, MediaEntry);
-
-        this.metaData = new Map();
-        this.type = _enums.MediaEntryTypes.Unknown;
-      }
-      /**
-       * @member - entry metadata
-       * @type {Map<string,string>}
-       */
-
-      /**
-       * @member - entry duration
-       * @type {number}
-       */
-
-      /**
-       * @member - entry ID
-       * @type {string}
-       */
-      ;
-
-      exports.default = MediaEntry;
-
-      /***/
-    },
-    /* 13 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _drm = __webpack_require__(14);
-
-      var _drm2 = _interopRequireDefault(_drm);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Media source
-       * @classdesc
-       */
-      var MediaSource =
-
-      /**
-       * @constructor
-       */
-
-      /**
-       * @member - media source height
-       * @type {number}
-       */
-
-      /**
-       * @member - media source bandwidth
-       * @type {number}
-       */
-
-      /**
-       * @member - media source mimetype
-       * @type {string}
-       */
-
-      /**
-       * @member - media source ID
-       * @type {string}
-       */
-      function MediaSource() {
-        _classCallCheck(this, MediaSource);
-      }
-      /**
-       * @member - media source label
-       * @type {string}
-       */
-
-      /**
-       * @member - media source width
-       * @type {number}
-       */
-
-      /**
-       * @member - media source drm data
-       * @type {Array<Drm>}
-       */
-
-      /**
-       * @member - media source URL
-       * @type {string}
-       */
-      ;
-
-      exports.default = MediaSource;
-
-      /***/
-    },
-    /* 14 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _enums = __webpack_require__(5);
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Drm data
-       * @classdesc
-       */
-      var Drm =
-
-      /**
-       * @constructor
-       * @param {string} licenseUrl - the license URL
-       * @param {Scheme} scheme - the drm scheme
-       */
-
-      /**
-       * @member - license URL
-       * @type {string}
-       */
-      function Drm(licenseUrl, scheme) {
-        _classCallCheck(this, Drm);
-
-        this.licenseUrl = licenseUrl;
-        this.scheme = scheme;
-      }
-      /**
-       * @member - drm scheme
-       * @type {Scheme}
-       */
-      ;
-
-      exports.default = Drm;
-
-      /***/
-    },
-    /* 15 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.OvpProvider = undefined;
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _logger = __webpack_require__(4);
-
-      var _logger2 = _interopRequireDefault(_logger);
-
-      var _providerParser = __webpack_require__(16);
-
-      var _providerParser2 = _interopRequireDefault(_providerParser);
-
-      var _dataLoaderManager = __webpack_require__(22);
-
-      var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
-
-      var _mediaEntryLoader = __webpack_require__(23);
-
-      var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
-
-      var _sessionLoader = __webpack_require__(31);
-
-      var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
-
-      var _uiConfigLoader = __webpack_require__(33);
-
-      var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _mediaEntry = __webpack_require__(12);
-
-      var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
-
-      var _mediaSources = __webpack_require__(8);
-
-      var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * @constant
-       */
-      var logger = _logger2.default.get("OvpProvider");
-
-      /**
-       * Ovp provider
-       * @classdesc
-       */
-      var OvpProvider = exports.OvpProvider = function () {
-
-        /**
-         * @constructor
-         * @param {number} partnerID The partner ID
-         * @param {string} [ks=""]  The provider ks (has empty string as default value)
-         * @param {Object} [config]  The provider config(optional)
-         */
-
-        /**
-         * @member - uiConf ID
-         * @type {number}
-         * @private
-         */
-
-        /**
-         * @member - partner ID
-         * @type {number}
-         */
-        function OvpProvider(partnerID) {
-          var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-          var config = arguments[2];
-
-          _classCallCheck(this, OvpProvider);
-
-          this.partnerID = partnerID;
-          this.ks = ks;
-          this._isAnonymous = !this.ks;
-          _config2.default.set(config);
-        }
-
-        /**
-         * Returns player json configuration
-         * @function getConfig
-         * @param {string} entryId The entry ID
-         * @param {number} uiConfId The uiConf ID
-         * @returns {Promise} The provider config object as promise
-         */
-
-        /**
-         * @member - Data loader
-         * @type {DataLoaderManager}
-         * @private
-         */
-
-        /**
-         * @member - is anonymous
-         * @type {boolean}
-         * @private
-         */
-
-        /**
-         * @member - ks
-         * @type {string}
-         */
-
-        _createClass(OvpProvider, [{
-          key: 'getConfig',
-          value: function getConfig(entryId, uiConfId) {
-            var _this = this;
-
-            if (uiConfId != null) {
-              this._uiConfId = uiConfId;
-            }
-            this._dataLoader = new _dataLoaderManager2.default(this.partnerID, this.ks);
-            return new Promise(function (resolve, reject) {
-              if (_this.validateParams(entryId, uiConfId)) {
-                var ks = _this.ks;
-                if (_this._isAnonymous) {
-                  ks = "{1:result:ks}";
-                  _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
-                }
-                _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
-                _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
-                _this._dataLoader.fetchData().then(function (response) {
-                  resolve(_this.parseDataFromResponse(response));
-                }, function (err) {
-                  reject(err);
-                });
-              } else {
-                reject({ success: false, data: "Missing mandatory parameter" });
-              }
-            });
-          }
-
-          /**
-           * Parses BE data to json configuration object
-           * @function parseDataFromResponse
-           * @param {Map<string,Function>} data The data to parse
-           * @returns {Object} The parsed config object
-           */
-
-        }, {
-          key: 'parseDataFromResponse',
-          value: function parseDataFromResponse(data) {
-            logger.debug("Data parsing started");
-            var config = {
-              id: "",
-              session: {
-                partnerID: this.partnerID,
-                uiConfID: this._uiConfId
-              },
-              sources: new _mediaSources2.default(),
-              duration: 0,
-              type: "Unknown",
-              metadata: {},
-              plugins: {}
-            };
-            if (data != null) {
-              if (data.has(_sessionLoader2.default.name)) {
-                var sessionLoader = data.get(_sessionLoader2.default.name);
-                if (sessionLoader != null && sessionLoader.response != null) {
-                  this.ks = sessionLoader.response;
-                  this._isAnonymous = !this.ks;
-                  config.session.ks = this.ks;
-                }
-              }
-              if (data.has(_uiConfigLoader2.default.name)) {
-                var uiConfLoader = data.get(_uiConfigLoader2.default.name);
-                var pluginsJson = {};
-                if (uiConfLoader != null) {
-                  pluginsJson = uiConfLoader.response;
-                }
-                config.plugins = pluginsJson;
-              }
-              if (data.has(_mediaEntryLoader2.default.name)) {
-                var mediaLoader = data.get(_mediaEntryLoader2.default.name);
-                if (mediaLoader != null && mediaLoader.response != null) {
-                  var mediaEntry = _providerParser2.default.getMediaEntry(this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
-                  config.id = mediaEntry.id;
-                  config.sources = mediaEntry.sources;
-                  config.duration = mediaEntry.duration;
-                  config.type = mediaEntry.type;
-                  config.metadata = mediaEntry.metaData;
-                }
-              }
-            }
-            logger.debug("Data parsing finished", config);
-            return config;
-          }
-
-          /**
-           * Parameters validation function
-           * @param {string} entryId The entry ID
-           * @param {number} uiConfId The uiConfID
-           * @returns {boolean} Is valid params
-           */
-
-        }, {
-          key: 'validateParams',
-          value: function validateParams(entryId, uiConfId) {
-            return !!entryId || !!uiConfId;
-          }
-        }]);
-
-        return OvpProvider;
-      }();
-
-      exports.default = OvpProvider;
-
-      /***/
-    },
-    /* 16 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _kalturaPlaybackSource = __webpack_require__(9);
-
-      var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
-
-      var _kalturaFlavorAsset = __webpack_require__(10);
-
-      var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
-
-      var _kalturaMetadataListResponse = __webpack_require__(11);
-
-      var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
-
-      var _playSourceUrlBuilder = __webpack_require__(19);
-
-      var _playSourceUrlBuilder2 = _interopRequireDefault(_playSourceUrlBuilder);
-
-      var _xmlParser = __webpack_require__(20);
-
-      var _xmlParser2 = _interopRequireDefault(_xmlParser);
-
-      var _enums = __webpack_require__(5);
-
-      var _logger = __webpack_require__(4);
-
-      var _logger2 = _interopRequireDefault(_logger);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _mediaFormat = __webpack_require__(21);
-
-      var _mediaEntry = __webpack_require__(12);
-
-      var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
-
-      var _drm = __webpack_require__(14);
-
-      var _drm2 = _interopRequireDefault(_drm);
-
-      var _mediaSource = __webpack_require__(13);
-
-      var _mediaSource2 = _interopRequireDefault(_mediaSource);
-
-      var _mediaSources = __webpack_require__(8);
-
-      var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-      /**
-       * @constant
-       */
-      var logger = _logger2.default.get("OvpProvider");
-
-      /**
-       * @constant
-       * @type {Map<string, MediaFormat>}
-       */
-      var SUPPORTED_FORMATS = new Map([["mpegdash", _mediaFormat.MediaFormats.dash], ["applehttp", _mediaFormat.MediaFormats.hls], ["url", _mediaFormat.MediaFormats.mp4]]);
-
-      /**
-       * Ovp provider parser
-       * @classdesc
-       */
-
-      var ProviderParser = function () {
-        function ProviderParser() {
-          _classCallCheck(this, ProviderParser);
-        }
-
-        _createClass(ProviderParser, null, [{
-          key: 'getMediaEntry',
-
-          /**
-           * Returns parsed media entry by given OVP response objects
-           * @function getMediaEntry
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {any} mediaEntryResponse - The media entry response
-           * @returns {MediaEntry} - The media entry
-           * @static
-           * @public
-           */
-          value: function getMediaEntry(ks, partnerID, uiConfId, mediaEntryResponse) {
-            var mediaEntry = new _mediaEntry2.default();
-            var entry = mediaEntryResponse.entry;
-            var playbackContext = mediaEntryResponse.playBackContextResult;
-            var metadataList = mediaEntryResponse.metadataListResult;
-            var kalturaSources = playbackContext.sources;
-            var sources = ProviderParser._getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext);
-
-            mediaEntry.sources = sources;
-
-            var metadata = this._parseMetaData(metadataList);
-            mediaEntry.metaData = metadata;
-            mediaEntry.id = entry.id;
-            mediaEntry.duration = entry.duration;
-
-            var type = _enums.MediaEntryTypes.Unknown;
-
-            switch (entry.entryType) {
-              case _enums.MediaTypes.IMAGE.value:
-                type = _enums.MediaEntryTypes.Image;
-                break;
-              case _enums.MediaTypes.AUDIO.value:
-                type = _enums.MediaEntryTypes.Audio;
-                break;
-              default:
-                switch (entry.type) {
-                  case _enums.EntryTypes.MEDIA_CLIP.value:
-                    type = _enums.MediaEntryTypes.Vod;
-                    break;
-                  case _enums.EntryTypes.LIVE_STREAM.value:
-                  case _enums.EntryTypes.LIVE_CHANNEL.value:
-                    type = _enums.MediaEntryTypes.Live;
-                    break;
-                  default:
-                    type = _enums.MediaEntryTypes.Unknown;
-                }
-            }
-            mediaEntry.type = type;
-
-            return mediaEntry;
-          }
-
-          /**
-           * Returns the parsed sources
-           * @function _getParsedSources
-           * @param {Array<KalturaPlaybackSource>} kalturaSources - The kaltura sources
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {Object} entry - The entry
-           * @param {Object} playbackContext - The playback context
-           * @return {MediaSources} - A media sources
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_getParsedSources',
-          value: function _getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext) {
-            var sources = new _mediaSources2.default();
-
-            var addAdaptiveSource = function addAdaptiveSource(source) {
-              var parsedSource = ProviderParser._parseAdaptiveSource(source, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
-              var sourceFormat = SUPPORTED_FORMATS.get(source.format);
-              sources.map(parsedSource, sourceFormat);
-            };
-
-            var parseAdaptiveSources = function parseAdaptiveSources() {
-              kalturaSources.filter(function (source) {
-                return !ProviderParser._isProgressiveSource(source);
-              }).forEach(addAdaptiveSource);
-            };
-
-            var parseProgressiveSources = function parseProgressiveSources() {
-              var progressiveSource = kalturaSources.find(ProviderParser._isProgressiveSource);
-              sources.progressive = ProviderParser._parseProgressiveSources(progressiveSource, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
-            };
-
-            if (kalturaSources && kalturaSources.length > 0) {
-              parseAdaptiveSources();
-              parseProgressiveSources();
-            }
-
-            return sources;
-          }
-
-          /**
-           * Returns a parsed adaptive source
-           * @function _parseAdaptiveSource
-           * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
-           * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {string} entryId - The entry id
-           * @returns {MediaSource} - The parsed adaptive kalturaSource
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_parseAdaptiveSource',
-          value: function _parseAdaptiveSource(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
-            var mediaSource = new _mediaSource2.default();
-            if (kalturaSource) {
-              var playUrl = "";
-              var mediaFormat = SUPPORTED_FORMATS.get(kalturaSource.format);
-              // in case playbackSource doesn't have flavors we don't need to build the url and we'll use the provided one.
-              if (kalturaSource.hasFlavorIds()) {
-                var extension = "";
-                if (!mediaFormat) {
-                  if (flavorAssets && flavorAssets.length > 0) {
-                    extension = flavorAssets[0].fileExt;
-                  }
-                } else {
-                  extension = mediaFormat.pathExt;
-                  mediaSource.mimetype = mediaFormat.mimeType;
-                }
-
-                playUrl = _playSourceUrlBuilder2.default.build({
-                  entryId: entryId,
-                  flavorIds: kalturaSource.flavorIds,
-                  format: kalturaSource.format,
-                  ks: ks,
-                  partnerId: partnerID,
-                  uiConfId: uiConfId,
-                  extension: extension,
-                  protocol: kalturaSource.getProtocol(this._getBaseProtocol())
-                });
-              } else {
-                playUrl = kalturaSource.url;
-              }
-
-              if (playUrl == "") {
-                logger.error('failed to create play url from source, discarding source: (' + entryId + '_' + kalturaSource.deliveryProfileId + '), ' + kalturaSource.format + '.');
-                return mediaSource;
-              }
-
-              mediaSource.url = playUrl;
-              mediaSource.id = entryId + "_" + kalturaSource.deliveryProfileId + "," + kalturaSource.format;
-              if (kalturaSource.hasDrmData()) {
-                var drmParams = [];
-                kalturaSource.drm.forEach(function (drm) {
-                  drmParams.push(new _drm2.default(drm.licenseURL, drm.scheme));
-                });
-                mediaSource.drmData = drmParams;
-              }
-            }
-            return mediaSource;
-          }
-
-          /**
-           * Returns parsed progressive sources
-           * @function _parseProgressiveSources
-           * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
-           * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {string} entryId - The entry id
-           * @returns {Array<MediaSource>} - The parsed progressive kalturaSources
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_parseProgressiveSources',
-          value: function _parseProgressiveSources(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
-            var sources = [];
-            if (kalturaSource) {
-              var protocol = kalturaSource.getProtocol(this._getBaseProtocol());
-              var format = kalturaSource.format;
-              var sourceId = kalturaSource.deliveryProfileId + "," + kalturaSource.format;
-              flavorAssets.map(function (flavor) {
-                if (flavor.height && flavor.width) {
-                  var mediaSource = new _mediaSource2.default();
-                  mediaSource.id = flavor.id + sourceId;
-                  mediaSource.mimetype = 'video/mp4';
-                  mediaSource.height = flavor.height;
-                  mediaSource.width = flavor.width;
-                  mediaSource.bandwidth = flavor.bitrate * 1024;
-                  mediaSource.label = flavor.label || flavor.language;
-                  mediaSource.url = _playSourceUrlBuilder2.default.build({
-                    entryId: entryId,
-                    flavorIds: flavor.id,
-                    format: format,
-                    ks: ks,
-                    partnerId: partnerID,
-                    uiConfId: uiConfId,
-                    extension: 'mp4',
-                    protocol: protocol
-                  });
-                  sources.push(mediaSource);
-                }
-              });
-            }
-            return sources;
-          }
-
-          /**
-           * @function _isProgressiveSource
-           * @param {KalturaPlaybackSource} source - The kaltura source
-           * @return {boolean} - Is progressive source
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_isProgressiveSource',
-          value: function _isProgressiveSource(source) {
-            var sourceFormat = SUPPORTED_FORMATS.get(source.format);
-            return !!sourceFormat && sourceFormat.name === 'mp4';
-          }
-
-          /**
-           * Ovp metadata parser
-           * @function _parseMetaData
-           * @param {KalturaMetadataListResponse} metadataList The metadata list
-           * @returns {Map<string,string>} Parsed metadata
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_parseMetaData',
-          value: function _parseMetaData(metadataList) {
-            var metadata = {};
-            if (metadataList && metadataList.metas && metadataList.metas.length > 0) {
-              metadataList.metas.forEach(function (meta) {
-                var metaXml = void 0;
-                var domParser = new DOMParser();
-                meta.xml = meta.xml.replace(/\r?\n|\r/g, "");
-                meta.xml = meta.xml.replace(/>\s*/g, '>');
-                meta.xml = meta.xml.replace(/>\s*/g, '>');
-                metaXml = domParser.parseFromString(meta.xml, 'text/xml');
-                var metasObj = _xmlParser2.default.xmlToJson(metaXml);
-                var metaKeys = Object.keys(metasObj.metadata);
-                metaKeys.forEach(function (key) {
-                  metadata[key] = metasObj.metadata[key]["#text"];
-                });
-              });
-            }
-            return metadata;
-          }
-
-          /**
-           * Returns the base protocol
-           * @function _getBaseProtocol
-           * @returns {string} - The base protocol
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_getBaseProtocol',
-          value: function _getBaseProtocol() {
-            var splittedUrl = config.baseUrl.split("/");
-            var baseProtocol = void 0;
-            if (splittedUrl && splittedUrl.length > 0) {
-              baseProtocol = splittedUrl[0].substring(0, splittedUrl[0].length - 1);
-            } else {
-              baseProtocol = "http";
-            }
-            return baseProtocol;
-          }
-        }]);
-
-        return ProviderParser;
-      }();
-
-      exports.default = ProviderParser;
-
-      /***/
-    },
-    /* 17 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _enums = __webpack_require__(5);
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE DrmPlaybackPluginData
-       * @classdesc
-       */
-      var KalturaDrmPlaybackPluginData =
-
-      /**
-       * @constructor
-       * @param {Object} drm The json response
-       */
-
-      /**
-       * @member - The drm scheme
-       * @type {Scheme}
-       */
-      function KalturaDrmPlaybackPluginData(drm) {
-        _classCallCheck(this, KalturaDrmPlaybackPluginData);
-
-        this.scheme = drm.scheme;
-        this.licenseURL = drm.licenseURL;
-      }
-
-      /**
-       * @member - The license URL
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaDrmPlaybackPluginData;
-
-      /***/
-    },
-    /* 18 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE Metadata
-       * @classdesc
-       */
-      var KalturaMetadata =
-
-      /**
-       * @constructor
-       * @param {Object} data The response
-       */
-      function KalturaMetadata(data) {
-        _classCallCheck(this, KalturaMetadata);
-
-        this.id = data.id;
-        this.metadataProfileId = data.metadataProfileId;
-        this.metadataProfileVersion = data.metadataProfileVersion;
-        this.metadataProfileId = data.metadataProfileId;
-        this.metadataObjectType = data.metadataObjectType;
-        this.objectId = data.objectId;
-        this.version = data.version;
-        this.created = new Date(0);
-        this.created.setUTCSeconds(data.createdAt);
-        this.updated = new Date(0);
-        this.updated.setUTCSeconds(data.updatedAt);
-        this.status = data.status;
-        this.xml = data.xml;
-      }
-      /**
-       * @member - The Metadata xml - represented as XML string
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaMetadata;
-
-      /***/
-    },
-    /* 19 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-
-      /**
-       * Media source url builder
-       * @classdesc
-       */
-
-      var PlaySourceUrlBuilder = function () {
-        function PlaySourceUrlBuilder() {
-          _classCallCheck(this, PlaySourceUrlBuilder);
-        }
-
-        _createClass(PlaySourceUrlBuilder, null, [{
-          key: "build",
-
-          /**
-           * Returns source url by given url params
-           * @function build
-           * @param {Object} urlParams The params
-           * @returns {string} The URL
-           * @static
-           */
-          value: function build(urlParams) {
-            var baseUrl = config.baseUrl;
-            var partnerId = urlParams.partnerId;
-            var entryId = urlParams.entryId;
-            var ks = urlParams.ks;
-            var uiConfId = urlParams.uiConfId;
-            var format = urlParams.format;
-            var protocol = urlParams.protocol;
-            var extension = urlParams.extension;
-            var flavorIds = urlParams.flavorIds;
-
-            if (baseUrl == "" && partnerId == "" && entryId == "" && extension == "" && format == "") {
-              return "";
-            }
-
-            var playUrl = baseUrl;
-            if (!baseUrl.endsWith("/")) {
-              playUrl += "/";
-            }
-            playUrl += "p/" + partnerId + "/sp/" + partnerId + "00" + "/playManifest/entryId/" + entryId + "/protocol/" + protocol + "/format/" + format;
-
-            if (flavorIds != "") {
-              playUrl += "/flavorIds/" + flavorIds;
-            } else if (uiConfId != "") {
-              playUrl += "/uiConfId/" + uiConfId;
-            }
-
-            if (this.ks != "") {
-              playUrl += "/ks/" + ks;
-            }
-
-            playUrl += "/a." + extension;
-
-            if (uiConfId && flavorIds != "") {
-              playUrl += "?uiConfId=." + uiConfId;
-            }
-
-            return playUrl;
-          }
-        }]);
-
-        return PlaySourceUrlBuilder;
-      }();
-
-      exports.default = PlaySourceUrlBuilder;
-
-      /***/
-    },
-    /* 20 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Xml parser
-       * @classdesc
-       */
-      var XmlParser = function () {
-        function XmlParser() {
-          _classCallCheck(this, XmlParser);
-        }
-
-        _createClass(XmlParser, null, [{
-          key: "xmlToJson",
-
-          /**
-           * Parses xml string to json object
-           * @param {string} xml The xml to parse
-           * @returns {{}} The parsed xml as Json object
-           * @static
-           */
-          value: function xmlToJson(xml) {
-            var obj = {};
-            if (xml.nodeType == 1) {
-              if (xml.attributes.length > 0) {
-                obj["@attributes"] = {};
-                for (var j = 0; j < xml.attributes.length; j++) {
-                  var attribute = xml.attributes.item(j);
-                  obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-                }
-              }
-            } else if (xml.nodeType == 3) {
-              obj = xml.nodeValue;
-            }
-            if (xml.hasChildNodes()) {
-              for (var i = 0; i < xml.childNodes.length; i++) {
-                var item = xml.childNodes.item(i);
-                var nodeName = item.nodeName;
-                if (typeof obj[nodeName] == "undefined") {
-                  obj[nodeName] = this.xmlToJson(item);
-                } else {
-                  if (typeof obj[nodeName].push == "undefined") {
-                    var old = obj[nodeName];
-                    obj[nodeName] = [];
-                    obj[nodeName].push(old);
-                  }
-                  obj[nodeName].push(this.xmlToJson(item));
-                }
-              }
-            }
-            return obj;
-          }
-        }]);
-
-        return XmlParser;
-      }();
-
-      exports.default = XmlParser;
-
-      /***/
-    },
-    /* 21 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var MediaFormats = exports.MediaFormats = function MediaFormats() {
-        _classCallCheck(this, MediaFormats);
-      };
-
-      MediaFormats.dash = {
-        name: 'dash',
-        mimeType: "application/dash+xml",
-        pathExt: "mpd"
-      };
-      MediaFormats.hls = {
-        name: 'hls',
-        mimeType: "application/x-mpegURL",
-        pathExt: "m3u8"
-      };
-      MediaFormats.wvm = {
-        name: 'wvm',
-        mimeType: "video/wvm",
-        pathExt: "wvm"
-      };
-      MediaFormats.mp4 = {
-        name: 'mp4',
-        mimeType: "video/mp4",
-        pathExt: "mp4"
-      };
-      MediaFormats.mp3 = {
-        name: 'mp3',
-        mimeType: "audio/mpeg",
-        pathExt: "mp3"
-      };
-
-      /***/
-    },
-    /* 22 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(3);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _multiRequestBuilder = __webpack_require__(6);
-
-      var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Data loaders manager
-       * @classdesc
-       */
-      var DataLoaderManager = function () {
-
-        /**
-         * @constructor
-         * @param {string} partnerID Then partner ID
-         * @param {string} ks The ks
-         */
-
-        /**
-         * @member - Lodaers response map index
-         * @type {Map<string,Array<number>>}
-         * @private
-         * @static
-         */
-        function DataLoaderManager(partnerID) {
-          var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-
-          _classCallCheck(this, DataLoaderManager);
-
-          this._loaders = new Map();
-
-          this._multiRequest = _ovpService2.default.getMultirequest(ks, partnerID);
-        }
-
-        /**
-         * Add loader too execution loaders map
-         * @function
-         * @param {Function} loader Loader to add
-         * @param {Object} params Loader params
-         * @returns {void}
-         */
-
-        /**
-         * @member - Loaders to execute
-         * @type {Map<string,Function>}
-         * @private
-         */
-
-        /**
-         * @member - Loaders multi request
-         * @type {MultiRequestBuilder}
-         * @private
-         */
-
-        /**
-         * @member - Loaders multi response
-         * @type {MultiRequestResult}
-         * @private
-         */
-
-        _createClass(DataLoaderManager, [{
-          key: 'add',
-          value: function add(loader, params) {
-            var _this = this;
-
-            var execution_loader = new loader(params);
-            if (execution_loader.isValid()) {
-              this._loaders.set(loader.name, execution_loader);
-              //Get the start index from the multiReqeust before adding current execution_loader requests
-              var startIndex = this._multiRequest.requests.length;
-              //Get the requests
-              var requests = execution_loader.requests;
-              //Add requests to muktiRequest queue
-              requests.forEach(function (request) {
-                _this._multiRequest.add(request);
-              });
-              //Create range array of current execution_loader requests
-              var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
-                return index + startIndex;
-              });
-              //Add to map
-              DataLoaderManager._loadersResponseMap.set(loader.name, executionLoaderResponseMap);
-            }
-          }
-
-          /**
-           * Get data from all loaders using multi request
-           * @function
-           * @returns {Promise} Promise
-           */
-
-        }, {
-          key: 'fetchData',
-          value: function fetchData() {
-            var _this2 = this;
-
-            return new Promise(function (resolve, reject) {
-              _this2._multiRequest.execute().then(function (response) {
-                _this2._multiResponse = response;
-                if (!response.success) {
-                  reject(response);
-                } else {
-                  var preparedData = _this2.prepareData(response);
-                  if (preparedData.success) {
-                    resolve(_this2._loaders);
-                  } else {
-                    reject({ success: false, data: preparedData.error });
-                  }
-                }
-              }, function (err) {
-                reject(err);
-              });
-            });
-          }
-        }, {
-          key: 'prepareData',
-          value: function prepareData(response) {
-            this._loaders.forEach(function (loader, name) {
-              var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
-              try {
-                if (loaderDataIndexes != null) {
-                  loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
-                }
-              } catch (err) {
-                return { success: false, error: err };
-              }
-            });
-            return { success: true, data: this._loaders };
-          }
-        }]);
-
-        return DataLoaderManager;
-      }();
-
-      DataLoaderManager._loadersResponseMap = new Map();
-      exports.default = DataLoaderManager;
-
-      /***/
-    },
-    /* 23 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      var _baseEntryService = __webpack_require__(24);
-
-      var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
-
-      var _metaDataService = __webpack_require__(25);
-
-      var _metaDataService2 = _interopRequireDefault(_metaDataService);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _kalturaPlaybackContext = __webpack_require__(26);
-
-      var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
-
-      var _kalturaMetadataListResponse = __webpack_require__(11);
-
-      var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
-
-      var _kalturaBaseEntryListResponse = __webpack_require__(29);
-
-      var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-
-      /**
-       * Media entry loader
-       * @classdesc
-       */
-
-      var MediaEntryLoader = function () {
-        _createClass(MediaEntryLoader, null, [{
-          key: 'name',
-          get: function get() {
-            return "media";
-          }
-        }]);
-
-        /**
-         * @constructor
-         * @param {Object} params loader params
-         */
-        function MediaEntryLoader(params) {
-          _classCallCheck(this, MediaEntryLoader);
-
-          this._response = {};
-
-          this.requests = this.buildRequests(params);
-          this._entryId = params.entryId;
-        }
-
-        _createClass(MediaEntryLoader, [{
-          key: 'buildRequests',
-
-          /**
-           * Builds loader requests
-           * @function
-           * @param {Object} params Requests parameters
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function buildRequests(params) {
-            var requests = [];
-            requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
-            requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
-            requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
-            return requests;
-          }
-
-          /**
-           * Loader validation function
-           * @function
-           * @returns {boolean} Is valid
-           */
-
-        }, {
-          key: 'isValid',
-          value: function isValid() {
-            return !!this._entryId;
-          }
-        }, {
-          key: 'requests',
-          set: function set(requests) {
-            this._requests = requests;
-          },
-          get: function get() {
-            return this._requests;
-          }
-        }, {
-          key: 'response',
-          set: function set(response) {
-            var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
-            this._response.entry = mediaEntryResponse.entries[0];
-            this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
-            this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
-          },
-          get: function get() {
-            return this._response;
-          }
-        }]);
-
-        return MediaEntryLoader;
-      }();
-
-      exports.default = MediaEntryLoader;
-
-      /***/
-    },
-    /* 24 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(3);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "baseEntry";
-
-      /**
-       * Ovp BaseEntry service methods
-       * @classdesc
-       */
-
-      var BaseEntryService = function (_OvpService) {
-        _inherits(BaseEntryService, _OvpService);
-
-        function BaseEntryService() {
-          _classCallCheck(this, BaseEntryService);
-
-          return _possibleConstructorReturn(this, (BaseEntryService.__proto__ || Object.getPrototypeOf(BaseEntryService)).apply(this, arguments));
-        }
-
-        _createClass(BaseEntryService, null, [{
-          key: 'getPlaybackContext',
-
-          /**
-           * Creates an instance of RequestBuilder for baseentry.getPlaybackContext
-           * @function getPlaybackContext
-           * @param {string} baseUrl The service base URL
-           * @param {string} ks The ks
-           * @param {string} entryId The entry ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function getPlaybackContext(baseUrl, ks, entryId) {
-            var request = new _requestBuilder2.default();
-            request.service = SERVICE_NAME;
-            request.action = "getPlaybackContext";
-            request.method = "POST";
-            request.baseUrl = baseUrl;
-            request.tag = "baseEntry-getPlaybackContext";
-            var contextDataParams = { objectType: "KalturaContextDataParams", flavorTags: "all" };
-            var params = { entryId: entryId, ks: ks, contextDataParams: contextDataParams };
-            request.params = params;
-            return request;
-          }
-
-          /**
-           * Creates an instance of RequestBuilder for baseentry.list
-           * @function list
-           * @param {string} baseUrl The base URL
-           * @param {string} ks The ks
-           * @param {string} entryId The entry ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-
-        }, {
-          key: 'list',
-          value: function list(baseUrl, ks, entryId) {
-            var request = new _requestBuilder2.default();
-            request.service = SERVICE_NAME;
-            request.action = "list";
-            request.method = "POST";
-            request.baseUrl = baseUrl;
-            request.tag = "list";
-            request.params = BaseEntryService.getEntryListReqParams(entryId, ks);
-            return request;
-          }
-
-          /**
-           * Gets  baseentry.list service params
-           * @function getEntryListReqParams
-           * @param {string} entryId The entry ID
-           * @param {string} ks The ks
-           * @returns {{ks: string, filter: {redirectFromEntryId: string}, responseProfile: {fields: string, type: number}}} The service params object
-           * @static
-           */
-
-        }, {
-          key: 'getEntryListReqParams',
-          value: function getEntryListReqParams(entryId, ks) {
-            var filterParams = { redirectFromEntryId: entryId };
-            var responseProfileParams = {
-              fields: "id,name,dataUrl,duration,msDuration,flavorParamsIds,mediaType,type,tags",
-              type: 1
-            };
-            return { ks: ks, filter: filterParams, responseProfile: responseProfileParams };
-          }
-        }]);
-
-        return BaseEntryService;
-      }(_ovpService2.default);
-
-      exports.default = BaseEntryService;
-
-      /***/
-    },
-    /* 25 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(3);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "metadata_metadata";
-
-      /**
-       * Ovp metadata_metadata service methods
-       * @classdesc
-       */
-
-      var MetaDataService = function (_OvpService) {
-        _inherits(MetaDataService, _OvpService);
-
-        function MetaDataService() {
-          _classCallCheck(this, MetaDataService);
-
-          return _possibleConstructorReturn(this, (MetaDataService.__proto__ || Object.getPrototypeOf(MetaDataService)).apply(this, arguments));
-        }
-
-        _createClass(MetaDataService, null, [{
-          key: 'list',
-
-          /**
-           * Creates an instance of RequestBuilder for metadata_metadata.list
-           * @function getPlaybackContext
-           * @param {string} baseUrl The service base URL
-           * @param {string} ks The ks
-           * @param {string} entryId The entry ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function list(baseUrl, ks, entryId) {
-            var request = new _requestBuilder2.default();
-            request.service = SERVICE_NAME;
-            request.action = "list";
-            request.method = "POST";
-            request.baseUrl = baseUrl;
-            request.tag = "metadata_metadata-list";
-            var filter = { objectType: "KalturaMetadataFilter", objectIdEqual: entryId, metadataObjectTypeEqual: "1" };
-            var params = { filter: filter, ks: ks };
-            request.params = params;
-            return request;
-          }
-        }]);
-
-        return MetaDataService;
-      }(_ovpService2.default);
-
-      exports.default = MetaDataService;
-
-      /***/
-    },
-    /* 26 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(2);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _kalturaAccessControlMessage = __webpack_require__(27);
-
-      var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
-
-      var _kalturaPlaybackSource = __webpack_require__(9);
-
-      var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
-
-      var _kalturaRuleAction = __webpack_require__(28);
-
-      var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
-
-      var _kalturaFlavorAsset = __webpack_require__(10);
-
-      var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE playback context response
-       * @classdesc
-       */
-      var KalturaPlaybackContext = function (_ServiceResult) {
-        _inherits(KalturaPlaybackContext, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} response The response
-         */
-
-        /**
-         * @member - Array of actions as received from the rules that invalidated
-         * @type {Array<KalturaAccessControlMessage>}
-         */
-
-        /**
-         * @member - The playback sources
-         * @type {Array<KalturaPlaybackSource>}
-         */
-        function KalturaPlaybackContext(response) {
-          _classCallCheck(this, KalturaPlaybackContext);
-
-          var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
-
-          _this.sources = [];
-          _this.actions = [];
-          _this.messages = [];
-          _this.flavorAssets = [];
-
-          if (!_this.hasError) {
-
-            var messages = response.messages;
-            if (messages) {
-              messages.map(function (message) {
-                return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
-              });
-            }
-
-            var actions = response.actions;
-            if (actions) {
-              actions.map(function (action) {
-                return _this.actions.push(new _kalturaRuleAction2.default(action));
-              });
-            }
-
-            var sources = response.sources;
-            if (sources) {
-              sources.map(function (source) {
-                return _this.sources.push(new _kalturaPlaybackSource2.default(source));
-              });
-            }
-
-            var flavorAssets = response.flavorAssets;
-            if (flavorAssets) {
-              flavorAssets.map(function (flavor) {
-                return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
-              });
-            }
-          }
-
-          return _this;
-        }
-        /**
-         * @member - The flavor assets
-         * @type {Array<KalturaFlavorAsset>}
-         */
-
-        /**
-         * @member - Array of actions as received from the rules that invalidated
-         * @type {Array<KalturaRuleAction>}
-         */
-
-        return KalturaPlaybackContext;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaPlaybackContext;
-
-      /***/
-    },
-    /* 27 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE access control message
-       * @classdesc
-       */
-      var KalturaAccessControlMessage =
-
-      /**
-       * @constructor
-       * @param {Object} data The json response
-       */
-
-      /**
-       * @member - The access control message
-       * @type {string}
-       */
-      function KalturaAccessControlMessage(data) {
-        _classCallCheck(this, KalturaAccessControlMessage);
-
-        this.message = data.message;
-        this.code = data.code;
-      }
-      /**
-       *  @member - The access control message code
-       * @@type {string}
-       */
-      ;
-
-      exports.default = KalturaAccessControlMessage;
-
-      /***/
-    },
-    /* 28 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE rule action
-       * @classdesc
-       */
-      var KalturaRuleAction =
-
-      /**
-       * @constructor
-       * @param {Object} data The response
-       */
-      function KalturaRuleAction(data) {
-        _classCallCheck(this, KalturaRuleAction);
-
-        this.type = data.type;
-      }
-      /**
-       * @member - The type of the action
-       * @type {KalturaRuleActionType}
-       */
-      ;
-
-      exports.default = KalturaRuleAction;
-
-      /***/
-    },
-    /* 29 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(2);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _kalturaMediaEntry = __webpack_require__(30);
-
-      var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE BaseEntryList service response
-       * @classdesc
-       */
-      var KalturaBaseEntryListResponse = function (_ServiceResult) {
-        _inherits(KalturaBaseEntryListResponse, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} responseObj The json response
-         */
-
-        /**
-         * @member - The total count
-         * @type {number}
-         */
-        function KalturaBaseEntryListResponse(responseObj) {
-          _classCallCheck(this, KalturaBaseEntryListResponse);
-
-          var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
-
-          if (!_this.hasError) {
-            _this.totalCount = responseObj.totalCount;
-            if (_this.totalCount > 0) {
-              _this.entries = [];
-              responseObj.objects.map(function (entry) {
-                return _this.entries.push(new _kalturaMediaEntry2.default(entry));
-              });
-            }
-          }
-          return _this;
-        }
-        /**
-         * @member - The entries
-         * @type {Array<KalturaMediaEntry>}
-         */
-
-        return KalturaBaseEntryListResponse;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaBaseEntryListResponse;
-
-      /***/
-    },
-    /* 30 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE MediaEntry
-       * @classdesc
-       */
-      var KalturaMediaEntry =
-
-      /**
-       * @constructor
-       * @param {Object} entry The json response
-       */
-
-      /**
-       * @member - The type of the entry, this is auto filled by the derived entry object
-       * @type {EntryType}
-       */
-
-      /**
-       * @member - Comma separated flavor params ids that exists for this media entry
-       * @type {string}
-       */
-
-      /**
-       * @member - Entry name (Min 1 chars)
-       * @type {string}
-       */
-      function KalturaMediaEntry(entry) {
-        _classCallCheck(this, KalturaMediaEntry);
-
-        this.id = entry.id;
-        this.name = entry.name;
-        this.dataUrl = entry.dataUrl;
-        this.type = entry.type;
-        this.entryType = entry.mediaType;
-        this.flavorParamsIds = entry.flavorParamsIds;
-        this.duration = entry.duration;
-      }
-      /**
-       * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
-       * @type {MediaType}
-       */
-
-      /**
-       * @member - The entry duration
-       * @type {number}
-       */
-
-      /**
-       * @member - The URL used for playback. This is not the download URL.
-       * @type {string}
-       */
-
-      /**
-       * @member - The entry id
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaMediaEntry;
-
-      /***/
-    },
-    /* 31 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _sessionService = __webpack_require__(32);
-
-      var _sessionService2 = _interopRequireDefault(_sessionService);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-      /**
-       * Media entry loader
-       * @classdesc
-       */
-
-      var SessionLoader = function () {
-        _createClass(SessionLoader, null, [{
-          key: 'name',
-          get: function get() {
-            return "session";
-          }
-
-          /**
-           * @member - partner ID
-           * @type {number}
-           * @private
-           */
-
-        }]);
-
-        /**
-         * @constructor
-         * @param {Object} params loader params
-         */
-        function SessionLoader(params) {
-          _classCallCheck(this, SessionLoader);
-
-          this._response = {};
-
-          this.requests = this.buildRequests(params);
-          this._partnerId = params.partnerId;
-        }
-
-        _createClass(SessionLoader, [{
-          key: 'buildRequests',
-
-          /**
-           * Builds loader requests
-           * @function
-           * @param {Object} params Requests parameters
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function buildRequests(params) {
-            var requests = [];
-            requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
-            return requests;
-          }
-
-          /**
-           * Loader validation function
-           * @function
-           * @returns {boolean} Is valid
-           */
-
-        }, {
-          key: 'isValid',
-          value: function isValid() {
-            return !!this._partnerId;
-          }
-        }, {
-          key: 'requests',
-          set: function set(requests) {
-            this._requests = requests;
-          },
-          get: function get() {
-            return this._requests;
-          }
-        }, {
-          key: 'response',
-          set: function set(response) {
-            this._response.ks = response[0].data.ks;
-          },
-          get: function get() {
-            return this._response.ks;
-          }
-        }]);
-
-        return SessionLoader;
-      }();
-
-      exports.default = SessionLoader;
-
-      /***/
-    },
-    /* 32 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(3);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "session";
-
-      /**
-       * Ovp session service methods
-       * @classdesc
-       */
-
-      var SessionService = function (_OvpService) {
-        _inherits(SessionService, _OvpService);
-
-        function SessionService() {
-          _classCallCheck(this, SessionService);
-
-          return _possibleConstructorReturn(this, (SessionService.__proto__ || Object.getPrototypeOf(SessionService)).apply(this, arguments));
-        }
-
-        _createClass(SessionService, null, [{
-          key: 'anonymousSession',
-
-          /**
-           * Creates an instance of RequestBuilder for session.startWidgetSession
-           * @function anonymousSession
-           * @param {string} baseUrl The service base URL
-           * @param {string} partnerId The partner ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function anonymousSession(baseUrl, partnerId) {
-            var request = new _requestBuilder2.default();
-            request.service = SERVICE_NAME;
-            request.action = "startWidgetSession";
-            request.method = "POST";
-            request.baseUrl = baseUrl;
-            request.tag = "session-startWidget";
-            request.params = { widgetId: "_" + partnerId };
-            return request;
-          }
-        }]);
-
-        return SessionService;
-      }(_ovpService2.default);
-
-      exports.default = SessionService;
-
-      /***/
-    },
-    /* 33 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _uiConfService = __webpack_require__(34);
-
-      var _uiConfService2 = _interopRequireDefault(_uiConfService);
-
-      var _kalturaUiConfResponse = __webpack_require__(35);
-
-      var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-
-      var UiConfigLoader = function () {
-        _createClass(UiConfigLoader, null, [{
-          key: 'name',
-          get: function get() {
-            return "uiConf";
-          }
-
-          /**
-           * @member - uiConf ID
-           * @type {number}
-           * @private
-           */
-
-        }]);
-
-        /**
-         * @constructor
-         * @param {Object} params loader params
-         */
-        function UiConfigLoader(params) {
-          _classCallCheck(this, UiConfigLoader);
-
-          this._response = {};
-
-          this.requests = this.buildRequests(params);
-          this._uiConfId = params.uiConfId;
-        }
-
-        _createClass(UiConfigLoader, [{
-          key: 'buildRequests',
-
-          /**
-           * Builds loader requests
-           * @function
-           * @param {Object} params Requests parameters
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function buildRequests(params) {
-            var requests = [];
-            requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
-            return requests;
-          }
-
-          /**
-           * Loader validation function
-           * @function
-           * @returns {boolean} Is valid
-           */
-
-        }, {
-          key: 'isValid',
-          value: function isValid() {
-            return !!this._uiConfId;
-          }
-        }, {
-          key: 'requests',
-          set: function set(requests) {
-            this._requests = requests;
-          },
-          get: function get() {
-            return this._requests;
-          }
-        }, {
-          key: 'response',
-          set: function set(response) {
-            this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
-          },
-          get: function get() {
-            if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
-              return JSON.parse(this._response.uiConf.config).plugins;
-            } catch (err) {
-              return null;
-            } else return null;
-          }
-        }]);
-
-        return UiConfigLoader;
-      }();
-
-      exports.default = UiConfigLoader;
-
-      /***/
-    },
-    /* 34 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(3);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "uiconf";
-
-      /**
-       * Ovp uiconf service methods
-       * @classdesc
-       */
-
-      var UiConfService = function (_OvpService) {
-        _inherits(UiConfService, _OvpService);
-
-        function UiConfService() {
-          _classCallCheck(this, UiConfService);
-
-          return _possibleConstructorReturn(this, (UiConfService.__proto__ || Object.getPrototypeOf(UiConfService)).apply(this, arguments));
-        }
-
-        _createClass(UiConfService, null, [{
-          key: 'get',
-
-          /**
-           * Creates an instance of RequestBuilder for uiconf.get
-           * @function get
-           * @param {string} baseUrl The service base URL
-           * @param {string} ks The ks
-           * @param {string} uiConfID The uiConf ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function get(baseUrl, ks, uiConfID) {
-            var request = new _requestBuilder2.default();
-            request.service = SERVICE_NAME;
-            request.action = "get";
-            request.method = "POST";
-            request.baseUrl = baseUrl;
-            request.tag = "uiconf-get";
-            var responseProfileParams = {
-              fields: "config",
-              type: 1
-            };
-            request.params = { id: uiConfID, responseProfile: responseProfileParams, ks: ks };
-            return request;
-          }
-        }]);
-
-        return UiConfService;
-      }(_ovpService2.default);
-
-      exports.default = UiConfService;
-
-      /***/
-    },
-    /* 35 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(2);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE Ui config response
-       * @classdesc
-       */
-      var KalturaUiConfResponse = function (_ServiceResult) {
-        _inherits(KalturaUiConfResponse, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} data The json response
-         */
-
-        /**
-         * @member -plugins configuration represented as Json string
-         * @type {string}
-         */
-
-        /**
-         * @member -Name of the uiConf, this is not a primary key
-         * @type {string}
-         */
-        function KalturaUiConfResponse(data) {
-          _classCallCheck(this, KalturaUiConfResponse);
-
-          var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
-
-          if (!_this.hasError) {
-            _this.name = data.name;
-
-            _this.description = data.description;
-            _this.objTypeAsString = data.objTypeAsString;
-            _this.width = data.width;
-            _this.height = data.height;
-            _this.htmlParams = data.htmlParams;
-            _this.swfUrl = data.swfUrl;
-            _this.confFilePath = data.confFilePath;
-            _this.confFile = data.confFile;
-            _this.confFileFeatures = data.confFileFeatures;
-            _this.config = data.config;
-            _this.confVars = data.confVars;
-            _this.useCdn = data.useCdn;
-            _this.tags = data.tags;
-            _this.swfUrlVersion = data.swfUrlVersion;
-            _this.created = new Date(0);
-            _this.created.setUTCSeconds(data.createdAt);
-            _this.updated = new Date(0);
-            _this.updated.setUTCSeconds(data.updatedAt);
-            _this.html5Url = data.description;
-            _this.version = data.description;
-            _this.partnerTags = data.description;
-            _this.objType = data.description;
-            _this.creationMode = data.description;
-          }
-          return _this;
-        }
-        /**
-         * @member -Name of the uiConf, this is not a primary key
-         * @type {string}
-         */
-
-        return KalturaUiConfResponse;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaUiConfResponse;
-
-      /***/
-    }]
-    /******/)
-  );
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(118)(module)))
-
-/***/ }),
-/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -16233,18 +15795,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Provider", function() { return Provider; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "connect", function() { return connect; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "connectAdvanced", function() { return connectAdvanced; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(8);
-
-
+(function (global, factory) {
+	 true ? module.exports = factory(__webpack_require__(0), __webpack_require__(8)) :
+	typeof define === 'function' && define.amd ? define(['preact', 'redux'], factory) :
+	(global.preactRedux = factory(global.preact,global.Redux));
+}(this, (function (preact,redux) {
 
 var Children = {
 	only: function only(children) {
@@ -16266,52 +15823,11 @@ var PropTypes = {
 	}
 };
 
-var subscriptionShape = PropTypes.shape({
-  trySubscribe: PropTypes.func.isRequired,
-  tryUnsubscribe: PropTypes.func.isRequired,
-  notifyNestedSubs: PropTypes.func.isRequired,
-  isSubscribed: PropTypes.func.isRequired
-});
-
-var storeShape = PropTypes.shape({
-  subscribe: PropTypes.func.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  getState: PropTypes.func.isRequired
-});
-
-/**
- * Prints a warning in the console if it exists.
- *
- * @param {String} message The warning message.
- * @returns {void}
- */
-function warning(message) {
-  /* eslint-disable no-console */
-  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-    console.error(message);
-  }
-  /* eslint-enable no-console */
-  try {
-    // This error was thrown as a convenience so that if you enable
-    // "break on all exceptions" in your console,
-    // it would pause the execution at this line.
-    throw new Error(message);
-    /* eslint-disable no-empty */
-  } catch (e) {}
-  /* eslint-enable no-empty */
-}
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
-
-
-
-
-
-
 
 
 
@@ -16345,7 +15861,30 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
+var get = function get(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
 
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get(parent, property, receiver);
+    }
+  } else if ("value" in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+
+    if (getter === undefined) {
+      return undefined;
+    }
+
+    return getter.call(receiver);
+  }
+};
 
 var inherits = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -16391,114 +15930,29 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var didWarnAboutReceivingStore = false;
-function warnAboutReceivingStore() {
-  if (didWarnAboutReceivingStore) {
-    return;
-  }
-  didWarnAboutReceivingStore = true;
 
-  warning('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
-}
 
-function createProvider() {
-  var _Provider$childContex;
+var set = function set(object, property, value, receiver) {
+  var desc = Object.getOwnPropertyDescriptor(object, property);
 
-  var storeKey = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'store';
-  var subKey = arguments[1];
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
 
-  var subscriptionKey = subKey || storeKey + 'Subscription';
-
-  var Provider = function (_Component) {
-    inherits(Provider, _Component);
-
-    Provider.prototype.getChildContext = function getChildContext() {
-      var _ref;
-
-      return _ref = {}, _ref[storeKey] = this[storeKey], _ref[subscriptionKey] = null, _ref;
-    };
-
-    function Provider(props, context) {
-      classCallCheck(this, Provider);
-
-      var _this = possibleConstructorReturn(this, _Component.call(this, props, context));
-
-      _this[storeKey] = props.store;
-      return _this;
+    if (parent !== null) {
+      set(parent, property, value, receiver);
     }
+  } else if ("value" in desc && desc.writable) {
+    desc.value = value;
+  } else {
+    var setter = desc.set;
 
-    Provider.prototype.render = function render() {
-      return Children.only(this.props.children);
-    };
-
-    return Provider;
-  }(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
-
-  {
-    Provider.prototype.componentWillReceiveProps = function (nextProps) {
-      if (this[storeKey] !== nextProps.store) {
-        warnAboutReceivingStore();
-      }
-    };
+    if (setter !== undefined) {
+      setter.call(receiver, value);
+    }
   }
 
-  Provider.childContextTypes = (_Provider$childContex = {}, _Provider$childContex[storeKey] = storeShape.isRequired, _Provider$childContex[subscriptionKey] = subscriptionShape, _Provider$childContex);
-  Provider.displayName = 'Provider';
-
-  return Provider;
-}
-
-var Provider = createProvider();
-
-/**
- * Copyright 2015, Yahoo! Inc.
- * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-var REACT_STATICS = {
-    childContextTypes: true,
-    contextTypes: true,
-    defaultProps: true,
-    displayName: true,
-    getDefaultProps: true,
-    mixins: true,
-    propTypes: true,
-    type: true
+  return value;
 };
-
-var KNOWN_STATICS = {
-    name: true,
-    length: true,
-    prototype: true,
-    caller: true,
-    arguments: true,
-    arity: true
-};
-
-var isGetOwnPropertySymbolsAvailable = typeof Object.getOwnPropertySymbols === 'function';
-
-var index$1 = function hoistNonReactStatics(targetComponent, sourceComponent, customStatics) {
-    if (typeof sourceComponent !== 'string') {
-        // don't hoist over string (html) components
-        var keys = Object.getOwnPropertyNames(sourceComponent);
-
-        /* istanbul ignore else */
-        if (isGetOwnPropertySymbolsAvailable) {
-            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent));
-        }
-
-        for (var i = 0; i < keys.length; ++i) {
-            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]] && (!customStatics || !customStatics[keys[i]])) {
-                try {
-                    targetComponent[keys[i]] = sourceComponent[keys[i]];
-                } catch (error) {}
-            }
-        }
-    }
-
-    return targetComponent;
-};
-
-var invariant = function () {};
 
 // encapsulates the subscription logic for connecting a component to the redux store, as
 // well as nesting subscriptions of descendant components, so that we can ensure the
@@ -16543,12 +15997,11 @@ function createListenerCollection() {
 }
 
 var Subscription = function () {
-  function Subscription(store, parentSub, onStateChange) {
+  function Subscription(store, parentSub) {
     classCallCheck(this, Subscription);
 
     this.store = store;
     this.parentSub = parentSub;
-    this.onStateChange = onStateChange;
     this.unsubscribe = null;
     this.listeners = nullListeners;
   }
@@ -16568,6 +16021,7 @@ var Subscription = function () {
 
   Subscription.prototype.trySubscribe = function trySubscribe() {
     if (!this.unsubscribe) {
+      // this.onStateChange is set by connectAdvanced.initSubscription()
       this.unsubscribe = this.parentSub ? this.parentSub.addNestedSub(this.onStateChange) : this.store.subscribe(this.onStateChange);
 
       this.listeners = createListenerCollection();
@@ -16586,30 +16040,136 @@ var Subscription = function () {
   return Subscription;
 }();
 
-var hotReloadingVersion = 0;
-var dummyState = {};
-function noop() {}
-function makeSelectorStateful(sourceSelector, store) {
-  // wrap the selector in an object that tracks its results between runs.
-  var selector = {
-    run: function runComponentSelector(props) {
-      try {
-        var nextProps = sourceSelector(store.getState(), props);
-        if (nextProps !== selector.props || selector.error) {
-          selector.shouldComponentUpdate = true;
-          selector.props = nextProps;
-          selector.error = null;
-        }
-      } catch (error) {
-        selector.shouldComponentUpdate = true;
-        selector.error = error;
-      }
-    }
-  };
+var storeShape = PropTypes.shape({
+  subscribe: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  getState: PropTypes.func.isRequired
+});
 
-  return selector;
+/**
+ * Prints a warning in the console if it exists.
+ *
+ * @param {String} message The warning message.
+ * @returns {void}
+ */
+function warning(message) {
+  /* eslint-disable no-console */
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+    console.error(message);
+  }
+  /* eslint-enable no-console */
+  try {
+    // This error was thrown as a convenience so that if you enable
+    // "break on all exceptions" in your console,
+    // it would pause the execution at this line.
+    throw new Error(message);
+    /* eslint-disable no-empty */
+  } catch (e) {}
+  /* eslint-enable no-empty */
 }
 
+var didWarnAboutReceivingStore = false;
+function warnAboutReceivingStore() {
+  if (didWarnAboutReceivingStore) {
+    return;
+  }
+  didWarnAboutReceivingStore = true;
+
+  warning('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
+}
+
+var Provider = function (_Component) {
+  inherits(Provider, _Component);
+
+  Provider.prototype.getChildContext = function getChildContext() {
+    return { store: this.store, storeSubscription: null };
+  };
+
+  function Provider(props, context) {
+    classCallCheck(this, Provider);
+
+    var _this = possibleConstructorReturn(this, _Component.call(this, props, context));
+
+    _this.store = props.store;
+    return _this;
+  }
+
+  Provider.prototype.render = function render() {
+    return Children.only(this.props.children);
+  };
+
+  return Provider;
+}(preact.Component);
+
+{
+  Provider.prototype.componentWillReceiveProps = function (nextProps) {
+    var store = this.store;
+    var nextStore = nextProps.store;
+
+
+    if (store !== nextStore) {
+      warnAboutReceivingStore();
+    }
+  };
+}
+
+Provider.childContextTypes = {
+  store: storeShape.isRequired,
+  storeSubscription: PropTypes.instanceOf(Subscription)
+};
+Provider.displayName = 'Provider';
+
+/**
+ * Copyright 2015, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+var REACT_STATICS = {
+    childContextTypes: true,
+    contextTypes: true,
+    defaultProps: true,
+    displayName: true,
+    getDefaultProps: true,
+    mixins: true,
+    propTypes: true,
+    type: true
+};
+
+var KNOWN_STATICS = {
+    name: true,
+    length: true,
+    prototype: true,
+    caller: true,
+    arguments: true,
+    arity: true
+};
+
+var isGetOwnPropertySymbolsAvailable = typeof Object.getOwnPropertySymbols === 'function';
+
+var index = function hoistNonReactStatics(targetComponent, sourceComponent, customStatics) {
+    if (typeof sourceComponent !== 'string') {
+        // don't hoist over string (html) components
+        var keys = Object.getOwnPropertyNames(sourceComponent);
+
+        /* istanbul ignore else */
+        if (isGetOwnPropertySymbolsAvailable) {
+            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent));
+        }
+
+        for (var i = 0; i < keys.length; ++i) {
+            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]] && (!customStatics || !customStatics[keys[i]])) {
+                try {
+                    targetComponent[keys[i]] = sourceComponent[keys[i]];
+                } catch (error) {}
+            }
+        }
+    }
+
+    return targetComponent;
+};
+
+var invariant = function () {}
+
+var hotReloadingVersion = 0;
 function connectAdvanced(
 /*
   selectorFactory is a func that is responsible for returning the selector function used to
@@ -16628,32 +16188,32 @@ function connectAdvanced(
 selectorFactory) {
   var _contextTypes, _childContextTypes;
 
-  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  var _ref$getDisplayName = _ref.getDisplayName,
-      getDisplayName = _ref$getDisplayName === undefined ? function (name) {
+  var _ref$getDisplayName = _ref.getDisplayName;
+  var getDisplayName = _ref$getDisplayName === undefined ? function (name) {
     return 'ConnectAdvanced(' + name + ')';
-  } : _ref$getDisplayName,
-      _ref$methodName = _ref.methodName,
-      methodName = _ref$methodName === undefined ? 'connectAdvanced' : _ref$methodName,
-      _ref$renderCountProp = _ref.renderCountProp,
-      renderCountProp = _ref$renderCountProp === undefined ? undefined : _ref$renderCountProp,
-      _ref$shouldHandleStat = _ref.shouldHandleStateChanges,
-      shouldHandleStateChanges = _ref$shouldHandleStat === undefined ? true : _ref$shouldHandleStat,
-      _ref$storeKey = _ref.storeKey,
-      storeKey = _ref$storeKey === undefined ? 'store' : _ref$storeKey,
-      _ref$withRef = _ref.withRef,
-      withRef = _ref$withRef === undefined ? false : _ref$withRef,
-      connectOptions = objectWithoutProperties(_ref, ['getDisplayName', 'methodName', 'renderCountProp', 'shouldHandleStateChanges', 'storeKey', 'withRef']);
+  } : _ref$getDisplayName;
+  var _ref$methodName = _ref.methodName;
+  var methodName = _ref$methodName === undefined ? 'connectAdvanced' : _ref$methodName;
+  var _ref$renderCountProp = _ref.renderCountProp;
+  var renderCountProp = _ref$renderCountProp === undefined ? undefined : _ref$renderCountProp;
+  var _ref$shouldHandleStat = _ref.shouldHandleStateChanges;
+  var shouldHandleStateChanges = _ref$shouldHandleStat === undefined ? true : _ref$shouldHandleStat;
+  var _ref$storeKey = _ref.storeKey;
+  var storeKey = _ref$storeKey === undefined ? 'store' : _ref$storeKey;
+  var _ref$withRef = _ref.withRef;
+  var withRef = _ref$withRef === undefined ? false : _ref$withRef;
+  var connectOptions = objectWithoutProperties(_ref, ['getDisplayName', 'methodName', 'renderCountProp', 'shouldHandleStateChanges', 'storeKey', 'withRef']);
 
   var subscriptionKey = storeKey + 'Subscription';
   var version = hotReloadingVersion++;
 
-  var contextTypes = (_contextTypes = {}, _contextTypes[storeKey] = storeShape, _contextTypes[subscriptionKey] = subscriptionShape, _contextTypes);
-  var childContextTypes = (_childContextTypes = {}, _childContextTypes[subscriptionKey] = subscriptionShape, _childContextTypes);
+  var contextTypes = (_contextTypes = {}, _contextTypes[storeKey] = storeShape, _contextTypes[subscriptionKey] = PropTypes.instanceOf(Subscription), _contextTypes);
+  var childContextTypes = (_childContextTypes = {}, _childContextTypes[subscriptionKey] = PropTypes.instanceOf(Subscription), _childContextTypes);
 
   return function wrapWithConnect(WrappedComponent) {
-    invariant(typeof WrappedComponent == 'function', 'You must pass a component to the function returned by ' + ('connect. Instead received ' + JSON.stringify(WrappedComponent)));
+    invariant(typeof WrappedComponent == 'function', 'You must pass a component to the function returned by ' + ('connect. Instead received ' + WrappedComponent));
 
     var wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
@@ -16682,11 +16242,16 @@ selectorFactory) {
         _this.version = version;
         _this.state = {};
         _this.renderCount = 0;
-        _this.store = props[storeKey] || context[storeKey];
-        _this.propsMode = Boolean(props[storeKey]);
+        _this.store = _this.props[storeKey] || _this.context[storeKey];
+        _this.parentSub = props[subscriptionKey] || context[subscriptionKey];
+
         _this.setWrappedInstance = _this.setWrappedInstance.bind(_this);
 
-        invariant(_this.store, 'Could not find "' + storeKey + '" in either the context or props of ' + ('"' + displayName + '". Either wrap the root component in a <Provider>, ') + ('or explicitly pass "' + storeKey + '" as a prop to "' + displayName + '".'));
+        invariant(_this.store, 'Could not find "' + storeKey + '" in either the context or ' + ('props of "' + displayName + '". ') + 'Either wrap the root component in a <Provider>, ' + ('or explicitly pass "' + storeKey + '" as a prop to "' + displayName + '".'));
+
+        // make sure `getState` is properly bound in order to avoid breaking
+        // custom store implementations that rely on the store's context
+        _this.getState = _this.store.getState.bind(_this.store);
 
         _this.initSelector();
         _this.initSubscription();
@@ -16696,12 +16261,7 @@ selectorFactory) {
       Connect.prototype.getChildContext = function getChildContext() {
         var _ref2;
 
-        // If this component received store from props, its subscription should be transparent
-        // to any descendants receiving store+subscription from context; it passes along
-        // subscription passed to it. Otherwise, it shadows the parent subscription, which allows
-        // Connect to control ordering of notifications to flow top-down.
-        var subscription = this.propsMode ? null : this.subscription;
-        return _ref2 = {}, _ref2[subscriptionKey] = subscription || this.context[subscriptionKey], _ref2;
+        return _ref2 = {}, _ref2[subscriptionKey] = this.subscription || this.parentSub, _ref2;
       };
 
       Connect.prototype.componentDidMount = function componentDidMount() {
@@ -16728,11 +16288,12 @@ selectorFactory) {
 
       Connect.prototype.componentWillUnmount = function componentWillUnmount() {
         if (this.subscription) this.subscription.tryUnsubscribe();
+        // these are just to guard against extra memory leakage if a parent element doesn't
+        // dereference this instance properly, such as an async callback that never finishes
         this.subscription = null;
-        this.notifyNestedSubs = noop;
         this.store = null;
-        this.selector.run = noop;
-        this.selector.shouldComponentUpdate = false;
+        this.parentSub = null;
+        this.selector.run = function () {};
       };
 
       Connect.prototype.getWrappedInstance = function getWrappedInstance() {
@@ -16745,47 +16306,55 @@ selectorFactory) {
       };
 
       Connect.prototype.initSelector = function initSelector() {
-        var sourceSelector = selectorFactory(this.store.dispatch, selectorFactoryOptions);
-        this.selector = makeSelectorStateful(sourceSelector, this.store);
-        this.selector.run(this.props);
+        var dispatch = this.store.dispatch;
+        var getState = this.getState;
+
+        var sourceSelector = selectorFactory(dispatch, selectorFactoryOptions);
+
+        // wrap the selector in an object that tracks its results between runs
+        var selector = this.selector = {
+          shouldComponentUpdate: true,
+          props: sourceSelector(getState(), this.props),
+          run: function runComponentSelector(props) {
+            try {
+              var nextProps = sourceSelector(getState(), props);
+              if (selector.error || nextProps !== selector.props) {
+                selector.shouldComponentUpdate = true;
+                selector.props = nextProps;
+                selector.error = null;
+              }
+            } catch (error) {
+              selector.shouldComponentUpdate = true;
+              selector.error = error;
+            }
+          }
+        };
       };
 
       Connect.prototype.initSubscription = function initSubscription() {
-        if (!shouldHandleStateChanges) return;
+        var _this2 = this;
 
-        // parentSub's source should match where store came from: props vs. context. A component
-        // connected to the store via props shouldn't use subscription from context, or vice versa.
-        var parentSub = (this.propsMode ? this.props : this.context)[subscriptionKey];
-        this.subscription = new Subscription(this.store, parentSub, this.onStateChange.bind(this));
+        if (shouldHandleStateChanges) {
+          (function () {
+            var subscription = _this2.subscription = new Subscription(_this2.store, _this2.parentSub);
+            var dummyState = {};
 
-        // `notifyNestedSubs` is duplicated to handle the case where the component is  unmounted in
-        // the middle of the notification loop, where `this.subscription` will then be null. An
-        // extra null check every change can be avoided by copying the method onto `this` and then
-        // replacing it with a no-op on unmount. This can probably be avoided if Subscription's
-        // listeners logic is changed to not call listeners that have been unsubscribed in the
-        // middle of the notification loop.
-        this.notifyNestedSubs = this.subscription.notifyNestedSubs.bind(this.subscription);
-      };
+            subscription.onStateChange = function onStateChange() {
+              this.selector.run(this.props);
 
-      Connect.prototype.onStateChange = function onStateChange() {
-        this.selector.run(this.props);
+              if (!this.selector.shouldComponentUpdate) {
+                subscription.notifyNestedSubs();
+              } else {
+                this.componentDidUpdate = function componentDidUpdate() {
+                  this.componentDidUpdate = undefined;
+                  subscription.notifyNestedSubs();
+                };
 
-        if (!this.selector.shouldComponentUpdate) {
-          this.notifyNestedSubs();
-        } else {
-          this.componentDidUpdate = this.notifyNestedSubsOnComponentDidUpdate;
-          this.setState(dummyState);
+                this.setState(dummyState);
+              }
+            }.bind(_this2);
+          })();
         }
-      };
-
-      Connect.prototype.notifyNestedSubsOnComponentDidUpdate = function notifyNestedSubsOnComponentDidUpdate() {
-        // `componentDidUpdate` is conditionally implemented when `onStateChange` determines it
-        // needs to notify nested subs. Once called, it unimplements itself until further state
-        // changes occur. Doing it this way vs having a permanent `componentDidMount` that does
-        // a boolean check every time avoids an extra method call most of the time, resulting
-        // in some perf boost.
-        this.componentDidUpdate = undefined;
-        this.notifyNestedSubs();
       };
 
       Connect.prototype.isSubscribed = function isSubscribed() {
@@ -16793,7 +16362,7 @@ selectorFactory) {
       };
 
       Connect.prototype.addExtraProps = function addExtraProps(props) {
-        if (!withRef && !renderCountProp && !(this.propsMode && this.subscription)) return props;
+        if (!withRef && !renderCountProp) return props;
         // make a shallow copy so that fields added don't leak to the original selector.
         // this is especially important for 'ref' since that's a reference back to the component
         // instance. a singleton memoized selector would then be holding a reference to the
@@ -16801,7 +16370,6 @@ selectorFactory) {
         var withExtras = _extends({}, props);
         if (withRef) withExtras.ref = this.setWrappedInstance;
         if (renderCountProp) withExtras[renderCountProp] = this.renderCount++;
-        if (this.propsMode && this.subscription) withExtras[subscriptionKey] = this.subscription;
         return withExtras;
       };
 
@@ -16812,12 +16380,12 @@ selectorFactory) {
         if (selector.error) {
           throw selector.error;
         } else {
-          return __WEBPACK_IMPORTED_MODULE_0_preact__["h"](WrappedComponent, this.addExtraProps(selector.props));
+          return preact.h(WrappedComponent, this.addExtraProps(selector.props));
         }
       };
 
       return Connect;
-    }(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
+    }(preact.Component);
 
     Connect.WrappedComponent = WrappedComponent;
     Connect.displayName = displayName;
@@ -16839,154 +16407,62 @@ selectorFactory) {
       };
     }
 
-    return index$1(Connect, WrappedComponent);
+    return index(Connect, WrappedComponent);
   };
 }
 
 var hasOwn = Object.prototype.hasOwnProperty;
 
-function is(x, y) {
-  if (x === y) {
-    return x !== 0 || y !== 0 || 1 / x === 1 / y;
-  } else {
-    return x !== x && y !== y;
+function shallowEqual(a, b) {
+  if (a === b) return true;
+
+  var countA = 0;
+  var countB = 0;
+
+  for (var key in a) {
+    if (hasOwn.call(a, key) && a[key] !== b[key]) return false;
+    countA++;
   }
+
+  for (var _key in b) {
+    if (hasOwn.call(b, _key)) countB++;
+  }
+
+  return countA === countB;
 }
 
-function shallowEqual(objA, objB) {
-  if (is(objA, objB)) return true;
-
-  if ((typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || objA === null || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object' || objB === null) {
-    return false;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) return false;
-
-  for (var i = 0; i < keysA.length; i++) {
-    if (!hasOwn.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global && global.Object === Object && global;
-
-/** Detect free variable `self`. */
-var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-/** Built-in value references. */
-var _Symbol = root.Symbol;
-
-/** Used for built-in method references. */
-var objectProto$1 = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeGetPrototype = Object.getPrototypeOf;
 
 /**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto$1.toString;
-
-/** Built-in value references. */
-var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;
-
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ * Gets the `[[Prototype]]` of `value`.
  *
  * @private
  * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
+ * @returns {null|Object} Returns the `[[Prototype]]`.
  */
-function getRawTag(value) {
-  var isOwn = hasOwnProperty$1.call(value, symToStringTag$1),
-      tag = value[symToStringTag$1];
+function getPrototype(value) {
+  return nativeGetPrototype(Object(value));
+}
 
-  try {
-    value[symToStringTag$1] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag$1] = tag;
-    } else {
-      delete value[symToStringTag$1];
-    }
+/**
+ * Checks if `value` is a host object in IE < 9.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+ */
+function isHostObject(value) {
+  // Many host objects are `Object` objects that can coerce to strings
+  // despite having improperly defined `toString` methods.
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
   }
   return result;
 }
-
-/** Used for built-in method references. */
-var objectProto$2 = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString$1 = objectProto$2.toString;
-
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-function objectToString(value) {
-  return nativeObjectToString$1.call(value);
-}
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]';
-var undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-    if (value == null) {
-        return value === undefined ? undefinedTag : nullTag;
-    }
-    return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
-}
-
-/**
- * Creates a unary function that invokes `func` with its argument transformed.
- *
- * @private
- * @param {Function} func The function to wrap.
- * @param {Function} transform The argument transform.
- * @returns {Function} Returns the new function.
- */
-function overArg(func, transform) {
-  return function (arg) {
-    return func(transform(arg));
-  };
-}
-
-/** Built-in value references. */
-var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -17013,24 +16489,30 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
  * // => false
  */
 function isObjectLike(value) {
-  return value != null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
+  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
 }
 
 /** `Object#toString` result references. */
 var objectTag = '[object Object]';
 
 /** Used for built-in method references. */
-var funcProto = Function.prototype;
 var objectProto = Object.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
+var funcToString = Function.prototype.toString;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
 
 /** Used to infer the `Object` constructor. */
 var objectCtorString = funcToString.call(Object);
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
 
 /**
  * Checks if `value` is a plain object, that is, an object created by the
@@ -17041,7 +16523,8 @@ var objectCtorString = funcToString.call(Object);
  * @since 0.8.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a plain object,
+ *  else `false`.
  * @example
  *
  * function Foo() {
@@ -17061,7 +16544,7 @@ var objectCtorString = funcToString.call(Object);
  * // => true
  */
 function isPlainObject(value) {
-  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
+  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
     return false;
   }
   var proto = getPrototype(value);
@@ -17121,12 +16604,10 @@ function wrapMapToPropsFunc(mapToProps, methodName) {
       return proxy.dependsOnOwnProps ? proxy.mapToProps(stateOrDispatch, ownProps) : proxy.mapToProps(stateOrDispatch);
     };
 
-    // allow detectFactoryAndVerify to get ownProps
-    proxy.dependsOnOwnProps = true;
+    proxy.dependsOnOwnProps = getDependsOnOwnProps(mapToProps);
 
     proxy.mapToProps = function detectFactoryAndVerify(stateOrDispatch, ownProps) {
       proxy.mapToProps = mapToProps;
-      proxy.dependsOnOwnProps = getDependsOnOwnProps(mapToProps);
       var props = proxy(stateOrDispatch, ownProps);
 
       if (typeof props === 'function') {
@@ -17156,7 +16637,7 @@ function whenMapDispatchToPropsIsMissing(mapDispatchToProps) {
 
 function whenMapDispatchToPropsIsObject(mapDispatchToProps) {
   return mapDispatchToProps && (typeof mapDispatchToProps === 'undefined' ? 'undefined' : _typeof(mapDispatchToProps)) === 'object' ? wrapMapToPropsConstant(function (dispatch) {
-    return __WEBPACK_IMPORTED_MODULE_1_redux__["bindActionCreators"](mapDispatchToProps, dispatch);
+    return redux.bindActionCreators(mapDispatchToProps, dispatch);
   }) : undefined;
 }
 
@@ -17180,9 +16661,9 @@ function defaultMergeProps(stateProps, dispatchProps, ownProps) {
 
 function wrapMergePropsFunc(mergeProps) {
   return function initMergePropsProxy(dispatch, _ref) {
-    var displayName = _ref.displayName,
-        pure = _ref.pure,
-        areMergedPropsEqual = _ref.areMergedPropsEqual;
+    var displayName = _ref.displayName;
+    var pure = _ref.pure;
+    var areMergedPropsEqual = _ref.areMergedPropsEqual;
 
     var hasRunOnce = false;
     var mergedProps = void 0;
@@ -17239,9 +16720,9 @@ function impureFinalPropsSelectorFactory(mapStateToProps, mapDispatchToProps, me
 }
 
 function pureFinalPropsSelectorFactory(mapStateToProps, mapDispatchToProps, mergeProps, dispatch, _ref) {
-  var areStatesEqual = _ref.areStatesEqual,
-      areOwnPropsEqual = _ref.areOwnPropsEqual,
-      areStatePropsEqual = _ref.areStatePropsEqual;
+  var areStatesEqual = _ref.areStatesEqual;
+  var areOwnPropsEqual = _ref.areOwnPropsEqual;
+  var areStatePropsEqual = _ref.areStatePropsEqual;
 
   var hasRunAtLeastOnce = false;
   var state = void 0;
@@ -17313,10 +16794,10 @@ function pureFinalPropsSelectorFactory(mapStateToProps, mapDispatchToProps, merg
 // object and shouldComponentUpdate will always return true.
 
 function finalPropsSelectorFactory(dispatch, _ref2) {
-  var initMapStateToProps = _ref2.initMapStateToProps,
-      initMapDispatchToProps = _ref2.initMapDispatchToProps,
-      initMergeProps = _ref2.initMergeProps,
-      options = objectWithoutProperties(_ref2, ['initMapStateToProps', 'initMapDispatchToProps', 'initMergeProps']);
+  var initMapStateToProps = _ref2.initMapStateToProps;
+  var initMapDispatchToProps = _ref2.initMapDispatchToProps;
+  var initMergeProps = _ref2.initMergeProps;
+  var options = objectWithoutProperties(_ref2, ['initMapStateToProps', 'initMapDispatchToProps', 'initMergeProps']);
 
   var mapStateToProps = initMapStateToProps(dispatch, options);
   var mapDispatchToProps = initMapDispatchToProps(dispatch, options);
@@ -17366,32 +16847,33 @@ function strictEqual(a, b) {
 // createConnect with default args builds the 'official' connect behavior. Calling it with
 // different options opens up some testing and extensibility scenarios
 function createConnect() {
-  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      _ref$connectHOC = _ref.connectHOC,
-      connectHOC = _ref$connectHOC === undefined ? connectAdvanced : _ref$connectHOC,
-      _ref$mapStateToPropsF = _ref.mapStateToPropsFactories,
-      mapStateToPropsFactories = _ref$mapStateToPropsF === undefined ? defaultMapStateToPropsFactories : _ref$mapStateToPropsF,
-      _ref$mapDispatchToPro = _ref.mapDispatchToPropsFactories,
-      mapDispatchToPropsFactories = _ref$mapDispatchToPro === undefined ? defaultMapDispatchToPropsFactories : _ref$mapDispatchToPro,
-      _ref$mergePropsFactor = _ref.mergePropsFactories,
-      mergePropsFactories = _ref$mergePropsFactor === undefined ? defaultMergePropsFactories : _ref$mergePropsFactor,
-      _ref$selectorFactory = _ref.selectorFactory,
-      selectorFactory = _ref$selectorFactory === undefined ? finalPropsSelectorFactory : _ref$selectorFactory;
+  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+  var _ref$connectHOC = _ref.connectHOC;
+  var connectHOC = _ref$connectHOC === undefined ? connectAdvanced : _ref$connectHOC;
+  var _ref$mapStateToPropsF = _ref.mapStateToPropsFactories;
+  var mapStateToPropsFactories = _ref$mapStateToPropsF === undefined ? defaultMapStateToPropsFactories : _ref$mapStateToPropsF;
+  var _ref$mapDispatchToPro = _ref.mapDispatchToPropsFactories;
+  var mapDispatchToPropsFactories = _ref$mapDispatchToPro === undefined ? defaultMapDispatchToPropsFactories : _ref$mapDispatchToPro;
+  var _ref$mergePropsFactor = _ref.mergePropsFactories;
+  var mergePropsFactories = _ref$mergePropsFactor === undefined ? defaultMergePropsFactories : _ref$mergePropsFactor;
+  var _ref$selectorFactory = _ref.selectorFactory;
+  var selectorFactory = _ref$selectorFactory === undefined ? finalPropsSelectorFactory : _ref$selectorFactory;
 
   return function connect(mapStateToProps, mapDispatchToProps, mergeProps) {
-    var _ref2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    var _ref2 = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
 
-    var _ref2$pure = _ref2.pure,
-        pure = _ref2$pure === undefined ? true : _ref2$pure,
-        _ref2$areStatesEqual = _ref2.areStatesEqual,
-        areStatesEqual = _ref2$areStatesEqual === undefined ? strictEqual : _ref2$areStatesEqual,
-        _ref2$areOwnPropsEqua = _ref2.areOwnPropsEqual,
-        areOwnPropsEqual = _ref2$areOwnPropsEqua === undefined ? shallowEqual : _ref2$areOwnPropsEqua,
-        _ref2$areStatePropsEq = _ref2.areStatePropsEqual,
-        areStatePropsEqual = _ref2$areStatePropsEq === undefined ? shallowEqual : _ref2$areStatePropsEq,
-        _ref2$areMergedPropsE = _ref2.areMergedPropsEqual,
-        areMergedPropsEqual = _ref2$areMergedPropsE === undefined ? shallowEqual : _ref2$areMergedPropsE,
-        extraOptions = objectWithoutProperties(_ref2, ['pure', 'areStatesEqual', 'areOwnPropsEqual', 'areStatePropsEqual', 'areMergedPropsEqual']);
+    var _ref2$pure = _ref2.pure;
+    var pure = _ref2$pure === undefined ? true : _ref2$pure;
+    var _ref2$areStatesEqual = _ref2.areStatesEqual;
+    var areStatesEqual = _ref2$areStatesEqual === undefined ? strictEqual : _ref2$areStatesEqual;
+    var _ref2$areOwnPropsEqua = _ref2.areOwnPropsEqual;
+    var areOwnPropsEqual = _ref2$areOwnPropsEqua === undefined ? shallowEqual : _ref2$areOwnPropsEqua;
+    var _ref2$areStatePropsEq = _ref2.areStatePropsEqual;
+    var areStatePropsEqual = _ref2$areStatePropsEq === undefined ? shallowEqual : _ref2$areStatePropsEq;
+    var _ref2$areMergedPropsE = _ref2.areMergedPropsEqual;
+    var areMergedPropsEqual = _ref2$areMergedPropsE === undefined ? shallowEqual : _ref2$areMergedPropsE;
+    var extraOptions = objectWithoutProperties(_ref2, ['pure', 'areStatesEqual', 'areOwnPropsEqual', 'areStatePropsEqual', 'areMergedPropsEqual']);
 
     var initMapStateToProps = match(mapStateToProps, mapStateToPropsFactories, 'mapStateToProps');
     var initMapDispatchToProps = match(mapDispatchToProps, mapDispatchToPropsFactories, 'mapDispatchToProps');
@@ -17423,14 +16905,21 @@ function createConnect() {
   };
 }
 
-var connect = createConnect();
+var connect$1 = createConnect();
 
-var index = { Provider: Provider, connect: connect, connectAdvanced: connectAdvanced };
 
-/* harmony default export */ __webpack_exports__["default"] = (index);
-//# sourceMappingURL=preact-redux.esm.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
+var lib$1 = {
+	Provider: Provider,
+	connect: connect$1,
+	connectAdvanced: connectAdvanced
+};
+
+return lib$1;
+
+})));
+//# sourceMappingURL=preact-redux.js.map
+
 
 /***/ }),
 /* 2 */
@@ -17685,7 +17174,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(16);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__["a"]; });
@@ -17705,7 +17194,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function isCrushed() {}
 
 if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
-  __WEBPACK_IMPORTED_MODULE_5__utils_warning__["a" /* default */]('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+  Object(__WEBPACK_IMPORTED_MODULE_5__utils_warning__["a" /* default */])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 }
 
 
@@ -17853,30 +17342,31 @@ exports.default = _keyboard2.default;
 
 /***/ }),
 /* 16 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = warning;
+/**
+ * Prints a warning in the console if it exists.
+ *
+ * @param {String} message The warning message.
+ * @returns {void}
+ */
+function warning(message) {
+  /* eslint-disable no-console */
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+    console.error(message);
+  }
+  /* eslint-enable no-console */
+  try {
+    // This error was thrown as a convenience so that if you enable
+    // "break on all exceptions" in your console,
+    // it would pause the execution at this line.
+    throw new Error(message);
+    /* eslint-disable no-empty */
+  } catch (e) {}
+  /* eslint-enable no-empty */
 }
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
 
 /***/ }),
 /* 17 */
@@ -18777,7 +18267,7 @@ var ActionTypes = {
    * return something else (for example, a Promise you can await).
    */
   function dispatch(action) {
-    if (!__WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__["a" /* default */](action)) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__["a" /* default */])(action)) {
       throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
     }
 
@@ -18933,10 +18423,10 @@ var objectCtorString = funcToString.call(Object);
  * // => true
  */
 function isPlainObject(value) {
-  if (!__WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__["a" /* default */](value) || __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__["a" /* default */](value) != objectTag) {
+  if (!Object(__WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__["a" /* default */])(value) || Object(__WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__["a" /* default */])(value) != objectTag) {
     return false;
   }
-  var proto = __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__["a" /* default */](value);
+  var proto = Object(__WEBPACK_IMPORTED_MODULE_1__getPrototype_js__["a" /* default */])(value);
   if (proto === null) {
     return true;
   }
@@ -18964,31 +18454,30 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 
 /***/ }),
 /* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = warning;
-/**
- * Prints a warning in the console if it exists.
- *
- * @param {String} message The warning message.
- * @returns {void}
- */
-function warning(message) {
-  /* eslint-disable no-console */
-  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-    console.error(message);
-  }
-  /* eslint-enable no-console */
-  try {
-    // This error was thrown as a convenience so that if you enable
-    // "break on all exceptions" in your console,
-    // it would pause the execution at this line.
-    throw new Error(message);
-    /* eslint-disable no-empty */
-  } catch (e) {}
-  /* eslint-enable no-empty */
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
 }
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
 
 /***/ }),
 /* 35 */
@@ -20390,8 +19879,8 @@ function baseGetTag(value) {
     return value === undefined ? undefinedTag : nullTag;
   }
   return (symToStringTag && symToStringTag in Object(value))
-    ? __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__["a" /* default */](value)
-    : __WEBPACK_IMPORTED_MODULE_2__objectToString_js__["a" /* default */](value);
+    ? Object(__WEBPACK_IMPORTED_MODULE_1__getRawTag_js__["a" /* default */])(value)
+    : Object(__WEBPACK_IMPORTED_MODULE_2__objectToString_js__["a" /* default */])(value);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (baseGetTag);
@@ -20424,7 +19913,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 
 /* harmony default export */ __webpack_exports__["a"] = (freeGlobal);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(34)))
 
 /***/ }),
 /* 57 */
@@ -20518,7 +20007,7 @@ function objectToString(value) {
 
 
 /** Built-in value references. */
-var getPrototype = __WEBPACK_IMPORTED_MODULE_0__overArg_js__["a" /* default */](Object.getPrototypeOf, Object);
+var getPrototype = Object(__WEBPACK_IMPORTED_MODULE_0__overArg_js__["a" /* default */])(Object.getPrototypeOf, Object);
 
 /* harmony default export */ __webpack_exports__["a"] = (getPrototype);
 
@@ -20622,7 +20111,7 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16), __webpack_require__(64)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34), __webpack_require__(64)(module)))
 
 /***/ }),
 /* 64 */
@@ -20689,7 +20178,7 @@ function symbolObservablePonyfill(root) {
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(16);
 
 
 
@@ -20709,7 +20198,7 @@ function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, une
     return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
   }
 
-  if (!__WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__["a" /* default */](inputState)) {
+  if (!Object(__WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__["a" /* default */])(inputState)) {
     return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
   }
 
@@ -20766,7 +20255,7 @@ function combineReducers(reducers) {
 
     if (process.env.NODE_ENV !== 'production') {
       if (typeof reducers[key] === 'undefined') {
-        __WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */]('No reducer provided for key "' + key + '"');
+        Object(__WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */])('No reducer provided for key "' + key + '"');
       }
     }
 
@@ -20799,7 +20288,7 @@ function combineReducers(reducers) {
     if (process.env.NODE_ENV !== 'production') {
       var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
       if (warningMessage) {
-        __WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */](warningMessage);
+        Object(__WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */])(warningMessage);
       }
     }
 
@@ -20828,6 +20317,9 @@ function combineReducers(reducers) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = bindActionCreators;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(16);
+
+
 function bindActionCreator(actionCreator, dispatch) {
   return function () {
     return dispatch(actionCreator.apply(undefined, arguments));
@@ -20871,6 +20363,8 @@ function bindActionCreators(actionCreators, dispatch) {
     var actionCreator = actionCreators[key];
     if (typeof actionCreator === 'function') {
       boundActionCreators[key] = bindActionCreator(actionCreator, dispatch);
+    } else {
+      Object(__WEBPACK_IMPORTED_MODULE_0__utils_warning__["a" /* default */])('bindActionCreators expected a function actionCreator for key \'' + key + '\', instead received type \'' + typeof actionCreator + '\'.');
     }
   }
   return boundActionCreators;
@@ -22773,7 +22267,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
     value: function render(props) {
       var _this2 = this;
 
-      var speedOptions = defaultSpeeds.reduce(function (acc, speed, i) {
+      var speedOptions = defaultSpeeds.reduce(function (acc, speed) {
         var speedOption = {
           value: speed,
           label: speed === 1 ? 'Normal' : speed,
@@ -22987,6 +22481,11 @@ var DropDown = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class =
       this.setState({ dropMenuActive: false });
     }
   }, {
+    key: 'onClose',
+    value: function onClose() {
+      this.setState({ dropMenuActive: false });
+    }
+  }, {
     key: 'getActiveOptionLabel',
     value: function getActiveOptionLabel() {
       var activeOptions = this.props.options.filter(function (t) {
@@ -23033,9 +22532,15 @@ var DropDown = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class =
           this.getActiveOptionLabel(),
           (0, _preact.h)(_icon2.default, { type: 'arrow-down' })
         ),
-        !this.state.dropMenuActive ? undefined : (0, _preact.h)(_menu2.default, { options: props.options, onSelect: function onSelect(o) {
+        !this.state.dropMenuActive ? undefined : (0, _preact.h)(_menu2.default, {
+          options: props.options,
+          onSelect: function onSelect(o) {
             return _this3.onSelect(o);
-          } })
+          },
+          onClose: function onClose() {
+            return _this3.onClose();
+          }
+        })
       );
     }
   }]);
@@ -23091,6 +22596,24 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
   }
 
   _createClass(Menu, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      document.addEventListener('click', this.handleClickOutside.bind(this), true);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      document.removeEventListener('click', this.handleClickOutside.bind(this));
+    }
+  }, {
+    key: 'handleClickOutside',
+    value: function handleClickOutside(e) {
+      if (!this.props.isMobile && this._menuElement && !this._menuElement.contains(event.target)) {
+        e.stopPropagation();
+        this.props.onClose();
+      }
+    }
+  }, {
     key: 'isSelected',
     value: function isSelected(o) {
       return o.active;
@@ -23147,7 +22670,12 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
 
       return props.isMobile ? this.renderNativeSelect() : (0, _preact.h)(
         'div',
-        { className: 'dropdown-menu top left' },
+        {
+          ref: function ref(c) {
+            return _this3._menuElement = c;
+          },
+          className: 'dropdown-menu top left'
+        },
         props.options.map(function (o, index) {
           return (0, _preact.h)(
             'div',
@@ -24261,6 +23789,8 @@ var _fullscreen = __webpack_require__(50);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
+__webpack_require__(100);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24793,24 +24323,606 @@ var PlayerGUI = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class 
 }(_preact.Component)) || _class);
 exports.default = PlayerGUI;
 
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(101);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(103)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(102)(undefined);
+// imports
+exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Lato);", ""]);
+
+// module
+exports.push([module.i, ".row {\n  display: block; }\n  .row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.d-inline-block {\n  display: inline-block; }\n\n.mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .form-group.has-error .form-control {\n    border-color: #db1f26; }\n    .form-group.has-error .form-control:focus {\n      border-color: #fff; }\n  .form-group.has-icon .form-control {\n    padding-left: 34px; }\n  .form-group .icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .form-control:focus + .icon {\n      fill: #999; }\n\ntextarea.form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: \"Lato\", sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  background: none;\n  border: 0; }\n\n.checkbox {\n  font-size: 15px;\n  position: relative; }\n  .checkbox input {\n    display: none; }\n  .checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .form-group-row .dropdown {\n    float: right; }\n\n.btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer; }\n  .btn.btn-block {\n    display: block; }\n  .btn.btn-branded {\n    background-color: #01ACCD; }\n    .btn.btn-branded:hover {\n      color: #fff; }\n\n.btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.dropdown {\n  position: relative;\n  font-size: 15px; }\n  .dropdown.active .dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .dropdown.active .dropdown-button .icon {\n    transform: rotate(180deg); }\n  .dropdown .dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer; }\n    .dropdown .dropdown-button .icon {\n      width: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px; }\n  .dropdown-menu.top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .dropdown-menu.bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .dropdown-menu.right {\n    left: 0; }\n  .dropdown-menu.left {\n    right: 0; }\n  .dropdown-menu .dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .dropdown-menu .dropdown-menu-item:hover {\n      color: #fff; }\n    .dropdown-menu .dropdown-menu-item.active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .dropdown-menu .dropdown-menu-item .check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .dropdown-menu .dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.player .control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .player .control-button svg {\n    width: 32px;\n    height: 32px; }\n  .player .control-button.active {\n    opacity: 1; }\n  .player .control-button.control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.player:not(.touch) .control-button:hover {\n  opacity: 1; }\n\n.player:not(.touch) .control-button.control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.player .control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.player.touch .player .control-button-container {\n  position: static; }\n\n.player.touch .control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.player {\n  overflow: hidden;\n  user-select: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .player * {\n    box-sizing: border-box;\n    outline: none; }\n  .player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .player video {\n    width: 100%; }\n  .player .player-gui {\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    width: 100%;\n    height: 100%;\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: \"Lato\", sans-serif; }\n    .player .player-gui input, .player .player-gui textarea {\n      font-family: \"Lato\", sans-serif; }\n  .player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .player.metadata-loaded .player-gui,\n  .player.state-paused .player-gui,\n  .player.overlay-active .player-gui,\n  .player.menu-active .player-gui {\n    opacity: 1; }\n\nvideo::-webkit-media-controls {\n  display: none !important;\n  -webkit-appearance: none; }\n\nvideo::-webkit-media-controls-start-playback-button {\n  display: none !important;\n  -webkit-appearance: none; }\n\nvideo::cue {\n  background-color: transparent;\n  font-family: \"Lato\", sans-serif; }\n\n.player.captions-yellow-text video::cue {\n  color: #FAFF00; }\n\n.player.captions-black-bg video::cue {\n  background-color: #000; }\n\n.player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.player.state-paused video::-webkit-media-text-track-display,\n.player.hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n@keyframes openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: openOverlay 100ms ease-in-out forwards;\n  z-index: 4; }\n  .overlay.active {\n    display: block;\n    opacity: 1; }\n  .overlay .overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 80px 20px;\n    overflow-y: auto; }\n  .overlay .title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .overlay .close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .overlay .close-overlay .icon-close {\n      width: 24px;\n      height: 24px; }\n  .overlay .overlay-screen {\n    display: none; }\n    .overlay .overlay-screen.active {\n      display: block; }\n\n@media screen and (max-width: 768px) {\n  .overlay .overlay-contents {\n    padding: 36px 20px; }\n  .overlay .close-overlay {\n    top: 38px; }\n  .overlay .title {\n    margin-bottom: 24px; } }\n\n@media screen and (max-width: 480px) {\n  .overlay .overlay-contents {\n    padding: 16px 24px; }\n  .overlay .close-overlay {\n    top: 15px;\n    right: 24px; }\n  .overlay .title {\n    font-size: 16px;\n    line-height: 19px;\n    margin-bottom: 24px; } }\n\n@keyframes openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.player:not(.touch) .smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 5;\n  display: block;\n  animation: openSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.leaving {\n    animation: closeSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .player:not(.touch) .smart-container.top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .player:not(.touch) .smart-container.bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .player:not(.touch) .smart-container.right {\n    left: 0px; }\n  .player:not(.touch) .smart-container.left {\n    right: 0px; }\n  .player:not(.touch) .smart-container .smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .player:not(.touch) .smart-container .smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item label {\n      float: left; }\n      .player:not(.touch) .smart-container .smart-container-item.select-menu-item label .label-icon {\n        display: none; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item .dropdown, .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      float: right; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      text-align-last: right; }\n\n.touch .smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .touch .smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .touch .smart-container-item.select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: #fff;\n    fill: #fff; }\n    .touch .smart-container-item.select-menu-item label .label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .touch .smart-container-item.select-menu-item .dropdown, .touch .smart-container-item.select-menu-item select {\n    float: right; }\n  .touch .smart-container-item.select-menu-item select {\n    text-align-last: right; }\n\n.overlay.share-overlay .share-icons {\n  margin: 60px 0; }\n  .overlay.share-overlay .share-icons .btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .overlay.share-overlay .share-icons .btn-rounded:first-child {\n      margin-left: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded:last-child {\n      margin-right: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded.facebook-share-btn {\n      background-color: #3B5998; }\n    .overlay.share-overlay .share-icons .btn-rounded.twitter-share-btn {\n      background-color: #1DA1F2; }\n    .overlay.share-overlay .share-icons .btn-rounded.google-plus-share-btn {\n      background-color: #DD4B39; }\n    .overlay.share-overlay .share-icons .btn-rounded.linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .link-options-container .copy-url-row {\n    display: flex; }\n    .link-options-container .copy-url-row .input-copy-url {\n      margin: 0; }\n    .link-options-container .copy-url-row .btn-copy-url {\n      margin-left: 16px; }\n      .link-options-container .copy-url-row .btn-copy-url .icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .link-options-container .copy-url-row .btn-copy-url .check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .link-options-container .copy-url-row .btn-copy-url.copied {\n        background-color: #009444; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .link-options-container .video-start-options-row {\n    margin-top: 24px; }\n    .link-options-container .video-start-options-row .checkbox {\n      margin-right: 15px; }\n    .link-options-container .video-start-options-row .form-group {\n      margin: 0; }\n\n.player:not(.touch) .overlay.share-overlay .share-icons .btn-rounded:hover {\n  transform: scale(1.1667); }\n\n@media screen and (max-width: 768px) {\n  .overlay.share-overlay .share-icons {\n    margin: 40px 0; } }\n\n@media screen and (max-width: 480px) {\n  .overlay.share-overlay .share-icons {\n    margin: 20px 0; } }\n\n.overlay.cvaa-overlay .sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer; }\n  .overlay.cvaa-overlay .sample.black-bg {\n    background-color: #000; }\n  .overlay.cvaa-overlay .sample.yellow-text {\n    color: #FAFF00; }\n\n.overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.overlay.cvaa-overlay .custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n@media screen and (max-width: 480px) {\n  .overlay.cvaa-overlay .sample {\n    width: 30%;\n    margin: 2.33%;\n    padding: 0; }\n    .overlay.cvaa-overlay .sample:first-child {\n      margin-left: 0; }\n    .overlay.cvaa-overlay .sample:last-child {\n      margin-right: 0; }\n  .overlay.cvaa-overlay .button-save-cvaa {\n    margin-top: 20px; } }\n\n@keyframes kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .loading-backdrop.show {\n    opacity: 1; }\n    .loading-backdrop.show .spinner-container {\n      display: block; }\n  .loading-backdrop .spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kaltura-spinner 2.5s infinite; }\n  .spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.control-button-container.control-play-pause .control-button {\n  transition: 400ms transform; }\n  .control-button-container.control-play-pause .control-button .icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .control-button-container.control-play-pause .control-button .icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .control-button-container.control-play-pause .control-button.is-playing {\n    transform: rotate(360deg); }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-pause {\n      opacity: 1;\n      display: block; }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-play {\n      opacity: 0;\n      display: none; }\n\n.touch .control-button-container.control-play-pause {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.control-play-pause {\n    display: none; } }\n\n.control-button-container.volume-control:hover .volume-control-bar {\n  display: block !important; }\n\n.control-button-container.volume-control.is-muted .volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.control-button-container.volume-control.is-muted .volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.control-button-container.volume-control.dragging-active .volume-control-bar {\n  display: block; }\n\n.control-button-container.volume-control .volume-waves {\n  transform: translateX(0px); }\n\n.control-button-container.volume-control .volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.control-button-container.volume-control .volume-waves, .control-button-container.volume-control .volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.control-button-container.volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .volume-control-bar .bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: ns-resize; }\n  .volume-control-bar .progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.touch .control-button-container.volume-control {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.volume-control {\n    display: none; } }\n\n.control-button-container.control-fullscreen .control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .control-button-container.control-fullscreen .control-button .icon-minimize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-maximize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-minimize {\n    display: block; }\n\n.player:not(.touch) .control-button-container.control-fullscreen .control-button:hover {\n  transform: scale(1.1); }\n\n.player .seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .player .seek-bar:hover .time-preview,\n  .player .seek-bar:hover .frame-preview, .player .seek-bar.dragging-active .time-preview,\n  .player .seek-bar.dragging-active .frame-preview {\n    display: block; }\n  .player .seek-bar:hover .progress-bar .scrubber, .player .seek-bar.dragging-active .progress-bar .scrubber {\n    transform: scale(1); }\n  .player .seek-bar:hover .progress-bar .virtual-progress, .player .seek-bar.dragging-active .progress-bar .virtual-progress {\n    display: block; }\n  .player .seek-bar .progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .player .seek-bar .progress-bar .progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .player .seek-bar .progress-bar .virtual-progress {\n      display: none; }\n    .player .seek-bar .progress-bar .buffered, .player .seek-bar .progress-bar .virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .player .seek-bar .progress-bar .scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .player .seek-bar .progress-bar .scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .player .seek-bar .frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px; }\n    .player .seek-bar .frame-preview .frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .player .seek-bar .time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 10;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .player .seek-bar .time-preview,\n  .player .seek-bar .frame-preview {\n    display: none; }\n\n.touch .virtual-progress, .touch .time-preview, .touch .frame-preview {\n  display: none !important; }\n\n@media screen and (max-width: 480px) {\n  .virtual-progress, .time-preview, .frame-preview {\n    display: none; } }\n\n.player .time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.touch .time-display {\n  padding-left: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .time-display {\n    padding: 0 12px 0 0; } }\n\n.player .video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.player .bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto; }\n  .player .bottom-bar .left-controls {\n    float: left;\n    text-align: left; }\n    .player .bottom-bar .left-controls:first-child {\n      margin-left: 0px; }\n  .player .bottom-bar .right-controls {\n    float: right;\n    text-align: left; }\n    .player .bottom-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .bottom-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .bottom-bar,\n.player.state-paused .bottom-bar,\n.player.menu-active .bottom-bar {\n  opacity: 1; }\n\n.player.overlay-active .bottom-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .bottom-bar {\n    padding: 6px 8px; } }\n\n.player .top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%; }\n  .player .top-bar .left-controls {\n    text-align: left;\n    min-width: 0; }\n  .player .top-bar .right-controls {\n    text-align: left; }\n    .player .top-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .top-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .top-bar,\n.player.state-paused .top-bar,\n.player.menu-active .top-bar {\n  opacity: 1; }\n\n.player.overlay-active .top-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .top-bar {\n    padding: 8px 8px 20px 8px; } }\n\n@keyframes overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .overlay-play.in .icon {\n    animation: overlayPlayIconIn 400ms linear forwards; }\n  .overlay-play .icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10; }\n  .pre-playback-play-overlay .pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px; }\n    .pre-playback-play-overlay .pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .pre-playback-play-overlay .pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.pre-playback .player-gui {\n  opacity: 0 !important; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(104);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
 /***/ })
 /******/ ]);
 });
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(88);
-module.exports = __webpack_require__(304);
+module.exports = __webpack_require__(303);
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(123);
+__webpack_require__(122);
+__webpack_require__(125);
 __webpack_require__(126);
 __webpack_require__(127);
 __webpack_require__(128);
@@ -24888,14 +25000,14 @@ __webpack_require__(199);
 __webpack_require__(200);
 __webpack_require__(201);
 __webpack_require__(202);
-__webpack_require__(203);
+__webpack_require__(204);
 __webpack_require__(205);
 __webpack_require__(206);
 __webpack_require__(207);
 __webpack_require__(208);
 __webpack_require__(209);
 __webpack_require__(210);
-__webpack_require__(211);
+__webpack_require__(213);
 __webpack_require__(214);
 __webpack_require__(215);
 __webpack_require__(216);
@@ -24908,19 +25020,19 @@ __webpack_require__(222);
 __webpack_require__(223);
 __webpack_require__(224);
 __webpack_require__(225);
-__webpack_require__(226);
 __webpack_require__(82);
+__webpack_require__(226);
 __webpack_require__(227);
-__webpack_require__(228);
 __webpack_require__(106);
+__webpack_require__(228);
 __webpack_require__(229);
 __webpack_require__(230);
 __webpack_require__(231);
 __webpack_require__(232);
-__webpack_require__(233);
 __webpack_require__(107);
 __webpack_require__(109);
 __webpack_require__(110);
+__webpack_require__(233);
 __webpack_require__(234);
 __webpack_require__(235);
 __webpack_require__(236);
@@ -24982,13 +25094,12 @@ __webpack_require__(291);
 __webpack_require__(292);
 __webpack_require__(293);
 __webpack_require__(294);
-__webpack_require__(295);
+__webpack_require__(297);
 __webpack_require__(298);
-__webpack_require__(299);
 module.exports = __webpack_require__(24);
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25007,8 +25118,8 @@ var global         = __webpack_require__(2)
   , wks            = __webpack_require__(5)
   , wksExt         = __webpack_require__(90)
   , wksDefine      = __webpack_require__(62)
-  , keyOf          = __webpack_require__(124)
-  , enumKeys       = __webpack_require__(125)
+  , keyOf          = __webpack_require__(123)
+  , enumKeys       = __webpack_require__(124)
   , isArray        = __webpack_require__(65)
   , anObject       = __webpack_require__(1)
   , toIObject      = __webpack_require__(14)
@@ -25229,7 +25340,7 @@ setToStringTag(Math, 'Math', true);
 setToStringTag(global.JSON, 'JSON', true);
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getKeys   = __webpack_require__(33)
@@ -25244,7 +25355,7 @@ module.exports = function(object, el){
 };
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
@@ -25264,7 +25375,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0)
@@ -25272,7 +25383,7 @@ var $export = __webpack_require__(0)
 $export($export.S, 'Object', {create: __webpack_require__(35)});
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -25280,7 +25391,7 @@ var $export = __webpack_require__(0);
 $export($export.S + $export.F * !__webpack_require__(6), 'Object', {defineProperty: __webpack_require__(7).f});
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -25288,7 +25399,7 @@ var $export = __webpack_require__(0);
 $export($export.S + $export.F * !__webpack_require__(6), 'Object', {defineProperties: __webpack_require__(92)});
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
@@ -25302,7 +25413,7 @@ __webpack_require__(22)('getOwnPropertyDescriptor', function(){
 });
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
@@ -25316,7 +25427,7 @@ __webpack_require__(22)('getPrototypeOf', function(){
 });
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
@@ -25330,7 +25441,7 @@ __webpack_require__(22)('keys', function(){
 });
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
@@ -25339,7 +25450,7 @@ __webpack_require__(22)('getOwnPropertyNames', function(){
 });
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.5 Object.freeze(O)
@@ -25353,7 +25464,7 @@ __webpack_require__(22)('freeze', function($freeze){
 });
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.17 Object.seal(O)
@@ -25367,7 +25478,7 @@ __webpack_require__(22)('seal', function($seal){
 });
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.15 Object.preventExtensions(O)
@@ -25381,7 +25492,7 @@ __webpack_require__(22)('preventExtensions', function($preventExtensions){
 });
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.12 Object.isFrozen(O)
@@ -25394,7 +25505,7 @@ __webpack_require__(22)('isFrozen', function($isFrozen){
 });
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.13 Object.isSealed(O)
@@ -25407,7 +25518,7 @@ __webpack_require__(22)('isSealed', function($isSealed){
 });
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.11 Object.isExtensible(O)
@@ -25420,7 +25531,7 @@ __webpack_require__(22)('isExtensible', function($isExtensible){
 });
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
@@ -25429,7 +25540,7 @@ var $export = __webpack_require__(0);
 $export($export.S + $export.F, 'Object', {assign: __webpack_require__(94)});
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.10 Object.is(value1, value2)
@@ -25437,7 +25548,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Object', {is: __webpack_require__(95)});
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
@@ -25445,7 +25556,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Object', {setPrototypeOf: __webpack_require__(67).set});
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25461,7 +25572,7 @@ if(test + '' != '[object z]'){
 }
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
@@ -25470,7 +25581,7 @@ var $export = __webpack_require__(0);
 $export($export.P, 'Function', {bind: __webpack_require__(96)});
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP         = __webpack_require__(7).f
@@ -25500,7 +25611,7 @@ NAME in FProto || __webpack_require__(6) && dP(FProto, NAME, {
 });
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25519,7 +25630,7 @@ if(!(HAS_INSTANCE in FunctionProto))__webpack_require__(7).f(FunctionProto, HAS_
 }});
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export   = __webpack_require__(0)
@@ -25528,7 +25639,7 @@ var $export   = __webpack_require__(0)
 $export($export.G + $export.F * (parseInt != $parseInt), {parseInt: $parseInt});
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export     = __webpack_require__(0)
@@ -25537,7 +25648,7 @@ var $export     = __webpack_require__(0)
 $export($export.G + $export.F * (parseFloat != $parseFloat), {parseFloat: $parseFloat});
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25612,7 +25723,7 @@ if(!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')){
 }
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25731,7 +25842,7 @@ $export($export.P + $export.F * (!!$toFixed && (
 });
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25755,7 +25866,7 @@ $export($export.P + $export.F * ($fails(function(){
 });
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.1 Number.EPSILON
@@ -25764,7 +25875,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {EPSILON: Math.pow(2, -52)});
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.2 Number.isFinite(number)
@@ -25778,7 +25889,7 @@ $export($export.S, 'Number', {
 });
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.3 Number.isInteger(number)
@@ -25787,7 +25898,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {isInteger: __webpack_require__(100)});
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.4 Number.isNaN(number)
@@ -25800,7 +25911,7 @@ $export($export.S, 'Number', {
 });
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.5 Number.isSafeInteger(number)
@@ -25815,7 +25926,7 @@ $export($export.S, 'Number', {
 });
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.6 Number.MAX_SAFE_INTEGER
@@ -25824,7 +25935,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {MAX_SAFE_INTEGER: 0x1fffffffffffff});
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.10 Number.MIN_SAFE_INTEGER
@@ -25833,7 +25944,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {MIN_SAFE_INTEGER: -0x1fffffffffffff});
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export     = __webpack_require__(0)
@@ -25842,7 +25953,7 @@ var $export     = __webpack_require__(0)
 $export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', {parseFloat: $parseFloat});
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export   = __webpack_require__(0)
@@ -25851,7 +25962,7 @@ var $export   = __webpack_require__(0)
 $export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', {parseInt: $parseInt});
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.3 Math.acosh(x)
@@ -25874,7 +25985,7 @@ $export($export.S + $export.F * !($acosh
 });
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.5 Math.asinh(x)
@@ -25889,7 +26000,7 @@ function asinh(x){
 $export($export.S + $export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', {asinh: asinh});
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.7 Math.atanh(x)
@@ -25904,7 +26015,7 @@ $export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
 });
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.9 Math.cbrt(x)
@@ -25918,7 +26029,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.11 Math.clz32(x)
@@ -25931,7 +26042,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.12 Math.cosh(x)
@@ -25945,7 +26056,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.14 Math.expm1(x)
@@ -25955,7 +26066,7 @@ var $export = __webpack_require__(0)
 $export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', {expm1: $expm1});
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.16 Math.fround(x)
@@ -25986,7 +26097,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
@@ -26016,7 +26127,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.18 Math.imul(x, y)
@@ -26038,7 +26149,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 170 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.21 Math.log10(x)
@@ -26051,7 +26162,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 171 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.20 Math.log1p(x)
@@ -26060,7 +26171,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Math', {log1p: __webpack_require__(101)});
 
 /***/ }),
-/* 172 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.22 Math.log2(x)
@@ -26073,7 +26184,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 173 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.28 Math.sign(x)
@@ -26082,7 +26193,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Math', {sign: __webpack_require__(71)});
 
 /***/ }),
-/* 174 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.30 Math.sinh(x)
@@ -26102,7 +26213,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 175 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.33 Math.tanh(x)
@@ -26119,7 +26230,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 176 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.34 Math.trunc(x)
@@ -26132,7 +26243,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 177 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export        = __webpack_require__(0)
@@ -26160,7 +26271,7 @@ $export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1)
 });
 
 /***/ }),
-/* 178 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export   = __webpack_require__(0)
@@ -26183,7 +26294,7 @@ $export($export.S, 'String', {
 });
 
 /***/ }),
-/* 179 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26196,7 +26307,7 @@ __webpack_require__(41)('trim', function($trim){
 });
 
 /***/ }),
-/* 180 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26219,7 +26330,7 @@ __webpack_require__(74)(String, 'String', function(iterated){
 });
 
 /***/ }),
-/* 181 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26234,7 +26345,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 182 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26260,7 +26371,7 @@ $export($export.P + $export.F * __webpack_require__(77)(ENDS_WITH), 'String', {
 });
 
 /***/ }),
-/* 183 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26278,7 +26389,7 @@ $export($export.P + $export.F * __webpack_require__(77)(INCLUDES), 'String', {
 });
 
 /***/ }),
-/* 184 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -26289,7 +26400,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 185 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26313,7 +26424,7 @@ $export($export.P + $export.F * __webpack_require__(77)(STARTS_WITH), 'String', 
 });
 
 /***/ }),
-/* 186 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26326,7 +26437,7 @@ __webpack_require__(15)('anchor', function(createHTML){
 });
 
 /***/ }),
-/* 187 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26339,7 +26450,7 @@ __webpack_require__(15)('big', function(createHTML){
 });
 
 /***/ }),
-/* 188 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26352,7 +26463,7 @@ __webpack_require__(15)('blink', function(createHTML){
 });
 
 /***/ }),
-/* 189 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26365,7 +26476,7 @@ __webpack_require__(15)('bold', function(createHTML){
 });
 
 /***/ }),
-/* 190 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26378,7 +26489,7 @@ __webpack_require__(15)('fixed', function(createHTML){
 });
 
 /***/ }),
-/* 191 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26391,7 +26502,7 @@ __webpack_require__(15)('fontcolor', function(createHTML){
 });
 
 /***/ }),
-/* 192 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26404,7 +26515,7 @@ __webpack_require__(15)('fontsize', function(createHTML){
 });
 
 /***/ }),
-/* 193 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26417,7 +26528,7 @@ __webpack_require__(15)('italics', function(createHTML){
 });
 
 /***/ }),
-/* 194 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26430,7 +26541,7 @@ __webpack_require__(15)('link', function(createHTML){
 });
 
 /***/ }),
-/* 195 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26443,7 +26554,7 @@ __webpack_require__(15)('small', function(createHTML){
 });
 
 /***/ }),
-/* 196 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26456,7 +26567,7 @@ __webpack_require__(15)('strike', function(createHTML){
 });
 
 /***/ }),
-/* 197 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26469,7 +26580,7 @@ __webpack_require__(15)('sub', function(createHTML){
 });
 
 /***/ }),
-/* 198 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26482,7 +26593,7 @@ __webpack_require__(15)('sup', function(createHTML){
 });
 
 /***/ }),
-/* 199 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.3.3.1 / 15.9.4.4 Date.now()
@@ -26491,7 +26602,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Date', {now: function(){ return new Date().getTime(); }});
 
 /***/ }),
-/* 200 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26511,7 +26622,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 201 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26545,7 +26656,7 @@ $export($export.P + $export.F * (fails(function(){
 });
 
 /***/ }),
-/* 202 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DateProto    = Date.prototype
@@ -26561,16 +26672,16 @@ if(new Date(NaN) + '' != INVALID_DATE){
 }
 
 /***/ }),
-/* 203 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var TO_PRIMITIVE = __webpack_require__(5)('toPrimitive')
   , proto        = Date.prototype;
 
-if(!(TO_PRIMITIVE in proto))__webpack_require__(11)(proto, TO_PRIMITIVE, __webpack_require__(204));
+if(!(TO_PRIMITIVE in proto))__webpack_require__(11)(proto, TO_PRIMITIVE, __webpack_require__(203));
 
 /***/ }),
-/* 204 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26585,7 +26696,7 @@ module.exports = function(hint){
 };
 
 /***/ }),
-/* 205 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
@@ -26594,7 +26705,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Array', {isArray: __webpack_require__(65)});
 
 /***/ }),
-/* 206 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26638,7 +26749,7 @@ $export($export.S + $export.F * !__webpack_require__(54)(function(iter){ Array.f
 
 
 /***/ }),
-/* 207 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26663,7 +26774,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 208 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26681,7 +26792,7 @@ $export($export.P + $export.F * (__webpack_require__(45) != Object || !__webpack
 });
 
 /***/ }),
-/* 209 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26715,7 +26826,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 210 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26744,7 +26855,7 @@ $export($export.P + $export.F * (fails(function(){
 });
 
 /***/ }),
-/* 211 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26761,18 +26872,18 @@ $export($export.P + $export.F * !STRICT, 'Array', {
 });
 
 /***/ }),
-/* 212 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-var speciesConstructor = __webpack_require__(213);
+var speciesConstructor = __webpack_require__(212);
 
 module.exports = function(original, length){
   return new (speciesConstructor(original))(length);
 };
 
 /***/ }),
-/* 213 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(4)
@@ -26793,7 +26904,7 @@ module.exports = function(original){
 };
 
 /***/ }),
-/* 214 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26809,7 +26920,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].map, true), 'Array',
 });
 
 /***/ }),
-/* 215 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26825,7 +26936,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].filter, true), 'Arra
 });
 
 /***/ }),
-/* 216 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26841,7 +26952,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].some, true), 'Array'
 });
 
 /***/ }),
-/* 217 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26857,7 +26968,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].every, true), 'Array
 });
 
 /***/ }),
-/* 218 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26873,7 +26984,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].reduce, true), 'Arra
 });
 
 /***/ }),
-/* 219 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26889,7 +27000,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].reduceRight, true), 
 });
 
 /***/ }),
-/* 220 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26910,7 +27021,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(20)($nati
 });
 
 /***/ }),
-/* 221 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26938,7 +27049,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(20)($nati
 });
 
 /***/ }),
-/* 222 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
@@ -26949,7 +27060,7 @@ $export($export.P, 'Array', {copyWithin: __webpack_require__(104)});
 __webpack_require__(43)('copyWithin');
 
 /***/ }),
-/* 223 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
@@ -26960,7 +27071,7 @@ $export($export.P, 'Array', {fill: __webpack_require__(81)});
 __webpack_require__(43)('fill');
 
 /***/ }),
-/* 224 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26980,7 +27091,7 @@ $export($export.P + $export.F * forced, 'Array', {
 __webpack_require__(43)(KEY);
 
 /***/ }),
-/* 225 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27000,13 +27111,13 @@ $export($export.P + $export.F * forced, 'Array', {
 __webpack_require__(43)(KEY);
 
 /***/ }),
-/* 226 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(37)('Array');
 
 /***/ }),
-/* 227 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global            = __webpack_require__(2)
@@ -27054,7 +27165,7 @@ if(__webpack_require__(6) && (!CORRECT_NEW || __webpack_require__(3)(function(){
 __webpack_require__(37)('RegExp');
 
 /***/ }),
-/* 228 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27085,7 +27196,7 @@ if(__webpack_require__(3)(function(){ return $toString.call({source: 'a', flags:
 }
 
 /***/ }),
-/* 229 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@match logic
@@ -27100,7 +27211,7 @@ __webpack_require__(56)('match', 1, function(defined, MATCH, $match){
 });
 
 /***/ }),
-/* 230 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@replace logic
@@ -27117,7 +27228,7 @@ __webpack_require__(56)('replace', 2, function(defined, REPLACE, $replace){
 });
 
 /***/ }),
-/* 231 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@search logic
@@ -27132,7 +27243,7 @@ __webpack_require__(56)('search', 1, function(defined, SEARCH, $search){
 });
 
 /***/ }),
-/* 232 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@split logic
@@ -27207,7 +27318,7 @@ __webpack_require__(56)('split', 2, function(defined, SPLIT, $split){
 });
 
 /***/ }),
-/* 233 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27512,7 +27623,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(54)(function
 });
 
 /***/ }),
-/* 234 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27530,7 +27641,7 @@ __webpack_require__(57)('WeakSet', function(get){
 }, weak, false, true);
 
 /***/ }),
-/* 235 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27582,7 +27693,7 @@ $export($export.P + $export.U + $export.F * __webpack_require__(3)(function(){
 __webpack_require__(37)(ARRAY_BUFFER);
 
 /***/ }),
-/* 236 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -27591,7 +27702,7 @@ $export($export.G + $export.W + $export.F * !__webpack_require__(58).ABV, {
 });
 
 /***/ }),
-/* 237 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Int8', 1, function(init){
@@ -27601,7 +27712,7 @@ __webpack_require__(26)('Int8', 1, function(init){
 });
 
 /***/ }),
-/* 238 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint8', 1, function(init){
@@ -27611,7 +27722,7 @@ __webpack_require__(26)('Uint8', 1, function(init){
 });
 
 /***/ }),
-/* 239 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint8', 1, function(init){
@@ -27621,7 +27732,7 @@ __webpack_require__(26)('Uint8', 1, function(init){
 }, true);
 
 /***/ }),
-/* 240 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Int16', 2, function(init){
@@ -27631,7 +27742,7 @@ __webpack_require__(26)('Int16', 2, function(init){
 });
 
 /***/ }),
-/* 241 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint16', 2, function(init){
@@ -27641,7 +27752,7 @@ __webpack_require__(26)('Uint16', 2, function(init){
 });
 
 /***/ }),
-/* 242 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Int32', 4, function(init){
@@ -27651,7 +27762,7 @@ __webpack_require__(26)('Int32', 4, function(init){
 });
 
 /***/ }),
-/* 243 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint32', 4, function(init){
@@ -27661,7 +27772,7 @@ __webpack_require__(26)('Uint32', 4, function(init){
 });
 
 /***/ }),
-/* 244 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Float32', 4, function(init){
@@ -27671,7 +27782,7 @@ __webpack_require__(26)('Float32', 4, function(init){
 });
 
 /***/ }),
-/* 245 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Float64', 8, function(init){
@@ -27681,7 +27792,7 @@ __webpack_require__(26)('Float64', 8, function(init){
 });
 
 /***/ }),
-/* 246 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
@@ -27702,7 +27813,7 @@ $export($export.S + $export.F * !__webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 247 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
@@ -27754,7 +27865,7 @@ $export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
 });
 
 /***/ }),
-/* 248 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
@@ -27781,7 +27892,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 249 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
@@ -27797,7 +27908,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 250 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27829,7 +27940,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 251 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
@@ -27855,7 +27966,7 @@ function get(target, propertyKey/*, receiver*/){
 $export($export.S, 'Reflect', {get: get});
 
 /***/ }),
-/* 252 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
@@ -27870,7 +27981,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 253 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
@@ -27885,7 +27996,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 254 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.9 Reflect.has(target, propertyKey)
@@ -27898,7 +28009,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 255 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.10 Reflect.isExtensible(target)
@@ -27914,7 +28025,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 256 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.11 Reflect.ownKeys(target)
@@ -27923,7 +28034,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Reflect', {ownKeys: __webpack_require__(112)});
 
 /***/ }),
-/* 257 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.12 Reflect.preventExtensions(target)
@@ -27944,7 +28055,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 258 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
@@ -27980,7 +28091,7 @@ function set(target, propertyKey, V/*, receiver*/){
 $export($export.S, 'Reflect', {set: set});
 
 /***/ }),
-/* 259 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.14 Reflect.setPrototypeOf(target, proto)
@@ -28000,7 +28111,7 @@ if(setProto)$export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 260 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28018,7 +28129,7 @@ $export($export.P, 'Array', {
 __webpack_require__(43)('includes');
 
 /***/ }),
-/* 261 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28034,7 +28145,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 262 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28050,7 +28161,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 263 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28066,7 +28177,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 264 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28079,7 +28190,7 @@ __webpack_require__(41)('trimLeft', function($trim){
 }, 'trimStart');
 
 /***/ }),
-/* 265 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28092,7 +28203,7 @@ __webpack_require__(41)('trimRight', function($trim){
 }, 'trimEnd');
 
 /***/ }),
-/* 266 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28128,19 +28239,19 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 267 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(62)('asyncIterator');
 
 /***/ }),
-/* 268 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(62)('observable');
 
 /***/ }),
-/* 269 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-getownpropertydescriptors
@@ -28164,7 +28275,7 @@ $export($export.S, 'Object', {
 });
 
 /***/ }),
-/* 270 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
@@ -28178,7 +28289,7 @@ $export($export.S, 'Object', {
 });
 
 /***/ }),
-/* 271 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
@@ -28192,7 +28303,7 @@ $export($export.S, 'Object', {
 });
 
 /***/ }),
-/* 272 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28210,7 +28321,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 273 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28228,7 +28339,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 274 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28252,7 +28363,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 275 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28276,7 +28387,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 276 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
@@ -28285,7 +28396,7 @@ var $export  = __webpack_require__(0);
 $export($export.P + $export.R, 'Map', {toJSON: __webpack_require__(115)('Map')});
 
 /***/ }),
-/* 277 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
@@ -28294,7 +28405,7 @@ var $export  = __webpack_require__(0);
 $export($export.P + $export.R, 'Set', {toJSON: __webpack_require__(115)('Set')});
 
 /***/ }),
-/* 278 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/ljharb/proposal-global
@@ -28303,7 +28414,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'System', {global: __webpack_require__(2)});
 
 /***/ }),
-/* 279 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/ljharb/proposal-is-error
@@ -28317,7 +28428,7 @@ $export($export.S, 'Error', {
 });
 
 /***/ }),
-/* 280 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -28333,7 +28444,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 281 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -28349,7 +28460,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 282 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -28370,7 +28481,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 283 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -28391,7 +28502,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 284 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata                  = __webpack_require__(27)
@@ -28404,7 +28515,7 @@ metadata.exp({defineMetadata: function defineMetadata(metadataKey, metadataValue
 }});
 
 /***/ }),
-/* 285 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -28424,7 +28535,7 @@ metadata.exp({deleteMetadata: function deleteMetadata(metadataKey, target /*, ta
 }});
 
 /***/ }),
-/* 286 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -28446,7 +28557,7 @@ metadata.exp({getMetadata: function getMetadata(metadataKey, target /*, targetKe
 }});
 
 /***/ }),
-/* 287 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Set                     = __webpack_require__(109)
@@ -28470,7 +28581,7 @@ metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */)
 }});
 
 /***/ }),
-/* 288 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -28484,7 +28595,7 @@ metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, ta
 }});
 
 /***/ }),
-/* 289 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata                = __webpack_require__(27)
@@ -28497,7 +28608,7 @@ metadata.exp({getOwnMetadataKeys: function getOwnMetadataKeys(target /*, targetK
 }});
 
 /***/ }),
-/* 290 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -28518,7 +28629,7 @@ metadata.exp({hasMetadata: function hasMetadata(metadataKey, target /*, targetKe
 }});
 
 /***/ }),
-/* 291 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -28532,7 +28643,7 @@ metadata.exp({hasOwnMetadata: function hasOwnMetadata(metadataKey, target /*, ta
 }});
 
 /***/ }),
-/* 292 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata                  = __webpack_require__(27)
@@ -28552,7 +28663,7 @@ metadata.exp({metadata: function metadata(metadataKey, metadataValue){
 }});
 
 /***/ }),
-/* 293 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/rwaldron/tc39-notes/blob/master/es6/2014-09/sept-25.md#510-globalasap-for-enqueuing-a-microtask
@@ -28569,7 +28680,7 @@ $export($export.G, {
 });
 
 /***/ }),
-/* 294 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28774,14 +28885,14 @@ $export($export.G, {Observable: $Observable});
 __webpack_require__(37)('Observable');
 
 /***/ }),
-/* 295 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // ie9- setTimeout & setInterval additional parameters fix
 var global     = __webpack_require__(2)
   , $export    = __webpack_require__(0)
   , invoke     = __webpack_require__(52)
-  , partial    = __webpack_require__(296)
+  , partial    = __webpack_require__(295)
   , navigator  = global.navigator
   , MSIE       = !!navigator && /MSIE .\./.test(navigator.userAgent); // <- dirty ie9- check
 var wrap = function(set){
@@ -28799,12 +28910,12 @@ $export($export.G + $export.B + $export.F * MSIE, {
 });
 
 /***/ }),
-/* 296 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var path      = __webpack_require__(297)
+var path      = __webpack_require__(296)
   , invoke    = __webpack_require__(52)
   , aFunction = __webpack_require__(13);
 module.exports = function(/* ...pargs */){
@@ -28828,13 +28939,13 @@ module.exports = function(/* ...pargs */){
 };
 
 /***/ }),
-/* 297 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(2);
 
 /***/ }),
-/* 298 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0)
@@ -28845,7 +28956,7 @@ $export($export.G + $export.B, {
 });
 
 /***/ }),
-/* 299 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $iterators    = __webpack_require__(82)
@@ -28872,7 +28983,7 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 }
 
 /***/ }),
-/* 300 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -29615,25 +29726,25 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
 
 /***/ }),
-/* 301 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(302);
+__webpack_require__(301);
 module.exports = __webpack_require__(24).RegExp.escape;
 
 /***/ }),
-/* 302 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/benjamingr/RexExp.escape
 var $export = __webpack_require__(0)
-  , $re     = __webpack_require__(303)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+  , $re     = __webpack_require__(302)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
 
 $export($export.S, 'RegExp', {escape: function escape(it){ return $re(it); }});
 
 
 /***/ }),
-/* 303 */
+/* 302 */
 /***/ (function(module, exports) {
 
 module.exports = function(regExp, replace){
@@ -29646,7 +29757,7 @@ module.exports = function(regExp, replace){
 };
 
 /***/ }),
-/* 304 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29663,17 +29774,17 @@ var _polyfillManager = __webpack_require__(117);
 
 var _polyfillManager2 = _interopRequireDefault(_polyfillManager);
 
-__webpack_require__(306);
+__webpack_require__(305);
 
 var _playkitJs = __webpack_require__(48);
 
 var Playkit = _interopRequireWildcard(_playkitJs);
 
-var _ovpProvider = __webpack_require__(119);
+var _ovpProvider = __webpack_require__(118);
 
 var _ovpProvider2 = _interopRequireDefault(_ovpProvider);
 
-var _playkitJsUi = __webpack_require__(120);
+var _playkitJsUi = __webpack_require__(119);
 
 var _playkitJsUi2 = _interopRequireDefault(_playkitJsUi);
 
@@ -29714,7 +29825,7 @@ exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup2.default;
 
 /***/ }),
-/* 305 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -29981,16 +30092,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 306 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(307);
+__webpack_require__(306);
 
 /***/ }),
-/* 307 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30047,6 +30158,34 @@ exports.default = PerformanceNowPolyfill;
 
 _polyfillManager2.default.register(PerformanceNowPolyfill);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
 
 /***/ }),
 /* 308 */
@@ -47994,11 +48133,11 @@ exports.default = setup;
 
 var _playkitJs = __webpack_require__(48);
 
-var _playkitJsUi = __webpack_require__(120);
+var _playkitJsUi = __webpack_require__(119);
 
 var _playkitJsUi2 = _interopRequireDefault(_playkitJsUi);
 
-var _ovpProvider = __webpack_require__(119);
+var _ovpProvider = __webpack_require__(118);
 
 var _ovpProvider2 = _interopRequireDefault(_ovpProvider);
 
@@ -48040,7 +48179,7 @@ function setup(targetId, userConfig) {
     // Prepare config for the ui manager
     _playkitJs.Utils.Object.mergeDeep(playerConfig, { targetId: containerId });
     // Build UI
-    // buildUI(response.player, playerConfig);
+    buildUI(response.player, playerConfig);
     // Handle provider config
     if (providerConfig.partnerId) {
       logger.debug('Partner id provided, creating ovp provider');
