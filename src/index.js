@@ -15,13 +15,14 @@ import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import PlaykitUI from 'playkit-js-ui'
 
 // Import media source adapters
-import 'playkit-js-hls';
-import 'playkit-js-dash';
+import 'playkit-js-hls'
+import 'playkit-js-dash'
+
+// Import plugins
+import 'playkit-js-kanalytics'
 
 // Import setup method
 import setup from './setup'
-
-// TODO: Import plugins
 
 export {Playkit, OvpProvider, PlaykitUI, setup};
 

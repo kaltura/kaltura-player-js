@@ -28,13 +28,14 @@
   var config = {
     partnerId: 1091,
     entryId: '0_wifqaipd',
-    ks: '',
     env: {
       baseUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/",
       beUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/api_v3"
     },
-    playback: {
-      autoplay: true
+    plugins: {
+      kanalytics: {
+        beUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/api_v3"
+      }
     }
   };
   KalturaPlayer.setup('player-placeholder', config)
