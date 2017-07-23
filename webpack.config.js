@@ -6,7 +6,7 @@ const PROD = (process.env.NODE_ENV === 'production');
 
 module.exports = {
   context: __dirname + "/src",
-  entry: PROD ? {"kaltura-player.min": ["babel-polyfill", "index.js"]} : {"kaltura-player": ["babel-polyfill", "index.js"]},
+  entry: PROD ? {"kaltura-player.min": "index.js"} : {"kaltura-player": "index.js"},
   output: {
     path: __dirname + "/dist",
     filename: '[name].js',
