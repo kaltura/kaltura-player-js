@@ -2,7 +2,7 @@
 import {loadPlayer, Utils} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
-import handleSessionId from './session-id'
+import {addKalturaParams} from './kaltura-params'
 import './assets/style.css'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -23,7 +23,7 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
     // Create player and handle session id
     response.player = loadPlayer(containerId, playerConfig);
     response.player.addEventListener(response.player.Event.SOURCE_SELECTED, (event) => {
-      handleSessionId(event.payload.selectedSource, response.player);
+      addKalturaParams(event.payload.selectedSource, response.player);
     });
     // Prepare config for the ui manager
     Utils.Object.mergeDeep(playerConfig, {targetId: containerId});
