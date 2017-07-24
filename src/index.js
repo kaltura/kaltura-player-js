@@ -1,5 +1,5 @@
 // @flow
-import 'babel-polyfill'
+import 'babel-polyfill' // Important! must be first import to support older browsers compatibility
 import PolyfillManager from './polyfill/polyfill-manager'
 import './polyfill/all'
 
