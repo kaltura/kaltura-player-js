@@ -39811,56 +39811,53 @@ function handleSessionId() {
 
   if (player.config.session && player.config.session.id) {
     // on change media
-    updateSessionId(selectedSource, player);
+    updateSessionId(player);
   } else {
     // on first playback
-    addSessionId(selectedSource, player);
+    addSessionId(player);
   }
+  updateSessionIdInUrl(selectedSource, player.config.session.id);
 }
 
 /**
- * @param {Object} selectedSource - selected source
  * @param {Player} player - player
  * @return {void}
  * @private
  */
-function addSessionId(selectedSource, player) {
+function addSessionId(player) {
   var primaryGUID = _playkitJs.Utils.Generator.guid();
   var secondGUID = _playkitJs.Utils.Generator.guid();
   player.sessionId = primaryGUID + ':' + secondGUID;
-  updateSessionIdInUrl(selectedSource, player);
 }
 
 /**
- * @param {Object} selectedSource - selected source
  * @param {Player} player - player
  * @return {void}
  * @private
  */
-function updateSessionId(selectedSource, player) {
+function updateSessionId(player) {
   var secondGuidInSessionIdRegex = /:((?:[a-z0-9]|-)*)/i;
   var secondGuidInSessionId = secondGuidInSessionIdRegex.exec(player.config.session.id);
   if (secondGuidInSessionId && secondGuidInSessionId[1]) {
     player.sessionId = player.config.session.id.replace(secondGuidInSessionId[1], _playkitJs.Utils.Generator.guid());
   }
-  updateSessionIdInUrl(selectedSource, player);
 }
 
 /**
  * @param {Object} selectedSource - selected source
- * @param {Player} player - player
+ * @param {string} sessionId - session id
  * @return {void}
  * @private
  */
-function updateSessionIdInUrl(selectedSource, player) {
+function updateSessionIdInUrl(selectedSource, sessionId) {
   var sessionIdInUrlRegex = new RegExp(PLAY_SESSION_ID + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
   var sessionIdInUrl = sessionIdInUrlRegex.exec(selectedSource.url);
   if (sessionIdInUrl && sessionIdInUrl[1]) {
     // this url has session id (has already been played)
-    selectedSource.url = selectedSource.url.replace(sessionIdInUrl[1], player.config.session.id);
+    selectedSource.url = selectedSource.url.replace(sessionIdInUrl[1], sessionId);
   } else {
     var delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
-    selectedSource.url += delimiter + PLAY_SESSION_ID + player.config.session.id;
+    selectedSource.url += delimiter + PLAY_SESSION_ID + sessionId;
   }
 }
 
@@ -39895,7 +39892,7 @@ function addClientTag(selectedSource) {
  */
 function copyParamsToProgressiveSources(player) {
   player.config.sources.progressive.forEach(function (source) {
-    updateSessionIdInUrl(source, player);
+    updateSessionIdInUrl(source, player.config.session.id);
     addReferrer(source);
     addClientTag(source);
   });
