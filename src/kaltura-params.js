@@ -28,12 +28,10 @@ function handleSessionId(selectedSource: Object = {}, player: Player): void {
  * @private
  */
 function addSessionId(selectedSource: Object, player: Player): void {
-  let delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
   let primaryGUID = Utils.Generator.guid();
   let secondGUID = Utils.Generator.guid();
-  let sessionId = primaryGUID + ':' + secondGUID;
-  selectedSource.url += delimiter + PLAY_SESSION_ID + sessionId;
-  player.sessionId = sessionId;
+  player.sessionId = primaryGUID + ':' + secondGUID;
+  updateSessionIdInUrl(selectedSource, player);
 }
 
 /**
@@ -43,30 +41,28 @@ function addSessionId(selectedSource: Object, player: Player): void {
  * @private
  */
 function updateSessionId(selectedSource: Object, player: Player): void {
-  let newSessionId: string = "";
   let secondGuidInSessionIdRegex = /:((?:[a-z0-9]|-)*)/i;
   let secondGuidInSessionId = secondGuidInSessionIdRegex.exec(player.config.session.id);
   if (secondGuidInSessionId && secondGuidInSessionId[1]) {
-    newSessionId = player.config.session.id.replace(secondGuidInSessionId[1], Utils.Generator.guid());
-    player.sessionId = newSessionId;
+    player.sessionId = player.config.session.id.replace(secondGuidInSessionId[1], Utils.Generator.guid());
   }
-  updateSessionIdInUrl(selectedSource, newSessionId);
+  updateSessionIdInUrl(selectedSource, player);
 }
 
 /**
  * @param {Object} selectedSource - selected source
- * @param {string} newSessionId - new session id
+ * @param {Player} player - player
  * @return {void}
  * @private
  */
-function updateSessionIdInUrl(selectedSource: Object, newSessionId: string): void {
-  let sessionIdInUrlRegex = /playSessionId=((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)/i;
+function updateSessionIdInUrl(selectedSource: Object, player: Player): void {
+  let sessionIdInUrlRegex = new RegExp(PLAY_SESSION_ID + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
   let sessionIdInUrl = sessionIdInUrlRegex.exec(selectedSource.url);
   if (sessionIdInUrl && sessionIdInUrl[1]) { // this url has session id (has already been played)
-    selectedSource.url = selectedSource.url.replace(sessionIdInUrl[1], newSessionId);
+    selectedSource.url = selectedSource.url.replace(sessionIdInUrl[1], player.config.session.id);
   } else {
     let delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
-    selectedSource.url += delimiter + PLAY_SESSION_ID + newSessionId;
+    selectedSource.url += delimiter + PLAY_SESSION_ID + player.config.session.id;
   }
 }
 
@@ -101,7 +97,7 @@ function addClientTag(selectedSource: Object) {
  */
 function copyParamsToProgressiveSources(player: Player) {
   player.config.sources.progressive.forEach((source) => {
-    updateSessionIdInUrl(source, player.config.session.id);
+    updateSessionIdInUrl(source, player);
     addReferrer(source);
     addClientTag(source);
   });
