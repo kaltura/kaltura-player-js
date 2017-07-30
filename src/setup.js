@@ -3,9 +3,11 @@ import {loadPlayer, Utils} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import {addKalturaParams} from './kaltura-params'
+import LoggerFactory from './utils/logger'
 import './assets/style.css'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
+const logger = LoggerFactory.getLogger('Setup');
 
 /**
  * Setup the kaltura player.
@@ -16,13 +18,16 @@ const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 export default function setup(targetId: string, userConfig: ?Object): Promise<*> {
   let response = {};
   let playerConfig = extractPlayerConfig(userConfig);
+  logger.debug('Extract player config', playerConfig);
   let providerConfig = extractProviderConfig(userConfig);
+  logger.debug('Extract provider config', providerConfig);
   return new Promise((resolve, reject) => {
     // Create player container
     let containerId = createKalturaPlayerContainer(targetId);
     // Create player and handle session id
     response.player = loadPlayer(containerId, playerConfig);
     response.player.addEventListener(response.player.Event.SOURCE_SELECTED, (event) => {
+      logger.debug('Add Kaltura params');
       addKalturaParams(event.payload.selectedSource, response.player);
     });
     // Prepare config for the ui manager
@@ -31,16 +36,19 @@ export default function setup(targetId: string, userConfig: ?Object): Promise<*>
     buildUI(response.player, playerConfig);
     // Handle provider config
     if (providerConfig.partnerId) {
+      logger.debug('Partner id provided, creating ovp provider');
       response.provider = new OvpProvider(providerConfig.partnerId, providerConfig.ks, providerConfig.env);
       return response.provider.getConfig(providerConfig.entryId, providerConfig.uiConfId)
         .then(data => {
           Utils.Object.mergeDeep(playerConfig, data);
           response.player.configure(playerConfig);
+          logger.debug('Finish setup, returning response', response);
           resolve(response);
         }).catch(error => {
           reject(error);
         });
     }
+    logger.debug('Finish setup, returning response', response);
     resolve(response);
   });
 }
