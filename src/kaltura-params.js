@@ -5,21 +5,18 @@ const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
 const REFERRER = 'referrer=';
 const CLIENT_TAG = 'clientTag=html5:v';
-const PROGRESSIVE = 'video/mp4';
 
 /**
- * @param {Object} selectedSource - selected source
  * @param {Player} player - player
  * @return {void}
  * @public
  */
-function handleSessionId(selectedSource: Object = {}, player: Player): void {
+function handleSessionId(player: Player): void {
   if (player.config.session && player.config.session.id) { // on change media
     updateSessionId(player);
   } else { // on first playback
     addSessionId(player);
   }
-  updateSessionIdInUrl(selectedSource, player.config.session.id);
 }
 
 /**
@@ -47,74 +44,61 @@ function updateSessionId(player: Player): void {
 }
 
 /**
- * @param {Object} selectedSource - selected source
+ * @param {Object} source - source
  * @param {string} sessionId - session id
  * @return {void}
  * @private
  */
-function updateSessionIdInUrl(selectedSource: Object, sessionId: string): void {
+function updateSessionIdInUrl(source: Object = {}, sessionId: string): void {
   let sessionIdInUrlRegex = new RegExp(PLAY_SESSION_ID + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
-  let sessionIdInUrl = sessionIdInUrlRegex.exec(selectedSource.url);
+  let sessionIdInUrl = sessionIdInUrlRegex.exec(source.url);
   if (sessionIdInUrl && sessionIdInUrl[1]) { // this url has session id (has already been played)
-    selectedSource.url = selectedSource.url.replace(sessionIdInUrl[1], sessionId);
+    source.url = source.url.replace(sessionIdInUrl[1], sessionId);
   } else {
-    let delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
-    selectedSource.url += delimiter + PLAY_SESSION_ID + sessionId;
+    let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
+    source.url += delimiter + PLAY_SESSION_ID + sessionId;
   }
 }
 
 /**
- * @param {Object} selectedSource - selected source
+ * @param {Object} source - source
  * @return {void}
  * @private
  */
-function addReferrer(selectedSource: Object) {
-  if (selectedSource.url.indexOf(REFERRER) === -1) {
-    let delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
-    selectedSource.url += delimiter + REFERRER + btoa(document.referrer || document.URL);
+function addReferrer(source: Object) {
+  if (source.url.indexOf(REFERRER) === -1) {
+    let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
+    source.url += delimiter + REFERRER + btoa(document.referrer || document.URL);
   }
 }
 
 /**
- * @param {Object} selectedSource - selected source
+ * @param {Object} source - source
  * @return {void}
  * @private
  */
-function addClientTag(selectedSource: Object) {
-  if (selectedSource.url.indexOf(CLIENT_TAG) === -1) {
-    let delimiter = selectedSource.url.indexOf('?') === -1 ? '?' : '&';
-    selectedSource.url += delimiter + CLIENT_TAG + VERSION;
+function addClientTag(source: Object) {
+  if (source.url.indexOf(CLIENT_TAG) === -1) {
+    let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
+    source.url += delimiter + CLIENT_TAG + VERSION;
   }
 }
 
 /**
+ * @param {Array<Object>} sources - player sources
  * @param {Player} player - player
  * @return {void}
  * @private
  */
-function copyParamsToProgressiveSources(player: Player) {
-  player.config.sources.progressive.forEach((source) => {
-    updateSessionIdInUrl(source, player.config.session.id);
-    addReferrer(source);
-    addClientTag(source);
-  });
-}
-
-/**
- * @param {Object} selectedSource - selected source
- * @param {Player} player - player
- * @return {void}
- * @private
- */
-function addKalturaParams(selectedSource: Object = {}, player: Player): void {
-  if (typeof selectedSource.url === 'string' && selectedSource.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1) {
-    handleSessionId(selectedSource, player);
-    addReferrer(selectedSource);
-    addClientTag(selectedSource);
-    if (selectedSource.mimetype === PROGRESSIVE) { // in progressive playback we have to update all progressive sources
-      copyParamsToProgressiveSources(player);
+function addKalturaParams(sources: Array<Object> = [], player: Player): void {
+  handleSessionId(player);
+  for (let source of sources) {
+    if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1) {
+      updateSessionIdInUrl(source, player.config.session.id);
+      addReferrer(source);
+      addClientTag(source);
     }
   }
 }
 
-export {addKalturaParams, handleSessionId, addReferrer, addClientTag, copyParamsToProgressiveSources}
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, addReferrer, addClientTag}
