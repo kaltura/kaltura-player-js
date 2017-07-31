@@ -12,25 +12,18 @@
       margin: 0;
       text-align: center;
     }
-    #player-placeholder-container {
+
+    #player-placeholder {
       margin: auto;
       max-width: 854px;
-      position: relative;
-    }
-    #player-placeholder {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 0;
-      padding-bottom: 56.5%;
+      width: 100%;
       background-color: #000;
     }
   </style>
   <script src="./kaltura-player.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="player-placeholder-container">
-  <div id="player-placeholder"></div>
-</div>
+<div id="player-placeholder"></div>
 <script>
   var config = {
     partnerId: 1091,
