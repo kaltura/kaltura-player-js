@@ -1,3 +1,4 @@
+// @flow
 import PolyfillManager from './polyfill-manager'
 import LoggerFactory from '../utils/logger'
 

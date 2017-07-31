@@ -1,3 +1,4 @@
+// @flow
 import LoggerFactory from '../utils/logger'
 
 export default class PolyfillManager {

@@ -85,20 +85,22 @@ function addClientTag(source: Object) {
 }
 
 /**
- * @param {Array<Object>} sources - player sources
+ * @param {Object} sources - player sources
  * @param {Player} player - player
  * @return {void}
  * @private
  */
-function addKalturaParams(sources: Array<Object> = [], player: Player): void {
+function addKalturaParams(sources: Object, player: Player): void {
   handleSessionId(player);
-  for (let source of sources) {
-    if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1) {
-      updateSessionIdInUrl(source, player.config.session.id);
-      addReferrer(source);
-      addClientTag(source);
-    }
-  }
+  Object.keys(sources).forEach((key) => {
+    sources[key].forEach((source) => {
+      if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1) {
+        updateSessionIdInUrl(source, player.config.session.id);
+        addReferrer(source);
+        addClientTag(source);
+      }
+    });
+  });
 }
 
 export {addKalturaParams, handleSessionId, updateSessionIdInUrl, addReferrer, addClientTag}

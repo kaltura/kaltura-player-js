@@ -25,9 +25,8 @@
 <body>
 <div id="player-placeholder"></div>
 <script>
-  var config = {
+  var options = {
     partnerId: 1091,
-    entryId: '0_wifqaipd',
     env: {
       baseUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/",
       beUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/api_v3"
@@ -38,11 +37,15 @@
       }
     }
   };
-  KalturaPlayer.setup('player-placeholder', config)
-    .then(function (response) {
-      window.player = response.player;
-      window.provider = response.provider;
+
+  try {
+    var kalturaPlayer = KalturaPlayer.setup('player-placeholder', options);
+    kalturaPlayer.loadMedia('0_wifqaipd').then(function () {
+      kalturaPlayer.play();
     });
+  } catch (e) {
+    console.error(e.message)
+  }
 </script>
 </body>
 </html>
