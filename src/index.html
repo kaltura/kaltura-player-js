@@ -25,7 +25,7 @@
 <body>
 <div id="player-placeholder"></div>
 <script>
-  var options = {
+  var config = {
     partnerId: 1091,
     env: {
       baseUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/",
@@ -39,7 +39,7 @@
   };
 
   try {
-    var kalturaPlayer = KalturaPlayer.setup('player-placeholder', options);
+    var kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
     kalturaPlayer.loadMedia('0_wifqaipd').then(function () {
       kalturaPlayer.play();
     });
