@@ -1,4 +1,5 @@
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
+import {ValidationErrorType} from '../../src/utils/validation-error'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -14,7 +15,7 @@ describe('error handling', function () {
     try {
       validateProvidersConfig();
     } catch (e) {
-      e.message.should.equal('Must provide initial providers config');
+      e.message.should.equal(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
       done();
     }
   });
@@ -23,7 +24,7 @@ describe('error handling', function () {
     try {
       validateTargetId();
     } catch (e) {
-      e.message.should.equal('Must provide target id');
+      e.message.should.equal(ValidationErrorType.TARGET_ID_REQUIRED);
       done();
     }
   });
@@ -32,7 +33,7 @@ describe('error handling', function () {
     try {
       validateTargetId('my-player-div');
     } catch (e) {
-      e.message.should.equal('Must provide DOM element with id of: my-player-div');
+      e.message.should.equal(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + 'my-player-div');
       done();
     }
   });
@@ -41,7 +42,7 @@ describe('error handling', function () {
     try {
       validateProvidersConfig({});
     } catch (e) {
-      e.message.should.equal('Must provide partner id');
+      e.message.should.equal(ValidationErrorType.PARTNER_ID_REQUIRED);
       done();
     }
   });

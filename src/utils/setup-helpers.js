@@ -1,5 +1,6 @@
 // @flow
 import {Utils} from 'playkit-js'
+import {ValidationErrorType} from './validation-error'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
@@ -10,10 +11,10 @@ const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
  */
 function validateProvidersConfig(config: Object) {
   if (!config) {
-    throw new Error('Must provide initial providers config');
+    throw new Error(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
   }
   if (!config.partnerId) {
-    throw new Error('Must provide partner id');
+    throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
   }
 }
 
@@ -24,10 +25,10 @@ function validateProvidersConfig(config: Object) {
  */
 function validateTargetId(targetId: string) {
   if (!targetId) {
-    throw new Error('Must provide target id');
+    throw new Error(ValidationErrorType.TARGET_ID_REQUIRED);
   }
   if (!document.getElementById(targetId)) {
-    throw new Error('Must provide DOM element with id of: ' + targetId);
+    throw new Error(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
   }
 }
 
