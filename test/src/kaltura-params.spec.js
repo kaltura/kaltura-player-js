@@ -1,8 +1,14 @@
-import {addKalturaParams, handleSessionId, updateSessionIdInUrl, addReferrer, addClientTag} from '../../src/kaltura-params'
+import {
+  addKalturaParams,
+  handleSessionId,
+  updateSessionIdInUrl,
+  addReferrer,
+  addClientTag
+} from '../../src/utils/kaltura-params'
 import {VERSION} from 'playkit-js'
 
 class Player {
-  set sessionId(s){
+  set sessionId(s) {
     this.config.session.id = s;
   }
 }
@@ -15,7 +21,7 @@ describe('addKalturaParams', function () {
     let source1 = {url: 'a/b/c/playmanifest/source'};
     let source2 = {url: 'd/e/f/playmanifest/source?a'};
     player.config = {session: {}, sources: {progressive: [source1, source2]}};
-    addKalturaParams(player.config.sources.progressive, player);
+    addKalturaParams(player.config.sources, player);
     source1.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
     source2.url.should.be.equal('d/e/f/playmanifest/source?a&playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
   });
@@ -23,15 +29,15 @@ describe('addKalturaParams', function () {
   it('should add session id, referrer and client tag for PLAYMANIFEST source', function () {
     let source1 = {url: 'a/b/c/PLAYMANIFEST/source'};
     let source2 = {url: 'd/e/f/PLAYMANIFEST/source?a'};
-    player.config =  {session: {}, sources: {progressive: [source1, source2]}};
-    addKalturaParams(player.config.sources.progressive, player);
+    player.config = {session: {}, sources: {progressive: [source1, source2]}};
+    addKalturaParams(player.config.sources, player);
     source1.url.should.be.equal('a/b/c/PLAYMANIFEST/source?playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
     source2.url.should.be.equal('d/e/f/PLAYMANIFEST/source?a&playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
   });
 
   it('should add nothing for no playManifest source', function () {
     let source1 = {url: 'a/b/c'};
-    addKalturaParams([source1], player);
+    addKalturaParams({progressive: [source1]}, player);
     player.config.session.id.should.be.exist;
     source1.url.should.be.equal('a/b/c');
   });

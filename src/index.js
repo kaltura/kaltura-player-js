@@ -1,7 +1,7 @@
 // @flow
 import 'babel-polyfill' // Important! must be first import to support older browsers compatibility
-import PolyfillManager from './polyfill/polyfill-manager'
-import './polyfill/all'
+import PolyfillManager from './polyfills/polyfill-manager'
+import './polyfills/all'
 
 PolyfillManager.installAll();
 
@@ -22,7 +22,7 @@ import 'playkit-js-dash'
 import 'playkit-js-kanalytics'
 
 // Import setup method
-import setup from './setup'
+import {setup} from './setup'
 
 export {Playkit, OvpProvider, PlaykitUI, setup};
 
