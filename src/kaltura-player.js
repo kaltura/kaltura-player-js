@@ -28,9 +28,22 @@ export default class KalturaPlayer {
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
         let playerConfig = {};
+        const dimensions = this._player.dimensions;
+        data.metadata.poster = getPosterRequestWithDimensions(data.metadata.poster, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(playerConfig, this._player.config, data);
         this._player.configure(playerConfig);
       });
   }
+}
+
+/**
+ *
+ * @param url - the poster url
+ * @param (number} width - the player width in px
+ * @param {number} height - the player height in px
+ * @returns {string}
+ */
+function getPosterRequestWithDimensions(url: string, width: number, height: number): string{
+  return `${url}/height/${height}/width/${width}`;
 }
