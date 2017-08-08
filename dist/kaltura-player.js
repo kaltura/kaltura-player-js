@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 119);
+/******/ 	return __webpack_require__(__webpack_require__.s = 120);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -448,7 +448,7 @@ var ctx      = __webpack_require__(25)
   , IObject  = __webpack_require__(46)
   , toObject = __webpack_require__(9)
   , toLength = __webpack_require__(8)
-  , asc      = __webpack_require__(211);
+  , asc      = __webpack_require__(212);
 module.exports = function(TYPE, $create){
   var IS_MAP        = TYPE == 1
     , IS_FILTER     = TYPE == 2
@@ -1151,7 +1151,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(31);
+var _jsLogger = __webpack_require__(32);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -1345,148 +1345,6 @@ exports.default = Track;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Create an Event work-alike object based on the dictionary.
- * The event should contain all of the same properties from the dict.
- * @param {string} type -
- * @param {Object=} opt_dict -
- * @constructor
- * @extends {Event}
- */
-var FakeEvent = function () {
-
-  /**
-   * Non-standard property read by FakeEventTarget to stop processing listeners.
-   * @type {boolean}
-   */
-
-
-  /** @type {EventTarget} */
-
-
-  /** @const {string} */
-
-
-  /** @const {boolean} */
-
-  /** @const {boolean} */
-  function FakeEvent(type, payload) {
-    _classCallCheck(this, FakeEvent);
-
-    // These Properties below cannot be set by dict.  They are all provided for
-    // compatibility with native events.
-
-    /** @const {boolean} */
-    this.bubbles = false;
-
-    /** @const {boolean} */
-    this.cancelable = false;
-
-    /** @const {boolean} */
-    this.defaultPrevented = false;
-
-    /**
-     * According to MDN, Chrome uses high-res timers instead of epoch time.
-     * Follow suit so that timeStamps on FakeEvents use the same base as
-     * on native Events.
-     * @const {number}
-     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
-     */
-    this.timeStamp = window.performance ? window.performance.now() : Date.now();
-
-    /** @const {string} */
-    this.type = type;
-
-    /** @const {boolean} */
-    this.isTrusted = false;
-
-    /** @type {EventTarget} */
-    this.currentTarget = null;
-
-    /** @type {EventTarget} */
-    this.target = null;
-
-    /**
-     * Non-standard property read by FakeEventTarget to stop processing listeners.
-     * @type {boolean}
-     */
-    this.stopped = false;
-
-    this.payload = payload;
-  }
-
-  /**
-   * Does nothing, since FakeEvents have no default.  Provided for compatibility
-   * with native Events.
-   * @override
-   */
-
-
-  /** @type {EventTarget} */
-
-
-  /** @const {boolean} */
-
-
-  /**
-   * According to MDN, Chrome uses high-res timers instead of epoch time.
-   * Follow suit so that timeStamps on FakeEvents use the same base as
-   * on native Events.
-   * @const {number}
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
-   */
-
-
-  /** @const {boolean} */
-
-
-  _createClass(FakeEvent, [{
-    key: "preventDefault",
-    value: function preventDefault() {}
-
-    /**
-     * Stops processing event listeners for this event.  Provided for compatibility
-     * with native Events.
-     * @override
-     */
-
-  }, {
-    key: "stopImmediatePropagation",
-    value: function stopImmediatePropagation() {
-      this.stopped = true;
-    }
-
-    /**
-     * Does nothing, since FakeEvents do not bubble.  Provided for compatibility
-     * with native Events.
-     * @override
-     */
-
-  }, {
-    key: "stopPropagation",
-    value: function stopPropagation() {}
-  }]);
-
-  return FakeEvent;
-}();
-
-exports.default = FakeEvent;
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1760,6 +1618,83 @@ var _Generator = {
 
 var _Dom = {
   /**
+   * Adds class name to an element
+   * @param {Element} element - an HTML element
+   * @param {string} className - a class name
+   * @returns {void}
+   */
+  addClassName: function addClassName(element, className) {
+    if (element.classList) {
+      element.classList.add(className);
+    } else {
+      if (!_Dom.hasClassName(element, className)) {
+        element.className += className;
+      }
+    }
+  },
+
+
+  /**
+   * Removes class name from an element
+   * @param {Element} element - an HTML element
+   * @param {string} className - a class name
+   * @returns {void}
+   */
+  removeClassName: function removeClassName(element, className) {
+    if (element.classList) {
+      element.classList.remove(className);
+    } else {
+      if (_Dom.hasClassName(element, className)) {
+        element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ').replace(/^\s+|\s+$/g, '');
+      }
+    }
+  },
+
+  /**
+   * Checks if an element has a class name
+   * @param {Element} element - an HTML element
+   * @param {string} className - a class name
+   * @returns {boolean} - weather an element contains a class name
+   */
+  hasClassName: function hasClassName(element, className) {
+    return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);
+  },
+
+  /**
+   * Add element attribute
+   * @param {Element} element - an HTML element
+   * @param {string} name - attribute name
+   * @param {string} value - attribute value
+   * @returns {void}
+   */
+  setAttribute: function setAttribute(element, name, value) {
+    element.setAttribute(name, value);
+  },
+
+  /**
+   * Remove element attribute
+   * @param {Element} element - an HTML element
+   * @param {string} name - attribute name
+   * @returns {void}
+   */
+  removeAttribute: function removeAttribute(element, name) {
+    element.removeAttribute(name);
+  },
+
+  /**
+   * Set element style
+   * @param {Element} element - an HTML element
+   * @param {string} name - style name
+   * @param {string} value - style value
+   * @returns {void}
+   */
+  setStyle: function setStyle(element, name, value) {
+    if (element.style.getPropertyValue(name) !== undefined) {
+      element.style.setProperty(name, value);
+    }
+  },
+
+  /**
    * Adds a node to the end of the list of children of a specified parent node.
    * @param {Element} parent - The parent node.
    * @param {Element} child - The child node.
@@ -1767,6 +1702,21 @@ var _Dom = {
    */
   appendChild: function appendChild(parent, child) {
     if (parent && child && parent.appendChild) {
+      parent.appendChild(child);
+    }
+  },
+
+
+  /**
+   * Prepend HTML element
+   * @param {HTMLElement} child - the child to prepend
+   * @param {HTMLElement} parent - the parent to preprend to
+   * @returns {void}
+   */
+  prependTo: function prependTo(child, parent) {
+    if (parent.firstChild) {
+      parent.insertBefore(child, parent.firstChild);
+    } else {
       parent.appendChild(child);
     }
   },
@@ -1856,6 +1806,148 @@ exports.Object = _Object;
 exports.Generator = _Generator;
 exports.Dom = _Dom;
 exports.Http = _Http;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Create an Event work-alike object based on the dictionary.
+ * The event should contain all of the same properties from the dict.
+ * @param {string} type -
+ * @param {Object=} opt_dict -
+ * @constructor
+ * @extends {Event}
+ */
+var FakeEvent = function () {
+
+  /**
+   * Non-standard property read by FakeEventTarget to stop processing listeners.
+   * @type {boolean}
+   */
+
+
+  /** @type {EventTarget} */
+
+
+  /** @const {string} */
+
+
+  /** @const {boolean} */
+
+  /** @const {boolean} */
+  function FakeEvent(type, payload) {
+    _classCallCheck(this, FakeEvent);
+
+    // These Properties below cannot be set by dict.  They are all provided for
+    // compatibility with native events.
+
+    /** @const {boolean} */
+    this.bubbles = false;
+
+    /** @const {boolean} */
+    this.cancelable = false;
+
+    /** @const {boolean} */
+    this.defaultPrevented = false;
+
+    /**
+     * According to MDN, Chrome uses high-res timers instead of epoch time.
+     * Follow suit so that timeStamps on FakeEvents use the same base as
+     * on native Events.
+     * @const {number}
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
+     */
+    this.timeStamp = window.performance ? window.performance.now() : Date.now();
+
+    /** @const {string} */
+    this.type = type;
+
+    /** @const {boolean} */
+    this.isTrusted = false;
+
+    /** @type {EventTarget} */
+    this.currentTarget = null;
+
+    /** @type {EventTarget} */
+    this.target = null;
+
+    /**
+     * Non-standard property read by FakeEventTarget to stop processing listeners.
+     * @type {boolean}
+     */
+    this.stopped = false;
+
+    this.payload = payload;
+  }
+
+  /**
+   * Does nothing, since FakeEvents have no default.  Provided for compatibility
+   * with native Events.
+   * @override
+   */
+
+
+  /** @type {EventTarget} */
+
+
+  /** @const {boolean} */
+
+
+  /**
+   * According to MDN, Chrome uses high-res timers instead of epoch time.
+   * Follow suit so that timeStamps on FakeEvents use the same base as
+   * on native Events.
+   * @const {number}
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
+   */
+
+
+  /** @const {boolean} */
+
+
+  _createClass(FakeEvent, [{
+    key: "preventDefault",
+    value: function preventDefault() {}
+
+    /**
+     * Stops processing event listeners for this event.  Provided for compatibility
+     * with native Events.
+     * @override
+     */
+
+  }, {
+    key: "stopImmediatePropagation",
+    value: function stopImmediatePropagation() {
+      this.stopped = true;
+    }
+
+    /**
+     * Does nothing, since FakeEvents do not bubble.  Provided for compatibility
+     * with native Events.
+     * @override
+     */
+
+  }, {
+    key: "stopPropagation",
+    value: function stopPropagation() {}
+  }]);
+
+  return FakeEvent;
+}();
+
+exports.default = FakeEvent;
 
 /***/ }),
 /* 4 */
@@ -2102,7 +2194,7 @@ var _multiMap = __webpack_require__(13);
 
 var _multiMap2 = _interopRequireDefault(_multiMap);
 
-var _fakeEvent = __webpack_require__(2);
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -2297,7 +2389,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CUSTOM_EVENTS = exports.HTML5_EVENTS = exports.PLAYER_EVENTS = undefined;
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -2527,7 +2619,11 @@ var _eventManager = __webpack_require__(7);
 
 var _eventManager2 = _interopRequireDefault(_eventManager);
 
-var _fakeEvent = __webpack_require__(2);
+var _posterManager = __webpack_require__(25);
+
+var _posterManager2 = _interopRequireDefault(_posterManager);
+
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -2541,7 +2637,7 @@ var _stateTypes = __webpack_require__(18);
 
 var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -2561,11 +2657,11 @@ var _basePlugin = __webpack_require__(11);
 
 var _basePlugin2 = _interopRequireDefault(_basePlugin);
 
-var _stateManager = __webpack_require__(25);
+var _stateManager = __webpack_require__(26);
 
 var _stateManager2 = _interopRequireDefault(_stateManager);
 
-var _trackTypes = __webpack_require__(27);
+var _trackTypes = __webpack_require__(28);
 
 var _trackTypes2 = _interopRequireDefault(_trackTypes);
 
@@ -2589,15 +2685,15 @@ var _playbackMiddleware = __webpack_require__(23);
 
 var _playbackMiddleware2 = _interopRequireDefault(_playbackMiddleware);
 
-var _playerConfig = __webpack_require__(37);
+var _playerConfig = __webpack_require__(38);
 
 var _playerConfig2 = _interopRequireDefault(_playerConfig);
 
-var _uaParserJs = __webpack_require__(35);
+var _uaParserJs = __webpack_require__(36);
 
 var _uaParserJs2 = _interopRequireDefault(_uaParserJs);
 
-__webpack_require__(32);
+__webpack_require__(33);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2615,6 +2711,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @const
  */
 var CONTAINER_CLASS_NAME = 'playkit-container';
+
+/**
+ /**
+ * The player poster class name.
+ * @type {string}
+ * @const
+ */
+var POSTER_CLASS_NAME = 'playkit-poster';
+
+/**
+ * The engine class name.
+ * @type {string}
+ * @const
+ */
+var ENGINE_CLASS_NAME = 'playkit-engine';
 
 /**
  * The HTML5 player class.
@@ -2639,6 +2750,12 @@ var Player = function (_FakeEventTarget) {
   /**
    * The event manager of the player.
    * @type {EventManager}
+   * @private
+   */
+
+  /**
+   * The poster manager of the player.
+   * @type {PosterManager}
    * @private
    */
 
@@ -2710,13 +2827,15 @@ var Player = function (_FakeEventTarget) {
     _this._tracks = [];
     _this._config = {};
     _this._firstPlay = true;
+    _this._eventManager = new _eventManager2.default();
+    _this._posterManager = new _posterManager2.default();
     _this._stateManager = new _stateManager2.default(_this);
     _this._pluginManager = new _pluginManager2.default();
-    _this._eventManager = new _eventManager2.default();
     _this._playbackMiddleware = new _playbackMiddleware2.default();
     _this._env = new _uaParserJs2.default().getResult();
     _this._createReadyPromise();
     _this._appendPlayerContainer(targetId);
+    _this._appendPosterEl();
     _this.configure(config);
     return _this;
   }
@@ -2743,6 +2862,8 @@ var Player = function (_FakeEventTarget) {
       this._config = Utils.Object.mergeDeep(Utils.Object.isEmptyObject(this._config) ? Player._defaultConfig : this._config, config);
       if (this._selectEngine()) {
         this._appendEngineEl();
+        this._posterManager.setSrc(this._config.metadata.poster);
+        this._posterManager.show();
         this._attachMedia();
         this._maybeLoadPlugins(engine);
         this._handlePlaybackConfig();
@@ -3065,10 +3186,26 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_createPlayerContainer',
     value: function _createPlayerContainer() {
-      this._el = Utils.Dom.createElement("div");
-      this._el.id = Utils.Generator.uniqueId(5);
-      this._el.className = CONTAINER_CLASS_NAME;
-      this._el.setAttribute('tabindex', '-1');
+      var el = this._el = Utils.Dom.createElement("div");
+      Utils.Dom.addClassName(el, CONTAINER_CLASS_NAME);
+      Utils.Dom.setAttribute(el, "id", Utils.Generator.uniqueId(5));
+      Utils.Dom.setAttribute(el, "tabindex", '-1');
+    }
+
+    /**
+     * Appends the poster element to the player's div container.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_appendPosterEl',
+    value: function _appendPosterEl() {
+      if (this._el != null) {
+        var el = this._posterManager.getElement();
+        Utils.Dom.addClassName(el, POSTER_CLASS_NAME);
+        Utils.Dom.appendChild(this._el, el);
+      }
     }
 
     /**
@@ -3081,7 +3218,12 @@ var Player = function (_FakeEventTarget) {
     key: '_appendEngineEl',
     value: function _appendEngineEl() {
       if (this._el != null && this._engine != null) {
-        Utils.Dom.appendChild(this._el, this._engine.getVideoElement());
+        var engineEl = this._engine.getVideoElement();
+        var classname = '' + ENGINE_CLASS_NAME;
+        Utils.Dom.addClassName(engineEl, classname);
+        var classnameWithId = ENGINE_CLASS_NAME + '-' + this._engine.id;
+        Utils.Dom.addClassName(engineEl, classnameWithId);
+        Utils.Dom.prependTo(engineEl, this._el);
       }
     }
 
@@ -3098,15 +3240,22 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
+     * Get the dimensions of the player.
+     * @returns {{width: number, height: number}} - The dimensions of the player.
+     * @public
+     */
+
+  }, {
+    key: 'getTracks',
+
+
+    /**
      * Returns the tracks according to the filter. if no filter given returns the all tracks.
      * @function getTracks
      * @param {string} [type] - a tracks filter, should be 'video', 'audio' or 'text'.
      * @returns {Array<Track>} - The parsed tracks.
      * @public
      */
-
-  }, {
-    key: 'getTracks',
     value: function getTracks(type) {
       return this._getTracksByType(type);
     }
@@ -3266,6 +3415,8 @@ var Player = function (_FakeEventTarget) {
       if (this._firstPlay) {
         this._firstPlay = false;
         this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FIRST_PLAY));
+
+        this._posterManager.hide();
       }
     }
 
@@ -3433,6 +3584,25 @@ var Player = function (_FakeEventTarget) {
      * @param {boolean} playsinline - Whether the video should plays in line.
      */
 
+  }, {
+    key: 'dimensions',
+    get: function get() {
+      return {
+        width: this._el.clientWidth,
+        height: this._el.clientHeight
+      };
+    }
+
+    /**
+     * Get the poster source URL
+     * @returns {string} - the poster image URL
+     */
+
+  }, {
+    key: 'poster',
+    get: function get() {
+      return this._posterManager.src;
+    }
   }, {
     key: 'env',
     get: function get() {
@@ -3782,7 +3952,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -3794,7 +3964,7 @@ var _playerError = __webpack_require__(14);
 
 var _playerError2 = _interopRequireDefault(_playerError);
 
-var _fakeEvent = __webpack_require__(2);
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -3989,7 +4159,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fakeEvent = __webpack_require__(2);
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -4372,7 +4542,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fakeEvent = __webpack_require__(2);
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -5087,7 +5257,7 @@ var _fakeEventTarget = __webpack_require__(12);
 
 var _fakeEventTarget2 = _interopRequireDefault(_fakeEventTarget);
 
-var _fakeEvent = __webpack_require__(2);
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -5113,7 +5283,7 @@ var _textTrack = __webpack_require__(5);
 
 var _textTrack2 = _interopRequireDefault(_textTrack);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -5128,17 +5298,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * The engine video element class name.
- * @type {string}
- * @const
- */
-var VIDEO_ELEMENT_CLASS_NAME = 'playkit-engine-html5';
-
-/**
  * Html5 engine for playback.
  * @classdesc
  */
-
 var Html5 = function (_FakeEventTarget) {
   _inherits(Html5, _FakeEventTarget);
 
@@ -5325,7 +5487,6 @@ var Html5 = function (_FakeEventTarget) {
     value: function _createVideoElement() {
       this._el = Utils.Dom.createElement("video");
       this._el.id = Utils.Generator.uniqueId(5);
-      this._el.className = VIDEO_ELEMENT_CLASS_NAME;
       this._el.controls = false;
     }
 
@@ -5984,9 +6145,9 @@ var _baseMediaSourceAdapter = __webpack_require__(15);
 
 var _baseMediaSourceAdapter2 = _interopRequireDefault(_baseMediaSourceAdapter);
 
-var _resolution = __webpack_require__(28);
+var _resolution = __webpack_require__(29);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -6836,7 +6997,7 @@ var _textTrack = __webpack_require__(5);
 
 var _textTrack2 = _interopRequireDefault(_textTrack);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -6906,6 +7067,127 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _util = __webpack_require__(2);
+
+var Utils = _interopRequireWildcard(_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PosterManager = function () {
+  /**
+   * Poster image URL
+   * @type {string}
+   * @private
+   */
+  function PosterManager() {
+    _classCallCheck(this, PosterManager);
+
+    this._createEl();
+  }
+
+  /**
+   * Set the poster source URL
+   * @param {string} posterUrl - the poster image URL
+   * @returns {void}
+   */
+
+  /**
+   * The poster HTML Div element.
+   * @type {HTMLDivElement}
+   * @private
+   */
+
+
+  _createClass(PosterManager, [{
+    key: "setSrc",
+    value: function setSrc(posterUrl) {
+      if (posterUrl) {
+        this._posterUrl = posterUrl;
+        this._el.style.backgroundImage = "url(\"" + posterUrl + "\")";
+      }
+    }
+
+    /**
+     * Get the poster source URL
+     * @returns {string} - the poster image URL
+     */
+
+  }, {
+    key: "getElement",
+
+
+    /**
+     * Get the poster HTML Div element
+     * @returns {HTMLDivElement} - Poster HTML Dom element
+     */
+    value: function getElement() {
+      return this._el;
+    }
+
+    /**
+     * Create the HTML Div element of the poster
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: "_createEl",
+    value: function _createEl() {
+      if (this._el === undefined) {
+        var el = this._el = Utils.Dom.createElement("div");
+        Utils.Dom.setAttribute(el, "id", Utils.Generator.uniqueId(5));
+        Utils.Dom.setAttribute(el, "tabindex", '-1');
+      }
+    }
+
+    /**
+     * Show the poster image
+     * @returns {void}
+     */
+
+  }, {
+    key: "show",
+    value: function show() {
+      Utils.Dom.setStyle(this._el, "display", "");
+    }
+
+    /**
+     * Hide the poster image
+     * @returns {void}
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      Utils.Dom.setStyle(this._el, "display", "none");
+    }
+  }, {
+    key: "src",
+    get: function get() {
+      return this._posterUrl;
+    }
+  }]);
+
+  return PosterManager;
+}();
+
+exports.default = PosterManager;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _player = __webpack_require__(9);
 
 var _player2 = _interopRequireDefault(_player);
@@ -6914,7 +7196,7 @@ var _eventManager = __webpack_require__(7);
 
 var _eventManager2 = _interopRequireDefault(_eventManager);
 
-var _state = __webpack_require__(26);
+var _state = __webpack_require__(27);
 
 var _state2 = _interopRequireDefault(_state);
 
@@ -6924,7 +7206,7 @@ var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
 var _events = __webpack_require__(8);
 
-var _fakeEvent = __webpack_require__(2);
+var _fakeEvent = __webpack_require__(3);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -6941,11 +7223,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * This class responsible to manage all the state machine of the player.
  * @classdesc
- */
-
-
-/**
- * Define a transition object.
  */
 var StateManager = function () {
 
@@ -7194,7 +7471,7 @@ var StateManager = function () {
 exports.default = StateManager;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7276,7 +7553,7 @@ var State = function () {
 exports.default = State;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7294,7 +7571,7 @@ var TRACK_TYPES = {
 exports.default = TRACK_TYPES;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7420,21 +7697,21 @@ function getSuitableSourceForResolution(tracks, width, height) {
 exports.getSuitableSourceForResolution = getSuitableSourceForResolution;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(30)(undefined);
+exports = module.exports = __webpack_require__(31)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n*[class^=\"playkit-engine-\"] {\n  width: 100%;\n  height: 100%;\n}\n", ""]);
+exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 /*
@@ -7516,7 +7793,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -7783,13 +8060,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(29);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7797,7 +8074,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(33)(content, options);
+var update = __webpack_require__(34)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -7814,7 +8091,7 @@ if(false) {
 }
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -7860,7 +8137,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(34);
+var	fixUrls = __webpack_require__(35);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -8173,7 +8450,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 
@@ -8268,7 +8545,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -9189,7 +9466,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
         exports.UAParser = UAParser;
     } else {
         // requirejs env (optional)
-        if ("function" === FUNC_TYPE && __webpack_require__(36)) {
+        if ("function" === FUNC_TYPE && __webpack_require__(37)) {
             !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
                 return UAParser;
             }.call(exports, __webpack_require__, exports, module),
@@ -9225,7 +9502,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -9234,10 +9511,13 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = {
+	"metadata": {
+		"poster": ""
+	},
 	"playback": {
 		"playsinline": false,
 		"preload": "none",
@@ -10807,7 +11087,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(303);
+var _jsLogger = __webpack_require__(304);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -11685,6 +11965,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -11712,7 +11995,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11902,6 +12185,75 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _multiRequestBuilder = __webpack_require__(6);
+
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+var SERVICE_NAME = "multirequest";
+
+/**
+ * Base for all ovp services
+ * @classdesc
+ */
+
+var OvpService = function () {
+  function OvpService() {
+    _classCallCheck(this, OvpService);
+  }
+
+  _createClass(OvpService, null, [{
+    key: 'getMultirequest',
+
+    /**
+     * Gets a new instance of MultiRequestBuilder with ovp params
+     * @function getMultirequest
+     * @param {string} ks The ks
+     * @param {string} partnerId The partner ID
+     * @returns {MultiRequestBuilder} The multi request builder
+     * @static
+     */
+    value: function getMultirequest(ks, partnerId) {
+      var ovpParams = config.serviceParams;
+      Object.assign(ovpParams, { ks: ks });
+      if (partnerId) {
+        Object.assign(ovpParams, { partnerId: partnerId });
+      }
+      var multiReq = new _multiRequestBuilder2.default();
+      multiReq.method = "POST";
+      multiReq.service = SERVICE_NAME;
+      multiReq.baseUrl = config.beUrl;
+      multiReq.params = ovpParams;
+      return multiReq;
+    }
+  }]);
+
+  return OvpService;
+}();
+
+exports.default = OvpService;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -11976,75 +12328,6 @@ function ServiceError(code, message) {
 ;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _multiRequestBuilder = __webpack_require__(6);
-
-var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-var SERVICE_NAME = "multirequest";
-
-/**
- * Base for all ovp services
- * @classdesc
- */
-
-var OvpService = function () {
-  function OvpService() {
-    _classCallCheck(this, OvpService);
-  }
-
-  _createClass(OvpService, null, [{
-    key: 'getMultirequest',
-
-    /**
-     * Gets a new instance of MultiRequestBuilder with ovp params
-     * @function getMultirequest
-     * @param {string} ks The ks
-     * @param {string} partnerId The partner ID
-     * @returns {MultiRequestBuilder} The multi request builder
-     * @static
-     */
-    value: function getMultirequest(ks, partnerId) {
-      var ovpParams = config.serviceParams;
-      Object.assign(ovpParams, { ks: ks });
-      if (partnerId) {
-        Object.assign(ovpParams, { partnerId: partnerId });
-      }
-      var multiReq = new _multiRequestBuilder2.default();
-      multiReq.method = "POST";
-      multiReq.service = SERVICE_NAME;
-      multiReq.baseUrl = config.beUrl;
-      multiReq.params = ovpParams;
-      return multiReq;
-    }
-  }]);
-
-  return OvpService;
-}();
-
-exports.default = OvpService;
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12058,7 +12341,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(7);
+var _jsLogger = __webpack_require__(8);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -12289,7 +12572,7 @@ var _requestBuilder = __webpack_require__(0);
 
 var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
 
-var _baseServiceResult = __webpack_require__(2);
+var _baseServiceResult = __webpack_require__(3);
 
 var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
 
@@ -12434,6 +12717,96 @@ exports.MultiRequestResult = function MultiRequestResult(response) {
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mediaSource = __webpack_require__(11);
+
+var _mediaSource2 = _interopRequireDefault(_mediaSource);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Container for the media sources aggregated by stream format.
+ * @classdesc
+ */
+var MediaSources = function () {
+
+  /**
+   * @constructor
+   */
+
+  /**
+   * Dash media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+  function MediaSources() {
+    _classCallCheck(this, MediaSources);
+
+    this.progressive = [];
+    this.dash = [];
+    this.hls = [];
+  }
+
+  /**
+   * Maps the source to one of the containers according to his media format.
+   * @param {MediaSource} source - The source to add to one of the containers.
+   * @param {MediaFormat} mediaFormat - The media format of the source.
+   * @returns {void}
+   */
+
+  /**
+   * Hls media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+
+  /**
+   * Progressive download media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+
+
+  _createClass(MediaSources, [{
+    key: 'map',
+    value: function map(source, mediaFormat) {
+      if (mediaFormat) {
+        switch (mediaFormat.name) {
+          case 'mp4':
+            this.progressive.push(source);
+            break;
+          case 'dash':
+            this.dash.push(source);
+            break;
+          case 'hls':
+            this.hls.push(source);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }]);
+
+  return MediaSources;
+}();
+
+exports.default = MediaSources;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12700,96 +13073,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _mediaSource = __webpack_require__(13);
-
-var _mediaSource2 = _interopRequireDefault(_mediaSource);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Container for the media sources aggregated by stream format.
- * @classdesc
- */
-var MediaSources = function () {
-
-  /**
-   * @constructor
-   */
-
-  /**
-   * Dash media sources container.
-   * @type {Array<MediaSource>}
-   * @public
-   */
-  function MediaSources() {
-    _classCallCheck(this, MediaSources);
-
-    this.progressive = [];
-    this.dash = [];
-    this.hls = [];
-  }
-
-  /**
-   * Maps the source to one of the containers according to his media format.
-   * @param {MediaSource} source - The source to add to one of the containers.
-   * @param {MediaFormat} mediaFormat - The media format of the source.
-   * @returns {void}
-   */
-
-  /**
-   * Hls media sources container.
-   * @type {Array<MediaSource>}
-   * @public
-   */
-
-  /**
-   * Progressive download media sources container.
-   * @type {Array<MediaSource>}
-   * @public
-   */
-
-
-  _createClass(MediaSources, [{
-    key: 'map',
-    value: function map(source, mediaFormat) {
-      if (mediaFormat) {
-        switch (mediaFormat.name) {
-          case 'mp4':
-            this.progressive.push(source);
-            break;
-          case 'dash':
-            this.dash.push(source);
-            break;
-          case 'hls':
-            this.hls.push(source);
-            break;
-          default:
-            break;
-        }
-      }
-    }
-  }]);
-
-  return MediaSources;
-}();
-
-exports.default = MediaSources;
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12800,9 +13083,381 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _enums = __webpack_require__(5);
+
+var _mediaSources = __webpack_require__(7);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media entry
+ * @classdesc
+ */
+var MediaEntry =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - entry type
+ * @type {MediaEntryType}
+ */
+
+/**
+ * @member - entry sources
+ * @type {MediaSources}
+ */
+
+
+/**
+ * @member - entry ID
+ * @type {string}
+ */
+function MediaEntry() {
+  _classCallCheck(this, MediaEntry);
+
+  this.metaData = new Map();
+  this.type = _enums.MediaEntryTypes.Unknown;
+}
+/**
+ * @member - entry metadata
+ * @type {Object}
+ */
+
+/**
+ * @member - entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - entry name
+ * @type {string}
+ */
+;
+
+exports.default = MediaEntry;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Drm data
+ * @classdesc
+ */
+var Drm =
+
+/**
+ * @constructor
+ * @param {string} licenseUrl - the license URL
+ * @param {Scheme} scheme - the drm scheme
+ */
+
+
+/**
+ * @member - license URL
+ * @type {string}
+ */
+function Drm(licenseUrl, scheme) {
+  _classCallCheck(this, Drm);
+
+  this.licenseUrl = licenseUrl;
+  this.scheme = scheme;
+}
+/**
+ * @member - drm scheme
+ * @type {Scheme}
+ */
+;
+
+exports.default = Drm;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _drm = __webpack_require__(10);
+
+var _drm2 = _interopRequireDefault(_drm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media source
+ * @classdesc
+ */
+var MediaSource =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - media source height
+ * @type {number}
+ */
+
+/**
+ * @member - media source bandwidth
+ * @type {number}
+ */
+
+/**
+ * @member - media source mimetype
+ * @type {string}
+ */
+
+/**
+ * @member - media source ID
+ * @type {string}
+ */
+function MediaSource() {
+  _classCallCheck(this, MediaSource);
+}
+/**
+ * @member - media source label
+ * @type {string}
+ */
+
+/**
+ * @member - media source width
+ * @type {number}
+ */
+
+/**
+ * @member - media source drm data
+ * @type {Array<Drm>}
+ */
+
+/**
+ * @member - media source URL
+ * @type {string}
+ */
+;
+
+exports.default = MediaSource;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE FlavorAsset
+ * @classdesc
+ */
+var KalturaFlavorAsset =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The language of the flavor asset
+ * @type {Status}
+ */
+
+/**
+ *@member - The video codec
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is playable in KDP
+ * @type {boolean}
+ */
+
+/**
+ * @member - The frame rate (in FPS) of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The width of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member -The file extension
+ * @type {string}
+ */
+
+/**
+ * @member - The ID of the Flavor Asset
+ * @type {string}
+ */
+function KalturaFlavorAsset(data) {
+  _classCallCheck(this, KalturaFlavorAsset);
+
+  this.id = data.id;
+  this.flavorParamsId = data.flavorParamsId;
+  this.fileExt = data.fileExt;
+  this.bitrate = data.bitrate;
+  this.width = data.width;
+  this.height = data.height;
+  this.id = data.id;
+  this.frameRate = data.frameRate;
+  this.isOriginal = data.isOriginal;
+  this.isWeb = data.isWeb;
+  this.containerFormat = data.containerFormat;
+  this.videoCodecId = data.videoCodecId;
+  this.status = data.status;
+  this.language = data.language;
+  this.label = data.label;
+}
+/**
+ * @member - The label of the flavor asset
+ * @type {string}
+ */
+
+/**
+ * @member - The status of the Flavor Asset
+ * @type {string}
+ */
+
+/**
+ * @member - The container format
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is the original source
+ * @type {number}
+ */
+
+/**
+ * @member - The height of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The overall bitrate (in KBits) of the Flavor Asset
+ *  @type {string}
+ */
+
+/**
+ * @member -The Flavor Params used to create this Flavor Asset
+ * @type {string}
+ */
+;
+
+exports.default = KalturaFlavorAsset;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMetadata = __webpack_require__(28);
+
+var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Metadata list response
+ * @classdesc
+ */
+var KalturaMetadataListResponse = function (_ServiceResult) {
+  _inherits(KalturaMetadataListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The response
+   */
+  function KalturaMetadataListResponse(responseObj) {
+    _classCallCheck(this, KalturaMetadataListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.metas = [];
+        responseObj.objects.map(function (meta) {
+          return _this.metas.push(new _kalturaMetadata2.default(meta));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member -The mata data array
+   * @type {Array<KalturaMetadata>}
+   */
+
+
+  return KalturaMetadataListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaMetadataListResponse;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _kalturaDrmPlaybackPluginData = __webpack_require__(17);
+var _kalturaDrmPlaybackPluginData = __webpack_require__(26);
 
 var _kalturaDrmPlaybackPluginData2 = _interopRequireDefault(_kalturaDrmPlaybackPluginData);
 
@@ -12925,378 +13580,6 @@ var KalturaPlaybackSource = function () {
 exports.default = KalturaPlaybackSource;
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _enums = __webpack_require__(5);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE FlavorAsset
- * @classdesc
- */
-var KalturaFlavorAsset =
-
-/**
- * @constructor
- * @param {Object} data The json response
- */
-
-/**
- * @member - The language of the flavor asset
- * @type {Status}
- */
-
-/**
- *@member - The video codec
- * @type {boolean}
- */
-
-/**
- * @member - True if this Flavor Asset is playable in KDP
- * @type {boolean}
- */
-
-/**
- * @member - The frame rate (in FPS) of the Flavor Asset
- * @type {number}
- */
-
-/**
- * @member - The width of the Flavor Asset
- * @type {number}
- */
-
-/**
- * @member -The file extension
- * @type {string}
- */
-
-/**
- * @member - The ID of the Flavor Asset
- * @type {string}
- */
-function KalturaFlavorAsset(data) {
-  _classCallCheck(this, KalturaFlavorAsset);
-
-  this.id = data.id;
-  this.flavorParamsId = data.flavorParamsId;
-  this.fileExt = data.fileExt;
-  this.bitrate = data.bitrate;
-  this.width = data.width;
-  this.height = data.height;
-  this.id = data.id;
-  this.frameRate = data.frameRate;
-  this.isOriginal = data.isOriginal;
-  this.isWeb = data.isWeb;
-  this.containerFormat = data.containerFormat;
-  this.videoCodecId = data.videoCodecId;
-  this.status = data.status;
-  this.language = data.language;
-  this.label = data.label;
-}
-/**
- * @member - The label of the flavor asset
- * @type {string}
- */
-
-/**
- * @member - The status of the Flavor Asset
- * @type {string}
- */
-
-/**
- * @member - The container format
- * @type {boolean}
- */
-
-/**
- * @member - True if this Flavor Asset is the original source
- * @type {number}
- */
-
-/**
- * @member - The height of the Flavor Asset
- * @type {number}
- */
-
-/**
- * @member - The overall bitrate (in KBits) of the Flavor Asset
- *  @type {string}
- */
-
-/**
- * @member -The Flavor Params used to create this Flavor Asset
- * @type {string}
- */
-;
-
-exports.default = KalturaFlavorAsset;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-var _kalturaMetadata = __webpack_require__(18);
-
-var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Ovp BE Metadata list response
- * @classdesc
- */
-var KalturaMetadataListResponse = function (_ServiceResult) {
-  _inherits(KalturaMetadataListResponse, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} responseObj The response
-   */
-  function KalturaMetadataListResponse(responseObj) {
-    _classCallCheck(this, KalturaMetadataListResponse);
-
-    var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
-
-    if (!_this.hasError) {
-      _this.totalCount = responseObj.totalCount;
-      if (_this.totalCount > 0) {
-        _this.metas = [];
-        responseObj.objects.map(function (meta) {
-          return _this.metas.push(new _kalturaMetadata2.default(meta));
-        });
-      }
-    }
-    return _this;
-  }
-  /**
-   * @member -The mata data array
-   * @type {Array<KalturaMetadata>}
-   */
-
-
-  return KalturaMetadataListResponse;
-}(_baseServiceResult2.default);
-
-exports.default = KalturaMetadataListResponse;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _enums = __webpack_require__(5);
-
-var _mediaSources = __webpack_require__(8);
-
-var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Media entry
- * @classdesc
- */
-var MediaEntry =
-
-/**
- * @constructor
- */
-
-/**
- * @member - entry type
- * @type {MediaEntryType}
- */
-
-/**
- * @member - entry sources
- * @type {MediaSources}
- */
-
-
-/**
- * @member - entry ID
- * @type {string}
- */
-function MediaEntry() {
-  _classCallCheck(this, MediaEntry);
-
-  this.metaData = new Map();
-  this.type = _enums.MediaEntryTypes.Unknown;
-}
-/**
- * @member - entry metadata
- * @type {Map<string,string>}
- */
-
-/**
- * @member - entry duration
- * @type {number}
- */
-
-/**
- * @member - entry name
- * @type {string}
- */
-;
-
-exports.default = MediaEntry;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _drm = __webpack_require__(14);
-
-var _drm2 = _interopRequireDefault(_drm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Media source
- * @classdesc
- */
-var MediaSource =
-
-/**
- * @constructor
- */
-
-/**
- * @member - media source height
- * @type {number}
- */
-
-/**
- * @member - media source bandwidth
- * @type {number}
- */
-
-/**
- * @member - media source mimetype
- * @type {string}
- */
-
-/**
- * @member - media source ID
- * @type {string}
- */
-function MediaSource() {
-  _classCallCheck(this, MediaSource);
-}
-/**
- * @member - media source label
- * @type {string}
- */
-
-/**
- * @member - media source width
- * @type {number}
- */
-
-/**
- * @member - media source drm data
- * @type {Array<Drm>}
- */
-
-/**
- * @member - media source URL
- * @type {string}
- */
-;
-
-exports.default = MediaSource;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _enums = __webpack_require__(5);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Drm data
- * @classdesc
- */
-var Drm =
-
-/**
- * @constructor
- * @param {string} licenseUrl - the license URL
- * @param {Scheme} scheme - the drm scheme
- */
-
-
-/**
- * @member - license URL
- * @type {string}
- */
-function Drm(licenseUrl, scheme) {
-  _classCallCheck(this, Drm);
-
-  this.licenseUrl = licenseUrl;
-  this.scheme = scheme;
-}
-/**
- * @member - drm scheme
- * @type {Scheme}
- */
-;
-
-exports.default = Drm;
-
-/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13306,220 +13589,152 @@ exports.default = Drm;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.OvpProvider = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _logger = __webpack_require__(4);
+var _ovpService = __webpack_require__(2);
 
-var _logger2 = _interopRequireDefault(_logger);
+var _ovpService2 = _interopRequireDefault(_ovpService);
 
-var _providerParser = __webpack_require__(16);
+var _multiRequestBuilder = __webpack_require__(6);
 
-var _providerParser2 = _interopRequireDefault(_providerParser);
-
-var _dataLoaderManager = __webpack_require__(22);
-
-var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
-
-var _mediaEntryLoader = __webpack_require__(23);
-
-var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
-
-var _sessionLoader = __webpack_require__(31);
-
-var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
-
-var _uiConfigLoader = __webpack_require__(33);
-
-var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _mediaEntry = __webpack_require__(12);
-
-var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
-
-var _mediaSources = __webpack_require__(8);
-
-var _mediaSources2 = _interopRequireDefault(_mediaSources);
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @constant
- */
-var logger = _logger2.default.get("OvpProvider");
-
-/**
- * Ovp provider
+ * Data loaders manager
  * @classdesc
  */
-var OvpProvider = exports.OvpProvider = function () {
+var DataLoaderManager = function () {
 
   /**
    * @constructor
-   * @param {number} partnerID The partner ID
-   * @param {string} [ks=""]  The provider ks (has empty string as default value)
-   * @param {Object} [config]  The provider config(optional)
+   * @param {string} partnerID Then partner ID
+   * @param {string} ks The ks
    */
 
   /**
-   * @member - uiConf ID
-   * @type {number}
+   * @member - Lodaers response map index
+   * @type {Map<string,Array<number>>}
    * @private
+   * @static
    */
-
-  /**
-   * @member - partner ID
-   * @type {number}
-   */
-  function OvpProvider(partnerID) {
+  function DataLoaderManager(partnerID) {
     var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-    var config = arguments[2];
 
-    _classCallCheck(this, OvpProvider);
+    _classCallCheck(this, DataLoaderManager);
 
-    this.partnerID = partnerID;
-    this.ks = ks;
-    this._isAnonymous = !this.ks;
-    _config2.default.set(config);
+    this._loaders = new Map();
+
+    this._multiRequest = _ovpService2.default.getMultirequest(ks, partnerID);
   }
 
   /**
-   * Returns player json configuration
-   * @function getConfig
-   * @param {string} entryId The entry ID
-   * @param {number} uiConfId The uiConf ID
-   * @returns {Promise} The provider config object as promise
+   * Add loader too execution loaders map
+   * @function
+   * @param {Function} loader Loader to add
+   * @param {Object} params Loader params
+   * @returns {void}
    */
 
   /**
-   * @member - Data loader
-   * @type {DataLoaderManager}
+   * @member - Loaders to execute
+   * @type {Map<string,Function>}
    * @private
    */
 
   /**
-   * @member - is anonymous
-   * @type {boolean}
+   * @member - Loaders multi request
+   * @type {MultiRequestBuilder}
    * @private
    */
 
   /**
-   * @member - ks
-   * @type {string}
+   * @member - Loaders multi response
+   * @type {MultiRequestResult}
+   * @private
    */
 
 
-  _createClass(OvpProvider, [{
-    key: 'getConfig',
-    value: function getConfig(entryId, uiConfId) {
+  _createClass(DataLoaderManager, [{
+    key: 'add',
+    value: function add(loader, params) {
       var _this = this;
 
-      if (uiConfId != null) {
-        this._uiConfId = uiConfId;
+      var execution_loader = new loader(params);
+      if (execution_loader.isValid()) {
+        this._loaders.set(loader.name, execution_loader);
+        //Get the start index from the multiReqeust before adding current execution_loader requests
+        var startIndex = this._multiRequest.requests.length;
+        //Get the requests
+        var requests = execution_loader.requests;
+        //Add requests to muktiRequest queue
+        requests.forEach(function (request) {
+          _this._multiRequest.add(request);
+        });
+        //Create range array of current execution_loader requests
+        var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
+          return index + startIndex;
+        });
+        //Add to map
+        DataLoaderManager._loadersResponseMap.set(loader.name, executionLoaderResponseMap);
       }
-      this._dataLoader = new _dataLoaderManager2.default(this.partnerID, this.ks);
+    }
+
+    /**
+     * Get data from all loaders using multi request
+     * @function
+     * @returns {Promise} Promise
+     */
+
+  }, {
+    key: 'fetchData',
+    value: function fetchData() {
+      var _this2 = this;
+
       return new Promise(function (resolve, reject) {
-        if (_this.validateParams(entryId, uiConfId)) {
-          var ks = _this.ks;
-          if (!ks) {
-            ks = "{1:result:ks}";
-            _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
+        _this2._multiRequest.execute().then(function (response) {
+          _this2._multiResponse = response;
+          if (!response.success) {
+            reject(response);
+          } else {
+            var preparedData = _this2.prepareData(response);
+            if (preparedData.success) {
+              resolve(_this2._loaders);
+            } else {
+              reject({ success: false, data: preparedData.error });
+            }
           }
-          _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
-          _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
-          _this._dataLoader.fetchData().then(function (response) {
-            resolve(_this.parseDataFromResponse(response));
-          }, function (err) {
-            reject(err);
-          });
-        } else {
-          reject({ success: false, data: "Missing mandatory parameter" });
-        }
+        }, function (err) {
+          reject(err);
+        });
       });
     }
-
-    /**
-     * Parses BE data to json configuration object
-     * @function parseDataFromResponse
-     * @param {Map<string,Function>} data The data to parse
-     * @returns {Object} The parsed config object
-     */
-
   }, {
-    key: 'parseDataFromResponse',
-    value: function parseDataFromResponse(data) {
-      logger.debug("Data parsing started");
-      var config = {
-        id: "",
-        name: "",
-        session: {
-          partnerID: this.partnerID,
-          uiConfID: this._uiConfId
-        },
-        sources: new _mediaSources2.default(),
-        duration: 0,
-        type: "Unknown",
-        metadata: {},
-        plugins: {}
-      };
-      if (data != null) {
-        if (data.has(_sessionLoader2.default.name)) {
-          var sessionLoader = data.get(_sessionLoader2.default.name);
-          if (sessionLoader != null && sessionLoader.response != null) {
-            this.ks = sessionLoader.response;
-            config.session.ks = this.ks;
+    key: 'prepareData',
+    value: function prepareData(response) {
+      this._loaders.forEach(function (loader, name) {
+        var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
+        try {
+          if (loaderDataIndexes != null) {
+            loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
           }
+        } catch (err) {
+          return { success: false, error: err };
         }
-        if (data.has(_uiConfigLoader2.default.name)) {
-          var uiConfLoader = data.get(_uiConfigLoader2.default.name);
-          var pluginsJson = {};
-          if (uiConfLoader != null) {
-            pluginsJson = uiConfLoader.response;
-          }
-          config.plugins = pluginsJson;
-        }
-        if (data.has(_mediaEntryLoader2.default.name)) {
-          var mediaLoader = data.get(_mediaEntryLoader2.default.name);
-          if (mediaLoader != null && mediaLoader.response != null) {
-            var mediaEntry = _providerParser2.default.getMediaEntry(this._isAnonymous ? "" : this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
-            config.id = mediaEntry.id;
-            config.name = mediaEntry.name;
-            config.sources = mediaEntry.sources;
-            config.duration = mediaEntry.duration;
-            config.type = mediaEntry.type;
-            config.metadata = mediaEntry.metaData;
-          }
-        }
-      }
-      logger.debug("Data parsing finished", config);
-      return config;
-    }
-
-    /**
-     * Parameters validation function
-     * @param {string} entryId The entry ID
-     * @param {number} uiConfId The uiConfID
-     * @returns {boolean} Is valid params
-     */
-
-  }, {
-    key: 'validateParams',
-    value: function validateParams(entryId, uiConfId) {
-      return !!entryId || !!uiConfId;
+      });
+      return { success: true, data: this._loaders };
     }
   }]);
 
-  return OvpProvider;
+  return DataLoaderManager;
 }();
 
-exports.default = OvpProvider;
+DataLoaderManager._loadersResponseMap = new Map();
+exports.default = DataLoaderManager;
 
 /***/ }),
 /* 16 */
@@ -13534,23 +13749,384 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _kalturaPlaybackSource = __webpack_require__(9);
+var _requestBuilder = __webpack_require__(0);
 
-var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
 
-var _kalturaFlavorAsset = __webpack_require__(10);
+var _baseEntryService = __webpack_require__(32);
 
-var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
 
-var _kalturaMetadataListResponse = __webpack_require__(11);
+var _metaDataService = __webpack_require__(33);
+
+var _metaDataService2 = _interopRequireDefault(_metaDataService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _kalturaPlaybackContext = __webpack_require__(29);
+
+var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
+
+var _kalturaMetadataListResponse = __webpack_require__(13);
 
 var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
 
-var _playSourceUrlBuilder = __webpack_require__(19);
+var _kalturaBaseEntryListResponse = __webpack_require__(25);
+
+var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var MediaEntryLoader = function () {
+  _createClass(MediaEntryLoader, null, [{
+    key: 'name',
+    get: function get() {
+      return "media";
+    }
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function MediaEntryLoader(params) {
+    _classCallCheck(this, MediaEntryLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._entryId = params.entryId;
+  }
+
+  _createClass(MediaEntryLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
+      requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
+      requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._entryId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
+      this._response.entry = mediaEntryResponse.entries[0];
+      this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
+      this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
+    },
+    get: function get() {
+      return this._response;
+    }
+  }]);
+
+  return MediaEntryLoader;
+}();
+
+exports.default = MediaEntryLoader;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _sessionService = __webpack_require__(34);
+
+var _sessionService2 = _interopRequireDefault(_sessionService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var SessionLoader = function () {
+  _createClass(SessionLoader, null, [{
+    key: 'name',
+    get: function get() {
+      return "session";
+    }
+
+    /**
+     * @member - partner ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function SessionLoader(params) {
+    _classCallCheck(this, SessionLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._partnerId = params.partnerId;
+  }
+
+  _createClass(SessionLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._partnerId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.ks = response[0].data.ks;
+    },
+    get: function get() {
+      return this._response.ks;
+    }
+  }]);
+
+  return SessionLoader;
+}();
+
+exports.default = SessionLoader;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _uiConfService = __webpack_require__(36);
+
+var _uiConfService2 = _interopRequireDefault(_uiConfService);
+
+var _kalturaUiConfResponse = __webpack_require__(31);
+
+var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+var UiConfigLoader = function () {
+  _createClass(UiConfigLoader, null, [{
+    key: 'name',
+    get: function get() {
+      return "uiConf";
+    }
+
+    /**
+     * @member - uiConf ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function UiConfigLoader(params) {
+    _classCallCheck(this, UiConfigLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._uiConfId = params.uiConfId;
+  }
+
+  _createClass(UiConfigLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._uiConfId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
+    },
+    get: function get() {
+      if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
+        return JSON.parse(this._response.uiConf.config).plugins;
+      } catch (err) {
+        return null;
+      } else return null;
+    }
+  }]);
+
+  return UiConfigLoader;
+}();
+
+exports.default = UiConfigLoader;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _kalturaPlaybackSource = __webpack_require__(14);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaFlavorAsset = __webpack_require__(12);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+var _kalturaMetadataListResponse = __webpack_require__(13);
+
+var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+
+var _playSourceUrlBuilder = __webpack_require__(23);
 
 var _playSourceUrlBuilder2 = _interopRequireDefault(_playSourceUrlBuilder);
 
-var _xmlParser = __webpack_require__(20);
+var _xmlParser = __webpack_require__(37);
 
 var _xmlParser2 = _interopRequireDefault(_xmlParser);
 
@@ -13564,21 +14140,21 @@ var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _mediaFormat = __webpack_require__(21);
+var _mediaFormat = __webpack_require__(20);
 
-var _mediaEntry = __webpack_require__(12);
+var _mediaEntry = __webpack_require__(9);
 
 var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
 
-var _drm = __webpack_require__(14);
+var _drm = __webpack_require__(10);
 
 var _drm2 = _interopRequireDefault(_drm);
 
-var _mediaSource = __webpack_require__(13);
+var _mediaSource = __webpack_require__(11);
 
 var _mediaSource2 = _interopRequireDefault(_mediaSource);
 
-var _mediaSources = __webpack_require__(8);
+var _mediaSources = __webpack_require__(7);
 
 var _mediaSources2 = _interopRequireDefault(_mediaSources);
 
@@ -13638,6 +14214,8 @@ var ProviderParser = function () {
       mediaEntry.id = entry.id;
       mediaEntry.name = entry.name;
       mediaEntry.duration = entry.duration;
+      mediaEntry.metaData["description"] = entry.description;
+      mediaEntry.metaData["poster"] = entry.poster;
 
       var type = _enums.MediaEntryTypes.Unknown;
 
@@ -13897,52 +14475,7 @@ var ProviderParser = function () {
 exports.default = ProviderParser;
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _enums = __webpack_require__(5);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE DrmPlaybackPluginData
- * @classdesc
- */
-var KalturaDrmPlaybackPluginData =
-
-/**
- * @constructor
- * @param {Object} drm The json response
- */
-
-/**
- * @member - The drm scheme
- * @type {Scheme}
- */
-function KalturaDrmPlaybackPluginData(drm) {
-  _classCallCheck(this, KalturaDrmPlaybackPluginData);
-
-  this.scheme = drm.scheme;
-  this.licenseURL = drm.licenseURL;
-}
-
-/**
- * @member - The license URL
- * @type {string}
- */
-;
-
-exports.default = KalturaDrmPlaybackPluginData;
-
-/***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13954,43 +14487,264 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * Ovp BE Metadata
- * @classdesc
- */
-var KalturaMetadata =
+var MediaFormats = exports.MediaFormats = function MediaFormats() {
+  _classCallCheck(this, MediaFormats);
+};
 
-/**
- * @constructor
- * @param {Object} data The response
- */
-function KalturaMetadata(data) {
-  _classCallCheck(this, KalturaMetadata);
-
-  this.id = data.id;
-  this.metadataProfileId = data.metadataProfileId;
-  this.metadataProfileVersion = data.metadataProfileVersion;
-  this.metadataProfileId = data.metadataProfileId;
-  this.metadataObjectType = data.metadataObjectType;
-  this.objectId = data.objectId;
-  this.version = data.version;
-  this.created = new Date(0);
-  this.created.setUTCSeconds(data.createdAt);
-  this.updated = new Date(0);
-  this.updated.setUTCSeconds(data.updatedAt);
-  this.status = data.status;
-  this.xml = data.xml;
-}
-/**
- * @member - The Metadata xml - represented as XML string
- * @type {string}
- */
-;
-
-exports.default = KalturaMetadata;
+MediaFormats.dash = {
+  name: 'dash',
+  mimeType: "application/dash+xml",
+  pathExt: "mpd"
+};
+MediaFormats.hls = {
+  name: 'hls',
+  mimeType: "application/x-mpegURL",
+  pathExt: "m3u8"
+};
+MediaFormats.wvm = {
+  name: 'wvm',
+  mimeType: "video/wvm",
+  pathExt: "wvm"
+};
+MediaFormats.mp4 = {
+  name: 'mp4',
+  mimeType: "video/mp4",
+  pathExt: "mp4"
+};
+MediaFormats.mp3 = {
+  name: 'mp3',
+  mimeType: "audio/mpeg",
+  pathExt: "mp3"
+};
 
 /***/ }),
-/* 19 */
+/* 21 */,
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.OvpProvider = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _providerParser = __webpack_require__(19);
+
+var _providerParser2 = _interopRequireDefault(_providerParser);
+
+var _dataLoaderManager = __webpack_require__(15);
+
+var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
+
+var _mediaEntryLoader = __webpack_require__(16);
+
+var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
+
+var _sessionLoader = __webpack_require__(17);
+
+var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
+
+var _uiConfigLoader = __webpack_require__(18);
+
+var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _mediaEntry = __webpack_require__(9);
+
+var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
+
+var _mediaSources = __webpack_require__(7);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * Ovp provider
+ * @classdesc
+ */
+var OvpProvider = exports.OvpProvider = function () {
+
+  /**
+   * @constructor
+   * @param {number} partnerID The partner ID
+   * @param {string} [ks=""]  The provider ks (has empty string as default value)
+   * @param {Object} [config]  The provider config(optional)
+   */
+
+  /**
+   * @member - uiConf ID
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * @member - partner ID
+   * @type {number}
+   */
+  function OvpProvider(partnerID) {
+    var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+    var config = arguments[2];
+
+    _classCallCheck(this, OvpProvider);
+
+    this.partnerID = partnerID;
+    this.ks = ks;
+    this._isAnonymous = !this.ks;
+    _config2.default.set(config);
+  }
+
+  /**
+   * Returns player json configuration
+   * @function getConfig
+   * @param {string} entryId The entry ID
+   * @param {number} uiConfId The uiConf ID
+   * @returns {Promise} The provider config object as promise
+   */
+
+  /**
+   * @member - Data loader
+   * @type {DataLoaderManager}
+   * @private
+   */
+
+  /**
+   * @member - is anonymous
+   * @type {boolean}
+   * @private
+   */
+
+  /**
+   * @member - ks
+   * @type {string}
+   */
+
+
+  _createClass(OvpProvider, [{
+    key: 'getConfig',
+    value: function getConfig(entryId, uiConfId) {
+      var _this = this;
+
+      if (uiConfId != null) {
+        this._uiConfId = uiConfId;
+      }
+      this._dataLoader = new _dataLoaderManager2.default(this.partnerID, this.ks);
+      return new Promise(function (resolve, reject) {
+        if (_this.validateParams(entryId, uiConfId)) {
+          var ks = _this.ks;
+          if (!ks) {
+            ks = "{1:result:ks}";
+            _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
+          }
+          _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
+          _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
+          _this._dataLoader.fetchData().then(function (response) {
+            resolve(_this.parseDataFromResponse(response));
+          }, function (err) {
+            reject(err);
+          });
+        } else {
+          reject({ success: false, data: "Missing mandatory parameter" });
+        }
+      });
+    }
+
+    /**
+     * Parses BE data to json configuration object
+     * @function parseDataFromResponse
+     * @param {Map<string,Function>} data The data to parse
+     * @returns {Object} The parsed config object
+     */
+
+  }, {
+    key: 'parseDataFromResponse',
+    value: function parseDataFromResponse(data) {
+      logger.debug("Data parsing started");
+      var config = {
+        id: "",
+        name: "",
+        session: {
+          partnerID: this.partnerID,
+          uiConfID: this._uiConfId
+        },
+        sources: new _mediaSources2.default(),
+        duration: 0,
+        type: "Unknown",
+        metadata: {},
+        plugins: {}
+      };
+      if (data != null) {
+        if (data.has(_sessionLoader2.default.name)) {
+          var sessionLoader = data.get(_sessionLoader2.default.name);
+          if (sessionLoader != null && sessionLoader.response != null) {
+            this.ks = sessionLoader.response;
+            config.session.ks = this.ks;
+          }
+        }
+        if (data.has(_uiConfigLoader2.default.name)) {
+          var uiConfLoader = data.get(_uiConfigLoader2.default.name);
+          var pluginsJson = {};
+          if (uiConfLoader != null) {
+            pluginsJson = uiConfLoader.response;
+          }
+          config.plugins = pluginsJson;
+        }
+        if (data.has(_mediaEntryLoader2.default.name)) {
+          var mediaLoader = data.get(_mediaEntryLoader2.default.name);
+          if (mediaLoader != null && mediaLoader.response != null) {
+            var mediaEntry = _providerParser2.default.getMediaEntry(this._isAnonymous ? "" : this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
+            config.id = mediaEntry.id;
+            config.name = mediaEntry.name;
+            config.sources = mediaEntry.sources;
+            config.duration = mediaEntry.duration;
+            config.type = mediaEntry.type;
+            config.metadata = mediaEntry.metaData;
+          }
+        }
+      }
+      logger.debug("Data parsing finished", config);
+      return config;
+    }
+
+    /**
+     * Parameters validation function
+     * @param {string} entryId The entry ID
+     * @param {number} uiConfId The uiConfID
+     * @returns {boolean} Is valid params
+     */
+
+  }, {
+    key: 'validateParams',
+    value: function validateParams(entryId, uiConfId) {
+      return !!entryId || !!uiConfId;
+    }
+  }]);
+
+  return OvpProvider;
+}();
+
+exports.default = OvpProvider;
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14080,406 +14834,6 @@ var PlaySourceUrlBuilder = function () {
 exports.default = PlaySourceUrlBuilder;
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Xml parser
- * @classdesc
- */
-var XmlParser = function () {
-  function XmlParser() {
-    _classCallCheck(this, XmlParser);
-  }
-
-  _createClass(XmlParser, null, [{
-    key: "xmlToJson",
-
-    /**
-     * Parses xml string to json object
-     * @param {string} xml The xml to parse
-     * @returns {{}} The parsed xml as Json object
-     * @static
-     */
-    value: function xmlToJson(xml) {
-      var obj = {};
-      if (xml.nodeType == 1) {
-        if (xml.attributes.length > 0) {
-          obj["@attributes"] = {};
-          for (var j = 0; j < xml.attributes.length; j++) {
-            var attribute = xml.attributes.item(j);
-            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-          }
-        }
-      } else if (xml.nodeType == 3) {
-        obj = xml.nodeValue;
-      }
-      if (xml.hasChildNodes()) {
-        for (var i = 0; i < xml.childNodes.length; i++) {
-          var item = xml.childNodes.item(i);
-          var nodeName = item.nodeName;
-          if (typeof obj[nodeName] == "undefined") {
-            obj[nodeName] = this.xmlToJson(item);
-          } else {
-            if (typeof obj[nodeName].push == "undefined") {
-              var old = obj[nodeName];
-              obj[nodeName] = [];
-              obj[nodeName].push(old);
-            }
-            obj[nodeName].push(this.xmlToJson(item));
-          }
-        }
-      }
-      return obj;
-    }
-  }]);
-
-  return XmlParser;
-}();
-
-exports.default = XmlParser;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MediaFormats = exports.MediaFormats = function MediaFormats() {
-  _classCallCheck(this, MediaFormats);
-};
-
-MediaFormats.dash = {
-  name: 'dash',
-  mimeType: "application/dash+xml",
-  pathExt: "mpd"
-};
-MediaFormats.hls = {
-  name: 'hls',
-  mimeType: "application/x-mpegURL",
-  pathExt: "m3u8"
-};
-MediaFormats.wvm = {
-  name: 'wvm',
-  mimeType: "video/wvm",
-  pathExt: "wvm"
-};
-MediaFormats.mp4 = {
-  name: 'mp4',
-  mimeType: "video/mp4",
-  pathExt: "mp4"
-};
-MediaFormats.mp3 = {
-  name: 'mp3',
-  mimeType: "audio/mpeg",
-  pathExt: "mp3"
-};
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ovpService = __webpack_require__(3);
-
-var _ovpService2 = _interopRequireDefault(_ovpService);
-
-var _multiRequestBuilder = __webpack_require__(6);
-
-var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Data loaders manager
- * @classdesc
- */
-var DataLoaderManager = function () {
-
-  /**
-   * @constructor
-   * @param {string} partnerID Then partner ID
-   * @param {string} ks The ks
-   */
-
-  /**
-   * @member - Lodaers response map index
-   * @type {Map<string,Array<number>>}
-   * @private
-   * @static
-   */
-  function DataLoaderManager(partnerID) {
-    var ks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-
-    _classCallCheck(this, DataLoaderManager);
-
-    this._loaders = new Map();
-
-    this._multiRequest = _ovpService2.default.getMultirequest(ks, partnerID);
-  }
-
-  /**
-   * Add loader too execution loaders map
-   * @function
-   * @param {Function} loader Loader to add
-   * @param {Object} params Loader params
-   * @returns {void}
-   */
-
-  /**
-   * @member - Loaders to execute
-   * @type {Map<string,Function>}
-   * @private
-   */
-
-  /**
-   * @member - Loaders multi request
-   * @type {MultiRequestBuilder}
-   * @private
-   */
-
-  /**
-   * @member - Loaders multi response
-   * @type {MultiRequestResult}
-   * @private
-   */
-
-
-  _createClass(DataLoaderManager, [{
-    key: 'add',
-    value: function add(loader, params) {
-      var _this = this;
-
-      var execution_loader = new loader(params);
-      if (execution_loader.isValid()) {
-        this._loaders.set(loader.name, execution_loader);
-        //Get the start index from the multiReqeust before adding current execution_loader requests
-        var startIndex = this._multiRequest.requests.length;
-        //Get the requests
-        var requests = execution_loader.requests;
-        //Add requests to muktiRequest queue
-        requests.forEach(function (request) {
-          _this._multiRequest.add(request);
-        });
-        //Create range array of current execution_loader requests
-        var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
-          return index + startIndex;
-        });
-        //Add to map
-        DataLoaderManager._loadersResponseMap.set(loader.name, executionLoaderResponseMap);
-      }
-    }
-
-    /**
-     * Get data from all loaders using multi request
-     * @function
-     * @returns {Promise} Promise
-     */
-
-  }, {
-    key: 'fetchData',
-    value: function fetchData() {
-      var _this2 = this;
-
-      return new Promise(function (resolve, reject) {
-        _this2._multiRequest.execute().then(function (response) {
-          _this2._multiResponse = response;
-          if (!response.success) {
-            reject(response);
-          } else {
-            var preparedData = _this2.prepareData(response);
-            if (preparedData.success) {
-              resolve(_this2._loaders);
-            } else {
-              reject({ success: false, data: preparedData.error });
-            }
-          }
-        }, function (err) {
-          reject(err);
-        });
-      });
-    }
-  }, {
-    key: 'prepareData',
-    value: function prepareData(response) {
-      this._loaders.forEach(function (loader, name) {
-        var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
-        try {
-          if (loaderDataIndexes != null) {
-            loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
-          }
-        } catch (err) {
-          return { success: false, error: err };
-        }
-      });
-      return { success: true, data: this._loaders };
-    }
-  }]);
-
-  return DataLoaderManager;
-}();
-
-DataLoaderManager._loadersResponseMap = new Map();
-exports.default = DataLoaderManager;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _requestBuilder = __webpack_require__(0);
-
-var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-var _baseEntryService = __webpack_require__(24);
-
-var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
-
-var _metaDataService = __webpack_require__(25);
-
-var _metaDataService2 = _interopRequireDefault(_metaDataService);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _kalturaPlaybackContext = __webpack_require__(26);
-
-var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
-
-var _kalturaMetadataListResponse = __webpack_require__(11);
-
-var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
-
-var _kalturaBaseEntryListResponse = __webpack_require__(29);
-
-var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-
-/**
- * Media entry loader
- * @classdesc
- */
-
-var MediaEntryLoader = function () {
-  _createClass(MediaEntryLoader, null, [{
-    key: 'name',
-    get: function get() {
-      return "media";
-    }
-  }]);
-
-  /**
-   * @constructor
-   * @param {Object} params loader params
-   */
-  function MediaEntryLoader(params) {
-    _classCallCheck(this, MediaEntryLoader);
-
-    this._response = {};
-
-    this.requests = this.buildRequests(params);
-    this._entryId = params.entryId;
-  }
-
-  _createClass(MediaEntryLoader, [{
-    key: 'buildRequests',
-
-
-    /**
-     * Builds loader requests
-     * @function
-     * @param {Object} params Requests parameters
-     * @returns {RequestBuilder} The request builder
-     * @static
-     */
-    value: function buildRequests(params) {
-      var requests = [];
-      requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
-      requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
-      requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
-      return requests;
-    }
-
-    /**
-     * Loader validation function
-     * @function
-     * @returns {boolean} Is valid
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return !!this._entryId;
-    }
-  }, {
-    key: 'requests',
-    set: function set(requests) {
-      this._requests = requests;
-    },
-    get: function get() {
-      return this._requests;
-    }
-  }, {
-    key: 'response',
-    set: function set(response) {
-      var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
-      this._response.entry = mediaEntryResponse.entries[0];
-      this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
-      this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
-    },
-    get: function get() {
-      return this._response;
-    }
-  }]);
-
-  return MediaEntryLoader;
-}();
-
-exports.default = MediaEntryLoader;
-
-/***/ }),
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14490,9 +14844,542 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE access control message
+ * @classdesc
+ */
+var KalturaAccessControlMessage =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The access control message
+ * @type {string}
+ */
+function KalturaAccessControlMessage(data) {
+  _classCallCheck(this, KalturaAccessControlMessage);
+
+  this.message = data.message;
+  this.code = data.code;
+}
+/**
+ *  @member - The access control message code
+ * @@type {string}
+ */
+;
+
+exports.default = KalturaAccessControlMessage;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMediaEntry = __webpack_require__(27);
+
+var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE BaseEntryList service response
+ * @classdesc
+ */
+var KalturaBaseEntryListResponse = function (_ServiceResult) {
+  _inherits(KalturaBaseEntryListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The json response
+   */
+
+  /**
+   * @member - The total count
+   * @type {number}
+   */
+  function KalturaBaseEntryListResponse(responseObj) {
+    _classCallCheck(this, KalturaBaseEntryListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.entries = [];
+        responseObj.objects.map(function (entry) {
+          return _this.entries.push(new _kalturaMediaEntry2.default(entry));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member - The entries
+   * @type {Array<KalturaMediaEntry>}
+   */
+
+
+  return KalturaBaseEntryListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaBaseEntryListResponse;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE DrmPlaybackPluginData
+ * @classdesc
+ */
+var KalturaDrmPlaybackPluginData =
+
+/**
+ * @constructor
+ * @param {Object} drm The json response
+ */
+
+/**
+ * @member - The drm scheme
+ * @type {Scheme}
+ */
+function KalturaDrmPlaybackPluginData(drm) {
+  _classCallCheck(this, KalturaDrmPlaybackPluginData);
+
+  this.scheme = drm.scheme;
+  this.licenseURL = drm.licenseURL;
+}
+
+/**
+ * @member - The license URL
+ * @type {string}
+ */
+;
+
+exports.default = KalturaDrmPlaybackPluginData;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE MediaEntry
+ * @classdesc
+ */
+var KalturaMediaEntry =
+
+/**
+ * @constructor
+ * @param {Object} entry The json response
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
+ * @type {MediaType}
+ */
+
+/**
+ * @member - The entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - The URL used for playback. This is not the download URL.
+ * @type {string}
+ */
+
+/**
+ * @member - Entry name (Min 1 chars)
+ * @type {string}
+ */
+function KalturaMediaEntry(entry) {
+  _classCallCheck(this, KalturaMediaEntry);
+
+  this.id = entry.id;
+  this.name = entry.name;
+  this.description = entry.description;
+  this.dataUrl = entry.dataUrl;
+  this.type = entry.type;
+  this.entryType = entry.mediaType;
+  this.flavorParamsIds = entry.flavorParamsIds;
+  this.duration = entry.duration;
+  this.poster = entry.thumbnailUrl;
+}
+/**
+ * @member - Entry poster image
+ * @type {string}
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object
+ * @type {EntryType}
+ */
+
+/**
+ * @member - Comma separated flavor params ids that exists for this media entry
+ * @type {string}
+ */
+
+/**
+ * @member - Entry description
+ * @type {string}
+ */
+
+/**
+ * @member - The entry id
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMediaEntry;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE Metadata
+ * @classdesc
+ */
+var KalturaMetadata =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaMetadata(data) {
+  _classCallCheck(this, KalturaMetadata);
+
+  this.id = data.id;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataProfileVersion = data.metadataProfileVersion;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataObjectType = data.metadataObjectType;
+  this.objectId = data.objectId;
+  this.version = data.version;
+  this.created = new Date(0);
+  this.created.setUTCSeconds(data.createdAt);
+  this.updated = new Date(0);
+  this.updated.setUTCSeconds(data.updatedAt);
+  this.status = data.status;
+  this.xml = data.xml;
+}
+/**
+ * @member - The Metadata xml - represented as XML string
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMetadata;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaAccessControlMessage = __webpack_require__(24);
+
+var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
+
+var _kalturaPlaybackSource = __webpack_require__(14);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaRuleAction = __webpack_require__(30);
+
+var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
+
+var _kalturaFlavorAsset = __webpack_require__(12);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE playback context response
+ * @classdesc
+ */
+var KalturaPlaybackContext = function (_ServiceResult) {
+  _inherits(KalturaPlaybackContext, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} response The response
+   */
+
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaAccessControlMessage>}
+   */
+
+  /**
+   * @member - The playback sources
+   * @type {Array<KalturaPlaybackSource>}
+   */
+  function KalturaPlaybackContext(response) {
+    _classCallCheck(this, KalturaPlaybackContext);
+
+    var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
+
+    _this.sources = [];
+    _this.actions = [];
+    _this.messages = [];
+    _this.flavorAssets = [];
+
+    if (!_this.hasError) {
+
+      var messages = response.messages;
+      if (messages) {
+        messages.map(function (message) {
+          return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
+        });
+      }
+
+      var actions = response.actions;
+      if (actions) {
+        actions.map(function (action) {
+          return _this.actions.push(new _kalturaRuleAction2.default(action));
+        });
+      }
+
+      var sources = response.sources;
+      if (sources) {
+        sources.map(function (source) {
+          return _this.sources.push(new _kalturaPlaybackSource2.default(source));
+        });
+      }
+
+      var flavorAssets = response.flavorAssets;
+      if (flavorAssets) {
+        flavorAssets.map(function (flavor) {
+          return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
+        });
+      }
+    }
+
+    return _this;
+  }
+  /**
+   * @member - The flavor assets
+   * @type {Array<KalturaFlavorAsset>}
+   */
+
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaRuleAction>}
+   */
+
+
+  return KalturaPlaybackContext;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaPlaybackContext;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE rule action
+ * @classdesc
+ */
+var KalturaRuleAction =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaRuleAction(data) {
+  _classCallCheck(this, KalturaRuleAction);
+
+  this.type = data.type;
+}
+/**
+ * @member - The type of the action
+ * @type {KalturaRuleActionType}
+ */
+;
+
+exports.default = KalturaRuleAction;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Ui config response
+ * @classdesc
+ */
+var KalturaUiConfResponse = function (_ServiceResult) {
+  _inherits(KalturaUiConfResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} data The json response
+   */
+
+  /**
+   * @member -plugins configuration represented as Json string
+   * @type {string}
+   */
+
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+  function KalturaUiConfResponse(data) {
+    _classCallCheck(this, KalturaUiConfResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
+
+    if (!_this.hasError) {
+      _this.name = data.name;
+
+      _this.description = data.description;
+      _this.objTypeAsString = data.objTypeAsString;
+      _this.width = data.width;
+      _this.height = data.height;
+      _this.htmlParams = data.htmlParams;
+      _this.swfUrl = data.swfUrl;
+      _this.confFilePath = data.confFilePath;
+      _this.confFile = data.confFile;
+      _this.confFileFeatures = data.confFileFeatures;
+      _this.config = data.config;
+      _this.confVars = data.confVars;
+      _this.useCdn = data.useCdn;
+      _this.tags = data.tags;
+      _this.swfUrlVersion = data.swfUrlVersion;
+      _this.created = new Date(0);
+      _this.created.setUTCSeconds(data.createdAt);
+      _this.updated = new Date(0);
+      _this.updated.setUTCSeconds(data.updatedAt);
+      _this.html5Url = data.description;
+      _this.version = data.description;
+      _this.partnerTags = data.description;
+      _this.objType = data.description;
+      _this.creationMode = data.description;
+    }
+    return _this;
+  }
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+
+
+  return KalturaUiConfResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaUiConfResponse;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -14587,7 +15474,7 @@ var BaseEntryService = function (_OvpService) {
     value: function getEntryListReqParams(entryId, ks) {
       var filterParams = { redirectFromEntryId: entryId };
       var responseProfileParams = {
-        fields: "id,name,dataUrl,duration,msDuration,flavorParamsIds,mediaType,type,tags",
+        fields: "id,name,description,thumbnailUrl,dataUrl,duration,msDuration,flavorParamsIds,mediaType,type,tags",
         type: 1
       };
       return { ks: ks, filter: filterParams, responseProfile: responseProfileParams };
@@ -14600,7 +15487,7 @@ var BaseEntryService = function (_OvpService) {
 exports.default = BaseEntryService;
 
 /***/ }),
-/* 25 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14612,7 +15499,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -14676,346 +15563,7 @@ var MetaDataService = function (_OvpService) {
 exports.default = MetaDataService;
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-var _kalturaAccessControlMessage = __webpack_require__(27);
-
-var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
-
-var _kalturaPlaybackSource = __webpack_require__(9);
-
-var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
-
-var _kalturaRuleAction = __webpack_require__(28);
-
-var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
-
-var _kalturaFlavorAsset = __webpack_require__(10);
-
-var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Ovp BE playback context response
- * @classdesc
- */
-var KalturaPlaybackContext = function (_ServiceResult) {
-  _inherits(KalturaPlaybackContext, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} response The response
-   */
-
-  /**
-   * @member - Array of actions as received from the rules that invalidated
-   * @type {Array<KalturaAccessControlMessage>}
-   */
-
-  /**
-   * @member - The playback sources
-   * @type {Array<KalturaPlaybackSource>}
-   */
-  function KalturaPlaybackContext(response) {
-    _classCallCheck(this, KalturaPlaybackContext);
-
-    var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
-
-    _this.sources = [];
-    _this.actions = [];
-    _this.messages = [];
-    _this.flavorAssets = [];
-
-    if (!_this.hasError) {
-
-      var messages = response.messages;
-      if (messages) {
-        messages.map(function (message) {
-          return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
-        });
-      }
-
-      var actions = response.actions;
-      if (actions) {
-        actions.map(function (action) {
-          return _this.actions.push(new _kalturaRuleAction2.default(action));
-        });
-      }
-
-      var sources = response.sources;
-      if (sources) {
-        sources.map(function (source) {
-          return _this.sources.push(new _kalturaPlaybackSource2.default(source));
-        });
-      }
-
-      var flavorAssets = response.flavorAssets;
-      if (flavorAssets) {
-        flavorAssets.map(function (flavor) {
-          return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
-        });
-      }
-    }
-
-    return _this;
-  }
-  /**
-   * @member - The flavor assets
-   * @type {Array<KalturaFlavorAsset>}
-   */
-
-  /**
-   * @member - Array of actions as received from the rules that invalidated
-   * @type {Array<KalturaRuleAction>}
-   */
-
-
-  return KalturaPlaybackContext;
-}(_baseServiceResult2.default);
-
-exports.default = KalturaPlaybackContext;
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE access control message
- * @classdesc
- */
-var KalturaAccessControlMessage =
-
-/**
- * @constructor
- * @param {Object} data The json response
- */
-
-/**
- * @member - The access control message
- * @type {string}
- */
-function KalturaAccessControlMessage(data) {
-  _classCallCheck(this, KalturaAccessControlMessage);
-
-  this.message = data.message;
-  this.code = data.code;
-}
-/**
- *  @member - The access control message code
- * @@type {string}
- */
-;
-
-exports.default = KalturaAccessControlMessage;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE rule action
- * @classdesc
- */
-var KalturaRuleAction =
-
-/**
- * @constructor
- * @param {Object} data The response
- */
-function KalturaRuleAction(data) {
-  _classCallCheck(this, KalturaRuleAction);
-
-  this.type = data.type;
-}
-/**
- * @member - The type of the action
- * @type {KalturaRuleActionType}
- */
-;
-
-exports.default = KalturaRuleAction;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-var _kalturaMediaEntry = __webpack_require__(30);
-
-var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Ovp BE BaseEntryList service response
- * @classdesc
- */
-var KalturaBaseEntryListResponse = function (_ServiceResult) {
-  _inherits(KalturaBaseEntryListResponse, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} responseObj The json response
-   */
-
-  /**
-   * @member - The total count
-   * @type {number}
-   */
-  function KalturaBaseEntryListResponse(responseObj) {
-    _classCallCheck(this, KalturaBaseEntryListResponse);
-
-    var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
-
-    if (!_this.hasError) {
-      _this.totalCount = responseObj.totalCount;
-      if (_this.totalCount > 0) {
-        _this.entries = [];
-        responseObj.objects.map(function (entry) {
-          return _this.entries.push(new _kalturaMediaEntry2.default(entry));
-        });
-      }
-    }
-    return _this;
-  }
-  /**
-   * @member - The entries
-   * @type {Array<KalturaMediaEntry>}
-   */
-
-
-  return KalturaBaseEntryListResponse;
-}(_baseServiceResult2.default);
-
-exports.default = KalturaBaseEntryListResponse;
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE MediaEntry
- * @classdesc
- */
-var KalturaMediaEntry =
-
-/**
- * @constructor
- * @param {Object} entry The json response
- */
-
-/**
- * @member - The type of the entry, this is auto filled by the derived entry object
- * @type {EntryType}
- */
-
-/**
- * @member - Comma separated flavor params ids that exists for this media entry
- * @type {string}
- */
-
-/**
- * @member - Entry name (Min 1 chars)
- * @type {string}
- */
-function KalturaMediaEntry(entry) {
-  _classCallCheck(this, KalturaMediaEntry);
-
-  this.id = entry.id;
-  this.name = entry.name;
-  this.dataUrl = entry.dataUrl;
-  this.type = entry.type;
-  this.entryType = entry.mediaType;
-  this.flavorParamsIds = entry.flavorParamsIds;
-  this.duration = entry.duration;
-}
-/**
- * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
- * @type {MediaType}
- */
-
-/**
- * @member - The entry duration
- * @type {number}
- */
-
-/**
- * @member - The URL used for playback. This is not the download URL.
- * @type {string}
- */
-
-/**
- * @member - The entry id
- * @type {string}
- */
-;
-
-exports.default = KalturaMediaEntry;
-
-/***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15027,121 +15575,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _sessionService = __webpack_require__(32);
-
-var _sessionService2 = _interopRequireDefault(_sessionService);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _requestBuilder = __webpack_require__(0);
-
-var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-/**
- * Media entry loader
- * @classdesc
- */
-
-var SessionLoader = function () {
-  _createClass(SessionLoader, null, [{
-    key: 'name',
-    get: function get() {
-      return "session";
-    }
-
-    /**
-     * @member - partner ID
-     * @type {number}
-     * @private
-     */
-
-  }]);
-
-  /**
-   * @constructor
-   * @param {Object} params loader params
-   */
-  function SessionLoader(params) {
-    _classCallCheck(this, SessionLoader);
-
-    this._response = {};
-
-    this.requests = this.buildRequests(params);
-    this._partnerId = params.partnerId;
-  }
-
-  _createClass(SessionLoader, [{
-    key: 'buildRequests',
-
-
-    /**
-     * Builds loader requests
-     * @function
-     * @param {Object} params Requests parameters
-     * @returns {RequestBuilder} The request builder
-     * @static
-     */
-    value: function buildRequests(params) {
-      var requests = [];
-      requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
-      return requests;
-    }
-
-    /**
-     * Loader validation function
-     * @function
-     * @returns {boolean} Is valid
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return !!this._partnerId;
-    }
-  }, {
-    key: 'requests',
-    set: function set(requests) {
-      this._requests = requests;
-    },
-    get: function get() {
-      return this._requests;
-    }
-  }, {
-    key: 'response',
-    set: function set(response) {
-      this._response.ks = response[0].data.ks;
-    },
-    get: function get() {
-      return this._response.ks;
-    }
-  }]);
-
-  return SessionLoader;
-}();
-
-exports.default = SessionLoader;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -15202,7 +15636,8 @@ var SessionService = function (_OvpService) {
 exports.default = SessionService;
 
 /***/ }),
-/* 33 */
+/* 35 */,
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15214,125 +15649,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _uiConfService = __webpack_require__(34);
-
-var _uiConfService2 = _interopRequireDefault(_uiConfService);
-
-var _kalturaUiConfResponse = __webpack_require__(35);
-
-var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _requestBuilder = __webpack_require__(0);
-
-var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-
-var UiConfigLoader = function () {
-  _createClass(UiConfigLoader, null, [{
-    key: 'name',
-    get: function get() {
-      return "uiConf";
-    }
-
-    /**
-     * @member - uiConf ID
-     * @type {number}
-     * @private
-     */
-
-  }]);
-
-  /**
-   * @constructor
-   * @param {Object} params loader params
-   */
-  function UiConfigLoader(params) {
-    _classCallCheck(this, UiConfigLoader);
-
-    this._response = {};
-
-    this.requests = this.buildRequests(params);
-    this._uiConfId = params.uiConfId;
-  }
-
-  _createClass(UiConfigLoader, [{
-    key: 'buildRequests',
-
-
-    /**
-     * Builds loader requests
-     * @function
-     * @param {Object} params Requests parameters
-     * @returns {RequestBuilder} The request builder
-     * @static
-     */
-    value: function buildRequests(params) {
-      var requests = [];
-      requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
-      return requests;
-    }
-
-    /**
-     * Loader validation function
-     * @function
-     * @returns {boolean} Is valid
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return !!this._uiConfId;
-    }
-  }, {
-    key: 'requests',
-    set: function set(requests) {
-      this._requests = requests;
-    },
-    get: function get() {
-      return this._requests;
-    }
-  }, {
-    key: 'response',
-    set: function set(response) {
-      this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
-    },
-    get: function get() {
-      if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
-        return JSON.parse(this._response.uiConf.config).plugins;
-      } catch (err) {
-        return null;
-      } else return null;
-    }
-  }]);
-
-  return UiConfigLoader;
-}();
-
-exports.default = UiConfigLoader;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -15398,7 +15715,7 @@ var UiConfService = function (_OvpService) {
 exports.default = UiConfService;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15408,83 +15725,65 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 /**
- * Ovp BE Ui config response
+ * Xml parser
  * @classdesc
  */
-var KalturaUiConfResponse = function (_ServiceResult) {
-  _inherits(KalturaUiConfResponse, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} data The json response
-   */
-
-  /**
-   * @member -plugins configuration represented as Json string
-   * @type {string}
-   */
-
-  /**
-   * @member -Name of the uiConf, this is not a primary key
-   * @type {string}
-   */
-  function KalturaUiConfResponse(data) {
-    _classCallCheck(this, KalturaUiConfResponse);
-
-    var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
-
-    if (!_this.hasError) {
-      _this.name = data.name;
-
-      _this.description = data.description;
-      _this.objTypeAsString = data.objTypeAsString;
-      _this.width = data.width;
-      _this.height = data.height;
-      _this.htmlParams = data.htmlParams;
-      _this.swfUrl = data.swfUrl;
-      _this.confFilePath = data.confFilePath;
-      _this.confFile = data.confFile;
-      _this.confFileFeatures = data.confFileFeatures;
-      _this.config = data.config;
-      _this.confVars = data.confVars;
-      _this.useCdn = data.useCdn;
-      _this.tags = data.tags;
-      _this.swfUrlVersion = data.swfUrlVersion;
-      _this.created = new Date(0);
-      _this.created.setUTCSeconds(data.createdAt);
-      _this.updated = new Date(0);
-      _this.updated.setUTCSeconds(data.updatedAt);
-      _this.html5Url = data.description;
-      _this.version = data.description;
-      _this.partnerTags = data.description;
-      _this.objType = data.description;
-      _this.creationMode = data.description;
-    }
-    return _this;
+var XmlParser = function () {
+  function XmlParser() {
+    _classCallCheck(this, XmlParser);
   }
-  /**
-   * @member -Name of the uiConf, this is not a primary key
-   * @type {string}
-   */
 
+  _createClass(XmlParser, null, [{
+    key: "xmlToJson",
 
-  return KalturaUiConfResponse;
-}(_baseServiceResult2.default);
+    /**
+     * Parses xml string to json object
+     * @param {string} xml The xml to parse
+     * @returns {{}} The parsed xml as Json object
+     * @static
+     */
+    value: function xmlToJson(xml) {
+      var obj = {};
+      if (xml.nodeType == 1) {
+        if (xml.attributes.length > 0) {
+          obj["@attributes"] = {};
+          for (var j = 0; j < xml.attributes.length; j++) {
+            var attribute = xml.attributes.item(j);
+            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+          }
+        }
+      } else if (xml.nodeType == 3) {
+        obj = xml.nodeValue;
+      }
+      if (xml.hasChildNodes()) {
+        for (var i = 0; i < xml.childNodes.length; i++) {
+          var item = xml.childNodes.item(i);
+          var nodeName = item.nodeName;
+          if (typeof obj[nodeName] == "undefined") {
+            obj[nodeName] = this.xmlToJson(item);
+          } else {
+            if (typeof obj[nodeName].push == "undefined") {
+              var old = obj[nodeName];
+              obj[nodeName] = [];
+              obj[nodeName].push(old);
+            }
+            obj[nodeName].push(this.xmlToJson(item));
+          }
+        }
+      }
+      return obj;
+    }
+  }]);
 
-exports.default = KalturaUiConfResponse;
+  return XmlParser;
+}();
+
+exports.default = XmlParser;
 
 /***/ })
 /******/ ]);
@@ -19284,6 +19583,10 @@ var _adSkip = __webpack_require__(99);
 
 var _adSkip2 = _interopRequireDefault(_adSkip);
 
+var _adLearnMore = __webpack_require__(101);
+
+var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
+
 var _topBar = __webpack_require__(13);
 
 var _topBar2 = _interopRequireDefault(_topBar);
@@ -19328,11 +19631,7 @@ function adsUI(props) {
           (0, _preact.h)(
             'div',
             { className: 'right-controls' },
-            (0, _preact.h)(
-              'a',
-              { href: '', className: 'btn btn-dark-transparent' },
-              'Learn more'
-            )
+            (0, _preact.h)(_adLearnMore2.default, null)
           )
         ),
         (0, _preact.h)(_adSkip2.default, { player: props.player })
@@ -19387,7 +19686,8 @@ var types = exports.types = {
   UPDATE_AD_BREAK_PROGRESS: 'engine/UPDATE_AD_BREAK_PROGRESS',
   UPDATE_AD_IS_PLAYING: 'engine/UPDATE_AD_IS_PLAYING',
   UPDATE_AD_SKIP_TIME_OFFSET: 'engine/UPDATE_AD_SKIP_TIME_OFFSET',
-  UPDATE_AD_SKIPPABLE_STATE: 'engine/UPDATE_AD_SKIPPABLE_STATE'
+  UPDATE_AD_SKIPPABLE_STATE: 'engine/UPDATE_AD_SKIPPABLE_STATE',
+  UPDATE_AD_URL: 'engine/UPDATE_AD_URL'
 };
 
 var initialState = exports.initialState = {
@@ -19412,7 +19712,8 @@ var initialState = exports.initialState = {
   adProgress: {
     currentTime: 0,
     duration: 0
-  }
+  },
+  adUrl: ''
 };
 
 exports.default = function () {
@@ -19500,6 +19801,11 @@ exports.default = function () {
         adSkippableState: action.adSkippableState
       });
 
+    case types.UPDATE_AD_URL:
+      return _extends({}, state, {
+        adUrl: action.adUrl
+      });
+
     default:
       return state;
   }
@@ -19553,6 +19859,9 @@ var actions = exports.actions = {
   },
   updateAdSkippableState: function updateAdSkippableState(adSkippableState) {
     return { type: types.UPDATE_AD_SKIPPABLE_STATE, adSkippableState: adSkippableState };
+  },
+  updateAdClickUrl: function updateAdClickUrl(adUrl) {
+    return { type: types.UPDATE_AD_URL, adUrl: adUrl };
   }
 };
 
@@ -19595,7 +19904,7 @@ Object.defineProperty(exports, 'adsUI', {
   }
 });
 
-var _fullscreen = __webpack_require__(101);
+var _fullscreen = __webpack_require__(103);
 
 Object.defineProperty(exports, 'fullscreenUI', {
   enumerable: true,
@@ -19739,7 +20048,7 @@ Object.defineProperty(exports, 'KeyboardControl', {
   }
 });
 
-var _uiManager = __webpack_require__(102);
+var _uiManager = __webpack_require__(104);
 
 var _uiManager2 = _interopRequireDefault(_uiManager);
 
@@ -21044,7 +21353,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var mapStateToProps = function mapStateToProps(state) {
   return {
     metadataLoaded: state.engine.metadataLoaded,
-    prePlayback: state.shell.prePlayback
+    prePlayback: state.shell.prePlayback,
+    isMobile: state.shell.isMobile
   };
 };
 
@@ -21067,11 +21377,18 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.addPlayerClass('pre-playback');
+
       try {
         this.autoplay = this.player.config.playback.autoplay;
-      } catch (error) {
+      } catch (e) {
         this.autoplay = false;
-      }
+      } // eslint-disable-line no-unused-vars
+
+      try {
+        this.mobileAutoplay = this.player.config.playback.mobileAutoplay;
+      } catch (e) {
+        this.mobileAutoplay = false;
+      } // eslint-disable-line no-unused-vars
     }
   }, {
     key: 'componentDidMount',
@@ -21098,7 +21415,7 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
     value: function render(props) {
       var _this3 = this;
 
-      if (!props.prePlayback || this.autoplay) return undefined;
+      if (!props.prePlayback || !this.props.isMobile && this.autoplay || this.props.isMobile && this.mobileAutoplay) return undefined;
 
       return (0, _preact.h)(
         'div',
@@ -21157,7 +21474,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    show: state.loading.show
+    show: state.loading.show,
+    isMobile: state.shell.isMobile
   };
 };
 
@@ -21175,16 +21493,22 @@ var Loading = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAction
     value: function componentWillMount() {
       try {
         this.autoplay = this.player.config.playback.autoplay;
-      } catch (error) {
+      } catch (e) {
         this.autoplay = false;
-      }
+      } // eslint-disable-line no-unused-vars
+
+      try {
+        this.mobileAutoplay = this.player.config.playback.mobileAutoplay;
+      } catch (e) {
+        this.mobileAutoplay = false;
+      } // eslint-disable-line no-unused-vars
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
 
-      if (this.autoplay) {
+      if (!this.props.isMobile && this.autoplay || this.props.isMobile && this.mobileAutoplay) {
         this.props.updateLoadingSpinnerState(true);
       }
 
@@ -21431,6 +21755,7 @@ var SeekBarPlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps
       var _this3 = this;
 
       return (0, _preact.h)(_seekbar3.default, {
+        playerElement: this.player.getView().parentElement,
         showFramePreview: this.props.showFramePreview,
         showTimeBubble: this.props.showTimeBubble,
         changeCurrentTime: function changeCurrentTime(time) {
@@ -21490,7 +21815,6 @@ var SeekBarControl = function (_Component) {
   _createClass(SeekBarControl, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this._playerElement = document.getElementById('player-placeholder');
       this.setState({ virtualTime: 0 });
     }
   }, {
@@ -21575,7 +21899,7 @@ var SeekBarControl = function (_Component) {
     key: 'getTime',
     value: function getTime(e) {
       var xPosition = e.touches ? e.touches[0].clientX : e.clientX;
-      var time = this.props.duration * ((xPosition - this._seekBarElement.offsetLeft - this.getOffset(this._playerElement).left) / this._seekBarElement.clientWidth);
+      var time = this.props.duration * ((xPosition - this._seekBarElement.offsetLeft - this.getOffset(this.props.playerElement).left) / this._seekBarElement.clientWidth);
       time = parseFloat(time.toFixed(2));
       if (time < 0) return 0;
       if (time > this.props.duration) return this.props.duration;
@@ -21765,6 +22089,7 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
 
       this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
         _this2.props.updateVolume(_this2.player.volume);
+        _this2.props.updateMuted(_this2.player.muted);
       });
 
       this.player.addEventListener(this.player.Event.VOLUME_CHANGE, function () {
@@ -22637,7 +22962,11 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
   }, {
     key: 'onQualityChange',
     value: function onQualityChange(videoTrack) {
-      this.player.selectTrack(videoTrack);
+      if (videoTrack === 'auto') {
+        this.player.enableAdaptiveBitrate();
+      } else {
+        this.player.selectTrack(videoTrack);
+      }
     }
   }, {
     key: 'getQualityOptionLabel',
@@ -22680,9 +23009,15 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
       }).map(function (t) {
         return {
           label: _this2.getQualityOptionLabel(t),
-          active: t.active,
+          active: !_this2.player.isAdaptiveBitrateEnabled() && t.active,
           value: t
         };
+      });
+
+      qualityOptions.unshift({
+        label: 'Auto',
+        active: this.player.isAdaptiveBitrateEnabled(),
+        value: 'auto'
       });
 
       return (0, _preact.h)(
@@ -23208,7 +23543,11 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
   }, {
     key: 'onCaptionsChange',
     value: function onCaptionsChange(textTrack) {
-      this.player.selectTrack(textTrack);
+      if (textTrack === 'off') {
+        this.player.hideTextTrack();
+      } else {
+        this.player.selectTrack(textTrack);
+      }
     }
   }, {
     key: 'toggleCVAAOverlay',
@@ -23231,7 +23570,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
               return _this2.onControlButtonClick();
             }
           },
-          (0, _preact.h)(_icon2.default, { type: _icon.IconType.Audio })
+          (0, _preact.h)(_icon2.default, { type: _icon.IconType.Language })
         ),
         !this.state.smartContainerOpen && !this.props.isMobile ? undefined : (0, _preact.h)(_menu2.default, {
           hideSelect: true,
@@ -23261,7 +23600,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
               return _this3.onControlButtonClick();
             }
           },
-          (0, _preact.h)(_icon2.default, { type: _icon.IconType.Captions })
+          (0, _preact.h)(_icon2.default, { type: _icon.IconType.Language })
         ),
         !this.state.smartContainerOpen && !this.props.isMobile ? undefined : (0, _preact.h)(_menu2.default, {
           hideSelect: true,
@@ -23364,6 +23703,16 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
       }).map(function (t) {
         return { label: t.label || t.language, active: t.active, value: t };
       });
+
+      if (textOptions.length > 0) {
+        textOptions.push({
+          label: 'Off',
+          active: props.textTracks.filter(function (t) {
+            return t.kind === 'subtitles' && t.active;
+          }).length === 0,
+          value: 'off'
+        });
+      }
 
       if (audioOptions.length > 0 && textOptions.length > 0) {
         return this.renderAll(audioOptions, textOptions);
@@ -23757,7 +24106,7 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
   }, {
     key: 'enterFullscreen',
     value: function enterFullscreen() {
-      this.requestFullscreen(this.player._el.parentElement);
+      this.requestFullscreen(this.player.getView().parentElement);
     }
   }, {
     key: 'exitFullscreen',
@@ -24117,7 +24466,7 @@ var KeyboardControl = function (_BaseComponent) {
 
     var _this = _possibleConstructorReturn(this, (KeyboardControl.__proto__ || Object.getPrototypeOf(KeyboardControl)).call(this, { name: 'Keyboard', player: obj.player }));
 
-    _this.player._el.parentElement.onkeydown = function (e) {
+    _this.player.getView().parentElement.onkeydown = function (e) {
       var time = void 0,
           newVolume = void 0;
       switch (e.which) {
@@ -24271,6 +24620,7 @@ var SeekBarAdsContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0,
     key: 'render',
     value: function render(props) {
       return (0, _preact.h)(_seekbar3.default, {
+        playerElement: this.player.getView().parentElement,
         changeCurrentTime: function changeCurrentTime(time) {} // eslint-disable-line no-unused-vars
         , updateSeekbarDraggingStatus: function updateSeekbarDraggingStatus(data) {} // eslint-disable-line no-unused-vars
         , updateCurrentTime: function updateCurrentTime(data) {} // eslint-disable-line no-unused-vars
@@ -24409,6 +24759,81 @@ exports.default = AdSkip;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
+
+var _adLearnMore = __webpack_require__(102);
+
+var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _adLearnMore2.default;
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _dec, _class;
+
+var _preact = __webpack_require__(0);
+
+var _preactRedux = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    url: state.engine.adUrl
+  };
+};
+
+var AdLearnMore = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = function (_Component) {
+  _inherits(AdLearnMore, _Component);
+
+  function AdLearnMore() {
+    _classCallCheck(this, AdLearnMore);
+
+    return _possibleConstructorReturn(this, (AdLearnMore.__proto__ || Object.getPrototypeOf(AdLearnMore)).apply(this, arguments));
+  }
+
+  _createClass(AdLearnMore, [{
+    key: 'render',
+    value: function render(props) {
+      return (0, _preact.h)(
+        'a',
+        { href: props.url, target: 'new', className: 'btn btn-dark-transparent' },
+        'Learn more'
+      );
+    }
+  }]);
+
+  return AdLearnMore;
+}(_preact.Component)) || _class);
+exports.default = AdLearnMore;
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = playbackUI;
 
 var _preact = __webpack_require__(0);
@@ -24529,7 +24954,7 @@ function playbackUI(props) {
 }
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24555,25 +24980,25 @@ var _preactI18n = __webpack_require__(5);
 
 var _redux = __webpack_require__(7);
 
-var _store = __webpack_require__(103);
+var _store = __webpack_require__(105);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _fr = __webpack_require__(104);
+var _fr = __webpack_require__(106);
 
 var _fr2 = _interopRequireDefault(_fr);
 
 var _playkitJs = __webpack_require__(37);
 
-var _engineConnector = __webpack_require__(105);
+var _engineConnector = __webpack_require__(107);
 
 var _engineConnector2 = _interopRequireDefault(_engineConnector);
 
-var _shell = __webpack_require__(106);
+var _shell = __webpack_require__(108);
 
 var _shell2 = _interopRequireDefault(_shell);
 
-var _playerGui = __webpack_require__(107);
+var _playerGui = __webpack_require__(109);
 
 var _playerGui2 = _interopRequireDefault(_playerGui);
 
@@ -24585,7 +25010,7 @@ var _playback = __webpack_require__(30);
 
 var _playback2 = _interopRequireDefault(_playback);
 
-__webpack_require__(108);
+__webpack_require__(110);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24659,7 +25084,7 @@ var UIManager = function () {
 exports.default = UIManager;
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24728,7 +25153,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -24761,7 +25186,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24823,6 +25248,7 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
 
       this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
         _this2.props.updateDuration(_this2.player.duration);
+        _this2.props.updateMuted(_this2.player.muted);
         _this2.props.updateMetadataLoadingStatus(true);
       });
 
@@ -24899,6 +25325,7 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
       });
 
       this.player.addEventListener(this.player.Event.AD_LOADED, function (e) {
+        _this2.props.updateAdClickUrl(e.payload.ad.g.clickThroughUrl);
         _this2.props.updateAdSkipTimeOffset(e.payload.ad.getSkipTimeOffset());
         _this2.props.updateAdSkippableState(e.payload.ad.getAdSkippableState());
       });
@@ -24920,7 +25347,7 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
 exports.default = EngineConnector;
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25010,10 +25437,10 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
         this.props.updateDocumentWidth(document.body.clientWidth);
       }
       this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
-        _this2.props.updatePlayerWidth(_this2.player._el.parentElement.clientWidth);
+        _this2.props.updatePlayerWidth(_this2.player.getView().parentElement.clientWidth);
       });
       window.addEventListener('resize', function () {
-        _this2.props.updatePlayerWidth(_this2.player._el.parentElement.clientWidth);
+        _this2.props.updatePlayerWidth(_this2.player.getView().parentElement.clientWidth);
 
         if (document.body) {
           _this2.props.updateDocumentWidth(document.body.clientWidth);
@@ -25058,7 +25485,7 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
 exports.default = Shell;
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25153,13 +25580,13 @@ var PlayerGUI = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class 
 exports.default = PlayerGUI;
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(109);
+var content = __webpack_require__(111);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -25167,7 +25594,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(111)(content, options);
+var update = __webpack_require__(113)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -25184,21 +25611,21 @@ if(false) {
 }
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(110)(undefined);
+exports = module.exports = __webpack_require__(112)(undefined);
 // imports
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Lato);", ""]);
 
 // module
-exports.push([module.i, ".row {\n  display: block; }\n  .row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.d-inline-block {\n  display: inline-block; }\n\n.mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.font-size-base {\n  font-size: 15px; }\n\n.form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .form-group.has-error .form-control {\n    border-color: #db1f26; }\n    .form-group.has-error .form-control:focus {\n      border-color: #fff; }\n  .form-group.has-icon .form-control {\n    padding-left: 34px; }\n  .form-group .icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .form-control:focus + .icon {\n      fill: #999; }\n\ntextarea.form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: \"Lato\", sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  background: none;\n  border: 0; }\n\n.checkbox {\n  font-size: 15px;\n  position: relative; }\n  .checkbox input {\n    display: none; }\n  .checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .form-group-row .dropdown {\n    float: right; }\n\n.btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .btn.btn-block {\n    display: block; }\n  .btn.btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .btn.btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .btn.btn-branded {\n    background-color: #01ACCD; }\n    .btn.btn-branded:hover {\n      color: #fff; }\n\n.btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.dropdown {\n  position: relative;\n  font-size: 15px; }\n  .dropdown.active .dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .dropdown.active .dropdown-button .icon {\n    transform: rotate(180deg); }\n  .dropdown .dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .dropdown .dropdown-button .icon {\n      width: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px; }\n  .dropdown-menu.top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .dropdown-menu.bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .dropdown-menu.right {\n    left: 0; }\n  .dropdown-menu.left {\n    right: 0; }\n  .dropdown-menu .dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .dropdown-menu .dropdown-menu-item:hover {\n      color: #fff; }\n    .dropdown-menu .dropdown-menu-item.active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .dropdown-menu .dropdown-menu-item .check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .dropdown-menu .dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.player .control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .player .control-button svg {\n    width: 32px;\n    height: 32px; }\n  .player .control-button.active {\n    opacity: 1; }\n  .player .control-button.control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.player:not(.touch) .control-button:hover {\n  opacity: 1; }\n\n.player:not(.touch) .control-button.control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.player .control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.player.touch .player .control-button-container {\n  position: static; }\n\n.player.touch .control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important; }\n\n.player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .player * {\n    box-sizing: border-box;\n    outline: none; }\n  .player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .player video {\n    width: 100%; }\n  .player .player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: \"Lato\", sans-serif; }\n    .player .player-gui input, .player .player-gui textarea {\n      font-family: \"Lato\", sans-serif; }\n  .player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .player.metadata-loaded .player-gui,\n  .player.state-paused .player-gui,\n  .player.overlay-active .player-gui,\n  .player.menu-active .player-gui {\n    opacity: 1; }\n\nvideo::-webkit-media-controls {\n  display: none !important;\n  -webkit-appearance: none; }\n\nvideo::-webkit-media-controls-start-playback-button {\n  display: none !important;\n  -webkit-appearance: none; }\n\nvideo::cue {\n  background-color: transparent;\n  font-family: \"Lato\", sans-serif; }\n\n.player.captions-yellow-text video::cue {\n  color: #FAFF00; }\n\n.player.captions-black-bg video::cue {\n  background-color: #000; }\n\n.player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.player.state-paused video::-webkit-media-text-track-display,\n.player.hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n@keyframes openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: openOverlay 100ms ease-in-out forwards;\n  z-index: 4; }\n  .overlay.active {\n    display: block;\n    opacity: 1; }\n  .overlay .overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 80px 20px;\n    overflow-y: auto; }\n  .overlay .title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .overlay .close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .overlay .close-overlay .icon-close {\n      width: 24px;\n      height: 24px; }\n  .overlay .overlay-screen {\n    display: none; }\n    .overlay .overlay-screen.active {\n      display: block; }\n\n@media screen and (max-width: 768px) {\n  .overlay .overlay-contents {\n    padding: 36px 20px; }\n  .overlay .close-overlay {\n    top: 38px; }\n  .overlay .title {\n    margin-bottom: 24px; } }\n\n@media screen and (max-width: 480px) {\n  .overlay .overlay-contents {\n    padding: 16px 24px; }\n  .overlay .close-overlay {\n    top: 15px;\n    right: 24px; }\n  .overlay .title {\n    font-size: 16px;\n    line-height: 19px;\n    margin-bottom: 24px; } }\n\n@keyframes openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.player:not(.touch) .smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 5;\n  display: block;\n  animation: openSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.leaving {\n    animation: closeSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .player:not(.touch) .smart-container.top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .player:not(.touch) .smart-container.bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .player:not(.touch) .smart-container.right {\n    left: 0px; }\n  .player:not(.touch) .smart-container.left {\n    right: 0px; }\n  .player:not(.touch) .smart-container .smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .player:not(.touch) .smart-container .smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item label {\n      float: left; }\n      .player:not(.touch) .smart-container .smart-container-item.select-menu-item label .label-icon {\n        display: none; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item .dropdown, .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      float: right; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      text-align-last: right; }\n\n.touch .smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .touch .smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .touch .smart-container-item.select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: #fff;\n    fill: #fff; }\n    .touch .smart-container-item.select-menu-item label .label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .touch .smart-container-item.select-menu-item .dropdown, .touch .smart-container-item.select-menu-item select {\n    float: right; }\n  .touch .smart-container-item.select-menu-item select {\n    text-align-last: right; }\n\n.overlay.share-overlay .share-icons {\n  margin: 60px 0; }\n  .overlay.share-overlay .share-icons .btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .overlay.share-overlay .share-icons .btn-rounded:first-child {\n      margin-left: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded:last-child {\n      margin-right: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded.facebook-share-btn {\n      background-color: #3B5998; }\n    .overlay.share-overlay .share-icons .btn-rounded.twitter-share-btn {\n      background-color: #1DA1F2; }\n    .overlay.share-overlay .share-icons .btn-rounded.google-plus-share-btn {\n      background-color: #DD4B39; }\n    .overlay.share-overlay .share-icons .btn-rounded.linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .link-options-container .copy-url-row {\n    display: flex; }\n    .link-options-container .copy-url-row .input-copy-url {\n      margin: 0; }\n    .link-options-container .copy-url-row .btn-copy-url {\n      margin-left: 16px; }\n      .link-options-container .copy-url-row .btn-copy-url .icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .link-options-container .copy-url-row .btn-copy-url .check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .link-options-container .copy-url-row .btn-copy-url.copied {\n        background-color: #009444; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .link-options-container .video-start-options-row {\n    margin-top: 24px; }\n    .link-options-container .video-start-options-row .checkbox {\n      margin-right: 15px; }\n    .link-options-container .video-start-options-row .form-group {\n      margin: 0; }\n\n.player:not(.touch) .overlay.share-overlay .share-icons .btn-rounded:hover {\n  transform: scale(1.1667); }\n\n@media screen and (max-width: 768px) {\n  .overlay.share-overlay .share-icons {\n    margin: 40px 0; } }\n\n@media screen and (max-width: 480px) {\n  .overlay.share-overlay .share-icons {\n    margin: 20px 0; } }\n\n.overlay.cvaa-overlay .sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer; }\n  .overlay.cvaa-overlay .sample.black-bg {\n    background-color: #000; }\n  .overlay.cvaa-overlay .sample.yellow-text {\n    color: #FAFF00; }\n\n.overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.overlay.cvaa-overlay .custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n@media screen and (max-width: 480px) {\n  .overlay.cvaa-overlay .sample {\n    width: 30%;\n    margin: 2.33%;\n    padding: 0; }\n    .overlay.cvaa-overlay .sample:first-child {\n      margin-left: 0; }\n    .overlay.cvaa-overlay .sample:last-child {\n      margin-right: 0; }\n  .overlay.cvaa-overlay .button-save-cvaa {\n    margin-top: 20px; } }\n\n@keyframes kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .loading-backdrop.show {\n    opacity: 1; }\n    .loading-backdrop.show .spinner-container {\n      display: block; }\n  .loading-backdrop .spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kaltura-spinner 2.5s infinite; }\n  .spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.control-button-container.control-play-pause .control-button {\n  transition: 400ms transform; }\n  .control-button-container.control-play-pause .control-button .icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .control-button-container.control-play-pause .control-button .icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .control-button-container.control-play-pause .control-button.is-playing {\n    transform: rotate(360deg); }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-pause {\n      opacity: 1;\n      display: block; }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-play {\n      opacity: 0;\n      display: none; }\n\n.touch .control-button-container.control-play-pause {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.control-play-pause {\n    display: none; } }\n\n.control-button-container.volume-control:hover .volume-control-bar {\n  display: block !important; }\n\n.control-button-container.volume-control.is-muted .volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.control-button-container.volume-control.is-muted .volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.control-button-container.volume-control.dragging-active .volume-control-bar {\n  display: block; }\n\n.control-button-container.volume-control .volume-waves {\n  transform: translateX(0px); }\n\n.control-button-container.volume-control .volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.control-button-container.volume-control .volume-waves, .control-button-container.volume-control .volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.control-button-container.volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .volume-control-bar .bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .volume-control-bar .progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.touch .control-button-container.volume-control {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.volume-control {\n    display: none; } }\n\n.control-button-container.control-fullscreen .control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .control-button-container.control-fullscreen .control-button .icon-minimize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-maximize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-minimize {\n    display: block; }\n\n.player:not(.touch) .control-button-container.control-fullscreen .control-button:hover {\n  transform: scale(1.1); }\n\n.player .seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .player .seek-bar:hover .time-preview,\n  .player .seek-bar:hover .frame-preview, .player .seek-bar.dragging-active .time-preview,\n  .player .seek-bar.dragging-active .frame-preview {\n    display: block; }\n  .player .seek-bar:hover .progress-bar .scrubber, .player .seek-bar.dragging-active .progress-bar .scrubber {\n    transform: scale(1); }\n  .player .seek-bar:hover .progress-bar .virtual-progress, .player .seek-bar.dragging-active .progress-bar .virtual-progress {\n    display: block; }\n  .player .seek-bar.ad-break {\n    cursor: initial; }\n    .player .seek-bar.ad-break .progress-bar .progress {\n      background-color: #F9A71B; }\n  .player .seek-bar .progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .player .seek-bar .progress-bar .progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .player .seek-bar .progress-bar .virtual-progress {\n      display: none; }\n    .player .seek-bar .progress-bar .buffered, .player .seek-bar .progress-bar .virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .player .seek-bar .progress-bar .scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .player .seek-bar .progress-bar .scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .player .seek-bar .frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px; }\n    .player .seek-bar .frame-preview .frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .player .seek-bar .time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 10;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .player .seek-bar .time-preview,\n  .player .seek-bar .frame-preview {\n    display: none; }\n\n.touch .virtual-progress, .touch .time-preview, .touch .frame-preview {\n  display: none !important; }\n\n@media screen and (max-width: 480px) {\n  .virtual-progress, .time-preview, .frame-preview {\n    display: none; } }\n\n.player .time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.touch .time-display {\n  padding-left: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .time-display {\n    padding: 0 12px 0 0; } }\n\n.player .video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.player .bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  bottom: 0;\n  left: 0; }\n  .player .bottom-bar .left-controls {\n    float: left;\n    text-align: left; }\n    .player .bottom-bar .left-controls:first-child {\n      margin-left: 0px; }\n  .player .bottom-bar .right-controls {\n    float: right;\n    text-align: left; }\n    .player .bottom-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .bottom-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .bottom-bar,\n.player.state-paused .bottom-bar,\n.player.menu-active .bottom-bar {\n  opacity: 1; }\n\n.player.overlay-active .bottom-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .bottom-bar {\n    padding: 6px 8px; } }\n\n.player .top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  left: 0; }\n  .player .top-bar .left-controls {\n    text-align: left;\n    min-width: 0; }\n  .player .top-bar .right-controls {\n    text-align: left; }\n    .player .top-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .top-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .top-bar,\n.player.state-paused .top-bar,\n.player.menu-active .top-bar {\n  opacity: 1; }\n\n.player.overlay-active .top-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .top-bar {\n    padding: 8px 8px 20px 8px; } }\n\n@keyframes overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .overlay-play.in .icon {\n    animation: overlayPlayIconIn 400ms linear forwards; }\n  .overlay-play .icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10; }\n  .pre-playback-play-overlay .pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .pre-playback-play-overlay .pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .pre-playback-play-overlay .pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.pre-playback .player-gui {\n  opacity: 0 !important; }\n\n.btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n", ""]);
+exports.push([module.i, ".row {\n  display: block; }\n  .row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.d-inline-block {\n  display: inline-block; }\n\n.mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.font-size-base {\n  font-size: 15px; }\n\n.form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .form-group.has-error .form-control {\n    border-color: #db1f26; }\n    .form-group.has-error .form-control:focus {\n      border-color: #fff; }\n  .form-group.has-icon .form-control {\n    padding-left: 34px; }\n  .form-group .icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .form-control:focus + .icon {\n      fill: #999; }\n\ntextarea.form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: \"Lato\", sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  background: none;\n  border: 0; }\n\n.checkbox {\n  font-size: 15px;\n  position: relative; }\n  .checkbox input {\n    display: none; }\n  .checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .form-group-row .dropdown {\n    float: right; }\n\n.btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .btn.btn-block {\n    display: block; }\n  .btn.btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .btn.btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .btn.btn-branded {\n    background-color: #01ACCD; }\n    .btn.btn-branded:hover {\n      color: #fff; }\n\n.btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.dropdown {\n  position: relative;\n  font-size: 15px; }\n  .dropdown.active .dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .dropdown.active .dropdown-button .icon {\n    transform: rotate(180deg); }\n  .dropdown .dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .dropdown .dropdown-button .icon {\n      width: 16px;\n      height: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px; }\n  .dropdown-menu.top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .dropdown-menu.bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .dropdown-menu.right {\n    left: 0; }\n  .dropdown-menu.left {\n    right: 0; }\n  .dropdown-menu .dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .dropdown-menu .dropdown-menu-item:hover {\n      color: #fff; }\n    .dropdown-menu .dropdown-menu-item.active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .dropdown-menu .dropdown-menu-item .check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .dropdown-menu .dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.player .control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .player .control-button svg {\n    width: 32px;\n    height: 32px; }\n  .player .control-button.active {\n    opacity: 1; }\n  .player .control-button.control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.player:not(.touch) .control-button:hover {\n  opacity: 1; }\n\n.player:not(.touch) .control-button.control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.player .control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.player.touch .player .control-button-container {\n  position: static; }\n\n.player.touch .control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important; }\n\n.player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .player * {\n    box-sizing: border-box;\n    outline: none; }\n  .player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .player video {\n    width: 100%; }\n  .player .player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: \"Lato\", sans-serif; }\n    .player .player-gui input, .player .player-gui textarea {\n      font-family: \"Lato\", sans-serif; }\n  .player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .player.metadata-loaded .player-gui,\n  .player.state-paused .player-gui,\n  .player.overlay-active .player-gui,\n  .player.menu-active .player-gui {\n    opacity: 1; }\n\nvideo::-webkit-media-controls {\n  display: none !important;\n  -webkit-appearance: none; }\n\nvideo::-webkit-media-controls-start-playback-button {\n  display: none !important;\n  -webkit-appearance: none; }\n\nvideo::cue {\n  background-color: transparent;\n  font-family: \"Lato\", sans-serif; }\n\n.player.captions-yellow-text video::cue {\n  color: #FAFF00; }\n\n.player.captions-black-bg video::cue {\n  background-color: #000; }\n\n.player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.player.state-paused video::-webkit-media-text-track-display,\n.player.hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n@keyframes openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: openOverlay 100ms ease-in-out forwards;\n  z-index: 4; }\n  .overlay.active {\n    display: block;\n    opacity: 1; }\n  .overlay .overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 80px 20px;\n    overflow-y: auto; }\n  .overlay .title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .overlay .close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .overlay .close-overlay .icon-close {\n      width: 24px;\n      height: 24px; }\n  .overlay .overlay-screen {\n    display: none; }\n    .overlay .overlay-screen.active {\n      display: block; }\n\n@media screen and (max-width: 768px) {\n  .overlay .overlay-contents {\n    padding: 36px 20px; }\n  .overlay .close-overlay {\n    top: 38px; }\n  .overlay .title {\n    margin-bottom: 24px; } }\n\n@media screen and (max-width: 480px) {\n  .overlay .overlay-contents {\n    padding: 16px 24px; }\n  .overlay .close-overlay {\n    top: 15px;\n    right: 24px; }\n  .overlay .title {\n    font-size: 16px;\n    line-height: 19px;\n    margin-bottom: 24px; } }\n\n@keyframes openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.player:not(.touch) .smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 5;\n  display: block;\n  animation: openSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.leaving {\n    animation: closeSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .player:not(.touch) .smart-container.top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .player:not(.touch) .smart-container.bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .player:not(.touch) .smart-container.right {\n    left: 0px; }\n  .player:not(.touch) .smart-container.left {\n    right: 0px; }\n  .player:not(.touch) .smart-container .smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .player:not(.touch) .smart-container .smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item label {\n      float: left; }\n      .player:not(.touch) .smart-container .smart-container-item.select-menu-item label .label-icon {\n        display: none; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item .dropdown, .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      float: right; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      text-align-last: right; }\n\n.touch .smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .touch .smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .touch .smart-container-item.select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: #fff;\n    fill: #fff; }\n    .touch .smart-container-item.select-menu-item label .label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .touch .smart-container-item.select-menu-item .dropdown, .touch .smart-container-item.select-menu-item select {\n    float: right; }\n  .touch .smart-container-item.select-menu-item select {\n    text-align-last: right; }\n\n.overlay.share-overlay .share-icons {\n  margin: 60px 0; }\n  .overlay.share-overlay .share-icons .btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .overlay.share-overlay .share-icons .btn-rounded:first-child {\n      margin-left: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded:last-child {\n      margin-right: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded.facebook-share-btn {\n      background-color: #3B5998; }\n    .overlay.share-overlay .share-icons .btn-rounded.twitter-share-btn {\n      background-color: #1DA1F2; }\n    .overlay.share-overlay .share-icons .btn-rounded.google-plus-share-btn {\n      background-color: #DD4B39; }\n    .overlay.share-overlay .share-icons .btn-rounded.linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .link-options-container .copy-url-row {\n    display: flex; }\n    .link-options-container .copy-url-row .input-copy-url {\n      margin: 0; }\n    .link-options-container .copy-url-row .btn-copy-url {\n      margin-left: 16px; }\n      .link-options-container .copy-url-row .btn-copy-url .icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .link-options-container .copy-url-row .btn-copy-url .check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .link-options-container .copy-url-row .btn-copy-url.copied {\n        background-color: #009444; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .link-options-container .video-start-options-row {\n    margin-top: 24px; }\n    .link-options-container .video-start-options-row .checkbox {\n      margin-right: 15px; }\n    .link-options-container .video-start-options-row .form-group {\n      margin: 0; }\n\n.player:not(.touch) .overlay.share-overlay .share-icons .btn-rounded:hover {\n  transform: scale(1.1667); }\n\n@media screen and (max-width: 768px) {\n  .overlay.share-overlay .share-icons {\n    margin: 40px 0; } }\n\n@media screen and (max-width: 480px) {\n  .overlay.share-overlay .share-icons {\n    margin: 20px 0; } }\n\n.overlay.cvaa-overlay .sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer; }\n  .overlay.cvaa-overlay .sample.black-bg {\n    background-color: #000; }\n  .overlay.cvaa-overlay .sample.yellow-text {\n    color: #FAFF00; }\n\n.overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.overlay.cvaa-overlay .custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n@media screen and (max-width: 480px) {\n  .overlay.cvaa-overlay .sample {\n    width: 30%;\n    margin: 2.33%;\n    padding: 0; }\n    .overlay.cvaa-overlay .sample:first-child {\n      margin-left: 0; }\n    .overlay.cvaa-overlay .sample:last-child {\n      margin-right: 0; }\n  .overlay.cvaa-overlay .button-save-cvaa {\n    margin-top: 20px; } }\n\n@keyframes kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .loading-backdrop.show {\n    opacity: 1; }\n    .loading-backdrop.show .spinner-container {\n      display: block; }\n  .loading-backdrop .spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kaltura-spinner 2.5s infinite; }\n  .spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.control-button-container.control-play-pause .control-button {\n  transition: 400ms transform; }\n  .control-button-container.control-play-pause .control-button .icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .control-button-container.control-play-pause .control-button .icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .control-button-container.control-play-pause .control-button.is-playing {\n    transform: rotate(360deg); }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-pause {\n      opacity: 1;\n      display: block; }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-play {\n      opacity: 0;\n      display: none; }\n\n.touch .control-button-container.control-play-pause {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.control-play-pause {\n    display: none; } }\n\n.control-button-container.volume-control:hover .volume-control-bar {\n  display: block !important; }\n\n.control-button-container.volume-control.is-muted .volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.control-button-container.volume-control.is-muted .volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.control-button-container.volume-control.dragging-active .volume-control-bar {\n  display: block; }\n\n.control-button-container.volume-control .volume-waves {\n  transform: translateX(0px); }\n\n.control-button-container.volume-control .volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.control-button-container.volume-control .volume-waves, .control-button-container.volume-control .volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.control-button-container.volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .volume-control-bar .bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .volume-control-bar .progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.touch .control-button-container.volume-control {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.volume-control {\n    display: none; } }\n\n.control-button-container.control-fullscreen .control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .control-button-container.control-fullscreen .control-button .icon-minimize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-maximize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-minimize {\n    display: block; }\n\n.player:not(.touch) .control-button-container.control-fullscreen .control-button:hover {\n  transform: scale(1.1); }\n\n.player .seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .player .seek-bar:hover .time-preview,\n  .player .seek-bar:hover .frame-preview, .player .seek-bar.dragging-active .time-preview,\n  .player .seek-bar.dragging-active .frame-preview {\n    display: block; }\n  .player .seek-bar:hover .progress-bar .scrubber, .player .seek-bar.dragging-active .progress-bar .scrubber {\n    transform: scale(1); }\n  .player .seek-bar:hover .progress-bar .virtual-progress, .player .seek-bar.dragging-active .progress-bar .virtual-progress {\n    display: block; }\n  .player .seek-bar.ad-break {\n    cursor: initial; }\n    .player .seek-bar.ad-break .progress-bar .progress {\n      background-color: #F9A71B; }\n  .player .seek-bar .progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .player .seek-bar .progress-bar .progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .player .seek-bar .progress-bar .virtual-progress {\n      display: none; }\n    .player .seek-bar .progress-bar .buffered, .player .seek-bar .progress-bar .virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .player .seek-bar .progress-bar .scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .player .seek-bar .progress-bar .scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .player .seek-bar .frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px; }\n    .player .seek-bar .frame-preview .frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .player .seek-bar .time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 10;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .player .seek-bar .time-preview,\n  .player .seek-bar .frame-preview {\n    display: none; }\n\n.touch .virtual-progress, .touch .time-preview, .touch .frame-preview {\n  display: none !important; }\n\n@media screen and (max-width: 480px) {\n  .virtual-progress, .time-preview, .frame-preview {\n    display: none; } }\n\n.player .time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.touch .time-display {\n  padding-left: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .time-display {\n    padding: 0 12px 0 0; } }\n\n.player .video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.player .bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  bottom: 0;\n  left: 0; }\n  .player .bottom-bar .left-controls {\n    float: left;\n    text-align: left; }\n    .player .bottom-bar .left-controls:first-child {\n      margin-left: 0px; }\n  .player .bottom-bar .right-controls {\n    float: right;\n    text-align: left; }\n    .player .bottom-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .bottom-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .bottom-bar,\n.player.state-paused .bottom-bar,\n.player.menu-active .bottom-bar {\n  opacity: 1; }\n\n.player.overlay-active .bottom-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .bottom-bar {\n    padding: 6px 8px; } }\n\n.player .top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  left: 0; }\n  .player .top-bar .left-controls {\n    text-align: left;\n    min-width: 0; }\n  .player .top-bar .right-controls {\n    text-align: left; }\n    .player .top-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .top-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .top-bar,\n.player.state-paused .top-bar,\n.player.menu-active .top-bar {\n  opacity: 1; }\n\n.player.overlay-active .top-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .top-bar {\n    padding: 8px 8px 20px 8px; } }\n\n@keyframes overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .overlay-play.in .icon {\n    animation: overlayPlayIconIn 400ms linear forwards; }\n  .overlay-play .icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10; }\n  .pre-playback-play-overlay .pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .pre-playback-play-overlay .pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .pre-playback-play-overlay .pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.pre-playback .player-gui {\n  opacity: 0 !important; }\n\n.btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports) {
 
 /*
@@ -25280,7 +25707,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -25326,7 +25753,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(112);
+var	fixUrls = __webpack_require__(114);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -25639,7 +26066,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports) {
 
 
@@ -25748,15 +26175,129 @@ module.exports = function (css) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.validateProvidersConfig = exports.validateTargetId = exports.addKalturaPoster = exports.createKalturaPlayerContainer = exports.extractProvidersConfig = exports.extractPlayerConfig = undefined;
+
+var _playkitJs = __webpack_require__(28);
+
+var _validationError = __webpack_require__(315);
+
+var CONTAINER_CLASS_NAME = 'kaltura-player-container';
+
+/**
+ * Validate the initial user input for the providers.
+ * @param {Object} config - The fully user provider configuration.
+ * @returns {void}
+ */
+function validateProvidersConfig(config) {
+  if (!config) {
+    throw new Error(_validationError.ValidationErrorType.INITIAL_CONFIG_REQUIRED);
+  }
+  if (!config.partnerId) {
+    throw new Error(_validationError.ValidationErrorType.PARTNER_ID_REQUIRED);
+  }
+}
+
+/**
+ * Validate the initial user input for the player.
+ * @param {string} targetId - The DOM element id which the player will be append to.
+ * @returns {void}
+ */
+function validateTargetId(targetId) {
+  if (!targetId) {
+    throw new Error(_validationError.ValidationErrorType.TARGET_ID_REQUIRED);
+  }
+  if (!document.getElementById(targetId)) {
+    throw new Error(_validationError.ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
+  }
+}
+
+/**
+ * Extracts the player configuration.
+ * @param {Object} config - The fully user configuration.
+ * @returns {Object} - The player configuration.
+ */
+function extractPlayerConfig(config) {
+  var playerConfig = {};
+  _playkitJs.Utils.Object.mergeDeep(playerConfig, config);
+  delete playerConfig.partnerId;
+  delete playerConfig.entryId;
+  delete playerConfig.uiConfId;
+  delete playerConfig.env;
+  delete playerConfig.ks;
+  return playerConfig;
+}
+
+/**
+ * Extracts the provider configuration.
+ * @param {Object} config - The fully user configuration.
+ * @returns {Object} - The provider configuration.
+ */
+function extractProvidersConfig(config) {
+  var providerConfig = {};
+  if (config) {
+    providerConfig.partnerId = config.partnerId;
+    providerConfig.entryId = config.entryId;
+    providerConfig.uiConfId = config.uiConfId;
+    providerConfig.env = config.env;
+    providerConfig.ks = config.ks;
+  }
+  return providerConfig;
+}
+
+/**
+ * Creates the player container dom element.
+ * @param {string} targetId - The div id which the player will append to.
+ * @returns {string} - The player container id.
+ */
+function createKalturaPlayerContainer(targetId) {
+  var el = document.createElement("div");
+  el.id = _playkitJs.Utils.Generator.uniqueId(5);
+  el.className = CONTAINER_CLASS_NAME;
+  el.setAttribute('tabindex', '-1');
+  var parentNode = document.getElementById(targetId);
+  if (parentNode && el) {
+    parentNode.appendChild(el);
+  }
+  return el.id;
+}
+
+/**
+ * Add poster with player dimensions to thumbnail API call
+ * @param {Object} metadata - metadata container
+ * @param {number} width - player width in px
+ * @param {number} height - player height in px
+ * @returns {void}
+ */
+function addKalturaPoster(metadata, width, height) {
+  metadata.poster = metadata.poster + '/height/' + height + '/width/' + width;
+}
+
+exports.extractPlayerConfig = extractPlayerConfig;
+exports.extractProvidersConfig = extractProvidersConfig;
+exports.createKalturaPlayerContainer = createKalturaPlayerContainer;
+exports.addKalturaPoster = addKalturaPoster;
+exports.validateTargetId = validateTargetId;
+exports.validateProvidersConfig = validateProvidersConfig;
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.setup = exports.PlaykitUI = exports.OvpProvider = exports.Playkit = undefined;
 
-__webpack_require__(120);
+__webpack_require__(121);
 
 var _polyfillManager = __webpack_require__(116);
 
 var _polyfillManager2 = _interopRequireDefault(_polyfillManager);
 
-__webpack_require__(304);
+__webpack_require__(305);
 
 var _playkitJs = __webpack_require__(28);
 
@@ -25770,13 +26311,13 @@ var _playkitJsUi = __webpack_require__(118);
 
 var _playkitJsUi2 = _interopRequireDefault(_playkitJsUi);
 
-__webpack_require__(306);
+__webpack_require__(307);
 
-__webpack_require__(308);
+__webpack_require__(309);
 
-__webpack_require__(310);
+__webpack_require__(311);
 
-var _setup = __webpack_require__(311);
+var _setup = __webpack_require__(312);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -25807,17 +26348,17 @@ exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup.setup;
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-__webpack_require__(121);
-
-__webpack_require__(299);
+__webpack_require__(122);
 
 __webpack_require__(300);
+
+__webpack_require__(301);
 
 if (global._babelPolyfill) {
   throw new Error("only one instance of babel-polyfill is allowed");
@@ -25842,11 +26383,10 @@ define(String.prototype, "padRight", "".padEnd);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(122);
-__webpack_require__(125);
+__webpack_require__(123);
 __webpack_require__(126);
 __webpack_require__(127);
 __webpack_require__(128);
@@ -25924,14 +26464,14 @@ __webpack_require__(199);
 __webpack_require__(200);
 __webpack_require__(201);
 __webpack_require__(202);
-__webpack_require__(204);
+__webpack_require__(203);
 __webpack_require__(205);
 __webpack_require__(206);
 __webpack_require__(207);
 __webpack_require__(208);
 __webpack_require__(209);
 __webpack_require__(210);
-__webpack_require__(213);
+__webpack_require__(211);
 __webpack_require__(214);
 __webpack_require__(215);
 __webpack_require__(216);
@@ -25944,19 +26484,19 @@ __webpack_require__(222);
 __webpack_require__(223);
 __webpack_require__(224);
 __webpack_require__(225);
-__webpack_require__(82);
 __webpack_require__(226);
+__webpack_require__(82);
 __webpack_require__(227);
-__webpack_require__(105);
 __webpack_require__(228);
+__webpack_require__(105);
 __webpack_require__(229);
 __webpack_require__(230);
 __webpack_require__(231);
 __webpack_require__(232);
+__webpack_require__(233);
 __webpack_require__(106);
 __webpack_require__(108);
 __webpack_require__(109);
-__webpack_require__(233);
 __webpack_require__(234);
 __webpack_require__(235);
 __webpack_require__(236);
@@ -26018,12 +26558,13 @@ __webpack_require__(291);
 __webpack_require__(292);
 __webpack_require__(293);
 __webpack_require__(294);
-__webpack_require__(297);
+__webpack_require__(295);
 __webpack_require__(298);
+__webpack_require__(299);
 module.exports = __webpack_require__(24);
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26042,8 +26583,8 @@ var global         = __webpack_require__(2)
   , wks            = __webpack_require__(5)
   , wksExt         = __webpack_require__(89)
   , wksDefine      = __webpack_require__(62)
-  , keyOf          = __webpack_require__(123)
-  , enumKeys       = __webpack_require__(124)
+  , keyOf          = __webpack_require__(124)
+  , enumKeys       = __webpack_require__(125)
   , isArray        = __webpack_require__(65)
   , anObject       = __webpack_require__(1)
   , toIObject      = __webpack_require__(14)
@@ -26264,7 +26805,7 @@ setToStringTag(Math, 'Math', true);
 setToStringTag(global.JSON, 'JSON', true);
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getKeys   = __webpack_require__(34)
@@ -26279,7 +26820,7 @@ module.exports = function(object, el){
 };
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
@@ -26299,7 +26840,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0)
@@ -26307,7 +26848,7 @@ var $export = __webpack_require__(0)
 $export($export.S, 'Object', {create: __webpack_require__(36)});
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -26315,7 +26856,7 @@ var $export = __webpack_require__(0);
 $export($export.S + $export.F * !__webpack_require__(6), 'Object', {defineProperty: __webpack_require__(7).f});
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -26323,7 +26864,7 @@ var $export = __webpack_require__(0);
 $export($export.S + $export.F * !__webpack_require__(6), 'Object', {defineProperties: __webpack_require__(91)});
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
@@ -26337,7 +26878,7 @@ __webpack_require__(22)('getOwnPropertyDescriptor', function(){
 });
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
@@ -26351,7 +26892,7 @@ __webpack_require__(22)('getPrototypeOf', function(){
 });
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
@@ -26365,7 +26906,7 @@ __webpack_require__(22)('keys', function(){
 });
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
@@ -26374,7 +26915,7 @@ __webpack_require__(22)('getOwnPropertyNames', function(){
 });
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.5 Object.freeze(O)
@@ -26388,7 +26929,7 @@ __webpack_require__(22)('freeze', function($freeze){
 });
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.17 Object.seal(O)
@@ -26402,7 +26943,7 @@ __webpack_require__(22)('seal', function($seal){
 });
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.15 Object.preventExtensions(O)
@@ -26416,7 +26957,7 @@ __webpack_require__(22)('preventExtensions', function($preventExtensions){
 });
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.12 Object.isFrozen(O)
@@ -26429,7 +26970,7 @@ __webpack_require__(22)('isFrozen', function($isFrozen){
 });
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.13 Object.isSealed(O)
@@ -26442,7 +26983,7 @@ __webpack_require__(22)('isSealed', function($isSealed){
 });
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.11 Object.isExtensible(O)
@@ -26455,7 +26996,7 @@ __webpack_require__(22)('isExtensible', function($isExtensible){
 });
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
@@ -26464,7 +27005,7 @@ var $export = __webpack_require__(0);
 $export($export.S + $export.F, 'Object', {assign: __webpack_require__(93)});
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.10 Object.is(value1, value2)
@@ -26472,7 +27013,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Object', {is: __webpack_require__(94)});
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
@@ -26480,7 +27021,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Object', {setPrototypeOf: __webpack_require__(67).set});
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26496,7 +27037,7 @@ if(test + '' != '[object z]'){
 }
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
@@ -26505,7 +27046,7 @@ var $export = __webpack_require__(0);
 $export($export.P, 'Function', {bind: __webpack_require__(95)});
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP         = __webpack_require__(7).f
@@ -26535,7 +27076,7 @@ NAME in FProto || __webpack_require__(6) && dP(FProto, NAME, {
 });
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26554,7 +27095,7 @@ if(!(HAS_INSTANCE in FunctionProto))__webpack_require__(7).f(FunctionProto, HAS_
 }});
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export   = __webpack_require__(0)
@@ -26563,7 +27104,7 @@ var $export   = __webpack_require__(0)
 $export($export.G + $export.F * (parseInt != $parseInt), {parseInt: $parseInt});
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export     = __webpack_require__(0)
@@ -26572,7 +27113,7 @@ var $export     = __webpack_require__(0)
 $export($export.G + $export.F * (parseFloat != $parseFloat), {parseFloat: $parseFloat});
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26647,7 +27188,7 @@ if(!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')){
 }
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26766,7 +27307,7 @@ $export($export.P + $export.F * (!!$toFixed && (
 });
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26790,7 +27331,7 @@ $export($export.P + $export.F * ($fails(function(){
 });
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.1 Number.EPSILON
@@ -26799,7 +27340,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {EPSILON: Math.pow(2, -52)});
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.2 Number.isFinite(number)
@@ -26813,7 +27354,7 @@ $export($export.S, 'Number', {
 });
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.3 Number.isInteger(number)
@@ -26822,7 +27363,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {isInteger: __webpack_require__(99)});
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.4 Number.isNaN(number)
@@ -26835,7 +27376,7 @@ $export($export.S, 'Number', {
 });
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.5 Number.isSafeInteger(number)
@@ -26850,7 +27391,7 @@ $export($export.S, 'Number', {
 });
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.6 Number.MAX_SAFE_INTEGER
@@ -26859,7 +27400,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {MAX_SAFE_INTEGER: 0x1fffffffffffff});
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.10 Number.MIN_SAFE_INTEGER
@@ -26868,7 +27409,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Number', {MIN_SAFE_INTEGER: -0x1fffffffffffff});
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export     = __webpack_require__(0)
@@ -26877,7 +27418,7 @@ var $export     = __webpack_require__(0)
 $export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', {parseFloat: $parseFloat});
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export   = __webpack_require__(0)
@@ -26886,7 +27427,7 @@ var $export   = __webpack_require__(0)
 $export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', {parseInt: $parseInt});
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.3 Math.acosh(x)
@@ -26909,7 +27450,7 @@ $export($export.S + $export.F * !($acosh
 });
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.5 Math.asinh(x)
@@ -26924,7 +27465,7 @@ function asinh(x){
 $export($export.S + $export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', {asinh: asinh});
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.7 Math.atanh(x)
@@ -26939,7 +27480,7 @@ $export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
 });
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.9 Math.cbrt(x)
@@ -26953,7 +27494,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.11 Math.clz32(x)
@@ -26966,7 +27507,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.12 Math.cosh(x)
@@ -26980,7 +27521,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.14 Math.expm1(x)
@@ -26990,7 +27531,7 @@ var $export = __webpack_require__(0)
 $export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', {expm1: $expm1});
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.16 Math.fround(x)
@@ -27021,7 +27562,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
@@ -27051,7 +27592,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.18 Math.imul(x, y)
@@ -27073,7 +27614,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.21 Math.log10(x)
@@ -27086,7 +27627,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.20 Math.log1p(x)
@@ -27095,7 +27636,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Math', {log1p: __webpack_require__(100)});
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.22 Math.log2(x)
@@ -27108,7 +27649,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.28 Math.sign(x)
@@ -27117,7 +27658,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Math', {sign: __webpack_require__(71)});
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.30 Math.sinh(x)
@@ -27137,7 +27678,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.33 Math.tanh(x)
@@ -27154,7 +27695,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.34 Math.trunc(x)
@@ -27167,7 +27708,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export        = __webpack_require__(0)
@@ -27195,7 +27736,7 @@ $export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1)
 });
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export   = __webpack_require__(0)
@@ -27218,7 +27759,7 @@ $export($export.S, 'String', {
 });
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27231,7 +27772,7 @@ __webpack_require__(42)('trim', function($trim){
 });
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27254,7 +27795,7 @@ __webpack_require__(74)(String, 'String', function(iterated){
 });
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27269,7 +27810,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27295,7 +27836,7 @@ $export($export.P + $export.F * __webpack_require__(77)(ENDS_WITH), 'String', {
 });
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27313,7 +27854,7 @@ $export($export.P + $export.F * __webpack_require__(77)(INCLUDES), 'String', {
 });
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -27324,7 +27865,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27348,7 +27889,7 @@ $export($export.P + $export.F * __webpack_require__(77)(STARTS_WITH), 'String', 
 });
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27361,7 +27902,7 @@ __webpack_require__(15)('anchor', function(createHTML){
 });
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27374,7 +27915,7 @@ __webpack_require__(15)('big', function(createHTML){
 });
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27387,7 +27928,7 @@ __webpack_require__(15)('blink', function(createHTML){
 });
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27400,7 +27941,7 @@ __webpack_require__(15)('bold', function(createHTML){
 });
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27413,7 +27954,7 @@ __webpack_require__(15)('fixed', function(createHTML){
 });
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27426,7 +27967,7 @@ __webpack_require__(15)('fontcolor', function(createHTML){
 });
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27439,7 +27980,7 @@ __webpack_require__(15)('fontsize', function(createHTML){
 });
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27452,7 +27993,7 @@ __webpack_require__(15)('italics', function(createHTML){
 });
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27465,7 +28006,7 @@ __webpack_require__(15)('link', function(createHTML){
 });
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27478,7 +28019,7 @@ __webpack_require__(15)('small', function(createHTML){
 });
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27491,7 +28032,7 @@ __webpack_require__(15)('strike', function(createHTML){
 });
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27504,7 +28045,7 @@ __webpack_require__(15)('sub', function(createHTML){
 });
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27517,7 +28058,7 @@ __webpack_require__(15)('sup', function(createHTML){
 });
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.3.3.1 / 15.9.4.4 Date.now()
@@ -27526,7 +28067,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Date', {now: function(){ return new Date().getTime(); }});
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27546,7 +28087,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27580,7 +28121,7 @@ $export($export.P + $export.F * (fails(function(){
 });
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DateProto    = Date.prototype
@@ -27596,16 +28137,16 @@ if(new Date(NaN) + '' != INVALID_DATE){
 }
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var TO_PRIMITIVE = __webpack_require__(5)('toPrimitive')
   , proto        = Date.prototype;
 
-if(!(TO_PRIMITIVE in proto))__webpack_require__(11)(proto, TO_PRIMITIVE, __webpack_require__(203));
+if(!(TO_PRIMITIVE in proto))__webpack_require__(11)(proto, TO_PRIMITIVE, __webpack_require__(204));
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27620,7 +28161,7 @@ module.exports = function(hint){
 };
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
@@ -27629,7 +28170,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Array', {isArray: __webpack_require__(65)});
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27673,7 +28214,7 @@ $export($export.S + $export.F * !__webpack_require__(54)(function(iter){ Array.f
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27698,7 +28239,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27716,7 +28257,7 @@ $export($export.P + $export.F * (__webpack_require__(46) != Object || !__webpack
 });
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27750,7 +28291,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27779,7 +28320,7 @@ $export($export.P + $export.F * (fails(function(){
 });
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27796,18 +28337,18 @@ $export($export.P + $export.F * !STRICT, 'Array', {
 });
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-var speciesConstructor = __webpack_require__(212);
+var speciesConstructor = __webpack_require__(213);
 
 module.exports = function(original, length){
   return new (speciesConstructor(original))(length);
 };
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(4)
@@ -27828,7 +28369,7 @@ module.exports = function(original){
 };
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27844,7 +28385,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].map, true), 'Array',
 });
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27860,7 +28401,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].filter, true), 'Arra
 });
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27876,7 +28417,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].some, true), 'Array'
 });
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27892,7 +28433,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].every, true), 'Array
 });
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27908,7 +28449,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].reduce, true), 'Arra
 });
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27924,7 +28465,7 @@ $export($export.P + $export.F * !__webpack_require__(20)([].reduceRight, true), 
 });
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27945,7 +28486,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(20)($nati
 });
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27973,7 +28514,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(20)($nati
 });
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
@@ -27984,7 +28525,7 @@ $export($export.P, 'Array', {copyWithin: __webpack_require__(103)});
 __webpack_require__(44)('copyWithin');
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
@@ -27995,7 +28536,7 @@ $export($export.P, 'Array', {fill: __webpack_require__(81)});
 __webpack_require__(44)('fill');
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28015,7 +28556,7 @@ $export($export.P + $export.F * forced, 'Array', {
 __webpack_require__(44)(KEY);
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28035,13 +28576,13 @@ $export($export.P + $export.F * forced, 'Array', {
 __webpack_require__(44)(KEY);
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(38)('Array');
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global            = __webpack_require__(2)
@@ -28089,7 +28630,7 @@ if(__webpack_require__(6) && (!CORRECT_NEW || __webpack_require__(3)(function(){
 __webpack_require__(38)('RegExp');
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28120,7 +28661,7 @@ if(__webpack_require__(3)(function(){ return $toString.call({source: 'a', flags:
 }
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@match logic
@@ -28135,7 +28676,7 @@ __webpack_require__(56)('match', 1, function(defined, MATCH, $match){
 });
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@replace logic
@@ -28152,7 +28693,7 @@ __webpack_require__(56)('replace', 2, function(defined, REPLACE, $replace){
 });
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@search logic
@@ -28167,7 +28708,7 @@ __webpack_require__(56)('search', 1, function(defined, SEARCH, $search){
 });
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@split logic
@@ -28242,7 +28783,7 @@ __webpack_require__(56)('split', 2, function(defined, SPLIT, $split){
 });
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28547,7 +29088,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(54)(function
 });
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28565,7 +29106,7 @@ __webpack_require__(57)('WeakSet', function(get){
 }, weak, false, true);
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28617,7 +29158,7 @@ $export($export.P + $export.U + $export.F * __webpack_require__(3)(function(){
 __webpack_require__(38)(ARRAY_BUFFER);
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -28626,7 +29167,7 @@ $export($export.G + $export.W + $export.F * !__webpack_require__(58).ABV, {
 });
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Int8', 1, function(init){
@@ -28636,7 +29177,7 @@ __webpack_require__(26)('Int8', 1, function(init){
 });
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint8', 1, function(init){
@@ -28646,7 +29187,7 @@ __webpack_require__(26)('Uint8', 1, function(init){
 });
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint8', 1, function(init){
@@ -28656,7 +29197,7 @@ __webpack_require__(26)('Uint8', 1, function(init){
 }, true);
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Int16', 2, function(init){
@@ -28666,7 +29207,7 @@ __webpack_require__(26)('Int16', 2, function(init){
 });
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint16', 2, function(init){
@@ -28676,7 +29217,7 @@ __webpack_require__(26)('Uint16', 2, function(init){
 });
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Int32', 4, function(init){
@@ -28686,7 +29227,7 @@ __webpack_require__(26)('Int32', 4, function(init){
 });
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Uint32', 4, function(init){
@@ -28696,7 +29237,7 @@ __webpack_require__(26)('Uint32', 4, function(init){
 });
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Float32', 4, function(init){
@@ -28706,7 +29247,7 @@ __webpack_require__(26)('Float32', 4, function(init){
 });
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26)('Float64', 8, function(init){
@@ -28716,7 +29257,7 @@ __webpack_require__(26)('Float64', 8, function(init){
 });
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
@@ -28737,7 +29278,7 @@ $export($export.S + $export.F * !__webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
@@ -28789,7 +29330,7 @@ $export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
 });
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
@@ -28816,7 +29357,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 });
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
@@ -28832,7 +29373,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28864,7 +29405,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
@@ -28890,7 +29431,7 @@ function get(target, propertyKey/*, receiver*/){
 $export($export.S, 'Reflect', {get: get});
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
@@ -28905,7 +29446,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
@@ -28920,7 +29461,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.9 Reflect.has(target, propertyKey)
@@ -28933,7 +29474,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.10 Reflect.isExtensible(target)
@@ -28949,7 +29490,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.11 Reflect.ownKeys(target)
@@ -28958,7 +29499,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'Reflect', {ownKeys: __webpack_require__(111)});
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.12 Reflect.preventExtensions(target)
@@ -28979,7 +29520,7 @@ $export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
@@ -29015,7 +29556,7 @@ function set(target, propertyKey, V/*, receiver*/){
 $export($export.S, 'Reflect', {set: set});
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.14 Reflect.setPrototypeOf(target, proto)
@@ -29035,7 +29576,7 @@ if(setProto)$export($export.S, 'Reflect', {
 });
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29053,7 +29594,7 @@ $export($export.P, 'Array', {
 __webpack_require__(44)('includes');
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29069,7 +29610,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29085,7 +29626,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29101,7 +29642,7 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29114,7 +29655,7 @@ __webpack_require__(42)('trimLeft', function($trim){
 }, 'trimStart');
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29127,7 +29668,7 @@ __webpack_require__(42)('trimRight', function($trim){
 }, 'trimEnd');
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29163,19 +29704,19 @@ $export($export.P, 'String', {
 });
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(62)('asyncIterator');
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(62)('observable');
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-getownpropertydescriptors
@@ -29199,7 +29740,7 @@ $export($export.S, 'Object', {
 });
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
@@ -29213,7 +29754,7 @@ $export($export.S, 'Object', {
 });
 
 /***/ }),
-/* 270 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
@@ -29227,7 +29768,7 @@ $export($export.S, 'Object', {
 });
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29245,7 +29786,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29263,7 +29804,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 273 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29287,7 +29828,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 274 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29311,7 +29852,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(59), 'Object',
 });
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
@@ -29320,7 +29861,7 @@ var $export  = __webpack_require__(0);
 $export($export.P + $export.R, 'Map', {toJSON: __webpack_require__(114)('Map')});
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
@@ -29329,7 +29870,7 @@ var $export  = __webpack_require__(0);
 $export($export.P + $export.R, 'Set', {toJSON: __webpack_require__(114)('Set')});
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/ljharb/proposal-global
@@ -29338,7 +29879,7 @@ var $export = __webpack_require__(0);
 $export($export.S, 'System', {global: __webpack_require__(2)});
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/ljharb/proposal-is-error
@@ -29352,7 +29893,7 @@ $export($export.S, 'Error', {
 });
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -29368,7 +29909,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -29384,7 +29925,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -29405,7 +29946,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -29426,7 +29967,7 @@ $export($export.S, 'Math', {
 });
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata                  = __webpack_require__(27)
@@ -29439,7 +29980,7 @@ metadata.exp({defineMetadata: function defineMetadata(metadataKey, metadataValue
 }});
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -29459,7 +30000,7 @@ metadata.exp({deleteMetadata: function deleteMetadata(metadataKey, target /*, ta
 }});
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -29481,7 +30022,7 @@ metadata.exp({getMetadata: function getMetadata(metadataKey, target /*, targetKe
 }});
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Set                     = __webpack_require__(108)
@@ -29505,7 +30046,7 @@ metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */)
 }});
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -29519,7 +30060,7 @@ metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, ta
 }});
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata                = __webpack_require__(27)
@@ -29532,7 +30073,7 @@ metadata.exp({getOwnMetadataKeys: function getOwnMetadataKeys(target /*, targetK
 }});
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -29553,7 +30094,7 @@ metadata.exp({hasMetadata: function hasMetadata(metadataKey, target /*, targetKe
 }});
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata               = __webpack_require__(27)
@@ -29567,7 +30108,7 @@ metadata.exp({hasOwnMetadata: function hasOwnMetadata(metadataKey, target /*, ta
 }});
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata                  = __webpack_require__(27)
@@ -29587,7 +30128,7 @@ metadata.exp({metadata: function metadata(metadataKey, metadataValue){
 }});
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/rwaldron/tc39-notes/blob/master/es6/2014-09/sept-25.md#510-globalasap-for-enqueuing-a-microtask
@@ -29604,7 +30145,7 @@ $export($export.G, {
 });
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29809,14 +30350,14 @@ $export($export.G, {Observable: $Observable});
 __webpack_require__(38)('Observable');
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // ie9- setTimeout & setInterval additional parameters fix
 var global     = __webpack_require__(2)
   , $export    = __webpack_require__(0)
   , invoke     = __webpack_require__(52)
-  , partial    = __webpack_require__(295)
+  , partial    = __webpack_require__(296)
   , navigator  = global.navigator
   , MSIE       = !!navigator && /MSIE .\./.test(navigator.userAgent); // <- dirty ie9- check
 var wrap = function(set){
@@ -29834,12 +30375,12 @@ $export($export.G + $export.B + $export.F * MSIE, {
 });
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var path      = __webpack_require__(296)
+var path      = __webpack_require__(297)
   , invoke    = __webpack_require__(52)
   , aFunction = __webpack_require__(13);
 module.exports = function(/* ...pargs */){
@@ -29863,13 +30404,13 @@ module.exports = function(/* ...pargs */){
 };
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(2);
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0)
@@ -29880,7 +30421,7 @@ $export($export.G + $export.B, {
 });
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $iterators    = __webpack_require__(82)
@@ -29907,7 +30448,7 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 }
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -30650,25 +31191,25 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(301);
+__webpack_require__(302);
 module.exports = __webpack_require__(24).RegExp.escape;
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/benjamingr/RexExp.escape
 var $export = __webpack_require__(0)
-  , $re     = __webpack_require__(302)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+  , $re     = __webpack_require__(303)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
 
 $export($export.S, 'RegExp', {escape: function escape(it){ return $re(it); }});
 
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, exports) {
 
 module.exports = function(regExp, replace){
@@ -30681,7 +31222,7 @@ module.exports = function(regExp, replace){
 };
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -30948,16 +31489,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(305);
+__webpack_require__(306);
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31016,12 +31557,12 @@ _polyfillManager2.default.register(PerformanceNowPolyfill);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(307), __webpack_require__(28));
+		module.exports = factory(__webpack_require__(308), __webpack_require__(28));
 	else if(typeof define === 'function' && define.amd)
 		define(["hls.js", "playkit-js"], factory);
 	else if(typeof exports === 'object')
@@ -31666,7 +32207,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Hls = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -47990,12 +48531,12 @@ exports.default = XhrLoader;
 
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(309), __webpack_require__(28));
+		module.exports = factory(__webpack_require__(310), __webpack_require__(28));
 	else if(typeof define === 'function' && define.amd)
 		define(["shaka-player", "playkit-js"], factory);
 	else if(typeof exports === 'object')
@@ -48615,7 +49156,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function(){var g={};
@@ -48995,7 +49536,7 @@ else this.shaka=g.shaka;
 
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -50531,7 +51072,7 @@ exports.default = Event;
 
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50544,11 +51085,11 @@ exports.setup = undefined;
 
 var _playkitJs = __webpack_require__(28);
 
-var _kalturaPlayer = __webpack_require__(312);
+var _kalturaPlayer = __webpack_require__(313);
 
 var _kalturaPlayer2 = _interopRequireDefault(_kalturaPlayer);
 
-var _setupHelpers = __webpack_require__(319);
+var _setupHelpers = __webpack_require__(119);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50565,7 +51106,7 @@ function setup(targetId, options) {
 exports.setup = setup;
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50591,9 +51132,11 @@ var _logger = __webpack_require__(87);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _kalturaParams = __webpack_require__(313);
+var _kalturaParams = __webpack_require__(314);
 
-__webpack_require__(314);
+var _setupHelpers = __webpack_require__(119);
+
+__webpack_require__(316);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50621,6 +51164,8 @@ var KalturaPlayer = function () {
       this._logger.debug('loadMedia', { entryId: entryId, uiConfId: uiConfId });
       return this._provider.getConfig(entryId, uiConfId).then(function (data) {
         var playerConfig = {};
+        var dimensions = _this._player.dimensions;
+        (0, _setupHelpers.addKalturaPoster)(data.metadata, dimensions.width, dimensions.height);
         (0, _kalturaParams.addKalturaParams)(data.sources, _this._player);
         _playkitJs.Utils.Object.mergeDeep(playerConfig, _this._player.config, data);
         _this._player.configure(playerConfig);
@@ -50634,7 +51179,7 @@ var KalturaPlayer = function () {
 exports.default = KalturaPlayer;
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50763,13 +51308,32 @@ exports.addReferrer = addReferrer;
 exports.addClientTag = addClientTag;
 
 /***/ }),
-/* 314 */
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ValidationErrorType = {
+  INITIAL_CONFIG_REQUIRED: 'Must provide initial providers config',
+  PARTNER_ID_REQUIRED: 'Must provide partner id',
+  TARGET_ID_REQUIRED: 'Must provide target id',
+  DOM_ELEMENT_WITH_TARGET_ID_REQUIRED: 'Must provide DOM element with id of: '
+};
+
+exports.ValidationErrorType = ValidationErrorType;
+
+/***/ }),
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(315);
+var content = __webpack_require__(317);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -50777,7 +51341,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(317)(content, options);
+var update = __webpack_require__(319)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -50794,21 +51358,21 @@ if(false) {
 }
 
 /***/ }),
-/* 315 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(316)(undefined);
+exports = module.exports = __webpack_require__(318)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".kaltura-player-container {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n", ""]);
+exports.push([module.i, ".kaltura-player-container {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 316 */
+/* 318 */
 /***/ (function(module, exports) {
 
 /*
@@ -50890,7 +51454,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 317 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -50936,7 +51500,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(318);
+var	fixUrls = __webpack_require__(320);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -51249,7 +51813,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 318 */
+/* 320 */
 /***/ (function(module, exports) {
 
 
@@ -51342,127 +51906,6 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
-
-/***/ }),
-/* 319 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.validateProvidersConfig = exports.validateTargetId = exports.createKalturaPlayerContainer = exports.extractProvidersConfig = exports.extractPlayerConfig = undefined;
-
-var _playkitJs = __webpack_require__(28);
-
-var _validationError = __webpack_require__(320);
-
-var CONTAINER_CLASS_NAME = 'kaltura-player-container';
-
-/**
- * Validate the initial user input for the providers.
- * @param {Object} config - The fully user provider configuration.
- * @returns {void}
- */
-function validateProvidersConfig(config) {
-  if (!config) {
-    throw new Error(_validationError.ValidationErrorType.INITIAL_CONFIG_REQUIRED);
-  }
-  if (!config.partnerId) {
-    throw new Error(_validationError.ValidationErrorType.PARTNER_ID_REQUIRED);
-  }
-}
-
-/**
- * Validate the initial user input for the player.
- * @param {string} targetId - The DOM element id which the player will be append to.
- * @returns {void}
- */
-function validateTargetId(targetId) {
-  if (!targetId) {
-    throw new Error(_validationError.ValidationErrorType.TARGET_ID_REQUIRED);
-  }
-  if (!document.getElementById(targetId)) {
-    throw new Error(_validationError.ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
-  }
-}
-
-/**
- * Extracts the player configuration.
- * @param {Object} config - The fully user configuration.
- * @returns {Object} - The player configuration.
- */
-function extractPlayerConfig(config) {
-  var playerConfig = {};
-  _playkitJs.Utils.Object.mergeDeep(playerConfig, config);
-  delete playerConfig.partnerId;
-  delete playerConfig.entryId;
-  delete playerConfig.uiConfId;
-  delete playerConfig.env;
-  delete playerConfig.ks;
-  return playerConfig;
-}
-
-/**
- * Extracts the provider configuration.
- * @param {Object} config - The fully user configuration.
- * @returns {Object} - The provider configuration.
- */
-function extractProvidersConfig(config) {
-  var providerConfig = {};
-  if (config) {
-    providerConfig.partnerId = config.partnerId;
-    providerConfig.entryId = config.entryId;
-    providerConfig.uiConfId = config.uiConfId;
-    providerConfig.env = config.env;
-    providerConfig.ks = config.ks;
-  }
-  return providerConfig;
-}
-
-/**
- * Creates the player container dom element.
- * @param {string} targetId - The div id which the player will append to.
- * @returns {string} - The player container id.
- */
-function createKalturaPlayerContainer(targetId) {
-  var el = document.createElement("div");
-  el.id = _playkitJs.Utils.Generator.uniqueId(5);
-  el.className = CONTAINER_CLASS_NAME;
-  el.setAttribute('tabindex', '-1');
-  var parentNode = document.getElementById(targetId);
-  if (parentNode && el) {
-    parentNode.appendChild(el);
-  }
-  return el.id;
-}
-
-exports.extractPlayerConfig = extractPlayerConfig;
-exports.extractProvidersConfig = extractProvidersConfig;
-exports.createKalturaPlayerContainer = createKalturaPlayerContainer;
-exports.validateTargetId = validateTargetId;
-exports.validateProvidersConfig = validateProvidersConfig;
-
-/***/ }),
-/* 320 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ValidationErrorType = {
-  INITIAL_CONFIG_REQUIRED: 'Must provide initial providers config',
-  PARTNER_ID_REQUIRED: 'Must provide partner id',
-  TARGET_ID_REQUIRED: 'Must provide target id',
-  DOM_ELEMENT_WITH_TARGET_ID_REQUIRED: 'Must provide DOM element with id of: '
-};
-
-exports.ValidationErrorType = ValidationErrorType;
 
 /***/ })
 /******/ ]);
