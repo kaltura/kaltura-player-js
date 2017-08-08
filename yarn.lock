@@ -1765,13 +1765,9 @@ di@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/di/-/di-0.0.1.tgz#806649326ceaa7caa3306d75d985ea2748ba913c"
 
-diff@3.2.0:
+diff@3.2.0, diff@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.2.0.tgz#c9ce393a4b7cbd0b058a725c93df299027868ff9"
-
-diff@^3.1.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-3.3.0.tgz#056695150d7aa93237ca7e378ac3b1682b7963b9"
 
 diffie-hellman@^5.0.0:
   version "5.0.2"
@@ -4175,27 +4171,17 @@ pkg-dir@^1.0.0:
   dependencies:
     find-up "^1.0.0"
 
-"playkit-js-dash@git+https://github.com/kaltura/playkit-js-dash.git#master":
+"playkit-js-dash@git+https://github.com/kaltura/playkit-js-dash.git#v1.0.1":
   version "1.0.1"
   resolved "git+https://github.com/kaltura/playkit-js-dash.git#8a5e8c975bc4edf91127b4266e8c9db0e5452741"
 
-"playkit-js-hls@git+https://github.com/kaltura/playkit-js-hls.git#master":
+"playkit-js-hls@git+https://github.com/kaltura/playkit-js-hls.git#v1.0.1":
   version "1.0.1"
   resolved "git+https://github.com/kaltura/playkit-js-hls.git#e54918c155b1b9af4e1756774bb4025ab311fb8e"
 
-"playkit-js-kanalytics@git+https://github.com/kaltura/playkit-js-kanalytics.git#master":
-  version "0.1.1"
-  resolved "git+https://github.com/kaltura/playkit-js-kanalytics.git#d9d4afbc974821a947ba2280663cb7a32f94379a"
-
-"playkit-js-providers@git+https://github.com/kaltura/playkit-js-providers.git#master":
-  version "1.0.0"
-  resolved "git+https://github.com/kaltura/playkit-js-providers.git#f0d3c17184fe9ed9f9d1b217ed41715fa526deb6"
-  dependencies:
-    js-logger "^1.3.0"
-
-"playkit-js-ui@git+https://github.com/kaltura/playkit-js-ui.git#master":
+"playkit-js-ima@git+https://github.com/kaltura/playkit-js-ui.git#v0.1.0", "playkit-js-ui@git+https://github.com/kaltura/playkit-js-ui.git#v0.1.0":
   version "0.1.0"
-  resolved "git+https://github.com/kaltura/playkit-js-ui.git#e0e21eebff33663f56d1c24e6d26558ae999b43f"
+  resolved "git+https://github.com/kaltura/playkit-js-ui.git#b516d82fba2ae4af79efcff84eb9f44212a48a07"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -4205,9 +4191,31 @@ pkg-dir@^1.0.0:
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"playkit-js@git+https://github.com/kaltura/playkit-js.git#master":
-  version "0.3.0"
-  resolved "git+https://github.com/kaltura/playkit-js.git#addb8fcd7321eb7fdc6c79115020dc89b8569e35"
+"playkit-js-kanalytics@git+https://github.com/kaltura/playkit-js-kanalytics.git#v0.1.1":
+  version "0.1.1"
+  resolved "git+https://github.com/kaltura/playkit-js-kanalytics.git#d9d4afbc974821a947ba2280663cb7a32f94379a"
+
+"playkit-js-providers@git+https://github.com/kaltura/playkit-js-providers.git#v1.1.0":
+  version "1.1.0"
+  resolved "git+https://github.com/kaltura/playkit-js-providers.git#cd11e2946ab3bd466bf674cb3a13e3afc444cd80"
+  dependencies:
+    js-logger "^1.3.0"
+
+"playkit-js-ui@git+https://github.com/kaltura/playkit-js-ui.git#v0.1.1":
+  version "0.1.1"
+  resolved "git+https://github.com/kaltura/playkit-js-ui.git#6cbc861be986323174798275f1418fea5639134d"
+  dependencies:
+    empty "^0.10.1"
+    js-logger "^1.3.0"
+    preact "^8.1.0"
+    preact-i18n "^1.0.0"
+    preact-portal "^1.1.2"
+    preact-redux "^2.0.1"
+    redux "^3.6.0"
+
+"playkit-js@git+https://github.com/kaltura/playkit-js.git#v0.4.0":
+  version "0.4.0"
+  resolved "git+https://github.com/kaltura/playkit-js.git#6f6da80a9514bce2cb5a40960be6dc9acb01550b"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
@@ -4866,11 +4874,11 @@ resolve-from@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-1.0.1.tgz#26cbfe935d1aeeeabb29bc3fe5aeb01e93d44226"
 
-resolve@1.1.x:
+resolve@1.1.x, resolve@^1.1.6, resolve@^1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
-resolve@^1.1.6, resolve@^1.1.7, resolve@^1.2.0:
+resolve@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.4.0.tgz#a75be01c53da25d934a98ebd0e4c4a7312f92a86"
   dependencies:
