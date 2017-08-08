@@ -25,6 +25,11 @@
     "prepush-msg:dist": "echo '\nAdding dist files to a seperate commit...\n' && exit 0",
     "prepush-msg:done": "echo '\nPre push tasks are done.\n' && exit 0"
   },
+  "standard-version": {
+    "scripts": {
+      "postbump": "yarn run build && yarn run build:prod && npm run commit:dist"
+    }
+  },
   "pre-push": [
     "prepush-msg:build",
     "prebuild",
