@@ -82,10 +82,22 @@ function createKalturaPlayerContainer(targetId: string): string {
   return el.id;
 }
 
+/**
+ * Add poster with player dimensions to thumbnail API call
+ * @param {Object} metadata - metadata container
+ * @param {number} width - player width in px
+ * @param {number} height - player height in px
+ * @returns {void}
+ */
+function addKalturaPoster(metadata: Object, width: number, height: number): void{
+  metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
+}
+
 export {
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
+  addKalturaPoster,
   validateTargetId,
   validateProvidersConfig
 };

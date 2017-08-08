@@ -4,6 +4,7 @@ import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import LoggerFactory from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
+import {addKalturaPoster} from './utils/setup-helpers'
 import './assets/style.css'
 
 export default class KalturaPlayer {
@@ -29,7 +30,7 @@ export default class KalturaPlayer {
       .then((data) => {
         let playerConfig = {};
         const dimensions = this._player.dimensions;
-        data.metadata.poster = getPosterRequestWithDimensions(data.metadata.poster, dimensions.width, dimensions.height);
+        addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(playerConfig, this._player.config, data);
         this._player.configure(playerConfig);
@@ -37,13 +38,4 @@ export default class KalturaPlayer {
   }
 }
 
-/**
- *
- * @param url - the poster url
- * @param (number} width - the player width in px
- * @param {number} height - the player height in px
- * @returns {string}
- */
-function getPosterRequestWithDimensions(url: string, width: number, height: number): string{
-  return `${url}/height/${height}/width/${width}`;
-}
+
