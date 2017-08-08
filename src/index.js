@@ -2,6 +2,17 @@
 import 'babel-polyfill' // Important! must be first import to support older browsers compatibility
 import PolyfillManager from './polyfills/polyfill-manager'
 import './polyfills/all'
+import * as packageData from '../package.json'
+import LoggerFactory from './utils/logger'
+
+// Player version
+const VERSION = packageData.version;
+
+// Player name
+const PLAYER_NAME = packageData.name;
+
+LoggerFactory.getLogger().log(`%c ${PLAYER_NAME} ${VERSION}`, "color: #98ff98;  font-size: large");
+LoggerFactory.getLogger().log(`%c For more details see ${packageData.repository.url}`, "color: #98ff98;");
 
 PolyfillManager.installAll();
 
@@ -24,5 +35,5 @@ import 'playkit-js-kanalytics'
 // Import setup method
 import {setup} from './setup'
 
-export {Playkit, OvpProvider, PlaykitUI, setup};
+export {Playkit, OvpProvider, PlaykitUI, setup, VERSION, PLAYER_NAME};
 
