@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>Title</title>
+  <link rel="stylesheet" type="text/css" href="../samples/style.css">
+  <script src="./kaltura-player.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="player-placeholder-container">
+  <div id="player-placeholder"></div>
+</div>
+<script>
+  var config = {
+    partnerId: 1091,
+    env: {
+      baseUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/",
+      beUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/api_v3"
+    },
+    plugins: {
+      kanalytics: {
+        beUrl: "http://qa-apache-testing-ubu-01.dev.kaltura.com/api_v3"
+      }
+    }
+  };
+
+  try {
+    var kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
+    kalturaPlayer.loadMedia('0_wifqaipd');
+  } catch (e) {
+    console.error(e.message)
+  }
+</script>
+</body>
+</html>

@@ -89,7 +89,7 @@ function createKalturaPlayerContainer(targetId: string): string {
  * @param {number} height - player height in px
  * @returns {void}
  */
-function addKalturaPoster(metadata: Object, width: number, height: number): void{
+function addKalturaPoster(metadata: Object, width: number, height: number): void {
   metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
 }
 
