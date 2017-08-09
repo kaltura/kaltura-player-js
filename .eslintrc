@@ -21,9 +21,7 @@
     "sinon": true
   },
   "rules": {
-    "mocha-no-only/mocha-no-only": [
-      "error"
-    ],
+    "mocha-no-only/mocha-no-only": "off",
     "require-jsdoc": [
       "error"
     ],
