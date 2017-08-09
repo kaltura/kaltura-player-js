@@ -20,25 +20,13 @@
     "eslint": "eslint . --color",
     "flow": "flow check",
     "eslint:flow:test": "npm run eslint && npm run flow && npm run test",
-    "commit:dist": "git add --all dist && (git commit -m 'chore: update dist' || exit 0)",
-    "prepush-msg:build": "echo '\nRunning build before push...\n' && exit 0",
-    "prepush-msg:dist": "echo '\nAdding dist files to a seperate commit...\n' && exit 0",
-    "prepush-msg:done": "echo '\nPre push tasks are done.\n' && exit 0"
+    "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"
   },
   "standard-version": {
     "scripts": {
       "postbump": "yarn run build && yarn run build:prod && npm run commit:dist"
     }
   },
-  "pre-push": [
-    "prepush-msg:build",
-    "prebuild",
-    "build",
-    "build:prod",
-    "prepush-msg:dist",
-    "commit:dist",
-    "prepush-msg:done"
-  ],
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
@@ -89,7 +77,7 @@
     "playkit-js": "git+https://github.com/kaltura/playkit-js.git#v0.4.0",
     "playkit-js-dash": "git+https://github.com/kaltura/playkit-js-dash.git#v1.0.1",
     "playkit-js-hls": "git+https://github.com/kaltura/playkit-js-hls.git#v1.0.1",
-    "playkit-js-ima": "git+https://github.com/kaltura/playkit-js-ui.git#v0.1.0",
+    "playkit-js-ima": "git+https://github.com/kaltura/playkit-js-ima.git#v0.1.0",
     "playkit-js-kanalytics": "git+https://github.com/kaltura/playkit-js-kanalytics.git#v0.1.1",
     "playkit-js-providers": "git+https://github.com/kaltura/playkit-js-providers.git#v1.1.0",
     "playkit-js-ui": "git+https://github.com/kaltura/playkit-js-ui.git#v0.1.1",
