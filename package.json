@@ -20,7 +20,7 @@
     "eslint": "eslint . --color",
     "flow": "flow check",
     "eslint:flow:test": "npm run eslint && npm run flow && npm run test",
-    "commit:dist": "git add --all dist && (git commit -m 'chore: update dist' || exit 0)"
+    "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"
   },
   "standard-version": {
     "scripts": {
