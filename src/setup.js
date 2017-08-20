@@ -8,6 +8,11 @@ import {
   validateTargetId, validateProvidersConfig
 } from "./utils/setup-helpers"
 
+/**
+ * @param {string} targetId - target id
+ * @param {Object} options - options
+ * @returns {Player} - Player
+ */
 function setup(targetId: string, options: Object): KalturaPlayer {
   validateTargetId(targetId);
   validateProvidersConfig(options);
