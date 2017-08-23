@@ -31,6 +31,7 @@ import 'playkit-js-dash'
 
 // Import plugins
 import 'playkit-js-kanalytics'
+import 'playkit-js-youbora'
 import 'playkit-js-ima'
 
 // Import setup method
