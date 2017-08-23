@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
-    "hls.js": "^0.7.9",
+    "hls.js": "^0.7.11",
     "js-logger": "^1.3.0",
     "playkit-js": "git+https://github.com/kaltura/playkit-js.git#v0.4.0",
     "playkit-js-dash": "git+https://github.com/kaltura/playkit-js-dash.git#v1.0.1",
