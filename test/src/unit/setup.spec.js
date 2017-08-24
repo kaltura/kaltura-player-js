@@ -1,4 +1,4 @@
-import {setup} from '../../src/setup'
+import {setup} from '../../../src/setup'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 
 const targetId = 'player-placeholder_setup.spec';

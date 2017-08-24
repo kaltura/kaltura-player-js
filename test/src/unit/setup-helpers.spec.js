@@ -1,5 +1,5 @@
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
-import {ValidationErrorType} from '../../src/utils/validation-error'
+import {ValidationErrorType} from '../../../src/utils/validation-error'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -7,7 +7,7 @@ import {
   validateTargetId,
   validateProvidersConfig,
   addKalturaPoster
-} from '../../src/utils/setup-helpers'
+} from '../../../src/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 

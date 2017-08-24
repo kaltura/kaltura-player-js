@@ -22,7 +22,11 @@ module.exports = function (config) {
       'mocha'
     ],
     files: [
-      'test/setup/karma.js'
+      'test/setup/karma.js',
+      {
+        pattern: 'test/src/integration/demo-styles.css',
+        included: false
+      },
     ],
     preprocessors: {
       'src/**/*.js': [
