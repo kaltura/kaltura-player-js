@@ -68,11 +68,11 @@
     "style-loader": "^0.18.2",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "babel-polyfill": "^6.23.0"
   },
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
-    "hls.js": "^0.7.11",
+    "hls.js": "^0.8.1",
     "js-logger": "^1.3.0",
     "playkit-js": "git+https://github.com/kaltura/playkit-js.git#v0.4.1",
     "playkit-js-dash": "git+https://github.com/kaltura/playkit-js-dash.git#v1.0.1",
@@ -82,7 +82,7 @@
     "playkit-js-providers": "git+https://github.com/kaltura/playkit-js-providers.git#v1.1.1",
     "playkit-js-ui": "git+https://github.com/kaltura/playkit-js-ui.git#v0.1.2",
     "playkit-js-youbora": "git+https://github.com/kaltura/playkit-js-youbora.git#v0.1.1",
-    "shaka-player": "latest"
+    "shaka-player": "2.2.0"
   },
   "repository": {
     "type": "git",
