@@ -1,15 +1,15 @@
 import '../../../../src/index'
 import {setup} from '../../../../src/setup'
 import {addDemoStylesheet} from '../demo-styles'
-import {DrmSupport, DrmScheme} from 'playkit-js'
+import {BaseDrmProtocol} from 'playkit-js'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 
+const DrmSupport = BaseDrmProtocol.DrmSupport;
+const DrmScheme = BaseDrmProtocol.DrmScheme;
 const containerId = 'player-placeholder-container';
 const targetId = 'player-placeholder';
 
 describe('Dash Widevine Integration', function () {
-  this.timeout(50000);
-
   let kalturaPlayer;
   let entryId = '0_2jiaa9tb';
   let config = {
