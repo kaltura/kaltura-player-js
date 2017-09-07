@@ -106,12 +106,12 @@ function checkNativeHlsSupport(playerConfig: Object): Object{
           preferNative:{}
         }
       }
-    };
+    }
     if (!playerConfig.playback.preferNative){
       playerConfig.playback = {
         preferNative:{}
       }
-    };
+    }
     //Set default value only if user didn't supply preferences
     if (typeof(playerConfig.playback.preferNative.hls) !== "boolean") {
       playerConfig.playback.preferNative.hls = true;
