@@ -1,3 +1,4 @@
+import {Env} from 'playkit-js'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 import {ValidationErrorType} from '../../src/utils/validation-error'
 import {
@@ -6,7 +7,8 @@ import {
   createKalturaPlayerContainer,
   validateTargetId,
   validateProvidersConfig,
-  addKalturaPoster
+  addKalturaPoster,
+  checkNativeHlsSupport
 } from '../../src/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -260,5 +262,39 @@ describe('addKalturaPoster', function () {
     let metadata = {poster: 'https//my/kaltura/poster'};
     addKalturaPoster(metadata, 640, 360);
     metadata.poster.should.equal('https//my/kaltura/poster/height/360/width/640');
+  });
+});
+
+describe('checkNativeHlsSupport', function () {
+  it('set preferNative to true if user preference was set to true', function () {
+    const playerConfig = checkNativeHlsSupport({
+      playback:{
+        preferNative:{
+          hls: true
+        }
+      }
+    });
+    playerConfig.playback.preferNative.hls.should.be.true;
+  });
+  it('set preferNative to false if user preference was set to false', function () {
+    const playerConfig = checkNativeHlsSupport({
+      playback:{
+        preferNative:{
+          hls: false
+        }
+      }
+    });
+    playerConfig.playback.preferNative.hls.should.be.false;
+  });
+
+  it('set preferNative to default value if user preference was not set', function () {
+    const playerConfig = checkNativeHlsSupport({
+      playback:{
+        preferNative:{}
+      }
+    });
+    if (Env.browser.name === "Safari"){
+      playerConfig.playback.preferNative.hls.should.be.true;
+    }
   });
 });
