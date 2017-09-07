@@ -93,11 +93,30 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
   metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
 }
 
+/**
+ * sets config option for native HLS playback
+ * @param {Object} playerConfig - the player config
+ * @param {Object} Env - UA Parser object
+ * @returns {Object} - the player config
+ */
+function checkNativeHlsSupport(playerConfig: Object, Env: Object){
+  if (Env.browser.name === "Safari"){
+    if (!playerConfig.playback){ playerConfig = {playback:{preferNative:{}}}};
+    if (!playerConfig.playback.preferNative){ playerConfig.playback = {preferNative:{}}};
+    //Set default value only if user didn't supply preferences
+    if (typeof(playerConfig.playback.preferNative.hls) !== "boolean") {
+      playerConfig.playback.preferNative.hls = true;
+    }
+  }
+  return playerConfig;
+}
+
 export {
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
   addKalturaPoster,
   validateTargetId,
-  validateProvidersConfig
+  validateProvidersConfig,
+  checkNativeHlsSupport
 };
