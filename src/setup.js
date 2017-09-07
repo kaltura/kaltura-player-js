@@ -1,7 +1,7 @@
 // @flow
 import {loadPlayer} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
-import LocalStorageManager from './storage/local-storage-manager'
+import LocalStorageManager from './storage/storage-manager'
 import {
   extractPlayerConfig,
   extractProvidersConfig,

@@ -1,17 +1,26 @@
 // @flow
-export default class LocalStorageWrapper {
+import LoggerFactory from '../utils/logger'
+
+export default class StorageWrapper {
   _isLocalStorageAvailable: boolean;
   _prefix: ?string;
+  _logger: any;
 
   constructor(prefix: ?string) {
     this._testForLocalStorage();
+    this._logger = LoggerFactory.getLogger('StorageWrapper');
     this._prefix = prefix;
+    if (this._isLocalStorageAvailable) {
+      this._logger.debug('Local storage available');
+    } else {
+      this._logger.warn('Local storage isn\'t available');
+    }
   }
 
   /**
-   * @return {number} - The number of keys in the local storage.
+   * @return {number} - The number of keys in the local storage started with wanted prefix.
    */
-  get length(): number {
+  get size(): number {
     if (this._isLocalStorageAvailable) {
       return Object.keys(localStorage).filter((key) => key.startsWith(this._prefix)).length;
     }
@@ -21,20 +30,31 @@ export default class LocalStorageWrapper {
   /**
    * Sets an item in the local storage.
    * @param {string} key - The key of the item.
-   * @param {any} data - The value of the item.
+   * @param {any} item - The value of the item.
    * @returns {void}
    */
-  setItem(key: string, data: any): void {
+  setItem(key: string, item: any): void {
     this._validateKey(key);
+    this._logger.debug('Sets item for key: ' + key, item);
     if (this._isLocalStorageAvailable) {
       try {
-        localStorage.setItem(this._prefix + key, data);
+        localStorage.setItem(this._prefix + key, item);
       } catch (e) {
-
+        if (this._isQuotaExceeded(e)) {
+          this._logger.error('Quota exceeded: ' + e.message);
+          this._isLocalStorageAvailable = false;
+        } else {
+          this._logger.error(e.message);
+        }
       }
     }
   }
 
+  /**
+   * Gets an item from the local storage.
+   * @param {string} key - The item key.
+   * @returns {any} - The item value.
+   */
   getItem(key: string): any {
     this._validateKey(key);
     if (this._isLocalStorageAvailable) {
@@ -61,8 +81,8 @@ export default class LocalStorageWrapper {
             }
             break;
         }
-      } else if (e.number === -2147024882) {
         // Internet Explorer 8
+      } else if (e.number === -2147024882) {
         quotaExceeded = true;
       }
       return quotaExceeded;
