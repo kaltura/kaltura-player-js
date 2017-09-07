@@ -1,5 +1,5 @@
 // @flow
-import {Env, Utils} from 'playkit-js'
+import {Utils} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -93,39 +93,11 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
   metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
 }
 
-/**
- * sets config option for native HLS playback
- * @param {Object} playerConfig - the player config
- * @returns {Object} - the player config
- */
-function checkNativeHlsSupport(playerConfig: Object): Object{
-  if (Env.browser.name === "Safari"){
-    if (!playerConfig.playback){
-        playerConfig = {
-        playback:{
-          preferNative:{}
-        }
-      }
-    }
-    if (!playerConfig.playback.preferNative){
-      playerConfig.playback = {
-        preferNative:{}
-      }
-    }
-    //Set default value only if user didn't supply preferences
-    if (typeof(playerConfig.playback.preferNative.hls) !== "boolean") {
-      playerConfig.playback.preferNative.hls = true;
-    }
-  }
-  return playerConfig;
-}
-
 export {
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
   addKalturaPoster,
   validateTargetId,
-  validateProvidersConfig,
-  checkNativeHlsSupport
+  validateProvidersConfig
 };
