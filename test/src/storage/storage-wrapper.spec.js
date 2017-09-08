@@ -27,7 +27,7 @@ describe('StorageWrapper', function () {
     }
   });
 
-  it('should get an item from local storage', function () {
+  it('should get an item from the local storage', function () {
     if (storage._isLocalStorageAvailable) {
       let key = 'test';
       storage.setItem(key, 2);
@@ -37,9 +37,9 @@ describe('StorageWrapper', function () {
     }
   });
 
-  it('should validate a key correctly', function (done) {
+  it('should validate a wrong key', function (done) {
     try {
-      storage._validateKey(1);
+      storage.setItem(2, 2);
     } catch (e) {
       done();
     }
