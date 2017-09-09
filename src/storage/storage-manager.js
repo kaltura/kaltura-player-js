@@ -1,9 +1,11 @@
 // @flow
 import StorageWrapper from './storage-wrapper'
 import LoggerFactory from '../utils/logger'
+import {name} from '../../package.json'
+
+const STORAGE_PREFIX = name + '_';
 
 export default class StorageManager {
-  static StoragePrefix = 'kaltura.player.';
   static StorageKeys = [
     'muted',
     'volume',
@@ -15,7 +17,7 @@ export default class StorageManager {
   _logger: any;
 
   constructor() {
-    this._storage = new StorageWrapper(StorageManager.StoragePrefix);
+    this._storage = new StorageWrapper(STORAGE_PREFIX);
     this._logger = LoggerFactory.getLogger('StorageManager');
   }
 

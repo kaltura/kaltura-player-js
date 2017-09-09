@@ -1,5 +1,5 @@
 // @flow
-import {loadPlayer} from 'playkit-js'
+import {loadPlayer, Utils} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
 import StorageManager from './storage/storage-manager'
 import {
@@ -21,7 +21,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   let storageManager = new StorageManager();
   if (!options.disableUserCache && storageManager.hasStorage()) {
     let storageConfig = storageManager.getStorage();
-    Object.assign(playerConfig, storageConfig);
+    playerConfig = Utils.Object.mergeDeep({}, storageConfig, playerConfig);
   }
   let providersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
