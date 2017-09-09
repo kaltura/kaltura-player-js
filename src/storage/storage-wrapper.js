@@ -3,10 +3,10 @@ import LoggerFactory from '../utils/logger'
 
 export default class StorageWrapper {
   _isLocalStorageAvailable: boolean;
-  _prefix: ?string;
+  _prefix: string;
   _logger: any;
 
-  constructor(prefix: ?string) {
+  constructor(prefix: string = '') {
     this._testForLocalStorage();
     this._logger = LoggerFactory.getLogger('StorageWrapper');
     this._prefix = prefix;
@@ -58,15 +58,20 @@ export default class StorageWrapper {
   getItem(key: string): any {
     this._validateKey(key);
     if (this._isLocalStorageAvailable) {
+      let item = null;
       try {
-        return JSON.parse(localStorage.getItem(this._prefix + key));
+        item = localStorage.getItem(this._prefix + key);
+        if (typeof item === 'string') {
+          return JSON.parse(item);
+        }
+        return null;
       } catch (e) {
-        return localStorage.getItem(this._prefix + key);
+        return item;
       }
     }
   }
 
-  _isQuotaExceeded(e: any): void {
+  _isQuotaExceeded(e: any): boolean {
     let quotaExceeded = false;
     if (e) {
       if (e.code) {
@@ -85,14 +90,14 @@ export default class StorageWrapper {
       } else if (e.number === -2147024882) {
         quotaExceeded = true;
       }
-      return quotaExceeded;
     }
+    return quotaExceeded;
   }
 
   _testForLocalStorage(): void {
     if (typeof Storage !== 'undefined') {
       try {
-        localStorage.setItem('test', null);
+        localStorage.setItem('test', 'test');
         localStorage.removeItem('test');
         this._isLocalStorageAvailable = true;
       }
