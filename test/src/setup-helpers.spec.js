@@ -267,34 +267,68 @@ describe('addKalturaPoster', function () {
 
 describe('checkNativeHlsSupport', function () {
   it('set preferNative to true if user preference was set to true', function () {
-    const playerConfig = checkNativeHlsSupport({
-      playback:{
-        preferNative:{
+    const playerConfig = {
+      playback: {
+        preferNative: {
           hls: true
         }
       }
-    });
+    };
+    checkNativeHlsSupport(playerConfig);
     playerConfig.playback.preferNative.hls.should.be.true;
   });
+
   it('set preferNative to false if user preference was set to false', function () {
-    const playerConfig = checkNativeHlsSupport({
-      playback:{
-        preferNative:{
+    const playerConfig = {
+      playback: {
+        preferNative: {
           hls: false
         }
       }
-    });
+    };
+    checkNativeHlsSupport(playerConfig);
     playerConfig.playback.preferNative.hls.should.be.false;
   });
 
-  it('set preferNative to default value if user preference was not set', function () {
-    const playerConfig = checkNativeHlsSupport({
-      playback:{
-        preferNative:{}
-      }
-    });
-    if (Env.browser.name === "Safari"){
+  it('set preferNative to default value if user preference was not set 1', function () {
+    const playerConfig = {};
+    checkNativeHlsSupport(playerConfig);
+    if (Env.browser.name === "Safari") {
       playerConfig.playback.preferNative.hls.should.be.true;
+    } else {
+      playerConfig.should.deep.equal({});
+    }
+  });
+
+  it('set preferNative to default value if user preference was not set 2', function () {
+    const playerConfig = {
+      playback: {}
+    };
+    checkNativeHlsSupport(playerConfig);
+    if (Env.browser.name === "Safari") {
+      playerConfig.playback.preferNative.hls.should.be.true;
+    } else {
+      playerConfig.should.deep.equal({
+        playback: {}
+      });
+    }
+  });
+
+  it('set preferNative to default value if user preference was not set 3', function () {
+    const playerConfig = {
+      playback: {
+        preferNative: {}
+      }
+    };
+    checkNativeHlsSupport(playerConfig);
+    if (Env.browser.name === "Safari") {
+      playerConfig.playback.preferNative.hls.should.be.true;
+    } else {
+      playerConfig.should.deep.equal({
+        playback: {
+          preferNative: {}
+        }
+      });
     }
   });
 });
