@@ -89,18 +89,9 @@ export default class StorageManager {
 
   _getStoragePlaybackConfig(values: Object): Object {
     let playback = {};
-    if (values['muted'] != null) {
-      playback.muted = values['muted'];
-    }
-    if (values['volume'] != null) {
-      playback.volume = values['volume'];
-    }
-    if (values['textLanguage'] != null) {
-      playback.textLanguage = values['textLanguage'];
-    }
-    if (values['audioLanguage'] != null) {
-      playback.audioLanguage = values['audioLanguage'];
-    }
+    Object.keys(values).forEach((key) => {
+      playback[key] = values[key];
+    });
     return playback;
   }
 }
