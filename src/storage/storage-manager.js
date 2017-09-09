@@ -59,7 +59,7 @@ export default class StorageManager {
   }
 
   /**
-   * Gets the storage in the structure of the configuration.
+   * Gets the storage in the structure of the player configuration.
    * @return {Object} - Partial storageable player configuration.
    */
   getStorage(): Object {
