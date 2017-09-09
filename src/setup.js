@@ -1,7 +1,7 @@
 // @flow
 import {loadPlayer} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
-import LocalStorageManager from './storage/storage-manager'
+import StorageManager from './storage/storage-manager'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -18,7 +18,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   validateTargetId(targetId);
   validateProvidersConfig(options);
   let playerConfig = extractPlayerConfig(options);
-  let storageManager = new LocalStorageManager();
+  let storageManager = new StorageManager();
   if (!options.disableUserCache && storageManager.hasStorage()) {
     let storageConfig = storageManager.getStorage();
     Object.assign(playerConfig, storageConfig);
