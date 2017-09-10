@@ -83,15 +83,7 @@ export default class StorageManager {
 
   _buildStorageConfig(values: Object): Object {
     return {
-      playback: this._getStoragePlaybackConfig(values)
+      playback: values
     };
-  }
-
-  _getStoragePlaybackConfig(values: Object): Object {
-    let playback = {};
-    Object.keys(values).forEach((key) => {
-      playback[key] = values[key];
-    });
-    return playback;
   }
 }
