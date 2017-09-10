@@ -6,7 +6,9 @@ import {
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
-  validateTargetId, validateProvidersConfig
+  validateTargetId,
+  validateProvidersConfig,
+  checkNativeHlsSupport
 } from "./utils/setup-helpers"
 
 /**
@@ -25,6 +27,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   }
   let providersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
+  checkNativeHlsSupport(playerConfig);
   let player = loadPlayer(containerId, playerConfig);
   let kalturaPlayerApi = new KalturaPlayer(player, containerId, providersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
