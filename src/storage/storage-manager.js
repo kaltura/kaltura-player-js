@@ -16,6 +16,10 @@ export default class StorageManager {
   _player: Player;
   _logger: any;
 
+  static isLocalStorageAvailable(): boolean {
+    return StorageWrapper.isLocalStorageAvailable();
+  }
+
   constructor() {
     this._storage = new StorageWrapper(STORAGE_PREFIX);
     this._logger = LoggerFactory.getLogger('StorageManager');

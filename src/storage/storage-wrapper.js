@@ -2,29 +2,34 @@
 import LoggerFactory from '../utils/logger'
 
 export default class StorageWrapper {
-  _isLocalStorageAvailable: boolean;
   _prefix: string;
   _logger: any;
 
+  static isLocalStorageAvailable(): boolean {
+    if (typeof Storage !== 'undefined') {
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+      }
+      catch (e) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   constructor(prefix: string = '') {
-    this._testForLocalStorage();
     this._logger = LoggerFactory.getLogger('StorageWrapper');
     this._prefix = prefix;
-    if (this._isLocalStorageAvailable) {
-      this._logger.debug('Local storage available');
-    } else {
-      this._logger.warn('Local storage isn\'t available');
-    }
   }
 
   /**
    * @return {number} - The number of keys in the local storage started with wanted prefix.
    */
   get size(): number {
-    if (this._isLocalStorageAvailable) {
-      return Object.keys(localStorage).filter((key) => key.startsWith(this._prefix)).length;
-    }
-    return 0;
+    return Object.keys(localStorage).filter((key) => key.startsWith(this._prefix)).length;
   }
 
   /**
@@ -34,18 +39,15 @@ export default class StorageWrapper {
    * @returns {void}
    */
   setItem(key: string, item: any): void {
-    this._validateKey(key);
-    this._logger.debug('Sets item for key: ' + key, item);
-    if (this._isLocalStorageAvailable) {
-      try {
-        localStorage.setItem(this._prefix + key, item);
-      } catch (e) {
-        if (this._isQuotaExceeded(e)) {
-          this._logger.error('Quota exceeded: ' + e.message);
-          this._isLocalStorageAvailable = false;
-        } else {
-          this._logger.error(e.message);
-        }
+    StorageWrapper._validateKey(key);
+    try {
+      this._logger.debug('Sets item for key: ' + key, item);
+      localStorage.setItem(this._prefix + key, item);
+    } catch (e) {
+      if (StorageWrapper._isQuotaExceeded(e)) {
+        this._logger.error('Quota exceeded: ' + e.message);
+      } else {
+        this._logger.error(e.message);
       }
     }
   }
@@ -56,22 +58,21 @@ export default class StorageWrapper {
    * @returns {any} - The item value.
    */
   getItem(key: string): any {
-    this._validateKey(key);
-    if (this._isLocalStorageAvailable) {
-      let item = null;
-      try {
-        item = localStorage.getItem(this._prefix + key);
-        if (typeof item === 'string') {
-          return JSON.parse(item);
-        }
+    StorageWrapper._validateKey(key);
+    let item = null;
+    try {
+      item = localStorage.getItem(this._prefix + key);
+      if (typeof item === 'string') {
+        return JSON.parse(item);
+      } else {
         return null;
-      } catch (e) {
-        return item;
       }
+    } catch (e) {
+      return item;
     }
   }
 
-  _isQuotaExceeded(e: any): boolean {
+  static _isQuotaExceeded(e: any): boolean {
     let quotaExceeded = false;
     if (e) {
       if (e.code) {
@@ -94,22 +95,7 @@ export default class StorageWrapper {
     return quotaExceeded;
   }
 
-  _testForLocalStorage(): void {
-    if (typeof Storage !== 'undefined') {
-      try {
-        localStorage.setItem('test', 'test');
-        localStorage.removeItem('test');
-        this._isLocalStorageAvailable = true;
-      }
-      catch (e) {
-        this._isLocalStorageAvailable = false;
-      }
-    } else {
-      this._isLocalStorageAvailable = false;
-    }
-  }
-
-  _validateKey(key: string): void {
+  static _validateKey(key: string): void {
     if (typeof key !== 'string' || key.length === 0) {
       throw new Error('Invalid key');
     }

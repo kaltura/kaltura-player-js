@@ -19,19 +19,23 @@ import {
 function setup(targetId: string, options: Object): KalturaPlayer {
   validateTargetId(targetId);
   validateProvidersConfig(options);
-  let playerConfig = extractPlayerConfig(options);
-  let storageManager = new StorageManager();
-  if (!options.disableUserCache && storageManager.hasStorage()) {
-    let storageConfig = storageManager.getStorage();
-    playerConfig = Utils.Object.mergeDeep({}, storageConfig, playerConfig);
-  }
-  let providersConfig = extractProvidersConfig(options);
+  let userPlayerConfig = extractPlayerConfig(options);
+  let userProvidersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
-  checkNativeHlsSupport(playerConfig);
-  let player = loadPlayer(containerId, playerConfig);
-  let kalturaPlayerApi = new KalturaPlayer(player, containerId, providersConfig);
+  checkNativeHlsSupport(userPlayerConfig);
+  let player = loadPlayer(containerId, userPlayerConfig);
+  let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
-  storageManager.attach(kalturaPlayer);
+  if (StorageManager.isLocalStorageAvailable()) {
+    let storageManager = new StorageManager();
+    storageManager.attach(kalturaPlayer);
+    if (!options.disableUserCache && storageManager.hasStorage()) {
+      let storageConfig = storageManager.getStorage();
+      let storageAndUserPlayerConfig = {};
+      Utils.Object.mergeDeep(storageAndUserPlayerConfig, storageConfig, userPlayerConfig);
+      kalturaPlayer.configure(storageAndUserPlayerConfig);
+    }
+  }
   return kalturaPlayer;
 }
 
