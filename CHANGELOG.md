@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/kaltura/kaltura-player-js/compare/v0.3.0...v0.4.0) (2017-09-11)
+
+
+### Features
+
+* prefer native hls on safari ([#25](https://github.com/kaltura/kaltura-player-js/issues/25)) ([81ba2bf](https://github.com/kaltura/kaltura-player-js/commit/81ba2bf))
+* **local storage:** support caching user preferences ([#24](https://github.com/kaltura/kaltura-player-js/issues/24)) ([2e4280a](https://github.com/kaltura/kaltura-player-js/commit/2e4280a))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/kaltura/kaltura-player-js/compare/v0.2.0...v0.3.0) (2017-09-07)
 
