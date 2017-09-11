@@ -4,7 +4,7 @@ import {
   updateSessionIdInUrl,
   addReferrer,
   addClientTag
-} from '../../src/utils/kaltura-params'
+} from '../../../src/utils/kaltura-params'
 import {VERSION} from 'playkit-js'
 
 class Player {

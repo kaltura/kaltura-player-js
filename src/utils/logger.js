@@ -1,7 +1,16 @@
 //@flow
 import * as JsLogger from 'js-logger';
 
-class LoggerFactory {
+const LOG_LEVEL: { [level: string]: Object } = {
+  "DEBUG": JsLogger.DEBUG,
+  "INFO": JsLogger.INFO,
+  "TIME": JsLogger.TIME,
+  "WARN": JsLogger.WARN,
+  "ERROR": JsLogger.ERROR,
+  "OFF": JsLogger.OFF
+};
+
+class Logger {
   constructor(options?: Object) {
     JsLogger.useDefaults(options || {});
   }
@@ -14,15 +23,7 @@ class LoggerFactory {
   }
 }
 
-const Logger = new LoggerFactory({defaultLevel: JsLogger.DEBUG});
-const LOG_LEVEL: { [level: string]: Object } = {
-  "DEBUG": JsLogger.DEBUG,
-  "INFO": JsLogger.INFO,
-  "TIME": JsLogger.TIME,
-  "WARN": JsLogger.WARN,
-  "ERROR": JsLogger.ERROR,
-  "OFF": JsLogger.OFF
-};
+const LoggerFactory = new Logger({defaultLevel: JsLogger.DEBUG});
 
-export default Logger;
+export default LoggerFactory;
 export {LOG_LEVEL};
