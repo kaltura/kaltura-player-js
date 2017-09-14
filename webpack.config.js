@@ -43,6 +43,9 @@ module.exports = {
     contentBase: __dirname + "/src"
   },
   resolve: {
+    alias: {
+      'playkit-js': path.resolve('./node_modules/playkit-js')
+    },
     modules: [
       path.resolve(__dirname, "src"),
       "node_modules"
