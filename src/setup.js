@@ -23,7 +23,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   let userProvidersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
   checkNativeHlsSupport(userPlayerConfig);
-  let player = loadPlayer(containerId, userPlayerConfig);
+  let player = loadPlayer(userPlayerConfig);
   let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
   if (StorageManager.isLocalStorageAvailable()) {
