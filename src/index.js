@@ -2,17 +2,14 @@
 import 'babel-polyfill' // Important! must be first import to support older browsers compatibility
 import PolyfillManager from './polyfills/polyfill-manager'
 import './polyfills/all'
-import * as packageData from '../package.json'
 import LoggerFactory from './utils/logger'
 
-// Player version
-const VERSION = packageData.version;
+declare var __VERSION__:string;
+declare var __NAME__:string;
+declare var __PACKAGE_URL__:string;
 
-// Player name
-const PLAYER_NAME = packageData.name;
-
-LoggerFactory.getLogger().log(`%c ${PLAYER_NAME} ${VERSION}`, "color: #98ff98;  font-size: large");
-LoggerFactory.getLogger().log(`%c For more details see ${packageData.repository.url}`, "color: #98ff98;");
+LoggerFactory.getLogger().log(`%c ${__NAME__} ${__VERSION__}`, "color: #98ff98;  font-size: large");
+LoggerFactory.getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, "color: #98ff98;");
 
 PolyfillManager.installAll();
 
@@ -37,5 +34,5 @@ import 'playkit-js-ima'
 // Import setup method
 import {setup} from './setup'
 
-export {Playkit, OvpProvider, PlaykitUI, setup, VERSION, PLAYER_NAME};
+export {Playkit, OvpProvider, PlaykitUI, setup, __VERSION__ as VERSION, __NAME__ as PLAYER_NAME};
 
