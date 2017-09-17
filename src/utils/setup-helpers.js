@@ -99,7 +99,8 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
  * @returns {void}
  */
 function checkNativeHlsSupport(playerConfig: Object): void {
-  if (Env.browser.name === "Mobile Safari") {
+  console.info(Env.browser.name);
+  if (Env.browser.name.includes("Safari")) {
     let preferNativeHlsValue = Utils.Object.getPropertyPath(playerConfig, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(playerConfig, {
