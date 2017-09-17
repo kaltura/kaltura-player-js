@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/kaltura/kaltura-player-js/compare/v0.5.0...v0.5.1) (2017-09-17)
+
+
+### Bug Fixes
+
+* **FEC-7131:** fix HLS playback on iOS ([#29](https://github.com/kaltura/kaltura-player-js/issues/29)) ([b635184](https://github.com/kaltura/kaltura-player-js/commit/b635184))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/kaltura/kaltura-player-js/compare/v0.4.0...v0.5.0) (2017-09-17)
 
