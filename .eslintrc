@@ -18,7 +18,10 @@
   },
   "globals": {
     "should": true,
-    "sinon": true
+    "sinon": true,
+    "__VERSION__": true,
+    "__NAME__": true,
+    "__PACKAGE_URL__": true
   },
   "rules": {
     "mocha-no-only/mocha-no-only": "off",
