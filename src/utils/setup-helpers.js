@@ -121,7 +121,8 @@ function checkNativeHlsSupport(playerConfig: Object): void {
  * @returns {void}
  */
 function handlePreloadState(playerConfig: Object): void {
-  if (playerConfig.playback.preload === "auto" && playerConfig.plugins.ima) {
+  if (Utils.Object.hasPropertyPath(playerConfig, 'playback.preload')
+    && Utils.Object.hasPropertyPath(playerConfig, 'plugins.ima')) {
     playerConfig.playback.preload = "none";
   }
 }
