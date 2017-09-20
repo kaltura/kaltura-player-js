@@ -8,7 +8,7 @@ import {
   validateTargetId,
   validateProvidersConfig,
   addKalturaPoster,
-  checkNativeHlsSupport
+  checkNativeHlsSupport, handlePreloadState
 } from '../../../src/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -68,10 +68,6 @@ describe('extractProvidersConfig', function () {
         autoplay: true,
         muted: true,
         streamPriority: [
-          {
-            engine: 'html5',
-            format: 'hls'
-          },
           {
             engine: 'flash',
             format: 'hls'
@@ -330,5 +326,30 @@ describe('checkNativeHlsSupport', function () {
         }
       });
     }
+  });
+});
+
+describe('handlePreloadState', function () {
+  it('should change preload state to "none"', function () {
+    const playerConfig = {
+      playback: {
+        preload: "auto"
+      },
+      plugins: {
+        ima: {}
+      }
+    };
+    handlePreloadState(playerConfig);
+    playerConfig.playback.preload.should.equals("none");
+  });
+
+  it('should keep the same preload state', function () {
+    const playerConfig = {
+      playback: {
+        preload: "auto"
+      }
+    };
+    handlePreloadState(playerConfig);
+    playerConfig.playback.preload.should.equals("auto");
   });
 });

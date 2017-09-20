@@ -113,6 +113,20 @@ function checkNativeHlsSupport(playerConfig: Object): void {
   }
 }
 
+/**
+ * If ads plugin enabled it's his responsibility to preload the content player,
+ * so to avoid loading the player twice which can cause errors on MSEs we are overriding
+ * the configuration and sending preload "none".
+ * @param {Object} playerConfig - The player configuration.
+ * @returns {void}
+ */
+function handlePreloadState(playerConfig: Object): void {
+  if (Utils.Object.hasPropertyPath(playerConfig, 'playback.preload')
+    && Utils.Object.hasPropertyPath(playerConfig, 'plugins.ima')) {
+    playerConfig.playback.preload = "none";
+  }
+}
+
 export {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -120,5 +134,6 @@ export {
   addKalturaPoster,
   validateTargetId,
   validateProvidersConfig,
-  checkNativeHlsSupport
+  checkNativeHlsSupport,
+  handlePreloadState
 };
