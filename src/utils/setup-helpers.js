@@ -99,7 +99,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
  * @returns {void}
  */
 function checkNativeHlsSupport(playerConfig: Object): void {
-  if (Env.browser.name.includes("Safari")) {
+  if (isSafari() || isIosChrome()) {
     let preferNativeHlsValue = Utils.Object.getPropertyPath(playerConfig, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(playerConfig, {
@@ -111,6 +111,22 @@ function checkNativeHlsSupport(playerConfig: Object): void {
       });
     }
   }
+}
+
+/**
+ * Returns true if user agent indicate that browser is Safari
+ * @returns {boolean} - if browser is Safari
+ */
+function isSafari(): boolean{
+  return Env.browser.name.includes("Safari");
+}
+
+/**
+ * Returns true if user agent indicate that browser is Chrome on iOS
+ * @returns {boolean} - if browser is Chrome on iOS
+ */
+function isIosChrome(): boolean{
+  return ((Env.browser.name === "Chrome") && (Env.os.name === "iOS"));
 }
 
 export {
