@@ -1,4 +1,3 @@
-import {Env} from 'playkit-js'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 import {ValidationErrorType} from '../../../src/utils/validation-error'
 import {
