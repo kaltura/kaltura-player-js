@@ -136,5 +136,7 @@ export {
   addKalturaPoster,
   validateTargetId,
   validateProvidersConfig,
-  checkNativeHlsSupport
+  checkNativeHlsSupport,
+  isSafari,
+  isIosChrome
 };
