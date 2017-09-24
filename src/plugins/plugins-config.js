@@ -28,9 +28,11 @@ function evaluatePluginsConfig(playerConfig = {}): void {
   } catch (e) {
     evaluatedConfigObj = {};
   }
-  Object.keys(playerConfig.plugins).forEach((pluginName) => {
-    Utils.Object.mergeDeep(playerConfig.plugins[pluginName], evaluatedConfigObj[pluginName]);
-  });
+  if (playerConfig.plugins) {
+    Object.keys(playerConfig.plugins).forEach((pluginName) => {
+      Utils.Object.mergeDeep(playerConfig.plugins[pluginName], evaluatedConfigObj[pluginName]);
+    });
+  }
 }
 
 
