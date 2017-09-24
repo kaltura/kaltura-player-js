@@ -10,7 +10,7 @@ import {
   addKalturaPoster,
   checkNativeHlsSupport,
   isSafari,
-  isIosChrome
+  isIos
 } from '../../../src/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -295,7 +295,7 @@ describe('checkNativeHlsSupport', function () {
   it('set preferNative to default value if user preference was not set 1', function () {
     const playerConfig = {};
     checkNativeHlsSupport(playerConfig);
-    if (if (isSafari() || isIosChrome()) {) {
+    if (isSafari() || isIos()) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({});
@@ -307,7 +307,7 @@ describe('checkNativeHlsSupport', function () {
       playback: {}
     };
     checkNativeHlsSupport(playerConfig);
-    if (if (isSafari() || isIosChrome()) {) {
+    if (isSafari() || isIos()) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
@@ -323,7 +323,7 @@ describe('checkNativeHlsSupport', function () {
       }
     };
     checkNativeHlsSupport(playerConfig);
-    if (if (isSafari() || isIosChrome()) {) {
+    if (isSafari() || isIos()) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
