@@ -293,7 +293,7 @@ describe('checkNativeHlsSupport', function () {
   it('set preferNative to default value if user preference was not set 1', function () {
     const playerConfig = {};
     checkNativeHlsSupport(playerConfig);
-    if (Env.browser.name === "Safari") {
+    if ((Env.browser.name === "Safari") || ((Env.browser.name === "Chrome") && (Env.os.name === "iOS"))) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({});
@@ -305,7 +305,7 @@ describe('checkNativeHlsSupport', function () {
       playback: {}
     };
     checkNativeHlsSupport(playerConfig);
-    if (Env.browser.name === "Safari") {
+    if ((Env.browser.name === "Safari") || ((Env.browser.name === "Chrome") && (Env.os.name === "iOS"))) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
@@ -321,7 +321,7 @@ describe('checkNativeHlsSupport', function () {
       }
     };
     checkNativeHlsSupport(playerConfig);
-    if (Env.browser.name === "Safari") {
+    if ((Env.browser.name === "Safari") || ((Env.browser.name === "Chrome") && (Env.os.name === "iOS"))) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
