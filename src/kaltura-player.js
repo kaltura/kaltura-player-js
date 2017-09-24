@@ -28,14 +28,10 @@ export default class KalturaPlayer {
     this._logger.debug('loadMedia', {entryId: entryId, uiConfId: uiConfId});
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
-        let playerConfig = {};
         const dimensions = this._player.dimensions;
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
-        Utils.Object.mergeDeep(playerConfig, this._player.config, data);
-        this._player.configure(playerConfig);
+        this._player.configure(data);
       });
   }
 }
-
-
