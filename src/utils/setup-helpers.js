@@ -1,6 +1,7 @@
 // @flow
 import {Env, Utils} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
+import StorageManager from '../storage/storage-manager'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
@@ -114,6 +115,29 @@ function checkNativeHlsSupport(playerConfig: Object): void {
 }
 
 /**
+ * Sets the storage config on the player config if certain conditions are met.
+ * @param {boolean} disableUserCache - Whether to disable the cache support.
+ * @param {Object} playerConfig - The player configuration.
+ * @returns {void}
+ */
+function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void {
+  if (!disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
+    Utils.Object.mergeDeep(playerConfig, StorageManager.getStorage());
+  }
+}
+
+/**
+ * Applies cache support if it's supported by the environment.
+ * @param {any} player - The Kaltura player.
+ * @returns {void}
+ */
+function applyStorageSupport(player: any): void {
+  if (StorageManager.isLocalStorageAvailable()) {
+    StorageManager.attach(player);
+  }
+}
+
+/**
  * Returns true if user agent indicate that browser is Safari
  * @returns {boolean} - if browser is Safari
  */
@@ -130,6 +154,8 @@ function isIos(): boolean{
 }
 
 export {
+  setStorageConfig,
+  applyStorageSupport,
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,

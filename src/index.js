@@ -4,9 +4,9 @@ import PolyfillManager from './polyfills/polyfill-manager'
 import './polyfills/all'
 import LoggerFactory from './utils/logger'
 
-declare var __VERSION__:string;
-declare var __NAME__:string;
-declare var __PACKAGE_URL__:string;
+declare var __VERSION__: string;
+declare var __NAME__: string;
+declare var __PACKAGE_URL__: string;
 
 LoggerFactory.getLogger().log(`%c ${__NAME__} ${__VERSION__}`, "color: #98ff98;  font-size: large");
 LoggerFactory.getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, "color: #98ff98;");

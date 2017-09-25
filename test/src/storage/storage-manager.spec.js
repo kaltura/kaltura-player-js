@@ -2,7 +2,6 @@ import StorageManager from '../../../src/storage/storage-manager'
 import StorageWrapper from "../../../src/storage/storage-wrapper";
 
 describe('StorageManager', function () {
-  let storageManager;
   let sandbox;
 
   beforeEach(function () {
@@ -10,43 +9,39 @@ describe('StorageManager', function () {
   });
 
   afterEach(function () {
-    storageManager = null;
     sandbox.restore();
     window.localStorage.clear();
   });
 
   it('should return it has no storage', function () {
-    sandbox.stub(StorageWrapper.prototype, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper.prototype._isLocalStorageAvailable = true;
+    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
+      StorageWrapper._isLocalStorageAvailable = true;
     });
-    sandbox.stub(StorageWrapper.prototype, 'size').get(() => {
+    sandbox.stub(StorageWrapper, 'size').get(() => {
       return 0;
     });
-    storageManager = new StorageManager();
-    storageManager.hasStorage().should.be.false;
+    StorageManager.hasStorage().should.be.false;
   });
 
   it('should return it has storage', function () {
-    sandbox.stub(StorageWrapper.prototype, '_testForLocalStorage').callsFake(() => {
+    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper.prototype._isLocalStorageAvailable = true;
     });
-    sandbox.stub(StorageWrapper.prototype, 'size').get(() => {
+    sandbox.stub(StorageWrapper, 'size').get(() => {
       return 1;
     });
-    storageManager = new StorageManager();
-    storageManager.hasStorage().should.be.true;
+    StorageManager.hasStorage().should.be.true;
   });
 
   it('should return config for volume', function () {
-    sandbox.stub(StorageWrapper.prototype, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper.prototype._isLocalStorageAvailable = true;
+    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
+      StorageWrapper._isLocalStorageAvailable = true;
     });
-    sandbox.stub(StorageWrapper.prototype, 'size').get(() => {
+    sandbox.stub(StorageWrapper, 'size').get(() => {
       return 1;
     });
-    sandbox.stub(StorageWrapper.prototype, 'getItem').withArgs('volume').returns(1);
-    storageManager = new StorageManager();
-    storageManager.getStorage().should.deep.equal({
+    sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
+    StorageManager.getStorage().should.deep.equal({
       playback: {
         volume: 1
       }
@@ -54,16 +49,15 @@ describe('StorageManager', function () {
   });
 
   it('should return config for all properties', function () {
-    sandbox.stub(StorageWrapper.prototype, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper.prototype._isLocalStorageAvailable = true;
+    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
+      StorageWrapper._isLocalStorageAvailable = true;
     });
-    let getItemStub = sandbox.stub(StorageWrapper.prototype, 'getItem');
+    let getItemStub = sandbox.stub(StorageWrapper, 'getItem');
     getItemStub.withArgs('volume').returns(0.5);
     getItemStub.withArgs('muted').returns(false);
     getItemStub.withArgs('textLanguage').returns('heb');
     getItemStub.withArgs('audioLanguage').returns('eng');
-    storageManager = new StorageManager();
-    storageManager.getStorage().should.deep.equal({
+    StorageManager.getStorage().should.deep.equal({
       playback: {
         volume: 0.5,
         muted: false,
@@ -74,8 +68,8 @@ describe('StorageManager', function () {
   });
 
   it('should attaches listeners', function () {
-    sandbox.stub(StorageWrapper.prototype, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper.prototype._isLocalStorageAvailable = true;
+    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
+      StorageWrapper._isLocalStorageAvailable = true;
     });
     let fakePlayer = {
       listeners: [],
@@ -88,8 +82,7 @@ describe('StorageManager', function () {
         this.listeners.push(eventName);
       }
     };
-    storageManager = new StorageManager();
-    storageManager.attach(fakePlayer);
+    StorageManager.attach(fakePlayer);
     fakePlayer.listeners.should.have.length.of(3);
     fakePlayer.listeners.should.deep.equal([
       'volumechange',

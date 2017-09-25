@@ -1,10 +1,17 @@
 // @flow
 import LoggerFactory from '../utils/logger'
+import {PLAYER_NAME} from '../index'
+
+const STORAGE_PREFIX = PLAYER_NAME + '_';
 
 export default class StorageWrapper {
-  _prefix: string;
-  _logger: any;
+  static _logger: any = LoggerFactory.getLogger('StorageWrapper');
 
+  /**
+   * @static
+   * @public
+   * @returns {boolean} - Whether a local storage object is available on the current environment.
+   */
   static isLocalStorageAvailable(): boolean {
     if (typeof Storage !== 'undefined') {
       try {
@@ -20,34 +27,33 @@ export default class StorageWrapper {
     }
   }
 
-  constructor(prefix: string = '') {
-    this._logger = LoggerFactory.getLogger('StorageWrapper');
-    this._prefix = prefix;
-  }
-
   /**
+   * @static
+   * @public
    * @return {number} - The number of keys in the local storage started with wanted prefix.
    */
-  get size(): number {
-    return Object.keys(localStorage).filter((key) => key.startsWith(this._prefix)).length;
+  static get size(): number {
+    return Object.keys(localStorage).filter((key) => key.startsWith(STORAGE_PREFIX)).length;
   }
 
   /**
    * Sets an item in the local storage.
    * @param {string} key - The key of the item.
    * @param {any} item - The value of the item.
+   * @static
+   * @public
    * @returns {void}
    */
-  setItem(key: string, item: any): void {
+  static setItem(key: string, item: any): void {
     StorageWrapper._validateKey(key);
     try {
-      this._logger.debug('Sets item for key: ' + key, item);
-      localStorage.setItem(this._prefix + key, item);
+      StorageWrapper._logger.debug('Sets item for key: ' + key, item);
+      localStorage.setItem(STORAGE_PREFIX + key, item);
     } catch (e) {
       if (StorageWrapper._isQuotaExceeded(e)) {
-        this._logger.error('Quota exceeded: ' + e.message);
+        StorageWrapper._logger.error('Quota exceeded: ' + e.message);
       } else {
-        this._logger.error(e.message);
+        StorageWrapper._logger.error(e.message);
       }
     }
   }
@@ -55,13 +61,15 @@ export default class StorageWrapper {
   /**
    * Gets an item from the local storage.
    * @param {string} key - The item key.
+   * @static
+   * @public
    * @returns {any} - The item value.
    */
-  getItem(key: string): any {
+  static getItem(key: string): any {
     StorageWrapper._validateKey(key);
     let item = null;
     try {
-      item = localStorage.getItem(this._prefix + key);
+      item = localStorage.getItem(STORAGE_PREFIX + key);
       if (typeof item === 'string') {
         return JSON.parse(item);
       } else {

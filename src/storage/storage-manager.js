@@ -1,9 +1,6 @@
 // @flow
 import StorageWrapper from './storage-wrapper'
 import LoggerFactory from '../utils/logger'
-import {name} from '../../package.json'
-
-const STORAGE_PREFIX = name + '_';
 
 export default class StorageManager {
   static StorageKeys = [
@@ -12,47 +9,45 @@ export default class StorageManager {
     'textLanguage',
     'audioLanguage'
   ];
-  _storage: StorageWrapper;
-  _player: Player;
-  _logger: any;
+  static _logger: any = LoggerFactory.getLogger('StorageManager');
+  static _player: Player;
 
   static isLocalStorageAvailable(): boolean {
     return StorageWrapper.isLocalStorageAvailable();
   }
 
-  constructor() {
-    this._storage = new StorageWrapper(STORAGE_PREFIX);
-    this._logger = LoggerFactory.getLogger('StorageManager');
-  }
-
   /**
    * Attaches the player listeners to the local storage wrapper.
    * @param {Player} player - The player reference.
+   * @static
+   * @public
    * @returns {void}
    */
-  attach(player: Player): void {
-    this._logger.debug('Attach local storage');
-    this._player = player;
-    this._player.addEventListener(player.Event.VOLUME_CHANGE, () => {
-      this._storage.setItem('muted', this._player.muted);
-      this._storage.setItem('volume', this._player.volume);
+  static attach(player: Player): void {
+    StorageManager._logger.debug('Attach local storage');
+    StorageManager._player = player;
+    StorageManager._player.addEventListener(player.Event.VOLUME_CHANGE, () => {
+      StorageWrapper.setItem('muted', StorageManager._player.muted);
+      StorageWrapper.setItem('volume', StorageManager._player.volume);
     });
-    this._player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
+    StorageManager._player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
       let audioTrack = event.payload.selectedAudioTrack;
-      this._storage.setItem('audioLanguage', audioTrack.language);
+      StorageWrapper.setItem('audioLanguage', audioTrack.language);
     });
-    this._player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
+    StorageManager._player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
       let textTrack = event.payload.selectedTextTrack;
-      this._storage.setItem('textLanguage', textTrack.language);
+      StorageWrapper.setItem('textLanguage', textTrack.language);
     });
   }
 
   /**
    * Checks if we have previous storage.
+   * @public
+   * @static
    * @return {boolean} - Whether we have previous storage.
    */
-  hasStorage(): boolean {
-    let storageSize = this._storage.size;
+  static hasStorage(): boolean {
+    let storageSize = StorageWrapper.size;
     let hasStorage = (storageSize !== 0);
     if (hasStorage) {
       this._logger.debug('Storage found with size of ', storageSize);
@@ -64,20 +59,22 @@ export default class StorageManager {
 
   /**
    * Gets the storage in the structure of the player configuration.
+   * @public
+   * @static
    * @return {Object} - Partial storageable player configuration.
    */
-  getStorage(): Object {
-    let values = this._getExistingValues();
-    let storageConfig = this._buildStorageConfig(values);
+  static getStorage(): Object {
+    let values = StorageManager._getExistingValues();
+    let storageConfig = StorageManager._buildStorageConfig(values);
     this._logger.debug('Gets storage config', storageConfig);
     return storageConfig;
   }
 
-  _getExistingValues(): Object {
+  static _getExistingValues(): Object {
     let obj = {};
     for (let i = 0; i < StorageManager.StorageKeys.length; i++) {
       let key = StorageManager.StorageKeys[i];
-      let value = this._storage.getItem(key);
+      let value = StorageWrapper.getItem(key);
       if (value != null) {
         obj[key] = value;
       }
@@ -85,7 +82,7 @@ export default class StorageManager {
     return obj;
   }
 
-  _buildStorageConfig(values: Object): Object {
+  static _buildStorageConfig(values: Object): Object {
     return {
       playback: values
     };
