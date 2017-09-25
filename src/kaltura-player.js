@@ -32,6 +32,8 @@ export default class KalturaPlayer {
         const dimensions = this._player.dimensions;
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
+        Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
+        Utils.Object.mergeDeep(data.session, this._player.config.session);
         evaluatePluginsConfig(data);
         this._player.configure(data);
       });
