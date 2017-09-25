@@ -1,6 +1,7 @@
 import StorageWrapper from '../../../src/storage/storage-wrapper'
+import {name} from '../../../package.json'
 
-const STORAGE_PREFIX = __NAME__ + '_';
+const STORAGE_PREFIX = name + '_';
 
 describe('StorageWrapper', function () {
 
