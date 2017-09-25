@@ -2233,6 +2233,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
           _this._createReadyPromise();
           _this._createPlayerContainer();
           _this._appendPosterEl();
+          _this._loadPlugins(config);
           _this.configure(config);
           return _this;
         }
@@ -2253,85 +2254,28 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         _createClass(Player, [{
           key: 'configure',
           value: function configure(config) {
-            this._updatePlayerConfig(config);
-            this._configureOrLoadPlugins(config.plugins);
-            if (config.sources) {
-              this._maybeResetPlayer();
-              if (this._selectEngineByPriority()) {
-                this._appendEngineEl();
-                this._posterManager.setSrc(this._config.metadata.poster);
-                this._posterManager.show();
-                this._attachMedia();
-                this._handlePlaybackConfig();
-              }
+            this._maybeResetPlayer(config);
+            this._config = Utils.Object.mergeDeep(Utils.Object.isEmptyObject(this._config) ? Player._defaultConfig : this._config, config);
+            if (this._selectEngine()) {
+              this._appendEngineEl();
+              this._posterManager.setSrc(this._config.metadata.poster);
+              this._posterManager.show();
+              this._attachMedia();
+              this._handlePlaybackConfig();
             }
-          }
-
-          /**
-           * Updates the player configuration.
-           * @param {Object} config - The new received configuration.
-           * @private
-           * @returns {void}
-           */
-
-        }, {
-          key: '_updatePlayerConfig',
-          value: function _updatePlayerConfig(config) {
-            if (Utils.Object.isEmptyObject(this._config)) {
-              Utils.Object.mergeDeep(this._config, Player._defaultConfig, config);
-            } else {
-              Utils.Object.mergeDeep(this._config, config);
-            }
-          }
-
-          /**
-           * Configures or load the plugins defined in the configuration.
-           * @param {Object} plugins - The new received plugins configuration.
-           * @private
-           * @returns {void}
-           */
-
-        }, {
-          key: '_configureOrLoadPlugins',
-          value: function _configureOrLoadPlugins() {
-            var _this2 = this;
-
-            var plugins = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-            Object.keys(plugins).forEach(function (name) {
-              // If the plugin is already exists in the registry we are updating his config
-              var plugin = _this2._pluginManager.get(name);
-              if (plugin) {
-                plugin.updateConfig(plugins[name]);
-                _this2._config.plugins[name] = plugin.getConfig();
-              } else {
-                // We allow to load plugins as long as the player has no engine
-                if (!_this2._engine) {
-                  _this2._pluginManager.load(name, _this2, plugins[name]);
-                  var _plugin = _this2._pluginManager.get(name);
-                  if (_plugin) {
-                    _this2._config.plugins[name] = _plugin.getConfig();
-                    if (typeof _plugin.getMiddlewareImpl === "function") {
-                      _this2._playbackMiddleware.use(_plugin.getMiddlewareImpl());
-                    }
-                  }
-                } else {
-                  delete _this2._config.plugins[name];
-                }
-              }
-            });
           }
 
           /**
            * Resets the player in case of new sources with existing engine.
+           * @param {Object} config - The player configuration.
            * @private
            * @returns {void}
            */
 
         }, {
           key: '_maybeResetPlayer',
-          value: function _maybeResetPlayer() {
-            if (this._engine) {
+          value: function _maybeResetPlayer(config) {
+            if (this._engine && config.sources) {
               Player._logger.debug('New sources on existing engine: reset engine to change media');
               this._reset();
             }
@@ -2364,11 +2308,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         }, {
           key: '_createReadyPromise',
           value: function _createReadyPromise() {
-            var _this3 = this;
+            var _this2 = this;
 
             this._readyPromise = new Promise(function (resolve, reject) {
-              _this3._eventManager.listen(_this3, _events.CUSTOM_EVENTS.TRACKS_CHANGED, resolve);
-              _this3._eventManager.listen(_this3, _events.HTML5_EVENTS.ERROR, reject);
+              _this2._eventManager.listen(_this2, _events.CUSTOM_EVENTS.TRACKS_CHANGED, function () {
+                resolve();
+              });
+              _this2._eventManager.listen(_this2, _events.HTML5_EVENTS.ERROR, reject);
             });
           }
 
@@ -2400,7 +2346,40 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
            */
 
         }, {
-          key: '_selectEngineByPriority',
+          key: '_loadPlugins',
+
+          /**
+           * Loads the configured plugins.
+           * @param {Object} config - The player configuration.
+           * @private
+           * @returns {void}
+           */
+          value: function _loadPlugins(config) {
+            Player._logger.debug('Load plugins');
+            var plugins = config.plugins;
+            for (var name in plugins) {
+              this._pluginManager.load(name, this, plugins[name]);
+              var plugin = this._pluginManager.get(name);
+              if (plugin && typeof plugin.getMiddlewareImpl === "function") {
+                this._playbackMiddleware.use(plugin.getMiddlewareImpl());
+              }
+            }
+          }
+
+          /**
+           * Selects the engine to create based on a given configuration.
+           * @private
+           * @returns {boolean} - Whether a proper engine was found.
+           */
+
+        }, {
+          key: '_selectEngine',
+          value: function _selectEngine() {
+            if (this._config.sources && this._config.playback && this._config.playback.streamPriority) {
+              return this._selectEngineByPriority();
+            }
+            return false;
+          }
 
           /**
            * Selects an engine to play a source according to a given stream priority.
@@ -2408,8 +2387,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
            * according to the priority.
            * @private
            */
+
+        }, {
+          key: '_selectEngineByPriority',
           value: function _selectEngineByPriority() {
-            var _this4 = this;
+            var _this3 = this;
 
             var streamPriority = this._config.playback.streamPriority;
             var preferNative = this._config.playback.preferNative;
@@ -2433,8 +2415,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     var source = formatSources[0];
                     if (engine.canPlaySource(source, preferNative[format])) {
                       Player._logger.debug('Source selected: ', formatSources);
-                      _this4._loadEngine(engine, source);
-                      _this4.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.SOURCE_SELECTED, { selectedSource: formatSources }));
+                      _this3._loadEngine(engine, source);
+                      _this3.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.SOURCE_SELECTED, { selectedSource: formatSources }));
                       return {
                         v: true
                       };
@@ -2490,28 +2472,28 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         }, {
           key: '_attachMedia',
           value: function _attachMedia() {
-            var _this5 = this;
+            var _this4 = this;
 
             if (this._engine) {
               for (var playerEvent in _events.HTML5_EVENTS) {
                 this._eventManager.listen(this._engine, _events.HTML5_EVENTS[playerEvent], function (event) {
-                  return _this5.dispatchEvent(event);
+                  return _this4.dispatchEvent(event);
                 });
               }
               this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.VIDEO_TRACK_CHANGED, function (event) {
-                _this5._markActiveTrack(event.payload.selectedVideoTrack);
-                return _this5.dispatchEvent(event);
+                _this4._markActiveTrack(event.payload.selectedVideoTrack);
+                return _this4.dispatchEvent(event);
               });
               this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.AUDIO_TRACK_CHANGED, function (event) {
-                _this5._markActiveTrack(event.payload.selectedAudioTrack);
-                return _this5.dispatchEvent(event);
+                _this4._markActiveTrack(event.payload.selectedAudioTrack);
+                return _this4.dispatchEvent(event);
               });
               this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED, function (event) {
-                _this5._markActiveTrack(event.payload.selectedTextTrack);
-                return _this5.dispatchEvent(event);
+                _this4._markActiveTrack(event.payload.selectedTextTrack);
+                return _this4.dispatchEvent(event);
               });
               this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.ABR_MODE_CHANGED, function (event) {
-                return _this5.dispatchEvent(event);
+                return _this4.dispatchEvent(event);
               });
               this._eventManager.listen(this, _events.HTML5_EVENTS.PLAY, this._onPlay.bind(this));
             }
@@ -2523,22 +2505,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
               if (typeof this._config.playback.volume === 'number') {
                 this.volume = this._config.playback.volume;
               }
-              if (typeof this._config.playback.muted === 'boolean') {
-                this.muted = this._config.playback.muted;
+              if (this._config.playback.muted) {
+                this.muted = true;
               }
-              if (typeof this._config.playback.playsinline === 'boolean') {
-                this.playsinline = this._config.playback.playsinline;
+              if (this._config.playback.playsinline) {
+                this.playsinline = true;
               }
               if (this._config.playback.preload === "auto") {
-                /**
-                 * If ads plugin enabled it's his responsibility to preload the content player.
-                 * So to avoid loading the player twice which can cause errors on MSEs we are not
-                 * calling load from the player.
-                 * TODO: Change it to check the ads configuration when we will develop the ads manager.
-                 */
-                if (!this._config.plugins.ima) {
-                  this.load();
-                }
+                this.load();
               }
               if (this._canAutoPlay()) {
                 this.play();
@@ -2876,15 +2850,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         }, {
           key: 'load',
           value: function load() {
-            var _this6 = this;
+            var _this5 = this;
 
             if (this._engine) {
               var startTime = this._config.playback.startTime;
               this._engine.load(startTime).then(function (data) {
-                _this6._tracks = data.tracks;
-                _this6.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TRACKS_CHANGED, { tracks: _this6._tracks }));
+                _this5._tracks = data.tracks;
+                _this5.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TRACKS_CHANGED, { tracks: _this5._tracks }));
               }).catch(function (error) {
-                _this6.dispatchEvent(new _fakeEvent2.default(_events.HTML5_EVENTS.ERROR, error));
+                _this5.dispatchEvent(new _fakeEvent2.default(_events.HTML5_EVENTS.ERROR, error));
               });
             }
           }
@@ -2912,7 +2886,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         }, {
           key: '_play',
           value: function _play() {
-            var _this7 = this;
+            var _this6 = this;
 
             if (this._engine.src) {
               if (this.isLive() && !this.isDvr()) {
@@ -2922,7 +2896,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
             } else {
               this.load();
               this.ready().then(function () {
-                _this7._engine.play();
+                _this6._engine.play();
               });
             }
           }
@@ -9653,14 +9627,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
     /***/function (module, exports) {
 
       module.exports = {
-        "sources": {},
-        "plugins": {},
         "metadata": {
           "poster": ""
         },
+        "plugins": {},
         "playback": {
-          "audioLanguage": "",
-          "textLanguage": "",
           "volume": 1,
           "playsinline": false,
           "preload": "none",
@@ -46026,10 +45997,188 @@ else this.shaka=g.shaka;
 
 /***/ }),
 /* 132 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-throw new Error("Module build failed: SyntaxError: Unexpected token (139:0)\n\n\u001b[0m \u001b[90m 137 | \u001b[39m    \u001b[33mStorageManager\u001b[39m\u001b[33m.\u001b[39mattach(player)\u001b[33m;\u001b[39m\n \u001b[90m 138 | \u001b[39m  }\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 | \u001b[39m\u001b[33m===\u001b[39m\u001b[33m===\u001b[39m\u001b[33m=\u001b[39m\n \u001b[90m     | \u001b[39m\u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 | \u001b[39m \u001b[33m*\u001b[39m \u001b[33mReturns\u001b[39m \u001b[36mtrue\u001b[39m \u001b[36mif\u001b[39m user agent indicate that browser is \u001b[33mSafari\u001b[39m\n \u001b[90m 141 | \u001b[39m \u001b[33m*\u001b[39m \u001b[37m\u001b[41m\u001b[1m@\u001b[22m\u001b[49m\u001b[39mreturns {boolean} \u001b[33m-\u001b[39m \u001b[36mif\u001b[39m browser is \u001b[33mSafari\u001b[39m\n \u001b[90m 142 | \u001b[39m \u001b[33m*\u001b[39m\u001b[33m/\u001b[39m\u001b[0m\n");
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.isIos = exports.isSafari = exports.checkNativeHlsSupport = exports.validateProvidersConfig = exports.validateTargetId = exports.addKalturaPoster = exports.createKalturaPlayerContainer = exports.extractProvidersConfig = exports.extractPlayerConfig = exports.applyStorageSupport = exports.setStorageConfig = undefined;
+
+var _playkitJs = __webpack_require__(11);
+
+var _validationError = __webpack_require__(347);
+
+var _storageManager = __webpack_require__(353);
+
+var _storageManager2 = _interopRequireDefault(_storageManager);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CONTAINER_CLASS_NAME = 'kaltura-player-container';
+
+/**
+ * Validate the initial user input for the providers.
+ * @param {Object} config - The fully user provider configuration.
+ * @returns {void}
+ */
+
+function validateProvidersConfig(config) {
+  if (!config) {
+    throw new Error(_validationError.ValidationErrorType.INITIAL_CONFIG_REQUIRED);
+  }
+  if (!config.partnerId) {
+    throw new Error(_validationError.ValidationErrorType.PARTNER_ID_REQUIRED);
+  }
+}
+
+/**
+ * Validate the initial user input for the player.
+ * @param {string} targetId - The DOM element id which the player will be append to.
+ * @returns {void}
+ */
+function validateTargetId(targetId) {
+  if (!targetId) {
+    throw new Error(_validationError.ValidationErrorType.TARGET_ID_REQUIRED);
+  }
+  if (!document.getElementById(targetId)) {
+    throw new Error(_validationError.ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
+  }
+}
+
+/**
+ * Extracts the player configuration.
+ * @param {Object} config - The fully user configuration.
+ * @returns {Object} - The player configuration.
+ */
+function extractPlayerConfig(config) {
+  var playerConfig = {};
+  _playkitJs.Utils.Object.mergeDeep(playerConfig, config);
+  delete playerConfig.partnerId;
+  delete playerConfig.entryId;
+  delete playerConfig.uiConfId;
+  delete playerConfig.env;
+  delete playerConfig.ks;
+  return playerConfig;
+}
+
+/**
+ * Extracts the provider configuration.
+ * @param {Object} config - The fully user configuration.
+ * @returns {Object} - The provider configuration.
+ */
+function extractProvidersConfig(config) {
+  var providerConfig = {};
+  if (config) {
+    providerConfig.partnerId = config.partnerId;
+    providerConfig.entryId = config.entryId;
+    providerConfig.uiConfId = config.uiConfId;
+    providerConfig.env = config.env;
+    providerConfig.ks = config.ks;
+  }
+  return providerConfig;
+}
+
+/**
+ * Creates the player container dom element.
+ * @param {string} targetId - The div id which the player will append to.
+ * @returns {string} - The player container id.
+ */
+function createKalturaPlayerContainer(targetId) {
+  var el = document.createElement("div");
+  el.id = _playkitJs.Utils.Generator.uniqueId(5);
+  el.className = CONTAINER_CLASS_NAME;
+  el.setAttribute('tabindex', '-1');
+  var parentNode = document.getElementById(targetId);
+  if (parentNode && el) {
+    parentNode.appendChild(el);
+  }
+  return el.id;
+}
+
+/**
+ * Add poster with player dimensions to thumbnail API call
+ * @param {Object} metadata - metadata container
+ * @param {number} width - player width in px
+ * @param {number} height - player height in px
+ * @returns {void}
+ */
+function addKalturaPoster(metadata, width, height) {
+  metadata.poster = metadata.poster + '/height/' + height + '/width/' + width;
+}
+
+/**
+ * Sets config option for native HLS playback
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function checkNativeHlsSupport(playerConfig) {
+  if (isSafari() || isIos()) {
+    var preferNativeHlsValue = _playkitJs.Utils.Object.getPropertyPath(playerConfig, 'playback.preferNative.hls');
+    if (typeof preferNativeHlsValue !== 'boolean') {
+      _playkitJs.Utils.Object.mergeDeep(playerConfig, {
+        playback: {
+          preferNative: {
+            hls: true
+          }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Sets the storage config on the player config if certain conditions are met.
+ * @param {boolean} disableUserCache - Whether to disable the cache support.
+ * @param {Object} playerConfig - The player configuration.
+ * @returns {void}
+ */
+function setStorageConfig(disableUserCache, playerConfig) {
+  if (!disableUserCache && _storageManager2.default.isLocalStorageAvailable() && _storageManager2.default.hasStorage()) {
+    _playkitJs.Utils.Object.mergeDeep(playerConfig, _storageManager2.default.getStorage());
+  }
+}
+
+/**
+ * Applies cache support if it's supported by the environment.
+ * @param {any} player - The Kaltura player.
+ * @returns {void}
+ */
+function applyStorageSupport(player) {
+  if (_storageManager2.default.isLocalStorageAvailable()) {
+    _storageManager2.default.attach(player);
+  }
+}
+
+/**
+ * Returns true if user agent indicate that browser is Safari
+ * @returns {boolean} - if browser is Safari
+ */
+function isSafari() {
+  return _playkitJs.Env.browser.name.includes("Safari");
+}
+
+/**
+ * Returns true if user agent indicate that browser is Chrome on iOS
+ * @returns {boolean} - if browser is Chrome on iOS
+ */
+function isIos() {
+  return _playkitJs.Env.os.name === "iOS";
+}
+
+exports.setStorageConfig = setStorageConfig;
+exports.applyStorageSupport = applyStorageSupport;
+exports.extractPlayerConfig = extractPlayerConfig;
+exports.extractProvidersConfig = extractProvidersConfig;
+exports.createKalturaPlayerContainer = createKalturaPlayerContainer;
+exports.addKalturaPoster = addKalturaPoster;
+exports.validateTargetId = validateTargetId;
+exports.validateProvidersConfig = validateProvidersConfig;
+exports.checkNativeHlsSupport = checkNativeHlsSupport;
+exports.isSafari = isSafari;
+exports.isIos = isIos;
 
 /***/ }),
 /* 133 */
@@ -51974,9 +52123,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           value: function createAdapter(videoElement, source, config) {
             var hlsConfig = {};
             if (_playkitJs.Utils.Object.hasPropertyPath(config, 'playback.options.html5.hls')) {
-              _playkitJs.Utils.Object.mergeDeep(hlsConfig, _hls2.default.DefaultConfig, config.playback.options.html5.hls);
-            } else {
-              _playkitJs.Utils.Object.mergeDeep(hlsConfig, _hls2.default.DefaultConfig);
+              hlsConfig = config.playback.options.html5.hls;
             }
             return new this(videoElement, source, hlsConfig);
           }
@@ -59597,7 +59744,25 @@ exports.addReferrer = addReferrer;
 exports.addClientTag = addClientTag;
 
 /***/ }),
-/* 347 */,
+/* 347 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ValidationErrorType = {
+  INITIAL_CONFIG_REQUIRED: 'Must provide initial providers config',
+  PARTNER_ID_REQUIRED: 'Must provide partner id',
+  TARGET_ID_REQUIRED: 'Must provide target id',
+  DOM_ELEMENT_WITH_TARGET_ID_REQUIRED: 'Must provide DOM element with id of: '
+};
+
+exports.ValidationErrorType = ValidationErrorType;
+
+/***/ }),
 /* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -60177,6 +60342,288 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 353 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _storageWrapper = __webpack_require__(354);
+
+var _storageWrapper2 = _interopRequireDefault(_storageWrapper);
+
+var _logger = __webpack_require__(47);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var StorageManager = function () {
+  function StorageManager() {
+    _classCallCheck(this, StorageManager);
+  }
+
+  _createClass(StorageManager, null, [{
+    key: 'isLocalStorageAvailable',
+    value: function isLocalStorageAvailable() {
+      return _storageWrapper2.default.isLocalStorageAvailable();
+    }
+
+    /**
+     * Attaches the player listeners to the local storage wrapper.
+     * @param {Player} player - The player reference.
+     * @static
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'attach',
+    value: function attach(player) {
+      StorageManager._logger.debug('Attach local storage');
+      StorageManager._player = player;
+      StorageManager._player.addEventListener(player.Event.VOLUME_CHANGE, function () {
+        _storageWrapper2.default.setItem('muted', StorageManager._player.muted);
+        _storageWrapper2.default.setItem('volume', StorageManager._player.volume);
+      });
+      StorageManager._player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, function (event) {
+        var audioTrack = event.payload.selectedAudioTrack;
+        _storageWrapper2.default.setItem('audioLanguage', audioTrack.language);
+      });
+      StorageManager._player.addEventListener(player.Event.TEXT_TRACK_CHANGED, function (event) {
+        var textTrack = event.payload.selectedTextTrack;
+        _storageWrapper2.default.setItem('textLanguage', textTrack.language);
+      });
+    }
+
+    /**
+     * Checks if we have previous storage.
+     * @public
+     * @static
+     * @return {boolean} - Whether we have previous storage.
+     */
+
+  }, {
+    key: 'hasStorage',
+    value: function hasStorage() {
+      var storageSize = _storageWrapper2.default.size;
+      var hasStorage = storageSize !== 0;
+      if (hasStorage) {
+        this._logger.debug('Storage found with size of ', storageSize);
+      } else {
+        this._logger.debug('No storage found');
+      }
+      return hasStorage;
+    }
+
+    /**
+     * Gets the storage in the structure of the player configuration.
+     * @public
+     * @static
+     * @return {Object} - Partial storageable player configuration.
+     */
+
+  }, {
+    key: 'getStorage',
+    value: function getStorage() {
+      var values = StorageManager._getExistingValues();
+      var storageConfig = StorageManager._buildStorageConfig(values);
+      this._logger.debug('Gets storage config', storageConfig);
+      return storageConfig;
+    }
+  }, {
+    key: '_getExistingValues',
+    value: function _getExistingValues() {
+      var obj = {};
+      for (var i = 0; i < StorageManager.StorageKeys.length; i++) {
+        var key = StorageManager.StorageKeys[i];
+        var value = _storageWrapper2.default.getItem(key);
+        if (value != null) {
+          obj[key] = value;
+        }
+      }
+      return obj;
+    }
+  }, {
+    key: '_buildStorageConfig',
+    value: function _buildStorageConfig(values) {
+      return {
+        playback: values
+      };
+    }
+  }]);
+
+  return StorageManager;
+}();
+
+StorageManager.StorageKeys = ['muted', 'volume', 'textLanguage', 'audioLanguage'];
+StorageManager._logger = _logger2.default.getLogger('StorageManager');
+exports.default = StorageManager;
+
+/***/ }),
+/* 354 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(47);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _index = __webpack_require__(133);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var STORAGE_PREFIX = _index.PLAYER_NAME + '_';
+
+var StorageWrapper = function () {
+  function StorageWrapper() {
+    _classCallCheck(this, StorageWrapper);
+  }
+
+  _createClass(StorageWrapper, null, [{
+    key: 'isLocalStorageAvailable',
+
+
+    /**
+     * @static
+     * @public
+     * @returns {boolean} - Whether a local storage object is available on the current environment.
+     */
+    value: function isLocalStorageAvailable() {
+      if (typeof Storage !== 'undefined') {
+        try {
+          localStorage.setItem('test', 'test');
+          localStorage.removeItem('test');
+          return true;
+        } catch (e) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+
+    /**
+     * @static
+     * @public
+     * @return {number} - The number of keys in the local storage started with wanted prefix.
+     */
+
+  }, {
+    key: 'setItem',
+
+
+    /**
+     * Sets an item in the local storage.
+     * @param {string} key - The key of the item.
+     * @param {any} item - The value of the item.
+     * @static
+     * @public
+     * @returns {void}
+     */
+    value: function setItem(key, item) {
+      StorageWrapper._validateKey(key);
+      try {
+        StorageWrapper._logger.debug('Sets item for key: ' + key, item);
+        localStorage.setItem(STORAGE_PREFIX + key, item);
+      } catch (e) {
+        if (StorageWrapper._isQuotaExceeded(e)) {
+          StorageWrapper._logger.error('Quota exceeded: ' + e.message);
+        } else {
+          StorageWrapper._logger.error(e.message);
+        }
+      }
+    }
+
+    /**
+     * Gets an item from the local storage.
+     * @param {string} key - The item key.
+     * @static
+     * @public
+     * @returns {any} - The item value.
+     */
+
+  }, {
+    key: 'getItem',
+    value: function getItem(key) {
+      StorageWrapper._validateKey(key);
+      var item = null;
+      try {
+        item = localStorage.getItem(STORAGE_PREFIX + key);
+        if (typeof item === 'string') {
+          return JSON.parse(item);
+        } else {
+          return null;
+        }
+      } catch (e) {
+        return item;
+      }
+    }
+  }, {
+    key: '_isQuotaExceeded',
+    value: function _isQuotaExceeded(e) {
+      var quotaExceeded = false;
+      if (e) {
+        if (e.code) {
+          switch (e.code) {
+            case 22:
+              quotaExceeded = true;
+              break;
+            case 1014:
+              // Firefox
+              if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                quotaExceeded = true;
+              }
+              break;
+          }
+          // Internet Explorer 8
+        } else if (e.number === -2147024882) {
+          quotaExceeded = true;
+        }
+      }
+      return quotaExceeded;
+    }
+  }, {
+    key: '_validateKey',
+    value: function _validateKey(key) {
+      if (typeof key !== 'string' || key.length === 0) {
+        throw new Error('Invalid key');
+      }
+    }
+  }, {
+    key: 'size',
+    get: function get() {
+      return Object.keys(localStorage).filter(function (key) {
+        return key.startsWith(STORAGE_PREFIX);
+      }).length;
+    }
+  }]);
+
+  return StorageWrapper;
+}();
+
+StorageWrapper._logger = _logger2.default.getLogger('StorageWrapper');
+exports.default = StorageWrapper;
 
 /***/ })
 /******/ ]);
