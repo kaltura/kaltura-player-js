@@ -99,7 +99,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
  * @returns {void}
  */
 function checkNativeHlsSupport(playerConfig: Object): void {
-  if (Env.browser.name.includes("Safari")) {
+  if (isSafari() || isIos()) {
     let preferNativeHlsValue = Utils.Object.getPropertyPath(playerConfig, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(playerConfig, {
@@ -113,6 +113,22 @@ function checkNativeHlsSupport(playerConfig: Object): void {
   }
 }
 
+/**
+ * Returns true if user agent indicate that browser is Safari
+ * @returns {boolean} - if browser is Safari
+ */
+function isSafari(): boolean{
+  return Env.browser.name.includes("Safari");
+}
+
+/**
+ * Returns true if user agent indicate that browser is Chrome on iOS
+ * @returns {boolean} - if browser is Chrome on iOS
+ */
+function isIos(): boolean{
+  return (Env.os.name === "iOS");
+}
+
 export {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -120,5 +136,7 @@ export {
   addKalturaPoster,
   validateTargetId,
   validateProvidersConfig,
-  checkNativeHlsSupport
+  checkNativeHlsSupport,
+  isSafari,
+  isIos
 };
