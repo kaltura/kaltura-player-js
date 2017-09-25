@@ -13,7 +13,7 @@ let plugins = [
   })
 ];
 
-if (PROD){
+if (PROD) {
   plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
 }
 
@@ -25,7 +25,8 @@ module.exports = {
     filename: '[name].js',
     library: 'KalturaPlayer',
     libraryTarget: 'umd',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+    devtoolModuleFilenameTemplate: "./kaltura-player/[resource-path]",
   },
   devtool: 'source-map',
   plugins: plugins,

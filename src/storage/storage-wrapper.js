@@ -1,8 +1,7 @@
 // @flow
 import LoggerFactory from '../utils/logger'
-import {name} from '../../package.json'
 
-const STORAGE_PREFIX = name + '_';
+const STORAGE_PREFIX = __NAME__ + '_';
 
 export default class StorageWrapper {
   static _logger: any = LoggerFactory.getLogger('StorageWrapper');
