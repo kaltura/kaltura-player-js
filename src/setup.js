@@ -1,14 +1,15 @@
 // @flow
-import {loadPlayer, Utils} from 'playkit-js'
+import {loadPlayer} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
-import StorageManager from './storage/storage-manager'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
   validateTargetId,
   validateProvidersConfig,
-  checkNativeHlsSupport
+  checkNativeHlsSupport,
+  setStorageConfig,
+  applyStorageSupport
 } from "./utils/setup-helpers"
 
 /**
@@ -23,19 +24,11 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   let userProvidersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
   checkNativeHlsSupport(userPlayerConfig);
+  setStorageConfig(options.disableUserCache, userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
   let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
-  if (StorageManager.isLocalStorageAvailable()) {
-    let storageManager = new StorageManager();
-    storageManager.attach(kalturaPlayer);
-    if (!options.disableUserCache && storageManager.hasStorage()) {
-      let storageConfig = storageManager.getStorage();
-      let storageAndUserPlayerConfig = {};
-      Utils.Object.mergeDeep(storageAndUserPlayerConfig, storageConfig, userPlayerConfig);
-      kalturaPlayer.configure(storageAndUserPlayerConfig);
-    }
-  }
+  applyStorageSupport(kalturaPlayer);
   return kalturaPlayer;
 }
 

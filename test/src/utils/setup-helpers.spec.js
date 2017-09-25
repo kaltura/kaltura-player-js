@@ -1,4 +1,3 @@
-import {Env} from 'playkit-js'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 import {ValidationErrorType} from '../../../src/utils/validation-error'
 import {
@@ -8,7 +7,9 @@ import {
   validateTargetId,
   validateProvidersConfig,
   addKalturaPoster,
-  checkNativeHlsSupport
+  checkNativeHlsSupport,
+  isSafari,
+  isIos
 } from '../../../src/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -293,7 +294,7 @@ describe('checkNativeHlsSupport', function () {
   it('set preferNative to default value if user preference was not set 1', function () {
     const playerConfig = {};
     checkNativeHlsSupport(playerConfig);
-    if (Env.browser.name === "Safari") {
+    if (isSafari() || isIos()) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({});
@@ -305,7 +306,7 @@ describe('checkNativeHlsSupport', function () {
       playback: {}
     };
     checkNativeHlsSupport(playerConfig);
-    if (Env.browser.name === "Safari") {
+    if (isSafari() || isIos()) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
@@ -321,7 +322,7 @@ describe('checkNativeHlsSupport', function () {
       }
     };
     checkNativeHlsSupport(playerConfig);
-    if (Env.browser.name === "Safari") {
+    if (isSafari() || isIos()) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({

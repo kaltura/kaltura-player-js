@@ -1,3 +1,6 @@
+const webpack = require("webpack");
+const packageData = require("./package.json");
+
 const isWindows = /^win/.test(process.platform);
 const isMacOS = /^darwin/.test(process.platform);
 // Create custom launcher in case running with Travis
@@ -39,6 +42,13 @@ module.exports = function (config) {
       'coverage'
     ],
     webpack: {
+      plugins: [
+        new webpack.DefinePlugin({
+          __VERSION__: JSON.stringify(packageData.version),
+          __NAME__: JSON.stringify(packageData.name),
+          __PACKAGE_URL__: JSON.stringify(packageData.repository.url)
+        })
+      ],
       devtool: 'inline-source-map',
       module: {
         rules: [{
