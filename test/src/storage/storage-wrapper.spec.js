@@ -1,6 +1,7 @@
 import StorageWrapper from '../../../src/storage/storage-wrapper'
+import {PLAYER_NAME} from '../../../src/index'
 
-const STORAGE_PREFIX = __NAME__ + '_';
+const STORAGE_PREFIX = PLAYER_NAME + '_';
 
 describe('StorageWrapper', function () {
 
