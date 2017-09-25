@@ -4,6 +4,9 @@ import pluginsConfig from './plugins-config.json'
 import evaluate from '../utils/evaluate'
 import {Utils} from 'playkit-js'
 
+declare var __VERSION__:string;
+declare var __NAME__:string;
+
 /**
  * @param {Object} [playerConfig = {}] - The player config
  * @return {void}

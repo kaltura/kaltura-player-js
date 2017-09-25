@@ -1,6 +1,8 @@
 // @flow
 import LoggerFactory from '../utils/logger'
 
+declare var __NAME__:string;
+
 const STORAGE_PREFIX = __NAME__ + '_';
 
 export default class StorageWrapper {
