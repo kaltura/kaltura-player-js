@@ -5,6 +5,7 @@ import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import LoggerFactory from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
 import {addKalturaPoster} from './utils/setup-helpers'
+import {evaluatePluginsConfig} from './plugins/plugins-config'
 import './assets/style.css'
 
 export default class KalturaPlayer {
@@ -31,6 +32,9 @@ export default class KalturaPlayer {
         const dimensions = this._player.dimensions;
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
+        Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
+        Utils.Object.mergeDeep(data.session, this._player.config.session);
+        evaluatePluginsConfig(data);
         this._player.configure(data);
       });
   }

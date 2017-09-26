@@ -1,6 +1,7 @@
 // @flow
 import {loadPlayer} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
+import {evaluatePluginsConfig} from './plugins/plugins-config'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -24,6 +25,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   let userProvidersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
   checkNativeHlsSupport(userPlayerConfig);
+  evaluatePluginsConfig(userPlayerConfig);
   setStorageConfig(options.disableUserCache, userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
   let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
