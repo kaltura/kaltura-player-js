@@ -6,7 +6,6 @@ import LoggerFactory from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
 import {addKalturaPoster} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
-import {VERSION} from "./index";
 import './assets/style.css'
 
 export default class KalturaPlayer {
@@ -19,7 +18,7 @@ export default class KalturaPlayer {
     this._player = player;
     this._logger = LoggerFactory.getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiManager = new PlaykitUI(this._player, {targetId: targetId});
-    this._provider = new OvpProvider(VERSION, config.partnerId, config.ks, config.env);
+    this._provider = new OvpProvider(__VERSION__, config.partnerId, config.ks, config.env);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)

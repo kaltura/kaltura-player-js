@@ -5,7 +5,6 @@ import {
   addReferrer,
   addClientTag
 } from '../../../src/utils/kaltura-params'
-import {VERSION} from 'playkit-js'
 
 class Player {
   set sessionId(s) {
@@ -22,8 +21,8 @@ describe('addKalturaParams', function () {
     let source2 = {url: 'd/e/f/playmanifest/source?a'};
     player.config = {session: {}, sources: {progressive: [source1, source2]}};
     addKalturaParams(player.config.sources, player);
-    source1.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
-    source2.url.should.be.equal('d/e/f/playmanifest/source?a&playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
+    source1.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + __VERSION__);
+    source2.url.should.be.equal('d/e/f/playmanifest/source?a&playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + __VERSION__);
   });
 
   it('should add session id, referrer and client tag for PLAYMANIFEST source', function () {
@@ -31,8 +30,8 @@ describe('addKalturaParams', function () {
     let source2 = {url: 'd/e/f/PLAYMANIFEST/source?a'};
     player.config = {session: {}, sources: {progressive: [source1, source2]}};
     addKalturaParams(player.config.sources, player);
-    source1.url.should.be.equal('a/b/c/PLAYMANIFEST/source?playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
-    source2.url.should.be.equal('d/e/f/PLAYMANIFEST/source?a&playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + VERSION);
+    source1.url.should.be.equal('a/b/c/PLAYMANIFEST/source?playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + __VERSION__);
+    source2.url.should.be.equal('d/e/f/PLAYMANIFEST/source?a&playSessionId=' + player.config.session.id + '&referrer=' + btoa(document.referrer) + '&clientTag=html5:v' + __VERSION__);
   });
 
   it('should add nothing for no playManifest source', function () {
@@ -115,13 +114,13 @@ describe('addClientTag', function () {
     let source = {url: 'a/b/c/playmanifest/source'};
     player.config = {session: {}};
     addClientTag(source, player);
-    source.url.should.be.equal('a/b/c/playmanifest/source?clientTag=html5:v' + VERSION);
+    source.url.should.be.equal('a/b/c/playmanifest/source?clientTag=html5:v' + __VERSION__);
   });
 
   it('should add client tag as second param', function () {
     let source = {url: 'a/b/c/playmanifest/source?a'};
     player.config = {session: {}};
     addClientTag(source, player);
-    source.url.should.be.equal('a/b/c/playmanifest/source?a&clientTag=html5:v' + VERSION);
+    source.url.should.be.equal('a/b/c/playmanifest/source?a&clientTag=html5:v' + __VERSION__);
   });
 });

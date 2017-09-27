@@ -1,5 +1,5 @@
 //@flow
-import {Utils, VERSION} from 'playkit-js'
+import {Utils} from 'playkit-js'
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
@@ -80,7 +80,7 @@ function addReferrer(source: Object) {
 function addClientTag(source: Object) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + VERSION;
+    source.url += delimiter + CLIENT_TAG + __VERSION__;
   }
 }
 

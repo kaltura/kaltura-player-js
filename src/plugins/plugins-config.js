@@ -3,8 +3,6 @@
 import pluginsConfig from './plugins-config.json'
 import evaluate from '../utils/evaluate'
 import {Utils} from 'playkit-js'
-import {PLAYER_NAME, VERSION} from "../index";
-
 
 /**
  * @param {Object} [playerConfig = {}] - The player config
@@ -13,8 +11,8 @@ import {PLAYER_NAME, VERSION} from "../index";
 function evaluatePluginsConfig(playerConfig: Object = {}): void {
   if (playerConfig.plugins) {
     let dataModel = {
-      pVersion: VERSION,
-      pName: PLAYER_NAME,
+      pVersion: __VERSION__,
+      pName: __NAME__
     };
     if (playerConfig.session) {
       let entryDataModel = {

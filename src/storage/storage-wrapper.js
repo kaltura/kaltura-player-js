@@ -1,8 +1,7 @@
 // @flow
 import LoggerFactory from '../utils/logger'
-import {PLAYER_NAME} from "../index";
 
-const STORAGE_PREFIX = PLAYER_NAME + '_';
+const STORAGE_PREFIX = __NAME__ + '_';
 
 export default class StorageWrapper {
   static _logger: any = LoggerFactory.getLogger('StorageWrapper');
