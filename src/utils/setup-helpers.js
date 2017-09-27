@@ -96,7 +96,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 
 /**
  * preform different checks for setting default player settings
- * @param playerConfig
+ * @param {Object} playerConfig - the player config
  * @returns {void}
  */
 function setDefaultPlayerConfig(playerConfig: Object): void{
