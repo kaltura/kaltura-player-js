@@ -95,6 +95,15 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 }
 
 /**
+ * preform different checks for setting default player settings
+ * @param playerConfig
+ * @returns {void}
+ */
+function setDefaultPlayerConfig(playerConfig: Object): void{
+  checkNativeHlsSupport(playerConfig);
+  checkNativeTextTracksSupport(playerConfig);
+}
+/**
  * Sets config option for native HLS playback
  * @param {Object} playerConfig - the player config
  * @returns {void}
@@ -108,6 +117,24 @@ function checkNativeHlsSupport(playerConfig: Object): void {
           preferNative: {
             hls: true
           }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Sets config option for native text track support
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function checkNativeTextTracksSupport(playerConfig: Object): void {
+  if (isIos()) {
+    let useNativeTextTrack = Utils.Object.getPropertyPath(playerConfig, 'playback.useNativeTextTrack');
+    if (typeof useNativeTextTrack !== 'boolean') {
+      Utils.Object.mergeDeep(playerConfig, {
+        playback: {
+          useNativeTextTrack: true
         }
       });
     }
@@ -162,7 +189,7 @@ export {
   addKalturaPoster,
   validateTargetId,
   validateProvidersConfig,
-  checkNativeHlsSupport,
+  setDefaultPlayerConfig,
   isSafari,
   isIos
 };
