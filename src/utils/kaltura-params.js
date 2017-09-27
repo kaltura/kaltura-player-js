@@ -1,5 +1,6 @@
 //@flow
-import {Utils, VERSION} from 'playkit-js'
+import {Utils} from 'playkit-js'
+import {VERSION} from "../index";
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
