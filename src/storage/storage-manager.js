@@ -31,11 +31,11 @@ export default class StorageManager {
       StorageWrapper.setItem('volume', StorageManager._player.volume);
     });
     StorageManager._player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
-      let audioTrack = event.payload.selectedAudioTrack;
+      const audioTrack = event.payload.selectedAudioTrack;
       StorageWrapper.setItem('audioLanguage', audioTrack.language);
     });
     StorageManager._player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
-      let textTrack = event.payload.selectedTextTrack;
+      const textTrack = event.payload.selectedTextTrack;
       StorageWrapper.setItem('textLanguage', textTrack.language);
     });
   }
