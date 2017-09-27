@@ -5,7 +5,7 @@ import {
   addReferrer,
   addClientTag
 } from '../../../src/utils/kaltura-params'
-import {VERSION} from 'playkit-js'
+import {VERSION} from '../../../src/index'
 
 class Player {
   set sessionId(s) {
