@@ -190,6 +190,8 @@ export {
   validateTargetId,
   validateProvidersConfig,
   setDefaultPlayerConfig,
+  checkNativeHlsSupport,
+  checkNativeTextTracksSupport,
   isSafari,
   isIos
 };
