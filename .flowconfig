@@ -7,6 +7,7 @@
 .*/node_modules/playkit-js-ui/src/
 .*/node_modules/playkit-js-providers/src/
 [include]
+./src/index.js
 [libs]
 node_modules/playkit-js/flow-typed/
 node_modules/playkit-js-hls/flow-typed/
