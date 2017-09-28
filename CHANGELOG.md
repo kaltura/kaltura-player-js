@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/kaltura/kaltura-player-js/compare/v0.6.0...v0.6.1) (2017-09-28)
+
+
+### Bug Fixes
+
+* **FEC-7123:** include global webpack var in flow config  ([#38](https://github.com/kaltura/kaltura-player-js/issues/38)) ([d77e96a](https://github.com/kaltura/kaltura-player-js/commit/d77e96a))
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/kaltura/kaltura-player-js/compare/v0.3.0...v0.6.0) (2017-09-26)
 
