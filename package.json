@@ -15,6 +15,7 @@
     "test:safari": "NODE_ENV=test karma start --color --browsers Safari",
     "test:watch": "NODE_ENV=test karma start --color --auto-watch",
     "start": "webpack-dev-server",
+    "release:dry-run": "standard-version --dry-run",
     "release": "standard-version",
     "publish": "git push --follow-tags --no-verify origin master",
     "eslint": "eslint . --color",
