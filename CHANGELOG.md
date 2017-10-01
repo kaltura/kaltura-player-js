@@ -17,20 +17,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **FEC-7131:** fix HLS playback on iOS ([#29](https://github.com/kaltura/kaltura-player-js/issues/29)) ([b635184](https://github.com/kaltura/kaltura-player-js/commit/b635184))
 * **FEC-7192:** play native HLS on iOS ([#34](https://github.com/kaltura/kaltura-player-js/issues/34)) ([9b27213](https://github.com/kaltura/kaltura-player-js/commit/9b27213))
 * **FEC-7123:** pass player version as provider param ([#35](https://github.com/kaltura/kaltura-player-js/issues/35)) ([bb950f8](https://github.com/kaltura/kaltura-player-js/commit/bb950f8))
 * remove import of global webpack var ([ca0a23c](https://github.com/kaltura/kaltura-player-js/commit/ca0a23c))
 
 
 ### Features
-
-* **local storage:** support caching user preferences ([#24](https://github.com/kaltura/kaltura-player-js/issues/24)) ([2e4280a](https://github.com/kaltura/kaltura-player-js/commit/2e4280a))
 * evaluate default plugins config ([#30](https://github.com/kaltura/kaltura-player-js/issues/30)) ([f87beac](https://github.com/kaltura/kaltura-player-js/commit/f87beac))
-* player doesn't attach itself to parent ([#27](https://github.com/kaltura/kaltura-player-js/issues/27)) ([b612d57](https://github.com/kaltura/kaltura-player-js/commit/b612d57))
-* prefer native hls on safari ([#25](https://github.com/kaltura/kaltura-player-js/issues/25)) ([81ba2bf](https://github.com/kaltura/kaltura-player-js/commit/81ba2bf))
 * storage refactor ([#33](https://github.com/kaltura/kaltura-player-js/issues/33)) ([717f409](https://github.com/kaltura/kaltura-player-js/commit/717f409))
-
 
 
 <a name="0.5.2"></a>
