@@ -8,7 +8,7 @@ import {
   createKalturaPlayerContainer,
   validateTargetId,
   validateProvidersConfig,
-  checkNativeHlsSupport,
+  setDefaultPlayerConfig,
   setStorageConfig,
   applyStorageSupport
 } from "./utils/setup-helpers"
@@ -24,7 +24,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   let userPlayerConfig = extractPlayerConfig(options);
   let userProvidersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
-  checkNativeHlsSupport(userPlayerConfig);
+  setDefaultPlayerConfig(userPlayerConfig);
   evaluatePluginsConfig(userPlayerConfig);
   setStorageConfig(options.disableUserCache, userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
