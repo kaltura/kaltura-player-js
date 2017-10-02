@@ -467,7 +467,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -484,7 +484,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(36);
+var _jsLogger = __webpack_require__(40);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -1333,6 +1333,7 @@ exports.default = AudioTrack;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.TextTrack = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1398,6 +1399,7 @@ var TextTrack = function (_Track) {
 }(_track2.default);
 
 exports.default = TextTrack;
+exports.TextTrack = TextTrack;
 
 /***/ }),
 /* 6 */
@@ -1859,6 +1861,10 @@ var CUSTOM_EVENTS = {
    */
   TEXT_TRACK_CHANGED: 'texttrackchanged',
   /**
+   * Fires when the active text track cue has changed
+   */
+  TEXT_CUE_CHANGED: 'textcuechanged',
+  /**
    * Fires when the player tracks have been changed
    */
   TRACKS_CHANGED: 'trackschanged',
@@ -1981,7 +1987,7 @@ var _eventManager = __webpack_require__(7);
 
 var _eventManager2 = _interopRequireDefault(_eventManager);
 
-var _posterManager = __webpack_require__(32);
+var _posterManager = __webpack_require__(36);
 
 var _posterManager2 = _interopRequireDefault(_posterManager);
 
@@ -1995,7 +2001,7 @@ var _fakeEventTarget2 = _interopRequireDefault(_fakeEventTarget);
 
 var _events = __webpack_require__(8);
 
-var _stateTypes = __webpack_require__(21);
+var _stateTypes = __webpack_require__(22);
 
 var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
@@ -2003,11 +2009,15 @@ var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
+var _locale = __webpack_require__(35);
+
+var _locale2 = _interopRequireDefault(_locale);
+
 var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _html = __webpack_require__(24);
+var _html = __webpack_require__(27);
 
 var _html2 = _interopRequireDefault(_html);
 
@@ -2019,17 +2029,17 @@ var _basePlugin = __webpack_require__(13);
 
 var _basePlugin2 = _interopRequireDefault(_basePlugin);
 
-var _stateManager = __webpack_require__(29);
+var _stateManager = __webpack_require__(32);
 
 var _stateManager2 = _interopRequireDefault(_stateManager);
 
-var _trackTypes = __webpack_require__(31);
+var _trackTypes = __webpack_require__(34);
 
 var _trackTypes2 = _interopRequireDefault(_trackTypes);
 
-var _track = __webpack_require__(1);
+var _track2 = __webpack_require__(1);
 
-var _track2 = _interopRequireDefault(_track);
+var _track3 = _interopRequireDefault(_track2);
 
 var _videoTrack = __webpack_require__(6);
 
@@ -2043,15 +2053,23 @@ var _textTrack = __webpack_require__(5);
 
 var _textTrack2 = _interopRequireDefault(_textTrack);
 
-var _playbackMiddleware = __webpack_require__(27);
+var _textStyle = __webpack_require__(20);
+
+var _textStyle2 = _interopRequireDefault(_textStyle);
+
+var _vttCue = __webpack_require__(24);
+
+var _textTrackDisplay = __webpack_require__(23);
+
+var _playbackMiddleware = __webpack_require__(30);
 
 var _playbackMiddleware2 = _interopRequireDefault(_playbackMiddleware);
 
-var _playerConfig = __webpack_require__(42);
+var _playerConfig = __webpack_require__(46);
 
 var _playerConfig2 = _interopRequireDefault(_playerConfig);
 
-__webpack_require__(37);
+__webpack_require__(41);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2086,6 +2104,20 @@ var POSTER_CLASS_NAME = 'playkit-poster';
 var ENGINE_CLASS_NAME = 'playkit-engine';
 
 /**
+ * The text style id.
+ * @type {string}
+ * @const
+ */
+var SUBTITLES_STYLE_ID_NAME = 'playkit-subtitles-style';
+
+/**
+ * The subtitles class name.
+ * @type {string}
+ * @const
+ */
+var SUBTITLES_CLASS_NAME = 'playkit-subtitles';
+
+/**
  * The live string.
  * @type {string}
  * @const
@@ -2103,6 +2135,42 @@ var Player = function (_FakeEventTarget) {
   /**
    * @param {Object} config - The configuration for the player instance.
    * @constructor
+   */
+
+  /**
+   * The player text style settings
+   * @type {TextStyle}
+   * @private
+   */
+
+  /**
+   * The playback middleware of the player.
+   * @type {PlaybackMiddleware}
+   * @private
+   */
+
+  /**
+   * The environment(os,device,browser) object of the player.
+   * @type {Object}
+   * @private
+   */
+
+  /**
+   * The currently selected engine type
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * The currently selected stream type
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * The player last updated text cues list
+   * @type {Array<any>}
+   * @private
    */
 
   /**
@@ -2166,25 +2234,13 @@ var Player = function (_FakeEventTarget) {
    */
 
   /**
-   * The playback middleware of the player.
-   * @type {PlaybackMiddleware}
+   * The player text DOM element container.
+   * @type {HTMLDivElement}
    * @private
    */
 
   /**
-   * The environment(os,device,browser) object of the player.
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The currently selected engine type
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The currently selected stream type
+   * The player DOM id.
    * @type {string}
    * @private
    */
@@ -2202,6 +2258,9 @@ var Player = function (_FakeEventTarget) {
 
     var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this));
 
+    _this._activeTextCues = [];
+    _this._textDisplaySettings = {};
+
     _this._env = _env2.default;
     _this._tracks = [];
     _this._firstPlay = true;
@@ -2218,10 +2277,20 @@ var Player = function (_FakeEventTarget) {
     return _this;
   }
 
+  // <editor-fold desc="Public API">
+
+  // <editor-fold desc="Playback API">
+
   /**
    * Configures the player according to a given configuration.
    * @param {Object} config - The configuration for the player instance.
    * @returns {void}
+   */
+
+  /**
+   * The player text disaply settings
+   * @type {Object}
+   * @private
    */
 
   /**
@@ -2250,6 +2319,431 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
+     * The player readiness
+     * @public
+     * @returns {Promise<*>} - The ready promise
+     */
+
+  }, {
+    key: 'ready',
+    value: function ready() {
+      return this._readyPromise ? this._readyPromise : Promise.resolve();
+    }
+
+    /**
+     * Load media
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'load',
+    value: function load() {
+      var _this2 = this;
+
+      if (this._engine) {
+        var startTime = this._config.playback.startTime;
+        this._engine.load(startTime).then(function (data) {
+          _this2._tracks = data.tracks;
+          _this2._addTextTrackOffOption();
+          _this2._setDefaultTracks();
+          _this2.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TRACKS_CHANGED, { tracks: _this2._tracks }));
+        }).catch(function (error) {
+          _this2.dispatchEvent(new _fakeEvent2.default(_events.HTML5_EVENTS.ERROR, error));
+        });
+      }
+    }
+
+    /**
+     * Start/resume playback.
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'play',
+    value: function play() {
+      if (this._engine) {
+        this._playbackMiddleware.play(this._play.bind(this));
+      }
+    }
+
+    /**
+     * Pause playback.
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      if (this._engine) {
+        this._playbackMiddleware.pause(this._pause.bind(this));
+      }
+    }
+
+    /**
+     * Gets the view of the player (i.e the dom container object).
+     * @return {HTMLElement} - The dom container.
+     * @public
+     */
+
+  }, {
+    key: 'getView',
+    value: function getView() {
+      return this._el;
+    }
+
+    /**
+     * @returns {HTMLVideoElement} - The video element.
+     * @public
+     */
+
+  }, {
+    key: 'getVideoElement',
+    value: function getVideoElement() {
+      if (this._engine) {
+        return this._engine.getVideoElement();
+      }
+    }
+
+    /**
+     * Destroys the player.
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      if (this._engine) {
+        this._engine.destroy();
+      }
+      this._eventManager.destroy();
+      this._pluginManager.destroy();
+      this._stateManager.destroy();
+      this._textDisplaySettings = {};
+      this._config = {};
+      this._tracks = [];
+      this._readyPromise = null;
+      this._firstPlay = true;
+    }
+  }, {
+    key: 'buffered',
+    value: function buffered() {}
+
+    /**
+     * Set the current time in seconds.
+     * @param {Number} to - The number to set in seconds.
+     * @public
+     */
+
+  }, {
+    key: 'isLive',
+
+
+    // </editor-fold>
+
+    // <editor-fold desc="Live API">
+
+    /**
+     * Checking if the current playback is live.
+     * @function isLive
+     * @returns {boolean} - Whether playback is live.
+     * @public
+     */
+    value: function isLive() {
+      return !!(this._config.type === LIVE || this._engine && this._engine.isLive());
+    }
+
+    /**
+     * Checking if the current live playback has DVR window.
+     * @function isDvr
+     * @returns {boolean} - Whether live playback has DVR window.
+     * @public
+     */
+
+  }, {
+    key: 'isDvr',
+    value: function isDvr() {
+      return this.isLive() && this._config.dvr;
+    }
+
+    /**
+     * Seeking to live edge.
+     * @function seekToLiveEdge
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'seekToLiveEdge',
+    value: function seekToLiveEdge() {
+      if (this._engine && this.isLive()) {
+        this._engine.seekToLiveEdge();
+      }
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Tracks API">
+
+    /**
+     * Returns the tracks according to the filter. if no filter given returns the all tracks.
+     * @function getTracks
+     * @param {string} [type] - a tracks filter, should be 'video', 'audio' or 'text'.
+     * @returns {Array<Track>} - The parsed tracks.
+     * @public
+     */
+
+  }, {
+    key: 'getTracks',
+    value: function getTracks(type) {
+      return this._getTracksByType(type);
+    }
+
+    /**
+     * Get an object includes the active video/audio/text tracks
+     * @return {{video: VideoTrack, audio: AudioTrack, text: TextTrack}} - The active tracks object
+     */
+
+  }, {
+    key: 'getActiveTracks',
+    value: function getActiveTracks() {
+      return {
+        video: this._getTracksByType(_trackTypes2.default.VIDEO).find(function (track) {
+          return track.active;
+        }),
+        audio: this._getTracksByType(_trackTypes2.default.AUDIO).find(function (track) {
+          return track.active;
+        }),
+        text: this._getTracksByType(_trackTypes2.default.TEXT).find(function (track) {
+          return track.active;
+        })
+      };
+    }
+
+    /**
+     * Select a track
+     * @function selectTrack
+     * @param {Track} track - the track to select
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'selectTrack',
+    value: function selectTrack(track) {
+      if (this._engine) {
+        if (track instanceof _videoTrack2.default) {
+          this._engine.selectVideoTrack(track);
+        } else if (track instanceof _audioTrack2.default) {
+          this._engine.selectAudioTrack(track);
+        } else if (track instanceof _textTrack2.default) {
+          if (track.language === "off") {
+            this.hideTextTrack();
+          } else {
+            this._engine.selectTextTrack(track);
+          }
+        }
+      }
+    }
+
+    /**
+     * Hide the text track
+     * @function hideTextTrack
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'hideTextTrack',
+    value: function hideTextTrack() {
+      if (this._engine) {
+        this._engine.hideTextTrack();
+        this._updateTextDisplay([]);
+        var textTracks = this._getTracksByType(_trackTypes2.default.TEXT);
+        textTracks.map(function (track) {
+          return track.active = false;
+        });
+        var textTrack = textTracks.find(function (track) {
+          return track.language === "off";
+        });
+        if (textTrack) {
+          textTrack.active = true;
+          this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED, { selectedTextTrack: textTrack }));
+        }
+      }
+    }
+
+    /**
+     * Enables adaptive bitrate switching.
+     * @function enableAdaptiveBitrate
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'enableAdaptiveBitrate',
+    value: function enableAdaptiveBitrate() {
+      if (this._engine) {
+        this._engine.enableAdaptiveBitrate();
+      }
+    }
+
+    /**
+     * Checking if adaptive bitrate switching is enabled.
+     * @function isAdaptiveBitrateEnabled
+     * @returns {boolean} - Whether adaptive bitrate is enabled.
+     * @public
+     */
+
+  }, {
+    key: 'isAdaptiveBitrateEnabled',
+    value: function isAdaptiveBitrateEnabled() {
+      if (this._engine) {
+        return this._engine.isAdaptiveBitrateEnabled();
+      }
+      return false;
+    }
+
+    /**
+     * update the text display settings
+     * @param {Object} settings - text cue display settings
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'setTextDisplaySettings',
+    value: function setTextDisplaySettings(settings) {
+      this._textDisplaySettings = settings;
+      this._updateCueDisplaySettings();
+      for (var i = 0; i < this._activeTextCues.length; i++) {
+        this._activeTextCues[i].hasBeenReset = true;
+      }
+      this._updateTextDisplay(this._activeTextCues);
+    }
+
+    /**
+     * Sets style attributes for text tracks.
+     * @param {TextStyle} style - text styling settings
+     * @returns {void}
+     */
+
+  }, {
+    key: 'skipAd',
+
+
+    // </editor-fold>
+
+    // <editor-fold desc="Ads API">
+
+    /**
+     * Skip on an ad.
+     * @public
+     * @returns {void}
+     */
+    value: function skipAd() {
+      var adsPlugin = this._pluginManager.get('ima');
+      if (adsPlugin && typeof adsPlugin.skipAd === 'function') {
+        adsPlugin.skipAd();
+      }
+    }
+
+    /**
+     * Start to play ad on demand.
+     * @param {string} adTagUrl - The ad tag url to play.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'playAdNow',
+    value: function playAdNow(adTagUrl) {
+      var adsPlugin = this._pluginManager.get('ima');
+      if (adsPlugin && typeof adsPlugin.playAdNow === 'function') {
+        adsPlugin.playAdNow(adTagUrl);
+      }
+    }
+
+    // </editor-fold>
+
+    // </editor-fold>
+
+    // <editor-fold desc="Private Methods">
+
+    // <editor-fold desc="Playback">
+
+    /**
+     * Creates the ready promise.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_createReadyPromise',
+    value: function _createReadyPromise() {
+      var _this3 = this;
+
+      this._readyPromise = new Promise(function (resolve, reject) {
+        _this3._eventManager.listen(_this3, _events.CUSTOM_EVENTS.TRACKS_CHANGED, resolve);
+        _this3._eventManager.listen(_this3, _events.HTML5_EVENTS.ERROR, reject);
+      });
+    }
+
+    /**
+     * Creates the player container.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_createPlayerContainer',
+    value: function _createPlayerContainer() {
+      var el = this._el = Utils.Dom.createElement("div");
+      Utils.Dom.addClassName(el, CONTAINER_CLASS_NAME);
+      this._playerId = Utils.Generator.uniqueId(5);
+      Utils.Dom.setAttribute(el, "id", this._playerId);
+      Utils.Dom.setAttribute(el, "tabindex", '-1');
+    }
+
+    /**
+     * Appends the poster element to the player's div container.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_appendPosterEl',
+    value: function _appendPosterEl() {
+      if (this._el) {
+        var el = this._posterManager.getElement();
+        Utils.Dom.addClassName(el, POSTER_CLASS_NAME);
+        Utils.Dom.appendChild(this._el, el);
+      }
+    }
+
+    /**
+     * Appends the engine's video element to the player's div container.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_appendEngineEl',
+    value: function _appendEngineEl() {
+      if (this._el && this._engine) {
+        var engineEl = this._engine.getVideoElement();
+        var classname = '' + ENGINE_CLASS_NAME;
+        Utils.Dom.addClassName(engineEl, classname);
+        var classnameWithId = ENGINE_CLASS_NAME + '-' + this._engine.id;
+        Utils.Dom.addClassName(engineEl, classnameWithId);
+        Utils.Dom.prependTo(engineEl, this._el);
+      }
+    }
+
+    /**
      * Configures or load the plugins defined in the configuration.
      * @param {Object} plugins - The new received plugins configuration.
      * @private
@@ -2259,29 +2753,29 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_configureOrLoadPlugins',
     value: function _configureOrLoadPlugins() {
-      var _this2 = this;
+      var _this4 = this;
 
       var plugins = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       Object.keys(plugins).forEach(function (name) {
         // If the plugin is already exists in the registry we are updating his config
-        var plugin = _this2._pluginManager.get(name);
+        var plugin = _this4._pluginManager.get(name);
         if (plugin) {
           plugin.updateConfig(plugins[name]);
-          _this2._config.plugins[name] = plugin.getConfig();
+          _this4._config.plugins[name] = plugin.getConfig();
         } else {
           // We allow to load plugins as long as the player has no engine
-          if (!_this2._engine) {
-            _this2._pluginManager.load(name, _this2, plugins[name]);
-            var _plugin = _this2._pluginManager.get(name);
+          if (!_this4._engine) {
+            _this4._pluginManager.load(name, _this4, plugins[name]);
+            var _plugin = _this4._pluginManager.get(name);
             if (_plugin) {
-              _this2._config.plugins[name] = _plugin.getConfig();
+              _this4._config.plugins[name] = _plugin.getConfig();
               if (typeof _plugin.getMiddlewareImpl === "function") {
-                _this2._playbackMiddleware.use(_plugin.getMiddlewareImpl());
+                _this4._playbackMiddleware.use(_plugin.getMiddlewareImpl());
               }
             }
           } else {
-            delete _this2._config.plugins[name];
+            delete _this4._config.plugins[name];
           }
         }
       });
@@ -2303,79 +2797,16 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
-     * Reset the necessary components before change media.
-     * @private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_reset',
-    value: function _reset() {
-      if (this._engine) {
-        this._engine.destroy();
-      }
-      this._tracks = [];
-      this._firstPlay = true;
-      this._eventManager.removeAll();
-      this._createReadyPromise();
-    }
-
-    /**
-     * Creates the ready promise.
-     * @private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_createReadyPromise',
-    value: function _createReadyPromise() {
-      var _this3 = this;
-
-      this._readyPromise = new Promise(function (resolve, reject) {
-        _this3._eventManager.listen(_this3, _events.CUSTOM_EVENTS.TRACKS_CHANGED, resolve);
-        _this3._eventManager.listen(_this3, _events.HTML5_EVENTS.ERROR, reject);
-      });
-    }
-
-    /**
-     * Destroys the player.
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      if (this._engine) {
-        this._engine.destroy();
-      }
-      this._eventManager.destroy();
-      this._pluginManager.destroy();
-      this._stateManager.destroy();
-      this._config = {};
-      this._tracks = [];
-      this._readyPromise = null;
-      this._firstPlay = true;
-    }
-
-    /**
-     * @returns {Object} - The default configuration of the player.
-     * @private
-     * @static
-     */
-
-  }, {
-    key: '_selectEngineByPriority',
-
-
-    /**
      * Selects an engine to play a source according to a given stream priority.
      * @return {boolean} - Whether a proper engine was found to play the given sources
      * according to the priority.
      * @private
      */
+
+  }, {
+    key: '_selectEngineByPriority',
     value: function _selectEngineByPriority() {
-      var _this4 = this;
+      var _this5 = this;
 
       var streamPriority = this._config.playback.streamPriority;
       var preferNative = this._config.playback.preferNative;
@@ -2399,10 +2830,10 @@ var Player = function (_FakeEventTarget) {
               var source = formatSources[0];
               if (engine.canPlaySource(source, preferNative[format])) {
                 Player._logger.debug('Source selected: ', formatSources);
-                _this4._engineType = engineId;
-                _this4._streamType = format;
-                _this4._loadEngine(engine, source);
-                _this4.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.SOURCE_SELECTED, { selectedSource: formatSources }));
+                _this5._engineType = engineId;
+                _this5._streamType = format;
+                _this5._loadEngine(engine, source);
+                _this5.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.SOURCE_SELECTED, { selectedSource: formatSources }));
                 return {
                   v: true
                 };
@@ -2458,32 +2889,42 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_attachMedia',
     value: function _attachMedia() {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this._engine) {
         for (var playerEvent in _events.HTML5_EVENTS) {
           this._eventManager.listen(this._engine, _events.HTML5_EVENTS[playerEvent], function (event) {
-            return _this5.dispatchEvent(event);
+            return _this6.dispatchEvent(event);
           });
         }
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.VIDEO_TRACK_CHANGED, function (event) {
-          _this5._markActiveTrack(event.payload.selectedVideoTrack);
-          return _this5.dispatchEvent(event);
+          _this6._markActiveTrack(event.payload.selectedVideoTrack);
+          return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.AUDIO_TRACK_CHANGED, function (event) {
-          _this5._markActiveTrack(event.payload.selectedAudioTrack);
-          return _this5.dispatchEvent(event);
+          _this6._markActiveTrack(event.payload.selectedAudioTrack);
+          return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED, function (event) {
-          _this5._markActiveTrack(event.payload.selectedTextTrack);
-          return _this5.dispatchEvent(event);
+          _this6._markActiveTrack(event.payload.selectedTextTrack);
+          return _this6.dispatchEvent(event);
+        });
+        this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.TEXT_CUE_CHANGED, function (event) {
+          return _this6._onCueChange(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.ABR_MODE_CHANGED, function (event) {
-          return _this5.dispatchEvent(event);
+          return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this, _events.HTML5_EVENTS.PLAY, this._onPlay.bind(this));
       }
     }
+
+    /**
+     * Handles the playback config.
+     * @returns {void}
+     * @private
+     */
+
   }, {
     key: '_handlePlaybackConfig',
     value: function _handlePlaybackConfig() {
@@ -2535,87 +2976,90 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
-     * Creates the player container.
+     * Start/resume the engine playback.
      * @private
      * @returns {void}
      */
 
   }, {
-    key: '_createPlayerContainer',
-    value: function _createPlayerContainer() {
-      var el = this._el = Utils.Dom.createElement("div");
-      Utils.Dom.addClassName(el, CONTAINER_CLASS_NAME);
-      Utils.Dom.setAttribute(el, "id", Utils.Generator.uniqueId(5));
-      Utils.Dom.setAttribute(el, "tabindex", '-1');
-    }
+    key: '_play',
+    value: function _play() {
+      var _this7 = this;
 
-    /**
-     * Appends the poster element to the player's div container.
-     * @private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_appendPosterEl',
-    value: function _appendPosterEl() {
-      if (this._el != null) {
-        var el = this._posterManager.getElement();
-        Utils.Dom.addClassName(el, POSTER_CLASS_NAME);
-        Utils.Dom.appendChild(this._el, el);
+      if (this._engine.src) {
+        if (this.isLive() && !this.isDvr()) {
+          this.seekToLiveEdge();
+        }
+        this._engine.play();
+      } else {
+        this.load();
+        this.ready().then(function () {
+          _this7._engine.play();
+        });
       }
     }
 
     /**
-     * Appends the engine's video element to the player's div container.
+     * Starts the engine pause.
      * @private
      * @returns {void}
      */
 
   }, {
-    key: '_appendEngineEl',
-    value: function _appendEngineEl() {
-      if (this._el != null && this._engine != null) {
-        var engineEl = this._engine.getVideoElement();
-        var classname = '' + ENGINE_CLASS_NAME;
-        Utils.Dom.addClassName(engineEl, classname);
-        var classnameWithId = ENGINE_CLASS_NAME + '-' + this._engine.id;
-        Utils.Dom.addClassName(engineEl, classnameWithId);
-        Utils.Dom.prependTo(engineEl, this._el);
+    key: '_pause',
+    value: function _pause() {
+      this._engine.pause();
+    }
+
+    /**
+     * @function _onPlay
+     * @return {void}
+     * @private
+     */
+
+  }, {
+    key: '_onPlay',
+    value: function _onPlay() {
+      if (this._firstPlay) {
+        this._firstPlay = false;
+        this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FIRST_PLAY));
+        this._posterManager.hide();
       }
     }
 
     /**
-     * Gets the view of the player (i.e the dom container object).
-     * @return {HTMLElement} - The dom container.
-     * @public
+     * Reset the necessary components before change media.
+     * @private
+     * @returns {void}
      */
 
   }, {
-    key: 'getView',
-    value: function getView() {
-      return this._el;
+    key: '_reset',
+    value: function _reset() {
+      if (this._engine) {
+        this._engine.destroy();
+      }
+      this._tracks = [];
+      this._textDisplaySettings = {};
+      this._activeTextCues = [];
+      this._firstPlay = true;
+      this._eventManager.removeAll();
+      this._createReadyPromise();
     }
 
     /**
-     * Get the dimensions of the player.
-     * @returns {{width: number, height: number}} - The dimensions of the player.
-     * @public
+     * @returns {Object} - The default configuration of the player.
+     * @private
+     * @static
      */
 
   }, {
-    key: 'getTracks',
+    key: '_getTracksByType',
 
 
-    /**
-     * Returns the tracks according to the filter. if no filter given returns the all tracks.
-     * @function getTracks
-     * @param {string} [type] - a tracks filter, should be 'video', 'audio' or 'text'.
-     * @returns {Array<Track>} - The parsed tracks.
-     * @public
-     */
-    value: function getTracks(type) {
-      return this._getTracksByType(type);
-    }
+    // </editor-fold>
+
+    // <editor-fold desc="Tracks">
 
     /**
      * Returns the tracks according to the filter. if no filter given returns the all tracks.
@@ -2624,9 +3068,6 @@ var Player = function (_FakeEventTarget) {
      * @returns {Array<Track>} - The parsed tracks.
      * @private
      */
-
-  }, {
-    key: '_getTracksByType',
     value: function _getTracksByType(type) {
       return !type ? this._tracks : this._tracks.filter(function (track) {
         if (type === _trackTypes2.default.VIDEO) {
@@ -2639,98 +3080,6 @@ var Player = function (_FakeEventTarget) {
           return true;
         }
       });
-    }
-
-    /**
-     * Get an object includes the active video/audio/text tracks
-     * @return {{video: VideoTrack, audio: AudioTrack, text: TextTrack}} - The active tracks object
-     */
-
-  }, {
-    key: 'getActiveTracks',
-    value: function getActiveTracks() {
-      return {
-        video: this._getTracksByType(_trackTypes2.default.VIDEO).find(function (track) {
-          return track.active;
-        }),
-        audio: this._getTracksByType(_trackTypes2.default.AUDIO).find(function (track) {
-          return track.active;
-        }),
-        text: this._getTracksByType(_trackTypes2.default.TEXT).find(function (track) {
-          return track.active;
-        })
-      };
-    }
-
-    /**
-     * Select a track
-     * @function selectTrack
-     * @param {Track} track - the track to select
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'selectTrack',
-    value: function selectTrack(track) {
-      if (this._engine) {
-        if (track instanceof _videoTrack2.default) {
-          this._engine.selectVideoTrack(track);
-        } else if (track instanceof _audioTrack2.default) {
-          this._engine.selectAudioTrack(track);
-        } else if (track instanceof _textTrack2.default) {
-          this._engine.selectTextTrack(track);
-        }
-      }
-    }
-
-    /**
-     * Hide the text track
-     * @function hideTextTrack
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'hideTextTrack',
-    value: function hideTextTrack() {
-      if (this._engine) {
-        this._engine.hideTextTrack();
-        this._getTracksByType(_trackTypes2.default.TEXT).map(function (track) {
-          return track.active = false;
-        });
-      }
-    }
-
-    /**
-     * Enables adaptive bitrate switching.
-     * @function enableAdaptiveBitrate
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'enableAdaptiveBitrate',
-    value: function enableAdaptiveBitrate() {
-      if (this._engine) {
-        this._engine.enableAdaptiveBitrate();
-      }
-    }
-
-    /**
-     * Checking if adaptive bitrate switching is enabled.
-     * @function isAdaptiveBitrateEnabled
-     * @returns {boolean} - Whether adaptive bitrate is enabled.
-     * @public
-     */
-
-  }, {
-    key: 'isAdaptiveBitrateEnabled',
-    value: function isAdaptiveBitrateEnabled() {
-      if (this._engine) {
-        return this._engine.isAdaptiveBitrateEnabled();
-      }
-      return false;
     }
 
     /**
@@ -2761,279 +3110,135 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
-     * @function _onPlay
-     * @return {void}
-     * @private
-     */
-
-  }, {
-    key: '_onPlay',
-    value: function _onPlay() {
-      if (this._firstPlay) {
-        this._firstPlay = false;
-        this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FIRST_PLAY));
-        this._posterManager.hide();
-      }
-    }
-
-    /**
-     * Getter for the environment of the player instance.
-     * @return {Object} - The current environment object.
-     * @public
-     */
-
-  }, {
-    key: 'isLive',
-
-
-    /**
-     * Checking if the current playback is live.
-     * @function isLive
-     * @returns {boolean} - Whether playback is live.
-     * @public
-     */
-    value: function isLive() {
-      return !!(this._config.type === LIVE || this._engine && this._engine.isLive());
-    }
-
-    /**
-     * Checking if the current live playback has DVR window.
-     * @function isDvr
-     * @returns {boolean} - Whether live playback has DVR window.
-     * @public
-     */
-
-  }, {
-    key: 'isDvr',
-    value: function isDvr() {
-      return this.isLive() && this._config.dvr;
-    }
-
-    /**
-     * Seeking to live edge.
-     * @function seekToLiveEdge
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'seekToLiveEdge',
-    value: function seekToLiveEdge() {
-      if (this._engine && this.isLive()) {
-        this._engine.seekToLiveEdge();
-      }
-    }
-
-    //  <editor-fold desc="Playback Interface">
-    /**
-     * The player readiness
-     * @public
-     * @returns {Promise<*>} - The ready promise
-     */
-
-  }, {
-    key: 'ready',
-    value: function ready() {
-      return this._readyPromise ? this._readyPromise : Promise.resolve();
-    }
-
-    /**
-     * Load media
-     * @public
-     * @returns {void}
-     */
-
-  }, {
-    key: 'load',
-    value: function load() {
-      var _this6 = this;
-
-      if (this._engine) {
-        var startTime = this._config.playback.startTime;
-        this._engine.load(startTime).then(function (data) {
-          _this6._tracks = data.tracks;
-          _this6.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TRACKS_CHANGED, { tracks: _this6._tracks }));
-        }).catch(function (error) {
-          _this6.dispatchEvent(new _fakeEvent2.default(_events.HTML5_EVENTS.ERROR, error));
-        });
-      }
-    }
-
-    /**
-     * Start/resume playback.
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'play',
-    value: function play() {
-      if (this._engine) {
-        this._playbackMiddleware.play(this._play.bind(this));
-      }
-    }
-
-    /**
-     * Start/resume the engine playback.
+     * handle text cue change
+     * @param {FakeEvent} event - the cue change event payload
      * @private
      * @returns {void}
      */
 
   }, {
-    key: '_play',
-    value: function _play() {
-      var _this7 = this;
+    key: '_onCueChange',
+    value: function _onCueChange(event) {
+      Player._logger.debug('Text cue changed', event.payload.cues);
+      this._activeTextCues = event.payload.cues;
+      this._updateCueDisplaySettings();
+      this._updateTextDisplay(this._activeTextCues);
+    }
 
-      if (this._engine.src) {
-        if (this.isLive() && !this.isDvr()) {
-          this.seekToLiveEdge();
+    /**
+     * update the text cue display settings
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_updateCueDisplaySettings',
+    value: function _updateCueDisplaySettings() {
+      var activeCues = this._activeTextCues;
+      var settings = this._textDisplaySettings;
+      for (var i = 0; i < activeCues.length; i++) {
+        var cue = activeCues[i];
+        for (var name in settings) {
+          cue[name] = settings[name];
         }
-        this._engine.play();
-      } else {
-        this.load();
-        this.ready().then(function () {
-          _this7._engine.play();
-        });
       }
     }
 
     /**
-     * Pause playback.
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'pause',
-    value: function pause() {
-      if (this._engine) {
-        this._playbackMiddleware.pause(this._pause.bind(this));
-      }
-    }
-
-    /**
-     * Starts the engine pause.
+     * update the text display
+     * @param {Array<Cue>} cues - list of cues
      * @private
      * @returns {void}
      */
 
   }, {
-    key: '_pause',
-    value: function _pause() {
-      this._engine.pause();
-    }
-
-    /**
-     * @returns {HTMLVideoElement} - The video element.
-     * @public
-     */
-
-  }, {
-    key: 'getVideoElement',
-    value: function getVideoElement() {
-      if (this._engine) {
-        return this._engine.getVideoElement();
+    key: '_updateTextDisplay',
+    value: function _updateTextDisplay(cues) {
+      if (this._textDisplayEl === undefined) {
+        this._textDisplayEl = Utils.Dom.createElement("div");
+        Utils.Dom.addClassName(this._textDisplayEl, SUBTITLES_CLASS_NAME);
+        Utils.Dom.appendChild(this._el, this._textDisplayEl);
       }
+      (0, _textTrackDisplay.processCues)(window, cues, this._textDisplayEl);
     }
 
     /**
-     * Skip on an ad.
-     * @public
+     * Add off text track if there are actual text tracks associated with media
+     * setting this track is the same as calling Player's hideTextTrack
+     * @private
      * @returns {void}
      */
 
   }, {
-    key: 'skipAd',
-    value: function skipAd() {
-      var adsPlugin = this._pluginManager.get('ima');
-      if (adsPlugin && typeof adsPlugin.skipAd === 'function') {
-        adsPlugin.skipAd();
+    key: '_addTextTrackOffOption',
+    value: function _addTextTrackOffOption() {
+      var textTracks = this.getTracks(_trackTypes2.default.TEXT);
+      if (textTracks && textTracks.length) {
+        this._tracks.push(new _textTrack2.default({
+          active: false,
+          index: textTracks.length,
+          kind: "subtitles",
+          label: "Off",
+          language: "off"
+        }));
       }
     }
 
     /**
-     * Start to play ad on demand.
-     * @param {string} adTagUrl - The ad tag url to play.
-     * @public
+     * Sets the default tracks defined in the player config.
      * @returns {void}
+     * @private
      */
 
   }, {
-    key: 'playAdNow',
-    value: function playAdNow(adTagUrl) {
-      var adsPlugin = this._pluginManager.get('ima');
-      if (adsPlugin && typeof adsPlugin.playAdNow === 'function') {
-        adsPlugin.playAdNow(adTagUrl);
+    key: '_setDefaultTracks',
+    value: function _setDefaultTracks() {
+      var activeTracks = this.getActiveTracks();
+      var playbackConfig = this._config.playback;
+
+      this.hideTextTrack();
+
+      var textLanguage = playbackConfig.textLanguage === "auto" ? _locale2.default.language : playbackConfig.textLanguage;
+      this._setDefaultTrack(_trackTypes2.default.TEXT, textLanguage, activeTracks.text);
+      this._setDefaultTrack(_trackTypes2.default.AUDIO, playbackConfig.audioLanguage, activeTracks.audio);
+    }
+
+    /**
+     * Sets a specific default track.
+     * @param {string} type - The track type.
+     * @param {string} language - The track language.
+     * @param {Track} defaultTrack - The default track to set in case there in case no language configured.
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_setDefaultTrack',
+    value: function _setDefaultTrack(type, language, defaultTrack) {
+      if (language) {
+        var _track = this._getTracksByType(type).find(function (track) {
+          return track.language === language;
+        });
+        if (_track) {
+          this.selectTrack(_track);
+        }
+      } else if (defaultTrack) {
+        this.selectTrack(defaultTrack);
       }
     }
 
+    // </editor-fold>
+
+    // </editor-fold>
+
+    // <editor-fold desc="Enums">
+
     /**
-     * Set the current time in seconds.
-     * @param {Number} to - The number to set in seconds.
+     * Get the player events.
+     * @returns {Object} - The events of the player.
      * @public
      */
 
-  }, {
-    key: 'buffered',
-    value: function buffered() {}
-
-    /**
-     * Set playsinline attribute.
-     * Relevant for iOS 10 and up:
-     * Elements will now be allowed to play inline, and will not automatically enter fullscreen mode when playback begins.
-     * @param {boolean} playsinline - Whether the video should plays in line.
-     */
-
-  }, {
-    key: 'dimensions',
-    get: function get() {
-      return {
-        width: this._el.clientWidth,
-        height: this._el.clientHeight
-      };
-    }
-
-    /**
-     * Get the poster source URL
-     * @returns {string} - the poster image URL
-     */
-
-  }, {
-    key: 'poster',
-    get: function get() {
-      return this._posterManager.src;
-    }
-  }, {
-    key: 'env',
-    get: function get() {
-      return this._env;
-    }
-
-    /**
-     * Get the player config.
-     * @returns {Object} - A copy of the player configuration.
-     * @public
-     */
-
-  }, {
-    key: 'config',
-    get: function get() {
-      return Utils.Object.mergeDeep({}, this._config);
-    }
-
-    /**
-     * Set player session id
-     * @param {string} sessionId - the player session id to set
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'sessionId',
-    set: function set(sessionId) {
-      this._config.session = this._config.session || {};
-      this._config.session.id = sessionId;
-    }
   }, {
     key: 'currentTime',
     set: function set(to) {
@@ -3114,33 +3319,6 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
-     * Sets the playbackRate property.
-     * @param {number} rate - The playback speed of the video.
-     */
-
-  }, {
-    key: 'playbackRate',
-    set: function set(rate) {
-      if (this._engine) {
-        this._engine.playbackRate = rate;
-      }
-    }
-
-    /**
-     * Gets the current playback speed of the video.
-     * @returns {number} - The current playback speed of the video.
-     */
-    ,
-    get: function get() {
-      if (this._engine) {
-        return this._engine.playbackRate;
-      }
-    }
-
-    // </editor-fold>
-
-    // <editor-fold desc="State">
-    /**
      * Get paused state.
      * @returns {?boolean} - Whether the video is paused or not.
      * @public
@@ -3167,6 +3345,14 @@ var Player = function (_FakeEventTarget) {
         return this._engine.seeking;
       }
     }
+
+    /**
+     * Set playsinline attribute.
+     * Relevant for iOS 10 and up:
+     * Elements will now be allowed to play inline, and will not automatically enter fullscreen mode when playback begins.
+     * @param {boolean} playsinline - Whether the video should plays in line.
+     */
+
   }, {
     key: 'playsinline',
     set: function set(playsinline) {
@@ -3231,11 +3417,152 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
-     * Get the player events.
-     * @returns {Object} - The events of the player.
+     * Get the dimensions of the player.
+     * @returns {{width: number, height: number}} - The dimensions of the player.
      * @public
      */
 
+  }, {
+    key: 'dimensions',
+    get: function get() {
+      return {
+        width: this._el.clientWidth,
+        height: this._el.clientHeight
+      };
+    }
+
+    /**
+     * Get the poster source URL
+     * @returns {string} - the poster image URL
+     */
+
+  }, {
+    key: 'poster',
+    get: function get() {
+      return this._posterManager.src;
+    }
+
+    /**
+     * Sets the playbackRate property.
+     * @param {number} rate - The playback speed of the video.
+     */
+
+  }, {
+    key: 'playbackRate',
+    set: function set(rate) {
+      if (this._engine) {
+        this._engine.playbackRate = rate;
+      }
+    }
+
+    /**
+     * Gets the current playback speed of the video.
+     * @returns {number} - The current playback speed of the video.
+     */
+    ,
+    get: function get() {
+      if (this._engine) {
+        return this._engine.playbackRate;
+      }
+    }
+
+    /**
+     * get the engine type
+     * @returns {string} - html5
+     */
+
+  }, {
+    key: 'engineType',
+    get: function get() {
+      return this._engineType;
+    }
+
+    /**
+     * get the stream type
+     * @returns {string} - hls|dash|progressive
+     */
+
+  }, {
+    key: 'streamType',
+    get: function get() {
+      return this._streamType;
+    }
+
+    /**
+     * Getter for the environment of the player instance.
+     * @return {Object} - The current environment object.
+     * @public
+     */
+
+  }, {
+    key: 'env',
+    get: function get() {
+      return this._env;
+    }
+
+    /**
+     * Get the player config.
+     * @returns {Object} - A copy of the player configuration.
+     * @public
+     */
+
+  }, {
+    key: 'config',
+    get: function get() {
+      return Utils.Object.mergeDeep({}, this._config);
+    }
+
+    /**
+     * Set player session id
+     * @param {string} sessionId - the player session id to set
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'sessionId',
+    set: function set(sessionId) {
+      this._config.session = this._config.session || {};
+      this._config.session.id = sessionId;
+    }
+  }, {
+    key: 'textStyle',
+    set: function set(style) {
+      if (!(style instanceof _textStyle2.default)) {
+        throw new Error("Style must be instance of TextStyle");
+      }
+      var element = Utils.Dom.getElementById(SUBTITLES_STYLE_ID_NAME);
+      if (!element) {
+        element = Utils.Dom.createElement('style');
+        Utils.Dom.setAttribute(element, 'id', SUBTITLES_STYLE_ID_NAME);
+        Utils.Dom.appendChild(document.head, element);
+      }
+      var sheet = element.sheet;
+
+      while (sheet.cssRules.length) {
+        sheet.deleteRule(0);
+      }
+
+      try {
+        if (this._config.playback.useNativeTextTrack) {
+          sheet.insertRule('video.' + ENGINE_CLASS_NAME + '::cue { ' + style.toCSS() + ' }', 0);
+        } else {
+          sheet.insertRule('#' + this._playerId + ' .' + SUBTITLES_CLASS_NAME + ' > div > div > div { ' + style.toCSS() + ' }', 0);
+        }
+        this._textStyle = style;
+      } catch (e) {
+        Player._logger.error(e.message);
+      }
+    }
+
+    /**
+     * Gets style attributes for text tracks.
+     * @returns {?TextStyle} - the current style attribute
+     */
+    ,
+    get: function get() {
+      return this._textStyle.clone();
+    }
   }, {
     key: 'Event',
     get: function get() {
@@ -3266,28 +3593,6 @@ var Player = function (_FakeEventTarget) {
       return _trackTypes2.default;
     }
 
-    /**
-     * get the engine type
-     * @returns {string} - html5
-     */
-
-  }, {
-    key: 'engineType',
-    get: function get() {
-      return this._engineType;
-    }
-
-    /**
-     * get the stream type
-     * @returns {string} - hls|dash|progressive
-     */
-
-  }, {
-    key: 'streamType',
-    get: function get() {
-      return this._streamType;
-    }
-
     // </editor-fold>
 
   }], [{
@@ -3315,7 +3620,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _uaParserJs = __webpack_require__(40);
+var _uaParserJs = __webpack_require__(44);
 
 var _uaParserJs2 = _interopRequireDefault(_uaParserJs);
 
@@ -3995,11 +4300,11 @@ var _playerError = __webpack_require__(11);
 
 var _playerError2 = _interopRequireDefault(_playerError);
 
-var _drmSupport = __webpack_require__(22);
+var _drmSupport = __webpack_require__(25);
 
 var _drmSupport2 = _interopRequireDefault(_drmSupport);
 
-var _drmScheme = __webpack_require__(20);
+var _drmScheme = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4323,7 +4628,7 @@ exports.registerMediaSourceAdapter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _nativeAdapter = __webpack_require__(25);
+var _nativeAdapter = __webpack_require__(28);
 
 var _nativeAdapter2 = _interopRequireDefault(_nativeAdapter);
 
@@ -4682,6 +4987,199 @@ exports.registerPlugin = registerPlugin;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Creates a TextStyle object.
+ *
+ * <p><i>
+ * Note that although this API is based on FCC guidelines, we cannot guarantee
+ * that your application is in compliance with this or any other guideline.
+ * </i></p>
+ *
+ * @constructor
+ * @struct
+ * @export
+ */
+var TextStyle = function () {
+  function TextStyle() {
+    _classCallCheck(this, TextStyle);
+
+    this.fontSize = '100%';
+    this.fontColor = TextStyle.StandardColors.WHITE;
+    this.fontOpacity = TextStyle.StandardOpacities.OPAQUE;
+    this.backgroundColor = TextStyle.StandardColors.BLACK;
+    this.backgroundOpacity = TextStyle.StandardOpacities.OPAQUE;
+    this.fontEdge = TextStyle.EdgeStyles.NONE;
+  }
+
+  /**
+   * Defined in {@link https://goo.gl/ZcqOOM FCC 12-9}, paragraph 111, footnote
+   * 448.  Each value is an array of the three RGB values for that color.
+   * @enum {!Array.<number>}
+   * @export
+   */
+
+
+  /**
+   * Defined in {@link https://goo.gl/ZcqOOM FCC 12-9}, paragraph 111.
+   * @enum {number}
+   * @export
+   */
+
+
+  /**
+   * Defined in {@link https://goo.gl/ZcqOOM FCC 12-9}, paragraph 111.
+   * The styles to achieve these effects are not specified anywhere.
+   *
+   * Each inner array represents a shadow, and is composed of RGB values for the
+   * shadow color, followed by pixel values for x-offset, y-offset, and blur.
+   *
+   * @enum {!Array.<!Array.<number>>}
+   * @export
+   */
+
+
+  _createClass(TextStyle, [{
+    key: 'toCSS',
+
+
+    /**
+     * Compute the CSS text necessary to represent this TextStyle.
+     * Output does not contain any selectors.
+     *
+     * @return {string} - ::CUE CSS string
+     */
+    value: function toCSS() {
+      var attributes = [];
+
+      attributes.push('font-size: ' + this.fontSize);
+      attributes.push('color: ' + TextStyle._toRGBA(this.fontColor, this.fontOpacity));
+      attributes.push('background-color: ' + TextStyle._toRGBA(this.backgroundColor, this.backgroundOpacity));
+
+      // A given edge effect may be implemented with multiple shadows.
+      // Collect them all into an array, then combine into one attribute.
+      var shadows = [];
+      for (var i = 0; i < this.fontEdge.length; i++) {
+        // shaka.asserts.assert(this.fontEdge[i].length == 6);
+        var color = this.fontEdge[i].slice(0, 3);
+        var shadow = this.fontEdge[i].slice(3, 6);
+        shadows.push(TextStyle._toRGBA(color, this.fontOpacity) + ' ' + shadow.join('px ') + 'px');
+      }
+      attributes.push('text-shadow: ' + shadows.join(','));
+
+      return attributes.join('!important; ');
+    }
+
+    /**
+     * clones the textStyle object
+     * @returns {TextStyle} the cloned textStyle object
+     */
+
+  }, {
+    key: 'clone',
+    value: function clone() {
+      var clonedTextStyle = new TextStyle();
+      clonedTextStyle.fontEdge = this.fontEdge;
+      clonedTextStyle.fontSize = this.fontSize;
+      clonedTextStyle.fontColor = this.fontColor;
+      clonedTextStyle.fontOpacity = this.fontOpacity;
+      clonedTextStyle.backgroundColor = this.backgroundColor;
+      clonedTextStyle.backgroundOpacity = this.backgroundOpacity;
+      return clonedTextStyle;
+    }
+  }], [{
+    key: '_toRGBA',
+
+
+    /**
+     * Creates a CSS RGBA sctring for a given color and opacity values
+     * @param {TextStyle.StandardColors} color - color value in RGB
+     * @param {TextStyle.StandardOpacities} opacity - opacity value
+     * @return {string} - CSS rgba string
+     * @private
+     */
+    value: function _toRGBA(color, opacity) {
+      // shaka.asserts.assert(color.length == 3);
+      return 'rgba(' + color.concat(opacity).join(',') + ')';
+    }
+
+    /**
+     * Font size, such as 50%, 75%, 100%, 200%, or 300%.
+     * @type {string}
+     */
+
+
+    /**
+     * @type {TextStyle.StandardColors}
+     */
+
+
+    /**
+     * @type {TextStyle.StandardOpacities}
+     * @expose
+     */
+
+
+    /**
+     * @type {TextStyle.StandardColors}
+     */
+
+
+    /**
+     * @type {TextStyle.StandardOpacities}
+     */
+
+
+    /**
+     * @type {TextStyle.EdgeStyles}
+     * @expose
+     */
+
+  }]);
+
+  return TextStyle;
+}();
+
+TextStyle.StandardColors = {
+  'WHITE': [255, 255, 255],
+  'BLACK': [0, 0, 0],
+  'RED': [255, 0, 0],
+  'GREEN': [0, 255, 0],
+  'BLUE': [0, 0, 255],
+  'YELLOW': [255, 255, 0],
+  'MAGENTA': [255, 0, 255],
+  'CYAN': [0, 255, 255]
+};
+TextStyle.StandardOpacities = {
+  'OPAQUE': 1,
+  'SEMI_HIGH': 0.75,
+  'SEMI_LOW': 0.25,
+  'TRANSPARENT': 0
+};
+TextStyle.EdgeStyles = {
+  'NONE': [],
+  'RAISED': [[34, 34, 34, 1, 1, 0], [34, 34, 34, 2, 2, 0], [34, 34, 34, 3, 3, 0]],
+  'DEPRESSED': [[204, 204, 204, 1, 1, 0], [204, 204, 204, 0, 1, 0], [34, 34, 34, -1, -1, 0], [34, 34, 34, 0, -1, 0]],
+  'UNIFORM': [[34, 34, 34, 0, 0, 4], [34, 34, 34, 0, 0, 4], [34, 34, 34, 0, 0, 4], [34, 34, 34, 0, 0, 4]],
+  'DROP': [[34, 34, 34, 2, 2, 3], [34, 34, 34, 2, 2, 4], [34, 34, 34, 2, 2, 5]]
+};
+TextStyle.FontSizes = ["50%", "75%", "100%", "200%", "300%", "400%"];
+exports.default = TextStyle;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var DrmScheme = exports.DrmScheme = {
   WIDEVINE: 'com.widevine.alpha',
   PLAYREADY: 'com.microsoft.playready',
@@ -4689,7 +5187,7 @@ var DrmScheme = exports.DrmScheme = {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4709,7 +5207,1230 @@ var PLAYER_STATE_TYPES = {
 exports.default = PLAYER_STATE_TYPES;
 
 /***/ }),
-/* 22 */
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* eslint-disable */
+/**
+ * Copyright 2013 vtt.js Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+
+/* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
+
+var fontScale = 1;
+
+// Try to parse input as a time stamp.
+function parseTimeStamp(input) {
+
+  function computeSeconds(h, m, s, f) {
+    return (h | 0) * 3600 + (m | 0) * 60 + (s | 0) + (f | 0) / 1000;
+  }
+
+  var m = input.match(/^(\d+):(\d{2})(:\d{2})?\.(\d{3})/);
+  if (!m) {
+    return null;
+  }
+
+  if (m[3]) {
+    // Timestamp takes the form of [hours]:[minutes]:[seconds].[milliseconds]
+    return computeSeconds(m[1], m[2], m[3].replace(":", ""), m[4]);
+  } else if (m[1] > 59) {
+    // Timestamp takes the form of [hours]:[minutes].[milliseconds]
+    // First position is hours as it's over 59.
+    return computeSeconds(m[1], m[2], 0, m[4]);
+  } else {
+    // Timestamp takes the form of [minutes]:[seconds].[milliseconds]
+    return computeSeconds(0, m[1], m[2], m[4]);
+  }
+}
+
+var ESCAPE = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&lrm;": "\u200E",
+  "&rlm;": "\u200F",
+  "&nbsp;": "\xA0"
+};
+
+var TAG_NAME = {
+  c: "span",
+  i: "i",
+  b: "b",
+  u: "u",
+  ruby: "ruby",
+  rt: "rt",
+  v: "span",
+  lang: "span"
+};
+
+var TAG_ANNOTATION = {
+  v: "title",
+  lang: "lang"
+};
+
+var NEEDS_PARENT = {
+  rt: "ruby"
+};
+
+// Parse content into a document fragment.
+function parseContent(window, input) {
+  function nextToken() {
+    // Check for end-of-string.
+    if (!input) {
+      return null;
+    }
+
+    // Consume 'n' characters from the input.
+    function consume(result) {
+      input = input.substr(result.length);
+      return result;
+    }
+
+    var m = input.match(/^([^<]*)(<[^>]+>?)?/);
+    // If there is some text before the next tag, return it, otherwise return
+    // the tag.
+    return consume(m[1] ? m[1] : m[2]);
+  }
+
+  // Unescape a string 's'.
+  function unescape1(e) {
+    return ESCAPE[e];
+  }
+
+  function unescape(s) {
+    var m = void 0;
+    while (m = s.match(/&(amp|lt|gt|lrm|rlm|nbsp);/)) {
+      s = s.replace(m[0], unescape1);
+    }
+    return s;
+  }
+
+  function shouldAdd(current, element) {
+    return !NEEDS_PARENT[element.localName] || NEEDS_PARENT[element.localName] === current.localName;
+  }
+
+  // Create an element for this tag.
+  function createElement(type, annotation) {
+    var tagName = TAG_NAME[type];
+    if (!tagName) {
+      return null;
+    }
+    var element = window.document.createElement(tagName);
+    element.localName = tagName;
+    var name = TAG_ANNOTATION[type];
+    if (name && annotation) {
+      element[name] = annotation.trim();
+    }
+    return element;
+  }
+
+  var rootDiv = window.document.createElement("div"),
+      current = rootDiv,
+      t = void 0,
+      tagStack = [];
+
+  while ((t = nextToken()) !== null) {
+    if (t[0] === '<') {
+      if (t[1] === "/") {
+        // If the closing tag matches, move back up to the parent node.
+        if (tagStack.length && tagStack[tagStack.length - 1] === t.substr(2).replace(">", "")) {
+          tagStack.pop();
+          current = current.parentNode;
+        }
+        // Otherwise just ignore the end tag.
+        continue;
+      }
+      var ts = parseTimeStamp(t.substr(1, t.length - 2));
+      var node = void 0;
+      if (ts) {
+        // Timestamps are lead nodes as well.
+        node = window.document.createProcessingInstruction("timestamp", ts);
+        current.appendChild(node);
+        continue;
+      }
+      var m = t.match(/^<([^.\s/0-9>]+)(\.[^\s\\>]+)?([^>\\]+)?(\\?)>?$/);
+      // If we can't parse the tag, skip to the next tag.
+      if (!m) {
+        continue;
+      }
+      // Try to construct an element, and ignore the tag if we couldn't.
+      node = createElement(m[1], m[3]);
+      if (!node) {
+        continue;
+      }
+      // Determine if the tag should be added based on the context of where it
+      // is placed in the cuetext.
+      if (!shouldAdd(current, node)) {
+        continue;
+      }
+      // Set the class list (as a list of classes, separated by space).
+      if (m[2]) {
+        node.className = m[2].substr(1).replace('.', ' ');
+      }
+      // Append the node to the current node, and enter the scope of the new
+      // node.
+      tagStack.push(m[1]);
+      current.appendChild(node);
+      current = node;
+      continue;
+    }
+
+    // Text nodes are leaf nodes.
+    current.appendChild(window.document.createTextNode(unescape(t)));
+  }
+
+  return rootDiv;
+}
+
+// This is a list of all the Unicode characters that have a strong
+// right-to-left category. What this means is that these characters are
+// written right-to-left for sure. It was generated by pulling all the strong
+// right-to-left characters out of the Unicode data table. That table can
+// found at: http://www.unicode.org/Public/UNIDATA/UnicodeData.txt
+var strongRTLRanges = [[0x5be, 0x5be], [0x5c0, 0x5c0], [0x5c3, 0x5c3], [0x5c6, 0x5c6], [0x5d0, 0x5ea], [0x5f0, 0x5f4], [0x608, 0x608], [0x60b, 0x60b], [0x60d, 0x60d], [0x61b, 0x61b], [0x61e, 0x64a], [0x66d, 0x66f], [0x671, 0x6d5], [0x6e5, 0x6e6], [0x6ee, 0x6ef], [0x6fa, 0x70d], [0x70f, 0x710], [0x712, 0x72f], [0x74d, 0x7a5], [0x7b1, 0x7b1], [0x7c0, 0x7ea], [0x7f4, 0x7f5], [0x7fa, 0x7fa], [0x800, 0x815], [0x81a, 0x81a], [0x824, 0x824], [0x828, 0x828], [0x830, 0x83e], [0x840, 0x858], [0x85e, 0x85e], [0x8a0, 0x8a0], [0x8a2, 0x8ac], [0x200f, 0x200f], [0xfb1d, 0xfb1d], [0xfb1f, 0xfb28], [0xfb2a, 0xfb36], [0xfb38, 0xfb3c], [0xfb3e, 0xfb3e], [0xfb40, 0xfb41], [0xfb43, 0xfb44], [0xfb46, 0xfbc1], [0xfbd3, 0xfd3d], [0xfd50, 0xfd8f], [0xfd92, 0xfdc7], [0xfdf0, 0xfdfc], [0xfe70, 0xfe74], [0xfe76, 0xfefc], [0x10800, 0x10805], [0x10808, 0x10808], [0x1080a, 0x10835], [0x10837, 0x10838], [0x1083c, 0x1083c], [0x1083f, 0x10855], [0x10857, 0x1085f], [0x10900, 0x1091b], [0x10920, 0x10939], [0x1093f, 0x1093f], [0x10980, 0x109b7], [0x109be, 0x109bf], [0x10a00, 0x10a00], [0x10a10, 0x10a13], [0x10a15, 0x10a17], [0x10a19, 0x10a33], [0x10a40, 0x10a47], [0x10a50, 0x10a58], [0x10a60, 0x10a7f], [0x10b00, 0x10b35], [0x10b40, 0x10b55], [0x10b58, 0x10b72], [0x10b78, 0x10b7f], [0x10c00, 0x10c48], [0x1ee00, 0x1ee03], [0x1ee05, 0x1ee1f], [0x1ee21, 0x1ee22], [0x1ee24, 0x1ee24], [0x1ee27, 0x1ee27], [0x1ee29, 0x1ee32], [0x1ee34, 0x1ee37], [0x1ee39, 0x1ee39], [0x1ee3b, 0x1ee3b], [0x1ee42, 0x1ee42], [0x1ee47, 0x1ee47], [0x1ee49, 0x1ee49], [0x1ee4b, 0x1ee4b], [0x1ee4d, 0x1ee4f], [0x1ee51, 0x1ee52], [0x1ee54, 0x1ee54], [0x1ee57, 0x1ee57], [0x1ee59, 0x1ee59], [0x1ee5b, 0x1ee5b], [0x1ee5d, 0x1ee5d], [0x1ee5f, 0x1ee5f], [0x1ee61, 0x1ee62], [0x1ee64, 0x1ee64], [0x1ee67, 0x1ee6a], [0x1ee6c, 0x1ee72], [0x1ee74, 0x1ee77], [0x1ee79, 0x1ee7c], [0x1ee7e, 0x1ee7e], [0x1ee80, 0x1ee89], [0x1ee8b, 0x1ee9b], [0x1eea1, 0x1eea3], [0x1eea5, 0x1eea9], [0x1eeab, 0x1eebb], [0x10fffd, 0x10fffd]];
+
+function isStrongRTLChar(charCode) {
+  for (var i = 0; i < strongRTLRanges.length; i++) {
+    var currentRange = strongRTLRanges[i];
+    if (charCode >= currentRange[0] && charCode <= currentRange[1]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function determineBidi(cueDiv) {
+  var nodeStack = [],
+      text = "",
+      charCode = void 0;
+
+  if (!cueDiv || !cueDiv.childNodes) {
+    return "ltr";
+  }
+
+  function pushNodes(nodeStack, node) {
+    for (var i = node.childNodes.length - 1; i >= 0; i--) {
+      nodeStack.push(node.childNodes[i]);
+    }
+  }
+
+  function nextTextNode(nodeStack) {
+    if (!nodeStack || !nodeStack.length) {
+      return null;
+    }
+
+    var node = nodeStack.pop(),
+        text = node.textContent || node.innerText;
+    if (text) {
+      // TODO: This should match all unicode type B characters (paragraph
+      // separator characters). See issue #115.
+      var m = text.match(/^.*(\n|\r)/);
+      if (m) {
+        nodeStack.length = 0;
+        return m[0];
+      }
+      return text;
+    }
+    if (node.tagName === "ruby") {
+      return nextTextNode(nodeStack);
+    }
+    if (node.childNodes) {
+      pushNodes(nodeStack, node);
+      return nextTextNode(nodeStack);
+    }
+  }
+
+  pushNodes(nodeStack, cueDiv);
+  while (text = nextTextNode(nodeStack)) {
+    for (var i = 0; i < text.length; i++) {
+      charCode = text.charCodeAt(i);
+      if (isStrongRTLChar(charCode)) {
+        return "rtl";
+      }
+    }
+  }
+  return "ltr";
+}
+
+function computeLinePos(cue) {
+  if (typeof cue.line === "number" && (cue.snapToLines || cue.line >= 0 && cue.line <= 100)) {
+    return cue.line;
+  }
+  if (!cue.track || !cue.track.textTrackList || !cue.track.textTrackList.mediaElement) {
+    return -1;
+  }
+  var track = cue.track;
+  var trackList = track.textTrackList;
+  var count = 0;
+  for (var i = 0; i < trackList.length && trackList[i] !== track; i++) {
+    if (trackList[i].mode === "showing") {
+      count++;
+    }
+  }
+  return ++count * -1;
+}
+
+var StyleBox = function () {
+  function StyleBox() {
+    _classCallCheck(this, StyleBox);
+  }
+
+  // Apply styles to a div. If there is no div passed then it defaults to the
+  // div on 'this'.
+
+
+  _createClass(StyleBox, [{
+    key: "applyStyles",
+    value: function applyStyles(styles, div) {
+      div = div || this.div;
+      for (var prop in styles) {
+        if (styles.hasOwnProperty(prop)) {
+          div.style[prop] = styles[prop];
+        }
+      }
+    }
+  }, {
+    key: "formatStyle",
+    value: function formatStyle(val, unit) {
+      return val === 0 ? 0 : val + unit;
+    }
+  }]);
+
+  return StyleBox;
+}();
+
+// Constructs the computed display state of the cue (a div). Places the div
+// into the overlay which should be a block level element (usually a div).
+
+
+var CueStyleBox = function (_StyleBox) {
+  _inherits(CueStyleBox, _StyleBox);
+
+  function CueStyleBox(window, cue, styleOptions) {
+    _classCallCheck(this, CueStyleBox);
+
+    var _this = _possibleConstructorReturn(this, (CueStyleBox.__proto__ || Object.getPrototypeOf(CueStyleBox)).call(this));
+
+    var isIE8 = typeof navigator !== "undefined" && /MSIE\s8\.0/.test(navigator.userAgent);
+    var color = "rgba(255, 255, 255, 1)";
+    var backgroundColor = "rgba(0, 0, 0, 0.8)";
+    var textShadow = "";
+
+    if (typeof WebVTTSet !== "undefined") {
+      color = WebVTTSet.fontSet;
+      backgroundColor = WebVTTSet.backgroundSet;
+      textShadow = WebVTTSet.edgeSet;
+    }
+
+    if (isIE8) {
+      color = "rgb(255, 255, 255)";
+      backgroundColor = "rgb(0, 0, 0)";
+    }
+
+    _this.cue = cue;
+
+    // Parse our cue's text into a DOM tree rooted at 'cueDiv'. This div will
+    // have inline positioning and will function as the cue background box.
+    _this.cueDiv = parseContent(window, cue.text);
+    var styles = {
+      color: color,
+      backgroundColor: backgroundColor,
+      textShadow: textShadow,
+      position: "relative",
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      display: "inline"
+    };
+
+    if (!isIE8) {
+      styles.writingMode = cue.vertical === "" ? "horizontal-tb" : cue.vertical === "lr" ? "vertical-lr" : "vertical-rl";
+      styles.unicodeBidi = "plaintext";
+    }
+    _this.applyStyles(styles, _this.cueDiv);
+
+    // Create an absolutely positioned div that will be used to position the cue
+    // div. Note, all WebVTT cue-setting alignments are equivalent to the CSS
+    // mirrors of them except "middle" which is "center" in CSS.
+    _this.div = window.document.createElement("div");
+    styles = {
+      textAlign: cue.align === "middle" ? "center" : cue.align,
+      font: styleOptions.font,
+      whiteSpace: "pre-line",
+      position: "absolute"
+    };
+
+    if (!isIE8) {
+      styles.direction = determineBidi(_this.cueDiv);
+      styles.writingMode = cue.vertical === "" ? "horizontal-tb" : cue.vertical === "lr" ? "vertical-lr" : "vertical-rl".stylesunicodeBidi = "plaintext";
+    }
+
+    _this.applyStyles(styles);
+
+    _this.div.appendChild(_this.cueDiv);
+
+    // Calculate the distance from the reference edge of the viewport to the text
+    // position of the cue box. The reference edge will be resolved later when
+    // the box orientation styles are applied.
+    var textPos = 0;
+    switch (cue.positionAlign) {
+      case "start":
+        textPos = cue.position;
+        break;
+      case "middle":
+        textPos = cue.position - cue.size / 2;
+        break;
+      case "end":
+        textPos = cue.position - cue.size;
+        break;
+    }
+
+    // Horizontal box orientation; textPos is the distance from the left edge of the
+    // area to the left edge of the box and cue.size is the distance extending to
+    // the right from there.
+    if (cue.vertical === "") {
+      _this.applyStyles({
+        left: _this.formatStyle(textPos, "%"),
+        width: _this.formatStyle(cue.size, "%")
+      });
+      // Vertical box orientation; textPos is the distance from the top edge of the
+      // area to the top edge of the box and cue.size is the height extending
+      // downwards from there.
+    } else {
+      _this.applyStyles({
+        top: _this.formatStyle(textPos, "%"),
+        height: _this.formatStyle(cue.size, "%")
+      });
+    }
+
+    _this.move = function (box) {
+      this.applyStyles({
+        top: this.formatStyle(box.top, "px"),
+        bottom: this.formatStyle(box.bottom, "px"),
+        left: this.formatStyle(box.left, "px"),
+        right: this.formatStyle(box.right, "px"),
+        height: this.formatStyle(box.height, "px"),
+        width: this.formatStyle(box.width, "px")
+      });
+    };
+    return _this;
+  }
+
+  return CueStyleBox;
+}(StyleBox);
+
+// Represents the co-ordinates of an Element in a way that we can easily
+// compute things with such as if it overlaps or intersects with another Element.
+// Can initialize it with either a StyleBox or another BoxPosition.
+
+
+var BoxPosition = function () {
+  function BoxPosition(obj) {
+    _classCallCheck(this, BoxPosition);
+
+    this.overlaps = function (b2) {
+      return this.left < b2.right && this.right > b2.left && this.top < b2.bottom && this.bottom > b2.top;
+    };
+
+    var isIE8 = typeof navigator !== "undefined" && /MSIE\s8\.0/.test(navigator.userAgent);
+
+    // Either a BoxPosition was passed in and we need to copy it, or a StyleBox
+    // was passed in and we need to copy the results of 'getBoundingClientRect'
+    // as the object returned is readonly. All co-ordinate values are in reference
+    // to the viewport origin (top left).
+    var lh = void 0,
+        height = void 0,
+        width = void 0,
+        top = void 0;
+    if (obj.div) {
+      height = obj.div.offsetHeight;
+      width = obj.div.offsetWidth;
+      top = obj.div.offsetTop;
+
+      var rects = (rects = obj.div.childNodes) && (rects = rects[0]) && rects.getClientRects && rects.getClientRects();
+      obj = obj.div.getBoundingClientRect();
+      // In certain cases the outter div will be slightly larger then the sum of
+      // the inner div's lines. This could be due to bold text, etc, on some platforms.
+      // In this case we should get the average line height and use that. This will
+      // result in the desired behaviour.
+      lh = rects ? Math.max(rects[0] && rects[0].height || 0, obj.height / rects.length) : 0;
+    }
+    this.left = obj.left;
+    this.right = obj.right;
+    this.top = obj.top || top;
+    this.height = obj.height || height;
+    this.bottom = obj.bottom || top + (obj.height || height);
+    this.width = obj.width || width;
+    this.lineHeight = lh !== undefined ? lh : obj.lineHeight;
+
+    if (isIE8 && !this.lineHeight) {
+      this.lineHeight = 13;
+    }
+  }
+
+  // Move the box along a particular axis. Optionally pass in an amount to move
+  // the box. If no amount is passed then the default is the line height of the
+  // box.
+
+
+  _createClass(BoxPosition, [{
+    key: "move",
+    value: function move(axis, toMove) {
+      toMove = toMove !== undefined ? toMove : this.lineHeight;
+      switch (axis) {
+        case "+x":
+          this.left += toMove;
+          this.right += toMove;
+          break;
+        case "-x":
+          this.left -= toMove;
+          this.right -= toMove;
+          break;
+        case "+y":
+          this.top += toMove;
+          this.bottom += toMove;
+          break;
+        case "-y":
+          this.top -= toMove;
+          this.bottom -= toMove;
+          break;
+      }
+    }
+
+    // Check if this box overlaps another box, b2.
+
+  }, {
+    key: "overlapsAny",
+
+
+    // Check if this box overlaps any other boxes in boxes.
+    value: function overlapsAny(boxes) {
+      for (var i = 0; i < boxes.length; i++) {
+        if (this.overlaps(boxes[i])) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Check if this box is within another box.
+
+  }, {
+    key: "within",
+    value: function within(container) {
+      return this.top >= container.top && this.bottom <= container.bottom && this.left >= container.left && this.right <= container.right;
+    }
+
+    // Check if this box is entirely within the container or it is overlapping
+    // on the edge opposite of the axis direction passed. For example, if "+x" is
+    // passed and the box is overlapping on the left edge of the container, then
+    // return true.
+
+  }, {
+    key: "overlapsOppositeAxis",
+    value: function overlapsOppositeAxis(container, axis) {
+      switch (axis) {
+        case "+x":
+          return this.left < container.left;
+        case "-x":
+          return this.right > container.right;
+        case "+y":
+          return this.top < container.top;
+        case "-y":
+          return this.bottom > container.bottom;
+      }
+    }
+
+    // Find the percentage of the area that this box is overlapping with another
+    // box.
+
+  }, {
+    key: "intersectPercentage",
+    value: function intersectPercentage(b2) {
+      var x = Math.max(0, Math.min(this.right, b2.right) - Math.max(this.left, b2.left)),
+          y = Math.max(0, Math.min(this.bottom, b2.bottom) - Math.max(this.top, b2.top)),
+          intersectArea = x * y;
+      return intersectArea / (this.height * this.width);
+    }
+
+    // Convert the positions from this box to CSS compatible positions using
+    // the reference container's positions. This has to be done because this
+    // box's positions are in reference to the viewport origin, whereas, CSS
+    // values are in referecne to their respective edges.
+
+  }, {
+    key: "toCSSCompatValues",
+    value: function toCSSCompatValues(reference) {
+      return {
+        top: this.top - reference.top,
+        bottom: reference.bottom - this.bottom,
+        left: this.left - reference.left,
+        right: reference.right - this.right,
+        height: this.height,
+        width: this.width
+      };
+    }
+
+    // Get an object that represents the box's position without anything extra.
+    // Can pass a StyleBox, HTMLElement, or another BoxPositon.
+
+  }], [{
+    key: "getSimpleBoxPosition",
+    value: function getSimpleBoxPosition(obj) {
+      var height = obj.div ? obj.div.offsetHeight : obj.tagName ? obj.offsetHeight : 0;
+      var width = obj.div ? obj.div.offsetWidth : obj.tagName ? obj.offsetWidth : 0;
+      var top = obj.div ? obj.div.offsetTop : obj.tagName ? obj.offsetTop : 0;
+
+      obj = obj.div ? obj.div.getBoundingClientRect() : obj.tagName ? obj.getBoundingClientRect() : obj;
+      return {
+        left: obj.left,
+        right: obj.right,
+        top: obj.top || top,
+        height: obj.height || height,
+        bottom: obj.bottom || top + (obj.height || height),
+        width: obj.width || width
+      };
+    }
+  }]);
+
+  return BoxPosition;
+}();
+
+// Move a StyleBox to its specified, or next best, position. The containerBox
+// is the box that contains the StyleBox, such as a div. boxPositions are
+// a list of other boxes that the styleBox can't overlap with.
+
+
+function moveBoxToLinePosition(styleBox, containerBox, boxPositions) {
+
+  // Find the best position for a cue box, b, on the video. The axis parameter
+  // is a list of axis, the order of which, it will move the box along. For example:
+  // Passing ["+x", "-x"] will move the box first along the x axis in the positive
+  // direction. If it doesn't find a good position for it there it will then move
+  // it along the x axis in the negative direction.
+  function findBestPosition(b, axis) {
+    var bestPosition = void 0,
+        specifiedPosition = new BoxPosition(b),
+        percentage = 1; // Highest possible so the first thing we get is better.
+
+    for (var i = 0; i < axis.length; i++) {
+      while (b.overlapsOppositeAxis(containerBox, axis[i]) || b.within(containerBox) && b.overlapsAny(boxPositions)) {
+        b.move(axis[i]);
+      }
+      // We found a spot where we aren't overlapping anything. This is our
+      // best position.
+      if (b.within(containerBox)) {
+        return b;
+      }
+      var p = b.intersectPercentage(containerBox);
+      // If we're outside the container box less then we were on our last try
+      // then remember this position as the best position.
+      if (percentage > p) {
+        bestPosition = new BoxPosition(b);
+        percentage = p;
+      }
+      // Reset the box position to the specified position.
+      b = new BoxPosition(specifiedPosition);
+    }
+    return bestPosition || specifiedPosition;
+  }
+
+  var boxPosition = new BoxPosition(styleBox),
+      cue = styleBox.cue,
+      linePos = computeLinePos(cue),
+      axis = [];
+
+  // If we have a line number to align the cue to.
+  if (cue.snapToLines) {
+    var size = void 0;
+    switch (cue.vertical) {
+      case "":
+        axis = ["+y", "-y"];
+        size = "height";
+        break;
+      case "rl":
+        axis = ["+x", "-x"];
+        size = "width";
+        break;
+      case "lr":
+        axis = ["-x", "+x"];
+        size = "width";
+        break;
+    }
+
+    var step = boxPosition.lineHeight,
+        position = step * Math.round(linePos),
+        maxPosition = containerBox[size] + step,
+        initialAxis = axis[0];
+
+    // If the specified intial position is greater then the max position then
+    // clamp the box to the amount of steps it would take for the box to
+    // reach the max position.
+    if (Math.abs(position) > maxPosition) {
+      position = position < 0 ? -1 : 1;
+      position *= Math.ceil(maxPosition / step) * step;
+    }
+
+    // If computed line position returns negative then line numbers are
+    // relative to the bottom of the video instead of the top. Therefore, we
+    // need to increase our initial position by the length or width of the
+    // video, depending on the writing direction, and reverse our axis directions.
+    if (linePos < 0) {
+      position += cue.vertical === "" ? containerBox.height : containerBox.width;
+      axis = axis.reverse();
+    }
+
+    // Move the box to the specified position. This may not be its best
+    // position.
+    boxPosition.move(initialAxis, position);
+  } else {
+    // If we have a percentage line value for the cue.
+    var calculatedPercentage = boxPosition.lineHeight / containerBox.height * 100;
+
+    switch (cue.lineAlign) {
+      case "middle":
+        linePos -= calculatedPercentage / 2;
+        break;
+      case "end":
+        linePos -= calculatedPercentage;
+        break;
+    }
+
+    // Apply initial line position to the cue box.
+    switch (cue.vertical) {
+      case "":
+        styleBox.applyStyles({
+          top: styleBox.formatStyle(linePos, "%")
+        });
+        break;
+      case "rl":
+        styleBox.applyStyles({
+          left: styleBox.formatStyle(linePos, "%")
+        });
+        break;
+      case "lr":
+        styleBox.applyStyles({
+          right: styleBox.formatStyle(linePos, "%")
+        });
+        break;
+    }
+
+    axis = ["+y", "-x", "+x", "-y"];
+
+    // Get the box position again after we've applied the specified positioning
+    // to it.
+    boxPosition = new BoxPosition(styleBox);
+  }
+
+  var bestPosition = findBestPosition(boxPosition, axis);
+  styleBox.move(bestPosition.toCSSCompatValues(containerBox));
+}
+
+function convertCueToDOMTree(window, cuetext) {
+  if (!window || !cuetext) {
+    return null;
+  }
+  return parseContent(window, cuetext);
+}
+
+var FONT_SIZE_PERCENT = 0.05;
+var FONT_STYLE = "sans-serif";
+var CUE_BACKGROUND_PADDING = "1.5%";
+
+// Runs the processing model over the cues and regions passed to it.
+// @param overlay A block level element (usually a div) that the computed cues
+//                and regions will be placed into.
+function processCues(window, cues, overlay) {
+  if (!window || !cues || !overlay) {
+    return null;
+  }
+
+  // Remove all previous children.
+  while (overlay.firstChild) {
+    overlay.removeChild(overlay.firstChild);
+  }
+
+  var paddedOverlay = window.document.createElement("div");
+  paddedOverlay.style.position = "absolute";
+  paddedOverlay.style.left = "0";
+  paddedOverlay.style.right = "0";
+  paddedOverlay.style.top = "0";
+  paddedOverlay.style.bottom = "0";
+  paddedOverlay.style.margin = CUE_BACKGROUND_PADDING;
+  overlay.appendChild(paddedOverlay);
+
+  // Determine if we need to compute the display states of the cues. This could
+  // be the case if a cue's state has been changed since the last computation or
+  // if it has not been computed yet.
+  function shouldCompute(cues) {
+    for (var i = 0; i < cues.length; i++) {
+      if (cues[i].hasBeenReset || !cues[i].displayState) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // We don't need to recompute the cues' display states. Just reuse them.
+  if (!shouldCompute(cues)) {
+    for (var i = 0; i < cues.length; i++) {
+      paddedOverlay.appendChild(cues[i].displayState);
+    }
+    return;
+  }
+
+  var boxPositions = [],
+      containerBox = BoxPosition.getSimpleBoxPosition(paddedOverlay),
+      fontSize = Math.round(containerBox.height * FONT_SIZE_PERCENT * 100) / 100;
+  var styleOptions = {
+    font: fontSize * fontScale + "px " + FONT_STYLE
+  };
+
+  (function () {
+    var styleBox = void 0,
+        cue = void 0;
+
+    for (var _i = 0; _i < cues.length; _i++) {
+      cue = cues[_i];
+
+      // Compute the intial position and styles of the cue div.
+      styleBox = new CueStyleBox(window, cue, styleOptions);
+      paddedOverlay.appendChild(styleBox.div);
+
+      // Move the cue div to it's correct line position.
+      moveBoxToLinePosition(styleBox, containerBox, boxPositions);
+
+      // Remember the computed div so that we don't have to recompute it later
+      // if we don't have too.
+      cue.displayState = styleBox.div;
+
+      boxPositions.push(BoxPosition.getSimpleBoxPosition(styleBox));
+    }
+  })();
+};
+
+exports.processCues = processCues;
+exports.convertCueToDOMTree = convertCueToDOMTree;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Cue = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _textTrackDisplay = __webpack_require__(23);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var autoKeyword = "auto";
+var directionSetting = {
+  "": true,
+  "lr": true,
+  "rl": true
+};
+var alignSetting = {
+  "start": true,
+  "middle": true,
+  "end": true,
+  "left": true,
+  "right": true
+};
+
+/**
+ * helper
+ * @param {string} value - the string to find
+ * @returns {string | boolean} - the aligned sting if found
+ */
+function findDirectionSetting(value) {
+  if (typeof value !== "string") {
+    return false;
+  }
+  var dir = directionSetting[value.toLowerCase()];
+  return dir ? value.toLowerCase() : false;
+}
+
+/**
+ * helper
+ * @param {string} value - the string
+ * @returns {string | boolean} - the aligned sting if found
+ */
+function findAlignSetting(value) {
+  if (typeof value !== "string") {
+    return false;
+  }
+  var align = alignSetting[value.toLowerCase()];
+  return align ? value.toLowerCase() : false;
+}
+
+/**
+ * VTTCue model
+ * @class
+ * @classdesc VTT Cue model to represent VTT cues internally
+ */
+
+var VTTCue = function () {
+  /**
+   * A number giving the size of the cue box, to be interpreted as a percentage of the video, as defined
+   * by the writing direction.
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * The position defines the indent of the cue box in the direction defined by the writing direction
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * The line defines positioning of the cue box.
+   * @type {string | number}
+   * @private
+   */
+
+  /**
+   * configures the cue to use vertical text layout rather than horizontal text layout.
+   * Vertical text layout is sometimes used in Japanese, for example. The default is horizontal layout
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * A boolean indicating whether playback of the media resource is to pause when the end of the
+   * range to which the cue applies is reached.
+   * @type {boolean}
+   * @private
+   */
+
+
+  /**
+   * This is used as part of the rendering model, to keep cues in a consistent position.
+   * http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#text-track-cue-display-state
+   * @type {undefined}
+   */
+  function VTTCue(startTime, endTime, text) {
+    _classCallCheck(this, VTTCue);
+
+    this.hasBeenReset = false;
+    this.displayState = undefined;
+    this._id = "";
+    this._pauseOnExit = false;
+    this._region = null;
+    this._vertical = "";
+    this._snapToLines = true;
+    this._line = "auto";
+    this._lineAlign = "start";
+    this._position = 50;
+    this._positionAlign = "middle";
+    this._size = 50;
+    this._align = "middle";
+
+    this._startTime = startTime;
+    this._endTime = endTime;
+    this._text = text;
+    /**
+     * Other <track> spec defined properties
+     */
+  }
+  /**
+   * An alignment for all lines of text within the cue box, in the dimension of the writing direction
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * An alignment for the cue box in the dimension of the writing direction, describing what the position
+   * is anchored to
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * An alignment for the cue box’s line, one of start/center/end alignment
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * A boolean indicating whether the line is an integer number of lines (using the line dimensions of
+   * the first line of the cue), or whether it is a percentage of the dimension of the video.
+   * The flag is set to true when lines are counted, and false otherwise.
+   * @type {boolean}
+   * @private
+   */
+
+  /**
+   * An optional WebVTT region to which a cue belongs.
+   * By default, the region is set to null.
+   * @type {null}
+   * @private
+   */
+
+  /**
+   * The time, in seconds and fractions of a second, that describes the beginning of the range of
+   * the media data to which the cue applies.
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * The time, in seconds and fractions of a second, that describes the end of the range of
+   * the media data to which the cue applies.
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * The raw text of the cue, and rules for its interpretation, allowing the text to be
+   * rendered and converted to a DOM fragment.
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * VTTCue and TextTrackCue properties
+   * http://dev.w3.org/html5/webvtt/#vttcue-interface
+   */
+  /**
+   * An arbitrary string.
+   * @type {string}
+   * @private
+   */
+
+
+  /**
+   * // Lets us know when the VTTCue's data has changed in such a way that we need
+   * to recompute its display state. This lets us compute its display state lazily.
+   * @type {boolean}
+   */
+
+
+  _createClass(VTTCue, [{
+    key: "resetCue",
+    value: function resetCue() {
+      this.hasBeenReset = true;
+    }
+  }, {
+    key: "getCueAsHTML",
+    value: function getCueAsHTML() {
+      return (0, _textTrackDisplay.convertCueToDOMTree)(window, this.text);
+    }
+  }, {
+    key: "id",
+    get: function get() {
+      return this._id;
+    },
+    set: function set(value) {
+      this._id = "" + value;
+    }
+  }, {
+    key: "pauseOnExit",
+    get: function get() {
+      return this._pauseOnExit;
+    },
+    set: function set(value) {
+      this._pauseOnExit = value;
+    }
+  }, {
+    key: "startTime",
+    get: function get() {
+      return this._endTime;
+    },
+    set: function set(value) {
+      if (typeof value !== "number") {
+        throw new TypeError("Start time must be set to a number.");
+      }
+      this._endTime = value;
+      this.resetCue();
+    }
+  }, {
+    key: "endTime",
+    get: function get() {
+      return this._endTime;
+    },
+    set: function set(value) {
+      if (typeof value !== "number") {
+        throw new TypeError("End time must be set to a number.");
+      }
+      this._endTime = value;
+      this.resetCue();
+    }
+  }, {
+    key: "text",
+    get: function get() {
+      return this._text;
+    },
+    set: function set(value) {
+      this._text = "" + value;
+      this.resetCue();
+    }
+  }, {
+    key: "region",
+    get: function get() {
+      return this._region;
+    },
+    set: function set(value) {
+      this._region = value;
+      this.resetCue();
+    }
+  }, {
+    key: "vertical",
+    get: function get() {
+      return this._vertical;
+    },
+    set: function set(value) {
+      var setting = findDirectionSetting(value);
+      // Have to check for false because the setting an be an empty string.
+      if (setting === false) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      } else if (typeof setting === "string") {
+        this._vertical = setting;
+        this.resetCue();
+      }
+    }
+  }, {
+    key: "snapToLines",
+    get: function get() {
+      return this._snapToLines;
+    },
+    set: function set(value) {
+      this._snapToLines = value;
+      this.resetCue();
+    }
+  }, {
+    key: "line",
+    get: function get() {
+      return this._line;
+    },
+    set: function set(value) {
+      if (typeof value !== "number" && value !== autoKeyword) {
+        throw new SyntaxError("An invalid number or illegal string was specified.");
+      }
+      this._line = value;
+      this.resetCue();
+    }
+  }, {
+    key: "lineAlign",
+    get: function get() {
+      return this._lineAlign;
+    },
+    set: function set(value) {
+      var setting = findAlignSetting(value);
+      if (!setting) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      } else if (typeof setting === "string") {
+        this._lineAlign = setting;
+        this.resetCue();
+      }
+    }
+  }, {
+    key: "position",
+    get: function get() {
+      return this._position;
+    },
+    set: function set(value) {
+      if (value < 0 || value > 100) {
+        throw new Error("Position must be between 0 and 100.");
+      }
+      this._position = value;
+      this.resetCue();
+    }
+  }, {
+    key: "positionAlign",
+    get: function get() {
+      return this._positionAlign;
+    },
+    set: function set(value) {
+      var setting = findAlignSetting(value);
+      if (!setting) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      } else if (typeof setting === "string") {
+        this._positionAlign = setting;
+        this.resetCue();
+      }
+    }
+  }, {
+    key: "size",
+    get: function get() {
+      return this._size;
+    },
+    set: function set(value) {
+      if (value < 0 || value > 100) {
+        throw new Error("Size must be between 0 and 100.");
+      }
+      this._size = value;
+      this.resetCue();
+    }
+  }, {
+    key: "align",
+    get: function get() {
+      return this._align;
+    },
+    set: function set(value) {
+      var setting = findAlignSetting(value);
+      if (!setting) {
+        throw new SyntaxError("An invalid or illegal string was specified.");
+      } else if (typeof setting === "string") {
+        this._align = setting;
+        this.resetCue();
+      }
+    }
+  }]);
+
+  return VTTCue;
+}();
+
+var Cue = void 0;
+if (typeof window !== 'undefined' && window.VTTCue) {
+  exports.Cue = Cue = window.VTTCue;
+} else {
+  exports.Cue = Cue = VTTCue;
+}
+
+exports.Cue = Cue;
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4729,7 +6450,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _drmScheme = __webpack_require__(20);
+var _drmScheme = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4813,7 +6534,7 @@ DrmSupport._Browsers = {
 exports.default = DrmSupport;
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5080,7 +6801,7 @@ FairPlay._WebkitEvents = {
 exports.default = FairPlay;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5120,7 +6841,7 @@ var _audioTrack2 = _interopRequireDefault(_audioTrack);
 
 var _textTrack = __webpack_require__(5);
 
-var _textTrack2 = _interopRequireDefault(_textTrack);
+var _vttCue = __webpack_require__(24);
 
 var _util = __webpack_require__(2);
 
@@ -5156,15 +6877,16 @@ var Html5 = function (_FakeEventTarget) {
      * @static
      */
 
+
     /**
-     * The selected media source adapter of the engine.
-     * @type {IMediaSourceAdapter}
+     * Flag to indicate first time text track cue change.
+     * @type {Object.<number, boolean>}
      * @private
      */
 
     /**
-     * The video element.
-     * @type {HTMLVideoElement}
+     * The event manager of the engine.
+     * @type {EventManager}
      * @private
      */
     value: function createEngine(source, config) {
@@ -5185,9 +6907,22 @@ var Html5 = function (_FakeEventTarget) {
      * @type {string} - The engine id.
      */
 
+
     /**
-     * The event manager of the engine.
-     * @type {EventManager}
+     * player config object.
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The selected media source adapter of the engine.
+     * @type {IMediaSourceAdapter}
+     * @private
+     */
+
+    /**
+     * The video element.
+     * @type {HTMLVideoElement}
      * @private
      */
 
@@ -5210,9 +6945,12 @@ var Html5 = function (_FakeEventTarget) {
 
     var _this = _possibleConstructorReturn(this, (Html5.__proto__ || Object.getPrototypeOf(Html5)).call(this));
 
+    _this._showTextTrackFirstTime = {};
+
+    _this._config = config;
     _this._eventManager = new _eventManager2.default();
     _this._createVideoElement();
-    _this._loadMediaSourceAdapter(source, config);
+    _this._loadMediaSourceAdapter(source);
     _this.attach();
     return _this;
   }
@@ -5239,6 +6977,7 @@ var Html5 = function (_FakeEventTarget) {
           this._el.parentNode.removeChild(this._el);
         }
       }
+      this._showTextTrackFirstTime = {};
       this._eventManager.destroy();
     }
 
@@ -5282,6 +7021,9 @@ var Html5 = function (_FakeEventTarget) {
         this._eventManager.listen(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.ABR_MODE_CHANGED, function (event) {
           return _this2.dispatchEvent(event);
         });
+        this._eventManager.listen(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.TEXT_CUE_CHANGED, function (event) {
+          return _this2.dispatchEvent(event);
+        });
       }
     }
 
@@ -5302,6 +7044,7 @@ var Html5 = function (_FakeEventTarget) {
         this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.VIDEO_TRACK_CHANGED);
         this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.AUDIO_TRACK_CHANGED);
         this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED);
+        this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.TEXT_CUE_CHANGED);
       }
     }
 
@@ -5333,15 +7076,14 @@ var Html5 = function (_FakeEventTarget) {
     /**
      * Loads the appropriate media source extension adapter.
      * @param {Source} source - The selected source object.
-     * @param {Object} config - The media source extension configuration.
      * @private
      * @returns {void}
      */
 
   }, {
     key: '_loadMediaSourceAdapter',
-    value: function _loadMediaSourceAdapter(source, config) {
-      this._mediaSourceAdapter = _mediaSourceProvider2.default.getMediaSourceAdapter(this.getVideoElement(), source, config);
+    value: function _loadMediaSourceAdapter(source) {
+      this._mediaSourceAdapter = _mediaSourceProvider2.default.getMediaSourceAdapter(this.getVideoElement(), source, this._config);
     }
 
     /**
@@ -5374,16 +7116,134 @@ var Html5 = function (_FakeEventTarget) {
 
     /**
      * Select a new text track.
-     * @param {TextTrack} textTrack - The text track object to set.
+     * @param {PKTextTrack} textTrack - The playkit text track object to set.
      * @returns {void}
      */
 
   }, {
     key: 'selectTextTrack',
     value: function selectTextTrack(textTrack) {
+      this._removeCueChangeListener();
       if (this._mediaSourceAdapter) {
         this._mediaSourceAdapter.selectTextTrack(textTrack);
       }
+      this._addCueChangeListener(textTrack);
+    }
+
+    /**
+     * Add cuechange listener to active textTrack.
+     * @param {PKTextTrack} textTrack - The playkit text track object to set.
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_addCueChangeListener',
+    value: function _addCueChangeListener(textTrack) {
+      var _this3 = this;
+
+      var textTrackEl = this._getSelectedTextTrackElement();
+      if (textTrackEl) {
+        /*
+         There's a quirk in TextTrackAPI that a text track added to video element will not fire cuechange event if it
+         didn't have it's mode set to showing for at least until a single cue has been change.
+         After first time it seems there's time tracking which allows the cuechange to fire even though the track mode
+         is set to hidden
+         This is not the case with a track DOM element added to a video element where cuechange will be fired even if
+         track mode is set only to hidden and was never set to showing
+         */
+        if (this._config.playback.useNativeTextTrack) {
+          textTrackEl.mode = "showing";
+        } else {
+          textTrackEl.mode = this._showTextTrackFirstTime[textTrack.index] ? "hidden" : "showing";
+          this._showTextTrackFirstTime[textTrack.index] = true;
+          textTrackEl.oncuechange = function (e) {
+            return _this3._onCueChange(e);
+          };
+        }
+      }
+    }
+
+    /**
+     * Remove cuechange listener to active textTrack
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_removeCueChangeListener',
+    value: function _removeCueChangeListener() {
+      var textTrackEl = this._getSelectedTextTrackElement();
+      if (textTrackEl) {
+        textTrackEl.oncuechange = null;
+      }
+    }
+
+    /**
+     * oncuechange event handler.
+     * @param {FakeEvent} e - The event arg.
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_onCueChange',
+    value: function _onCueChange(e) {
+      var textTrack = e.currentTarget;
+      var activeCues = [];
+      textTrack.mode = 'hidden';
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = textTrack.activeCues[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var cue = _step.value;
+
+          //Normalize cues to be of type of VTT model
+          if (cue instanceof window.VTTCue) {
+            activeCues.push(cue);
+          } else if (cue instanceof window.TextTrackCue) {
+            activeCues.push(new _vttCue.Cue(cue.startTime, cue.endTime, cue.text));
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TEXT_CUE_CHANGED, { cues: activeCues }));
+    }
+
+    /**
+     * Get currently selected text track
+     * @returns {?TextTrack} - returns the active text track element if available
+     * @private
+     */
+
+  }, {
+    key: '_getSelectedTextTrackElement',
+    value: function _getSelectedTextTrackElement() {
+      var textTracks = this._el.textTracks;
+      for (var track in textTracks) {
+        if (textTracks.hasOwnProperty(track)) {
+          var textTrack = textTracks[parseInt(track)];
+          if (textTrack && textTrack.mode !== "disabled") {
+            return textTrack;
+          }
+        }
+      }
+      return null;
     }
 
     /**
@@ -5399,6 +7259,7 @@ var Html5 = function (_FakeEventTarget) {
       if (this._mediaSourceAdapter) {
         this._mediaSourceAdapter.hideTextTrack();
       }
+      this._removeCueChangeListener();
     }
 
     /**
@@ -5979,7 +7840,7 @@ Html5.id = "html5";
 exports.default = Html5;
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6013,19 +7874,17 @@ var _audioTrack2 = _interopRequireDefault(_audioTrack);
 
 var _textTrack = __webpack_require__(5);
 
-var _textTrack2 = _interopRequireDefault(_textTrack);
-
 var _baseMediaSourceAdapter = __webpack_require__(17);
 
 var _baseMediaSourceAdapter2 = _interopRequireDefault(_baseMediaSourceAdapter);
 
-var _resolution = __webpack_require__(33);
+var _resolution = __webpack_require__(37);
 
 var _util = __webpack_require__(2);
 
 var Utils = _interopRequireWildcard(_util);
 
-var _fairplay = __webpack_require__(23);
+var _fairplay = __webpack_require__(26);
 
 var _fairplay2 = _interopRequireDefault(_fairplay);
 
@@ -6455,7 +8314,7 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
             language: textTracks[i].language,
             index: i
           };
-          parsedTracks.push(new _textTrack2.default(settings));
+          parsedTracks.push(new _textTrack.TextTrack(settings));
         }
       }
       return parsedTracks;
@@ -6565,7 +8424,7 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     /**
      * Select a text track
      * @function selectTextTrack
-     * @param {TextTrack} textTrack - the track to select
+     * @param {PKTextTrack} textTrack - The playkit text track
      * @returns {void}
      * @public
      */
@@ -6574,9 +8433,10 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     key: 'selectTextTrack',
     value: function selectTextTrack(textTrack) {
       var textTracks = this._videoElement.textTracks;
-      if (textTrack instanceof _textTrack2.default && (textTrack.kind === 'subtitles' || textTrack.kind === 'captions') && textTracks && textTracks[textTrack.index]) {
+      if (textTrack instanceof _textTrack.TextTrack && (textTrack.kind === 'subtitles' || textTrack.kind === 'captions') && textTracks && textTracks[textTrack.index]) {
         this._disableTextTracks();
-        textTracks[textTrack.index].mode = 'showing';
+        textTracks[textTrack.index].mode = 'hidden';
+        NativeAdapter._logger.debug('Text track changed', textTrack);
         this._onTrackChanged(textTrack);
       }
     }
@@ -6761,7 +8621,7 @@ NativeAdapter._drmProtocol = null;
 exports.default = NativeAdapter;
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6894,7 +8754,7 @@ var Middleware = function () {
 exports.default = Middleware;
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6906,7 +8766,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _middleware = __webpack_require__(26);
+var _middleware = __webpack_require__(29);
 
 var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -6994,7 +8854,7 @@ PlaybackMiddleware.Actions = {
 exports.default = PlaybackMiddleware;
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7003,7 +8863,7 @@ exports.default = PlaybackMiddleware;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BaseDrmProtocol = exports.Env = exports.PLAYER_NAME = exports.VERSION = exports.Utils = exports.TextTrack = exports.AudioTrack = exports.VideoTrack = exports.Track = exports.BaseMiddleware = exports.BasePlugin = exports.registerPlugin = exports.BaseMediaSourceAdapter = exports.registerMediaSourceAdapter = undefined;
+exports.BaseDrmProtocol = exports.Env = exports.PLAYER_NAME = exports.VERSION = exports.Utils = exports.TextStyle = exports.TextTrack = exports.AudioTrack = exports.VideoTrack = exports.Track = exports.BaseMiddleware = exports.BasePlugin = exports.registerPlugin = exports.BaseMediaSourceAdapter = exports.registerMediaSourceAdapter = undefined;
 exports.loadPlayer = loadPlayer;
 
 var _player = __webpack_require__(9);
@@ -7050,6 +8910,10 @@ var _textTrack = __webpack_require__(5);
 
 var _textTrack2 = _interopRequireDefault(_textTrack);
 
+var _textStyle = __webpack_require__(20);
+
+var _textStyle2 = _interopRequireDefault(_textStyle);
+
 var _env = __webpack_require__(10);
 
 var _env2 = _interopRequireDefault(_env);
@@ -7062,7 +8926,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.9.0", "color: #98ff98;  font-size: large");
+_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.10.0", "color: #98ff98;  font-size: large");
+
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/playkit-js", "color: #98ff98;");
 
 /**
@@ -7089,6 +8954,7 @@ exports.Track = _track2.default;
 exports.VideoTrack = _videoTrack2.default;
 exports.AudioTrack = _audioTrack2.default;
 exports.TextTrack = _textTrack2.default;
+exports.TextStyle = _textStyle2.default;
 
 // Export utils library
 
@@ -7096,7 +8962,7 @@ exports.Utils = Utils;
 
 // Export version
 
-exports.VERSION = "0.9.0";
+exports.VERSION = "0.10.0";
 
 // Export player name
 
@@ -7112,7 +8978,7 @@ exports.BaseDrmProtocol = _baseDrmProtocol2.default;
 exports.default = loadPlayer;
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7132,11 +8998,11 @@ var _eventManager = __webpack_require__(7);
 
 var _eventManager2 = _interopRequireDefault(_eventManager);
 
-var _state = __webpack_require__(30);
+var _state = __webpack_require__(33);
 
 var _state2 = _interopRequireDefault(_state);
 
-var _stateTypes = __webpack_require__(21);
+var _stateTypes = __webpack_require__(22);
 
 var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
@@ -7413,7 +9279,7 @@ var StateManager = function () {
 exports.default = StateManager;
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7495,7 +9361,7 @@ var State = function () {
 exports.default = State;
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7513,7 +9379,69 @@ var TRACK_TYPES = {
 exports.default = TRACK_TYPES;
 
 /***/ }),
-/* 32 */
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Locale class
+ * @class
+ *
+ */
+var Locale = function () {
+  function Locale() {
+    _classCallCheck(this, Locale);
+  }
+
+  _createClass(Locale, null, [{
+    key: "language",
+
+
+    /**
+     * tries to return the locale language in IOS-693-1 format(two-letter codes, one per language for)
+     * @returns {string} - the IOS-693-1 language string
+     * @static
+     */
+    get: function get() {
+      var lang = void 0;
+
+      if (navigator.languages && navigator.languages.length) {
+        // latest versions of Chrome and Firefox set this correctly
+        lang = navigator.languages[0];
+      } else if (navigator.userLanguage) {
+        // IE only
+        //$FlowFixMe - userLanguage is IE specific and flow doesn't have it in definitions
+        lang = navigator.userLanguage;
+      } else {
+        // latest versions of Chrome, Firefox, and Safari set this correctly
+        lang = navigator.language;
+      }
+
+      if (lang && lang.match("-")) {
+        lang = lang.split("-")[0];
+      }
+
+      return lang;
+    }
+  }]);
+
+  return Locale;
+}();
+
+exports.default = Locale;
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7634,7 +9562,7 @@ var PosterManager = function () {
 exports.default = PosterManager;
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7760,21 +9688,21 @@ function getSuitableSourceForResolution(tracks, width, height) {
 exports.getSuitableSourceForResolution = getSuitableSourceForResolution;
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(35)(undefined);
+exports = module.exports = __webpack_require__(39)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n", ""]);
+exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n\n.playkit-subtitles {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n\n.playkit-subtitles > div > div {\n  -webkit-transition: 0.3s ease-in-out;\n  -moz-transition: 0.3s ease-in-out;\n  -o-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports) {
 
 /*
@@ -7856,7 +9784,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -8123,13 +10051,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(34);
+var content = __webpack_require__(38);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -8137,7 +10065,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(38)(content, options);
+var update = __webpack_require__(42)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -8154,7 +10082,7 @@ if(false) {
 }
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -8200,7 +10128,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(39);
+var	fixUrls = __webpack_require__(43);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -8513,7 +10441,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports) {
 
 
@@ -8608,7 +10536,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -9529,7 +11457,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
         exports.UAParser = UAParser;
     } else {
         // requirejs env (optional)
-        if ("function" === FUNC_TYPE && __webpack_require__(41)) {
+        if ("function" === FUNC_TYPE && __webpack_require__(45)) {
             !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
                 return UAParser;
             }.call(exports, __webpack_require__, exports, module),
@@ -9565,7 +11493,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -9574,7 +11502,7 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -9586,6 +11514,7 @@ module.exports = {
 	"playback": {
 		"audioLanguage": "",
 		"textLanguage": "",
+		"useNativeTextTrack": false,
 		"volume": 1,
 		"playsinline": false,
 		"preload": "none",
@@ -19654,7 +21583,7 @@ function playbackUI(props) {
       (0, _preact.h)(
         _bottomBar2.default,
         null,
-        (0, _preact.h)(_seekbarPlaybackContainer2.default, { showFramePreview: true, showTimeBubble: true, player: props.player }),
+        (0, _preact.h)(_seekbarPlaybackContainer2.default, { showFramePreview: true, showTimeBubble: true, player: props.player, config: props.config }),
         (0, _preact.h)(
           'div',
           { className: 'left-controls' },
@@ -19667,7 +21596,7 @@ function playbackUI(props) {
           (0, _preact.h)(_volume2.default, { player: props.player }),
           (0, _preact.h)(_language2.default, { player: props.player }),
           (0, _preact.h)(_settings2.default, { player: props.player }),
-          (0, _preact.h)(_fullscreen2.default, { player: props.player })
+          (0, _preact.h)(_fullscreen2.default, { player: props.player, config: props.config })
         )
       )
     ),
@@ -20723,7 +22652,7 @@ function adsUI(props) {
           'div',
           { className: 'right-controls' },
           (0, _preact.h)(_volume2.default, { player: props.player }),
-          (0, _preact.h)(_fullscreen2.default, { player: props.player })
+          (0, _preact.h)(_fullscreen2.default, { player: props.player, config: props.config })
         )
       )
     )
@@ -20829,7 +22758,7 @@ function liveUI(props) {
   return (0, _preact.h)(
     'div',
     { className: 'playback-gui-wrapper' },
-    (0, _preact.h)(_keyboard2.default, { player: props.player }),
+    (0, _preact.h)(_keyboard2.default, { player: props.player, config: props.config }),
     (0, _preact.h)(_loading2.default, { player: props.player }),
     (0, _preact.h)(
       'div',
@@ -23310,7 +25239,7 @@ var SeekBarPlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps
   function SeekBarPlaybackContainer(obj) {
     _classCallCheck(this, SeekBarPlaybackContainer);
 
-    return _possibleConstructorReturn(this, (SeekBarPlaybackContainer.__proto__ || Object.getPrototypeOf(SeekBarPlaybackContainer)).call(this, { name: 'SeekBarPlaybackContainer', player: obj.player }));
+    return _possibleConstructorReturn(this, (SeekBarPlaybackContainer.__proto__ || Object.getPrototypeOf(SeekBarPlaybackContainer)).call(this, { name: 'SeekBarPlaybackContainer', player: obj.player, config: obj.config }));
   }
 
   /**
@@ -23347,7 +25276,7 @@ var SeekBarPlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps
       var _this3 = this;
 
       return (0, _preact.h)(_seekbar3.default, {
-        playerElement: this.player.getView().parentElement,
+        playerElement: document.getElementById(this.config.targetId),
         showFramePreview: this.props.showFramePreview,
         showTimeBubble: this.props.showTimeBubble,
         changeCurrentTime: function changeCurrentTime(time) {
@@ -23455,6 +25384,27 @@ var SeekBarControl = function (_Component) {
     }
 
     /**
+     * on component mount, bind mouseup and mousemove events to top player element
+     *
+     * @returns {void}
+     * @memberof SeekBarControl
+     */
+
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      this.props.playerElement.addEventListener('mouseup', function (e) {
+        _this2.onPlayerMouseUp(e);
+      });
+
+      this.props.playerElement.addEventListener('mousemove', function (e) {
+        _this2.onPlayerMouseMove(e);
+      });
+    }
+
+    /**
      * seekbar mouse down handler
      *
      * @param {Event} e - mouse down event
@@ -23475,7 +25425,26 @@ var SeekBarControl = function (_Component) {
     }
 
     /**
-     * seekbar mouse up handler
+     * onTap event handler
+     *
+     * @param {Event} e - onClick event
+     * @returns {void}
+     * @memberof SeekBarControl
+     */
+
+  }, {
+    key: 'onTap',
+    value: function onTap(e) {
+      if (!this.props.isMobile) return;
+
+      var time = this.getTime(e);
+      this.props.changeCurrentTime(time);
+      this.updateSeekBarProgress(time, this.props.duration);
+      this.props.updateSeekbarDraggingStatus(false);
+    }
+
+    /**
+     * player mouse up handler for seekbar porpuses
      *
      * @param {Event} e - mouse up event
      * @returns {void}
@@ -23483,14 +25452,36 @@ var SeekBarControl = function (_Component) {
      */
 
   }, {
-    key: 'onSeekbarMouseUp',
-    value: function onSeekbarMouseUp(e) {
+    key: 'onPlayerMouseUp',
+    value: function onPlayerMouseUp(e) {
       if (this.props.isMobile) return;
 
-      var time = this.getTime(e);
-      this.props.changeCurrentTime(time);
-      this.updateSeekBarProgress(time, this.props.duration);
-      this.props.updateSeekbarDraggingStatus(false);
+      if (this.props.isDraggingActive) {
+        var time = this.getTime(e);
+        this.props.changeCurrentTime(time);
+        this.updateSeekBarProgress(time, this.props.duration);
+        this.props.updateSeekbarDraggingStatus(false);
+      }
+    }
+
+    /**
+     * player mouse move handler for seekbar porpuses
+     *
+     * @param {Event} e - mouse move event
+     * @returns {void}
+     * @memberof SeekBarControl
+     */
+
+  }, {
+    key: 'onPlayerMouseMove',
+    value: function onPlayerMouseMove(e) {
+      if (this.props.isMobile) return;
+
+      if (this.props.isDraggingActive) {
+        var time = this.getTime(e);
+        this.updateSeekBarProgress(time, this.props.duration);
+        this.updateSeekBarProgress(time, this.props.duration, true);
+      }
     }
 
     /**
@@ -23508,10 +25499,6 @@ var SeekBarControl = function (_Component) {
 
       var time = this.getTime(e);
       this.updateSeekBarProgress(time, this.props.duration, true);
-
-      if (this.props.isDraggingActive) {
-        this.updateSeekBarProgress(time, this.props.duration);
-      }
     }
 
     /**
@@ -23707,7 +25694,7 @@ var SeekBarControl = function (_Component) {
   }, {
     key: 'renderFramePreview',
     value: function renderFramePreview() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!this.props.showFramePreview || this.props.isMobile) return undefined;
       var framePreviewStyle = 'left: ' + this.getFramePreviewOffset() + 'px';
@@ -23720,7 +25707,7 @@ var SeekBarControl = function (_Component) {
           className: 'frame-preview',
           style: framePreviewStyle,
           ref: function ref(c) {
-            return _this2._framePreviewElement = c;
+            return _this3._framePreviewElement = c;
           }
         },
         (0, _preact.h)('div', { className: 'frame-preview-img', style: framePreviewImgStyle })
@@ -23737,7 +25724,7 @@ var SeekBarControl = function (_Component) {
   }, {
     key: 'renderTimeBubble',
     value: function renderTimeBubble() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this.props.showTimeBubble || this.props.isMobile) return undefined;
       var timeBubbleStyle = 'left: ' + this.getTimeBubbleOffset() + 'px';
@@ -23745,7 +25732,7 @@ var SeekBarControl = function (_Component) {
       return (0, _preact.h)(
         'div',
         { className: 'time-preview', style: timeBubbleStyle, ref: function ref(c) {
-            return _this3._timeBubbleElement = c;
+            return _this4._timeBubbleElement = c;
           } },
         timeBubbleValue
       );
@@ -23762,7 +25749,7 @@ var SeekBarControl = function (_Component) {
   }, {
     key: 'render',
     value: function render(props) {
-      var _this4 = this;
+      var _this5 = this;
 
       var virtualProgressWidth = this.state.virtualTime / props.duration * 100 + '%';
       var progressWidth = props.currentTime / props.duration * 100 + '%';
@@ -23770,13 +25757,14 @@ var SeekBarControl = function (_Component) {
       if (props.adBreak) seekbarStyleClass += ' ad-break';
       if (props.isDvr) seekbarStyleClass += ' live';
       if (props.isMobile) seekbarStyleClass += ' hover';
+      if (props.isDraggingActive) seekbarStyleClass += ' hover';
 
       return (0, _preact.h)(
         'div',
         {
           className: seekbarStyleClass,
           ref: function ref(c) {
-            return _this4._seekBarElement = c;
+            return _this5._seekBarElement = c;
           },
           role: 'slider',
           'aria-label': 'Seek slider',
@@ -23784,23 +25772,23 @@ var SeekBarControl = function (_Component) {
           'aria-valuemax': Math.round(this.props.duration),
           'aria-valuenow': Math.round(this.props.currentTime),
           'aria-valuetext': (0, _timeFormat.toHHMMSS)(this.props.currentTime) + ' of ' + (0, _timeFormat.toHHMMSS)(this.props.duration),
+          onClick: function onClick(e) {
+            return _this5.onTap(e);
+          },
           onMouseMove: function onMouseMove(e) {
-            return _this4.onSeekbarMouseMove(e);
+            return _this5.onSeekbarMouseMove(e);
           },
           onMouseDown: function onMouseDown(e) {
-            return _this4.onSeekbarMouseDown(e);
-          },
-          onMouseUp: function onMouseUp(e) {
-            return _this4.onSeekbarMouseUp(e);
+            return _this5.onSeekbarMouseDown(e);
           },
           onTouchStart: function onTouchStart(e) {
-            return _this4.onSeekbarTouchStart(e);
+            return _this5.onSeekbarTouchStart(e);
           },
           onTouchMove: function onTouchMove(e) {
-            return _this4.onSeekbarTouchMove(e);
+            return _this5.onSeekbarTouchMove(e);
           },
           onTouchEnd: function onTouchEnd() {
-            return _this4.onSeekbarTouchEnd();
+            return _this5.onSeekbarTouchEnd();
           }
         },
         (0, _preact.h)(
@@ -25310,10 +27298,9 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
     }
 
     /**
-     * check if option is 'off', if it does- hideTextTrack called.
-     * otherwise, selecting the given text track
+     * Select the given text track
      *
-     * @param {(Object | string)} textTrack - text track or 'off' string
+     * @param {Object} textTrack - text track
      * @returns {void}
      * @memberof LanguageControl
      */
@@ -25321,11 +27308,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
   }, {
     key: 'onCaptionsChange',
     value: function onCaptionsChange(textTrack) {
-      if (textTrack === 'off') {
-        this.player.hideTextTrack();
-      } else {
-        this.player.selectTrack(textTrack);
-      }
+      this.player.selectTrack(textTrack);
     }
 
     /**
@@ -25450,16 +27433,6 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
       }).map(function (t) {
         return { label: t.label || t.language, active: t.active, value: t };
       });
-
-      if (textOptions.length > 0) {
-        textOptions.push({
-          label: 'Off',
-          active: props.textTracks.filter(function (t) {
-            return t.kind === 'subtitles' && t.active;
-          }).length === 0,
-          value: 'off'
-        });
-      }
 
       if (audioOptions.length > 0 || textOptions.length > 0) {
         return this.renderAll(audioOptions, textOptions);
@@ -25891,7 +27864,7 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
   function FullscreenControl(obj) {
     _classCallCheck(this, FullscreenControl);
 
-    return _possibleConstructorReturn(this, (FullscreenControl.__proto__ || Object.getPrototypeOf(FullscreenControl)).call(this, { name: 'Fullscreen', player: obj.player }));
+    return _possibleConstructorReturn(this, (FullscreenControl.__proto__ || Object.getPrototypeOf(FullscreenControl)).call(this, { name: 'Fullscreen', player: obj.player, config: obj.config }));
   }
 
   /**
@@ -25978,7 +27951,11 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
       if (this.props.isMobile && this.player.env.os.name === 'iOS') {
         this.player.getView().getElementsByTagName('video')[0].webkitEnterFullscreen();
       } else {
-        this.requestFullscreen(this.player.getView().parentElement);
+        var elementToFullscreen = document.getElementById(this.config.targetId);
+
+        if (elementToFullscreen) {
+          this.requestFullscreen(elementToFullscreen);
+        }
       }
     }
 
@@ -29160,7 +31137,7 @@ exports = module.exports = __webpack_require__(121)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Lato);", ""]);
 
 // module
-exports.push([module.i, ".row {\n  display: block; }\n  .row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.d-inline-block {\n  display: inline-block; }\n\n.mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.font-size-base {\n  font-size: 15px; }\n\n.form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .form-group.has-error .form-control {\n    border-color: #db1f26; }\n    .form-group.has-error .form-control:focus {\n      border-color: #fff; }\n  .form-group.has-icon .form-control {\n    padding-left: 34px; }\n  .form-group .icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .form-control:focus + .icon {\n      fill: #999; }\n\ntextarea.form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: \"Lato\", sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.checkbox {\n  font-size: 15px;\n  position: relative; }\n  .checkbox input {\n    display: none; }\n  .checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .form-group-row .dropdown {\n    float: right; }\n\n.btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .btn.btn-block {\n    display: block; }\n  .btn.btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .btn.btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .btn.btn-branded {\n    background-color: #01ACCD; }\n    .btn.btn-branded:hover {\n      color: #fff; }\n\n.btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.dropdown {\n  position: relative;\n  font-size: 15px; }\n  .dropdown.active .dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .dropdown.active .dropdown-button .icon {\n    transform: rotate(180deg); }\n  .dropdown .dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .dropdown .dropdown-button .icon {\n      width: 16px;\n      height: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px; }\n  .dropdown-menu.top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .dropdown-menu.bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .dropdown-menu.right {\n    left: 0; }\n  .dropdown-menu.left {\n    right: 0; }\n  .dropdown-menu .dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .dropdown-menu .dropdown-menu-item:hover {\n      color: #fff; }\n    .dropdown-menu .dropdown-menu-item.active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .dropdown-menu .dropdown-menu-item .check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .dropdown-menu .dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.player .control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .player .control-button svg {\n    width: 32px;\n    height: 32px; }\n  .player .control-button.active {\n    opacity: 1; }\n  .player .control-button.control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.player:not(.touch) .control-button:hover {\n  opacity: 1; }\n\n.player:not(.touch) .control-button.control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.player .control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.player.touch .player .control-button-container {\n  position: static; }\n\n.player.touch .control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .player * {\n    box-sizing: border-box;\n    outline: none; }\n  .player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .player video {\n    width: 100%; }\n  .player .player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: \"Lato\", sans-serif; }\n    .player .player-gui input, .player .player-gui textarea {\n      font-family: \"Lato\", sans-serif; }\n  .player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .player.metadata-loaded .player-gui,\n  .player.state-paused .player-gui,\n  .player.overlay-active .player-gui,\n  .player.menu-active .player-gui {\n    opacity: 1; }\n\n.player:not(.ad-break) #ads-container {\n  z-index: 10;\n  transition: transform 100ms; }\n\n.player:not(.ad-break).metadata-loaded.hover #ads-container,\n.player:not(.ad-break).metadata-loaded.state-paused #ads-container {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\nvideo::cue {\n  background-color: transparent;\n  font-family: \"Lato\", sans-serif; }\n\n.player.captions-yellow-text video::cue {\n  color: #FAFF00; }\n\n.player.captions-black-bg video::cue {\n  background-color: #000; }\n\n.player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.player.state-paused video::-webkit-media-text-track-display,\n.player.hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: openOverlay 100ms ease-in-out forwards;\n  z-index: 4; }\n  .overlay.active {\n    display: block;\n    opacity: 1; }\n  .overlay .overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 80px 20px;\n    overflow-y: auto; }\n  .overlay .title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .overlay .close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .overlay .close-overlay .icon-close {\n      width: 24px;\n      height: 24px; }\n  .overlay .overlay-screen {\n    display: none; }\n    .overlay .overlay-screen.active {\n      display: block; }\n\n@media screen and (max-width: 768px) {\n  .overlay .overlay-contents {\n    padding: 36px 20px; }\n  .overlay .close-overlay {\n    top: 38px; }\n  .overlay .title {\n    margin-bottom: 24px; } }\n\n@media screen and (max-width: 480px) {\n  .overlay .overlay-contents {\n    padding: 16px 24px; }\n  .overlay .close-overlay {\n    top: 15px;\n    right: 24px; }\n  .overlay .title {\n    font-size: 16px;\n    line-height: 19px;\n    margin-bottom: 24px; } }\n\n@keyframes openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.player:not(.touch) .smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: openSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.leaving {\n    animation: closeSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .player:not(.touch) .smart-container.top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .player:not(.touch) .smart-container.bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .player:not(.touch) .smart-container.right {\n    left: 0px; }\n  .player:not(.touch) .smart-container.left {\n    right: 0px; }\n  .player:not(.touch) .smart-container .smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .player:not(.touch) .smart-container .smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item label {\n      float: left; }\n      .player:not(.touch) .smart-container .smart-container-item.select-menu-item label .label-icon {\n        display: none; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item .dropdown, .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      float: right; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      text-align-last: right; }\n\n.touch .smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .touch .smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .touch .smart-container-item.select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    fill: #fff; }\n    .touch .smart-container-item.select-menu-item label .label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .touch .smart-container-item.select-menu-item .dropdown, .touch .smart-container-item.select-menu-item select {\n    float: right; }\n  .touch .smart-container-item.select-menu-item select {\n    text-align-last: right; }\n\n.overlay.share-overlay .share-icons {\n  margin: 60px 0; }\n  .overlay.share-overlay .share-icons .btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .overlay.share-overlay .share-icons .btn-rounded:first-child {\n      margin-left: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded:last-child {\n      margin-right: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded.facebook-share-btn {\n      background-color: #3B5998; }\n    .overlay.share-overlay .share-icons .btn-rounded.twitter-share-btn {\n      background-color: #1DA1F2; }\n    .overlay.share-overlay .share-icons .btn-rounded.google-plus-share-btn {\n      background-color: #DD4B39; }\n    .overlay.share-overlay .share-icons .btn-rounded.linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .link-options-container .copy-url-row {\n    display: flex; }\n    .link-options-container .copy-url-row .input-copy-url {\n      margin: 0; }\n    .link-options-container .copy-url-row .btn-copy-url {\n      margin-left: 16px; }\n      .link-options-container .copy-url-row .btn-copy-url .icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .link-options-container .copy-url-row .btn-copy-url .check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .link-options-container .copy-url-row .btn-copy-url.copied {\n        background-color: #009444; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .link-options-container .video-start-options-row {\n    margin-top: 24px; }\n    .link-options-container .video-start-options-row .checkbox {\n      margin-right: 15px; }\n    .link-options-container .video-start-options-row .form-group {\n      margin: 0; }\n\n.player:not(.touch) .overlay.share-overlay .share-icons .btn-rounded:hover {\n  transform: scale(1.1667); }\n\n@media screen and (max-width: 768px) {\n  .overlay.share-overlay .share-icons {\n    margin: 40px 0; } }\n\n@media screen and (max-width: 480px) {\n  .overlay.share-overlay .share-icons {\n    margin: 20px 0; } }\n\n.overlay.cvaa-overlay .sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer; }\n  .overlay.cvaa-overlay .sample.black-bg {\n    background-color: #000; }\n  .overlay.cvaa-overlay .sample.yellow-text {\n    color: #FAFF00; }\n\n.overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.overlay.cvaa-overlay .custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n@media screen and (max-width: 480px) {\n  .overlay.cvaa-overlay .sample {\n    width: 30%;\n    margin: 2.33%;\n    padding: 0; }\n    .overlay.cvaa-overlay .sample:first-child {\n      margin-left: 0; }\n    .overlay.cvaa-overlay .sample:last-child {\n      margin-right: 0; }\n  .overlay.cvaa-overlay .button-save-cvaa {\n    margin-top: 20px; } }\n\n@keyframes kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .loading-backdrop.show {\n    opacity: 1; }\n    .loading-backdrop.show .spinner-container {\n      display: block; }\n  .loading-backdrop .spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kaltura-spinner 2.5s infinite; }\n  .spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.control-button-container.control-play-pause .control-button {\n  transition: 400ms transform; }\n  .control-button-container.control-play-pause .control-button .icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .control-button-container.control-play-pause .control-button .icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .control-button-container.control-play-pause .control-button.is-playing {\n    transform: rotate(360deg); }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-pause {\n      opacity: 1;\n      display: block; }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-play {\n      opacity: 0;\n      display: none; }\n\n.touch .control-button-container.control-play-pause {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.control-play-pause {\n    display: none; } }\n\n.control-button-container.volume-control:hover .volume-control-bar {\n  display: block !important; }\n\n.control-button-container.volume-control.is-muted .volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.control-button-container.volume-control.is-muted .volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.control-button-container.volume-control.dragging-active .volume-control-bar {\n  display: block; }\n\n.control-button-container.volume-control .volume-waves {\n  transform: translateX(0px); }\n\n.control-button-container.volume-control .volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.control-button-container.volume-control .volume-waves, .control-button-container.volume-control .volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.control-button-container.volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .volume-control-bar .bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .volume-control-bar .progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.touch .control-button-container.volume-control {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.volume-control {\n    display: none; } }\n\n.control-button-container.control-fullscreen .control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .control-button-container.control-fullscreen .control-button .icon-minimize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-maximize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-minimize {\n    display: block; }\n\n.player:not(.touch) .control-button-container.control-fullscreen .control-button:hover {\n  transform: scale(1.1); }\n\n.player .seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .player .seek-bar:hover .time-preview,\n  .player .seek-bar:hover .frame-preview, .player .seek-bar.hover .time-preview,\n  .player .seek-bar.hover .frame-preview, .player .seek-bar.dragging-active .time-preview,\n  .player .seek-bar.dragging-active .frame-preview {\n    display: block; }\n  .player .seek-bar:hover .progress-bar .scrubber, .player .seek-bar.hover .progress-bar .scrubber, .player .seek-bar.dragging-active .progress-bar .scrubber {\n    transform: scale(1); }\n  .player .seek-bar:hover .progress-bar .virtual-progress, .player .seek-bar.hover .progress-bar .virtual-progress, .player .seek-bar.dragging-active .progress-bar .virtual-progress {\n    display: block; }\n  .player .seek-bar.ad-break {\n    cursor: initial; }\n    .player .seek-bar.ad-break .progress-bar .progress {\n      background-color: #F9A71B; }\n  .player .seek-bar.live .progress-bar .progress {\n    background-color: #DA1F26; }\n  .player .seek-bar .progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .player .seek-bar .progress-bar .progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .player .seek-bar .progress-bar .virtual-progress {\n      display: none; }\n    .player .seek-bar .progress-bar .buffered, .player .seek-bar .progress-bar .virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .player .seek-bar .progress-bar .scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .player .seek-bar .progress-bar .scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .player .seek-bar .frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .player .seek-bar .frame-preview .frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .player .seek-bar .time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .player .seek-bar .time-preview,\n  .player .seek-bar .frame-preview {\n    display: none; }\n\n.touch .virtual-progress, .touch .time-preview, .touch .frame-preview {\n  display: none !important; }\n\n@media screen and (max-width: 480px) {\n  .virtual-progress, .time-preview, .frame-preview {\n    display: none; } }\n\n.player .time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.touch .time-display {\n  padding-left: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .time-display {\n    padding: 0 12px 0 0; } }\n\n.player .video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.player .bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  bottom: 0;\n  left: 0; }\n  .player .bottom-bar .left-controls {\n    float: left;\n    text-align: left; }\n    .player .bottom-bar .left-controls:first-child {\n      margin-left: 0px; }\n  .player .bottom-bar .right-controls {\n    float: right;\n    text-align: left; }\n    .player .bottom-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .bottom-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .bottom-bar,\n.player.state-paused .bottom-bar,\n.player.menu-active .bottom-bar {\n  opacity: 1; }\n\n.player.overlay-active .bottom-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .bottom-bar {\n    padding: 6px 8px; } }\n\n.player .top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  left: 0; }\n  .player .top-bar .left-controls {\n    text-align: left;\n    min-width: 0; }\n  .player .top-bar .right-controls {\n    text-align: left; }\n    .player .top-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .top-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .top-bar,\n.player.state-paused .top-bar,\n.player.menu-active .top-bar {\n  opacity: 1; }\n\n.player.overlay-active .top-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .top-bar {\n    padding: 8px 8px 20px 8px; } }\n\n@keyframes overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .overlay-play.in .icon {\n    animation: overlayPlayIconIn 400ms linear forwards; }\n  .overlay-play .icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: cover; }\n  .pre-playback-play-overlay .pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .pre-playback-play-overlay .pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .pre-playback-play-overlay .pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.pre-playback .player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .live-tag.non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n@media screen and (max-width: 480px) {\n  .live-tag {\n    margin-left: 0; } }\n", ""]);
+exports.push([module.i, ".row {\n  display: block; }\n  .row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.d-inline-block {\n  display: inline-block; }\n\n.mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.font-size-base {\n  font-size: 15px; }\n\n.form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .form-group.has-error .form-control {\n    border-color: #db1f26; }\n    .form-group.has-error .form-control:focus {\n      border-color: #fff; }\n  .form-group.has-icon .form-control {\n    padding-left: 34px; }\n  .form-group .icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .form-control:focus + .icon {\n      fill: #999; }\n\ntextarea.form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: \"Lato\", sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.checkbox {\n  font-size: 15px;\n  position: relative; }\n  .checkbox input {\n    display: none; }\n  .checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .form-group-row .dropdown {\n    float: right; }\n\n.btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .btn.btn-block {\n    display: block; }\n  .btn.btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .btn.btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .btn.btn-branded {\n    background-color: #01ACCD; }\n    .btn.btn-branded:hover {\n      color: #fff; }\n\n.btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.dropdown {\n  position: relative;\n  font-size: 15px; }\n  .dropdown.active .dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .dropdown.active .dropdown-button .icon {\n    transform: rotate(180deg); }\n  .dropdown .dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .dropdown .dropdown-button .icon {\n      width: 16px;\n      height: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px; }\n  .dropdown-menu.top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .dropdown-menu.bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .dropdown-menu.right {\n    left: 0; }\n  .dropdown-menu.left {\n    right: 0; }\n  .dropdown-menu .dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .dropdown-menu .dropdown-menu-item:hover {\n      color: #fff; }\n    .dropdown-menu .dropdown-menu-item.active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .dropdown-menu .dropdown-menu-item .check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .dropdown-menu .dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.player .control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .player .control-button svg {\n    width: 32px;\n    height: 32px; }\n  .player .control-button.active {\n    opacity: 1; }\n  .player .control-button.control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.player:not(.touch) .control-button:hover {\n  opacity: 1; }\n\n.player:not(.touch) .control-button.control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.player .control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.player.touch .player .control-button-container {\n  position: static; }\n\n.player.touch .control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .player * {\n    box-sizing: border-box;\n    outline: none; }\n  .player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .player video {\n    width: 100%; }\n  .player .player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: \"Lato\", sans-serif; }\n    .player .player-gui input, .player .player-gui textarea {\n      font-family: \"Lato\", sans-serif; }\n  .player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .player.metadata-loaded .player-gui,\n  .player.state-paused .player-gui,\n  .player.overlay-active .player-gui,\n  .player.menu-active .player-gui {\n    opacity: 1; }\n\n.player:not(.ad-break) [id^=ads-container] {\n  z-index: 10;\n  transition: transform 100ms; }\n\n.player:not(.ad-break).metadata-loaded.hover [id^=ads-container],\n.player:not(.ad-break).metadata-loaded.state-paused [id^=ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\nvideo::cue {\n  background-color: transparent;\n  font-family: \"Lato\", sans-serif; }\n\n.player.captions-yellow-text video::cue {\n  color: #FAFF00; }\n\n.player.captions-black-bg video::cue {\n  background-color: #000; }\n\n.player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.player.state-paused video::-webkit-media-text-track-display,\n.player.hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: openOverlay 100ms ease-in-out forwards;\n  z-index: 4; }\n  .overlay.active {\n    display: block;\n    opacity: 1; }\n  .overlay .overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 80px 20px;\n    overflow-y: auto; }\n  .overlay .title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .overlay .close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .overlay .close-overlay .icon-close {\n      width: 24px;\n      height: 24px; }\n  .overlay .overlay-screen {\n    display: none; }\n    .overlay .overlay-screen.active {\n      display: block; }\n\n@media screen and (max-width: 768px) {\n  .overlay .overlay-contents {\n    padding: 36px 20px; }\n  .overlay .close-overlay {\n    top: 38px; }\n  .overlay .title {\n    margin-bottom: 24px; } }\n\n@media screen and (max-width: 480px) {\n  .overlay .overlay-contents {\n    padding: 16px 24px; }\n  .overlay .close-overlay {\n    top: 15px;\n    right: 24px; }\n  .overlay .title {\n    font-size: 16px;\n    line-height: 19px;\n    margin-bottom: 24px; } }\n\n@keyframes openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.player:not(.touch) .smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: openSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.leaving {\n    animation: closeSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .player:not(.touch) .smart-container.top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .player:not(.touch) .smart-container.bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .player:not(.touch) .smart-container.right {\n    left: 0px; }\n  .player:not(.touch) .smart-container.left {\n    right: 0px; }\n  .player:not(.touch) .smart-container .smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .player:not(.touch) .smart-container .smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item label {\n      float: left; }\n      .player:not(.touch) .smart-container .smart-container-item.select-menu-item label .label-icon {\n        display: none; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item .dropdown, .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      float: right; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      text-align-last: right; }\n\n.touch .smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .touch .smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .touch .smart-container-item.select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    fill: #fff; }\n    .touch .smart-container-item.select-menu-item label .label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .touch .smart-container-item.select-menu-item .dropdown, .touch .smart-container-item.select-menu-item select {\n    float: right; }\n  .touch .smart-container-item.select-menu-item select {\n    text-align-last: right; }\n\n.overlay.share-overlay .share-icons {\n  margin: 60px 0; }\n  .overlay.share-overlay .share-icons .btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .overlay.share-overlay .share-icons .btn-rounded:first-child {\n      margin-left: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded:last-child {\n      margin-right: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded.facebook-share-btn {\n      background-color: #3B5998; }\n    .overlay.share-overlay .share-icons .btn-rounded.twitter-share-btn {\n      background-color: #1DA1F2; }\n    .overlay.share-overlay .share-icons .btn-rounded.google-plus-share-btn {\n      background-color: #DD4B39; }\n    .overlay.share-overlay .share-icons .btn-rounded.linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .link-options-container .copy-url-row {\n    display: flex; }\n    .link-options-container .copy-url-row .input-copy-url {\n      margin: 0; }\n    .link-options-container .copy-url-row .btn-copy-url {\n      margin-left: 16px; }\n      .link-options-container .copy-url-row .btn-copy-url .icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .link-options-container .copy-url-row .btn-copy-url .check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .link-options-container .copy-url-row .btn-copy-url.copied {\n        background-color: #009444; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .link-options-container .video-start-options-row {\n    margin-top: 24px; }\n    .link-options-container .video-start-options-row .checkbox {\n      margin-right: 15px; }\n    .link-options-container .video-start-options-row .form-group {\n      margin: 0; }\n\n.player:not(.touch) .overlay.share-overlay .share-icons .btn-rounded:hover {\n  transform: scale(1.1667); }\n\n@media screen and (max-width: 768px) {\n  .overlay.share-overlay .share-icons {\n    margin: 40px 0; } }\n\n@media screen and (max-width: 480px) {\n  .overlay.share-overlay .share-icons {\n    margin: 20px 0; } }\n\n.overlay.cvaa-overlay .sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer; }\n  .overlay.cvaa-overlay .sample.black-bg {\n    background-color: #000; }\n  .overlay.cvaa-overlay .sample.yellow-text {\n    color: #FAFF00; }\n\n.overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.overlay.cvaa-overlay .custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n@media screen and (max-width: 480px) {\n  .overlay.cvaa-overlay .sample {\n    width: 30%;\n    margin: 2.33%;\n    padding: 0; }\n    .overlay.cvaa-overlay .sample:first-child {\n      margin-left: 0; }\n    .overlay.cvaa-overlay .sample:last-child {\n      margin-right: 0; }\n  .overlay.cvaa-overlay .button-save-cvaa {\n    margin-top: 20px; } }\n\n@keyframes kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .loading-backdrop.show {\n    opacity: 1; }\n    .loading-backdrop.show .spinner-container {\n      display: block; }\n  .loading-backdrop .spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kaltura-spinner 2.5s infinite; }\n  .spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.control-button-container.control-play-pause .control-button {\n  transition: 400ms transform; }\n  .control-button-container.control-play-pause .control-button .icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .control-button-container.control-play-pause .control-button .icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .control-button-container.control-play-pause .control-button.is-playing {\n    transform: rotate(360deg); }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-pause {\n      opacity: 1;\n      display: block; }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-play {\n      opacity: 0;\n      display: none; }\n\n.touch .control-button-container.control-play-pause {\n  display: none; }\n\n@media screen and (max-width: 480px) {\n  .control-button-container.control-play-pause {\n    display: none; } }\n\n.control-button-container.volume-control:hover .volume-control-bar {\n  display: block !important; }\n\n.control-button-container.volume-control.is-muted .volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.control-button-container.volume-control.is-muted .volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.control-button-container.volume-control.dragging-active .volume-control-bar {\n  display: block; }\n\n.control-button-container.volume-control .volume-waves {\n  transform: translateX(0px); }\n\n.control-button-container.volume-control .volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.control-button-container.volume-control .volume-waves, .control-button-container.volume-control .volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.control-button-container.volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .volume-control-bar .bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .volume-control-bar .progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.touch .control-button-container.volume-control:hover .volume-control-bar {\n  display: none !important; }\n\n.control-button-container.control-fullscreen .control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .control-button-container.control-fullscreen .control-button .icon-minimize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-maximize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-minimize {\n    display: block; }\n\n.player:not(.touch) .control-button-container.control-fullscreen .control-button:hover {\n  transform: scale(1.1); }\n\n.player .seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .player .seek-bar:hover .time-preview,\n  .player .seek-bar:hover .frame-preview, .player .seek-bar.hover .time-preview,\n  .player .seek-bar.hover .frame-preview, .player .seek-bar.dragging-active .time-preview,\n  .player .seek-bar.dragging-active .frame-preview {\n    display: block; }\n  .player .seek-bar:hover .progress-bar .scrubber, .player .seek-bar.hover .progress-bar .scrubber, .player .seek-bar.dragging-active .progress-bar .scrubber {\n    transform: scale(1); }\n  .player .seek-bar:hover .progress-bar .virtual-progress, .player .seek-bar.hover .progress-bar .virtual-progress, .player .seek-bar.dragging-active .progress-bar .virtual-progress {\n    display: block; }\n  .player .seek-bar.ad-break {\n    cursor: initial; }\n    .player .seek-bar.ad-break .progress-bar .progress {\n      background-color: #F9A71B; }\n  .player .seek-bar.live .progress-bar .progress {\n    background-color: #DA1F26; }\n  .player .seek-bar .progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .player .seek-bar .progress-bar .progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .player .seek-bar .progress-bar .virtual-progress {\n      display: none; }\n    .player .seek-bar .progress-bar .buffered, .player .seek-bar .progress-bar .virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .player .seek-bar .progress-bar .scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .player .seek-bar .progress-bar .scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .player .seek-bar .frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .player .seek-bar .frame-preview .frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .player .seek-bar .time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .player .seek-bar .time-preview,\n  .player .seek-bar .frame-preview {\n    display: none; }\n\n.touch .virtual-progress, .touch .time-preview, .touch .frame-preview {\n  display: none !important; }\n\n@media screen and (max-width: 480px) {\n  .virtual-progress, .time-preview, .frame-preview {\n    display: none; } }\n\n.player .time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.touch .time-display {\n  padding-left: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .time-display {\n    padding: 0 12px 0 0; } }\n\n.player .video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.player .bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  bottom: 0;\n  left: 0; }\n  .player .bottom-bar .left-controls {\n    float: left;\n    text-align: left; }\n    .player .bottom-bar .left-controls:first-child {\n      margin-left: 0px; }\n  .player .bottom-bar .right-controls {\n    float: right;\n    text-align: left; }\n    .player .bottom-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .bottom-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .bottom-bar,\n.player.state-paused .bottom-bar,\n.player.menu-active .bottom-bar {\n  opacity: 1; }\n\n.player.overlay-active .bottom-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .bottom-bar {\n    padding: 6px 8px; } }\n\n.player .top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  left: 0; }\n  .player .top-bar .left-controls {\n    text-align: left;\n    min-width: 0; }\n  .player .top-bar .right-controls {\n    text-align: left; }\n    .player .top-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .top-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .top-bar,\n.player.state-paused .top-bar,\n.player.menu-active .top-bar {\n  opacity: 1; }\n\n.player.overlay-active .top-bar {\n  opacity: 0; }\n\n@media screen and (max-width: 480px) {\n  .player .top-bar {\n    padding: 8px 8px 20px 8px; } }\n\n@keyframes overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .overlay-play.in .icon {\n    animation: overlayPlayIconIn 400ms linear forwards; }\n  .overlay-play .icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: cover; }\n  .pre-playback-play-overlay .pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .pre-playback-play-overlay .pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .pre-playback-play-overlay .pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.pre-playback .player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .live-tag.non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n@media screen and (max-width: 480px) {\n  .live-tag {\n    margin-left: 0; } }\n", ""]);
 
 // exports
 
@@ -29716,7 +31693,7 @@ module.exports = function (css) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isIos = exports.isSafari = exports.checkNativeHlsSupport = exports.validateProvidersConfig = exports.validateTargetId = exports.addKalturaPoster = exports.createKalturaPlayerContainer = exports.extractProvidersConfig = exports.extractPlayerConfig = exports.applyStorageSupport = exports.setStorageConfig = undefined;
+exports.isIos = exports.isSafari = exports.checkNativeTextTracksSupport = exports.checkNativeHlsSupport = exports.setDefaultPlayerConfig = exports.validateProvidersConfig = exports.validateTargetId = exports.addKalturaPoster = exports.createKalturaPlayerContainer = exports.extractProvidersConfig = exports.extractPlayerConfig = exports.applyStorageSupport = exports.setStorageConfig = undefined;
 
 var _playkitJs = __webpack_require__(18);
 
@@ -29821,6 +31798,15 @@ function addKalturaPoster(metadata, width, height) {
 }
 
 /**
+ * preform different checks for setting default player settings
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDefaultPlayerConfig(playerConfig) {
+  checkNativeHlsSupport(playerConfig);
+  checkNativeTextTracksSupport(playerConfig);
+}
+/**
  * Sets config option for native HLS playback
  * @param {Object} playerConfig - the player config
  * @returns {void}
@@ -29834,6 +31820,24 @@ function checkNativeHlsSupport(playerConfig) {
           preferNative: {
             hls: true
           }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Sets config option for native text track support
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function checkNativeTextTracksSupport(playerConfig) {
+  if (isIos()) {
+    var useNativeTextTrack = _playkitJs.Utils.Object.getPropertyPath(playerConfig, 'playback.useNativeTextTrack');
+    if (typeof useNativeTextTrack !== 'boolean') {
+      _playkitJs.Utils.Object.mergeDeep(playerConfig, {
+        playback: {
+          useNativeTextTrack: true
         }
       });
     }
@@ -29887,7 +31891,9 @@ exports.createKalturaPlayerContainer = createKalturaPlayerContainer;
 exports.addKalturaPoster = addKalturaPoster;
 exports.validateTargetId = validateTargetId;
 exports.validateProvidersConfig = validateProvidersConfig;
+exports.setDefaultPlayerConfig = setDefaultPlayerConfig;
 exports.checkNativeHlsSupport = checkNativeHlsSupport;
+exports.checkNativeTextTracksSupport = checkNativeTextTracksSupport;
 exports.isSafari = isSafari;
 exports.isIos = isIos;
 
@@ -29924,7 +31930,7 @@ function evaluatePluginsConfig() {
 
   if (playerConfig.plugins) {
     var dataModel = {
-      pVersion: "0.6.1",
+      pVersion: "0.7.0",
       pName: "kaltura-player-js"
     };
     if (playerConfig.session) {
@@ -30014,7 +32020,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.6.1", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
+_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.7.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
 
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/kaltura-player-js", "color: #98ff98;");
 
@@ -30040,7 +32046,7 @@ exports.Playkit = Playkit;
 exports.OvpProvider = _ovpProvider2.default;
 exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup.setup;
-exports.VERSION = "0.6.1";
+exports.VERSION = "0.7.0";
 exports.PLAYER_NAME = "kaltura-player-js";
 
 /***/ }),
@@ -36151,7 +38157,7 @@ var HlsAdapter = function (_BaseMediaSourceAdapt) {
     value: function selectTextTrack(textTrack) {
       if (textTrack instanceof _playkitJs.TextTrack && !textTrack.active && this._videoElement.textTracks) {
         this._disableAllTextTracks();
-        this._videoElement.textTracks[textTrack.index].mode = 'showing';
+        this._videoElement.textTracks[textTrack.index].mode = 'hidden';
         HlsAdapter._logger.debug('Text track changed', textTrack);
         this._onTrackChanged(textTrack);
       }
@@ -36320,7 +38326,7 @@ var HlsAdapter = function (_BaseMediaSourceAdapt) {
     value: function _disableAllTextTracks() {
       var vidTextTracks = this._videoElement.textTracks;
       for (var i = 0; i < vidTextTracks.length; i++) {
-        vidTextTracks[i].mode = 'hidden';
+        vidTextTracks[i].mode = 'disabled';
       }
     }
 
@@ -52199,8 +54205,21 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
   }, {
     key: 'isSupported',
     value: function isSupported() {
+      /*
+      for browsers which don't have VTT cue we need to install a polyfill for both isBrowserSupported
+      check and also for playback, but we might not use Shaka so if we install the polyfill now just for browser support
+      check then uninstall it after, and call it again if we actually use DASH adapter for playback on init
+      this is in order to avoid collisions with other libs
+       */
+      var resetVttPolyfill = false;
+      if (!window.VTTCue) {
+        resetVttPolyfill = true;
+      }
       _shakaPlayer2.default.polyfill.installAll();
       var isSupported = _shakaPlayer2.default.Player.isBrowserSupported();
+      if (resetVttPolyfill) {
+        window.VTTCue = undefined;
+      }
       DashAdapter._logger.debug('isSupported:' + isSupported);
       return isSupported;
     }
@@ -52233,10 +54252,12 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
   _createClass(DashAdapter, [{
     key: '_init',
     value: function _init() {
+      //Need to call this again cause we are uninstalling the VTTCue polyfill to avoid collisions with other libs
+      _shakaPlayer2.default.polyfill.installAll();
       this._shaka = new _shakaPlayer2.default.Player(this._videoElement);
       this._maybeSetDrmConfig();
       this._shaka.configure(this._config);
-      this._shaka.setTextTrackVisibility(true);
+      this._shaka.setTextTrackVisibility(false);
       this._addBindings();
     }
 
@@ -58940,7 +60961,7 @@ function setup(targetId, options) {
   var userPlayerConfig = (0, _setupHelpers.extractPlayerConfig)(options);
   var userProvidersConfig = (0, _setupHelpers.extractProvidersConfig)(options);
   var containerId = (0, _setupHelpers.createKalturaPlayerContainer)(targetId);
-  (0, _setupHelpers.checkNativeHlsSupport)(userPlayerConfig);
+  (0, _setupHelpers.setDefaultPlayerConfig)(userPlayerConfig);
   (0, _pluginsConfig.evaluatePluginsConfig)(userPlayerConfig);
   (0, _setupHelpers.setStorageConfig)(options.disableUserCache, userPlayerConfig);
   var player = (0, _playkitJs.loadPlayer)(userPlayerConfig);
@@ -58998,7 +61019,7 @@ var KalturaPlayer = function () {
     this._player = player;
     this._logger = _logger2.default.getLogger('KalturaPlayer' + _playkitJs.Utils.Generator.uniqueId(5));
     this._uiManager = new _playkitJsUi2.default(this._player, { targetId: targetId });
-    this._provider = new _ovpProvider2.default("0.6.1", config.partnerId, config.ks, config.env);
+    this._provider = new _ovpProvider2.default("0.7.0", config.partnerId, config.ks, config.env);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -59128,7 +61149,7 @@ function addReferrer(source) {
 function addClientTag(source) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     var delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + "0.6.1";
+    source.url += delimiter + CLIENT_TAG + "0.7.0";
   }
 }
 
