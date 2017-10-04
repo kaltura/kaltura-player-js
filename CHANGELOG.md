@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.1"></a>
+## [0.7.1](https://github.com/kaltura/kaltura-player-js/compare/v0.7.0...v0.7.1) (2017-10-04)
+
+
+### Bug Fixes
+
+* **FEC-7032, FEC-7034:** update playkit-js-*, shaka & hls.js versions ([#41](https://github.com/kaltura/kaltura-player-js/issues/41)) ([1f9d925](https://github.com/kaltura/kaltura-player-js/commit/1f9d925))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/kaltura/kaltura-player-js/compare/v0.6.1...v0.7.0) (2017-10-02)
 
