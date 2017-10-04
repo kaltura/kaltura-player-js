@@ -5113,9 +5113,9 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-shaka-player@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.2.0.tgz#3e727f1c10046390245074bccfa6df04566f1321"
+shaka-player@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.2.2.tgz#9f0d234999486892be4eff90911498d0d735e316"
 
 shebang-command@^1.2.0:
   version "1.2.0"
