@@ -83,7 +83,7 @@
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v1.3.1",
     "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.4.0",
     "playkit-js-youbora": "https://github.com/kaltura/playkit-js-youbora.git#v0.1.2",
-    "shaka-player": "2.2.0"
+    "shaka-player": "2.2.2"
   },
   "repository": {
     "type": "git",
