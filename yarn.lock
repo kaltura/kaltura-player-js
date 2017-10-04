@@ -2759,9 +2759,9 @@ he@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hls.js@^0.8.1:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.3.tgz#064dbf1ba224c46a1c7b872914f3832e7aad9acc"
+hls.js@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.4.tgz#4cc31e66f4c6ccd3b686ce2fbbe2d9be20de04b9"
   dependencies:
     url-toolkit "^2.0.1"
 
