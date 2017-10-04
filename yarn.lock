@@ -2759,9 +2759,9 @@ he@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hls.js@^0.8.1:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.3.tgz#064dbf1ba224c46a1c7b872914f3832e7aad9acc"
+hls.js@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.4.tgz#4cc31e66f4c6ccd3b686ce2fbbe2d9be20de04b9"
   dependencies:
     url-toolkit "^2.0.1"
 
@@ -4260,17 +4260,17 @@ pkg-dir@^1.0.0:
   dependencies:
     find-up "^1.0.0"
 
-"playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#v1.2.0":
-  version "1.2.0"
-  resolved "https://github.com/kaltura/playkit-js-dash.git#9de91df88a4aa0c92ad6b24d59593b22d8b3a992"
+"playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#v1.2.1":
+  version "1.2.1"
+  resolved "https://github.com/kaltura/playkit-js-dash.git#59e041b40de2a9cc62549ef92cf52a9ed7b78d4a"
 
-"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.2.0":
-  version "1.2.0"
-  resolved "https://github.com/kaltura/playkit-js-hls.git#55e0765e84a55975a652bead78acfd97148fd91b"
+"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.2.1":
+  version "1.2.1"
+  resolved "https://github.com/kaltura/playkit-js-hls.git#1546848c55e10be6d3a21df6b8b2ac880ecf74ee"
 
-"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.1.5":
-  version "0.1.5"
-  resolved "https://github.com/kaltura/playkit-js-ima.git#a558692749f72691c4d03924eee763f9dff4075f"
+"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.1.6":
+  version "0.1.6"
+  resolved "https://github.com/kaltura/playkit-js-ima.git#2a2948c9ef53e6abd29fd0acf3b0894738cb6d23"
   dependencies:
     javascript-state-machine "^3.0.1"
 
@@ -4284,9 +4284,9 @@ pkg-dir@^1.0.0:
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.4.0":
-  version "0.4.0"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#66a797a9c0d2abebd488cfad3e1078c91988703f"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.4.1":
+  version "0.4.1"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#461d45624cf6c90965135718951cc86c52ebce25"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -5113,9 +5113,9 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-shaka-player@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.2.0.tgz#3e727f1c10046390245074bccfa6df04566f1321"
+shaka-player@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.2.2.tgz#9f0d234999486892be4eff90911498d0d735e316"
 
 shebang-command@^1.2.0:
   version "1.2.0"
