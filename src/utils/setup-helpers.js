@@ -99,10 +99,11 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
  * @param {Object} playerConfig - the player config
  * @returns {void}
  */
-function setDefaultPlayerConfig(playerConfig: Object): void{
+function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
 }
+
 /**
  * Sets config option for native HLS playback
  * @param {Object} playerConfig - the player config
@@ -149,7 +150,7 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
  */
 function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void {
   if (!disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    Utils.Object.mergeDeep(playerConfig, StorageManager.getStorage());
+    Utils.Object.mergeDeep(StorageManager.getStorage(), playerConfig);
   }
 }
 
@@ -168,7 +169,7 @@ function applyStorageSupport(player: any): void {
  * Returns true if user agent indicate that browser is Safari
  * @returns {boolean} - if browser is Safari
  */
-function isSafari(): boolean{
+function isSafari(): boolean {
   return Env.browser.name.includes("Safari");
 }
 
@@ -176,7 +177,7 @@ function isSafari(): boolean{
  * Returns true if user agent indicate that browser is Chrome on iOS
  * @returns {boolean} - if browser is Chrome on iOS
  */
-function isIos(): boolean{
+function isIos(): boolean {
   return (Env.os.name === "iOS");
 }
 
