@@ -22,9 +22,9 @@
     "flow": "flow check",
     "eslint:flow:test": "npm run eslint && npm run flow && npm run test",
     "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)",
-    "playkit-dev:start": "platykit-dev start",
+    "playkit-dev:start": "playkit-dev start",
     "playkit-dev:stop": "playkit-dev stop",
-    "playkit-rel:start": "playkit-rel start"
+    "playkit-rel": "playkit-rel start"
   },
   "envManager": {
     "devMode": {},
