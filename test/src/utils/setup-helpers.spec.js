@@ -1,5 +1,6 @@
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 import {ValidationErrorType} from '../../../src/utils/validation-error'
+import StorageManager from '../../../src/storage/storage-manager'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -9,7 +10,8 @@ import {
   addKalturaPoster,
   checkNativeHlsSupport,
   isSafari,
-  isIos
+  isIos,
+  setStorageConfig
 } from '../../../src/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -331,5 +333,53 @@ describe('checkNativeHlsSupport', function () {
         }
       });
     }
+  });
+});
+
+describe('setStorageConfig', function () {
+  let sandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it('should merge the player and storage config with priority to the player config', function () {
+    let playerConfig = {
+      playback: {
+        textLanguage: 'ita'
+      }
+    };
+    let storageConfig = {
+      playback: {
+        textLanguage: 'eng',
+        audioLanguage: 'fra'
+      }
+    };
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
+    sandbox.stub(StorageManager, 'hasStorage', () => true);
+    sandbox.stub(StorageManager, 'getStorage', () => storageConfig);
+    setStorageConfig(false, playerConfig);
+    playerConfig.playback.textLanguage.should.equal('ita');
+    playerConfig.playback.audioLanguage.should.equal('fra');
+  });
+
+  it('should take the storage config in case no player config', function () {
+    let playerConfig = {};
+    let storageConfig = {
+      playback: {
+        textLanguage: 'eng',
+        audioLanguage: 'fra'
+      }
+    };
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
+    sandbox.stub(StorageManager, 'hasStorage', () => true);
+    sandbox.stub(StorageManager, 'getStorage', () => storageConfig);
+    setStorageConfig(false, playerConfig);
+    playerConfig.playback.textLanguage.should.equal('eng');
+    playerConfig.playback.audioLanguage.should.equal('fra');
   });
 });

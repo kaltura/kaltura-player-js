@@ -150,7 +150,9 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
  */
 function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void {
   if (!disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    Utils.Object.mergeDeep(StorageManager.getStorage(), playerConfig);
+    const playerStorageConfig = {};
+    Utils.Object.mergeDeep(playerStorageConfig, StorageManager.getStorage(), playerConfig);
+    Utils.Object.mergeDeep(playerConfig, playerStorageConfig);
   }
 }
 
