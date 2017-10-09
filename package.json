@@ -21,7 +21,14 @@
     "eslint": "eslint . --color",
     "flow": "flow check",
     "eslint:flow:test": "npm run eslint && npm run flow && npm run test",
-    "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"
+    "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)",
+    "playkit-dev:start": "playkit-dev start",
+    "playkit-dev:stop": "playkit-dev stop",
+    "playkit-rel": "playkit-rel start"
+  },
+  "envManager": {
+    "devMode": {},
+    "releaseMode": []
   },
   "standard-version": {
     "scripts": {
@@ -61,6 +68,7 @@
     "karma-webpack": "^2.0.2",
     "mocha": "^3.2.0",
     "mocha-cli": "^1.0.1",
+    "playkit-js-env-manager": "https://github.com/kaltura/playkit-js-env-manager.git#v3.0.0",
     "pre-push": "^0.1.1",
     "sinon": "^2.0.0",
     "sinon-chai": "^2.8.0",
