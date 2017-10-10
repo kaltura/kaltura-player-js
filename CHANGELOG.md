@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/kaltura/kaltura-player-js/compare/v0.7.1...v0.8.0) (2017-10-10)
+
+
+### Bug Fixes
+
+* **FEC-7226, FEC-7243:** player config stronger then storage config ([#43](https://github.com/kaltura/kaltura-player-js/issues/43)) ([0fb9525](https://github.com/kaltura/kaltura-player-js/commit/0fb9525))
+
+
+### Features
+
+* upgrade playkit-js and ui libs ([8c4c1d1](https://github.com/kaltura/kaltura-player-js/commit/8c4c1d1))
+
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/kaltura/kaltura-player-js/compare/v0.7.0...v0.7.1) (2017-10-04)
 
