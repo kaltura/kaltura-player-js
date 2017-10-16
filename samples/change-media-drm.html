@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>Title</title>
+  <style>
+    body {
+      background-color: #212121;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+
+    #player-placeholder-container {
+      margin: auto;
+      max-width: 854px;
+      position: relative;
+    }
+
+    #player-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.5%;
+      background-color: #000;
+    }
+  </style>
+  <script src="./kaltura-player.js" type="text/javascript"></script>
+</head>
+<body>
+<button onclick="changeMediaHls()">Change Media -> Lead with Hls</button>
+<button onclick="changeMediaDash()">Change Media -> Lead with Dash</button>
+<div id="player-placeholder-container">
+  <div id="player-placeholder"></div>
+</div>
+<script>
+  var config = {
+    partnerId: 4171,
+    env: {
+      baseUrl: "http://qa-apache-php7.dev.kaltura.com/",
+      beUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+    }
+  };
+  try {
+    var kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
+    kalturaPlayer.loadMedia('0_4s6xvtx3');
+
+    kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_STARTED, () => {
+      console.log("TEST: CHANGE_SOURCE_STARTED");
+    });
+
+    kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
+      console.log("TEST: CHANGE_SOURCE_ENDED");
+    });
+  } catch (e) {
+    console.error(e.message)
+  }
+
+  function changeMediaHls() {
+    kalturaPlayer.configure({
+      playback: {
+        autoplay: true,
+        streamPriority: [{
+          engine: "html5",
+          format: "hls",
+        }, {
+          engine: "html5",
+          format: "dash"
+        }]
+      }
+    });
+    kalturaPlayer.loadMedia('0_4s6xvtx3').then(() => {
+      kalturaPlayer.ready().then(() => {
+        console.log("TEST: ready HLS");
+      });
+    });
+  }
+
+  function changeMediaDash() {
+    kalturaPlayer.configure({
+      playback: {
+        autoplay: true,
+        streamPriority: [{
+          engine: "html5",
+          format: "dash"
+        },{
+          engine: "html5",
+          format: "hls"
+        }]
+      }
+    });
+    kalturaPlayer.loadMedia('0_2jiaa9tb').then(() => {
+      kalturaPlayer.ready().then(() => {
+        console.log("TEST: ready DASH");
+      });
+    });
+  }
+</script>
+</body>
+</html>
