@@ -1,6 +1,7 @@
 // @flow
 import StorageWrapper from './storage-wrapper'
 import LoggerFactory from '../utils/logger'
+import {Utils, TextStyle} from 'playkit-js'
 
 export default class StorageManager {
   static StorageKeys = [
@@ -50,6 +51,20 @@ export default class StorageManager {
   }
 
   /**
+   * Sets the player text style from storage.
+   * @param {any} player - The Kaltura player.
+   * @static
+   * @public
+   * @returns {void}
+   */
+  static setPlayerTextStyle(player: Player): void {
+    const textStyle = StorageManager.getStorage().textStyle;
+    if (textStyle) {
+      player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyle);
+    }
+  }
+
+  /**
    * Checks if we have previous storage.
    * @public
    * @static
@@ -67,12 +82,22 @@ export default class StorageManager {
   }
 
   /**
+   * Gets the storage.
+   * @public
+   * @static
+   * @return {Object} - The storage.
+   */
+  static getStorage(): Object {
+    return StorageManager._getExistingValues();
+  }
+
+  /**
    * Gets the storage in the structure of the player configuration.
    * @public
    * @static
    * @return {Object} - Partial storageable player configuration.
    */
-  static getStorage(): Object {
+  static getStorageConfig(): Object {
     let values = StorageManager._getExistingValues();
     let storageConfig = StorageManager._buildStorageConfig(values);
     this._logger.debug('Gets storage config', storageConfig);
@@ -92,8 +117,10 @@ export default class StorageManager {
   }
 
   static _buildStorageConfig(values: Object): Object {
+    const storageConfig = Utils.Object.mergeDeep({}, values);
+    delete storageConfig.textStyle;
     return {
-      playback: values
+      playback: storageConfig
     };
   }
 }

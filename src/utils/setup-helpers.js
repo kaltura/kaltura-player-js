@@ -151,7 +151,7 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
 function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void {
   if (!disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
     const playerStorageConfig = {};
-    Utils.Object.mergeDeep(playerStorageConfig, StorageManager.getStorage(), playerConfig);
+    Utils.Object.mergeDeep(playerStorageConfig, StorageManager.getStorageConfig(), playerConfig);
     Utils.Object.mergeDeep(playerConfig, playerStorageConfig);
   }
 }
@@ -164,6 +164,17 @@ function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void
 function applyStorageSupport(player: any): void {
   if (StorageManager.isLocalStorageAvailable()) {
     StorageManager.attach(player);
+  }
+}
+
+/**
+ * Sets the player text style from storage.
+ * @param {any} player - The Kaltura player.
+ * @returns {void}
+ */
+function setStorageTextStyle(player: any): void {
+  if (StorageManager.isLocalStorageAvailable()) {
+    StorageManager.setPlayerTextStyle(player);
   }
 }
 
@@ -186,6 +197,7 @@ function isIos(): boolean {
 export {
   setStorageConfig,
   applyStorageSupport,
+  setStorageTextStyle,
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
