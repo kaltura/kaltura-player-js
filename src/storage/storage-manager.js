@@ -56,9 +56,9 @@ export default class StorageManager {
    * @returns {void}
    */
   static setPlayerTextStyle(player: Player): void {
-    const textStyle = StorageWrapper.getItem('textStyle');
-    if (textStyle) {
-      player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyle);
+    const textStyleObj = StorageWrapper.getItem('textStyle');
+    if (textStyleObj) {
+      player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
     }
   }
 
