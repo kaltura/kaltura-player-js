@@ -38,9 +38,9 @@ export default class StorageManager {
       const textTrack = event.payload.selectedTextTrack;
       StorageWrapper.setItem('textLanguage', textTrack.language);
     });
-    player.addEventListener(player.Event.TEXT_STYLE_CHANGED, (event) => {
+    player.addEventListener(player.Event.TEXT_STYLE_CHANGED, () => {
       try {
-        const textStyle = JSON.stringify(event.payload.textStyle);
+        const textStyle = JSON.stringify(player.textStyle);
         StorageWrapper.setItem('textStyle', textStyle);
       } catch (e) {
         this._logger.error(e.message);
