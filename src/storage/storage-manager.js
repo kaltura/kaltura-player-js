@@ -12,7 +12,6 @@ export default class StorageManager {
     'textStyle'
   ];
   static _logger: any = LoggerFactory.getLogger('StorageManager');
-  static _player: Player;
 
   static isLocalStorageAvailable(): boolean {
     return StorageWrapper.isLocalStorageAvailable();
@@ -27,20 +26,19 @@ export default class StorageManager {
    */
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
-    StorageManager._player = player;
-    StorageManager._player.addEventListener(player.Event.VOLUME_CHANGE, () => {
-      StorageWrapper.setItem('muted', StorageManager._player.muted);
-      StorageWrapper.setItem('volume', StorageManager._player.volume);
+    player.addEventListener(player.Event.VOLUME_CHANGE, () => {
+      StorageWrapper.setItem('muted', player.muted);
+      StorageWrapper.setItem('volume', player.volume);
     });
-    StorageManager._player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
+    player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
       const audioTrack = event.payload.selectedAudioTrack;
       StorageWrapper.setItem('audioLanguage', audioTrack.language);
     });
-    StorageManager._player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
+    player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
       const textTrack = event.payload.selectedTextTrack;
       StorageWrapper.setItem('textLanguage', textTrack.language);
     });
-    StorageManager._player.addEventListener(player.Event.TEXT_STYLE_CHANGED, (event) => {
+    player.addEventListener(player.Event.TEXT_STYLE_CHANGED, (event) => {
       try {
         const textStyle = JSON.stringify(event.payload.textStyle);
         StorageWrapper.setItem('textStyle', textStyle);
@@ -58,7 +56,7 @@ export default class StorageManager {
    * @returns {void}
    */
   static setPlayerTextStyle(player: Player): void {
-    const textStyle = StorageManager.getStorage().textStyle;
+    const textStyle = StorageWrapper.getItem('textStyle');
     if (textStyle) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyle);
     }
@@ -79,16 +77,6 @@ export default class StorageManager {
       this._logger.debug('No storage found');
     }
     return hasStorage;
-  }
-
-  /**
-   * Gets the storage.
-   * @public
-   * @static
-   * @return {Object} - The storage.
-   */
-  static getStorage(): Object {
-    return StorageManager._getExistingValues();
   }
 
   /**
