@@ -6,8 +6,9 @@ export default class StorageManager {
   static StorageKeys = [
     'muted',
     'volume',
+    'audioLanguage',
     'textLanguage',
-    'audioLanguage'
+    'textStyle'
   ];
   static _logger: any = LoggerFactory.getLogger('StorageManager');
   static _player: Player;
@@ -37,6 +38,14 @@ export default class StorageManager {
     StorageManager._player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
       const textTrack = event.payload.selectedTextTrack;
       StorageWrapper.setItem('textLanguage', textTrack.language);
+    });
+    StorageManager._player.addEventListener(player.Event.TEXT_STYLE_CHANGED, (event) => {
+      try {
+        const textStyle = JSON.stringify(event.payload.textStyle);
+        StorageWrapper.setItem('textStyle', textStyle);
+      } catch (e) {
+        this._logger.error(e.message);
+      }
     });
   }
 
