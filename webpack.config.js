@@ -19,9 +19,9 @@ if (PROD) {
 
 module.exports = {
   context: __dirname + "/src",
-  entry: PROD ? {"kaltura-player.min": "index.js"} : {"kaltura-player": "index.js"},
+  entry: PROD ? {"kaltura-player.min": "index.js", "kaltura-player-ott.min": "index-ott.js"} : {"kaltura-player": "index.js", "kaltura-player-ott": "index-ott.js"},
   output: {
-    path: __dirname + "/dist",
+    path: path.join(__dirname, "dist"),
     filename: '[name].js',
     library: 'KalturaPlayer',
     libraryTarget: 'umd',
