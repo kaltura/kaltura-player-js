@@ -60,7 +60,7 @@ export default class StorageManager {
    * Gets the player text style from storage.
    * @static
    * @public
-   * @returns {?Object} - The stored text styyle object
+   * @returns {?Object} - The stored text style object
    */
   static getPlayerTextStyle(): ?Object {
     return StorageWrapper.getItem(TEXT_STYLE);
