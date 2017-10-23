@@ -41,7 +41,7 @@ describe('StorageManager', function () {
       return 1;
     });
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
-    StorageManager.getStorage().should.deep.equal({
+    StorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 1
       }
@@ -57,7 +57,7 @@ describe('StorageManager', function () {
     getItemStub.withArgs('muted').returns(false);
     getItemStub.withArgs('textLanguage').returns('heb');
     getItemStub.withArgs('audioLanguage').returns('eng');
-    StorageManager.getStorage().should.deep.equal({
+    StorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 0.5,
         muted: false,
@@ -74,20 +74,24 @@ describe('StorageManager', function () {
     let fakePlayer = {
       listeners: [],
       Event: {
+        MUTE_CHANGE: 'mutechange',
         VOLUME_CHANGE: 'volumechange',
         AUDIO_TRACK_CHANGED: 'audiotrackchanged',
-        TEXT_TRACK_CHANGED: 'texttrackchanged'
+        TEXT_TRACK_CHANGED: 'texttrackchanged',
+        TEXT_STYLE_CHANGED: 'textstylechanged'
       },
       addEventListener: function (eventName) {
         this.listeners.push(eventName);
       }
     };
     StorageManager.attach(fakePlayer);
-    fakePlayer.listeners.should.have.length.of(3);
+    fakePlayer.listeners.should.have.length.of(5);
     fakePlayer.listeners.should.deep.equal([
+      'mutechange',
       'volumechange',
       'audiotrackchanged',
-      'texttrackchanged'
+      'texttrackchanged',
+      'textstylechanged'
     ]);
   });
 });

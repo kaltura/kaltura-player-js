@@ -48,10 +48,12 @@ describe('setup', function () {
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia(providerConfig.entryId)
       .then(() => {
+        kalturaPlayer.ready().then(()=>{
+          let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
+          sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
+          done();
+        });
         kalturaPlayer.load();
-        let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
-        sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
-        done();
       });
   });
 });
