@@ -144,15 +144,12 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
 
 /**
  * Sets the storage config on the player config if certain conditions are met.
- * @param {boolean} disableUserCache - Whether to disable the cache support.
  * @param {Object} playerConfig - The player configuration.
  * @returns {void}
  */
-function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void {
-  if (!disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    const playerStorageConfig = {};
-    Utils.Object.mergeDeep(playerStorageConfig, StorageManager.getStorageConfig(), playerConfig);
-    Utils.Object.mergeDeep(playerConfig, playerStorageConfig);
+function setStorageConfig(playerConfig: Object): void {
+  if (!playerConfig.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
+    Utils.Object.mergeDeep(playerConfig, StorageManager.getStorageConfig());
   }
 }
 

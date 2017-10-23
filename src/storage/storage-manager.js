@@ -3,13 +3,19 @@ import StorageWrapper from './storage-wrapper'
 import LoggerFactory from '../utils/logger'
 import {Utils, TextStyle} from 'playkit-js'
 
+const MUTED = 'muted';
+const VOLUME = 'volume';
+const AUDIO_LANG = 'audioLanguage';
+const TEXT_LANG = 'textLanguage';
+const TEXT_STYLE = 'textStyle';
+
 export default class StorageManager {
   static StorageKeys = [
-    'muted',
-    'volume',
-    'audioLanguage',
-    'textLanguage',
-    'textStyle'
+    MUTED,
+    VOLUME,
+    AUDIO_LANG,
+    TEXT_LANG,
+    TEXT_STYLE
   ];
   static _logger: any = LoggerFactory.getLogger('StorageManager');
 
@@ -26,22 +32,24 @@ export default class StorageManager {
    */
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
+    player.addEventListener(player.Event.MUTE_CHANGE, () => {
+      StorageWrapper.setItem(MUTED, player.muted);
+    });
     player.addEventListener(player.Event.VOLUME_CHANGE, () => {
-      StorageWrapper.setItem('muted', player.muted);
-      StorageWrapper.setItem('volume', player.volume);
+      StorageWrapper.setItem(VOLUME, player.volume);
     });
     player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
       const audioTrack = event.payload.selectedAudioTrack;
-      StorageWrapper.setItem('audioLanguage', audioTrack.language);
+      StorageWrapper.setItem(AUDIO_LANG, audioTrack.language);
     });
     player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
       const textTrack = event.payload.selectedTextTrack;
-      StorageWrapper.setItem('textLanguage', textTrack.language);
+      StorageWrapper.setItem(TEXT_LANG, textTrack.language);
     });
     player.addEventListener(player.Event.TEXT_STYLE_CHANGED, () => {
       try {
         const textStyle = JSON.stringify(player.textStyle);
-        StorageWrapper.setItem('textStyle', textStyle);
+        StorageWrapper.setItem(TEXT_STYLE, textStyle);
       } catch (e) {
         this._logger.error(e.message);
       }
@@ -56,7 +64,7 @@ export default class StorageManager {
    * @returns {void}
    */
   static setPlayerTextStyle(player: Player): void {
-    const textStyleObj = StorageWrapper.getItem('textStyle');
+    const textStyleObj = StorageWrapper.getItem(TEXT_STYLE);
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
     }
