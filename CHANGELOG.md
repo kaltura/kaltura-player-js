@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/kaltura/kaltura-player-js/compare/v0.9.0...v0.10.0) (2017-10-23)
+
+
+### Features
+
+* upgrade playkit-js-* libs ([7a17570](https://github.com/kaltura/kaltura-player-js/commit/7a17570))
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/kaltura/kaltura-player-js/compare/v0.8.0...v0.9.0) (2017-10-16)
 
