@@ -1,5 +1,5 @@
 // @flow
-import {Env, Utils} from 'playkit-js'
+import {Env, Utils, TextStyle} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 
@@ -171,7 +171,10 @@ function applyStorageSupport(player: any): void {
  */
 function setStorageTextStyle(player: any): void {
   if (StorageManager.isLocalStorageAvailable()) {
-    StorageManager.setPlayerTextStyle(player);
+    const textStyleObj = StorageManager.getPlayerTextStyle();
+    if (textStyleObj) {
+      player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
+    }
   }
 }
 

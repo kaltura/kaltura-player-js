@@ -1,7 +1,7 @@
 // @flow
 import StorageWrapper from './storage-wrapper'
 import LoggerFactory from '../utils/logger'
-import {Utils, TextStyle} from 'playkit-js'
+import {Utils} from 'playkit-js'
 
 const MUTED = 'muted';
 const VOLUME = 'volume';
@@ -57,17 +57,13 @@ export default class StorageManager {
   }
 
   /**
-   * Sets the player text style from storage.
-   * @param {any} player - The Kaltura player.
+   * Gets the player text style from storage.
    * @static
    * @public
-   * @returns {void}
+   * @returns {?Object} - The stored text styyle object
    */
-  static setPlayerTextStyle(player: Player): void {
-    const textStyleObj = StorageWrapper.getItem(TEXT_STYLE);
-    if (textStyleObj) {
-      player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
-    }
+  static getPlayerTextStyle(): ?Object {
+    return StorageWrapper.getItem(TEXT_STYLE);
   }
 
   /**
