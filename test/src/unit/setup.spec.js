@@ -1,4 +1,4 @@
-import {setup} from '../../src/setup'
+import {setup} from '../../../src/setup'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 
 const targetId = 'player-placeholder_setup.spec';
@@ -13,8 +13,12 @@ describe('setup', function () {
 
   beforeEach(function () {
     providerConfig = {
-      partnerId: 2196781,
-      entryId: '1_h14v9eug'
+      partnerId: 4171,
+      entryId: '0_2jiaa9tb',
+      env: {
+        baseUrl: "http://qa-apache-php7.dev.kaltura.com/",
+        beUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+      }
     };
   });
 
