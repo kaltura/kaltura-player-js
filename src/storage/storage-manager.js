@@ -3,20 +3,15 @@ import StorageWrapper from './storage-wrapper'
 import LoggerFactory from '../utils/logger'
 import {Utils} from 'playkit-js'
 
-const MUTED = 'muted';
-const VOLUME = 'volume';
-const AUDIO_LANG = 'audioLanguage';
-const TEXT_LANG = 'textLanguage';
-const TEXT_STYLE = 'textStyle';
-
 export default class StorageManager {
-  static StorageKeys = [
-    MUTED,
-    VOLUME,
-    AUDIO_LANG,
-    TEXT_LANG,
-    TEXT_STYLE
-  ];
+  static StorageKeys: { [key: string]: string } = {
+    MUTED: 'muted',
+    VOLUME: 'volume',
+    AUDIO_LANG: 'audioLanguage',
+    TEXT_LANG: 'textLanguage',
+    TEXT_STYLE: 'textStyle'
+  };
+
   static _logger: any = LoggerFactory.getLogger('StorageManager');
 
   static isLocalStorageAvailable(): boolean {
@@ -33,23 +28,23 @@ export default class StorageManager {
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
     player.addEventListener(player.Event.MUTE_CHANGE, () => {
-      StorageWrapper.setItem(MUTED, player.muted);
+      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
     });
     player.addEventListener(player.Event.VOLUME_CHANGE, () => {
-      StorageWrapper.setItem(VOLUME, player.volume);
+      StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
     });
     player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
       const audioTrack = event.payload.selectedAudioTrack;
-      StorageWrapper.setItem(AUDIO_LANG, audioTrack.language);
+      StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
     player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
       const textTrack = event.payload.selectedTextTrack;
-      StorageWrapper.setItem(TEXT_LANG, textTrack.language);
+      StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
     });
     player.addEventListener(player.Event.TEXT_STYLE_CHANGED, () => {
       try {
         const textStyle = JSON.stringify(player.textStyle);
-        StorageWrapper.setItem(TEXT_STYLE, textStyle);
+        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
       } catch (e) {
         this._logger.error(e.message);
       }
@@ -63,7 +58,7 @@ export default class StorageManager {
    * @returns {?Object} - The stored text style object
    */
   static getPlayerTextStyle(): ?Object {
-    return StorageWrapper.getItem(TEXT_STYLE);
+    return StorageWrapper.getItem(StorageManager.StorageKeys.TEXT_STYLE);
   }
 
   /**
@@ -98,13 +93,13 @@ export default class StorageManager {
 
   static _getExistingValues(): Object {
     let obj = {};
-    for (let i = 0; i < StorageManager.StorageKeys.length; i++) {
-      let key = StorageManager.StorageKeys[i];
-      let value = StorageWrapper.getItem(key);
-      if (value != null) {
-        obj[key] = value;
+    Object.keys(StorageManager.StorageKeys).forEach((key)=>{
+      let value = StorageManager.StorageKeys[key];
+      let item = StorageWrapper.getItem(value);
+      if (item != null) {
+        obj[value] = item;
       }
-    }
+    });
     return obj;
   }
 
