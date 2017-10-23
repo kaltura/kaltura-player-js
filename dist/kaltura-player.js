@@ -1687,6 +1687,10 @@ var CUSTOM_EVENTS = {
    */
   SOURCE_SELECTED: 'sourceselected',
   /**
+   * Fires when the text track style has changed
+   */
+  TEXT_STYLE_CHANGED: 'textstylechanged',
+  /**
    * Fired when ad data is available.
    */
   AD_LOADED: 'adloaded',
@@ -2169,6 +2173,13 @@ var AUTO = 'auto';
  *  @const
  */
 var OFF = 'off';
+
+/**
+ *  The duration offset, for seeking to duration safety.
+ *  @type {number}
+ *  @const
+ */
+var DURATION_OFFSET = 0.1;
 
 /**
  * The HTML5 player class.
@@ -3355,8 +3366,8 @@ var Player = function (_FakeEventTarget) {
           if (to < 0) {
             boundedTo = 0;
           }
-          if (boundedTo > this._engine.duration) {
-            boundedTo = this._engine.duration;
+          if (boundedTo > this._engine.duration - DURATION_OFFSET) {
+            boundedTo = this._engine.duration - DURATION_OFFSET;
           }
           this._engine.currentTime = boundedTo;
         }
@@ -3657,6 +3668,7 @@ var Player = function (_FakeEventTarget) {
           sheet.insertRule('#' + this._playerId + ' .' + SUBTITLES_CLASS_NAME + ' > div > div > div { ' + style.toCSS() + ' }', 0);
         }
         this._textStyle = style;
+        this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TEXT_STYLE_CHANGED));
       } catch (e) {
         Player._logger.error(e.message);
       }
@@ -6687,7 +6699,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.12.0", "color: #98ff98;  font-size: large");
+_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.13.0", "color: #98ff98;  font-size: large");
 
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/playkit-js", "color: #98ff98;");
 
@@ -6723,7 +6735,7 @@ exports.Utils = Utils;
 
 // Export version
 
-exports.VERSION = "0.12.0";
+exports.VERSION = "0.13.0";
 
 // Export player name
 
@@ -8770,9 +8782,9 @@ var Html5 = function (_FakeEventTarget) {
           var cue = _step.value;
 
           //Normalize cues to be of type of VTT model
-          if (cue instanceof window.VTTCue) {
+          if (window.VTTCue && cue instanceof window.VTTCue) {
             activeCues.push(cue);
-          } else if (cue instanceof window.TextTrackCue) {
+          } else if (window.TextTrackCue && cue instanceof window.TextTrackCue) {
             activeCues.push(new _vttCue.Cue(cue.startTime, cue.endTime, cue.text));
           }
         }
@@ -10318,9 +10330,38 @@ var FairPlay = function (_BaseDrmProtocol) {
       FairPlay._logger.debug("License request loaded");
       var request = event.target;
       var keyText = request.responseText.trim();
-      var responseObj = JSON.parse(keyText);
-      var key = FairPlay._base64DecodeUint8Array(responseObj.ckc);
-      FairPlay._keySession.update(key);
+      var responseObj = {};
+      try {
+        responseObj = JSON.parse(keyText);
+      } catch (error) {
+        this._licenseRequestFailed();
+      }
+      var isValidResponse = this._validateResponse(responseObj);
+      if (isValidResponse.valid) {
+        var key = FairPlay._base64DecodeUint8Array(responseObj.ckc);
+        FairPlay._keySession.update(key);
+      } else {
+        this._licenseRequestFailed(isValidResponse);
+      }
+    }
+  }, {
+    key: '_validateResponse',
+    value: function _validateResponse(responseObj) {
+      if (responseObj.message && responseObj.message.indexOf("error") > 0 || responseObj.reference === null || responseObj.status_code === 500) {
+        return { //todo: create & edit an error object
+          valid: false,
+          details: "internal server error" // would be ERROR.INTERNAL or something like that
+        };
+      } else if (responseObj.ckc === "") {
+        return {
+          valid: false,
+          details: "ckc is missing" // would be ERROR.MISSING_CKC or something like that
+        };
+      } else {
+        return {
+          valid: true
+        };
+      }
     }
   }, {
     key: '_licenseRequestFailed',
@@ -11283,7 +11324,7 @@ exports = module.exports = __webpack_require__(44)(undefined);
 
 
 // module
-exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n\n.playkit-subtitles {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n\n.playkit-subtitles > div > div {\n  -webkit-transition: 0.3s ease-in-out;\n  -moz-transition: 0.3s ease-in-out;\n  -o-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n", ""]);
+exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n\n.playkit-subtitles {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n\n", ""]);
 
 // exports
 
@@ -24065,234 +24106,272 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__row {\n  display: block; }\n  .kp__row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.kp__d-inline-block {\n  display: inline-block; }\n\n.kp__mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.kp__font-size-base {\n  font-size: 15px; }\n\n.kp__form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .kp__form-group.kp__has-error .kp__form-control {\n    border-color: #db1f26; }\n    .kp__form-group.kp__has-error .kp__form-control:focus {\n      border-color: #fff; }\n  .kp__form-group.kp__has-icon .kp__form-control {\n    padding-left: 34px; }\n  .kp__form-group .kp__icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.kp__form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .kp__form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .kp__form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .kp__form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .kp__form-control:focus + .kp__icon {\n      fill: #999; }\n\ntextarea.kp__form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.kp__checkbox {\n  font-size: 15px;\n  position: relative; }\n  .kp__checkbox input {\n    display: none; }\n  .kp__checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .kp__checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.kp__form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .kp__form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .kp__form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .kp__form-group-row .kp__dropdown {\n    float: right; }\n\n.kp__btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .kp__btn.kp__btn-block {\n    display: block; }\n  .kp__btn.kp__btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .kp__btn.kp__btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .kp__btn.kp__btn-branded {\n    background-color: #01ACCD; }\n    .kp__btn.kp__btn-branded:hover {\n      color: #fff; }\n\n.kp__btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes kp__openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.kp__dropdown {\n  position: relative;\n  font-size: 15px; }\n  .kp__dropdown.kp__active .kp__dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .kp__dropdown.kp__active .kp__dropdown-button .kp__icon {\n    transform: rotate(180deg); }\n  .kp__dropdown .kp__dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .kp__dropdown .kp__dropdown-button .kp__icon {\n      width: 16px;\n      height: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.kp__dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: kp__openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .kp__dropdown-menu.kp__top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .kp__dropdown-menu.kp__bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .kp__dropdown-menu.kp__right {\n    left: 0; }\n  .kp__dropdown-menu.kp__left {\n    right: 0; }\n  .kp__dropdown-menu .kp__dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .kp__dropdown-menu .kp__dropdown-menu-item:hover {\n      color: #fff; }\n    .kp__dropdown-menu .kp__dropdown-menu-item.kp__active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .kp__dropdown-menu .kp__dropdown-menu-item .kp__check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .kp__dropdown-menu .kp__dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.kp__tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.kp__player .kp__control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .kp__player .kp__control-button svg {\n    width: 32px;\n    height: 32px; }\n  .kp__player .kp__control-button.kp__active {\n    opacity: 1; }\n  .kp__player .kp__control-button.kp__control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.kp__player:not(.kp__touch) .kp__control-button:hover {\n  opacity: 1; }\n\n.kp__player:not(.kp__touch) .kp__control-button.kp__control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.kp__player .kp__control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.kp__player.kp__touch .kp__player .kp__control-button-container {\n  position: static; }\n\n.kp__player.kp__touch .kp__control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kp__kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.kp__player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .kp__player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .kp__player * {\n    box-sizing: border-box;\n    outline: none; }\n  .kp__player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .kp__player video {\n    width: 100%; }\n  .kp__player .kp__player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .kp__player .kp__player-gui input, .kp__player .kp__player-gui textarea {\n      font-family: sans-serif; }\n  .kp__player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .kp__player.kp__metadata-loaded .kp__player-gui,\n  .kp__player.kp__state-paused .kp__player-gui,\n  .kp__player.kp__overlay-active .kp__player-gui,\n  .kp__player.kp__menu-active .kp__player-gui {\n    opacity: 1; }\n\n.kp__player [id^=ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.kp__player:not(.kp__ad-break).kp__metadata-loaded.kp__hover [id^=ads-container],\n.kp__player:not(.kp__ad-break).kp__metadata-loaded.kp__state-paused [id^=ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\n.kp__player.kp__overlay-active .playkit-subtitles {\n  display: none; }\n\n.kp__player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.kp__player:not(.kp__overlay-active).kp__state-paused .playkit-subtitles,\n.kp__player:not(.kp__overlay-active).kp__hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.kp__video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes kp__openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.kp__overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: kp__openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .kp__overlay.kp__active {\n    display: block;\n    opacity: 1; }\n  .kp__overlay .kp__overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .kp__overlay .kp__title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .kp__overlay .kp__close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .kp__overlay .kp__close-overlay .kp__icon-close {\n      width: 24px;\n      height: 24px; }\n  .kp__overlay .kp__overlay-screen {\n    display: none; }\n    .kp__overlay .kp__overlay-screen.kp__active {\n      display: block; }\n\n.kp__player.kp__size-md .kp__overlay .kp__overlay-contents {\n  padding: 36px 20px; }\n\n.kp__player.kp__size-md .kp__overlay .kp__close-overlay {\n  top: 38px; }\n\n.kp__player.kp__size-md .kp__overlay .kp__title {\n  margin-bottom: 24px; }\n\n.kp__player.kp__size-sm .kp__overlay .kp__overlay-contents {\n  padding: 16px 24px; }\n\n.kp__player.kp__size-sm .kp__overlay .kp__close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.kp__player.kp__size-sm .kp__overlay .kp__title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes kp__openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes kp__closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.kp__player:not(.kp__touch) .kp__smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: kp__openSmartContainer 100ms ease-out forwards; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__leaving {\n    animation: kp__closeSmartContainer 100ms ease-out forwards; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .kp__player:not(.kp__touch) .kp__smart-container.kp__top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__right {\n    left: 0px; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__left {\n    right: 0px; }\n  .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item label {\n      float: left; }\n      .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item label .kp__label-icon {\n        display: none; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item .kp__dropdown, .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item select {\n      float: right; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item select {\n      text-align-last: right; }\n\n.kp__touch .kp__smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .kp__touch .kp__smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .kp__touch .kp__smart-container-item.kp__select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    fill: #fff; }\n    .kp__touch .kp__smart-container-item.kp__select-menu-item label .kp__label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .kp__touch .kp__smart-container-item.kp__select-menu-item .kp__dropdown, .kp__touch .kp__smart-container-item.kp__select-menu-item select {\n    float: right; }\n  .kp__touch .kp__smart-container-item.kp__select-menu-item select {\n    text-align-last: right; }\n\n.kp__overlay.kp__share-overlay .kp__share-icons {\n  margin: 60px 0; }\n  .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded:first-child {\n      margin-left: 0; }\n    .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded:last-child {\n      margin-right: 0; }\n    .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded.kp__facebook-share-btn {\n      background-color: #3B5998; }\n    .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded.kp__twitter-share-btn {\n      background-color: #1DA1F2; }\n    .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded.kp__google-plus-share-btn {\n      background-color: #DD4B39; }\n    .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded.kp__linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.kp__share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.kp__link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .kp__link-options-container .kp__copy-url-row {\n    display: flex; }\n    .kp__link-options-container .kp__copy-url-row .kp__input-copy-url {\n      margin: 0; }\n    .kp__link-options-container .kp__copy-url-row .kp__btn-copy-url {\n      margin-left: 16px; }\n      .kp__link-options-container .kp__copy-url-row .kp__btn-copy-url .kp__icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .kp__link-options-container .kp__copy-url-row .kp__btn-copy-url .kp__check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .kp__link-options-container .kp__copy-url-row .kp__btn-copy-url.kp__copied {\n        background-color: #009444; }\n        .kp__link-options-container .kp__copy-url-row .kp__btn-copy-url.kp__copied .kp__copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .kp__link-options-container .kp__copy-url-row .kp__btn-copy-url.kp__copied .kp__check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .kp__link-options-container .kp__video-start-options-row {\n    margin-top: 24px; }\n    .kp__link-options-container .kp__video-start-options-row .kp__checkbox {\n      margin-right: 15px; }\n    .kp__link-options-container .kp__video-start-options-row .kp__form-group {\n      margin: 0; }\n\n.kp__player:not(.kp__touch) .kp__overlay.kp__share-overlay .kp__share-icons .kp__btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.kp__player.kp__size-md .kp__overlay.kp__share-overlay .kp__share-icons {\n  margin: 40px 0; }\n\n.kp__player.kp__size-sm .kp__overlay.kp__share-overlay .kp__share-icons {\n  margin: 20px 0; }\n\n.kp__overlay.kp__cvaa-overlay .kp__sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .kp__overlay.kp__cvaa-overlay .kp__sample.kp__black-bg {\n    background-color: #000; }\n  .kp__overlay.kp__cvaa-overlay .kp__sample.kp__yellow-text {\n    color: #FAFF00; }\n  .kp__overlay.kp__cvaa-overlay .kp__sample .kp__active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .kp__overlay.kp__cvaa-overlay .kp__sample .kp__active-tick .kp__icon {\n      fill: #fff;\n      vertical-align: top; }\n  .kp__overlay.kp__cvaa-overlay .kp__sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.kp__overlay.kp__cvaa-overlay .kp__button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.kp__overlay.kp__cvaa-overlay .kp__custom-captions-applied {\n  margin-top: 50px; }\n\n.kp__overlay.kp__cvaa-overlay .kp__custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .kp__overlay.kp__cvaa-overlay .kp__custom-caption-form .kp__slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.kp__overlay.kp__cvaa-overlay .kp__preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.kp__player.kp__size-sm .kp__overlay.kp__cvaa-overlay .kp__sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .kp__player.kp__size-sm .kp__overlay.kp__cvaa-overlay .kp__sample:first-child {\n    margin-left: 0; }\n  .kp__player.kp__size-sm .kp__overlay.kp__cvaa-overlay .kp__sample:last-child {\n    margin-right: 0; }\n  .kp__player.kp__size-sm .kp__overlay.kp__cvaa-overlay .kp__sample.kp__custom {\n    width: auto;\n    padding: 0 10px; }\n\n.kp__player.kp__size-sm .kp__overlay.kp__cvaa-overlay .kp__button-save-cvaa,\n.kp__player.kp__size-sm .kp__overlay.kp__cvaa-overlay .kp__custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes kp__kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.kp__loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .kp__loading-backdrop.kp__show {\n    opacity: 1; }\n    .kp__loading-backdrop.kp__show .kp__spinner-container {\n      display: block; }\n  .kp__loading-backdrop .kp__spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.kp__spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kp__kaltura-spinner 2.5s infinite; }\n  .kp__spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .kp__spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .kp__spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .kp__spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .kp__spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .kp__spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .kp__spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .kp__spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .kp__spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.kp__control-button-container.kp__control-play-pause .kp__control-button {\n  transition: 400ms transform; }\n  .kp__control-button-container.kp__control-play-pause .kp__control-button .kp__icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .kp__control-button-container.kp__control-play-pause .kp__control-button .kp__icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .kp__control-button-container.kp__control-play-pause .kp__control-button.kp__is-playing {\n    transform: rotate(360deg); }\n    .kp__control-button-container.kp__control-play-pause .kp__control-button.kp__is-playing .kp__icon-pause {\n      opacity: 1;\n      display: block; }\n    .kp__control-button-container.kp__control-play-pause .kp__control-button.kp__is-playing .kp__icon-play {\n      opacity: 0;\n      display: none; }\n\n.kp__touch .kp__control-button-container.kp__control-play-pause {\n  display: none; }\n\n.kp__player.kp__size-sm .kp__control-button-container.kp__control-play-pause {\n  display: none; }\n\n.kp__control-button-container.kp__volume-control:hover .kp__volume-control-bar {\n  display: block !important; }\n\n.kp__control-button-container.kp__volume-control.kp__is-muted .kp__volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.kp__control-button-container.kp__volume-control.kp__is-muted .kp__volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.kp__control-button-container.kp__volume-control.kp__dragging-active .kp__volume-control-bar {\n  display: block; }\n\n.kp__control-button-container.kp__volume-control .kp__volume-waves {\n  transform: translateX(0px); }\n\n.kp__control-button-container.kp__volume-control .kp__volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.kp__control-button-container.kp__volume-control .kp__volume-waves, .kp__control-button-container.kp__volume-control .kp__volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.kp__control-button-container.kp__volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.kp__volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .kp__volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .kp__volume-control-bar .kp__bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .kp__volume-control-bar .kp__progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.kp__touch .kp__control-button-container.kp__volume-control:hover .kp__volume-control-bar {\n  display: none !important; }\n\n.kp__control-button-container.kp__control-fullscreen .kp__control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .kp__control-button-container.kp__control-fullscreen .kp__control-button .kp__icon-minimize {\n    display: none; }\n  .kp__control-button-container.kp__control-fullscreen .kp__control-button.kp__is-fullscreen .kp__icon-maximize {\n    display: none; }\n  .kp__control-button-container.kp__control-fullscreen .kp__control-button.kp__is-fullscreen .kp__icon-minimize {\n    display: block; }\n\n.kp__player:not(.kp__touch) .kp__control-button-container.kp__control-fullscreen .kp__control-button:hover {\n  transform: scale(1.1); }\n\n.kp__player .kp__seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .kp__player .kp__seek-bar:hover .kp__time-preview,\n  .kp__player .kp__seek-bar:hover .kp__frame-preview, .kp__player .kp__seek-bar.kp__hover .kp__time-preview,\n  .kp__player .kp__seek-bar.kp__hover .kp__frame-preview, .kp__player .kp__seek-bar.kp__dragging-active .kp__time-preview,\n  .kp__player .kp__seek-bar.kp__dragging-active .kp__frame-preview {\n    display: block; }\n  .kp__player .kp__seek-bar:hover .kp__progress-bar .kp__scrubber, .kp__player .kp__seek-bar.kp__hover .kp__progress-bar .kp__scrubber, .kp__player .kp__seek-bar.kp__dragging-active .kp__progress-bar .kp__scrubber {\n    transform: scale(1); }\n  .kp__player .kp__seek-bar:hover .kp__progress-bar .kp__virtual-progress, .kp__player .kp__seek-bar.kp__hover .kp__progress-bar .kp__virtual-progress, .kp__player .kp__seek-bar.kp__dragging-active .kp__progress-bar .kp__virtual-progress {\n    display: block; }\n  .kp__player .kp__seek-bar.kp__ad-break {\n    cursor: initial; }\n    .kp__player .kp__seek-bar.kp__ad-break .kp__progress-bar .kp__progress {\n      background-color: #F9A71B; }\n  .kp__player .kp__seek-bar.kp__live .kp__progress-bar .kp__progress {\n    background-color: #DA1F26; }\n  .kp__player .kp__seek-bar .kp__progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__virtual-progress {\n      display: none; }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__buffered, .kp__player .kp__seek-bar .kp__progress-bar .kp__virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .kp__player .kp__seek-bar .kp__progress-bar .kp__scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .kp__player .kp__seek-bar .kp__frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .kp__player .kp__seek-bar .kp__frame-preview .kp__frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .kp__player .kp__seek-bar .kp__time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .kp__player .kp__seek-bar .kp__time-preview,\n  .kp__player .kp__seek-bar .kp__frame-preview {\n    display: none; }\n\n.kp__touch .kp__virtual-progress, .kp__touch .kp__time-preview, .kp__touch .kp__frame-preview {\n  display: none !important; }\n\n.kp__player.kp__size-sm .kp__virtual-progress, .kp__player.kp__size-sm .kp__time-preview, .kp__player.kp__size-sm .kp__frame-preview {\n  display: none; }\n\n.kp__player .kp__time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.kp__touch .kp__time-display {\n  padding-left: 0; }\n\n.kp__player.kp__size-sm .kp__player .kp__time-display {\n  padding: 0 12px 0 0; }\n\n.kp__player .kp__video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.kp__player .kp__bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .kp__player .kp__bottom-bar .kp__left-controls {\n    float: left;\n    text-align: left; }\n    .kp__player .kp__bottom-bar .kp__left-controls:first-child {\n      margin-left: 0px; }\n  .kp__player .kp__bottom-bar .kp__right-controls {\n    float: right;\n    text-align: left; }\n    .kp__player .kp__bottom-bar .kp__right-controls .kp__control-button-container {\n      margin: 0 6px; }\n      .kp__player .kp__bottom-bar .kp__right-controls .kp__control-button-container:last-child {\n        margin-right: 0; }\n\n.kp__player.kp__hover .kp__bottom-bar,\n.kp__player.kp__state-paused .kp__bottom-bar,\n.kp__player.kp__menu-active .kp__bottom-bar {\n  opacity: 1; }\n\n.kp__player.kp__overlay-active .kp__bottom-bar {\n  opacity: 0; }\n\n.kp__player.kp__size-sm .kp__bottom-bar {\n  padding: 6px 8px; }\n  .kp__player.kp__size-sm .kp__bottom-bar .kp__time-display {\n    padding-left: 0; }\n\n.kp__player .kp__top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .kp__player .kp__top-bar .kp__left-controls {\n    text-align: left;\n    min-width: 0; }\n  .kp__player .kp__top-bar .kp__right-controls {\n    text-align: left; }\n    .kp__player .kp__top-bar .kp__right-controls .kp__control-button-container {\n      margin: 0 6px; }\n      .kp__player .kp__top-bar .kp__right-controls .kp__control-button-container:last-child {\n        margin-right: 0; }\n\n.kp__player.kp__hover .kp__top-bar,\n.kp__player.kp__state-paused .kp__top-bar,\n.kp__player.kp__menu-active .kp__top-bar {\n  opacity: 1; }\n\n.kp__player.kp__overlay-active .kp__top-bar {\n  opacity: 0; }\n\n.kp__player.kp__size-sm .kp__player .kp__top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes kp__overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.kp__overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .kp__overlay-play.kp__in .kp__icon {\n    animation: kp__overlayPlayIconIn 400ms linear forwards; }\n  .kp__overlay-play .kp__icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.kp__pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: cover; }\n  .kp__pre-playback-play-overlay .kp__pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .kp__pre-playback-play-overlay .kp__pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .kp__pre-playback-play-overlay .kp__pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.kp__pre-playback .kp__player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.kp__btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.kp__skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.kp__live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .kp__live-tag.kp__non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.kp__player.kp__size-sm .kp__live-tag {\n  margin-left: 0; }\n", ""]);
+exports.push([module.i, ".playkit-row {\n  display: block; }\n  .playkit-row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.playkit-d-inline-block {\n  display: inline-block; }\n\n.playkit-mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.playkit-font-size-base {\n  font-size: 15px; }\n\n.playkit-form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .playkit-form-group.playkit-has-error .playkit-form-control {\n    border-color: #db1f26; }\n    .playkit-form-group.playkit-has-error .playkit-form-control:focus {\n      border-color: #fff; }\n  .playkit-form-group.playkit-has-icon .playkit-form-control {\n    padding-left: 34px; }\n  .playkit-form-group .playkit-icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.playkit-form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .playkit-form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .playkit-form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .playkit-form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .playkit-form-control:focus + .playkit-icon {\n      fill: #999; }\n\ntextarea.playkit-form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.playkit-checkbox {\n  font-size: 15px;\n  position: relative; }\n  .playkit-checkbox input {\n    display: none; }\n  .playkit-checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .playkit-checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.playkit-form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .playkit-form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .playkit-form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .playkit-form-group-row .playkit-dropdown {\n    float: right; }\n\n.playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z\" /> <path fill=\"#fff\" d=\"M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z\" /></svg>'); }\n\n.playkit-icon-minimize {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z\" /><path fill=\"#fff\" d=\"M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z\" /></svg>'); }\n\n.playkit-icon-play {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z\" /></svg>'); }\n\n.playkit-icon-pause {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z\" /></svg>'); }\n\n.playkit-icon-volume-base {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z\" /><path fill=\"#fff\" d=\"M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z\" /></svg>'); }\n\n.playkit-icon-volume-waves {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z\" /><path fill=\"#fff\" d=\"M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z\" /></svg>'); }\n\n.playkit-icon-volume-mute {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z\" /></svg>'); }\n\n.playkit-icon-close {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z\" /></svg>'); }\n\n.playkit-icon-share {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z\" /></svg>'); }\n\n.playkit-icon-settings {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z\" /></svg>'); }\n\n.playkit-icon-check {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z\" /></svg>'); }\n\n.playkit-icon-language {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z\" /><path fill=\"#fff\" d=\"M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z\" /><path fill=\"#fff\" d=\"M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z\" /><path fill=\"#fff\" d=\"M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z\" /><path fill=\"#fff\" d=\"M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z\" /><path fill=\"#fff\" d=\"M480 192h64v640h-64v-640z\" /></svg>'); }\n\n.playkit-icon-quality {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z\" /></svg>'); }\n\n.playkit-icon-captions {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z\" /><path fill=\"#fff\" d=\"M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z\" /></svg>'); }\n\n.playkit-icon-speed {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z\" /></svg>'); }\n\n.playkit-icon-audio {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z\" /></svg>'); }\n\n.playkit-icon-copy {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z\" /></svg>'); }\n\n.playkit-icon-facebook {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z\" /></svg>'); }\n\n.playkit-icon-twitter {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z\" /></svg>'); }\n\n.playkit-icon-google-plus {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" fill=\"#fff\" d=\"M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z\" /></svg>'); }\n\n.playkit-icon-linked-in {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z\" /></svg>'); }\n\n.playkit-icon-email {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z\" /></svg>'); }\n\n.playkit-icon-embed {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z\" /></svg>'); }\n\n.playkit-icon-link {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z\" /></svg>'); }\n\n.playkit-icon-arrow-down {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z\" /></svg>'); }\n\n.playkit-icon-start-over {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z\" /></svg>'); }\n\n@keyframes playkit-openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.playkit-dropdown {\n  position: relative;\n  font-size: 15px; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-button .playkit-icon {\n    transform: rotate(180deg); }\n  .playkit-dropdown .playkit-dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .playkit-dropdown .playkit-dropdown-button .playkit-icon {\n      width: 16px;\n      height: 16px;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.playkit-dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: playkit-openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .playkit-dropdown-menu.playkit-top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .playkit-dropdown-menu.playkit-bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .playkit-dropdown-menu.playkit-right {\n    left: 0; }\n  .playkit-dropdown-menu.playkit-left {\n    right: 0; }\n  .playkit-dropdown-menu .playkit-dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item:hover {\n      color: #fff; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active {\n      color: #01ACCD; }\n      .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active .playkit-icon-check {\n        background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#01ACCD\" d=\"M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z\" /></svg>'); }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item .playkit-icon-check {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.playkit-tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.playkit-player .playkit-control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer; }\n  .playkit-player .playkit-control-button i {\n    width: 32px;\n    height: 32px; }\n  .playkit-player .playkit-control-button.playkit-active {\n    opacity: 1; }\n  .playkit-player .playkit-control-button.playkit-control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button:hover {\n  opacity: 1; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button.playkit-control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.playkit-player .playkit-control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.playkit-player.playkit-touch .playkit-player .playkit-control-button-container {\n  position: static; }\n\n.playkit-player.playkit-touch .playkit-control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.playkit-kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.playkit-player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .playkit-player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .playkit-player * {\n    box-sizing: border-box;\n    outline: none; }\n  .playkit-player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .playkit-player video {\n    width: 100%; }\n  .playkit-player .playkit-player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .playkit-player .playkit-player-gui input, .playkit-player .playkit-player-gui textarea {\n      font-family: sans-serif; }\n  .playkit-player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .playkit-player.playkit-overlay-active #overlay-portal {\n    z-index: 11; }\n  .playkit-player.playkit-metadata-loaded .playkit-player-gui,\n  .playkit-player.playkit-state-paused .playkit-player-gui,\n  .playkit-player.playkit-overlay-active .playkit-player-gui,\n  .playkit-player.playkit-menu-active .playkit-player-gui {\n    opacity: 1; }\n\n.playkit-player [id^=ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-hover [id^=ads-container],\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-state-paused [id^=ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\n.playkit-player.playkit-overlay-active .playkit-subtitles {\n  display: none; }\n\n.playkit-player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player:not(.playkit-overlay-active).playkit-state-paused .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active).playkit-hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes playkit-openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.playkit-overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: playkit-openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .playkit-overlay.playkit-active {\n    display: block;\n    opacity: 1; }\n  .playkit-overlay .playkit-overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .playkit-overlay .playkit-title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .playkit-overlay .playkit-close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    cursor: pointer; }\n    .playkit-overlay .playkit-close-overlay .playkit-icon-close {\n      width: 24px;\n      height: 24px; }\n  .playkit-overlay .playkit-overlay-screen {\n    display: none; }\n    .playkit-overlay .playkit-overlay-screen.playkit-active {\n      display: block; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-overlay-contents {\n  padding: 36px 20px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-close-overlay {\n  top: 38px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-title {\n  margin-bottom: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-overlay-contents {\n  padding: 16px 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n\n.playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 60px 0; }\n  .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:first-child {\n      margin-left: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:last-child {\n      margin-right: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-facebook-share-btn {\n      background-color: #3B5998; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-twitter-share-btn {\n      background-color: #1DA1F2; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-google-plus-share-btn {\n      background-color: #DD4B39; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.playkit-share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.playkit-link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .playkit-link-options-container .playkit-copy-url-row {\n    display: flex; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-input-copy-url {\n      margin: 0; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url {\n      margin-left: 16px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied {\n        background-color: #009444; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .playkit-link-options-container .playkit-video-start-options-row {\n    margin-top: 24px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-checkbox {\n      margin-right: 15px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-form-group {\n      margin: 0; }\n\n.playkit-player:not(.playkit-touch) .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.playkit-player.playkit-size-md .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 40px 0; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 20px 0; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-black-bg {\n    background-color: #000; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-yellow-text {\n    color: #FAFF00; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick .playkit-icon {\n      vertical-align: top; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 50px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form .playkit-slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:first-child {\n    margin-left: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:last-child {\n    margin-right: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-custom {\n    width: auto;\n    padding: 0 10px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa,\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: block !important; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-dragging-active .playkit-volume-control-bar {\n  display: block; }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves {\n  transform: translateX(0px); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves, .playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.playkit-control-button-container.playkit-volume-control i {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.playkit-volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .playkit-volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .playkit-volume-control-bar .playkit-bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .playkit-volume-control-bar .playkit-progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.playkit-touch .playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n\n.playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n\n.playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n\n.playkit-player .playkit-video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n\n.playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z\" /> <path fill=\"#fff\" d=\"M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z\" /></svg>'); }\n\n.playkit-icon-minimize {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z\" /><path fill=\"#fff\" d=\"M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z\" /></svg>'); }\n\n.playkit-icon-play {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z\" /></svg>'); }\n\n.playkit-icon-pause {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z\" /></svg>'); }\n\n.playkit-icon-volume-base {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z\" /><path fill=\"#fff\" d=\"M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z\" /></svg>'); }\n\n.playkit-icon-volume-waves {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z\" /><path fill=\"#fff\" d=\"M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z\" /></svg>'); }\n\n.playkit-icon-volume-mute {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z\" /></svg>'); }\n\n.playkit-icon-close {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z\" /></svg>'); }\n\n.playkit-icon-share {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z\" /></svg>'); }\n\n.playkit-icon-settings {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z\" /></svg>'); }\n\n.playkit-icon-check {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z\" /></svg>'); }\n\n.playkit-icon-language {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z\" /><path fill=\"#fff\" d=\"M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z\" /><path fill=\"#fff\" d=\"M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z\" /><path fill=\"#fff\" d=\"M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z\" /><path fill=\"#fff\" d=\"M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z\" /><path fill=\"#fff\" d=\"M480 192h64v640h-64v-640z\" /></svg>'); }\n\n.playkit-icon-quality {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z\" /></svg>'); }\n\n.playkit-icon-captions {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z\" /><path fill=\"#fff\" d=\"M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z\" /></svg>'); }\n\n.playkit-icon-speed {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z\" /></svg>'); }\n\n.playkit-icon-audio {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z\" /></svg>'); }\n\n.playkit-icon-copy {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z\" /></svg>'); }\n\n.playkit-icon-facebook {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z\" /></svg>'); }\n\n.playkit-icon-twitter {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z\" /></svg>'); }\n\n.playkit-icon-google-plus {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" fill=\"#fff\" d=\"M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z\" /></svg>'); }\n\n.playkit-icon-linked-in {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z\" /></svg>'); }\n\n.playkit-icon-email {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z\" /></svg>'); }\n\n.playkit-icon-embed {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z\" /></svg>'); }\n\n.playkit-icon-link {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z\" /></svg>'); }\n\n.playkit-icon-arrow-down {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z\" /></svg>'); }\n\n.playkit-icon-start-over {\n  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 1024 1024\" width=\"36\" height=\"36\"><path fill=\"#fff\" d=\"M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z\" /></svg>'); }\n", ""]);
 
 // exports
 exports.locals = {
-	"row": "kp__row",
-	"d-inline-block": "kp__d-inline-block",
-	"dInlineBlock": "kp__d-inline-block",
-	"mobile-hidden-select": "kp__mobile-hidden-select",
-	"mobileHiddenSelect": "kp__mobile-hidden-select",
-	"font-size-base": "kp__font-size-base",
-	"fontSizeBase": "kp__font-size-base",
-	"form-group": "kp__form-group",
-	"formGroup": "kp__form-group",
-	"has-error": "kp__has-error",
-	"hasError": "kp__has-error",
-	"form-control": "kp__form-control",
-	"formControl": "kp__form-control",
-	"has-icon": "kp__has-icon",
-	"hasIcon": "kp__has-icon",
-	"icon": "kp__icon",
-	"checkbox": "kp__checkbox",
-	"form-group-row": "kp__form-group-row",
-	"formGroupRow": "kp__form-group-row",
-	"dropdown": "kp__dropdown",
-	"btn": "kp__btn",
-	"btn-block": "kp__btn-block",
-	"btnBlock": "kp__btn-block",
-	"btn-dark-transparent": "kp__btn-dark-transparent",
-	"btnDarkTransparent": "kp__btn-dark-transparent",
-	"btn-branded": "kp__btn-branded",
-	"btnBranded": "kp__btn-branded",
-	"btn-rounded": "kp__btn-rounded",
-	"btnRounded": "kp__btn-rounded",
-	"active": "kp__active",
-	"dropdown-menu": "kp__dropdown-menu",
-	"dropdownMenu": "kp__dropdown-menu",
-	"dropdown-button": "kp__dropdown-button",
-	"dropdownButton": "kp__dropdown-button",
-	"openDropmenu": "kp__openDropmenu",
-	"top": "kp__top",
-	"bottom": "kp__bottom",
-	"right": "kp__right",
-	"left": "kp__left",
-	"dropdown-menu-item": "kp__dropdown-menu-item",
-	"dropdownMenuItem": "kp__dropdown-menu-item",
-	"check-icon": "kp__check-icon",
-	"checkIcon": "kp__check-icon",
-	"tooltip": "kp__tooltip",
-	"player": "kp__player",
-	"control-button": "kp__control-button",
-	"controlButton": "kp__control-button",
-	"control-button-rounded": "kp__control-button-rounded",
-	"controlButtonRounded": "kp__control-button-rounded",
-	"touch": "kp__touch",
-	"control-button-container": "kp__control-button-container",
-	"controlButtonContainer": "kp__control-button-container",
-	"kaltura-player-container": "kp__kaltura-player-container",
-	"kalturaPlayerContainer": "kp__kaltura-player-container",
-	"player-gui": "kp__player-gui",
-	"playerGui": "kp__player-gui",
-	"metadata-loaded": "kp__metadata-loaded",
-	"metadataLoaded": "kp__metadata-loaded",
-	"state-paused": "kp__state-paused",
-	"statePaused": "kp__state-paused",
-	"overlay-active": "kp__overlay-active",
-	"overlayActive": "kp__overlay-active",
-	"menu-active": "kp__menu-active",
-	"menuActive": "kp__menu-active",
-	"ad-break": "kp__ad-break",
-	"adBreak": "kp__ad-break",
-	"hover": "kp__hover",
-	"video-player": "kp__video-player",
-	"videoPlayer": "kp__video-player",
-	"overlay": "kp__overlay",
-	"openOverlay": "kp__openOverlay",
-	"overlay-contents": "kp__overlay-contents",
-	"overlayContents": "kp__overlay-contents",
-	"title": "kp__title",
-	"close-overlay": "kp__close-overlay",
-	"closeOverlay": "kp__close-overlay",
-	"icon-close": "kp__icon-close",
-	"iconClose": "kp__icon-close",
-	"overlay-screen": "kp__overlay-screen",
-	"overlayScreen": "kp__overlay-screen",
-	"size-md": "kp__size-md",
-	"sizeMd": "kp__size-md",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm",
-	"smart-container": "kp__smart-container",
-	"smartContainer": "kp__smart-container",
-	"openSmartContainer": "kp__openSmartContainer",
-	"leaving": "kp__leaving",
-	"closeSmartContainer": "kp__closeSmartContainer",
-	"smart-container-item": "kp__smart-container-item",
-	"smartContainerItem": "kp__smart-container-item",
-	"select-menu-item": "kp__select-menu-item",
-	"selectMenuItem": "kp__select-menu-item",
-	"label-icon": "kp__label-icon",
-	"labelIcon": "kp__label-icon",
-	"share-overlay": "kp__share-overlay",
-	"shareOverlay": "kp__share-overlay",
-	"share-icons": "kp__share-icons",
-	"shareIcons": "kp__share-icons",
-	"facebook-share-btn": "kp__facebook-share-btn",
-	"facebookShareBtn": "kp__facebook-share-btn",
-	"twitter-share-btn": "kp__twitter-share-btn",
-	"twitterShareBtn": "kp__twitter-share-btn",
-	"google-plus-share-btn": "kp__google-plus-share-btn",
-	"googlePlusShareBtn": "kp__google-plus-share-btn",
-	"linkedin-share-btn": "kp__linkedin-share-btn",
-	"linkedinShareBtn": "kp__linkedin-share-btn",
-	"share-main-container": "kp__share-main-container",
-	"shareMainContainer": "kp__share-main-container",
-	"link-options-container": "kp__link-options-container",
-	"linkOptionsContainer": "kp__link-options-container",
-	"copy-url-row": "kp__copy-url-row",
-	"copyUrlRow": "kp__copy-url-row",
-	"input-copy-url": "kp__input-copy-url",
-	"inputCopyUrl": "kp__input-copy-url",
-	"btn-copy-url": "kp__btn-copy-url",
-	"btnCopyUrl": "kp__btn-copy-url",
-	"copied": "kp__copied",
-	"copy-icon": "kp__copy-icon",
-	"copyIcon": "kp__copy-icon",
-	"video-start-options-row": "kp__video-start-options-row",
-	"videoStartOptionsRow": "kp__video-start-options-row",
-	"cvaa-overlay": "kp__cvaa-overlay",
-	"cvaaOverlay": "kp__cvaa-overlay",
-	"sample": "kp__sample",
-	"black-bg": "kp__black-bg",
-	"blackBg": "kp__black-bg",
-	"yellow-text": "kp__yellow-text",
-	"yellowText": "kp__yellow-text",
-	"active-tick": "kp__active-tick",
-	"activeTick": "kp__active-tick",
-	"button-save-cvaa": "kp__button-save-cvaa",
-	"buttonSaveCvaa": "kp__button-save-cvaa",
-	"custom-captions-applied": "kp__custom-captions-applied",
-	"customCaptionsApplied": "kp__custom-captions-applied",
-	"custom-caption-form": "kp__custom-caption-form",
-	"customCaptionForm": "kp__custom-caption-form",
-	"slider": "kp__slider",
-	"preview-container": "kp__preview-container",
-	"previewContainer": "kp__preview-container",
-	"custom": "kp__custom",
-	"loading-backdrop": "kp__loading-backdrop",
-	"loadingBackdrop": "kp__loading-backdrop",
-	"show": "kp__show",
-	"spinner-container": "kp__spinner-container",
-	"spinnerContainer": "kp__spinner-container",
-	"spinner": "kp__spinner",
-	"kaltura-spinner": "kp__kaltura-spinner",
-	"kalturaSpinner": "kp__kaltura-spinner",
-	"control-play-pause": "kp__control-play-pause",
-	"controlPlayPause": "kp__control-play-pause",
-	"icon-pause": "kp__icon-pause",
-	"iconPause": "kp__icon-pause",
-	"icon-play": "kp__icon-play",
-	"iconPlay": "kp__icon-play",
-	"is-playing": "kp__is-playing",
-	"isPlaying": "kp__is-playing",
-	"volume-control": "kp__volume-control",
-	"volumeControl": "kp__volume-control",
-	"volume-control-bar": "kp__volume-control-bar",
-	"volumeControlBar": "kp__volume-control-bar",
-	"is-muted": "kp__is-muted",
-	"isMuted": "kp__is-muted",
-	"volume-waves": "kp__volume-waves",
-	"volumeWaves": "kp__volume-waves",
-	"volume-mute": "kp__volume-mute",
-	"volumeMute": "kp__volume-mute",
-	"dragging-active": "kp__dragging-active",
-	"draggingActive": "kp__dragging-active",
-	"bar": "kp__bar",
-	"progress": "kp__progress",
-	"control-fullscreen": "kp__control-fullscreen",
-	"controlFullscreen": "kp__control-fullscreen",
-	"icon-minimize": "kp__icon-minimize",
-	"iconMinimize": "kp__icon-minimize",
-	"is-fullscreen": "kp__is-fullscreen",
-	"isFullscreen": "kp__is-fullscreen",
-	"icon-maximize": "kp__icon-maximize",
-	"iconMaximize": "kp__icon-maximize",
-	"seek-bar": "kp__seek-bar",
-	"seekBar": "kp__seek-bar",
-	"time-preview": "kp__time-preview",
-	"timePreview": "kp__time-preview",
-	"frame-preview": "kp__frame-preview",
-	"framePreview": "kp__frame-preview",
-	"progress-bar": "kp__progress-bar",
-	"progressBar": "kp__progress-bar",
-	"scrubber": "kp__scrubber",
-	"virtual-progress": "kp__virtual-progress",
-	"virtualProgress": "kp__virtual-progress",
-	"live": "kp__live",
-	"buffered": "kp__buffered",
-	"frame-preview-img": "kp__frame-preview-img",
-	"framePreviewImg": "kp__frame-preview-img",
-	"time-display": "kp__time-display",
-	"timeDisplay": "kp__time-display",
-	"video-playing-title": "kp__video-playing-title",
-	"videoPlayingTitle": "kp__video-playing-title",
-	"bottom-bar": "kp__bottom-bar",
-	"bottomBar": "kp__bottom-bar",
-	"left-controls": "kp__left-controls",
-	"leftControls": "kp__left-controls",
-	"right-controls": "kp__right-controls",
-	"rightControls": "kp__right-controls",
-	"top-bar": "kp__top-bar",
-	"topBar": "kp__top-bar",
-	"overlay-play": "kp__overlay-play",
-	"overlayPlay": "kp__overlay-play",
-	"in": "kp__in",
-	"overlayPlayIconIn": "kp__overlayPlayIconIn",
-	"pre-playback-play-overlay": "kp__pre-playback-play-overlay",
-	"prePlaybackPlayOverlay": "kp__pre-playback-play-overlay",
-	"pre-playback-play-button": "kp__pre-playback-play-button",
-	"prePlaybackPlayButton": "kp__pre-playback-play-button",
-	"pre-playback": "kp__pre-playback",
-	"prePlayback": "kp__pre-playback",
-	"btn-skip-ad": "kp__btn-skip-ad",
-	"btnSkipAd": "kp__btn-skip-ad",
-	"skip-ad": "kp__skip-ad",
-	"skipAd": "kp__skip-ad",
-	"live-tag": "kp__live-tag",
-	"liveTag": "kp__live-tag",
-	"non-live-playhead": "kp__non-live-playhead",
-	"nonLivePlayhead": "kp__non-live-playhead"
+	"row": "playkit-row",
+	"d-inline-block": "playkit-d-inline-block",
+	"dInlineBlock": "playkit-d-inline-block",
+	"mobile-hidden-select": "playkit-mobile-hidden-select",
+	"mobileHiddenSelect": "playkit-mobile-hidden-select",
+	"font-size-base": "playkit-font-size-base",
+	"fontSizeBase": "playkit-font-size-base",
+	"form-group": "playkit-form-group",
+	"formGroup": "playkit-form-group",
+	"has-error": "playkit-has-error",
+	"hasError": "playkit-has-error",
+	"form-control": "playkit-form-control",
+	"formControl": "playkit-form-control",
+	"has-icon": "playkit-has-icon",
+	"hasIcon": "playkit-has-icon",
+	"icon": "playkit-icon",
+	"checkbox": "playkit-checkbox",
+	"form-group-row": "playkit-form-group-row",
+	"formGroupRow": "playkit-form-group-row",
+	"dropdown": "playkit-dropdown",
+	"btn": "playkit-btn",
+	"btn-block": "playkit-btn-block",
+	"btnBlock": "playkit-btn-block",
+	"btn-dark-transparent": "playkit-btn-dark-transparent",
+	"btnDarkTransparent": "playkit-btn-dark-transparent",
+	"btn-branded": "playkit-btn-branded",
+	"btnBranded": "playkit-btn-branded",
+	"btn-rounded": "playkit-btn-rounded",
+	"btnRounded": "playkit-btn-rounded",
+	"icon-maximize": "playkit-icon-maximize",
+	"iconMaximize": "playkit-icon-maximize",
+	"icon-minimize": "playkit-icon-minimize",
+	"iconMinimize": "playkit-icon-minimize",
+	"icon-play": "playkit-icon-play",
+	"iconPlay": "playkit-icon-play",
+	"icon-pause": "playkit-icon-pause",
+	"iconPause": "playkit-icon-pause",
+	"icon-volume-base": "playkit-icon-volume-base",
+	"iconVolumeBase": "playkit-icon-volume-base",
+	"icon-volume-waves": "playkit-icon-volume-waves",
+	"iconVolumeWaves": "playkit-icon-volume-waves",
+	"icon-volume-mute": "playkit-icon-volume-mute",
+	"iconVolumeMute": "playkit-icon-volume-mute",
+	"icon-close": "playkit-icon-close",
+	"iconClose": "playkit-icon-close",
+	"icon-share": "playkit-icon-share",
+	"iconShare": "playkit-icon-share",
+	"icon-settings": "playkit-icon-settings",
+	"iconSettings": "playkit-icon-settings",
+	"icon-check": "playkit-icon-check",
+	"iconCheck": "playkit-icon-check",
+	"icon-language": "playkit-icon-language",
+	"iconLanguage": "playkit-icon-language",
+	"icon-quality": "playkit-icon-quality",
+	"iconQuality": "playkit-icon-quality",
+	"icon-captions": "playkit-icon-captions",
+	"iconCaptions": "playkit-icon-captions",
+	"icon-speed": "playkit-icon-speed",
+	"iconSpeed": "playkit-icon-speed",
+	"icon-audio": "playkit-icon-audio",
+	"iconAudio": "playkit-icon-audio",
+	"icon-copy": "playkit-icon-copy",
+	"iconCopy": "playkit-icon-copy",
+	"icon-facebook": "playkit-icon-facebook",
+	"iconFacebook": "playkit-icon-facebook",
+	"icon-twitter": "playkit-icon-twitter",
+	"iconTwitter": "playkit-icon-twitter",
+	"icon-google-plus": "playkit-icon-google-plus",
+	"iconGooglePlus": "playkit-icon-google-plus",
+	"icon-linked-in": "playkit-icon-linked-in",
+	"iconLinkedIn": "playkit-icon-linked-in",
+	"icon-email": "playkit-icon-email",
+	"iconEmail": "playkit-icon-email",
+	"icon-embed": "playkit-icon-embed",
+	"iconEmbed": "playkit-icon-embed",
+	"icon-link": "playkit-icon-link",
+	"iconLink": "playkit-icon-link",
+	"icon-arrow-down": "playkit-icon-arrow-down",
+	"iconArrowDown": "playkit-icon-arrow-down",
+	"icon-start-over": "playkit-icon-start-over",
+	"iconStartOver": "playkit-icon-start-over",
+	"active": "playkit-active",
+	"dropdown-menu": "playkit-dropdown-menu",
+	"dropdownMenu": "playkit-dropdown-menu",
+	"dropdown-button": "playkit-dropdown-button",
+	"dropdownButton": "playkit-dropdown-button",
+	"openDropmenu": "playkit-openDropmenu",
+	"top": "playkit-top",
+	"bottom": "playkit-bottom",
+	"right": "playkit-right",
+	"left": "playkit-left",
+	"dropdown-menu-item": "playkit-dropdown-menu-item",
+	"dropdownMenuItem": "playkit-dropdown-menu-item",
+	"tooltip": "playkit-tooltip",
+	"player": "playkit-player",
+	"control-button": "playkit-control-button",
+	"controlButton": "playkit-control-button",
+	"control-button-rounded": "playkit-control-button-rounded",
+	"controlButtonRounded": "playkit-control-button-rounded",
+	"touch": "playkit-touch",
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"kaltura-player-container": "playkit-kaltura-player-container",
+	"kalturaPlayerContainer": "playkit-kaltura-player-container",
+	"player-gui": "playkit-player-gui",
+	"playerGui": "playkit-player-gui",
+	"overlay-active": "playkit-overlay-active",
+	"overlayActive": "playkit-overlay-active",
+	"metadata-loaded": "playkit-metadata-loaded",
+	"metadataLoaded": "playkit-metadata-loaded",
+	"state-paused": "playkit-state-paused",
+	"statePaused": "playkit-state-paused",
+	"menu-active": "playkit-menu-active",
+	"menuActive": "playkit-menu-active",
+	"ad-break": "playkit-ad-break",
+	"adBreak": "playkit-ad-break",
+	"hover": "playkit-hover",
+	"video-player": "playkit-video-player",
+	"videoPlayer": "playkit-video-player",
+	"overlay": "playkit-overlay",
+	"openOverlay": "playkit-openOverlay",
+	"overlay-contents": "playkit-overlay-contents",
+	"overlayContents": "playkit-overlay-contents",
+	"title": "playkit-title",
+	"close-overlay": "playkit-close-overlay",
+	"closeOverlay": "playkit-close-overlay",
+	"overlay-screen": "playkit-overlay-screen",
+	"overlayScreen": "playkit-overlay-screen",
+	"size-md": "playkit-size-md",
+	"sizeMd": "playkit-size-md",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm",
+	"smart-container": "playkit-smart-container",
+	"smartContainer": "playkit-smart-container",
+	"openSmartContainer": "playkit-openSmartContainer",
+	"leaving": "playkit-leaving",
+	"closeSmartContainer": "playkit-closeSmartContainer",
+	"smart-container-item": "playkit-smart-container-item",
+	"smartContainerItem": "playkit-smart-container-item",
+	"select-menu-item": "playkit-select-menu-item",
+	"selectMenuItem": "playkit-select-menu-item",
+	"label-icon": "playkit-label-icon",
+	"labelIcon": "playkit-label-icon",
+	"share-overlay": "playkit-share-overlay",
+	"shareOverlay": "playkit-share-overlay",
+	"share-icons": "playkit-share-icons",
+	"shareIcons": "playkit-share-icons",
+	"facebook-share-btn": "playkit-facebook-share-btn",
+	"facebookShareBtn": "playkit-facebook-share-btn",
+	"twitter-share-btn": "playkit-twitter-share-btn",
+	"twitterShareBtn": "playkit-twitter-share-btn",
+	"google-plus-share-btn": "playkit-google-plus-share-btn",
+	"googlePlusShareBtn": "playkit-google-plus-share-btn",
+	"linkedin-share-btn": "playkit-linkedin-share-btn",
+	"linkedinShareBtn": "playkit-linkedin-share-btn",
+	"share-main-container": "playkit-share-main-container",
+	"shareMainContainer": "playkit-share-main-container",
+	"link-options-container": "playkit-link-options-container",
+	"linkOptionsContainer": "playkit-link-options-container",
+	"copy-url-row": "playkit-copy-url-row",
+	"copyUrlRow": "playkit-copy-url-row",
+	"input-copy-url": "playkit-input-copy-url",
+	"inputCopyUrl": "playkit-input-copy-url",
+	"btn-copy-url": "playkit-btn-copy-url",
+	"btnCopyUrl": "playkit-btn-copy-url",
+	"check-icon": "playkit-check-icon",
+	"checkIcon": "playkit-check-icon",
+	"copied": "playkit-copied",
+	"copy-icon": "playkit-copy-icon",
+	"copyIcon": "playkit-copy-icon",
+	"video-start-options-row": "playkit-video-start-options-row",
+	"videoStartOptionsRow": "playkit-video-start-options-row",
+	"cvaa-overlay": "playkit-cvaa-overlay",
+	"cvaaOverlay": "playkit-cvaa-overlay",
+	"sample": "playkit-sample",
+	"black-bg": "playkit-black-bg",
+	"blackBg": "playkit-black-bg",
+	"yellow-text": "playkit-yellow-text",
+	"yellowText": "playkit-yellow-text",
+	"active-tick": "playkit-active-tick",
+	"activeTick": "playkit-active-tick",
+	"button-save-cvaa": "playkit-button-save-cvaa",
+	"buttonSaveCvaa": "playkit-button-save-cvaa",
+	"custom-captions-applied": "playkit-custom-captions-applied",
+	"customCaptionsApplied": "playkit-custom-captions-applied",
+	"custom-caption-form": "playkit-custom-caption-form",
+	"customCaptionForm": "playkit-custom-caption-form",
+	"slider": "playkit-slider",
+	"preview-container": "playkit-preview-container",
+	"previewContainer": "playkit-preview-container",
+	"custom": "playkit-custom",
+	"loading-backdrop": "playkit-loading-backdrop",
+	"loadingBackdrop": "playkit-loading-backdrop",
+	"show": "playkit-show",
+	"spinner-container": "playkit-spinner-container",
+	"spinnerContainer": "playkit-spinner-container",
+	"spinner": "playkit-spinner",
+	"kaltura-spinner": "playkit-kaltura-spinner",
+	"kalturaSpinner": "playkit-kaltura-spinner",
+	"control-play-pause": "playkit-control-play-pause",
+	"controlPlayPause": "playkit-control-play-pause",
+	"is-playing": "playkit-is-playing",
+	"isPlaying": "playkit-is-playing",
+	"volume-control": "playkit-volume-control",
+	"volumeControl": "playkit-volume-control",
+	"volume-control-bar": "playkit-volume-control-bar",
+	"volumeControlBar": "playkit-volume-control-bar",
+	"is-muted": "playkit-is-muted",
+	"isMuted": "playkit-is-muted",
+	"dragging-active": "playkit-dragging-active",
+	"draggingActive": "playkit-dragging-active",
+	"bar": "playkit-bar",
+	"progress": "playkit-progress",
+	"control-fullscreen": "playkit-control-fullscreen",
+	"controlFullscreen": "playkit-control-fullscreen",
+	"is-fullscreen": "playkit-is-fullscreen",
+	"isFullscreen": "playkit-is-fullscreen",
+	"seek-bar": "playkit-seek-bar",
+	"seekBar": "playkit-seek-bar",
+	"time-preview": "playkit-time-preview",
+	"timePreview": "playkit-time-preview",
+	"frame-preview": "playkit-frame-preview",
+	"framePreview": "playkit-frame-preview",
+	"progress-bar": "playkit-progress-bar",
+	"progressBar": "playkit-progress-bar",
+	"scrubber": "playkit-scrubber",
+	"virtual-progress": "playkit-virtual-progress",
+	"virtualProgress": "playkit-virtual-progress",
+	"live": "playkit-live",
+	"buffered": "playkit-buffered",
+	"frame-preview-img": "playkit-frame-preview-img",
+	"framePreviewImg": "playkit-frame-preview-img",
+	"time-display": "playkit-time-display",
+	"timeDisplay": "playkit-time-display",
+	"video-playing-title": "playkit-video-playing-title",
+	"videoPlayingTitle": "playkit-video-playing-title",
+	"bottom-bar": "playkit-bottom-bar",
+	"bottomBar": "playkit-bottom-bar",
+	"left-controls": "playkit-left-controls",
+	"leftControls": "playkit-left-controls",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
+	"top-bar": "playkit-top-bar",
+	"topBar": "playkit-top-bar",
+	"overlay-play": "playkit-overlay-play",
+	"overlayPlay": "playkit-overlay-play",
+	"in": "playkit-in",
+	"overlayPlayIconIn": "playkit-overlayPlayIconIn",
+	"pre-playback-play-overlay": "playkit-pre-playback-play-overlay",
+	"prePlaybackPlayOverlay": "playkit-pre-playback-play-overlay",
+	"pre-playback-play-button": "playkit-pre-playback-play-button",
+	"prePlaybackPlayButton": "playkit-pre-playback-play-button",
+	"pre-playback": "playkit-pre-playback",
+	"prePlayback": "playkit-pre-playback",
+	"btn-skip-ad": "playkit-btn-skip-ad",
+	"btnSkipAd": "playkit-btn-skip-ad",
+	"skip-ad": "playkit-skip-ad",
+	"skipAd": "playkit-skip-ad",
+	"live-tag": "playkit-live-tag",
+	"liveTag": "playkit-live-tag",
+	"non-live-playhead": "playkit-non-live-playhead",
+	"nonLivePlayhead": "playkit-non-live-playhead"
 };
 
 /***/ }),
@@ -24585,15 +24664,15 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "@keyframes kp__overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.kp__overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .kp__overlay-play.kp__in .kp__icon {\n    animation: kp__overlayPlayIconIn 400ms linear forwards; }\n  .kp__overlay-play .kp__icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n", ""]);
+exports.push([module.i, "@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n", ""]);
 
 // exports
 exports.locals = {
-	"overlay-play": "kp__overlay-play",
-	"overlayPlay": "kp__overlay-play",
-	"in": "kp__in",
-	"icon": "kp__icon",
-	"overlayPlayIconIn": "kp__overlayPlayIconIn"
+	"overlay-play": "playkit-overlay-play",
+	"overlayPlay": "playkit-overlay-play",
+	"in": "playkit-in",
+	"icon": "playkit-icon",
+	"overlayPlayIconIn": "playkit-overlayPlayIconIn"
 };
 
 /***/ }),
@@ -25597,194 +25676,82 @@ var Icon = function (_Component) {
     value: function render(props) {
       switch (props.type) {
         case IconType.Maximize:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconMaximize].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' }),
-            (0, _preact.h)('path', { d: 'M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconMaximize].join(' ') });
+
         case IconType.Minimize:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconMinimize].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' }),
-            (0, _preact.h)('path', { d: 'M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconMinimize].join(' ') });
 
         case IconType.Play:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconPlay].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconPlay].join(' ') });
 
         case IconType.Pause:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconPause].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconPause].join(' ') });
 
         case IconType.VolumeBase:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.volumeBase].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' }),
-            (0, _preact.h)('path', { d: 'M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconVolumeBase].join(' ') });
 
         case IconType.VolumeWaves:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.volumeWaves].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' }),
-            (0, _preact.h)('path', { d: 'M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconVolumeWaves].join(' ') });
 
         case IconType.VolumeMute:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.volumeMute].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconVolumeMute].join(' ') });
 
         case IconType.Close:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconClose].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconClose].join(' ') });
 
         case IconType.Share:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconShare].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconShare].join(' ') });
 
         case IconType.Settings:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.iconShare].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconSettings].join(' ') });
 
         case IconType.Check:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.checkIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconCheck].join(' ') });
+
         case IconType.Language:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.languageIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' }),
-            (0, _preact.h)('path', { d: 'M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' }),
-            (0, _preact.h)('path', { d: 'M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' }),
-            (0, _preact.h)('path', { d: 'M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' }),
-            (0, _preact.h)('path', { d: 'M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' }),
-            (0, _preact.h)('path', { d: 'M480 192h64v640h-64v-640z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconLanguage].join(' ') });
 
         case IconType.Quality:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.qualityIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconQuality].join(' ') });
 
         case IconType.Captions:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.captionsIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' }),
-            (0, _preact.h)('path', { d: 'M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconCaptions].join(' ') });
 
         case IconType.Speed:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.speedIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconSpeed].join(' ') });
 
         case IconType.Audio:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.audioIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconAudio].join(' ') });
 
         case IconType.Copy:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.copyIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconCopy].join(' ') });
 
         case IconType.Facebook:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.facebookIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconFacebook].join(' ') });
 
         case IconType.Twitter:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.twitterIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconTwitter].join(' ') });
 
         case IconType.GooglePlus:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.googleplusIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { fill: '#fff', d: 'M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconGoogleplus].join(' ') });
 
         case IconType.Linkedin:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.linkedinIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconLinkedin].join(' ') });
 
         case IconType.Email:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.emailIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconEmail].join(' ') });
 
         case IconType.Embed:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.embedIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconEmbed].join(' ') });
 
         case IconType.Link:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.linkIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconLink].join(' ') });
 
         case IconType.ArrowDown:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.arrowDownIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconArrowDown].join(' ') });
 
         case IconType.Startover:
-          return (0, _preact.h)(
-            'svg',
-            { className: [_style2.default.icon, _style2.default.startoverIcon].join(' '), viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconStartover].join(' ') });
 
         default:
           break;
@@ -26096,18 +26063,18 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: cover; }\n  .kp__pre-playback-play-overlay .kp__pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .kp__pre-playback-play-overlay .kp__pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .kp__pre-playback-play-overlay .kp__pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.kp__pre-playback .kp__player-gui {\n  opacity: 0 !important;\n  display: none; }\n", ""]);
+exports.push([module.i, ".playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n", ""]);
 
 // exports
 exports.locals = {
-	"pre-playback-play-overlay": "kp__pre-playback-play-overlay",
-	"prePlaybackPlayOverlay": "kp__pre-playback-play-overlay",
-	"pre-playback-play-button": "kp__pre-playback-play-button",
-	"prePlaybackPlayButton": "kp__pre-playback-play-button",
-	"pre-playback": "kp__pre-playback",
-	"prePlayback": "kp__pre-playback",
-	"player-gui": "kp__player-gui",
-	"playerGui": "kp__player-gui"
+	"pre-playback-play-overlay": "playkit-pre-playback-play-overlay",
+	"prePlaybackPlayOverlay": "playkit-pre-playback-play-overlay",
+	"pre-playback-play-button": "playkit-pre-playback-play-button",
+	"prePlaybackPlayButton": "playkit-pre-playback-play-button",
+	"pre-playback": "playkit-pre-playback",
+	"prePlayback": "playkit-pre-playback",
+	"player-gui": "playkit-player-gui",
+	"playerGui": "playkit-player-gui"
 };
 
 /***/ }),
@@ -26329,18 +26296,18 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "@keyframes kp__kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.kp__loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .kp__loading-backdrop.kp__show {\n    opacity: 1; }\n    .kp__loading-backdrop.kp__show .kp__spinner-container {\n      display: block; }\n  .kp__loading-backdrop .kp__spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.kp__spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kp__kaltura-spinner 2.5s infinite; }\n  .kp__spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .kp__spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .kp__spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .kp__spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .kp__spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .kp__spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .kp__spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .kp__spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .kp__spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n", ""]);
+exports.push([module.i, "@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n", ""]);
 
 // exports
 exports.locals = {
-	"loading-backdrop": "kp__loading-backdrop",
-	"loadingBackdrop": "kp__loading-backdrop",
-	"show": "kp__show",
-	"spinner-container": "kp__spinner-container",
-	"spinnerContainer": "kp__spinner-container",
-	"spinner": "kp__spinner",
-	"kaltura-spinner": "kp__kaltura-spinner",
-	"kalturaSpinner": "kp__kaltura-spinner"
+	"loading-backdrop": "playkit-loading-backdrop",
+	"loadingBackdrop": "playkit-loading-backdrop",
+	"show": "playkit-show",
+	"spinner-container": "playkit-spinner-container",
+	"spinnerContainer": "playkit-spinner-container",
+	"spinner": "playkit-spinner",
+	"kaltura-spinner": "playkit-kaltura-spinner",
+	"kalturaSpinner": "playkit-kaltura-spinner"
 };
 
 /***/ }),
@@ -26537,26 +26504,26 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__control-button-container.kp__control-play-pause .kp__control-button {\n  transition: 400ms transform; }\n  .kp__control-button-container.kp__control-play-pause .kp__control-button .kp__icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .kp__control-button-container.kp__control-play-pause .kp__control-button .kp__icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .kp__control-button-container.kp__control-play-pause .kp__control-button.kp__is-playing {\n    transform: rotate(360deg); }\n    .kp__control-button-container.kp__control-play-pause .kp__control-button.kp__is-playing .kp__icon-pause {\n      opacity: 1;\n      display: block; }\n    .kp__control-button-container.kp__control-play-pause .kp__control-button.kp__is-playing .kp__icon-play {\n      opacity: 0;\n      display: none; }\n\n.kp__touch .kp__control-button-container.kp__control-play-pause {\n  display: none; }\n\n.kp__player.kp__size-sm .kp__control-button-container.kp__control-play-pause {\n  display: none; }\n", ""]);
+exports.push([module.i, ".playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n", ""]);
 
 // exports
 exports.locals = {
-	"control-button-container": "kp__control-button-container",
-	"controlButtonContainer": "kp__control-button-container",
-	"control-play-pause": "kp__control-play-pause",
-	"controlPlayPause": "kp__control-play-pause",
-	"control-button": "kp__control-button",
-	"controlButton": "kp__control-button",
-	"icon-pause": "kp__icon-pause",
-	"iconPause": "kp__icon-pause",
-	"icon-play": "kp__icon-play",
-	"iconPlay": "kp__icon-play",
-	"is-playing": "kp__is-playing",
-	"isPlaying": "kp__is-playing",
-	"touch": "kp__touch",
-	"player": "kp__player",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm"
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"control-play-pause": "playkit-control-play-pause",
+	"controlPlayPause": "playkit-control-play-pause",
+	"control-button": "playkit-control-button",
+	"controlButton": "playkit-control-button",
+	"icon-pause": "playkit-icon-pause",
+	"iconPause": "playkit-icon-pause",
+	"icon-play": "playkit-icon-play",
+	"iconPlay": "playkit-icon-play",
+	"is-playing": "playkit-is-playing",
+	"isPlaying": "playkit-is-playing",
+	"touch": "playkit-touch",
+	"player": "playkit-player",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
 };
 
 /***/ }),
@@ -27196,16 +27163,16 @@ var SeekBarControl = function (_Component) {
 
       var virtualProgressWidth = this.state.virtualTime / props.duration * 100 + '%';
       var progressWidth = props.currentTime / props.duration * 100 + '%';
-      var seekbarStyleClass = _seekbar2.default.seekBar;
-      if (props.adBreak) seekbarStyleClass += _seekbar2.default.adBreak;
-      if (props.isDvr) seekbarStyleClass += _seekbar2.default.live;
-      if (props.isMobile) seekbarStyleClass += _seekbar2.default.hover;
-      if (props.isDraggingActive) seekbarStyleClass += _seekbar2.default.hover;
+      var seekbarStyleClass = [_seekbar2.default.seekBar];
+      if (props.adBreak) seekbarStyleClass.push(_seekbar2.default.adBreak);
+      if (props.isDvr) seekbarStyleClass.push(_seekbar2.default.live);
+      if (props.isMobile) seekbarStyleClass.push(_seekbar2.default.hover);
+      if (props.isDraggingActive) seekbarStyleClass.push(_seekbar2.default.hover);
 
       return (0, _preact.h)(
         'div',
         {
-          className: seekbarStyleClass,
+          className: seekbarStyleClass.join(' '),
           ref: function ref(c) {
             return _this5._seekBarElement = c;
           },
@@ -27296,35 +27263,35 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__player .kp__seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .kp__player .kp__seek-bar:hover .kp__time-preview,\n  .kp__player .kp__seek-bar:hover .kp__frame-preview, .kp__player .kp__seek-bar.kp__hover .kp__time-preview,\n  .kp__player .kp__seek-bar.kp__hover .kp__frame-preview, .kp__player .kp__seek-bar.kp__dragging-active .kp__time-preview,\n  .kp__player .kp__seek-bar.kp__dragging-active .kp__frame-preview {\n    display: block; }\n  .kp__player .kp__seek-bar:hover .kp__progress-bar .kp__scrubber, .kp__player .kp__seek-bar.kp__hover .kp__progress-bar .kp__scrubber, .kp__player .kp__seek-bar.kp__dragging-active .kp__progress-bar .kp__scrubber {\n    transform: scale(1); }\n  .kp__player .kp__seek-bar:hover .kp__progress-bar .kp__virtual-progress, .kp__player .kp__seek-bar.kp__hover .kp__progress-bar .kp__virtual-progress, .kp__player .kp__seek-bar.kp__dragging-active .kp__progress-bar .kp__virtual-progress {\n    display: block; }\n  .kp__player .kp__seek-bar.kp__ad-break {\n    cursor: initial; }\n    .kp__player .kp__seek-bar.kp__ad-break .kp__progress-bar .kp__progress {\n      background-color: #F9A71B; }\n  .kp__player .kp__seek-bar.kp__live .kp__progress-bar .kp__progress {\n    background-color: #DA1F26; }\n  .kp__player .kp__seek-bar .kp__progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__virtual-progress {\n      display: none; }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__buffered, .kp__player .kp__seek-bar .kp__progress-bar .kp__virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .kp__player .kp__seek-bar .kp__progress-bar .kp__scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .kp__player .kp__seek-bar .kp__progress-bar .kp__scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .kp__player .kp__seek-bar .kp__frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .kp__player .kp__seek-bar .kp__frame-preview .kp__frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .kp__player .kp__seek-bar .kp__time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .kp__player .kp__seek-bar .kp__time-preview,\n  .kp__player .kp__seek-bar .kp__frame-preview {\n    display: none; }\n\n.kp__touch .kp__virtual-progress, .kp__touch .kp__time-preview, .kp__touch .kp__frame-preview {\n  display: none !important; }\n\n.kp__player.kp__size-sm .kp__virtual-progress, .kp__player.kp__size-sm .kp__time-preview, .kp__player.kp__size-sm .kp__frame-preview {\n  display: none; }\n", ""]);
+exports.push([module.i, ".playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n", ""]);
 
 // exports
 exports.locals = {
-	"player": "kp__player",
-	"seek-bar": "kp__seek-bar",
-	"seekBar": "kp__seek-bar",
-	"time-preview": "kp__time-preview",
-	"timePreview": "kp__time-preview",
-	"frame-preview": "kp__frame-preview",
-	"framePreview": "kp__frame-preview",
-	"hover": "kp__hover",
-	"dragging-active": "kp__dragging-active",
-	"draggingActive": "kp__dragging-active",
-	"progress-bar": "kp__progress-bar",
-	"progressBar": "kp__progress-bar",
-	"scrubber": "kp__scrubber",
-	"virtual-progress": "kp__virtual-progress",
-	"virtualProgress": "kp__virtual-progress",
-	"ad-break": "kp__ad-break",
-	"adBreak": "kp__ad-break",
-	"progress": "kp__progress",
-	"live": "kp__live",
-	"buffered": "kp__buffered",
-	"frame-preview-img": "kp__frame-preview-img",
-	"framePreviewImg": "kp__frame-preview-img",
-	"touch": "kp__touch",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm"
+	"player": "playkit-player",
+	"seek-bar": "playkit-seek-bar",
+	"seekBar": "playkit-seek-bar",
+	"time-preview": "playkit-time-preview",
+	"timePreview": "playkit-time-preview",
+	"frame-preview": "playkit-frame-preview",
+	"framePreview": "playkit-frame-preview",
+	"hover": "playkit-hover",
+	"dragging-active": "playkit-dragging-active",
+	"draggingActive": "playkit-dragging-active",
+	"progress-bar": "playkit-progress-bar",
+	"progressBar": "playkit-progress-bar",
+	"scrubber": "playkit-scrubber",
+	"virtual-progress": "playkit-virtual-progress",
+	"virtualProgress": "playkit-virtual-progress",
+	"ad-break": "playkit-ad-break",
+	"adBreak": "playkit-ad-break",
+	"progress": "playkit-progress",
+	"live": "playkit-live",
+	"buffered": "playkit-buffered",
+	"frame-preview-img": "playkit-frame-preview-img",
+	"framePreviewImg": "playkit-frame-preview-img",
+	"touch": "playkit-touch",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
 };
 
 /***/ }),
@@ -27432,6 +27399,13 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
 
       this.player.addEventListener(this.player.Event.MUTE_CHANGE, function () {
         _this2.props.updateMuted(_this2.player.muted);
+      });
+
+      document.addEventListener('mouseup', function (e) {
+        return _this2.onVolumeProgressBarMouseUp(e);
+      });
+      document.addEventListener('mousemove', function (e) {
+        return _this2.onVolumeProgressBarMouseMove(e);
       });
     }
 
@@ -27600,12 +27574,6 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
               },
               onMouseDown: function onMouseDown() {
                 return _this3.onVolumeProgressBarMouseDown();
-              },
-              onMouseUp: function onMouseUp(e) {
-                return _this3.onVolumeProgressBarMouseUp(e);
-              },
-              onMouseMove: function onMouseMove(e) {
-                return _this3.onVolumeProgressBarMouseMove(e);
               }
             },
             (0, _preact.h)('div', { className: _style2.default.progress, style: { height: this.getVolumeProgressHeight() } })
@@ -27869,7 +27837,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
       var qualityOptions = props.videoTracks.filter(function (t) {
         return t.bandwidth || t.height;
       }).sort(function (a, b) {
-        return a.bandwidth < b.bandwidth;
+        return a.bandwidth < b.bandwidth ? 1 : -1;
       }).map(function (t) {
         return {
           label: _this2.getQualityOptionLabel(t),
@@ -28063,28 +28031,28 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "@keyframes kp__openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes kp__closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.kp__player:not(.kp__touch) .kp__smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: kp__openSmartContainer 100ms ease-out forwards; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__leaving {\n    animation: kp__closeSmartContainer 100ms ease-out forwards; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .kp__player:not(.kp__touch) .kp__smart-container.kp__top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__right {\n    left: 0px; }\n  .kp__player:not(.kp__touch) .kp__smart-container.kp__left {\n    right: 0px; }\n  .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item label {\n      float: left; }\n      .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item label .kp__label-icon {\n        display: none; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item .kp__dropdown, .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item select {\n      float: right; }\n    .kp__player:not(.kp__touch) .kp__smart-container .kp__smart-container-item.kp__select-menu-item select {\n      text-align-last: right; }\n\n.kp__touch .kp__smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .kp__touch .kp__smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .kp__touch .kp__smart-container-item.kp__select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    fill: #fff; }\n    .kp__touch .kp__smart-container-item.kp__select-menu-item label .kp__label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .kp__touch .kp__smart-container-item.kp__select-menu-item .kp__dropdown, .kp__touch .kp__smart-container-item.kp__select-menu-item select {\n    float: right; }\n  .kp__touch .kp__smart-container-item.kp__select-menu-item select {\n    text-align-last: right; }\n", ""]);
+exports.push([module.i, "@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n", ""]);
 
 // exports
 exports.locals = {
-	"player": "kp__player",
-	"touch": "kp__touch",
-	"smart-container": "kp__smart-container",
-	"smartContainer": "kp__smart-container",
-	"openSmartContainer": "kp__openSmartContainer",
-	"leaving": "kp__leaving",
-	"closeSmartContainer": "kp__closeSmartContainer",
-	"top": "kp__top",
-	"bottom": "kp__bottom",
-	"right": "kp__right",
-	"left": "kp__left",
-	"smart-container-item": "kp__smart-container-item",
-	"smartContainerItem": "kp__smart-container-item",
-	"select-menu-item": "kp__select-menu-item",
-	"selectMenuItem": "kp__select-menu-item",
-	"label-icon": "kp__label-icon",
-	"labelIcon": "kp__label-icon",
-	"dropdown": "kp__dropdown"
+	"player": "playkit-player",
+	"touch": "playkit-touch",
+	"smart-container": "playkit-smart-container",
+	"smartContainer": "playkit-smart-container",
+	"openSmartContainer": "playkit-openSmartContainer",
+	"leaving": "playkit-leaving",
+	"closeSmartContainer": "playkit-closeSmartContainer",
+	"top": "playkit-top",
+	"bottom": "playkit-bottom",
+	"right": "playkit-right",
+	"left": "playkit-left",
+	"smart-container-item": "playkit-smart-container-item",
+	"smartContainerItem": "playkit-smart-container-item",
+	"select-menu-item": "playkit-select-menu-item",
+	"selectMenuItem": "playkit-select-menu-item",
+	"label-icon": "playkit-label-icon",
+	"labelIcon": "playkit-label-icon",
+	"dropdown": "playkit-dropdown"
 };
 
 /***/ }),
@@ -28404,7 +28372,11 @@ var DropDown = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class =
           { className: _style2.default.dropdownButton, onClick: function onClick() {
               return _this3.setState({ dropMenuActive: !_this3.state.dropMenuActive });
             } },
-          this.getActiveOptionLabel(),
+          (0, _preact.h)(
+            'span',
+            null,
+            this.getActiveOptionLabel()
+          ),
           (0, _preact.h)(_icon2.default, { type: _icon.IconType.ArrowDown })
         ),
         !this.state.dropMenuActive ? undefined : (0, _preact.h)(_menu2.default, {
@@ -28522,7 +28494,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
      * @memberof Menu
      */
     value: function componentWillMount() {
-      this.setState({ position: ['top', 'left'] });
+      this.setState({ position: [_style2.default.top, _style2.default.left] });
     }
 
     /**
@@ -28565,9 +28537,9 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
     value: function getPosition() {
       var box = this._menuElement.getBoundingClientRect();
       if (box.y < 0) {
-        return ['bottom', 'left'];
+        return [_style2.default.bottom, _style2.default.left];
       } else {
-        return ['top', 'left'];
+        return [_style2.default.top, _style2.default.left];
       }
     }
 
@@ -28584,10 +28556,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
     key: 'handleClickOutside',
     value: function handleClickOutside(e) {
       if (!this.props.isMobile && this._menuElement && !this._menuElement.contains(e.target)) {
-
-        if (e.target.classList.contains(_style2.default.overlayPlay) || e.target.parentElement.getElementsByClassName(_style2.default.dropdownMenu)[0] === this._menuElement) {
-          e.stopPropagation();
-        }
+        e.stopPropagation();
         this.props.onClose();
       }
     }
@@ -28712,7 +28681,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
             ),
             (0, _preact.h)(
               'span',
-              { style: 'opacity: ' + (_this3.isSelected(o) ? 1 : 0) },
+              { className: _style2.default.menuIconContainer, style: 'opacity: ' + (_this3.isSelected(o) ? 1 : 0) },
               (0, _preact.h)(_icon2.default, { type: _icon.IconType.Check })
             )
           );
@@ -29014,11 +28983,13 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
         ),
         this.state.cvaaOverlay ? (0, _preact.h)(
           _preactPortal2.default,
-          { into: '#overlay-portal' },
+          { into: '#overlay-portal', ref: function ref(_ref) {
+              return _this2._portal = _ref;
+            } },
           (0, _preact.h)(_cvaaOverlay2.default, { player: this.player, onClose: function onClose() {
               _this2.toggleCVAAOverlay();_this2.onControlButtonClick();
             } })
-        ) : null
+        ) : (0, _preact.h)('div', null)
       );
     }
 
@@ -29902,13 +29873,13 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__slider {\n  height: 8px;\n  border-radius: 4px;\n  background-color: rgba(255, 255, 255, 0.2); }\n  .kp__slider .kp__progress {\n    background-color: #01ACCD;\n    height: 8px;\n    border-radius: 4px;\n    position: relative; }\n    .kp__slider .kp__progress .kp__handle {\n      height: 12px;\n      width: 12px;\n      border-radius: 5px;\n      background-color: #FFFFFF;\n      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n      position: absolute;\n      right: 0;\n      top: 0px;\n      transform: translate3d(6px, -2px, 0);\n      cursor: pointer; }\n", ""]);
+exports.push([module.i, ".playkit-slider {\n  height: 8px;\n  border-radius: 4px;\n  background-color: rgba(255, 255, 255, 0.2); }\n  .playkit-slider .playkit-progress {\n    background-color: #01ACCD;\n    height: 8px;\n    border-radius: 4px;\n    position: relative; }\n    .playkit-slider .playkit-progress .playkit-handle {\n      height: 12px;\n      width: 12px;\n      border-radius: 5px;\n      background-color: #FFFFFF;\n      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n      position: absolute;\n      right: 0;\n      top: 0px;\n      transform: translate3d(6px, -2px, 0);\n      cursor: pointer; }\n", ""]);
 
 // exports
 exports.locals = {
-	"slider": "kp__slider",
-	"progress": "kp__progress",
-	"handle": "kp__handle"
+	"slider": "playkit-slider",
+	"progress": "playkit-progress",
+	"handle": "playkit-handle"
 };
 
 /***/ }),
@@ -30193,24 +30164,24 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__control-button-container.kp__control-fullscreen .kp__control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .kp__control-button-container.kp__control-fullscreen .kp__control-button .kp__icon-minimize {\n    display: none; }\n  .kp__control-button-container.kp__control-fullscreen .kp__control-button.kp__is-fullscreen .kp__icon-maximize {\n    display: none; }\n  .kp__control-button-container.kp__control-fullscreen .kp__control-button.kp__is-fullscreen .kp__icon-minimize {\n    display: block; }\n\n.kp__player:not(.kp__touch) .kp__control-button-container.kp__control-fullscreen .kp__control-button:hover {\n  transform: scale(1.1); }\n", ""]);
+exports.push([module.i, ".playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n", ""]);
 
 // exports
 exports.locals = {
-	"control-button-container": "kp__control-button-container",
-	"controlButtonContainer": "kp__control-button-container",
-	"control-fullscreen": "kp__control-fullscreen",
-	"controlFullscreen": "kp__control-fullscreen",
-	"control-button": "kp__control-button",
-	"controlButton": "kp__control-button",
-	"icon-minimize": "kp__icon-minimize",
-	"iconMinimize": "kp__icon-minimize",
-	"is-fullscreen": "kp__is-fullscreen",
-	"isFullscreen": "kp__is-fullscreen",
-	"icon-maximize": "kp__icon-maximize",
-	"iconMaximize": "kp__icon-maximize",
-	"player": "kp__player",
-	"touch": "kp__touch"
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"control-fullscreen": "playkit-control-fullscreen",
+	"controlFullscreen": "playkit-control-fullscreen",
+	"control-button": "playkit-control-button",
+	"controlButton": "playkit-control-button",
+	"icon-minimize": "playkit-icon-minimize",
+	"iconMinimize": "playkit-icon-minimize",
+	"is-fullscreen": "playkit-is-fullscreen",
+	"isFullscreen": "playkit-is-fullscreen",
+	"icon-maximize": "playkit-icon-maximize",
+	"iconMaximize": "playkit-icon-maximize",
+	"player": "playkit-player",
+	"touch": "playkit-touch"
 };
 
 /***/ }),
@@ -30470,16 +30441,16 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__player .kp__time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.kp__touch .kp__time-display {\n  padding-left: 0; }\n\n.kp__player.kp__size-sm .kp__player .kp__time-display {\n  padding: 0 12px 0 0; }\n", ""]);
+exports.push([module.i, ".playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n", ""]);
 
 // exports
 exports.locals = {
-	"player": "kp__player",
-	"time-display": "kp__time-display",
-	"timeDisplay": "kp__time-display",
-	"touch": "kp__touch",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm"
+	"player": "playkit-player",
+	"time-display": "playkit-time-display",
+	"timeDisplay": "playkit-time-display",
+	"touch": "playkit-touch",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
 };
 
 /***/ }),
@@ -30589,30 +30560,30 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__player .kp__bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .kp__player .kp__bottom-bar .kp__left-controls {\n    float: left;\n    text-align: left; }\n    .kp__player .kp__bottom-bar .kp__left-controls:first-child {\n      margin-left: 0px; }\n  .kp__player .kp__bottom-bar .kp__right-controls {\n    float: right;\n    text-align: left; }\n    .kp__player .kp__bottom-bar .kp__right-controls .kp__control-button-container {\n      margin: 0 6px; }\n      .kp__player .kp__bottom-bar .kp__right-controls .kp__control-button-container:last-child {\n        margin-right: 0; }\n\n.kp__player.kp__hover .kp__bottom-bar,\n.kp__player.kp__state-paused .kp__bottom-bar,\n.kp__player.kp__menu-active .kp__bottom-bar {\n  opacity: 1; }\n\n.kp__player.kp__overlay-active .kp__bottom-bar {\n  opacity: 0; }\n\n.kp__player.kp__size-sm .kp__bottom-bar {\n  padding: 6px 8px; }\n  .kp__player.kp__size-sm .kp__bottom-bar .kp__time-display {\n    padding-left: 0; }\n", ""]);
+exports.push([module.i, ".playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n", ""]);
 
 // exports
 exports.locals = {
-	"player": "kp__player",
-	"bottom-bar": "kp__bottom-bar",
-	"bottomBar": "kp__bottom-bar",
-	"left-controls": "kp__left-controls",
-	"leftControls": "kp__left-controls",
-	"right-controls": "kp__right-controls",
-	"rightControls": "kp__right-controls",
-	"control-button-container": "kp__control-button-container",
-	"controlButtonContainer": "kp__control-button-container",
-	"hover": "kp__hover",
-	"state-paused": "kp__state-paused",
-	"statePaused": "kp__state-paused",
-	"menu-active": "kp__menu-active",
-	"menuActive": "kp__menu-active",
-	"overlay-active": "kp__overlay-active",
-	"overlayActive": "kp__overlay-active",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm",
-	"time-display": "kp__time-display",
-	"timeDisplay": "kp__time-display"
+	"player": "playkit-player",
+	"bottom-bar": "playkit-bottom-bar",
+	"bottomBar": "playkit-bottom-bar",
+	"left-controls": "playkit-left-controls",
+	"leftControls": "playkit-left-controls",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"hover": "playkit-hover",
+	"state-paused": "playkit-state-paused",
+	"statePaused": "playkit-state-paused",
+	"menu-active": "playkit-menu-active",
+	"menuActive": "playkit-menu-active",
+	"overlay-active": "playkit-overlay-active",
+	"overlayActive": "playkit-overlay-active",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm",
+	"time-display": "playkit-time-display",
+	"timeDisplay": "playkit-time-display"
 };
 
 /***/ }),
@@ -31253,14 +31224,14 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.kp__skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n", ""]);
+exports.push([module.i, ".playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n", ""]);
 
 // exports
 exports.locals = {
-	"btn-skip-ad": "kp__btn-skip-ad",
-	"btnSkipAd": "kp__btn-skip-ad",
-	"skip-ad": "kp__skip-ad",
-	"skipAd": "kp__skip-ad"
+	"btn-skip-ad": "playkit-btn-skip-ad",
+	"btnSkipAd": "playkit-btn-skip-ad",
+	"skip-ad": "playkit-skip-ad",
+	"skipAd": "playkit-skip-ad"
 };
 
 /***/ }),
@@ -31354,7 +31325,7 @@ var AdLearnMore = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_clas
     value: function render(props) {
       return (0, _preact.h)(
         'a',
-        { href: props.url, target: 'new', className: [_adLearnMore2.default.btn, _adLearnMore2.default.btnDarkTransparent].join(' ') },
+        { href: props.url, target: '_blank', className: [_adLearnMore2.default.btn, _adLearnMore2.default.btnDarkTransparent].join(' ') },
         'Learn more'
       );
     }
@@ -31404,10 +31375,20 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n", ""]);
 
 // exports
-
+exports.locals = {
+	"btn": "playkit-btn",
+	"btn-block": "playkit-btn-block",
+	"btnBlock": "playkit-btn-block",
+	"btn-dark-transparent": "playkit-btn-dark-transparent",
+	"btnDarkTransparent": "playkit-btn-dark-transparent",
+	"btn-branded": "playkit-btn-branded",
+	"btnBranded": "playkit-btn-branded",
+	"btn-rounded": "playkit-btn-rounded",
+	"btnRounded": "playkit-btn-rounded"
+};
 
 /***/ }),
 /* 132 */
@@ -31516,28 +31497,28 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__player .kp__top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .kp__player .kp__top-bar .kp__left-controls {\n    text-align: left;\n    min-width: 0; }\n  .kp__player .kp__top-bar .kp__right-controls {\n    text-align: left; }\n    .kp__player .kp__top-bar .kp__right-controls .kp__control-button-container {\n      margin: 0 6px; }\n      .kp__player .kp__top-bar .kp__right-controls .kp__control-button-container:last-child {\n        margin-right: 0; }\n\n.kp__player.kp__hover .kp__top-bar,\n.kp__player.kp__state-paused .kp__top-bar,\n.kp__player.kp__menu-active .kp__top-bar {\n  opacity: 1; }\n\n.kp__player.kp__overlay-active .kp__top-bar {\n  opacity: 0; }\n\n.kp__player.kp__size-sm .kp__player .kp__top-bar {\n  padding: 8px 8px 20px 8px; }\n", ""]);
+exports.push([module.i, ".playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n", ""]);
 
 // exports
 exports.locals = {
-	"player": "kp__player",
-	"top-bar": "kp__top-bar",
-	"topBar": "kp__top-bar",
-	"left-controls": "kp__left-controls",
-	"leftControls": "kp__left-controls",
-	"right-controls": "kp__right-controls",
-	"rightControls": "kp__right-controls",
-	"control-button-container": "kp__control-button-container",
-	"controlButtonContainer": "kp__control-button-container",
-	"hover": "kp__hover",
-	"state-paused": "kp__state-paused",
-	"statePaused": "kp__state-paused",
-	"menu-active": "kp__menu-active",
-	"menuActive": "kp__menu-active",
-	"overlay-active": "kp__overlay-active",
-	"overlayActive": "kp__overlay-active",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm"
+	"player": "playkit-player",
+	"top-bar": "playkit-top-bar",
+	"topBar": "playkit-top-bar",
+	"left-controls": "playkit-left-controls",
+	"leftControls": "playkit-left-controls",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"hover": "playkit-hover",
+	"state-paused": "playkit-state-paused",
+	"statePaused": "playkit-state-paused",
+	"menu-active": "playkit-menu-active",
+	"menuActive": "playkit-menu-active",
+	"overlay-active": "playkit-overlay-active",
+	"overlayActive": "playkit-overlay-active",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
 };
 
 /***/ }),
@@ -31891,17 +31872,17 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .kp__live-tag.kp__non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.kp__player.kp__size-sm .kp__live-tag {\n  margin-left: 0; }\n", ""]);
+exports.push([module.i, ".playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n", ""]);
 
 // exports
 exports.locals = {
-	"live-tag": "kp__live-tag",
-	"liveTag": "kp__live-tag",
-	"non-live-playhead": "kp__non-live-playhead",
-	"nonLivePlayhead": "kp__non-live-playhead",
-	"player": "kp__player",
-	"size-sm": "kp__size-sm",
-	"sizeSm": "kp__size-sm"
+	"live-tag": "playkit-live-tag",
+	"liveTag": "playkit-live-tag",
+	"non-live-playhead": "playkit-non-live-playhead",
+	"nonLivePlayhead": "playkit-non-live-playhead",
+	"player": "playkit-player",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
 };
 
 /***/ }),
@@ -33389,7 +33370,7 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
       if (this.props.playerHover) playerClasses.push(_style2.default.hover);
       if (this.props.metadataLoaded) playerClasses.push(_style2.default.metadataLoaded);
       if (this.props.adBreak) playerClasses.push(_style2.default.adBreak);
-      if (this.props.metadataLoaded) playerClasses.push(_style2.default.state + this.props.currentState);
+      if (this.props.metadataLoaded) playerClasses.push(_style2.default['state-' + this.props.currentState]);
       if (this.props.playerWidth <= 480) playerClasses.push(_style2.default.sizeSm);else if (this.props.playerWidth <= 768) playerClasses.push(_style2.default.sizeMd);
       if (this.props.seekbarDraggingActive) playerClasses.push(_style2.default.hover);
 
@@ -33571,12 +33552,12 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".kp__video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n", ""]);
+exports.push([module.i, ".playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n", ""]);
 
 // exports
 exports.locals = {
-	"video-player": "kp__video-player",
-	"videoPlayer": "kp__video-player"
+	"video-player": "playkit-video-player",
+	"videoPlayer": "playkit-video-player"
 };
 
 /***/ }),
@@ -33962,7 +33943,7 @@ function evaluatePluginsConfig() {
 
   if (playerConfig.plugins) {
     var dataModel = {
-      pVersion: "0.9.0",
+      pVersion: "0.10.0",
       pName: "kaltura-player-js"
     };
     if (playerConfig.session) {
@@ -34052,7 +34033,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.9.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
+_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.10.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
 
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/kaltura-player-js", "color: #98ff98;");
 
@@ -34078,7 +34059,7 @@ exports.Playkit = Playkit;
 exports.OvpProvider = _ovpProvider2.default;
 exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup.setup;
-exports.VERSION = "0.9.0";
+exports.VERSION = "0.10.0";
 exports.PLAYER_NAME = "kaltura-player-js";
 
 /***/ }),
@@ -59262,6 +59243,19 @@ var Youbora = function (_BasePlugin) {
     }
 
     /**
+     * Reset the plugin
+     * @return {void}
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      if (this._youbora) {
+        this._youbora.reset();
+      }
+    }
+
+    /**
      * Add the player metadata to the plugin config.
      * @function
      * @private
@@ -59397,6 +59391,14 @@ _youboraLib2.default.plugins.KalturaV3.bindLogger = function (logger) {
   _youboraLib2.default.warn = logger.warn.bind(logger);
   _youboraLib2.default.debug = logger.debug.bind(logger);
   _youboraLib2.default.verbose = function () {};
+};
+
+/**
+ * @returns {void}
+ */
+_youboraLib2.default.plugins.KalturaV3.prototype.reset = function () {
+  this.endedHandler();
+  this.viewManager.comm.view++;
 };
 
 /**
@@ -60550,7 +60552,7 @@ var $YB = $YB || { version: "5.4.6", plugins: {}, adnalyzers: {}, utils: {}, man
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"playkit-js-youbora","version":"0.1.2","main":"dist/playkit-youbora.js","scripts":{"clean":"rm -rf ./dist","prebuild":"npm run clean","build:prod":"NODE_ENV=production webpack","build":"webpack","dev":"webpack --progress --colors --watch","test":"NODE_ENV=test karma start --color","test:chrome":"NODE_ENV=test karma start --color --browsers Chrome","test:chrome:dots":"NODE_ENV=test karma start --color --browsers Chrome --reporters dots","test:firefox":"NODE_ENV=test karma start --color --browsers Firefox","test:safari":"NODE_ENV=test karma start --color --browsers Safari","test:watch":"NODE_ENV=test karma start --color --auto-watch","start":"webpack-dev-server","release":"standard-version","publish":"git push --follow-tags --no-verify origin master","eslint":"eslint . --color","flow":"flow check","eslint:flow:test":"npm run eslint && npm run flow && npm run test","commit:dist":"git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"},"standard-version":{"scripts":{"postbump":"yarn run build && yarn run build:prod && npm run commit:dist"}},"devDependencies":{"babel-cli":"^6.18.0","babel-core":"^6.18.2","babel-eslint":"^7.1.1","babel-loader":"^6.2.7","babel-plugin-istanbul":"^4.0.0","babel-plugin-transform-class-properties":"^6.22.0","babel-plugin-transform-flow-strip-types":"^6.22.0","babel-preset-es2015":"^6.18.0","babel-register":"^6.23.0","chai":"^3.5.0","cross-env":"^3.1.4","css-loader":"^0.28.4","eslint":"^3.10.0","eslint-loader":"^1.6.1","eslint-plugin-flowtype":"^2.30.0","eslint-plugin-import":"^2.2.0","eslint-plugin-mocha-no-only":"^0.0.5","flow-bin":"latest","istanbul":"^0.4.5","karma":"^1.5.0","karma-chai":"^0.1.0","karma-chrome-launcher":"^2.0.0","karma-cli":"^1.0.1","karma-coverage":"^1.1.1","karma-firefox-launcher":"^1.0.1","karma-ie-launcher":"^1.0.0","karma-mocha":"^1.3.0","karma-safari-launcher":"^1.0.0","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^2.0.2","mocha":"^3.2.0","mocha-cli":"^1.0.1","playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.9.0","pre-push":"^0.1.1","sinon":"^2.0.0","sinon-chai":"^2.8.0","standard-version":"^4.2.0","style-loader":"^0.18.2","uglifyjs-webpack-plugin":"^0.4.3","webpack":"latest","webpack-dev-server":"latest"},"peerDependencies":{"playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.9.0"},"keywords":[],"license":"AGPL-3.0","repository":{"type":"git","url":"git+https://github.com/kaltura/playkit-js-youbora.git"},"bugs":{"url":"https://github.com/kaltura/playkit-js-youbora/issues"},"homepage":"https://github.com/kaltura/playkit-js-youbora#readme"}
+module.exports = {"name":"playkit-js-youbora","version":"0.2.0","main":"dist/playkit-youbora.js","scripts":{"clean":"rm -rf ./dist","prebuild":"npm run clean","build:prod":"NODE_ENV=production webpack","build":"webpack","dev":"webpack --progress --colors --watch","test":"NODE_ENV=test karma start --color","test:chrome":"NODE_ENV=test karma start --color --browsers Chrome","test:chrome:dots":"NODE_ENV=test karma start --color --browsers Chrome --reporters dots","test:firefox":"NODE_ENV=test karma start --color --browsers Firefox","test:safari":"NODE_ENV=test karma start --color --browsers Safari","test:watch":"NODE_ENV=test karma start --color --auto-watch","start":"webpack-dev-server","release":"standard-version","publish":"git push --follow-tags --no-verify origin master","eslint":"eslint . --color","flow":"flow check","eslint:flow:test":"npm run eslint && npm run flow && npm run test","commit:dist":"git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"},"standard-version":{"scripts":{"postbump":"yarn run build && yarn run build:prod && npm run commit:dist"}},"devDependencies":{"babel-cli":"^6.18.0","babel-core":"^6.18.2","babel-eslint":"^7.1.1","babel-loader":"^6.2.7","babel-plugin-istanbul":"^4.0.0","babel-plugin-transform-class-properties":"^6.22.0","babel-plugin-transform-flow-strip-types":"^6.22.0","babel-preset-es2015":"^6.18.0","babel-register":"^6.23.0","chai":"^3.5.0","cross-env":"^3.1.4","css-loader":"^0.28.4","eslint":"^3.10.0","eslint-loader":"^1.6.1","eslint-plugin-flowtype":"^2.30.0","eslint-plugin-import":"^2.2.0","eslint-plugin-mocha-no-only":"^0.0.5","flow-bin":"latest","istanbul":"^0.4.5","karma":"^1.5.0","karma-chai":"^0.1.0","karma-chrome-launcher":"^2.0.0","karma-cli":"^1.0.1","karma-coverage":"^1.1.1","karma-firefox-launcher":"^1.0.1","karma-ie-launcher":"^1.0.0","karma-mocha":"^1.3.0","karma-safari-launcher":"^1.0.0","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^2.0.2","mocha":"^3.2.0","mocha-cli":"^1.0.1","playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.12.0","pre-push":"^0.1.1","sinon":"^2.0.0","sinon-chai":"^2.8.0","standard-version":"^4.2.0","style-loader":"^0.18.2","uglifyjs-webpack-plugin":"^0.4.3","webpack":"latest","webpack-dev-server":"latest"},"peerDependencies":{"playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.12.0"},"keywords":[],"license":"AGPL-3.0","repository":{"type":"git","url":"git+https://github.com/kaltura/playkit-js-youbora.git"},"bugs":{"url":"https://github.com/kaltura/playkit-js-youbora/issues"},"homepage":"https://github.com/kaltura/playkit-js-youbora#readme"}
 
 /***/ })
 /******/ ]);
@@ -63129,7 +63131,7 @@ var KalturaPlayer = function () {
     this._player = player;
     this._logger = _logger2.default.getLogger('KalturaPlayer' + _playkitJs.Utils.Generator.uniqueId(5));
     this._uiManager = new _playkitJsUi2.default(this._player, { targetId: targetId });
-    this._provider = new _ovpProvider2.default("0.9.0", config.partnerId, config.ks, config.env);
+    this._provider = new _ovpProvider2.default("0.10.0", config.partnerId, config.ks, config.env);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -63259,7 +63261,7 @@ function addReferrer(source) {
 function addClientTag(source) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     var delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + "0.9.0";
+    source.url += delimiter + CLIENT_TAG + "0.10.0";
   }
 }
 
