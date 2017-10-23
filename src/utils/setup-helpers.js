@@ -1,5 +1,5 @@
 // @flow
-import {Env, Utils} from 'playkit-js'
+import {Env, Utils, TextStyle} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 
@@ -144,15 +144,12 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
 
 /**
  * Sets the storage config on the player config if certain conditions are met.
- * @param {boolean} disableUserCache - Whether to disable the cache support.
  * @param {Object} playerConfig - The player configuration.
  * @returns {void}
  */
-function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void {
-  if (!disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    const playerStorageConfig = {};
-    Utils.Object.mergeDeep(playerStorageConfig, StorageManager.getStorage(), playerConfig);
-    Utils.Object.mergeDeep(playerConfig, playerStorageConfig);
+function setStorageConfig(playerConfig: Object): void {
+  if (!playerConfig.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
+    Utils.Object.mergeDeep(playerConfig, StorageManager.getStorageConfig());
   }
 }
 
@@ -164,6 +161,20 @@ function setStorageConfig(disableUserCache: boolean, playerConfig: Object): void
 function applyStorageSupport(player: any): void {
   if (StorageManager.isLocalStorageAvailable()) {
     StorageManager.attach(player);
+  }
+}
+
+/**
+ * Sets the player text style from storage.
+ * @param {any} player - The Kaltura player.
+ * @returns {void}
+ */
+function setStorageTextStyle(player: any): void {
+  if (StorageManager.isLocalStorageAvailable()) {
+    const textStyleObj = StorageManager.getPlayerTextStyle();
+    if (textStyleObj) {
+      player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
+    }
   }
 }
 
@@ -186,6 +197,7 @@ function isIos(): boolean {
 export {
   setStorageConfig,
   applyStorageSupport,
+  setStorageTextStyle,
   extractPlayerConfig,
   extractProvidersConfig,
   createKalturaPlayerContainer,
