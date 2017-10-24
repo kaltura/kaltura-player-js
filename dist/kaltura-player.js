@@ -32251,11 +32251,11 @@ function validateTargetId(targetId) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The player configuration.
  */
-function extractPlayerConfig(config) {
+function extractPlayerConfig(config, uiConf) {
   var playerConfig = {};
   var configMergedWithUIConf = {};
-  if (config.uiConfId && KalturaPlayer.UiConf && KalturaPlayer.UiConf[config.uiConfId]) {
-    _playkitJs.Utils.Object.mergeDeep(configMergedWithUIConf, KalturaPlayer.UiConf[config.uiConfId].config, config);
+  if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
+    _playkitJs.Utils.Object.mergeDeep(configMergedWithUIConf, vm.UiConf[config.uiConfId].config, config);
   }
   _playkitJs.Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
   delete playerConfig.partnerId;
@@ -32271,14 +32271,14 @@ function extractPlayerConfig(config) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The provider configuration.
  */
-function extractProvidersConfig(config) {
+function extractProvidersConfig(config, uiConf) {
   var providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
     providerConfig.loadUiConf = true;
-    if (config.uiConfId && KalturaPlayer.UiConf[config.uiConfId]) {
+    if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
       providerConfig.loadUiConf = false;
     }
     providerConfig.env = config.env;
@@ -61509,8 +61509,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function setup(targetId, options) {
   (0, _setupHelpers.validateTargetId)(targetId);
   (0, _setupHelpers.validateProvidersConfig)(options);
-  var userPlayerConfig = (0, _setupHelpers.extractPlayerConfig)(options);
-  var userProvidersConfig = (0, _setupHelpers.extractProvidersConfig)(options);
+  var userPlayerConfig = (0, _setupHelpers.extractPlayerConfig)(options, this.Uiconf);
+  var userProvidersConfig = (0, _setupHelpers.extractProvidersConfig)(options, this.Uiconf);
   var containerId = (0, _setupHelpers.createKalturaPlayerContainer)(targetId);
   (0, _setupHelpers.setDefaultPlayerConfig)(userPlayerConfig);
   (0, _pluginsConfig.evaluatePluginsConfig)(userPlayerConfig);

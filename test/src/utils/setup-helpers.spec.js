@@ -98,6 +98,7 @@ describe('extractProvidersConfig', function () {
       entryId: '1_umer46fd',
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
+      loadUiConf: true,
       env: {
         beUrl: 'http://some/be/url',
         baseUrl: 'http://some/base/url'
@@ -112,6 +113,7 @@ describe('extractProvidersConfig', function () {
       entryId: undefined,
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
+      loadUiConf: true,
       env: {
         beUrl: 'http://some/be/url',
         baseUrl: 'http://some/base/url'
@@ -126,6 +128,7 @@ describe('extractProvidersConfig', function () {
       entryId: '1_umer46fd',
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
+      loadUiConf: true,
       env: {
         beUrl: 'http://some/be/url',
         baseUrl: 'http://some/base/url'
@@ -140,6 +143,7 @@ describe('extractProvidersConfig', function () {
       entryId: '1_umer46fd',
       uiConfId: '12345',
       ks: undefined,
+      loadUiConf: true,
       env: {
         beUrl: 'http://some/be/url',
         baseUrl: 'http://some/base/url'
@@ -154,7 +158,8 @@ describe('extractProvidersConfig', function () {
       entryId: '1_umer46fd',
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
-      env: undefined
+      env: undefined,
+      loadUiConf: true,
     });
   });
 

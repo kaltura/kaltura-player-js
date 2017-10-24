@@ -38,13 +38,17 @@ function validateTargetId(targetId: string) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The player configuration.
  */
-function extractPlayerConfig(config: ?Object): Object {
+function extractPlayerConfig(config: ?Object, uiConf: ?Object): Object {
   let playerConfig = {};
   let configMergedWithUIConf = {};
-  if (config.uiConfId && KalturaPlayer.UiConf && KalturaPlayer.UiConf[config.uiConfId]) {
-    Utils.Object.mergeDeep(configMergedWithUIConf, KalturaPlayer.UiConf[config.uiConfId].config, config);
+  if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
+    Utils.Object.mergeDeep(configMergedWithUIConf, uiConf[config.uiConfId].config, config);
+    Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
   }
-  Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
+  else{
+    Utils.Object.mergeDeep(playerConfig, config);
+  }
+
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   delete playerConfig.uiConfId;
@@ -58,14 +62,14 @@ function extractPlayerConfig(config: ?Object): Object {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The provider configuration.
  */
-function extractProvidersConfig(config: ?Object): Object {
+function extractProvidersConfig(config: ?Object, uiConf: ?Object): Object {
   let providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
     providerConfig.loadUiConf = true;
-    if (config.uiConfId && KalturaPlayer.UiConf[config.uiConfId]) {
+    if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
       providerConfig.loadUiConf = false;
     }
     providerConfig.env = config.env;
