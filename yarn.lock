@@ -4312,9 +4312,9 @@ pkginfo@0.x.x:
   version "1.3.1"
   resolved "https://github.com/kaltura/playkit-js-hls.git#a0ab908b68b3e660458667880f13ff26bb464402"
 
-"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.1.7":
-  version "0.1.7"
-  resolved "https://github.com/kaltura/playkit-js-ima.git#db4103a9f31d3b6faae03dfb8d0227d632d86566"
+"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.2.0":
+  version "0.2.0"
+  resolved "https://github.com/kaltura/playkit-js-ima.git#beb05e36ad362f54d3c8e874393c29c51135c95b"
   dependencies:
     javascript-state-machine "^3.0.1"
 
