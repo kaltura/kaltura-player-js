@@ -40,7 +40,11 @@ function validateTargetId(targetId: string) {
  */
 function extractPlayerConfig(config: ?Object): Object {
   let playerConfig = {};
-  Utils.Object.mergeDeep(playerConfig, config);
+  let configMergedWithUIConf = {};
+  if (config.uiConfId && KalturaPlayer.UiConf && KalturaPlayer.UiConf[config.uiConfId]) {
+    Utils.Object.mergeDeep(configMergedWithUIConf, KalturaPlayer.UiConf[config.uiConfId].config, config);
+  }
+  Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   delete playerConfig.uiConfId;
@@ -60,6 +64,10 @@ function extractProvidersConfig(config: ?Object): Object {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
+    providerConfig.loadUiConf = true;
+    if (config.uiConfId && KalturaPlayer.UiConf[config.uiConfId]) {
+      providerConfig.loadUiConf = false;
+    }
     providerConfig.env = config.env;
     providerConfig.ks = config.ks;
   }
