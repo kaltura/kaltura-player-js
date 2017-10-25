@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/kaltura/kaltura-player-js/compare/v0.11.0...v0.12.0) (2017-10-25)
+
+
+### Features
+
+* **FEC-7336:** set default analyticsd plugins settings ([#48](https://github.com/kaltura/kaltura-player-js/issues/48)) ([ebdec97](https://github.com/kaltura/kaltura-player-js/commit/ebdec97))
+* upgrade playkit-js-* libs ([81437fe](https://github.com/kaltura/kaltura-player-js/commit/81437fe))
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/kaltura/kaltura-player-js/compare/v0.10.0...v0.11.0) (2017-10-24)
 
