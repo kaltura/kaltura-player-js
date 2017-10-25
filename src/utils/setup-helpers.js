@@ -149,13 +149,16 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
  * @returns {void}
  */
 function setDefaultAnalytics(playerConfig: any): void {
-  if (!playerConfig.plugins) {
-    playerConfig.plugins = {};
+  let kanalyticsBeUrl = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics.beUrl');
+  if (typeof kanalyticsBeUrl !== 'string') {
+    Utils.Object.mergeDeep(playerConfig, {
+      plugins: {
+        kanalytics: {
+          beUrl: "//stats.kaltura.com/api_v3"
+        }
+      }
+    });
   }
-  if (!playerConfig.plugins.kanalytics) {
-    playerConfig.plugins.kanalytics = {};
-  }
-  playerConfig.plugins.kanalytics.beUrl = "//stats.kaltura.com/api_v3";
 }
 
 /**
