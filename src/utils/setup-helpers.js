@@ -102,6 +102,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
+  setDefaultAnalytics(playerConfig);
 }
 
 /**
@@ -140,6 +141,21 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
       });
     }
   }
+}
+
+/**
+ * Sets the player default analyics service
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDefaultAnalytics(playerConfig: any): void {
+  if (!playerConfig.plugins) {
+    playerConfig.plugins = {};
+  }
+  if (!playerConfig.plugins.kanalytics) {
+    playerConfig.plugins.kanalytics = {};
+  }
+  playerConfig.plugins.kanalytics.beUrl = "//stats.kaltura.com/api_v3";
 }
 
 /**
