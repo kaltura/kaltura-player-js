@@ -347,7 +347,7 @@ describe('setStorageConfig', function () {
     sandbox.restore();
   });
 
-  it('should merge the player and storage config with priority to the player config', function () {
+  it('should merge the player and storage config with priority to the storage config', function () {
     let playerConfig = {
       playback: {
         textLanguage: 'ita'
@@ -361,9 +361,9 @@ describe('setStorageConfig', function () {
     };
     sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
     sandbox.stub(StorageManager, 'hasStorage', () => true);
-    sandbox.stub(StorageManager, 'getStorage', () => storageConfig);
-    setStorageConfig(false, playerConfig);
-    playerConfig.playback.textLanguage.should.equal('ita');
+    sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
+    setStorageConfig(playerConfig);
+    playerConfig.playback.textLanguage.should.equal('eng');
     playerConfig.playback.audioLanguage.should.equal('fra');
   });
 
@@ -377,8 +377,8 @@ describe('setStorageConfig', function () {
     };
     sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
     sandbox.stub(StorageManager, 'hasStorage', () => true);
-    sandbox.stub(StorageManager, 'getStorage', () => storageConfig);
-    setStorageConfig(false, playerConfig);
+    sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
+    setStorageConfig(playerConfig);
     playerConfig.playback.textLanguage.should.equal('eng');
     playerConfig.playback.audioLanguage.should.equal('fra');
   });

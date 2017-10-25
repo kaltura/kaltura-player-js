@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/kaltura/kaltura-player-js/compare/v0.10.0...v0.11.0) (2017-10-24)
+
+
+### Features
+
+* **local-storage:** store cvaa settings ([#45](https://github.com/kaltura/kaltura-player-js/issues/45)) ([f3546f5](https://github.com/kaltura/kaltura-player-js/commit/f3546f5))
+* upgrade playkit-js-* libs ([a992a4e](https://github.com/kaltura/kaltura-player-js/commit/a992a4e))
+* upgrade playkit-js-ima ([ad03d91](https://github.com/kaltura/kaltura-player-js/commit/ad03d91))
+
+
+
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/kaltura/kaltura-player-js/compare/v0.9.0...v0.10.0) (2017-10-23)
+
+
+### Features
+
+* upgrade playkit-js-* libs ([7a17570](https://github.com/kaltura/kaltura-player-js/commit/7a17570))
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/kaltura/kaltura-player-js/compare/v0.8.0...v0.9.0) (2017-10-16)
 

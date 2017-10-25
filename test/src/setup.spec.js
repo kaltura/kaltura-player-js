@@ -1,17 +1,19 @@
 import {setup} from '../../src/setup'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
+import StorageWrapper from "../../src/storage/storage-wrapper";
 
 const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function () {
 
-  let providerConfig, kalturaPlayer;
+  let providerConfig, kalturaPlayer, sandbox;
 
   before(function () {
     TestUtils.createElement('DIV', targetId);
   });
 
   beforeEach(function () {
+    sandbox = sinon.sandbox.create();
     providerConfig = {
       partnerId: 2196781,
       entryId: '1_h14v9eug'
@@ -19,6 +21,7 @@ describe('setup', function () {
   });
 
   afterEach(function () {
+    sandbox.restore();
     kalturaPlayer = null;
     TestUtils.removeVideoElementsFromTestPage();
   });
@@ -48,10 +51,19 @@ describe('setup', function () {
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia(providerConfig.entryId)
       .then(() => {
+        kalturaPlayer.ready().then(()=>{
+          let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
+          sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
+          done();
+        });
         kalturaPlayer.load();
-        let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
-        sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
-        done();
       });
+  });
+
+  it('should set text style from storage', function () {
+    let textStyle = {"fontSize":"20%","fontFamily":"sans-serif","fontColor":[14,15,0],"fontOpacity":0,"backgroundColor":[1,2,3],"backgroundOpacity":1,"fontEdge":[]};
+    sandbox.stub(StorageWrapper, 'getItem').withArgs('textStyle').returns(textStyle);
+    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
 });
