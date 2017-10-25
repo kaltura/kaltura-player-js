@@ -10,7 +10,8 @@ import {
   validateProvidersConfig,
   setDefaultPlayerConfig,
   setStorageConfig,
-  applyStorageSupport
+  applyStorageSupport,
+  setStorageTextStyle
 } from "./utils/setup-helpers"
 
 /**
@@ -26,10 +27,11 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   let containerId = createKalturaPlayerContainer(targetId);
   setDefaultPlayerConfig(userPlayerConfig);
   evaluatePluginsConfig(userPlayerConfig);
-  setStorageConfig(options.disableUserCache, userPlayerConfig);
+  setStorageConfig(userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
   let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
+  setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);
   return kalturaPlayer;
 }
