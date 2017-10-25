@@ -103,7 +103,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
-  setDefaultAnalytics(playerConfig);
+  setDefaultAnalyticsPlugin(playerConfig);
 }
 
 /**
