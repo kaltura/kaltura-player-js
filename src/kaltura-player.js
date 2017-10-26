@@ -18,7 +18,7 @@ export default class KalturaPlayer {
     this._player = player;
     this._logger = LoggerFactory.getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiManager = new PlaykitUI(this._player, {targetId: targetId});
-    this._provider = new OvpProvider(__VERSION__, config.partnerId, config.ks, config.env);
+    this._provider = new OvpProvider({pVersion: __VERSION__, partnerID: config.partnerId, ks: config.ks, config: config.env, loadUiConf: config.loadUiConf});
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -27,7 +27,7 @@ export default class KalturaPlayer {
 
   loadMedia(entryId: string, uiConfId: ?number): Promise<*> {
     this._logger.debug('loadMedia', {entryId: entryId, uiConfId: uiConfId});
-    return this._provider.getConfig(entryId, uiConfId)
+    return this._provider.getConfig({entryId: entryId, uiConfId: uiConfId})
       .then((data) => {
         const dimensions = this._player.dimensions;
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
