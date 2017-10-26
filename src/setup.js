@@ -22,8 +22,8 @@ import {
 function setup(targetId: string, options: Object): KalturaPlayer {
   validateTargetId(targetId);
   validateProvidersConfig(options);
-  let userPlayerConfig = extractPlayerConfig(options, this ? this.UiConf : {});
-  let userProvidersConfig = extractProvidersConfig(options, this ? this.UiConf : {});
+  let userPlayerConfig = extractPlayerConfig(options, this.UiConf);
+  let userProvidersConfig = extractProvidersConfig(options, this.UiConf);
   let containerId = createKalturaPlayerContainer(targetId);
   setDefaultPlayerConfig(userPlayerConfig);
   evaluatePluginsConfig(userPlayerConfig);

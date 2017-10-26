@@ -242,7 +242,7 @@ describe('extractPlayerConfig', function () {
 
   it('should extract empty player config', function () {
     config = null;
-    extractPlayerConfig(config).should.deep.equals({});
+    extractPlayerConfig(config, {}).should.deep.equals({});
   });
 
 });

@@ -41,12 +41,14 @@ function validateTargetId(targetId: string) {
  */
 function extractPlayerConfig(config: ?Object, uiConf: ?Object): Object {
   let playerConfig = {};
-  let configMergedWithUIConf = {};
-  if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
-    Utils.Object.mergeDeep(configMergedWithUIConf, uiConf[config.uiConfId].config, config);
-    Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
+  let playerUiConf = {};
+  if(config){
+    playerUiConf = getUiConf(uiConf, config.uiConfId);
   }
-  else{
+  if (playerUiConf) {
+    Utils.Object.mergeDeep(playerConfig, playerUiConf.config, config);
+  }
+  else {
     Utils.Object.mergeDeep(playerConfig, config);
   }
 
@@ -70,7 +72,7 @@ function extractProvidersConfig(config: ?Object, uiConf: ?Object): Object {
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
     providerConfig.loadUiConf = true;
-    if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
+    if (getUiConf(uiConf, config.uiConfId)) {
       providerConfig.loadUiConf = false;
     }
     providerConfig.env = config.env;
@@ -224,6 +226,15 @@ function isSafari(): boolean {
  */
 function isIos(): boolean {
   return (Env.os.name === "iOS");
+}
+
+function getUiConf(uiConf: Object, uiConfId: number): Object {
+  if (uiConfId > 0 && uiConf && uiConf[uiConfId]) {
+    return uiConf[uiConfId];
+  }
+  else {
+    return null;
+  }
 }
 
 export {

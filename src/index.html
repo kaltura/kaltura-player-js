@@ -37,15 +37,11 @@
 <script>
   var config = {
     partnerId: 1091,
-    uiConfId:15205635,
-    layout: {skin: "testSkin"},
     env: {
       baseUrl: "http://qa-apache-php7.dev.kaltura.com/",
       beUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
     }
   };
-  (function(){(KalturaPlayer.UiConf = KalturaPlayer.UiConf || {}) ["15205635"] = {"config":{"plugins":[],"uiVars":[{"key":"autoPlay","value":false,"overrideFlashvar":false},{"key":"autoMute","value":false,"overrideFlashvar":false},{"key":"enableTooltips","value":true,"overrideFlashvar":false},{"key":"adsOnReplay","value":true,"overrideFlashvar":false}],"layout":{"skin":"kdark"}}};
-  })();
 
   try {
     var kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
