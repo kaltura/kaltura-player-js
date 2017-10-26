@@ -5,6 +5,7 @@ import StorageManager from '../storage/storage-manager'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
+const DEFAULT_ANALYTICS_BE_URL: string = "//stats.kaltura.com/api_v3";
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
@@ -114,6 +115,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
+  setDefaultAnalyticsPlugin(playerConfig);
 }
 
 /**
@@ -151,6 +153,24 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
         }
       });
     }
+  }
+}
+
+/**
+ * Sets the player default analyics service
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDefaultAnalyticsPlugin(playerConfig: any): void {
+  let kanalyticsBeUrl = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics.beUrl');
+  if (typeof kanalyticsBeUrl !== 'string') {
+    Utils.Object.mergeDeep(playerConfig, {
+      plugins: {
+        kanalytics: {
+          beUrl: DEFAULT_ANALYTICS_BE_URL
+        }
+      }
+    });
   }
 }
 

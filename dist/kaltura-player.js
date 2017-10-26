@@ -481,148 +481,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Create an Event work-alike object based on the dictionary.
- * The event should contain all of the same properties from the dict.
- * @param {string} type -
- * @param {Object=} opt_dict -
- * @constructor
- * @extends {Event}
- */
-var FakeEvent = function () {
-
-  /**
-   * Non-standard property read by FakeEventTarget to stop processing listeners.
-   * @type {boolean}
-   */
-
-
-  /** @type {EventTarget} */
-
-
-  /** @const {string} */
-
-
-  /** @const {boolean} */
-
-  /** @const {boolean} */
-  function FakeEvent(type, payload) {
-    _classCallCheck(this, FakeEvent);
-
-    // These Properties below cannot be set by dict.  They are all provided for
-    // compatibility with native events.
-
-    /** @const {boolean} */
-    this.bubbles = false;
-
-    /** @const {boolean} */
-    this.cancelable = false;
-
-    /** @const {boolean} */
-    this.defaultPrevented = false;
-
-    /**
-     * According to MDN, Chrome uses high-res timers instead of epoch time.
-     * Follow suit so that timeStamps on FakeEvents use the same base as
-     * on native Events.
-     * @const {number}
-     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
-     */
-    this.timeStamp = window.performance ? window.performance.now() : Date.now();
-
-    /** @const {string} */
-    this.type = type;
-
-    /** @const {boolean} */
-    this.isTrusted = false;
-
-    /** @type {EventTarget} */
-    this.currentTarget = null;
-
-    /** @type {EventTarget} */
-    this.target = null;
-
-    /**
-     * Non-standard property read by FakeEventTarget to stop processing listeners.
-     * @type {boolean}
-     */
-    this.stopped = false;
-
-    this.payload = payload;
-  }
-
-  /**
-   * Does nothing, since FakeEvents have no default.  Provided for compatibility
-   * with native Events.
-   * @override
-   */
-
-
-  /** @type {EventTarget} */
-
-
-  /** @const {boolean} */
-
-
-  /**
-   * According to MDN, Chrome uses high-res timers instead of epoch time.
-   * Follow suit so that timeStamps on FakeEvents use the same base as
-   * on native Events.
-   * @const {number}
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
-   */
-
-
-  /** @const {boolean} */
-
-
-  _createClass(FakeEvent, [{
-    key: "preventDefault",
-    value: function preventDefault() {}
-
-    /**
-     * Stops processing event listeners for this event.  Provided for compatibility
-     * with native Events.
-     * @override
-     */
-
-  }, {
-    key: "stopImmediatePropagation",
-    value: function stopImmediatePropagation() {
-      this.stopped = true;
-    }
-
-    /**
-     * Does nothing, since FakeEvents do not bubble.  Provided for compatibility
-     * with native Events.
-     * @override
-     */
-
-  }, {
-    key: "stopPropagation",
-    value: function stopPropagation() {}
-  }]);
-
-  return FakeEvent;
-}();
-
-exports.default = FakeEvent;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -975,6 +833,17 @@ var _Dom = {
     }
   },
 
+  /**
+   * Removes an element from his parent node.
+   * @param {Element} parent - The parent node.
+   * @param {Element} child - The child node.
+   * @returns {void}
+   */
+  removeChild: function removeChild(parent, child) {
+    if (parent && child && parent.removeChild) {
+      parent.removeChild(child);
+    }
+  },
 
   /**
    * Prepend HTML element
@@ -990,7 +859,6 @@ var _Dom = {
     }
   },
 
-
   /**
    * Returns a reference to the element by its ID.
    * @param {string} id - The desired id.
@@ -1000,7 +868,6 @@ var _Dom = {
     return document.getElementById(id);
   },
 
-
   /**
    * Creates the HTML element specified by tagName.
    * @param {string} tagName - The tag name.
@@ -1009,7 +876,6 @@ var _Dom = {
   createElement: function createElement(tagName) {
     return document.createElement(tagName);
   },
-
 
   /**
    * Loads script asynchronously.
@@ -1077,6 +943,148 @@ exports.Dom = _Dom;
 exports.Http = _Http;
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Create an Event work-alike object based on the dictionary.
+ * The event should contain all of the same properties from the dict.
+ * @param {string} type -
+ * @param {Object=} opt_dict -
+ * @constructor
+ * @extends {Event}
+ */
+var FakeEvent = function () {
+
+  /**
+   * Non-standard property read by FakeEventTarget to stop processing listeners.
+   * @type {boolean}
+   */
+
+
+  /** @type {EventTarget} */
+
+
+  /** @const {string} */
+
+
+  /** @const {boolean} */
+
+  /** @const {boolean} */
+  function FakeEvent(type, payload) {
+    _classCallCheck(this, FakeEvent);
+
+    // These Properties below cannot be set by dict.  They are all provided for
+    // compatibility with native events.
+
+    /** @const {boolean} */
+    this.bubbles = false;
+
+    /** @const {boolean} */
+    this.cancelable = false;
+
+    /** @const {boolean} */
+    this.defaultPrevented = false;
+
+    /**
+     * According to MDN, Chrome uses high-res timers instead of epoch time.
+     * Follow suit so that timeStamps on FakeEvents use the same base as
+     * on native Events.
+     * @const {number}
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
+     */
+    this.timeStamp = window.performance ? window.performance.now() : Date.now();
+
+    /** @const {string} */
+    this.type = type;
+
+    /** @const {boolean} */
+    this.isTrusted = false;
+
+    /** @type {EventTarget} */
+    this.currentTarget = null;
+
+    /** @type {EventTarget} */
+    this.target = null;
+
+    /**
+     * Non-standard property read by FakeEventTarget to stop processing listeners.
+     * @type {boolean}
+     */
+    this.stopped = false;
+
+    this.payload = payload;
+  }
+
+  /**
+   * Does nothing, since FakeEvents have no default.  Provided for compatibility
+   * with native Events.
+   * @override
+   */
+
+
+  /** @type {EventTarget} */
+
+
+  /** @const {boolean} */
+
+
+  /**
+   * According to MDN, Chrome uses high-res timers instead of epoch time.
+   * Follow suit so that timeStamps on FakeEvents use the same base as
+   * on native Events.
+   * @const {number}
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
+   */
+
+
+  /** @const {boolean} */
+
+
+  _createClass(FakeEvent, [{
+    key: "preventDefault",
+    value: function preventDefault() {}
+
+    /**
+     * Stops processing event listeners for this event.  Provided for compatibility
+     * with native Events.
+     * @override
+     */
+
+  }, {
+    key: "stopImmediatePropagation",
+    value: function stopImmediatePropagation() {
+      this.stopped = true;
+    }
+
+    /**
+     * Does nothing, since FakeEvents do not bubble.  Provided for compatibility
+     * with native Events.
+     * @override
+     */
+
+  }, {
+    key: "stopPropagation",
+    value: function stopPropagation() {}
+  }]);
+
+  return FakeEvent;
+}();
+
+exports.default = FakeEvent;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1105,20 +1113,6 @@ var Track = function () {
      * @public
      * @returns {?string} - The track id.
      */
-
-    /**
-     * The language of the track.
-     * @member
-     * @type {string}
-     * @private
-     */
-
-    /**
-     * The active mode of the track.
-     * @member
-     * @type {boolean}
-     * @private
-     */
     get: function get() {
       return this._id;
     }
@@ -1127,27 +1121,6 @@ var Track = function () {
      * Getter for the active mode of the track.
      * @public
      * @returns {boolean} - The active mode of the track.
-     */
-
-    /**
-     * The index of the track.
-     * @member
-     * @type {number}
-     * @private
-     */
-
-    /**
-     * The label of the track.
-     * @member
-     * @type {string}
-     * @private
-     */
-
-    /**
-     * The id of the track.
-     * @member
-     * @type {string}
-     * @private
      */
 
   }, {
@@ -1207,6 +1180,60 @@ var Track = function () {
      * @param {Object} settings - The track settings object.
      */
 
+  }], [{
+    key: "langComparer",
+
+    /**
+     * Comparing language strings.
+     * @param {string} inputLang - The configured language.
+     * @param {string} trackLang - The default track language.
+     * @returns {boolean} - Whether the strings are equal or starts with the same substring.
+     */
+    value: function langComparer(inputLang, trackLang) {
+      try {
+        inputLang = inputLang.toLowerCase();
+        trackLang = trackLang.toLowerCase();
+        return inputLang.startsWith(trackLang) || trackLang.startsWith(inputLang);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    /**
+     * The id of the track.
+     * @member
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The active mode of the track.
+     * @member
+     * @type {boolean}
+     * @private
+     */
+
+    /**
+     * The label of the track.
+     * @member
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The language of the track.
+     * @member
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The index of the track.
+     * @member
+     * @type {number}
+     * @private
+     */
+
   }]);
 
   function Track() {
@@ -1243,7 +1270,7 @@ var _multiMap = __webpack_require__(12);
 
 var _multiMap2 = _interopRequireDefault(_multiMap);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -1459,7 +1486,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CUSTOM_EVENTS = exports.HTML5_EVENTS = exports.PLAYER_EVENTS = undefined;
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -1559,6 +1586,22 @@ var HTML5_EVENTS = {
 
 var CUSTOM_EVENTS = {
   /**
+   * Fires when browser fails to autoplay with sound
+   */
+  AUTOPLAY_FAILED: 'autoplayfailed',
+  /**
+   * Fires when browser fails to autoplay with sound but start muted autoplay instead
+   */
+  FALLBACK_TO_MUTED_AUTOPLAY: 'fallbacktomutedautoplay',
+  /**
+   * Fires when change source flow started
+   */
+  CHANGE_SOURCE_STARTED: 'changesourcestarted',
+  /**
+   * Fires when change source flow ended
+   */
+  CHANGE_SOURCE_ENDED: 'changesourceended',
+  /**
    * Fires when the volume has been muted/unmute
    */
   MUTE_CHANGE: 'mutechange',
@@ -1598,6 +1641,10 @@ var CUSTOM_EVENTS = {
    * Fires when the player has selected the source to play
    */
   SOURCE_SELECTED: 'sourceselected',
+  /**
+   * Fires when the text track style has changed
+   */
+  TEXT_STYLE_CHANGED: 'textstylechanged',
   /**
    * Fired when ad data is available.
    */
@@ -1881,24 +1928,6 @@ var TextTrack = function (_Track) {
      * @param {Object} settings - The track settings object.
      */
 
-  }], [{
-    key: 'langComparer',
-
-    /**
-     * Comparing language strings according to their length.
-     * @param {string} inputLang - The configured language.
-     * @param {string} trackLang - The default track language.
-     * @returns {boolean} - Whether the strings are equal or starts with the same substring.
-     */
-    value: function langComparer(inputLang, trackLang) {
-      var inputLangLength = inputLang.length;
-      var trackLangLength = trackLang.length;
-      if (inputLangLength === trackLangLength) {
-        return inputLang === trackLang;
-      }
-      return inputLangLength > trackLangLength ? inputLang.startsWith(trackLang) : trackLang.startsWith(inputLang);
-    }
-
     /**
      * The kind of the text track:
      * subtitles/captions/metadata.
@@ -1953,7 +1982,7 @@ var _posterManager = __webpack_require__(28);
 
 var _posterManager2 = _interopRequireDefault(_posterManager);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -1967,7 +1996,7 @@ var _stateTypes = __webpack_require__(16);
 
 var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -1991,17 +2020,17 @@ var _basePlugin = __webpack_require__(14);
 
 var _basePlugin2 = _interopRequireDefault(_basePlugin);
 
-var _stateManager = __webpack_require__(36);
+var _stateManager = __webpack_require__(39);
 
 var _stateManager2 = _interopRequireDefault(_stateManager);
 
-var _trackTypes = __webpack_require__(38);
+var _trackTypes = __webpack_require__(41);
 
 var _trackTypes2 = _interopRequireDefault(_trackTypes);
 
-var _track2 = __webpack_require__(3);
+var _track = __webpack_require__(3);
 
-var _track3 = _interopRequireDefault(_track2);
+var _track2 = _interopRequireDefault(_track);
 
 var _videoTrack = __webpack_require__(6);
 
@@ -2023,15 +2052,15 @@ var _vttCue = __webpack_require__(21);
 
 var _textTrackDisplay = __webpack_require__(22);
 
-var _playbackMiddleware = __webpack_require__(39);
+var _playbackMiddleware = __webpack_require__(42);
 
 var _playbackMiddleware2 = _interopRequireDefault(_playbackMiddleware);
 
-var _playerConfig = __webpack_require__(41);
+var _playerConfig = __webpack_require__(44);
 
 var _playerConfig2 = _interopRequireDefault(_playerConfig);
 
-__webpack_require__(42);
+__webpack_require__(45);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2087,6 +2116,27 @@ var SUBTITLES_CLASS_NAME = 'playkit-subtitles';
 var LIVE = 'Live';
 
 /**
+ *  The auto string, for captions
+ *  @type {string}
+ *  @const
+ */
+var AUTO = 'auto';
+
+/**
+ *  The off string, for captions
+ *  @type {string}
+ *  @const
+ */
+var OFF = 'off';
+
+/**
+ *  The duration offset, for seeking to duration safety.
+ *  @type {number}
+ *  @const
+ */
+var DURATION_OFFSET = 0.1;
+
+/**
  * The HTML5 player class.
  * @classdesc
  */
@@ -2094,124 +2144,203 @@ var LIVE = 'Live';
 var Player = function (_FakeEventTarget) {
   _inherits(Player, _FakeEventTarget);
 
+  _createClass(Player, null, [{
+    key: 'runCapabilities',
+
+
+    /**
+     * Runs the engines capabilities tests.
+     * @returns {void}
+     * @public
+     * @static
+     */
+
+    /**
+     * The player capabilities result object.
+     * @type {Object}
+     * @private
+     * @static
+     */
+
+    /**
+     * The player class logger.
+     * @type {any}
+     * @static
+     * @private
+     */
+    value: function runCapabilities() {
+      Player._logger.debug("Running player capabilities");
+      Player._engines.forEach(function (Engine) {
+        return Engine.runCapabilities();
+      });
+    }
+
+    /**
+     * Gets the engines capabilities.
+     * @param {?string} engineType - The engine type.
+     * @return {Promise<Object>} - The engines capabilities object.
+     * @public
+     * @static
+     */
+
+    /**
+     * The available engines of the player.
+     * @type {Array<typeof IEngine>}
+     * @private
+     * @static
+     */
+
+  }, {
+    key: 'getCapabilities',
+    value: function getCapabilities(engineType) {
+      Player._logger.debug("Get player capabilities", engineType);
+      if (Player._playerCapabilities) {
+        return engineType ? Promise.resolve(Player._playerCapabilities[engineType]) : Promise.resolve(Player._playerCapabilities);
+      }
+      var promises = [];
+      Player._engines.forEach(function (Engine) {
+        return promises.push(Engine.getCapabilities());
+      });
+      return Promise.all(promises).then(function (arrayOfResults) {
+        Player._playerCapabilities = {};
+        arrayOfResults.forEach(function (res) {
+          return Object.assign(Player._playerCapabilities, res);
+        });
+        return engineType ? Promise.resolve(Player._playerCapabilities[engineType]) : Promise.resolve(Player._playerCapabilities);
+      });
+    }
+
+    /**
+     * The plugin manager of the player.
+     * @type {PluginManager}
+     * @private
+     */
+
+    /**
+     * The event manager of the player.
+     * @type {EventManager}
+     * @private
+     */
+
+    /**
+     * The poster manager of the player.
+     * @type {PosterManager}
+     * @private
+     */
+
+    /**
+     * The runtime configuration of the player.
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The playback engine.
+     * @type {IEngine}
+     * @private
+     */
+
+    /**
+     * The state manager of the player.
+     * @type {StateManager}
+     * @private
+     */
+
+    /**
+     * The tracks of the player.
+     * @type {Array<Track>}
+     * @private
+     */
+
+    /**
+     * The player ready promise
+     * @type {Promise<*>}
+     * @private
+     */
+
+    /**
+     * Whether the play is the first or not
+     * @type {boolean}
+     * @private
+     */
+
+    /**
+     * The player DOM element container.
+     * @type {HTMLDivElement}
+     * @private
+     */
+
+    /**
+     * The player text DOM element container.
+     * @type {HTMLDivElement}
+     * @private
+     */
+
+    /**
+     * The player DOM id.
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The player last updated text cues list
+     * @type {Array<any>}
+     * @private
+     */
+
+    /**
+     * The player text disaply settings
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The current playback attributes state
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The player text style settings
+     * @type {TextStyle}
+     * @private
+     */
+
+    /**
+     * The playback middleware of the player.
+     * @type {PlaybackMiddleware}
+     * @private
+     */
+
+    /**
+     * The environment(os,device,browser) object of the player.
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The currently selected engine type
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The currently selected stream type
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * Flag to indicate whether is the first play in the current session.
+     * @type {boolean}
+     * @private
+     */
+
+  }]);
+
   /**
    * @param {Object} config - The configuration for the player instance.
    * @constructor
-   */
-
-  /**
-   * The player text style settings
-   * @type {TextStyle}
-   * @private
-   */
-
-  /**
-   * The playback middleware of the player.
-   * @type {PlaybackMiddleware}
-   * @private
-   */
-
-  /**
-   * The environment(os,device,browser) object of the player.
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The currently selected engine type
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The currently selected stream type
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The player last updated text cues list
-   * @type {Array<any>}
-   * @private
-   */
-
-  /**
-   * The plugin manager of the player.
-   * @type {PluginManager}
-   * @private
-   */
-
-  /**
-   * The event manager of the player.
-   * @type {EventManager}
-   * @private
-   */
-
-  /**
-   * The poster manager of the player.
-   * @type {PosterManager}
-   * @private
-   */
-
-  /**
-   * The runtime configuration of the player.
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The playback engine.
-   * @type {IEngine}
-   * @private
-   */
-
-  /**
-   * The state manager of the player.
-   * @type {StateManager}
-   * @private
-   */
-
-  /**
-   * The tracks of the player.
-   * @type {Array<Track>}
-   * @private
-   */
-
-  /**
-   * The player ready promise
-   * @type {Promise<*>}
-   * @private
-   */
-
-  /**
-   * Whether the play is the first or not
-   * @type {boolean}
-   * @private
-   */
-
-  /**
-   * The player DOM element container.
-   * @type {HTMLDivElement}
-   * @private
-   */
-
-  /**
-   * The player text DOM element container.
-   * @type {HTMLDivElement}
-   * @private
-   */
-
-  /**
-   * The player DOM id.
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The player class logger.
-   * @type {any}
-   * @static
-   * @private
    */
   function Player() {
     var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2222,10 +2351,18 @@ var Player = function (_FakeEventTarget) {
 
     _this._activeTextCues = [];
     _this._textDisplaySettings = {};
+    _this._playbackAttributesState = {
+      muted: undefined,
+      volume: undefined,
+      rate: undefined,
+      audioLanguage: "",
+      textLanguage: ""
+    };
 
     _this._env = _env2.default;
     _this._tracks = [];
     _this._firstPlay = true;
+    _this._firstPlayInCurrentSession = true;
     _this._config = Player._defaultConfig;
     _this._eventManager = new _eventManager2.default();
     _this._posterManager = new _posterManager2.default();
@@ -2250,33 +2387,31 @@ var Player = function (_FakeEventTarget) {
    * @returns {void}
    */
 
-  /**
-   * The player text disaply settings
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The available engines of the player.
-   * @type {Array<typeof IEngine>}
-   * @private
-   * @static
-   */
-
 
   _createClass(Player, [{
     key: 'configure',
     value: function configure(config) {
       Utils.Object.mergeDeep(this._config, config);
       this._configureOrLoadPlugins(config.plugins);
-      if (config.sources) {
-        this._maybeResetPlayer();
+      if (!Utils.Object.isEmptyObject(config.sources)) {
+        var receivedSourcesWhenHasEngine = !!this._engine;
+        if (receivedSourcesWhenHasEngine) {
+          this._reset();
+          Player._logger.debug('Change source started');
+          this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.CHANGE_SOURCE_STARTED));
+        }
         if (this._selectEngineByPriority()) {
           this._appendEngineEl();
           this._posterManager.setSrc(this._config.metadata.poster);
           this._posterManager.show();
           this._attachMedia();
-          this._handlePlaybackConfig();
+          this._handlePlaybackOptions();
+          this._handlePreload();
+          this._handleAutoPlay();
+          if (receivedSourcesWhenHasEngine) {
+            Player._logger.debug('Change source ended');
+            this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.CHANGE_SOURCE_ENDED));
+          }
         }
       }
     }
@@ -2382,14 +2517,22 @@ var Player = function (_FakeEventTarget) {
       if (this._engine) {
         this._engine.destroy();
       }
+      this._posterManager.destroy();
       this._eventManager.destroy();
       this._pluginManager.destroy();
       this._stateManager.destroy();
+      this._activeTextCues = [];
       this._textDisplaySettings = {};
       this._config = {};
       this._tracks = [];
+      this._engineType = '';
+      this._streamType = '';
       this._readyPromise = null;
       this._firstPlay = true;
+      this._playbackAttributesState = {};
+      if (this._el) {
+        Utils.Dom.removeChild(this._el.parentNode, this._el);
+      }
     }
   }, {
     key: 'buffered',
@@ -2489,7 +2632,7 @@ var Player = function (_FakeEventTarget) {
     /**
      * Select a track
      * @function selectTrack
-     * @param {Track} track - the track to select
+     * @param {?Track} track - the track to select
      * @returns {void}
      * @public
      */
@@ -2503,8 +2646,9 @@ var Player = function (_FakeEventTarget) {
         } else if (track instanceof _audioTrack2.default) {
           this._engine.selectAudioTrack(track);
         } else if (track instanceof _textTrack2.default) {
-          if (track.language === "off") {
+          if (track.language === OFF) {
             this.hideTextTrack();
+            this._playbackAttributesState.textLanguage = OFF;
           } else {
             this._engine.selectTextTrack(track);
           }
@@ -2530,7 +2674,7 @@ var Player = function (_FakeEventTarget) {
           return track.active = false;
         });
         var textTrack = textTracks.find(function (track) {
-          return track.language === "off";
+          return track.language === OFF;
         });
         if (textTrack) {
           textTrack.active = true;
@@ -2639,23 +2783,6 @@ var Player = function (_FakeEventTarget) {
     // <editor-fold desc="Playback">
 
     /**
-     * Creates the ready promise.
-     * @private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_createReadyPromise',
-    value: function _createReadyPromise() {
-      var _this3 = this;
-
-      this._readyPromise = new Promise(function (resolve, reject) {
-        _this3._eventManager.listen(_this3, _events.CUSTOM_EVENTS.TRACKS_CHANGED, resolve);
-        _this3._eventManager.listen(_this3, _events.HTML5_EVENTS.ERROR, reject);
-      });
-    }
-
-    /**
      * Creates the player container.
      * @private
      * @returns {void}
@@ -2716,47 +2843,51 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_configureOrLoadPlugins',
     value: function _configureOrLoadPlugins() {
-      var _this4 = this;
+      var _this3 = this;
 
       var plugins = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      Object.keys(plugins).forEach(function (name) {
-        // If the plugin is already exists in the registry we are updating his config
-        var plugin = _this4._pluginManager.get(name);
-        if (plugin) {
-          plugin.updateConfig(plugins[name]);
-          _this4._config.plugins[name] = plugin.getConfig();
-        } else {
-          // We allow to load plugins as long as the player has no engine
-          if (!_this4._engine) {
-            _this4._pluginManager.load(name, _this4, plugins[name]);
-            var _plugin = _this4._pluginManager.get(name);
-            if (_plugin) {
-              _this4._config.plugins[name] = _plugin.getConfig();
-              if (typeof _plugin.getMiddlewareImpl === "function") {
-                _this4._playbackMiddleware.use(_plugin.getMiddlewareImpl());
-              }
-            }
+      if (plugins) {
+        Object.keys(plugins).forEach(function (name) {
+          // If the plugin is already exists in the registry we are updating his config
+          var plugin = _this3._pluginManager.get(name);
+          if (plugin) {
+            plugin.updateConfig(plugins[name]);
+            _this3._config.plugins[name] = plugin.getConfig();
           } else {
-            delete _this4._config.plugins[name];
+            // We allow to load plugins as long as the player has no engine
+            if (!_this3._engine) {
+              _this3._pluginManager.load(name, _this3, plugins[name]);
+              var _plugin = _this3._pluginManager.get(name);
+              if (_plugin) {
+                _this3._config.plugins[name] = _plugin.getConfig();
+                if (typeof _plugin.getMiddlewareImpl === "function") {
+                  _this3._playbackMiddleware.use(_plugin.getMiddlewareImpl());
+                }
+              }
+            } else {
+              delete _this3._config.plugins[name];
+            }
           }
-        }
-      });
+        });
+      }
     }
 
     /**
-     * Resets the player in case of new sources with existing engine.
+     * Creates the ready promise.
      * @private
      * @returns {void}
      */
 
   }, {
-    key: '_maybeResetPlayer',
-    value: function _maybeResetPlayer() {
-      if (this._engine) {
-        Player._logger.debug('New sources on existing engine: reset engine to change media');
-        this._reset();
-      }
+    key: '_createReadyPromise',
+    value: function _createReadyPromise() {
+      var _this4 = this;
+
+      this._readyPromise = new Promise(function (resolve, reject) {
+        _this4._eventManager.listen(_this4, _events.CUSTOM_EVENTS.TRACKS_CHANGED, resolve);
+        _this4._eventManager.listen(_this4, _events.HTML5_EVENTS.ERROR, reject);
+      });
     }
 
     /**
@@ -2784,18 +2915,18 @@ var Player = function (_FakeEventTarget) {
 
           var engineId = typeof priority.engine === 'string' ? priority.engine.toLowerCase() : '';
           var format = typeof priority.format === 'string' ? priority.format.toLowerCase() : '';
-          var engine = Player._engines.find(function (engine) {
-            return engine.id === engineId;
+          var Engine = Player._engines.find(function (Engine) {
+            return Engine.id === engineId;
           });
-          if (engine) {
+          if (Engine) {
             var formatSources = sources[format];
             if (formatSources && formatSources.length > 0) {
               var source = formatSources[0];
-              if (engine.canPlaySource(source, preferNative[format])) {
+              if (Engine.canPlaySource(source, preferNative[format])) {
                 Player._logger.debug('Source selected: ', formatSources);
+                _this5._loadEngine(Engine, source);
                 _this5._engineType = engineId;
                 _this5._streamType = format;
-                _this5._loadEngine(engine, source);
                 _this5.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.SOURCE_SELECTED, { selectedSource: formatSources }));
                 return {
                   v: true
@@ -2831,7 +2962,7 @@ var Player = function (_FakeEventTarget) {
 
     /**
      * Loads the selected engine.
-     * @param {IEngine} engine - The selected engine.
+     * @param {IEngine} Engine - The selected engine.
      * @param {Source} source - The selected source object.
      * @private
      * @returns {void}
@@ -2839,8 +2970,17 @@ var Player = function (_FakeEventTarget) {
 
   }, {
     key: '_loadEngine',
-    value: function _loadEngine(engine, source) {
-      this._engine = engine.createEngine(source, this._config);
+    value: function _loadEngine(Engine, source) {
+      if (this._engine) {
+        if (this._engine.id === Engine.id) {
+          this._engine.restore(source, this._config);
+        } else {
+          this._engine.destroy();
+          this._engine = Engine.createEngine(source, this._config);
+        }
+      } else {
+        this._engine = Engine.createEngine(source, this._config);
+      }
     }
 
     /**
@@ -2855,20 +2995,22 @@ var Player = function (_FakeEventTarget) {
       var _this6 = this;
 
       if (this._engine) {
-        for (var playerEvent in _events.HTML5_EVENTS) {
-          this._eventManager.listen(this._engine, _events.HTML5_EVENTS[playerEvent], function (event) {
+        Object.keys(_events.HTML5_EVENTS).forEach(function (html5Event) {
+          _this6._eventManager.listen(_this6._engine, _events.HTML5_EVENTS[html5Event], function (event) {
             return _this6.dispatchEvent(event);
           });
-        }
+        });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.VIDEO_TRACK_CHANGED, function (event) {
           _this6._markActiveTrack(event.payload.selectedVideoTrack);
           return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.AUDIO_TRACK_CHANGED, function (event) {
+          _this6._playbackAttributesState.audioLanguage = event.payload.selectedAudioTrack.language;
           _this6._markActiveTrack(event.payload.selectedAudioTrack);
           return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED, function (event) {
+          _this6._playbackAttributesState.textLanguage = event.payload.selectedTextTrack.language;
           _this6._markActiveTrack(event.payload.selectedTextTrack);
           return _this6.dispatchEvent(event);
         });
@@ -2878,65 +3020,105 @@ var Player = function (_FakeEventTarget) {
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.ABR_MODE_CHANGED, function (event) {
           return _this6.dispatchEvent(event);
         });
+        this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.AUTOPLAY_FAILED, function (event) {
+          _this6.pause();
+          _this6.dispatchEvent(event);
+        });
         this._eventManager.listen(this, _events.HTML5_EVENTS.PLAY, this._onPlay.bind(this));
         this._eventManager.listen(this, _events.HTML5_EVENTS.ENDED, this._onEnded.bind(this));
+        this._eventManager.listen(this, _events.CUSTOM_EVENTS.MUTE_CHANGE, function () {
+          _this6._playbackAttributesState.muted = _this6.muted;
+        });
+        this._eventManager.listen(this, _events.HTML5_EVENTS.VOLUME_CHANGE, function () {
+          _this6._playbackAttributesState.volume = _this6.volume;
+        });
+        this._eventManager.listen(this, _events.HTML5_EVENTS.RATE_CHANGE, function () {
+          _this6._playbackAttributesState.rate = _this6.playbackRate;
+        });
       }
     }
 
     /**
-     * Handles the playback config.
+     * Handles the playback options, from current state or config.
      * @returns {void}
      * @private
      */
 
   }, {
-    key: '_handlePlaybackConfig',
-    value: function _handlePlaybackConfig() {
-      if (this._config.playback) {
-        if (typeof this._config.playback.volume === 'number') {
-          this.volume = this._config.playback.volume;
-        }
-        if (typeof this._config.playback.muted === 'boolean') {
-          this.muted = this._config.playback.muted;
-        }
-        if (typeof this._config.playback.playsinline === 'boolean') {
-          this.playsinline = this._config.playback.playsinline;
-        }
-        if (this._config.playback.preload === "auto") {
-          /**
-           * If ads plugin enabled it's his responsibility to preload the content player.
-           * So to avoid loading the player twice which can cause errors on MSEs we are not
-           * calling load from the player.
-           * TODO: Change it to check the ads configuration when we will develop the ads manager.
-           */
-          if (!this._config.plugins.ima) {
-            this.load();
-          }
-        }
-        if (this._canAutoPlay()) {
-          this.play();
-        }
+    key: '_handlePlaybackOptions',
+    value: function _handlePlaybackOptions() {
+      this._config.playback = this._config.playback || {};
+      if (typeof this._playbackAttributesState.muted === 'boolean') {
+        this.muted = this._playbackAttributesState.muted;
+      } else if (typeof this._config.playback.muted === 'boolean') {
+        this.muted = this._config.playback.muted;
+      }
+      if (typeof this._playbackAttributesState.volume === 'number') {
+        this.volume = this._playbackAttributesState.volume;
+      } else if (typeof this._config.playback.volume === 'number') {
+        this.volume = this._config.playback.volume;
+      }
+      if (typeof this._config.playback.playsinline === 'boolean') {
+        this.playsinline = this._config.playback.playsinline;
       }
     }
 
     /**
-     * Determine whether we can auto playing or not.
-     * @returns {boolean} - Whether an auto play can be done.
+     * Handles preload.
+     * If ads plugin enabled it's his responsibility to preload the content player.
+     * So to avoid loading the player twice which can cause errors on MSEs we are not
+     * calling load from the player.
+     * TODO: Change it to check the ads configuration when we will develop the ads manager.
+     * @returns {void}
      * @private
      */
 
   }, {
-    key: '_canAutoPlay',
-    value: function _canAutoPlay() {
-      if (!this._config.playback.autoplay) {
-        return false;
+    key: '_handlePreload',
+    value: function _handlePreload() {
+      if (this._config.playback.preload === "auto" && !this._config.plugins.ima) {
+        this.load();
       }
-      var device = this._env.device.type;
-      var os = this._env.os.name;
-      if (device) {
-        return os === 'iOS' ? this.muted && this.playsinline : this.muted;
+    }
+
+    /**
+     * Handles auto play.
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_handleAutoPlay',
+    value: function _handleAutoPlay() {
+      var _this7 = this;
+
+      if (this._config.playback.autoplay === true) {
+        if (this.muted || !this._firstPlayInCurrentSession) {
+          this.play();
+        } else {
+          var allowMutedAutoPlay = this._config.playback.allowMutedAutoPlay;
+          Player.getCapabilities(this.engineType).then(function (capabilities) {
+            if (capabilities.autoplay) {
+              Player._logger.debug("Start autoplay");
+              _this7.play();
+            } else {
+              if (allowMutedAutoPlay) {
+                Player._logger.debug("Fallback to muted autoplay");
+                _this7.muted = true;
+                _this7.play();
+                _this7.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FALLBACK_TO_MUTED_AUTOPLAY));
+              } else {
+                Player._logger.warn("Autoplay failed, pause player");
+                _this7.load();
+                _this7.ready().then(function () {
+                  return _this7.pause();
+                });
+                _this7.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.AUTOPLAY_FAILED));
+              }
+            }
+          });
+        }
       }
-      return true;
     }
 
     /**
@@ -2948,7 +3130,7 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_play',
     value: function _play() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this._engine.src) {
         if (this.isLive() && !this.isDvr()) {
@@ -2958,7 +3140,7 @@ var Player = function (_FakeEventTarget) {
       } else {
         this.load();
         this.ready().then(function () {
-          _this7._engine.play();
+          _this8._engine.play();
         });
       }
     }
@@ -2988,6 +3170,9 @@ var Player = function (_FakeEventTarget) {
         this._firstPlay = false;
         this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FIRST_PLAY));
         this._posterManager.hide();
+        if (typeof this._playbackAttributesState.rate === 'number') {
+          this.playbackRate = this._playbackAttributesState.rate;
+        }
       }
     }
 
@@ -3006,7 +3191,7 @@ var Player = function (_FakeEventTarget) {
     }
 
     /**
-     * Reset the necessary components before change media.
+     * Resets the necessary components before change media.
      * @private
      * @returns {void}
      */
@@ -3014,14 +3199,17 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_reset',
     value: function _reset() {
-      if (this._engine) {
-        this._engine.destroy();
-      }
-      this._tracks = [];
-      this._textDisplaySettings = {};
-      this._activeTextCues = [];
-      this._firstPlay = true;
+      this.pause();
+      this._posterManager.reset();
+      this._stateManager.reset();
+      this._pluginManager.reset();
       this._eventManager.removeAll();
+      this._activeTextCues = [];
+      this._tracks = [];
+      this._firstPlay = true;
+      this._firstPlayInCurrentSession = false;
+      this._engineType = '';
+      this._streamType = '';
       this._createReadyPromise();
     }
 
@@ -3157,7 +3345,7 @@ var Player = function (_FakeEventTarget) {
           index: textTracks.length,
           kind: "subtitles",
           label: "Off",
-          language: "off"
+          language: OFF
         }));
       }
     }
@@ -3172,20 +3360,53 @@ var Player = function (_FakeEventTarget) {
     key: '_setDefaultTracks',
     value: function _setDefaultTracks() {
       var activeTracks = this.getActiveTracks();
-      var playbackConfig = this._config.playback;
+      var playbackConfig = this.config.playback;
+      var offTextTrack = this._getTracksByType(_trackTypes2.default.TEXT).find(function (track) {
+        return _textTrack2.default.langComparer(OFF, track.language);
+      });
 
       this.hideTextTrack();
 
-      var textLanguage = playbackConfig.textLanguage === "auto" ? _locale2.default.language : playbackConfig.textLanguage;
-      this._setDefaultTrack(_trackTypes2.default.TEXT, textLanguage, activeTracks.text);
-      this._setDefaultTrack(_trackTypes2.default.AUDIO, playbackConfig.audioLanguage, activeTracks.audio);
+      var currentOrConfiguredTextLang = this._playbackAttributesState.textLanguage || this._getLanguage(playbackConfig.textLanguage, activeTracks.text, _trackTypes2.default.TEXT);
+      var currentOrConfiguredAudioLang = this._playbackAttributesState.audioLanguage || playbackConfig.audioLanguage;
+      this._setDefaultTrack(_trackTypes2.default.TEXT, currentOrConfiguredTextLang, offTextTrack);
+      this._setDefaultTrack(_trackTypes2.default.AUDIO, currentOrConfiguredAudioLang, activeTracks.audio);
+    }
+
+    /**
+     * Gets the track language that should be set by default.
+     * @param {string} configuredLanguage - The configured language (can be also "auto").
+     * @param {Track} defaultTrack - The default track.
+     * @param {string} type - The track type.
+     * @private
+     * @returns {string} - The track language to set by default.
+     */
+
+  }, {
+    key: '_getLanguage',
+    value: function _getLanguage(configuredLanguage, defaultTrack, type) {
+      var language = configuredLanguage;
+      if (language === AUTO) {
+        var tracks = this._getTracksByType(type);
+        var localeTrack = tracks.find(function (track) {
+          return _track2.default.langComparer(_locale2.default.language, track.language);
+        });
+        if (localeTrack) {
+          language = localeTrack.language;
+        } else if (defaultTrack && defaultTrack.language !== OFF) {
+          language = defaultTrack.language;
+        } else if (tracks && tracks.length > 0) {
+          language = tracks[0].language;
+        }
+      }
+      return language;
     }
 
     /**
      * Sets a specific default track.
      * @param {string} type - The track type.
      * @param {string} language - The track language.
-     * @param {Track} defaultTrack - The default track to set in case there in case no language configured.
+     * @param {?Track} defaultTrack - The default track to set in case there is no language configured.
      * @returns {void}
      * @private
      */
@@ -3193,14 +3414,12 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_setDefaultTrack',
     value: function _setDefaultTrack(type, language, defaultTrack) {
-      if (language) {
-        var _track = this._getTracksByType(type).find(function (track) {
-          return _textTrack2.default.langComparer(language, track.language);
-        });
-        if (_track) {
-          this.selectTrack(_track);
-        }
-      } else if (defaultTrack) {
+      var track = this._getTracksByType(type).find(function (track) {
+        return _track2.default.langComparer(language, track.language);
+      });
+      if (track) {
+        this.selectTrack(track);
+      } else {
         this.selectTrack(defaultTrack);
       }
     }
@@ -3226,8 +3445,8 @@ var Player = function (_FakeEventTarget) {
           if (to < 0) {
             boundedTo = 0;
           }
-          if (boundedTo > this._engine.duration) {
-            boundedTo = this._engine.duration;
+          if (boundedTo > this._engine.duration - DURATION_OFFSET) {
+            boundedTo = this._engine.duration - DURATION_OFFSET;
           }
           this._engine.currentTime = boundedTo;
         }
@@ -3528,6 +3747,7 @@ var Player = function (_FakeEventTarget) {
           sheet.insertRule('#' + this._playerId + ' .' + SUBTITLES_CLASS_NAME + ' > div > div > div { ' + style.toCSS() + ' }', 0);
         }
         this._textStyle = style;
+        this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.TEXT_STYLE_CHANGED));
       } catch (e) {
         Player._logger.error(e.message);
       }
@@ -3869,7 +4089,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -4023,7 +4243,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -4035,7 +4255,7 @@ var _playerError = __webpack_require__(11);
 
 var _playerError2 = _interopRequireDefault(_playerError);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -4174,15 +4394,25 @@ var BasePlugin = function () {
      * Runs the destroy logic of the plugin.
      * plugin must implement this method.
      * @public
-     * @abstract
+     * @virtual
      * @returns {void}
      */
 
   }, {
     key: 'destroy',
-    value: function destroy() {
-      throw new _playerError2.default(_playerError2.default.TYPE.NOT_IMPLEMENTED_METHOD, 'destroy()').getError();
-    }
+    value: function destroy() {}
+
+    /**
+     * Runs the reset logic of the plugin.
+     * plugin must implement this method.
+     * @public
+     * @virtual
+     * @returns {void}
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {}
 
     /**
      * Getter for the plugin's name.
@@ -4491,7 +4721,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -4619,6 +4849,7 @@ var BaseMediaSourceAdapter = function (_FakeEventTarget) {
     value: function destroy() {
       this._sourceObj = null;
       this._config = null;
+      return Promise.resolve();
     }
 
     /**
@@ -6140,7 +6371,7 @@ var PluginManager = function () {
         throw new _playerError2.default(_playerError2.default.TYPE.NOT_REGISTERED_PLUGIN, name).getError();
       }
       var pluginClass = PluginManager._registry.get(name);
-      if (pluginClass != null && pluginClass.isValid()) {
+      if (pluginClass && pluginClass.isValid()) {
         this._plugins.set(name, pluginClass.createPlugin(name, player, config));
         logger.debug('Plugin <' + name + '> has been loaded');
         return true;
@@ -6159,6 +6390,20 @@ var PluginManager = function () {
     key: 'destroy',
     value: function destroy() {
       this._plugins.forEach(this._destroy.bind(this));
+    }
+
+    /**
+     * Iterates over all the plugins and calls reset() method of the plugin's impl.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      this._plugins.forEach(function (plugin) {
+        plugin.reset();
+      });
     }
 
     /**
@@ -6470,7 +6715,7 @@ exports.default = TextStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BaseDrmProtocol = exports.Env = exports.PLAYER_NAME = exports.VERSION = exports.Utils = exports.TextStyle = exports.TextTrack = exports.AudioTrack = exports.VideoTrack = exports.Track = exports.BaseMiddleware = exports.BasePlugin = exports.registerPlugin = exports.BaseMediaSourceAdapter = exports.registerMediaSourceAdapter = undefined;
+exports.getCapabilities = exports.BaseDrmProtocol = exports.Env = exports.PLAYER_NAME = exports.VERSION = exports.Utils = exports.TextStyle = exports.TextTrack = exports.AudioTrack = exports.VideoTrack = exports.Track = exports.BaseMiddleware = exports.BasePlugin = exports.registerPlugin = exports.BaseMediaSourceAdapter = exports.registerMediaSourceAdapter = undefined;
 exports.loadPlayer = loadPlayer;
 
 var _player = __webpack_require__(9);
@@ -6525,7 +6770,7 @@ var _env = __webpack_require__(10);
 
 var _env2 = _interopRequireDefault(_env);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -6533,8 +6778,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.11.0", "color: #98ff98;  font-size: large");
+_player2.default.runCapabilities();
 
+
+_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.14.0", "color: #98ff98;  font-size: large");
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/playkit-js", "color: #98ff98;");
 
 /**
@@ -6569,7 +6816,7 @@ exports.Utils = Utils;
 
 // Export version
 
-exports.VERSION = "0.11.0";
+exports.VERSION = "0.14.0";
 
 // Export player name
 
@@ -6582,6 +6829,11 @@ exports.Env = _env2.default;
 // Export base DRM protocol
 
 exports.BaseDrmProtocol = _baseDrmProtocol2.default;
+
+// Export the player capabilities
+
+var getCapabilities = _player2.default.getCapabilities;
+exports.getCapabilities = getCapabilities;
 exports.default = loadPlayer;
 
 /***/ }),
@@ -7563,7 +7815,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -7586,6 +7838,7 @@ var PosterManager = function () {
   /**
    * Set the poster source URL
    * @param {string} posterUrl - the poster image URL
+   * @public
    * @returns {void}
    */
 
@@ -7601,12 +7854,13 @@ var PosterManager = function () {
     value: function setSrc(posterUrl) {
       if (posterUrl) {
         this._posterUrl = posterUrl;
-        this._el.style.backgroundImage = "url(\"" + posterUrl + "\")";
+        Utils.Dom.setStyle(this._el, "background-image", "url(\"" + this._posterUrl + "\")");
       }
     }
 
     /**
      * Get the poster source URL
+     * @public
      * @returns {string} - the poster image URL
      */
 
@@ -7616,6 +7870,7 @@ var PosterManager = function () {
 
     /**
      * Get the poster HTML Div element
+     * @public
      * @returns {HTMLDivElement} - Poster HTML Dom element
      */
     value: function getElement() {
@@ -7631,7 +7886,7 @@ var PosterManager = function () {
   }, {
     key: "_createEl",
     value: function _createEl() {
-      if (this._el === undefined) {
+      if (!this._el) {
         var el = this._el = Utils.Dom.createElement("div");
         Utils.Dom.setAttribute(el, "id", Utils.Generator.uniqueId(5));
         Utils.Dom.setAttribute(el, "tabindex", '-1');
@@ -7639,7 +7894,23 @@ var PosterManager = function () {
     }
 
     /**
+     * Removes the poster element from the dom
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: "_removeEl",
+    value: function _removeEl() {
+      if (this._el) {
+        Utils.Dom.removeChild(this._el.parentNode, this._el);
+      }
+    }
+
+    /**
      * Show the poster image
+     * @public
+     * @private
      * @returns {void}
      */
 
@@ -7651,6 +7922,7 @@ var PosterManager = function () {
 
     /**
      * Hide the poster image
+     * @public
      * @returns {void}
      */
 
@@ -7658,6 +7930,32 @@ var PosterManager = function () {
     key: "hide",
     value: function hide() {
       Utils.Dom.setStyle(this._el, "display", "none");
+    }
+
+    /**
+     * Resets the poster url and the background image
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: "reset",
+    value: function reset() {
+      this._posterUrl = '';
+      Utils.Dom.setStyle(this._el, "background-image", '');
+    }
+
+    /**
+     * Destroys the poster element
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.reset();
+      this._removeEl();
     }
   }, {
     key: "src",
@@ -8017,7 +8315,7 @@ var _fakeEventTarget = __webpack_require__(13);
 
 var _fakeEventTarget2 = _interopRequireDefault(_fakeEventTarget);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -8043,13 +8341,23 @@ var _textTrack = __webpack_require__(8);
 
 var _vttCue = __webpack_require__(21);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
+
+var _html5Autoplay = __webpack_require__(36);
+
+var _html5Autoplay2 = _interopRequireDefault(_html5Autoplay);
+
+var _html5IsSupported = __webpack_require__(38);
+
+var _html5IsSupported2 = _interopRequireDefault(_html5IsSupported);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8079,8 +8387,20 @@ var Html5 = function (_FakeEventTarget) {
 
 
     /**
-     * Flag to indicate first time text track cue change.
-     * @type {Object.<number, boolean>}
+     * The html5 capabilities handlers.
+     * @private
+     * @static
+     */
+
+    /**
+     * Promise to indicate when a media source adapter can be loaded.
+     * @type {Promise<*>}
+     * @private
+     */
+
+    /**
+     * The player config object.
+     * @type {Object}
      * @private
      */
 
@@ -8105,18 +8425,19 @@ var Html5 = function (_FakeEventTarget) {
 
     /**
      * @type {string} - The engine id.
+     * @public
+     * @static
      */
 
-
     /**
-     * player config object.
-     * @type {Object}
+     * Flag to indicate first time text track cue change.
+     * @type {Object<number, boolean>}
      * @private
      */
 
     /**
      * The selected media source adapter of the engine.
-     * @type {IMediaSourceAdapter}
+     * @type {?IMediaSourceAdapter}
      * @private
      */
 
@@ -8130,6 +8451,44 @@ var Html5 = function (_FakeEventTarget) {
     key: 'canPlaySource',
     value: function canPlaySource(source, preferNative) {
       return _mediaSourceProvider2.default.canPlaySource(source, preferNative);
+    }
+
+    /**
+     * Runs the html5 capabilities tests.
+     * @returns {void}
+     * @public
+     * @static
+     */
+
+  }, {
+    key: 'runCapabilities',
+    value: function runCapabilities() {
+      Html5._capabilities.forEach(function (capability) {
+        return capability.runCapability();
+      });
+    }
+
+    /**
+     * Gets the html5 capabilities.
+     * @return {Promise<Object>} - The html5 capabilities object.
+     * @public
+     * @static
+     */
+
+  }, {
+    key: 'getCapabilities',
+    value: function getCapabilities() {
+      var promises = [];
+      Html5._capabilities.forEach(function (capability) {
+        return promises.push(capability.getCapability());
+      });
+      return Promise.all(promises).then(function (arrayOfResults) {
+        var mergedResults = {};
+        arrayOfResults.forEach(function (res) {
+          return Object.assign(mergedResults, res);
+        });
+        return _defineProperty({}, Html5.id, mergedResults);
+      });
     }
 
     /**
@@ -8147,38 +8506,50 @@ var Html5 = function (_FakeEventTarget) {
 
     _this._showTextTrackFirstTime = {};
 
-    _this._config = config;
     _this._eventManager = new _eventManager2.default();
     _this._createVideoElement();
-    _this._loadMediaSourceAdapter(source);
-    _this.attach();
+    _this._init(source, config);
     return _this;
   }
 
   /**
-   * Destroys the engine.
-   * @public
+   * Restores the engine.
+   * @param {Source} source - The selected source object.
+   * @param {Object} config - The player configuration.
    * @returns {void}
    */
 
 
   _createClass(Html5, [{
+    key: 'restore',
+    value: function restore(source, config) {
+      this.detach();
+      this._eventManager.removeAll();
+      if (this._el) {
+        Utils.Dom.removeAttribute(this._el, 'src');
+      }
+      this._init(source, config);
+    }
+
+    /**
+     * Destroys the engine.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
     key: 'destroy',
     value: function destroy() {
       this.detach();
-      if (this._mediaSourceAdapter) {
-        this._mediaSourceAdapter.destroy();
-        _mediaSourceProvider2.default.destroy();
-      }
       if (this._el) {
         this.pause();
-        this._el.removeAttribute('src');
-        if (this._el.parentNode) {
-          this._el.parentNode.removeChild(this._el);
-        }
+        Utils.Dom.removeAttribute(this._el, 'src');
+        Utils.Dom.removeChild(this._el.parentNode, this._el);
       }
       this._showTextTrackFirstTime = {};
       this._eventManager.destroy();
+      _mediaSourceProvider2.default.destroy();
+      this._mediaSourceAdapter = null;
     }
 
     /**
@@ -8199,15 +8570,11 @@ var Html5 = function (_FakeEventTarget) {
     value: function attach() {
       var _this2 = this;
 
-      var _loop = function _loop(playerEvent) {
-        _this2._eventManager.listen(_this2._el, _events.HTML5_EVENTS[playerEvent], function () {
-          _this2.dispatchEvent(new _fakeEvent2.default(_events.HTML5_EVENTS[playerEvent]));
+      Object.keys(_events.HTML5_EVENTS).forEach(function (html5Event) {
+        _this2._eventManager.listen(_this2._el, _events.HTML5_EVENTS[html5Event], function () {
+          _this2.dispatchEvent(new _fakeEvent2.default(_events.HTML5_EVENTS[html5Event]));
         });
-      };
-
-      for (var playerEvent in _events.HTML5_EVENTS) {
-        _loop(playerEvent);
-      }
+      });
       if (this._mediaSourceAdapter) {
         this._eventManager.listen(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.VIDEO_TRACK_CHANGED, function (event) {
           return _this2.dispatchEvent(event);
@@ -8236,11 +8603,12 @@ var Html5 = function (_FakeEventTarget) {
   }, {
     key: 'detach',
     value: function detach() {
-      for (var playerEvent in _events.HTML5_EVENTS) {
-        this._eventManager.unlisten(this._el, _events.HTML5_EVENTS[playerEvent]);
-      }
+      var _this3 = this;
+
+      Object.keys(_events.HTML5_EVENTS).forEach(function (html5Event) {
+        _this3._eventManager.unlisten(_this3._el, _events.HTML5_EVENTS[html5Event]);
+      });
       if (this._mediaSourceAdapter) {
-        // unlisten to adaptive bitrate changed
         this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.VIDEO_TRACK_CHANGED);
         this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.AUDIO_TRACK_CHANGED);
         this._eventManager.unlisten(this._mediaSourceAdapter, _events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED);
@@ -8257,33 +8625,6 @@ var Html5 = function (_FakeEventTarget) {
     key: 'getVideoElement',
     value: function getVideoElement() {
       return this._el;
-    }
-
-    /**
-     * Creates a video element dom object.
-     * @private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_createVideoElement',
-    value: function _createVideoElement() {
-      this._el = Utils.Dom.createElement("video");
-      this._el.id = Utils.Generator.uniqueId(5);
-      this._el.controls = false;
-    }
-
-    /**
-     * Loads the appropriate media source extension adapter.
-     * @param {Source} source - The selected source object.
-     * @private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_loadMediaSourceAdapter',
-    value: function _loadMediaSourceAdapter(source) {
-      this._mediaSourceAdapter = _mediaSourceProvider2.default.getMediaSourceAdapter(this.getVideoElement(), source, this._config);
     }
 
     /**
@@ -8331,6 +8672,196 @@ var Html5 = function (_FakeEventTarget) {
     }
 
     /**
+     * Hide the text track
+     * @function hideTextTrack
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'hideTextTrack',
+    value: function hideTextTrack() {
+      if (this._mediaSourceAdapter) {
+        this._mediaSourceAdapter.hideTextTrack();
+      }
+      this._removeCueChangeListener();
+    }
+
+    /**
+     * Enables adaptive bitrate switching according to the media source extension logic.
+     * @function enableAdaptiveBitrate
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'enableAdaptiveBitrate',
+    value: function enableAdaptiveBitrate() {
+      if (this._mediaSourceAdapter) {
+        this._mediaSourceAdapter.enableAdaptiveBitrate();
+      }
+    }
+
+    /**
+     * Checking if adaptive bitrate switching is enabled.
+     * @function isAdaptiveBitrateEnabled
+     * @returns {boolean} - Whether adaptive bitrate is enabled.
+     * @public
+     */
+
+  }, {
+    key: 'isAdaptiveBitrateEnabled',
+    value: function isAdaptiveBitrateEnabled() {
+      if (this._mediaSourceAdapter) {
+        return this._mediaSourceAdapter.isAdaptiveBitrateEnabled();
+      }
+      return false;
+    }
+
+    /**
+     * Seeking to live edge.
+     * @function seekToLiveEdge
+     * @returns {void}
+     * @public
+     */
+
+  }, {
+    key: 'seekToLiveEdge',
+    value: function seekToLiveEdge() {
+      if (this._mediaSourceAdapter) {
+        this._mediaSourceAdapter.seekToLiveEdge();
+      }
+    }
+
+    /**
+     * Checking if the current playback is live.
+     * @function isLive
+     * @returns {boolean} - Whether playback is live.
+     * @public
+     */
+
+  }, {
+    key: 'isLive',
+    value: function isLive() {
+      return this._mediaSourceAdapter ? this._mediaSourceAdapter.isLive() : false;
+    }
+
+    /**
+     * Start/resume playback.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'play',
+    value: function play() {
+      var _this4 = this;
+
+      var playPromise = this._el.play();
+      if (playPromise) {
+        playPromise.catch(function () {
+          return _this4.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.AUTOPLAY_FAILED));
+        });
+      }
+    }
+
+    /**
+     * Pause playback.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      return this._el.pause();
+    }
+
+    /**
+     * Load media.
+     * @param {number} startTime - Optional time to start the video from.
+     * @public
+     * @returns {Promise<Object>} - The loaded data
+     */
+
+  }, {
+    key: 'load',
+    value: function load(startTime) {
+      var _this5 = this;
+
+      this._el.load();
+      return this._canLoadMediaSourceAdapterPromise.then(function () {
+        if (_this5._mediaSourceAdapter) {
+          return _this5._mediaSourceAdapter.load(startTime);
+        }
+        return Promise.resolve({});
+      });
+    }
+
+    /**
+     * Set a source.
+     * @param {string} source - Source to set.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'ready',
+    value: function ready() {}
+
+    /**
+     * Get paused state.
+     * @returns {boolean} - The paused value of the video element.
+     * @public
+     */
+
+  }, {
+    key: '_init',
+
+
+    /**
+     * Initializes the engine.
+     * @param {Source} source - The selected source object.
+     * @param {Object} config - The player configuration.
+     * @private
+     * @returns {void}
+     */
+    value: function _init(source, config) {
+      this._config = config;
+      this._canLoadMediaSourceAdapterPromise = this._mediaSourceAdapter ? this._mediaSourceAdapter.destroy() : Promise.resolve();
+      this._mediaSourceAdapter = null;
+      this._loadMediaSourceAdapter(source);
+      this.attach();
+    }
+
+    /**
+     * Creates a video element dom object.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_createVideoElement',
+    value: function _createVideoElement() {
+      this._el = Utils.Dom.createElement("video");
+      this._el.id = Utils.Generator.uniqueId(5);
+      this._el.controls = false;
+    }
+
+    /**
+     * Loads the appropriate media source extension adapter.
+     * @param {Source} source - The selected source object.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_loadMediaSourceAdapter',
+    value: function _loadMediaSourceAdapter(source) {
+      this._mediaSourceAdapter = _mediaSourceProvider2.default.getMediaSourceAdapter(this.getVideoElement(), source, this._config);
+    }
+
+    /**
      * Add cuechange listener to active textTrack.
      * @param {PKTextTrack} textTrack - The playkit text track object to set.
      * @returns {void}
@@ -8340,7 +8871,7 @@ var Html5 = function (_FakeEventTarget) {
   }, {
     key: '_addCueChangeListener',
     value: function _addCueChangeListener(textTrack) {
-      var _this3 = this;
+      var _this6 = this;
 
       var textTrackEl = this._getSelectedTextTrackElement();
       if (textTrackEl) {
@@ -8358,7 +8889,7 @@ var Html5 = function (_FakeEventTarget) {
           textTrackEl.mode = this._showTextTrackFirstTime[textTrack.index] ? "hidden" : "showing";
           this._showTextTrackFirstTime[textTrack.index] = true;
           textTrackEl.oncuechange = function (e) {
-            return _this3._onCueChange(e);
+            return _this6._onCueChange(e);
           };
         }
       }
@@ -8445,148 +8976,6 @@ var Html5 = function (_FakeEventTarget) {
       }
       return null;
     }
-
-    /**
-     * Hide the text track
-     * @function hideTextTrack
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'hideTextTrack',
-    value: function hideTextTrack() {
-      if (this._mediaSourceAdapter) {
-        this._mediaSourceAdapter.hideTextTrack();
-      }
-      this._removeCueChangeListener();
-    }
-
-    /**
-     * Enables adaptive bitrate switching according to the media source extension logic.
-     * @function enableAdaptiveBitrate
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'enableAdaptiveBitrate',
-    value: function enableAdaptiveBitrate() {
-      if (this._mediaSourceAdapter) {
-        this._mediaSourceAdapter.enableAdaptiveBitrate();
-      }
-    }
-
-    /**
-     * Checking if adaptive bitrate switching is enabled.
-     * @function isAdaptiveBitrateEnabled
-     * @returns {boolean} - Whether adaptive bitrate is enabled.
-     * @public
-     */
-
-  }, {
-    key: 'isAdaptiveBitrateEnabled',
-    value: function isAdaptiveBitrateEnabled() {
-      if (this._mediaSourceAdapter) {
-        return this._mediaSourceAdapter.isAdaptiveBitrateEnabled();
-      }
-      return false;
-    }
-
-    /**
-     * Seeking to live edge.
-     * @function seekToLiveEdge
-     * @returns {void}
-     * @public
-     */
-
-  }, {
-    key: 'seekToLiveEdge',
-    value: function seekToLiveEdge() {
-      if (this._mediaSourceAdapter) {
-        this._mediaSourceAdapter.seekToLiveEdge();
-      }
-    }
-
-    /**
-     * Checking if the current playback is live.
-     * @function isLive
-     * @returns {boolean} - Whether playback is live.
-     * @public
-     */
-
-  }, {
-    key: 'isLive',
-    value: function isLive() {
-      return this._mediaSourceAdapter ? this._mediaSourceAdapter.isLive() : false;
-    }
-
-    /**
-     * Set a source.
-     * @param {string} source - Source to set.
-     * @public
-     * @returns {void}
-     */
-
-  }, {
-    key: 'play',
-
-
-    //playback interface
-    /**
-     * Start/resume playback.
-     * @public
-     * @returns {void}
-     */
-    value: function play() {
-      this._el.play();
-    }
-
-    /**
-     * Pause playback.
-     * @public
-     * @returns {void}
-     */
-
-  }, {
-    key: 'pause',
-    value: function pause() {
-      return this._el.pause();
-    }
-
-    /**
-     * Load media.
-     * @param {number} startTime - Optional time to start the video from.
-     * @public
-     * @returns {Promise<Object>} - The loaded data
-     */
-
-  }, {
-    key: 'load',
-    value: function load(startTime) {
-      this._el.load();
-      if (this._mediaSourceAdapter) {
-        return this._mediaSourceAdapter.load(startTime);
-      }
-      return Promise.resolve({});
-    }
-
-    /**
-     * Get the current time in seconds.
-     * @returns {Number} - The current playback time.
-     * @public
-     */
-
-  }, {
-    key: 'ready',
-    value: function ready() {}
-
-    /**
-     * Get paused state.
-     * @returns {boolean} - The paused value of the video element.
-     * @public
-     */
-
   }, {
     key: 'id',
     get: function get() {
@@ -8610,6 +8999,13 @@ var Html5 = function (_FakeEventTarget) {
       }
       return "";
     }
+
+    /**
+     * Get the current time in seconds.
+     * @returns {Number} - The current playback time.
+     * @public
+     */
+
   }, {
     key: 'currentTime',
     get: function get() {
@@ -9007,35 +9403,12 @@ var Html5 = function (_FakeEventTarget) {
     get: function get() {
       return this._el.getAttribute('playsinline') === '';
     }
-
-    /**
-     * Test video element to check if html5 engine is supported.
-     */
-
-  }], [{
-    key: 'isSupported',
-
-
-    /**
-     * Checks if the html5 engine is supported.
-     * @returns {boolean} - The isSupported result.
-     * @static
-     * @public
-     */
-    value: function isSupported() {
-      try {
-        Html5.TEST_VID = Utils.Dom.createElement('video');
-        Html5.TEST_VID.volume = 0.5;
-      } catch (e) {
-        return false;
-      }
-      return !!Html5.TEST_VID.canPlayType;
-    }
   }]);
 
   return Html5;
 }(_fakeEventTarget2.default);
 
+Html5._capabilities = [_html5Autoplay2.default, _html5IsSupported2.default];
 Html5.id = "html5";
 exports.default = Html5;
 
@@ -9080,7 +9453,7 @@ var _baseMediaSourceAdapter2 = _interopRequireDefault(_baseMediaSourceAdapter);
 
 var _resolution = __webpack_require__(33);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -9356,21 +9729,24 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     /**
      * Destroys the native adapter.
      * @function destroy
-     * @returns {void}
+     * @returns {Promise<*>} - The destroy promise.
      */
 
   }, {
     key: 'destroy',
     value: function destroy() {
+      var _this3 = this;
+
       NativeAdapter._logger.debug('destroy');
-      _get(NativeAdapter.prototype.__proto__ || Object.getPrototypeOf(NativeAdapter.prototype), 'destroy', this).call(this);
-      this._eventManager.destroy();
-      this._loadPromise = null;
-      this._progressiveSources = [];
-      if (NativeAdapter._drmProtocol) {
-        NativeAdapter._drmProtocol.destroy();
-        NativeAdapter._drmProtocol = null;
-      }
+      return _get(NativeAdapter.prototype.__proto__ || Object.getPrototypeOf(NativeAdapter.prototype), 'destroy', this).call(this).then(function () {
+        _this3._eventManager.destroy();
+        _this3._progressiveSources = [];
+        _this3._loadPromise = null;
+        if (NativeAdapter._drmProtocol) {
+          NativeAdapter._drmProtocol.destroy();
+          NativeAdapter._drmProtocol = null;
+        }
+      });
     }
 
     /**
@@ -9546,7 +9922,7 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
   }, {
     key: '_selectProgressiveVideoTrack',
     value: function _selectProgressiveVideoTrack(videoTrack) {
-      var _this3 = this;
+      var _this4 = this;
 
       var videoTracks = this._progressiveSources;
       if (videoTrack instanceof _videoTrack2.default && videoTracks && videoTracks[videoTrack.index]) {
@@ -9556,23 +9932,23 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
         this._eventManager.listenOnce(this._videoElement, _events.HTML5_EVENTS.LOADED_DATA, function () {
           if (_env2.default.browser.name === 'Android Browser') {
             // In android browser we have to seek only after some playback.
-            _this3._eventManager.listenOnce(_this3._videoElement, _events.HTML5_EVENTS.DURATION_CHANGE, function () {
-              _this3._videoElement.currentTime = currentTime;
+            _this4._eventManager.listenOnce(_this4._videoElement, _events.HTML5_EVENTS.DURATION_CHANGE, function () {
+              _this4._videoElement.currentTime = currentTime;
             });
-            _this3._eventManager.listenOnce(_this3._videoElement, _events.HTML5_EVENTS.SEEKED, function () {
-              _this3._onTrackChanged(videoTrack);
+            _this4._eventManager.listenOnce(_this4._videoElement, _events.HTML5_EVENTS.SEEKED, function () {
+              _this4._onTrackChanged(videoTrack);
               if (paused) {
-                _this3._videoElement.pause();
+                _this4._videoElement.pause();
               }
             });
-            _this3._videoElement.play();
+            _this4._videoElement.play();
           } else {
-            _this3._eventManager.listenOnce(_this3._videoElement, _events.HTML5_EVENTS.SEEKED, function () {
-              _this3._onTrackChanged(videoTrack);
+            _this4._eventManager.listenOnce(_this4._videoElement, _events.HTML5_EVENTS.SEEKED, function () {
+              _this4._onTrackChanged(videoTrack);
             });
-            _this3._videoElement.currentTime = currentTime;
+            _this4._videoElement.currentTime = currentTime;
             if (!paused) {
-              _this3._videoElement.play();
+              _this4._videoElement.play();
             }
           }
         });
@@ -10081,9 +10457,38 @@ var FairPlay = function (_BaseDrmProtocol) {
       FairPlay._logger.debug("License request loaded");
       var request = event.target;
       var keyText = request.responseText.trim();
-      var responseObj = JSON.parse(keyText);
-      var key = FairPlay._base64DecodeUint8Array(responseObj.ckc);
-      FairPlay._keySession.update(key);
+      var responseObj = {};
+      try {
+        responseObj = JSON.parse(keyText);
+      } catch (error) {
+        FairPlay._licenseRequestFailed();
+      }
+      var isValidResponse = FairPlay._validateResponse(responseObj);
+      if (isValidResponse.valid) {
+        var key = FairPlay._base64DecodeUint8Array(responseObj.ckc);
+        FairPlay._keySession.update(key);
+      } else {
+        FairPlay._licenseRequestFailed();
+      }
+    }
+  }, {
+    key: '_validateResponse',
+    value: function _validateResponse(responseObj) {
+      if (responseObj.message && responseObj.message.indexOf("error") > 0 || responseObj.reference === null || responseObj.status_code === 500) {
+        return { //todo: create & edit an error object
+          valid: false,
+          details: "internal server error" // would be ERROR.INTERNAL or something like that
+        };
+      } else if (responseObj.ckc === "") {
+        return {
+          valid: false,
+          details: "ckc is missing" // would be ERROR.MISSING_CKC or something like that
+        };
+      } else {
+        return {
+          valid: true
+        };
+      }
     }
   }, {
     key: '_licenseRequestFailed',
@@ -10327,6 +10732,152 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _util = __webpack_require__(1);
+
+var Utils = _interopRequireWildcard(_util);
+
+var _encodingSources = __webpack_require__(37);
+
+var EncodingSources = _interopRequireWildcard(_encodingSources);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Html5AutoPlayCapability = function () {
+  function Html5AutoPlayCapability() {
+    _classCallCheck(this, Html5AutoPlayCapability);
+  }
+
+  _createClass(Html5AutoPlayCapability, null, [{
+    key: 'runCapability',
+
+
+    /***
+     * Runs the test for autoplay capability.
+     * @public
+     * @static
+     * @returns {void}
+     */
+    value: function runCapability() {
+      try {
+        Html5AutoPlayCapability._vid.src = EncodingSources.Base64Mp4Source;
+        Html5AutoPlayCapability._promise = Html5AutoPlayCapability._vid.play() || Promise.resolve();
+      } catch (e) {
+        Html5AutoPlayCapability._promise = Promise.reject();
+      }
+    }
+
+    /**
+     * Gets the test result for autoplay capability.
+     * @returns {Promise<CapabilityResult>} - The result object for autoplay capability.
+     * @static
+     * @public
+     */
+
+  }, {
+    key: 'getCapability',
+    value: function getCapability() {
+      return Html5AutoPlayCapability._promise.then(function () {
+        return { autoplay: true };
+      }).catch(function () {
+        return { autoplay: false };
+      });
+    }
+  }]);
+
+  return Html5AutoPlayCapability;
+}();
+
+Html5AutoPlayCapability._vid = Utils.Dom.createElement('video');
+exports.default = Html5AutoPlayCapability;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"Base64Mp4Source": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAABPptZGF0AAACrQYF//+p3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0OCByMjcyMSA3MmQ1M2FiIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAxNiAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOjA6MCBhbmFseXNlPTB4MzoweDExMyBtZT1oZXggc3VibWU9NyBwc3k9MSBwc3lfcmQ9MS4wMDowLjAwIG1peGVkX3JlZj0xIG1lX3JhbmdlPTE2IGNocm9tYV9tZT0xIHRyZWxsaXM9MSA4eDhkY3Q9MSBjcW09MCBkZWFkem9uZT0yMSwxMSBmYXN0X3Bza2lwPTEgY2hyb21hX3FwX29mZnNldD00IHRocmVhZHM9MSBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MjUgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAwAIAAAAAQZYiEADf//vaH+BTZWBP/gd4CAExhdmM1Ny42NC4xMDAAQiAIwRg4AAAACEGaJGxDf/7gAAAACEGeQniFf8SBIRAEYIwcAAAACAGeYXRCf8eAIRAEYIwcAAAACAGeY2pCf8eBIRAEYIwcAAAADkGaaEmoQWiZTAhv//7hAAAACkGehkURLCv/xIEhEARgjBwAAAAIAZ6ldEJ/x4EhEARgjBwAAAAIAZ6nakJ/x4AhEARgjBwAAAAOQZqsSahBbJlMCG///uAAAAAKQZ7KRRUsK//EgSEQBGCMHAAAAAgBnul0Qn/HgCEQBGCMHAAAAAgBnutqQn/HgAAAAA5BmvBJqEFsmUwIb//+4SEQBGCMHAAAAApBnw5FFSwr/8SBIRAEYIwcAAAACAGfLXRCf8eBIRAEYIwcAAAACAGfL2pCf8eAAAAADkGbNEmoQWyZTAhv//7gIRAEYIwcAAAACkGfUkUVLCv/xIEhEARgjBwAAAAIAZ9xdEJ/x4AAAAAIAZ9zakJ/x4AhEARgjBwAAAAOQZt4SahBbJlMCGf//uEhEARgjBwAAAAKQZ+WRRUsK//EgCEQBGCMHAAAAAgBn7V0Qn/HgQAAAAgBn7dqQn/HgSEQBGCMHAAAAA5Bm7xJqEFsmUwIV//+wCEQBGCMHAAAAApBn9pFFSwr/8SBAAAACAGf+XRCf8eAIRAEYIwcAAAACAGf+2pCf8eBIRAEYIwcAAAADkGb/UmoQWyZTAhP//7BIRAEYIwcIRAEYIwcAAAIOG1vb3YAAABsbXZoZAAAAAAAAAAAAAAAAAAAA+gAAAQXAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAS3dHJhawAAAFx0a2hkAAAAAwAAAAAAAAAAAAAAAQAAAAAAAAPoAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAIAAAACAAAAAAAJGVkdHMAAAAcZWxzdAAAAAAAAAABAAAD6AAABAAAAQAAAAAEL21kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAPAAAADwAVcQAAAAAAC1oZGxyAAAAAAAAAAB2aWRlAAAAAAAAAAAAAAAAVmlkZW9IYW5kbGVyAAAAA9ptaW5mAAAAFHZtaGQAAAABAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAOac3RibAAAAJZzdHNkAAAAAAAAAAEAAACGYXZjMQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIAAgASAAAAEgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABj//wAAADBhdmNDAfQACv/hABdn9AAKkZsr8TEwgAAAAwCAAAAeB4kSywEABmjr48RIRAAAABhzdHRzAAAAAAAAAAEAAAAeAAACAAAAABRzdHNzAAAAAAAAAAEAAAABAAABAGN0dHMAAAAAAAAAHgAAAAEAAAQAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAABAAAAAABAAAAAAAAAAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAABAAAAAABAAAAAAAAAAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAEAAAAANxzdHNjAAAAAAAAABEAAAABAAAAAQAAAAEAAAACAAAAAgAAAAEAAAADAAAAAQAAAAEAAAAFAAAAAgAAAAEAAAAGAAAAAQAAAAEAAAAIAAAAAgAAAAEAAAAJAAAAAQAAAAEAAAAKAAAAAgAAAAEAAAALAAAAAQAAAAEAAAANAAAAAgAAAAEAAAAOAAAAAQAAAAEAAAAPAAAAAgAAAAEAAAAQAAAAAQAAAAEAAAASAAAAAgAAAAEAAAATAAAAAQAAAAEAAAAUAAAAAgAAAAEAAAAVAAAAAQAAAAEAAACMc3RzegAAAAAAAAAAAAAAHgAAAsUAAAAMAAAADAAAAAwAAAAMAAAAEgAAAA4AAAAMAAAADAAAABIAAAAOAAAADAAAAAwAAAASAAAADgAAAAwAAAAMAAAAEgAAAA4AAAAMAAAADAAAABIAAAAOAAAADAAAAAwAAAASAAAADgAAAAwAAAAMAAAAEgAAAGhzdGNvAAAAAAAAABYAAAAwAAADDAAAAyoAAAM8AAADTgAAA3QAAAOGAAADmAAAA74AAAPQAAAD9AAABAgAAAQaAAAEPgAABFIAAARwAAAEiAAABJwAAAS6AAAE0gAABPIAAAUEAAACq3RyYWsAAABcdGtoZAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAEFwAAAAAAAAAAAAAAAQEAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACRlZHRzAAAAHGVsc3QAAAAAAAAAAQAAA+gAAAQAAAEAAAAAAiNtZGlhAAAAIG1kaGQAAAAAAAAAAAAAAAAAAFYiAABaIlXEAAAAAAAtaGRscgAAAAAAAAAAc291bgAAAAAAAAAAAAAAAFNvdW5kSGFuZGxlcgAAAAHObWluZgAAABBzbWhkAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAGSc3RibAAAAGpzdHNkAAAAAAAAAAEAAABabXA0YQAAAAAAAAABAAAAAAAAAAAAAgAQAAAAAFYiAAAAAAA2ZXNkcwAAAAADgICAJQACAASAgIAXQBUAAAAAAfQAAAAEoAWAgIAFE5BW5QAGgICAAQIAAAAgc3R0cwAAAAAAAAACAAAAFgAABAAAAAABAAACIgAAAChzdHNjAAAAAAAAAAIAAAABAAAAAQAAAAEAAAAWAAAAAgAAAAEAAABwc3RzegAAAAAAAAAAAAAAFwAAABcAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAAaHN0Y28AAAAAAAAAFgAAAvUAAAMkAAADNgAAA0gAAANuAAADgAAAA5IAAAO4AAADygAAA+4AAAQCAAAEFAAABDgAAARMAAAEagAABIIAAASWAAAEtAAABMwAAATsAAAE/gAABRYAAABidWR0YQAAAFptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABtZGlyYXBwbAAAAAAAAAAAAAAAAC1pbHN0AAAAJal0b28AAAAdZGF0YQAAAAEAAAAATGF2ZjU3LjU2LjEwMA=="
+};
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(1);
+
+var Utils = _interopRequireWildcard(_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Html5IsSupportedCapability = function () {
+  function Html5IsSupportedCapability() {
+    _classCallCheck(this, Html5IsSupportedCapability);
+  }
+
+  _createClass(Html5IsSupportedCapability, null, [{
+    key: 'runCapability',
+
+
+    /***
+     * Runs the test for isSupported capability.
+     * @public
+     * @static
+     * @returns {void}
+     */
+    value: function runCapability() {
+      try {
+        Html5IsSupportedCapability._vid.volume = 0.5;
+        Html5IsSupportedCapability._result = !!Html5IsSupportedCapability._vid.canPlayType;
+      } catch (e) {
+        Html5IsSupportedCapability._result = false;
+      }
+    }
+
+    /**
+     * Gets the test result for isSupported capability.
+     * @returns {Promise<CapabilityResult>} - The result object for isSupported capability.
+     * @static
+     * @public
+     */
+
+  }, {
+    key: 'getCapability',
+    value: function getCapability() {
+      return Promise.resolve({ isSupported: Html5IsSupportedCapability._result });
+    }
+  }]);
+
+  return Html5IsSupportedCapability;
+}();
+
+Html5IsSupportedCapability._vid = Utils.Dom.createElement('video');
+exports.default = Html5IsSupportedCapability;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _player = __webpack_require__(9);
 
 var _player2 = _interopRequireDefault(_player);
@@ -10335,7 +10886,7 @@ var _eventManager = __webpack_require__(4);
 
 var _eventManager2 = _interopRequireDefault(_eventManager);
 
-var _state = __webpack_require__(37);
+var _state = __webpack_require__(40);
 
 var _state2 = _interopRequireDefault(_state);
 
@@ -10345,7 +10896,7 @@ var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
 var _events = __webpack_require__(5);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -10408,11 +10959,7 @@ var StateManager = function () {
       _this._updateState(_stateTypes2.default.BUFFERING);
       _this._dispatchEvent();
     }), _PlayerStates$IDLE)), _defineProperty(_transitions, _stateTypes2.default.LOADING, (_PlayerStates$LOADING = {}, _defineProperty(_PlayerStates$LOADING, _events.HTML5_EVENTS.LOADED_METADATA, function () {
-      if (_this._player.config.playback.autoplay) {
-        _this._updateState(_stateTypes2.default.PLAYING);
-      } else {
-        _this._updateState(_stateTypes2.default.PAUSED);
-      }
+      _this._updateState(_stateTypes2.default.PAUSED);
       _this._dispatchEvent();
     }), _defineProperty(_PlayerStates$LOADING, _events.HTML5_EVENTS.ERROR, function () {
       _this._updateState(_stateTypes2.default.IDLE);
@@ -10574,6 +11121,18 @@ var StateManager = function () {
     }
 
     /**
+     * Resets the state manager.
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      this._history = [];
+    }
+
+    /**
      * Getter to the current state of the player.
      * @public
      * @returns {State} - The current state object
@@ -10616,7 +11175,7 @@ var StateManager = function () {
 exports.default = StateManager;
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10698,7 +11257,7 @@ var State = function () {
 exports.default = State;
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10716,7 +11275,7 @@ var TRACK_TYPES = {
 exports.default = TRACK_TYPES;
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10728,7 +11287,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _middleware = __webpack_require__(40);
+var _middleware = __webpack_require__(43);
 
 var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -10816,7 +11375,7 @@ PlaybackMiddleware.Actions = {
 exports.default = PlaybackMiddleware;
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10949,7 +11508,7 @@ var Middleware = function () {
 exports.default = Middleware;
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -10963,9 +11522,10 @@ module.exports = {
 		"textLanguage": "",
 		"useNativeTextTrack": false,
 		"volume": 1,
-		"playsinline": false,
+		"playsinline": true,
 		"preload": "none",
 		"autoplay": false,
+		"allowMutedAutoPlay": true,
 		"muted": false,
 		"options": {
 			"html5": {
@@ -10995,13 +11555,13 @@ module.exports = {
 };
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(43);
+var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -11009,7 +11569,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(48)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -11026,21 +11586,21 @@ if(false) {
 }
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(undefined);
+exports = module.exports = __webpack_require__(47)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n\n.playkit-subtitles {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n\n.playkit-subtitles > div > div {\n  -webkit-transition: 0.3s ease-in-out;\n  -moz-transition: 0.3s ease-in-out;\n  -o-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n", ""]);
+exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  outline: none;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.playkit-engine {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  object-fit: contain;\n}\n\n.playkit-engine video::-webkit-media-controls-panel,\n.playkit-engine video::-webkit-media-controls-panel-container,\n.playkit-engine video::-webkit-media-controls-start-playback-button,\n.playkit-engine video::-webkit-media-controls-play-button {\n  display: none;\n  -webkit-appearance: none\n}\n\n.playkit-poster {\n  position: absolute;\n  display: block;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n\n.playkit-subtitles {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports) {
 
 /*
@@ -11122,7 +11682,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11168,7 +11728,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(46);
+var	fixUrls = __webpack_require__(49);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -11481,7 +12041,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports) {
 
 
@@ -15060,4349 +15620,16 @@ exports.default = PolyfillManager;
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-(function webpackUniversalModuleDefinition(root, factory) {
-  if (( false ? 'undefined' : _typeof2(exports)) === 'object' && ( false ? 'undefined' : _typeof2(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else if ((typeof exports === 'undefined' ? 'undefined' : _typeof2(exports)) === 'object') exports["PlaykitJsProviders"] = factory();else root["PlaykitJsProviders"] = factory();
-})(undefined, function () {
-  return (/******/function (modules) {
-      // webpackBootstrap
-      /******/ // The module cache
-      /******/var installedModules = {};
-      /******/
-      /******/ // The require function
-      /******/function __webpack_require__(moduleId) {
-        /******/
-        /******/ // Check if module is in cache
-        /******/if (installedModules[moduleId]) {
-          /******/return installedModules[moduleId].exports;
-          /******/
-        }
-        /******/ // Create a new module (and put it into the cache)
-        /******/var module = installedModules[moduleId] = {
-          /******/i: moduleId,
-          /******/l: false,
-          /******/exports: {}
-          /******/ };
-        /******/
-        /******/ // Execute the module function
-        /******/modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-        /******/
-        /******/ // Flag the module as loaded
-        /******/module.l = true;
-        /******/
-        /******/ // Return the exports of the module
-        /******/return module.exports;
-        /******/
-      }
-      /******/
-      /******/
-      /******/ // expose the modules object (__webpack_modules__)
-      /******/__webpack_require__.m = modules;
-      /******/
-      /******/ // expose the module cache
-      /******/__webpack_require__.c = installedModules;
-      /******/
-      /******/ // identity function for calling harmony imports with the correct context
-      /******/__webpack_require__.i = function (value) {
-        return value;
-      };
-      /******/
-      /******/ // define getter function for harmony exports
-      /******/__webpack_require__.d = function (exports, name, getter) {
-        /******/if (!__webpack_require__.o(exports, name)) {
-          /******/Object.defineProperty(exports, name, {
-            /******/configurable: false,
-            /******/enumerable: true,
-            /******/get: getter
-            /******/ });
-          /******/
-        }
-        /******/
-      };
-      /******/
-      /******/ // getDefaultExport function for compatibility with non-harmony modules
-      /******/__webpack_require__.n = function (module) {
-        /******/var getter = module && module.__esModule ?
-        /******/function getDefault() {
-          return module['default'];
-        } :
-        /******/function getModuleExports() {
-          return module;
-        };
-        /******/__webpack_require__.d(getter, 'a', getter);
-        /******/return getter;
-        /******/
-      };
-      /******/
-      /******/ // Object.prototype.hasOwnProperty.call
-      /******/__webpack_require__.o = function (object, property) {
-        return Object.prototype.hasOwnProperty.call(object, property);
-      };
-      /******/
-      /******/ // __webpack_public_path__
-      /******/__webpack_require__.p = "";
-      /******/
-      /******/ // Load entry module and return exports
-      /******/return __webpack_require__(__webpack_require__.s = 23);
-      /******/
-    }(
-    /************************************************************************/
-    /******/[
-    /* 0 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
-        return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-      } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-      };
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Request builder
-       * @classdesc
-       */
-      var RequestBuilder = function () {
-
-        /**
-         * @constructor
-         * @param {Map<string, string>} headers The request headers
-         */
-
-        /**
-         * @member - Service method (POST,GET,DELETE etc..)
-         * @type {string}
-         */
-
-        /**
-         * @member - Service headers
-         * @type {Map<string, string>}
-         */
-
-        /**
-         * @member - Service action
-         * @type {string}
-         */
-        function RequestBuilder() {
-          var headers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Map();
-
-          _classCallCheck(this, RequestBuilder);
-
-          this.headers = headers;
-        }
-
-        /**
-         * Builds restful service URL
-         * @function getUrl
-         * @param {string} baseUrl - The service base URL
-         * @returns {string} The service URL
-         */
-
-        /**
-         * @member - Service tag
-         * @type {string}
-         */
-
-        /**
-         * @member - Service URL
-         * @type {string}
-         */
-
-        /**
-         * @member - Service params
-         * @type {any}
-         */
-
-        /**
-         * @member - Service name
-         * @type {string}
-         */
-
-        _createClass(RequestBuilder, [{
-          key: 'getUrl',
-          value: function getUrl(baseUrl) {
-            return baseUrl + '/service/' + this.service + (this.action ? '/action/' + this.action : '');
-          }
-
-          /**
-           * Executes service
-           * @function doHttpRequest
-           * @returns {Promise.<any>} Service response as promise
-           */
-
-        }, {
-          key: 'doHttpRequest',
-          value: function doHttpRequest() {
-            var _this = this;
-
-            if (!this.url) {
-              throw new Error("baseUrl is mandatory for request builder");
-            }
-            var request = new XMLHttpRequest();
-            return new Promise(function (resolve, reject) {
-              request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                  if (request.status === 200) {
-                    var jsonResponse = JSON.parse(request.responseText);
-                    if (jsonResponse && (typeof jsonResponse === 'undefined' ? 'undefined' : _typeof(jsonResponse)) === 'object' && jsonResponse.code && jsonResponse.message) reject(jsonResponse);else resolve(jsonResponse);
-                  } else {
-                    reject(request.responseText);
-                  }
-                }
-              };
-              request.open(_this.method, _this.url);
-              _this.headers.forEach(function (value, key) {
-                request.setRequestHeader(key, value);
-              });
-              request.send(_this.params);
-            });
-          }
-        }]);
-
-        return RequestBuilder;
-      }();
-
-      exports.default = RequestBuilder;
-
-      /***/
-    },
-    /* 1 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var defaultConfig = {
-        beUrl: "http://www.kaltura.com/api_v3",
-        baseUrl: "https://cdnapisec.kaltura.com",
-        serviceParams: {
-          apiVersion: '3.3.0',
-          format: 1
-        }
-      };
-
-      var Configuration = function () {
-        function Configuration() {
-          _classCallCheck(this, Configuration);
-        }
-
-        _createClass(Configuration, null, [{
-          key: "set",
-          value: function set(clientConfig) {
-            if (clientConfig) {
-              Object.assign(defaultConfig, clientConfig);
-            }
-          }
-        }, {
-          key: "get",
-          value: function get() {
-            return defaultConfig;
-          }
-        }]);
-
-        return Configuration;
-      }();
-
-      exports.default = Configuration;
-      exports.Configuration = Configuration;
-
-      /***/
-    },
-    /* 2 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _multiRequestBuilder = __webpack_require__(5);
-
-      var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-      var SERVICE_NAME = "multirequest";
-
-      /**
-       * Base for all ovp services
-       * @classdesc
-       */
-
-      var OvpService = function () {
-        function OvpService() {
-          _classCallCheck(this, OvpService);
-        }
-
-        _createClass(OvpService, null, [{
-          key: 'getMultirequest',
-
-          /**
-           * Gets a new instance of MultiRequestBuilder with ovp params
-           * @function getMultirequest
-           * @param {string} pVersion The player version
-           * @param {string} ks The ks
-           * @param {string} partnerId The partner ID
-           * @returns {MultiRequestBuilder} The multi request builder
-           * @static
-           */
-          value: function getMultirequest(pVersion, ks, partnerId) {
-            var ovpParams = config.serviceParams;
-            Object.assign(ovpParams, { ks: ks, clientTag: 'html5:v' + pVersion });
-            if (partnerId) {
-              Object.assign(ovpParams, { partnerId: partnerId });
-            }
-            var headers = new Map();
-            headers.set("Content-Type", "application/json");
-            var multiReq = new _multiRequestBuilder2.default(headers);
-            multiReq.method = "POST";
-            multiReq.service = SERVICE_NAME;
-            multiReq.url = multiReq.getUrl(config.beUrl);
-            multiReq.params = ovpParams;
-            return multiReq;
-          }
-        }]);
-
-        return OvpService;
-      }();
-
-      exports.default = OvpService;
-
-      /***/
-    },
-    /* 3 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Base service result
-       * @classdesc
-       */
-      var ServiceResult =
-
-      /**
-       * @constructor
-       * @param {Object} response - Service response
-       */
-
-      /**
-       * @member - The service error
-       * @type {ServiceError}
-       */
-
-      /**
-       * @member - The service result data
-       * @type {Object}
-       */
-      function ServiceResult(response) {
-        _classCallCheck(this, ServiceResult);
-
-        this.hasError = false;
-
-        if (response.objectType === "KalturaAPIException") {
-          this.hasError = true;
-          this.error = new ServiceError(response.code, response.message);
-        } else {
-          this.data = response;
-        }
-      }
-
-      /**
-       * @member - Is service returned an error
-       * @type {boolean}
-       */
-      ;
-
-      /**
-       * Service error
-       * @classdesc
-       */
-
-      exports.default = ServiceResult;
-
-      var ServiceError =
-
-      /**
-       * @constructor
-       * @param {string} code - The result code
-       * @param {string} message - The result message
-       */
-
-      /**
-       * @member - The error code
-       * @type {string}
-       */
-      function ServiceError(code, message) {
-        _classCallCheck(this, ServiceError);
-
-        this.code = code;
-        this.message = message;
-      }
-      /**
-       * @member - The error message
-       * @type {string}
-       */
-      ;
-
-      /***/
-    },
-    /* 4 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.LOG_LEVEL = undefined;
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _jsLogger = __webpack_require__(8);
-
-      var JsLogger = _interopRequireWildcard(_jsLogger);
-
-      function _interopRequireWildcard(obj) {
-        if (obj && obj.__esModule) {
-          return obj;
-        } else {
-          var newObj = {};if (obj != null) {
-            for (var key in obj) {
-              if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-            }
-          }newObj.default = obj;return newObj;
-        }
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var LoggerFactory = function () {
-        function LoggerFactory(options) {
-          _classCallCheck(this, LoggerFactory);
-
-          JsLogger.useDefaults(options || {});
-        }
-
-        _createClass(LoggerFactory, [{
-          key: "get",
-          value: function get(name) {
-            if (!name) {
-              return JsLogger;
-            }
-            return JsLogger.get(name);
-          }
-        }]);
-
-        return LoggerFactory;
-      }();
-
-      var Logger = new LoggerFactory({ defaultLevel: JsLogger.DEBUG });
-      var LOG_LEVEL = {
-        "DEBUG": JsLogger.DEBUG,
-        "INFO": JsLogger.INFO,
-        "TIME": JsLogger.TIME,
-        "WARN": JsLogger.WARN,
-        "ERROR": JsLogger.ERROR,
-        "OFF": JsLogger.OFF
-      };
-
-      exports.default = Logger;
-      exports.LOG_LEVEL = LOG_LEVEL;
-
-      /***/
-    },
-    /* 5 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.MultiRequestResult = undefined;
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      var _baseServiceResult = __webpack_require__(3);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _logger = __webpack_require__(4);
-
-      var _logger2 = _interopRequireDefault(_logger);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _defineProperty(obj, key, value) {
-        if (key in obj) {
-          Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
-        } else {
-          obj[key] = value;
-        }return obj;
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * @constant
-       */
-      var logger = _logger2.default.get("OvpProvider");
-
-      /**
-       * Multi Request builder
-       * @classdesc
-       */
-
-      var MultiRequestBuilder = function (_RequestBuilder) {
-        _inherits(MultiRequestBuilder, _RequestBuilder);
-
-        function MultiRequestBuilder() {
-          var _ref;
-
-          var _temp, _this, _ret;
-
-          _classCallCheck(this, MultiRequestBuilder);
-
-          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-          }
-
-          return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MultiRequestBuilder.__proto__ || Object.getPrototypeOf(MultiRequestBuilder)).call.apply(_ref, [this].concat(args))), _this), _this.requests = [], _temp), _possibleConstructorReturn(_this, _ret);
-        }
-
-        /**
-         * @member - Array of requests
-         * @type {Array<RequestBuilder>}
-         */
-
-        _createClass(MultiRequestBuilder, [{
-          key: 'add',
-
-          /**
-           * Adds request to requests array
-           * @function add
-           * @param {RequestBuilder} request The request
-           * @returns {MultiRequestBuilder} The multiRequest
-           */
-          value: function add(request) {
-            this.requests.push(request);
-            var requestParams = {};
-            var serviceDef = { service: request.service, action: request.action };
-            Object.assign(requestParams, _defineProperty({}, this.requests.length, Object.assign(serviceDef, request.params)));
-            Object.assign(requestParams, this.params);
-            this.params = requestParams;
-            return this;
-          }
-
-          /**
-           * Executes a multi request
-           * @function execute
-           * @returns {Promise} The multirequest execution promisie
-           */
-
-        }, {
-          key: 'execute',
-          value: function execute() {
-            var _this2 = this;
-
-            try {
-              this.params = JSON.stringify(this.params);
-            } catch (err) {
-              logger.error('' + err.message);
-            }
-            return new Promise(function (resolve, reject) {
-              _this2.doHttpRequest().then(function (data) {
-                resolve(new MultiRequestResult(data));
-              }, function (err) {
-                var errorText = 'Error on multiRequest execution, error <' + err + '>.';
-                reject(errorText);
-              });
-            });
-          }
-        }]);
-
-        return MultiRequestBuilder;
-      }(_requestBuilder2.default);
-
-      /**
-       * Multi Request result object
-       * @classdesc
-       */
-
-      exports.default = MultiRequestBuilder;
-
-      var MultiRequestResult =
-
-      /**
-       * @constructor
-       * @param {Object}  response data
-       */
-
-      /**
-       * @member - Is success
-       * @type {boolean}
-       */
-      exports.MultiRequestResult = function MultiRequestResult(response) {
-        var _this3 = this;
-
-        _classCallCheck(this, MultiRequestResult);
-
-        this.results = [];
-
-        this.success = true;
-        response.forEach(function (result) {
-          var serviceResult = new _baseServiceResult2.default(result);
-          _this3.results.push(serviceResult);
-          if (serviceResult.hasError) {
-            logger.error('Service returned an error with error code: ' + serviceResult.error.code + ' and message: ' + serviceResult.error.message + '.');
-            _this3.success = false;
-            return;
-          }
-        });
-      }
-      /**
-       * @member - Multi request response data
-       * @type {Object}
-       */
-      ;
-
-      /***/
-    },
-    /* 6 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _mediaSource = __webpack_require__(11);
-
-      var _mediaSource2 = _interopRequireDefault(_mediaSource);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Container for the media sources aggregated by stream format.
-       * @classdesc
-       */
-      var MediaSources = function () {
-
-        /**
-         * @constructor
-         */
-
-        /**
-         * Dash media sources container.
-         * @type {Array<MediaSource>}
-         * @public
-         */
-        function MediaSources() {
-          _classCallCheck(this, MediaSources);
-
-          this.progressive = [];
-          this.dash = [];
-          this.hls = [];
-        }
-
-        /**
-         * Maps the source to one of the containers according to his media format.
-         * @param {MediaSource} source - The source to add to one of the containers.
-         * @param {MediaFormat} mediaFormat - The media format of the source.
-         * @returns {void}
-         */
-
-        /**
-         * Hls media sources container.
-         * @type {Array<MediaSource>}
-         * @public
-         */
-
-        /**
-         * Progressive download media sources container.
-         * @type {Array<MediaSource>}
-         * @public
-         */
-
-        _createClass(MediaSources, [{
-          key: 'map',
-          value: function map(source, mediaFormat) {
-            if (mediaFormat) {
-              switch (mediaFormat.name) {
-                case 'mp4':
-                  this.progressive.push(source);
-                  break;
-                case 'dash':
-                  this.dash.push(source);
-                  break;
-                case 'hls':
-                  this.hls.push(source);
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
-        }]);
-
-        return MediaSources;
-      }();
-
-      exports.default = MediaSources;
-
-      /***/
-    },
-    /* 7 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var DrmScheme = exports.DrmScheme = {
-        'drm.PLAYREADY_CENC': 'com.microsoft.playready',
-        'drm.WIDEVINE_CENC': 'com.widevine.alpha',
-        'fairplay.FAIRPLAY': 'com.apple.fairplay'
-      };
-
-      var KalturaRuleActionTypes = exports.KalturaRuleActionTypes = function KalturaRuleActionTypes() {
-        _classCallCheck(this, KalturaRuleActionTypes);
-      };
-
-      KalturaRuleActionTypes.DRM_POLICY = "drm.DRM_POLICY";
-      KalturaRuleActionTypes.BLOCK = 1;
-      KalturaRuleActionTypes.PREVIEW = 2;
-      KalturaRuleActionTypes.LIMIT_FLAVORS = 3;
-      KalturaRuleActionTypes.ADD_TO_STORAGE = 4;
-      KalturaRuleActionTypes.LIMIT_DELIVERY_PROFILES = 5;
-      KalturaRuleActionTypes.SERVE_FROM_REMOTE_SERVER = 6;
-      KalturaRuleActionTypes.REQUEST_HOST_REGEX = 7;
-      KalturaRuleActionTypes.LIMIT_THUMBNAIL_CAPTURE = 8;
-
-      var Status = exports.Status = function Status() {
-        _classCallCheck(this, Status);
-      };
-
-      Status.ERROR = -1;
-      Status.QUEUED = 0;
-      Status.CONVERTING = 1;
-      Status.READY = 2;
-      Status.DELETED = 3;
-      Status.NOT_APPLICABLE = 4;
-      Status.TEMP = 5;
-      Status.WAIT_FOR_CONVERT = 6;
-      Status.IMPORTING = 7;
-      Status.VALIDATING = 8;
-      Status.EXPORTING = 9;
-
-      var MetadataObjectTypes = exports.MetadataObjectTypes = function MetadataObjectTypes() {
-        _classCallCheck(this, MetadataObjectTypes);
-      };
-
-      MetadataObjectTypes.AD_CUE_POINT = "adCuePointMetadata.AdCuePoint";
-      MetadataObjectTypes.ANNOTATION = "annotationMetadata.Annotation";
-      MetadataObjectTypes.CODE_CUE_POINT = "codeCuePointMetadata.CodeCuePoint";
-      MetadataObjectTypes.THUMB_CUE_POINT = "thumbCuePointMetadata.thumbCuePoint";
-      MetadataObjectTypes.ENTRY = 1;
-      MetadataObjectTypes.CATEGORY = 2;
-      MetadataObjectTypes.USER = 3;
-      MetadataObjectTypes.PARTNER = 4;
-      MetadataObjectTypes.DYNAMIC_OBJECT = 5;
-
-      var MetadataStatuses = exports.MetadataStatuses = function MetadataStatuses() {
-        _classCallCheck(this, MetadataStatuses);
-      };
-
-      MetadataStatuses.VALID = 1;
-      MetadataStatuses.INVALID = 2;
-      MetadataStatuses.DELETED = 3;
-
-      var EntryStatuses = exports.EntryStatuses = function EntryStatuses() {
-        _classCallCheck(this, EntryStatuses);
-      };
-
-      EntryStatuses.ERROR_IMPORTING = -2;
-      EntryStatuses.ERROR_CONVERTING = -1;
-      EntryStatuses.SCAN_FAILURE = "virusScan.ScanFailure";
-      EntryStatuses.IMPORT = 0;
-      EntryStatuses.INFECTED = "virusScan.Infected";
-      EntryStatuses.PRECONVERT = 1;
-      EntryStatuses.READY = 2;
-      EntryStatuses.DELETED = 3;
-      EntryStatuses.PENDING = 4;
-      EntryStatuses.MODERATE = 5;
-      EntryStatuses.BLOCKED = 6;
-      EntryStatuses.NO_CONTENT = 7;
-
-      var EntryModerationStatuses = exports.EntryModerationStatuses = function EntryModerationStatuses() {
-        _classCallCheck(this, EntryModerationStatuses);
-      };
-
-      EntryModerationStatuses.PENDING_MODERATION = 1;
-      EntryModerationStatuses.APPROVED = 2;
-      EntryModerationStatuses.REJECTED = 3;
-      EntryModerationStatuses.FLAGGED_FOR_REVIEW = 4;
-      EntryModerationStatuses.MODERATE = 5;
-      EntryModerationStatuses.AUTO_APPROVED = 6;
-
-      var EntryTypes = exports.EntryTypes = function EntryTypes() {
-        _classCallCheck(this, EntryTypes);
-      };
-
-      EntryTypes.AUTOMATIC = { value: -1 };
-      EntryTypes.EXTERNAL_MEDIA = { value: "externalMedia.externalMedia" };
-      EntryTypes.MEDIA_CLIP = { value: 1 };
-      EntryTypes.MIX = { value: 2 };
-      EntryTypes.PLAYLIST = { value: 5 };
-      EntryTypes.DATA = { value: 6 };
-      EntryTypes.LIVE_STREAM = { value: 7 };
-      EntryTypes.LIVE_CHANNEL = { value: 8 };
-      EntryTypes.DOCUMENT = { value: 10 };
-
-      var MediaTypes = exports.MediaTypes = function MediaTypes() {
-        _classCallCheck(this, MediaTypes);
-      };
-
-      MediaTypes.VIDEO = { value: 1 };
-      MediaTypes.IMAGE = { value: 2 };
-      MediaTypes.AUDIO = { value: 5 };
-      MediaTypes.LIVE_STREAM_FLASH = { value: 201 };
-      MediaTypes.LIVE_STREAM_WINDOWS_MEDIA = { value: 202 };
-      MediaTypes.LIVE_STREAM_REAL_MEDIA = { value: 203 };
-      MediaTypes.LIVE_STREAM_QUICKTIME = { value: 204 };
-
-      var MediaEntryTypes = exports.MediaEntryTypes = function MediaEntryTypes() {
-        _classCallCheck(this, MediaEntryTypes);
-      };
-
-      MediaEntryTypes.Vod = 'Vod';
-      MediaEntryTypes.Live = 'Live';
-      MediaEntryTypes.Image = 'Image';
-      MediaEntryTypes.Audio = 'Audio';
-      MediaEntryTypes.Unknown = 'Unknown';
-
-      var UIConfTypes = exports.UIConfTypes = function UIConfTypes() {
-        _classCallCheck(this, UIConfTypes);
-      };
-
-      UIConfTypes.PLAYER = 1;
-      UIConfTypes.CONTRIBUTION_WIZARD = 2;
-      UIConfTypes.SIMPLE_EDITOR = 3;
-      UIConfTypes.ADVANCED_EDITOR = 4;
-      UIConfTypes.PLAYLIST = 5;
-      UIConfTypes.APP_STUDIO = 6;
-      UIConfTypes.KRECORD = 7;
-      UIConfTypes.PLAYER_V3 = 8;
-      UIConfTypes.KMC_ACCOUNT = 9;
-      UIConfTypes.KMC_ANALYTICS = 10;
-      UIConfTypes.KMC_CONTENT = 11;
-      UIConfTypes.KMC_DASHBOARD = 12;
-      UIConfTypes.KMC_LOGIN = 13;
-      UIConfTypes.PLAYER_SL = 14;
-      UIConfTypes.CLIENTSIDE_ENCODER = 15;
-      UIConfTypes.KMC_GENERAL = 16;
-      UIConfTypes.KMC_ROLES_AND_PERMISSIONS = 17;
-      UIConfTypes.CLIPPER = 18;
-      UIConfTypes.KSR = 19;
-      UIConfTypes.KUPLOAD = 20;
-      UIConfTypes.WEBCASTING = 21;
-
-      var UIConfCreationModes = exports.UIConfCreationModes = function UIConfCreationModes() {
-        _classCallCheck(this, UIConfCreationModes);
-      };
-
-      UIConfCreationModes.WIZARD = 2;
-      UIConfCreationModes.ADVANCED = 3;
-
-      /***/
-    },
-    /* 8 */
-    /***/function (module, exports, __webpack_require__) {
-
-      var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__; /*!
-                                                                         * js-logger - http://github.com/jonnyreeves/js-logger
-                                                                         * Jonny Reeves, http://jonnyreeves.co.uk/
-                                                                         * js-logger may be freely distributed under the MIT license.
-                                                                         */
-      (function (global) {
-        "use strict";
-
-        // Top level module for the global, static logger instance.
-
-        var Logger = {};
-
-        // For those that are at home that are keeping score.
-        Logger.VERSION = "1.3.0";
-
-        // Function which handles all incoming log messages.
-        var logHandler;
-
-        // Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
-        var contextualLoggersByNameMap = {};
-
-        // Polyfill for ES5's Function.bind.
-        var bind = function bind(scope, func) {
-          return function () {
-            return func.apply(scope, arguments);
-          };
-        };
-
-        // Super exciting object merger-matron 9000 adding another 100 bytes to your download.
-        var merge = function merge() {
-          var args = arguments,
-              target = args[0],
-              key,
-              i;
-          for (i = 1; i < args.length; i++) {
-            for (key in args[i]) {
-              if (!(key in target) && args[i].hasOwnProperty(key)) {
-                target[key] = args[i][key];
-              }
-            }
-          }
-          return target;
-        };
-
-        // Helper to define a logging level object; helps with optimisation.
-        var defineLogLevel = function defineLogLevel(value, name) {
-          return { value: value, name: name };
-        };
-
-        // Predefined logging levels.
-        Logger.DEBUG = defineLogLevel(1, 'DEBUG');
-        Logger.INFO = defineLogLevel(2, 'INFO');
-        Logger.TIME = defineLogLevel(3, 'TIME');
-        Logger.WARN = defineLogLevel(4, 'WARN');
-        Logger.ERROR = defineLogLevel(8, 'ERROR');
-        Logger.OFF = defineLogLevel(99, 'OFF');
-
-        // Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
-        // of each other.
-        var ContextualLogger = function ContextualLogger(defaultContext) {
-          this.context = defaultContext;
-          this.setLevel(defaultContext.filterLevel);
-          this.log = this.info; // Convenience alias.
-        };
-
-        ContextualLogger.prototype = {
-          // Changes the current logging level for the logging instance.
-          setLevel: function setLevel(newLevel) {
-            // Ensure the supplied Level object looks valid.
-            if (newLevel && "value" in newLevel) {
-              this.context.filterLevel = newLevel;
-            }
-          },
-
-          // Is the logger configured to output messages at the supplied level?
-          enabledFor: function enabledFor(lvl) {
-            var filterLevel = this.context.filterLevel;
-            return lvl.value >= filterLevel.value;
-          },
-
-          debug: function debug() {
-            this.invoke(Logger.DEBUG, arguments);
-          },
-
-          info: function info() {
-            this.invoke(Logger.INFO, arguments);
-          },
-
-          warn: function warn() {
-            this.invoke(Logger.WARN, arguments);
-          },
-
-          error: function error() {
-            this.invoke(Logger.ERROR, arguments);
-          },
-
-          time: function time(label) {
-            if (typeof label === 'string' && label.length > 0) {
-              this.invoke(Logger.TIME, [label, 'start']);
-            }
-          },
-
-          timeEnd: function timeEnd(label) {
-            if (typeof label === 'string' && label.length > 0) {
-              this.invoke(Logger.TIME, [label, 'end']);
-            }
-          },
-
-          // Invokes the logger callback if it's not being filtered.
-          invoke: function invoke(level, msgArgs) {
-            if (logHandler && this.enabledFor(level)) {
-              logHandler(msgArgs, merge({ level: level }, this.context));
-            }
-          }
-        };
-
-        // Protected instance which all calls to the to level `Logger` module will be routed through.
-        var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
-
-        // Configure the global Logger instance.
-        (function () {
-          // Shortcut for optimisers.
-          var L = Logger;
-
-          L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
-          L.debug = bind(globalLogger, globalLogger.debug);
-          L.time = bind(globalLogger, globalLogger.time);
-          L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
-          L.info = bind(globalLogger, globalLogger.info);
-          L.warn = bind(globalLogger, globalLogger.warn);
-          L.error = bind(globalLogger, globalLogger.error);
-
-          // Don't forget the convenience alias!
-          L.log = L.info;
-        })();
-
-        // Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
-        // object with the supplied log messages and the second being a context object which contains a hash of stateful
-        // parameters which the logging function can consume.
-        Logger.setHandler = function (func) {
-          logHandler = func;
-        };
-
-        // Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
-        // (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
-        Logger.setLevel = function (level) {
-          // Set the globalLogger's level.
-          globalLogger.setLevel(level);
-
-          // Apply this level to all registered contextual loggers.
-          for (var key in contextualLoggersByNameMap) {
-            if (contextualLoggersByNameMap.hasOwnProperty(key)) {
-              contextualLoggersByNameMap[key].setLevel(level);
-            }
-          }
-        };
-
-        // Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
-        // default context and log handler.
-        Logger.get = function (name) {
-          // All logger instances are cached so they can be configured ahead of use.
-          return contextualLoggersByNameMap[name] || (contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
-        };
-
-        // CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
-        // write to the window's console object (if present); the optional options object can be used to customise the
-        // formatter used to format each log message.
-        Logger.createDefaultHandler = function (options) {
-          options = options || {};
-
-          options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
-            // Prepend the logger's name to the log message for easy identification.
-            if (context.name) {
-              messages.unshift("[" + context.name + "]");
-            }
-          };
-
-          // Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
-          // that don't offer a native console method.
-          var timerStartTimeByLabelMap = {};
-
-          // Support for IE8+ (and other, slightly more sane environments)
-          var invokeConsoleMethod = function invokeConsoleMethod(hdlr, messages) {
-            Function.prototype.apply.call(hdlr, console, messages);
-          };
-
-          // Check for the presence of a logger.
-          if (typeof console === "undefined") {
-            return function () {/* no console */};
-          }
-
-          return function (messages, context) {
-            // Convert arguments object to Array.
-            messages = Array.prototype.slice.call(messages);
-
-            var hdlr = console.log;
-            var timerLabel;
-
-            if (context.level === Logger.TIME) {
-              timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
-
-              if (messages[1] === 'start') {
-                if (console.time) {
-                  console.time(timerLabel);
-                } else {
-                  timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
-                }
-              } else {
-                if (console.timeEnd) {
-                  console.timeEnd(timerLabel);
-                } else {
-                  invokeConsoleMethod(hdlr, [timerLabel + ': ' + (new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms']);
-                }
-              }
-            } else {
-              // Delegate through to custom warn/error loggers if present on the console.
-              if (context.level === Logger.WARN && console.warn) {
-                hdlr = console.warn;
-              } else if (context.level === Logger.ERROR && console.error) {
-                hdlr = console.error;
-              } else if (context.level === Logger.INFO && console.info) {
-                hdlr = console.info;
-              }
-
-              options.formatter(messages, context);
-              invokeConsoleMethod(hdlr, messages);
-            }
-          };
-        };
-
-        // Configure and example a Default implementation which writes to the `window.console` (if present).  The
-        // `options` hash can be used to configure the default logLevel and provide a custom message formatter.
-        Logger.useDefaults = function (options) {
-          Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
-          Logger.setHandler(Logger.createDefaultHandler(options));
-        };
-
-        // Export to popular environments boilerplate.
-        if (true) {
-          !(__WEBPACK_AMD_DEFINE_FACTORY__ = Logger, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? __WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module) : __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-        } else if (typeof module !== 'undefined' && module.exports) {
-          module.exports = Logger;
-        } else {
-          Logger._prevLogger = global.Logger;
-
-          Logger.noConflict = function () {
-            global.Logger = Logger._prevLogger;
-            return Logger;
-          };
-
-          global.Logger = Logger;
-        }
-      })(this);
-
-      /***/
-    },
-    /* 9 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _enums = __webpack_require__(7);
-
-      var _mediaSources = __webpack_require__(6);
-
-      var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Media entry
-       * @classdesc
-       */
-      var MediaEntry =
-
-      /**
-       * @constructor
-       */
-
-      /**
-       * @member - entry metadata
-       * @type {Object}
-       */
-
-      /**
-       * @member - entry duration
-       * @type {number}
-       */
-
-      /**
-       * @member - entry name
-       * @type {string}
-       */
-      function MediaEntry() {
-        _classCallCheck(this, MediaEntry);
-
-        this.metaData = new Map();
-        this.type = _enums.MediaEntryTypes.Unknown;
-      }
-      /**
-       * @member - DVR status
-       * @type {number}
-       */
-
-      /**
-       * @member - entry type
-       * @type {MediaEntryType}
-       */
-
-      /**
-       * @member - entry sources
-       * @type {MediaSources}
-       */
-
-      /**
-       * @member - entry ID
-       * @type {string}
-       */
-      ;
-
-      exports.default = MediaEntry;
-
-      /***/
-    },
-    /* 10 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Drm data
-       * @classdesc
-       */
-      var Drm =
-
-      /**
-       * @constructor
-       * @param {string} licenseUrl - the license URL
-       * @param {Scheme} scheme - the drm scheme
-       * @param {?string} certificate - the drm certificate
-       */
-
-      /**
-       * @member - drm scheme
-       * @type {Scheme}
-       */
-      function Drm(licenseUrl, scheme, certificate) {
-        _classCallCheck(this, Drm);
-
-        this.licenseUrl = licenseUrl;
-        this.scheme = scheme;
-        this.certificate = certificate;
-      }
-
-      /**
-       * @member - The drm certificate
-       * @type {?string}
-       */
-
-      /**
-       * @member - license URL
-       * @type {string}
-       */
-      ;
-
-      exports.default = Drm;
-
-      /***/
-    },
-    /* 11 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _drm = __webpack_require__(10);
-
-      var _drm2 = _interopRequireDefault(_drm);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Media source
-       * @classdesc
-       */
-      var MediaSource =
-
-      /**
-       * @constructor
-       */
-
-      /**
-       * @member - media source height
-       * @type {number}
-       */
-
-      /**
-       * @member - media source bandwidth
-       * @type {number}
-       */
-
-      /**
-       * @member - media source mimetype
-       * @type {string}
-       */
-
-      /**
-       * @member - media source ID
-       * @type {string}
-       */
-      function MediaSource() {
-        _classCallCheck(this, MediaSource);
-      }
-      /**
-       * @member - media source label
-       * @type {string}
-       */
-
-      /**
-       * @member - media source width
-       * @type {number}
-       */
-
-      /**
-       * @member - media source drm data
-       * @type {Array<Drm>}
-       */
-
-      /**
-       * @member - media source URL
-       * @type {string}
-       */
-      ;
-
-      exports.default = MediaSource;
-
-      /***/
-    },
-    /* 12 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _enums = __webpack_require__(7);
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE FlavorAsset
-       * @classdesc
-       */
-      var KalturaFlavorAsset =
-
-      /**
-       * @constructor
-       * @param {Object} data The json response
-       */
-
-      /**
-       * @member - The language of the flavor asset
-       * @type {Status}
-       */
-
-      /**
-       *@member - The video codec
-       * @type {boolean}
-       */
-
-      /**
-       * @member - True if this Flavor Asset is playable in KDP
-       * @type {boolean}
-       */
-
-      /**
-       * @member - The frame rate (in FPS) of the Flavor Asset
-       * @type {number}
-       */
-
-      /**
-       * @member - The width of the Flavor Asset
-       * @type {number}
-       */
-
-      /**
-       * @member -The file extension
-       * @type {string}
-       */
-
-      /**
-       * @member - The ID of the Flavor Asset
-       * @type {string}
-       */
-      function KalturaFlavorAsset(data) {
-        _classCallCheck(this, KalturaFlavorAsset);
-
-        this.id = data.id;
-        this.flavorParamsId = data.flavorParamsId;
-        this.fileExt = data.fileExt;
-        this.bitrate = data.bitrate;
-        this.width = data.width;
-        this.height = data.height;
-        this.id = data.id;
-        this.frameRate = data.frameRate;
-        this.isOriginal = data.isOriginal;
-        this.isWeb = data.isWeb;
-        this.containerFormat = data.containerFormat;
-        this.videoCodecId = data.videoCodecId;
-        this.status = data.status;
-        this.language = data.language;
-        this.label = data.label;
-      }
-      /**
-       * @member - The label of the flavor asset
-       * @type {string}
-       */
-
-      /**
-       * @member - The status of the Flavor Asset
-       * @type {string}
-       */
-
-      /**
-       * @member - The container format
-       * @type {boolean}
-       */
-
-      /**
-       * @member - True if this Flavor Asset is the original source
-       * @type {number}
-       */
-
-      /**
-       * @member - The height of the Flavor Asset
-       * @type {number}
-       */
-
-      /**
-       * @member - The overall bitrate (in KBits) of the Flavor Asset
-       *  @type {string}
-       */
-
-      /**
-       * @member -The Flavor Params used to create this Flavor Asset
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaFlavorAsset;
-
-      /***/
-    },
-    /* 13 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(3);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _kalturaMetadata = __webpack_require__(29);
-
-      var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE Metadata list response
-       * @classdesc
-       */
-      var KalturaMetadataListResponse = function (_ServiceResult) {
-        _inherits(KalturaMetadataListResponse, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} responseObj The response
-         */
-        function KalturaMetadataListResponse(responseObj) {
-          _classCallCheck(this, KalturaMetadataListResponse);
-
-          var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
-
-          if (!_this.hasError) {
-            _this.totalCount = responseObj.totalCount;
-            if (_this.totalCount > 0) {
-              _this.metas = [];
-              responseObj.objects.map(function (meta) {
-                return _this.metas.push(new _kalturaMetadata2.default(meta));
-              });
-            }
-          }
-          return _this;
-        }
-        /**
-         * @member -The mata data array
-         * @type {Array<KalturaMetadata>}
-         */
-
-        return KalturaMetadataListResponse;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaMetadataListResponse;
-
-      /***/
-    },
-    /* 14 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _kalturaDrmPlaybackPluginData = __webpack_require__(27);
-
-      var _kalturaDrmPlaybackPluginData2 = _interopRequireDefault(_kalturaDrmPlaybackPluginData);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE playback source
-       * @classdesc
-       */
-      var KalturaPlaybackSource = function () {
-
-        /**
-         * @constructor
-         * @param {Object} source The response
-         */
-
-        /**
-         * @member - comma separated string of flavor ids
-         * @type {string}
-         */
-
-        /**
-         * @member - The source URL
-         * @type {string}
-         */
-
-        /**
-         * @member - source format according to delivery profile streamer type (applehttp, mpegdash etc.)
-         * @type {string}
-         */
-        function KalturaPlaybackSource(source) {
-          var _this = this;
-
-          _classCallCheck(this, KalturaPlaybackSource);
-
-          this.drm = [];
-
-          this.format = source.format;
-          this.deliveryProfileId = source.deliveryProfileId;
-          this.url = source.url;
-          this.protocols = source.protocols;
-          this.flavorIds = source.flavorIds;
-
-          if (source.drm) {
-            source.drm.map(function (drm) {
-              return _this.drm.push(new _kalturaDrmPlaybackPluginData2.default(drm));
-            });
-          }
-        }
-
-        /**
-         * Checks if source has DRM data
-         * @function hasDrmData
-         * @returns {boolean} Is source has DRM
-         */
-
-        /**
-         * @member - drm data object containing relevant license url ,scheme name and certificate
-         * @type {Array<KalturaDrmPlaybackPluginData>}
-         */
-
-        /**
-         * @member - comma separated string according to deliveryProfile media protocols ('http,https' etc.)
-         * @type {string}
-         */
-
-        /**
-         * @member - delivery profile Id
-         * @type {string}
-         */
-
-        _createClass(KalturaPlaybackSource, [{
-          key: "hasDrmData",
-          value: function hasDrmData() {
-            return this.drm && this.drm.length > 0;
-          }
-
-          /**
-           * Checks if source has flavor IDs
-           * @function hasFlavorIds
-           * @returns {boolean} Is source ha flavor IDs
-           */
-
-        }, {
-          key: "hasFlavorIds",
-          value: function hasFlavorIds() {
-            return !!this.flavorIds && this.flavorIds.length > 0;
-          }
-
-          /**
-           * Returns source desired protocol if supported
-           * @param {string} protocol - the desired protocol for the source (base play url protocol)
-           * @returns {string} - protocol if protocol is in the protocols list - if not empty string returned
-           */
-
-        }, {
-          key: "getProtocol",
-          value: function getProtocol(protocol) {
-            var returnValue = "";
-            if (this.protocols && this.protocols.length > 0) {
-              var protocolsArr = this.protocols.split(",");
-              protocolsArr.forEach(function (p) {
-                if (p == protocol) {
-                  returnValue = p;
-                }
-              });
-            } else if (protocol == "http") {
-              return protocol;
-            }
-            return returnValue;
-          }
-        }]);
-
-        return KalturaPlaybackSource;
-      }();
-
-      exports.default = KalturaPlaybackSource;
-
-      /***/
-    },
-    /* 15 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(2);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _multiRequestBuilder = __webpack_require__(5);
-
-      var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Data loaders manager
-       * @classdesc
-       */
-      var DataLoaderManager = function () {
-
-        /**
-         * @constructor
-         * @param {string} pVersion The player version
-         * @param {string} partnerID Then partner ID
-         * @param {string} ks The ks
-         */
-
-        /**
-         * @member - Lodaers response map index
-         * @type {Map<string,Array<number>>}
-         * @private
-         * @static
-         */
-        function DataLoaderManager(pVersion, partnerID) {
-          var ks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-
-          _classCallCheck(this, DataLoaderManager);
-
-          this._loaders = new Map();
-
-          this._multiRequest = _ovpService2.default.getMultirequest(pVersion, ks, partnerID);
-        }
-
-        /**
-         * Add loader too execution loaders map
-         * @function
-         * @param {Function} loader Loader to add
-         * @param {Object} params Loader params
-         * @returns {void}
-         */
-
-        /**
-         * @member - Loaders to execute
-         * @type {Map<string,Function>}
-         * @private
-         */
-
-        /**
-         * @member - Loaders multi request
-         * @type {MultiRequestBuilder}
-         * @private
-         */
-
-        /**
-         * @member - Loaders multi response
-         * @type {MultiRequestResult}
-         * @private
-         */
-
-        _createClass(DataLoaderManager, [{
-          key: 'add',
-          value: function add(loader, params) {
-            var _this = this;
-
-            var execution_loader = new loader(params);
-            if (execution_loader.isValid()) {
-              this._loaders.set(loader.id, execution_loader);
-              //Get the start index from the multiReqeust before adding current execution_loader requests
-              var startIndex = this._multiRequest.requests.length;
-              //Get the requests
-              var requests = execution_loader.requests;
-              //Add requests to muktiRequest queue
-              requests.forEach(function (request) {
-                _this._multiRequest.add(request);
-              });
-              //Create range array of current execution_loader requests
-              var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
-                return index + startIndex;
-              });
-              //Add to map
-              DataLoaderManager._loadersResponseMap.set(loader.id, executionLoaderResponseMap);
-            }
-          }
-
-          /**
-           * Get data from all loaders using multi request
-           * @function
-           * @returns {Promise} Promise
-           */
-
-        }, {
-          key: 'fetchData',
-          value: function fetchData() {
-            var _this2 = this;
-
-            return new Promise(function (resolve, reject) {
-              _this2._multiRequest.execute().then(function (response) {
-                _this2._multiResponse = response;
-                if (!response.success) {
-                  reject(response);
-                } else {
-                  var preparedData = _this2.prepareData(response);
-                  if (preparedData.success) {
-                    resolve(_this2._loaders);
-                  } else {
-                    reject({ success: false, data: preparedData.error });
-                  }
-                }
-              }, function (err) {
-                reject(err);
-              });
-            });
-          }
-        }, {
-          key: 'prepareData',
-          value: function prepareData(response) {
-            this._loaders.forEach(function (loader, name) {
-              var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
-              try {
-                if (loaderDataIndexes != null) {
-                  loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
-                }
-              } catch (err) {
-                return { success: false, error: err };
-              }
-            });
-            return { success: true, data: this._loaders };
-          }
-        }]);
-
-        return DataLoaderManager;
-      }();
-
-      DataLoaderManager._loadersResponseMap = new Map();
-      exports.default = DataLoaderManager;
-
-      /***/
-    },
-    /* 16 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      var _baseEntryService = __webpack_require__(33);
-
-      var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
-
-      var _metaDataService = __webpack_require__(34);
-
-      var _metaDataService2 = _interopRequireDefault(_metaDataService);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _kalturaPlaybackContext = __webpack_require__(30);
-
-      var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
-
-      var _kalturaMetadataListResponse = __webpack_require__(13);
-
-      var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
-
-      var _kalturaBaseEntryListResponse = __webpack_require__(26);
-
-      var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-
-      /**
-       * Media entry loader
-       * @classdesc
-       */
-
-      var MediaEntryLoader = function () {
-        _createClass(MediaEntryLoader, null, [{
-          key: 'id',
-          get: function get() {
-            return "media";
-          }
-        }]);
-
-        /**
-         * @constructor
-         * @param {Object} params loader params
-         */
-        function MediaEntryLoader(params) {
-          _classCallCheck(this, MediaEntryLoader);
-
-          this._response = {};
-
-          this.requests = this.buildRequests(params);
-          this._entryId = params.entryId;
-        }
-
-        _createClass(MediaEntryLoader, [{
-          key: 'buildRequests',
-
-          /**
-           * Builds loader requests
-           * @function
-           * @param {Object} params Requests parameters
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function buildRequests(params) {
-            var requests = [];
-            requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
-            requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
-            requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
-            return requests;
-          }
-
-          /**
-           * Loader validation function
-           * @function
-           * @returns {boolean} Is valid
-           */
-
-        }, {
-          key: 'isValid',
-          value: function isValid() {
-            return !!this._entryId;
-          }
-        }, {
-          key: 'requests',
-          set: function set(requests) {
-            this._requests = requests;
-          },
-          get: function get() {
-            return this._requests;
-          }
-        }, {
-          key: 'response',
-          set: function set(response) {
-            var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
-            this._response.entry = mediaEntryResponse.entries[0];
-            this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
-            this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
-          },
-          get: function get() {
-            return this._response;
-          }
-        }]);
-
-        return MediaEntryLoader;
-      }();
-
-      exports.default = MediaEntryLoader;
-
-      /***/
-    },
-    /* 17 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _sessionService = __webpack_require__(35);
-
-      var _sessionService2 = _interopRequireDefault(_sessionService);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-      /**
-       * Media entry loader
-       * @classdesc
-       */
-
-      var SessionLoader = function () {
-        _createClass(SessionLoader, null, [{
-          key: 'id',
-          get: function get() {
-            return "session";
-          }
-
-          /**
-           * @member - partner ID
-           * @type {number}
-           * @private
-           */
-
-        }]);
-
-        /**
-         * @constructor
-         * @param {Object} params loader params
-         */
-        function SessionLoader(params) {
-          _classCallCheck(this, SessionLoader);
-
-          this._response = {};
-
-          this.requests = this.buildRequests(params);
-          this._partnerId = params.partnerId;
-        }
-
-        _createClass(SessionLoader, [{
-          key: 'buildRequests',
-
-          /**
-           * Builds loader requests
-           * @function
-           * @param {Object} params Requests parameters
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function buildRequests(params) {
-            var requests = [];
-            requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
-            return requests;
-          }
-
-          /**
-           * Loader validation function
-           * @function
-           * @returns {boolean} Is valid
-           */
-
-        }, {
-          key: 'isValid',
-          value: function isValid() {
-            return !!this._partnerId;
-          }
-        }, {
-          key: 'requests',
-          set: function set(requests) {
-            this._requests = requests;
-          },
-          get: function get() {
-            return this._requests;
-          }
-        }, {
-          key: 'response',
-          set: function set(response) {
-            this._response.ks = response[0].data.ks;
-          },
-          get: function get() {
-            return this._response.ks;
-          }
-        }]);
-
-        return SessionLoader;
-      }();
-
-      exports.default = SessionLoader;
-
-      /***/
-    },
-    /* 18 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _uiConfService = __webpack_require__(37);
-
-      var _uiConfService2 = _interopRequireDefault(_uiConfService);
-
-      var _kalturaUiConfResponse = __webpack_require__(32);
-
-      var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-
-      var UiConfigLoader = function () {
-        _createClass(UiConfigLoader, null, [{
-          key: 'id',
-          get: function get() {
-            return "uiConf";
-          }
-
-          /**
-           * @member - uiConf ID
-           * @type {number}
-           * @private
-           */
-
-        }]);
-
-        /**
-         * @constructor
-         * @param {Object} params loader params
-         */
-        function UiConfigLoader(params) {
-          _classCallCheck(this, UiConfigLoader);
-
-          this._response = {};
-
-          this.requests = this.buildRequests(params);
-          this._uiConfId = params.uiConfId;
-        }
-
-        _createClass(UiConfigLoader, [{
-          key: 'buildRequests',
-
-          /**
-           * Builds loader requests
-           * @function
-           * @param {Object} params Requests parameters
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function buildRequests(params) {
-            var requests = [];
-            requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
-            return requests;
-          }
-
-          /**
-           * Loader validation function
-           * @function
-           * @returns {boolean} Is valid
-           */
-
-        }, {
-          key: 'isValid',
-          value: function isValid() {
-            return !!this._uiConfId;
-          }
-        }, {
-          key: 'requests',
-          set: function set(requests) {
-            this._requests = requests;
-          },
-          get: function get() {
-            return this._requests;
-          }
-        }, {
-          key: 'response',
-          set: function set(response) {
-            this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
-          },
-          get: function get() {
-            if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
-              return JSON.parse(this._response.uiConf.config).plugins;
-            } catch (err) {
-              return null;
-            } else return null;
-          }
-        }]);
-
-        return UiConfigLoader;
-      }();
-
-      exports.default = UiConfigLoader;
-
-      /***/
-    },
-    /* 19 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _kalturaPlaybackSource = __webpack_require__(14);
-
-      var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
-
-      var _kalturaFlavorAsset = __webpack_require__(12);
-
-      var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
-
-      var _kalturaMetadataListResponse = __webpack_require__(13);
-
-      var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
-
-      var _playSourceUrlBuilder = __webpack_require__(24);
-
-      var _playSourceUrlBuilder2 = _interopRequireDefault(_playSourceUrlBuilder);
-
-      var _xmlParser = __webpack_require__(38);
-
-      var _xmlParser2 = _interopRequireDefault(_xmlParser);
-
-      var _enums = __webpack_require__(7);
-
-      var _logger = __webpack_require__(4);
-
-      var _logger2 = _interopRequireDefault(_logger);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _mediaFormat = __webpack_require__(21);
-
-      var _mediaEntry = __webpack_require__(9);
-
-      var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
-
-      var _drm = __webpack_require__(10);
-
-      var _drm2 = _interopRequireDefault(_drm);
-
-      var _mediaSource = __webpack_require__(11);
-
-      var _mediaSource2 = _interopRequireDefault(_mediaSource);
-
-      var _mediaSources = __webpack_require__(6);
-
-      var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-      /**
-       * @constant
-       */
-      var logger = _logger2.default.get("OvpProvider");
-
-      /**
-       * @constant
-       * @type {Map<string, MediaFormat>}
-       */
-      var SUPPORTED_FORMATS = new Map([["mpegdash", _mediaFormat.MediaFormats.dash], ["applehttp", _mediaFormat.MediaFormats.hls], ["url", _mediaFormat.MediaFormats.mp4]]);
-
-      /**
-       * Ovp provider parser
-       * @classdesc
-       */
-
-      var ProviderParser = function () {
-        function ProviderParser() {
-          _classCallCheck(this, ProviderParser);
-        }
-
-        _createClass(ProviderParser, null, [{
-          key: 'getMediaEntry',
-
-          /**
-           * Returns parsed media entry by given OVP response objects
-           * @function getMediaEntry
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {any} mediaEntryResponse - The media entry response
-           * @returns {MediaEntry} - The media entry
-           * @static
-           * @public
-           */
-          value: function getMediaEntry(ks, partnerID, uiConfId, mediaEntryResponse) {
-            var mediaEntry = new _mediaEntry2.default();
-            var entry = mediaEntryResponse.entry;
-            var playbackContext = mediaEntryResponse.playBackContextResult;
-            var metadataList = mediaEntryResponse.metadataListResult;
-            var kalturaSources = playbackContext.sources;
-            var sources = ProviderParser._getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext);
-
-            mediaEntry.sources = sources;
-
-            var metadata = this._parseMetaData(metadataList);
-            mediaEntry.metaData = metadata;
-            mediaEntry.id = entry.id;
-            mediaEntry.name = entry.name;
-            mediaEntry.duration = entry.duration;
-            mediaEntry.metaData["description"] = entry.description;
-            mediaEntry.metaData["poster"] = entry.poster;
-
-            var type = _enums.MediaEntryTypes.Unknown;
-
-            switch (entry.entryType) {
-              case _enums.MediaTypes.IMAGE.value:
-                type = _enums.MediaEntryTypes.Image;
-                break;
-              case _enums.MediaTypes.AUDIO.value:
-                type = _enums.MediaEntryTypes.Audio;
-                break;
-              default:
-                switch (entry.type) {
-                  case _enums.EntryTypes.MEDIA_CLIP.value:
-                    type = _enums.MediaEntryTypes.Vod;
-                    break;
-                  case _enums.EntryTypes.LIVE_STREAM.value:
-                  case _enums.EntryTypes.LIVE_CHANNEL.value:
-                    type = _enums.MediaEntryTypes.Live;
-                    mediaEntry.dvrStatus = entry.dvrStatus;
-                    break;
-                  default:
-                    type = _enums.MediaEntryTypes.Unknown;
-                }
-            }
-            mediaEntry.type = type;
-
-            return mediaEntry;
-          }
-
-          /**
-           * Returns the parsed sources
-           * @function _getParsedSources
-           * @param {Array<KalturaPlaybackSource>} kalturaSources - The kaltura sources
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {Object} entry - The entry
-           * @param {Object} playbackContext - The playback context
-           * @return {MediaSources} - A media sources
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_getParsedSources',
-          value: function _getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext) {
-            var sources = new _mediaSources2.default();
-
-            var addAdaptiveSource = function addAdaptiveSource(source) {
-              var parsedSource = ProviderParser._parseAdaptiveSource(source, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
-              var sourceFormat = SUPPORTED_FORMATS.get(source.format);
-              sources.map(parsedSource, sourceFormat);
-            };
-
-            var parseAdaptiveSources = function parseAdaptiveSources() {
-              kalturaSources.filter(function (source) {
-                return !ProviderParser._isProgressiveSource(source);
-              }).forEach(addAdaptiveSource);
-            };
-
-            var parseProgressiveSources = function parseProgressiveSources() {
-              var progressiveSource = kalturaSources.find(ProviderParser._isProgressiveSource);
-              sources.progressive = ProviderParser._parseProgressiveSources(progressiveSource, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
-            };
-
-            if (kalturaSources && kalturaSources.length > 0) {
-              parseAdaptiveSources();
-              parseProgressiveSources();
-            }
-
-            return sources;
-          }
-
-          /**
-           * Returns a parsed adaptive source
-           * @function _parseAdaptiveSource
-           * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
-           * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {string} entryId - The entry id
-           * @returns {MediaSource} - The parsed adaptive kalturaSource
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_parseAdaptiveSource',
-          value: function _parseAdaptiveSource(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
-            var mediaSource = new _mediaSource2.default();
-            if (kalturaSource) {
-              var playUrl = "";
-              var mediaFormat = SUPPORTED_FORMATS.get(kalturaSource.format);
-              var extension = "";
-              if (mediaFormat) {
-                extension = mediaFormat.pathExt;
-                mediaSource.mimetype = mediaFormat.mimeType;
-              }
-              // in case playbackSource doesn't have flavors we don't need to build the url and we'll use the provided one.
-              if (kalturaSource.hasFlavorIds()) {
-                if (!extension && flavorAssets && flavorAssets.length > 0) {
-                  extension = flavorAssets[0].fileExt;
-                }
-
-                playUrl = _playSourceUrlBuilder2.default.build({
-                  entryId: entryId,
-                  flavorIds: kalturaSource.flavorIds,
-                  format: kalturaSource.format,
-                  ks: ks,
-                  partnerId: partnerID,
-                  uiConfId: uiConfId,
-                  extension: extension,
-                  protocol: kalturaSource.getProtocol(this._getBaseProtocol())
-                });
-              } else {
-                playUrl = kalturaSource.url;
-              }
-
-              if (playUrl === "") {
-                logger.error('failed to create play url from source, discarding source: (' + entryId + '_' + kalturaSource.deliveryProfileId + '), ' + kalturaSource.format + '.');
-                return mediaSource;
-              }
-
-              mediaSource.url = playUrl;
-              mediaSource.id = entryId + "_" + kalturaSource.deliveryProfileId + "," + kalturaSource.format;
-              if (kalturaSource.hasDrmData()) {
-                var drmParams = [];
-                kalturaSource.drm.forEach(function (drm) {
-                  drmParams.push(new _drm2.default(drm.licenseURL, _enums.DrmScheme[drm.scheme], drm.certificate));
-                });
-                mediaSource.drmData = drmParams;
-              }
-            }
-            return mediaSource;
-          }
-
-          /**
-           * Returns parsed progressive sources
-           * @function _parseProgressiveSources
-           * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
-           * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
-           * @param {string} ks - The ks
-           * @param {number} partnerID - The partner ID
-           * @param {number} uiConfId - The uiConf ID
-           * @param {string} entryId - The entry id
-           * @returns {Array<MediaSource>} - The parsed progressive kalturaSources
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_parseProgressiveSources',
-          value: function _parseProgressiveSources(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
-            var sources = [];
-            if (kalturaSource) {
-              var protocol = kalturaSource.getProtocol(this._getBaseProtocol());
-              var format = kalturaSource.format;
-              var sourceId = kalturaSource.deliveryProfileId + "," + kalturaSource.format;
-              flavorAssets.map(function (flavor) {
-                if (flavor.height && flavor.width) {
-                  var mediaSource = new _mediaSource2.default();
-                  mediaSource.id = flavor.id + sourceId;
-                  mediaSource.mimetype = 'video/mp4';
-                  mediaSource.height = flavor.height;
-                  mediaSource.width = flavor.width;
-                  mediaSource.bandwidth = flavor.bitrate * 1024;
-                  mediaSource.label = flavor.label || flavor.language;
-                  mediaSource.url = _playSourceUrlBuilder2.default.build({
-                    entryId: entryId,
-                    flavorIds: flavor.id,
-                    format: format,
-                    ks: ks,
-                    partnerId: partnerID,
-                    uiConfId: uiConfId,
-                    extension: 'mp4',
-                    protocol: protocol
-                  });
-                  sources.push(mediaSource);
-                }
-              });
-            }
-            return sources;
-          }
-
-          /**
-           * @function _isProgressiveSource
-           * @param {KalturaPlaybackSource} source - The kaltura source
-           * @return {boolean} - Is progressive source
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_isProgressiveSource',
-          value: function _isProgressiveSource(source) {
-            var sourceFormat = SUPPORTED_FORMATS.get(source.format);
-            return !!sourceFormat && sourceFormat.name === 'mp4';
-          }
-
-          /**
-           * Ovp metadata parser
-           * @function _parseMetaData
-           * @param {KalturaMetadataListResponse} metadataList The metadata list
-           * @returns {Map<string,string>} Parsed metadata
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_parseMetaData',
-          value: function _parseMetaData(metadataList) {
-            var metadata = {};
-            if (metadataList && metadataList.metas && metadataList.metas.length > 0) {
-              metadataList.metas.forEach(function (meta) {
-                var metaXml = void 0;
-                var domParser = new DOMParser();
-                meta.xml = meta.xml.replace(/\r?\n|\r/g, "");
-                meta.xml = meta.xml.replace(/>\s*/g, '>');
-                meta.xml = meta.xml.replace(/>\s*/g, '>');
-                metaXml = domParser.parseFromString(meta.xml, 'text/xml');
-                var metasObj = _xmlParser2.default.xmlToJson(metaXml);
-                var metaKeys = Object.keys(metasObj.metadata);
-                metaKeys.forEach(function (key) {
-                  metadata[key] = metasObj.metadata[key]["#text"];
-                });
-              });
-            }
-            return metadata;
-          }
-
-          /**
-           * Returns the base protocol
-           * @function _getBaseProtocol
-           * @returns {string} - The base protocol
-           * @static
-           * @private
-           */
-
-        }, {
-          key: '_getBaseProtocol',
-          value: function _getBaseProtocol() {
-            var splittedUrl = config.baseUrl.split("/");
-            var baseProtocol = void 0;
-            if (splittedUrl && splittedUrl.length > 0) {
-              baseProtocol = splittedUrl[0].substring(0, splittedUrl[0].length - 1);
-            } else {
-              baseProtocol = "http";
-            }
-            return baseProtocol;
-          }
-        }]);
-
-        return ProviderParser;
-      }();
-
-      exports.default = ProviderParser;
-
-      /***/
-    },,
-    /* 20 */
-    /* 21 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var MediaFormats = exports.MediaFormats = function MediaFormats() {
-        _classCallCheck(this, MediaFormats);
-      };
-
-      MediaFormats.dash = {
-        name: 'dash',
-        mimeType: "application/dash+xml",
-        pathExt: "mpd"
-      };
-      MediaFormats.hls = {
-        name: 'hls',
-        mimeType: "application/x-mpegURL",
-        pathExt: "m3u8"
-      };
-      MediaFormats.wvm = {
-        name: 'wvm',
-        mimeType: "video/wvm",
-        pathExt: "wvm"
-      };
-      MediaFormats.mp4 = {
-        name: 'mp4',
-        mimeType: "video/mp4",
-        pathExt: "mp4"
-      };
-      MediaFormats.mp3 = {
-        name: 'mp3',
-        mimeType: "audio/mpeg",
-        pathExt: "mp3"
-      };
-
-      /***/
-    },,
-    /* 22 */
-    /* 23 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.OvpProvider = undefined;
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _logger = __webpack_require__(4);
-
-      var _logger2 = _interopRequireDefault(_logger);
-
-      var _providerParser = __webpack_require__(19);
-
-      var _providerParser2 = _interopRequireDefault(_providerParser);
-
-      var _dataLoaderManager = __webpack_require__(15);
-
-      var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
-
-      var _mediaEntryLoader = __webpack_require__(16);
-
-      var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
-
-      var _sessionLoader = __webpack_require__(17);
-
-      var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
-
-      var _uiConfigLoader = __webpack_require__(18);
-
-      var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      var _mediaEntry = __webpack_require__(9);
-
-      var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
-
-      var _mediaSources = __webpack_require__(6);
-
-      var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * @constant
-       */
-      var logger = _logger2.default.get("OvpProvider");
-
-      /**
-       * Ovp provider
-       * @classdesc
-       */
-      var OvpProvider = exports.OvpProvider = function () {
-
-        /**
-         * @constructor
-         * @param {Object} options  The provider options
-         */
-
-        /**
-         * @member - Data loader
-         * @type {DataLoaderManager}
-         * @private
-         */
-
-        /**
-         * @member - is anonymous
-         * @type {boolean}
-         * @private
-         */
-
-        /**
-         * @member - partner ID
-         * @type {number}
-         */
-        function OvpProvider(options) {
-          _classCallCheck(this, OvpProvider);
-
-          this._pVersion = options.pVersion;
-          this.partnerID = options.partnerID;
-          this.ks = options.ks;
-          this._isAnonymous = !this.ks;
-          this._loadUiConf = options.loadUiConf;
-          _config2.default.set(options.config);
-        }
-
-        /**
-         * Returns player json configuration
-         * @function getConfig
-         * @param {Object} options The get config options
-         * @returns {Promise} The provider config object as promise
-         */
-
-        /**
-         +   * @member - Does UiConf should be loaded
-         +   * @type {boolean}
-         +   * @private
-         +   */
-
-        /**
-         * @member - uiConf ID
-         * @type {number}
-         * @private
-         */
-
-        /**
-         * @member - pVersion the player version
-         * @type {string}
-         * @private
-         */
-
-        /**
-         * @member - ks
-         * @type {string}
-         */
-
-        _createClass(OvpProvider, [{
-          key: 'getConfig',
-          value: function getConfig(options) {
-            var _this = this;
-
-            if (options && options.uiConfId != null) {
-              this._uiConfId = options.uiConfId;
-            }
-            this._dataLoader = new _dataLoaderManager2.default(this._pVersion, this.partnerID, this.ks);
-            return new Promise(function (resolve, reject) {
-              if (_this.validateParams(options)) {
-                var _ks = _this.ks;
-                if (!_ks) {
-                  _ks = "{1:result:ks}";
-                  _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
-                }
-                _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: options.entryId, ks: _ks });
-                if (_this._loadUiConf) {
-                  _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: options.uiConfId, ks: _ks });
-                }
-                _this._dataLoader.fetchData().then(function (response) {
-                  resolve(_this.parseDataFromResponse(response));
-                }, function (err) {
-                  reject(err);
-                });
-              } else {
-                reject({ success: false, data: "Missing mandatory parameter" });
-              }
-            });
-          }
-
-          /**
-           * Parses BE data to json configuration object
-           * @function parseDataFromResponse
-           * @param {Map<string,Function>} data The data to parse
-           * @returns {Object} The parsed config object
-           */
-
-        }, {
-          key: 'parseDataFromResponse',
-          value: function parseDataFromResponse(data) {
-            logger.debug("Data parsing started");
-            var config = {
-              id: "",
-              name: "",
-              session: {
-                partnerID: this.partnerID,
-                uiConfID: this._uiConfId
-              },
-              sources: new _mediaSources2.default(),
-              duration: 0,
-              type: "Unknown",
-              dvr: false,
-              metadata: {},
-              plugins: {}
-            };
-            if (data != null) {
-              if (data.has(_sessionLoader2.default.id)) {
-                var sessionLoader = data.get(_sessionLoader2.default.id);
-                if (sessionLoader != null && sessionLoader.response != null) {
-                  this.ks = sessionLoader.response;
-                  config.session.ks = this.ks;
-                }
-              }
-              if (data.has(_uiConfigLoader2.default.id)) {
-                var uiConfLoader = data.get(_uiConfigLoader2.default.id);
-                var pluginsJson = {};
-                if (uiConfLoader != null) {
-                  pluginsJson = uiConfLoader.response;
-                }
-                config.plugins = pluginsJson;
-              }
-              if (data.has(_mediaEntryLoader2.default.id)) {
-                var mediaLoader = data.get(_mediaEntryLoader2.default.id);
-                if (mediaLoader != null && mediaLoader.response != null) {
-                  var mediaEntry = _providerParser2.default.getMediaEntry(this._isAnonymous ? "" : this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
-                  config.id = mediaEntry.id;
-                  config.name = mediaEntry.name;
-                  config.sources = mediaEntry.sources;
-                  config.duration = mediaEntry.duration;
-                  config.type = mediaEntry.type;
-                  config.dvr = !!mediaEntry.dvrStatus;
-                  config.metadata = mediaEntry.metaData;
-                }
-              }
-            }
-            logger.debug("Data parsing finished", config);
-            return config;
-          }
-
-          /**
-           * Parameters validation function
-           *  @param {Object} options The options
-           * @returns {boolean} Is valid params
-           */
-
-        }, {
-          key: 'validateParams',
-          value: function validateParams(options) {
-            if (options) {
-              return !!options.entryId || !!options.uiConfId;
-            } else {
-              return false;
-            }
-          }
-        }]);
-
-        return OvpProvider;
-      }();
-
-      exports.default = OvpProvider;
-
-      /***/
-    },
-    /* 24 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _config = __webpack_require__(1);
-
-      var _config2 = _interopRequireDefault(_config);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      var config = _config2.default.get();
-
-      /**
-       * Media source url builder
-       * @classdesc
-       */
-
-      var PlaySourceUrlBuilder = function () {
-        function PlaySourceUrlBuilder() {
-          _classCallCheck(this, PlaySourceUrlBuilder);
-        }
-
-        _createClass(PlaySourceUrlBuilder, null, [{
-          key: "build",
-
-          /**
-           * Returns source url by given url params
-           * @function build
-           * @param {Object} urlParams The params
-           * @returns {string} The URL
-           * @static
-           */
-          value: function build(urlParams) {
-            var baseUrl = config.baseUrl;
-            var partnerId = urlParams.partnerId;
-            var entryId = urlParams.entryId;
-            var ks = urlParams.ks;
-            var uiConfId = urlParams.uiConfId;
-            var format = urlParams.format;
-            var protocol = urlParams.protocol;
-            var extension = urlParams.extension;
-            var flavorIds = urlParams.flavorIds;
-
-            if (baseUrl == "" && partnerId == "" && entryId == "" && extension == "" && format == "") {
-              return "";
-            }
-
-            var playUrl = baseUrl;
-            if (!baseUrl.endsWith("/")) {
-              playUrl += "/";
-            }
-            playUrl += "p/" + partnerId + "/sp/" + partnerId + "00" + "/playManifest/entryId/" + entryId + "/protocol/" + protocol + "/format/" + format;
-
-            if (flavorIds != "") {
-              playUrl += "/flavorIds/" + flavorIds;
-            } else if (uiConfId != "") {
-              playUrl += "/uiConfId/" + uiConfId;
-            }
-
-            if (ks != "") {
-              playUrl += "/ks/" + ks;
-            }
-
-            playUrl += "/a." + extension;
-
-            if (uiConfId && flavorIds != "") {
-              playUrl += "?uiConfId=" + uiConfId;
-            }
-
-            return playUrl;
-          }
-        }]);
-
-        return PlaySourceUrlBuilder;
-      }();
-
-      exports.default = PlaySourceUrlBuilder;
-
-      /***/
-    },
-    /* 25 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE access control message
-       * @classdesc
-       */
-      var KalturaAccessControlMessage =
-
-      /**
-       * @constructor
-       * @param {Object} data The json response
-       */
-
-      /**
-       * @member - The access control message
-       * @type {string}
-       */
-      function KalturaAccessControlMessage(data) {
-        _classCallCheck(this, KalturaAccessControlMessage);
-
-        this.message = data.message;
-        this.code = data.code;
-      }
-      /**
-       *  @member - The access control message code
-       * @@type {string}
-       */
-      ;
-
-      exports.default = KalturaAccessControlMessage;
-
-      /***/
-    },
-    /* 26 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(3);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _kalturaMediaEntry = __webpack_require__(28);
-
-      var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE BaseEntryList service response
-       * @classdesc
-       */
-      var KalturaBaseEntryListResponse = function (_ServiceResult) {
-        _inherits(KalturaBaseEntryListResponse, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} responseObj The json response
-         */
-
-        /**
-         * @member - The total count
-         * @type {number}
-         */
-        function KalturaBaseEntryListResponse(responseObj) {
-          _classCallCheck(this, KalturaBaseEntryListResponse);
-
-          var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
-
-          if (!_this.hasError) {
-            _this.totalCount = responseObj.totalCount;
-            if (_this.totalCount > 0) {
-              _this.entries = [];
-              responseObj.objects.map(function (entry) {
-                return _this.entries.push(new _kalturaMediaEntry2.default(entry));
-              });
-            }
-          }
-          return _this;
-        }
-        /**
-         * @member - The entries
-         * @type {Array<KalturaMediaEntry>}
-         */
-
-        return KalturaBaseEntryListResponse;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaBaseEntryListResponse;
-
-      /***/
-    },
-    /* 27 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE DrmPlaybackPluginData
-       * @classdesc
-       */
-      var KalturaDrmPlaybackPluginData =
-
-      /**
-       * @constructor
-       * @param {Object} drm The json response
-       */
-
-      /**
-       * @member - The license URL
-       * @type {string}
-       */
-      function KalturaDrmPlaybackPluginData(drm) {
-        _classCallCheck(this, KalturaDrmPlaybackPluginData);
-
-        this.scheme = drm.scheme;
-        this.licenseURL = drm.licenseURL;
-        this.certificate = drm.certificate;
-      }
-
-      /**
-       * @member - The drm certificate
-       * @type {?string}
-       */
-
-      /**
-       * @member - The drm scheme
-       * @type {Scheme}
-       */
-      ;
-
-      exports.default = KalturaDrmPlaybackPluginData;
-
-      /***/
-    },
-    /* 28 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE MediaEntry
-       * @classdesc
-       */
-      var KalturaMediaEntry =
-
-      /**
-       * @constructor
-       * @param {Object} entry The json response
-       */
-
-      /**
-       * @member - Entry poster image
-       * @type {string}
-       */
-
-      /**
-       * @member - The type of the entry, this is auto filled by the derived entry object
-       * @type {EntryType}
-       */
-
-      /**
-       * @member - Comma separated flavor params ids that exists for this media entry
-       * @type {string}
-       */
-
-      /**
-       * @member - Entry description
-       * @type {string}
-       */
-
-      /**
-       * @member - The entry id
-       * @type {string}
-       */
-      function KalturaMediaEntry(entry) {
-        _classCallCheck(this, KalturaMediaEntry);
-
-        this.id = entry.id;
-        this.name = entry.name;
-        this.description = entry.description;
-        this.dataUrl = entry.dataUrl;
-        this.type = entry.type;
-        this.entryType = entry.mediaType;
-        this.flavorParamsIds = entry.flavorParamsIds;
-        this.duration = entry.duration;
-        this.poster = entry.thumbnailUrl;
-        this.dvrStatus = entry.dvrStatus;
-      }
-      /**
-       * @member - DVR status
-       * @type {number}
-       */
-
-      /**
-       * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
-       * @type {MediaType}
-       */
-
-      /**
-       * @member - The entry duration
-       * @type {number}
-       */
-
-      /**
-       * @member - The URL used for playback. This is not the download URL.
-       * @type {string}
-       */
-
-      /**
-       * @member - Entry name (Min 1 chars)
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaMediaEntry;
-
-      /***/
-    },
-    /* 29 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE Metadata
-       * @classdesc
-       */
-      var KalturaMetadata =
-
-      /**
-       * @constructor
-       * @param {Object} data The response
-       */
-      function KalturaMetadata(data) {
-        _classCallCheck(this, KalturaMetadata);
-
-        this.id = data.id;
-        this.metadataProfileId = data.metadataProfileId;
-        this.metadataProfileVersion = data.metadataProfileVersion;
-        this.metadataProfileId = data.metadataProfileId;
-        this.metadataObjectType = data.metadataObjectType;
-        this.objectId = data.objectId;
-        this.version = data.version;
-        this.created = new Date(0);
-        this.created.setUTCSeconds(data.createdAt);
-        this.updated = new Date(0);
-        this.updated.setUTCSeconds(data.updatedAt);
-        this.status = data.status;
-        this.xml = data.xml;
-      }
-      /**
-       * @member - The Metadata xml - represented as XML string
-       * @type {string}
-       */
-      ;
-
-      exports.default = KalturaMetadata;
-
-      /***/
-    },
-    /* 30 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(3);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      var _kalturaAccessControlMessage = __webpack_require__(25);
-
-      var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
-
-      var _kalturaPlaybackSource = __webpack_require__(14);
-
-      var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
-
-      var _kalturaRuleAction = __webpack_require__(31);
-
-      var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
-
-      var _kalturaFlavorAsset = __webpack_require__(12);
-
-      var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE playback context response
-       * @classdesc
-       */
-      var KalturaPlaybackContext = function (_ServiceResult) {
-        _inherits(KalturaPlaybackContext, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} response The response
-         */
-
-        /**
-         * @member - Array of actions as received from the rules that invalidated
-         * @type {Array<KalturaAccessControlMessage>}
-         */
-
-        /**
-         * @member - The playback sources
-         * @type {Array<KalturaPlaybackSource>}
-         */
-        function KalturaPlaybackContext(response) {
-          _classCallCheck(this, KalturaPlaybackContext);
-
-          var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
-
-          _this.sources = [];
-          _this.actions = [];
-          _this.messages = [];
-          _this.flavorAssets = [];
-
-          if (!_this.hasError) {
-
-            var messages = response.messages;
-            if (messages) {
-              messages.map(function (message) {
-                return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
-              });
-            }
-
-            var actions = response.actions;
-            if (actions) {
-              actions.map(function (action) {
-                return _this.actions.push(new _kalturaRuleAction2.default(action));
-              });
-            }
-
-            var sources = response.sources;
-            if (sources) {
-              sources.map(function (source) {
-                return _this.sources.push(new _kalturaPlaybackSource2.default(source));
-              });
-            }
-
-            var flavorAssets = response.flavorAssets;
-            if (flavorAssets) {
-              flavorAssets.map(function (flavor) {
-                return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
-              });
-            }
-          }
-
-          return _this;
-        }
-        /**
-         * @member - The flavor assets
-         * @type {Array<KalturaFlavorAsset>}
-         */
-
-        /**
-         * @member - Array of actions as received from the rules that invalidated
-         * @type {Array<KalturaRuleAction>}
-         */
-
-        return KalturaPlaybackContext;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaPlaybackContext;
-
-      /***/
-    },
-    /* 31 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Ovp BE rule action
-       * @classdesc
-       */
-      var KalturaRuleAction =
-
-      /**
-       * @constructor
-       * @param {Object} data The response
-       */
-      function KalturaRuleAction(data) {
-        _classCallCheck(this, KalturaRuleAction);
-
-        this.type = data.type;
-      }
-      /**
-       * @member - The type of the action
-       * @type {KalturaRuleActionType}
-       */
-      ;
-
-      exports.default = KalturaRuleAction;
-
-      /***/
-    },
-    /* 32 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _baseServiceResult = __webpack_require__(3);
-
-      var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      /**
-       * Ovp BE Ui config response
-       * @classdesc
-       */
-      var KalturaUiConfResponse = function (_ServiceResult) {
-        _inherits(KalturaUiConfResponse, _ServiceResult);
-
-        /**
-         * @constructor
-         * @param {Object} data The json response
-         */
-
-        /**
-         * @member -plugins configuration represented as Json string
-         * @type {string}
-         */
-
-        /**
-         * @member -Name of the uiConf, this is not a primary key
-         * @type {string}
-         */
-        function KalturaUiConfResponse(data) {
-          _classCallCheck(this, KalturaUiConfResponse);
-
-          var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
-
-          if (!_this.hasError) {
-            _this.name = data.name;
-
-            _this.description = data.description;
-            _this.objTypeAsString = data.objTypeAsString;
-            _this.width = data.width;
-            _this.height = data.height;
-            _this.htmlParams = data.htmlParams;
-            _this.swfUrl = data.swfUrl;
-            _this.confFilePath = data.confFilePath;
-            _this.confFile = data.confFile;
-            _this.confFileFeatures = data.confFileFeatures;
-            _this.config = data.config;
-            _this.confVars = data.confVars;
-            _this.useCdn = data.useCdn;
-            _this.tags = data.tags;
-            _this.swfUrlVersion = data.swfUrlVersion;
-            _this.created = new Date(0);
-            _this.created.setUTCSeconds(data.createdAt);
-            _this.updated = new Date(0);
-            _this.updated.setUTCSeconds(data.updatedAt);
-            _this.html5Url = data.description;
-            _this.version = data.description;
-            _this.partnerTags = data.description;
-            _this.objType = data.description;
-            _this.creationMode = data.description;
-          }
-          return _this;
-        }
-        /**
-         * @member -Name of the uiConf, this is not a primary key
-         * @type {string}
-         */
-
-        return KalturaUiConfResponse;
-      }(_baseServiceResult2.default);
-
-      exports.default = KalturaUiConfResponse;
-
-      /***/
-    },
-    /* 33 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(2);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "baseEntry";
-
-      /**
-       * Ovp BaseEntry service methods
-       * @classdesc
-       */
-
-      var BaseEntryService = function (_OvpService) {
-        _inherits(BaseEntryService, _OvpService);
-
-        function BaseEntryService() {
-          _classCallCheck(this, BaseEntryService);
-
-          return _possibleConstructorReturn(this, (BaseEntryService.__proto__ || Object.getPrototypeOf(BaseEntryService)).apply(this, arguments));
-        }
-
-        _createClass(BaseEntryService, null, [{
-          key: 'getPlaybackContext',
-
-          /**
-           * Creates an instance of RequestBuilder for baseentry.getPlaybackContext
-           * @function getPlaybackContext
-           * @param {string} baseUrl The service base URL
-           * @param {string} ks The ks
-           * @param {string} entryId The entry ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function getPlaybackContext(baseUrl, ks, entryId) {
-            var headers = new Map();
-            headers.set("Content-Type", "application/json");
-            var request = new _requestBuilder2.default(headers);
-            request.service = SERVICE_NAME;
-            request.action = "getPlaybackContext";
-            request.method = "POST";
-            request.url = request.getUrl(baseUrl);
-            request.tag = "baseEntry-getPlaybackContext";
-            var contextDataParams = { objectType: "KalturaContextDataParams", flavorTags: "all" };
-            var params = { entryId: entryId, ks: ks, contextDataParams: contextDataParams };
-            request.params = params;
-            return request;
-          }
-
-          /**
-           * Creates an instance of RequestBuilder for baseentry.list
-           * @function list
-           * @param {string} baseUrl The base URL
-           * @param {string} ks The ks
-           * @param {string} entryId The entry ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-
-        }, {
-          key: 'list',
-          value: function list(baseUrl, ks, entryId) {
-            var headers = new Map();
-            headers.set("Content-Type", "application/json");
-            var request = new _requestBuilder2.default(headers);
-            request.service = SERVICE_NAME;
-            request.action = "list";
-            request.method = "POST";
-            request.url = request.getUrl(baseUrl);
-            request.tag = "list";
-            request.params = BaseEntryService.getEntryListReqParams(entryId, ks);
-            return request;
-          }
-
-          /**
-           * Gets  baseentry.list service params
-           * @function getEntryListReqParams
-           * @param {string} entryId The entry ID
-           * @param {string} ks The ks
-           * @returns {{ks: string, filter: {redirectFromEntryId: string}, responseProfile: {fields: string, type: number}}} The service params object
-           * @static
-           */
-
-        }, {
-          key: 'getEntryListReqParams',
-          value: function getEntryListReqParams(entryId, ks) {
-            var filterParams = { redirectFromEntryId: entryId };
-            var responseProfileParams = {
-              fields: "id,name,description,thumbnailUrl,dataUrl,duration,msDuration,flavorParamsIds,mediaType,type,tags,dvrStatus",
-              type: 1
-            };
-            return { ks: ks, filter: filterParams, responseProfile: responseProfileParams };
-          }
-        }]);
-
-        return BaseEntryService;
-      }(_ovpService2.default);
-
-      exports.default = BaseEntryService;
-
-      /***/
-    },
-    /* 34 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(2);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "metadata_metadata";
-
-      /**
-       * Ovp metadata_metadata service methods
-       * @classdesc
-       */
-
-      var MetaDataService = function (_OvpService) {
-        _inherits(MetaDataService, _OvpService);
-
-        function MetaDataService() {
-          _classCallCheck(this, MetaDataService);
-
-          return _possibleConstructorReturn(this, (MetaDataService.__proto__ || Object.getPrototypeOf(MetaDataService)).apply(this, arguments));
-        }
-
-        _createClass(MetaDataService, null, [{
-          key: 'list',
-
-          /**
-           * Creates an instance of RequestBuilder for metadata_metadata.list
-           * @function getPlaybackContext
-           * @param {string} baseUrl The service base URL
-           * @param {string} ks The ks
-           * @param {string} entryId The entry ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function list(baseUrl, ks, entryId) {
-            var headers = new Map();
-            headers.set("Content-Type", "application/json");
-            var request = new _requestBuilder2.default(headers);
-            request.service = SERVICE_NAME;
-            request.action = "list";
-            request.method = "POST";
-            request.url = request.getUrl(baseUrl);
-            request.tag = "metadata_metadata-list";
-            var filter = { objectType: "KalturaMetadataFilter", objectIdEqual: entryId, metadataObjectTypeEqual: "1" };
-            var params = { filter: filter, ks: ks };
-            request.params = params;
-            return request;
-          }
-        }]);
-
-        return MetaDataService;
-      }(_ovpService2.default);
-
-      exports.default = MetaDataService;
-
-      /***/
-    },
-    /* 35 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(2);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "session";
-
-      /**
-       * Ovp session service methods
-       * @classdesc
-       */
-
-      var SessionService = function (_OvpService) {
-        _inherits(SessionService, _OvpService);
-
-        function SessionService() {
-          _classCallCheck(this, SessionService);
-
-          return _possibleConstructorReturn(this, (SessionService.__proto__ || Object.getPrototypeOf(SessionService)).apply(this, arguments));
-        }
-
-        _createClass(SessionService, null, [{
-          key: 'anonymousSession',
-
-          /**
-           * Creates an instance of RequestBuilder for session.startWidgetSession
-           * @function anonymousSession
-           * @param {string} baseUrl The service base URL
-           * @param {string} partnerId The partner ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function anonymousSession(baseUrl, partnerId) {
-            var headers = new Map();
-            headers.set("Content-Type", "application/json");
-            var request = new _requestBuilder2.default(headers);
-            request.service = SERVICE_NAME;
-            request.action = "startWidgetSession";
-            request.method = "POST";
-            request.url = request.getUrl(baseUrl);
-            request.tag = "session-startWidget";
-            request.params = { widgetId: "_" + partnerId };
-            return request;
-          }
-        }]);
-
-        return SessionService;
-      }(_ovpService2.default);
-
-      exports.default = SessionService;
-
-      /***/
-    },,
-    /* 36 */
-    /* 37 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      var _ovpService = __webpack_require__(2);
-
-      var _ovpService2 = _interopRequireDefault(_ovpService);
-
-      var _requestBuilder = __webpack_require__(0);
-
-      var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-      }
-
-      var SERVICE_NAME = "uiconf";
-
-      /**
-       * Ovp uiconf service methods
-       * @classdesc
-       */
-
-      var UiConfService = function (_OvpService) {
-        _inherits(UiConfService, _OvpService);
-
-        function UiConfService() {
-          _classCallCheck(this, UiConfService);
-
-          return _possibleConstructorReturn(this, (UiConfService.__proto__ || Object.getPrototypeOf(UiConfService)).apply(this, arguments));
-        }
-
-        _createClass(UiConfService, null, [{
-          key: 'get',
-
-          /**
-           * Creates an instance of RequestBuilder for uiconf.get
-           * @function get
-           * @param {string} baseUrl The service base URL
-           * @param {string} ks The ks
-           * @param {string} uiConfID The uiConf ID
-           * @returns {RequestBuilder} The request builder
-           * @static
-           */
-          value: function get(baseUrl, ks, uiConfID) {
-            var headers = new Map();
-            headers.set("Content-Type", "application/json");
-            var request = new _requestBuilder2.default(headers);
-            request.service = SERVICE_NAME;
-            request.action = "get";
-            request.method = "POST";
-            request.url = request.getUrl(baseUrl);
-            request.tag = "uiconf-get";
-            var responseProfileParams = {
-              fields: "config",
-              type: 1
-            };
-            request.params = { id: uiConfID, responseProfile: responseProfileParams, ks: ks };
-            return request;
-          }
-        }]);
-
-        return UiConfService;
-      }(_ovpService2.default);
-
-      exports.default = UiConfService;
-
-      /***/
-    },
-    /* 38 */
-    /***/function (module, exports, __webpack_require__) {
-
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-        };
-      }();
-
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      /**
-       * Xml parser
-       * @classdesc
-       */
-      var XmlParser = function () {
-        function XmlParser() {
-          _classCallCheck(this, XmlParser);
-        }
-
-        _createClass(XmlParser, null, [{
-          key: "xmlToJson",
-
-          /**
-           * Parses xml string to json object
-           * @param {string} xml The xml to parse
-           * @returns {{}} The parsed xml as Json object
-           * @static
-           */
-          value: function xmlToJson(xml) {
-            var obj = {};
-            if (xml.nodeType == 1) {
-              if (xml.attributes.length > 0) {
-                obj["@attributes"] = {};
-                for (var j = 0; j < xml.attributes.length; j++) {
-                  var attribute = xml.attributes.item(j);
-                  obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-                }
-              }
-            } else if (xml.nodeType == 3) {
-              obj = xml.nodeValue;
-            }
-            if (xml.hasChildNodes()) {
-              for (var i = 0; i < xml.childNodes.length; i++) {
-                var item = xml.childNodes.item(i);
-                var nodeName = item.nodeName;
-                if (typeof obj[nodeName] == "undefined") {
-                  obj[nodeName] = this.xmlToJson(item);
-                } else {
-                  if (typeof obj[nodeName].push == "undefined") {
-                    var old = obj[nodeName];
-                    obj[nodeName] = [];
-                    obj[nodeName].push(old);
-                  }
-                  obj[nodeName].push(this.xmlToJson(item));
-                }
-              }
-            }
-            return obj;
-          }
-        }]);
-
-        return XmlParser;
-      }();
-
-      exports.default = XmlParser;
-
-      /***/
-    }]
-    /******/)
-  );
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(337)(module)))
-
-/***/ }),
-/* 128 */
-/***/ (function(module, exports, __webpack_require__) {
-
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(15));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["playkit-js"], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["PlaykitJsUi"] = factory(require("playkit-js"));
+		exports["PlaykitJsProviders"] = factory();
 	else
-		root["PlaykitJsUi"] = factory(root["Playkit"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_35__) {
+		root["PlaykitJsProviders"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -19465,7 +15692,3930 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 48);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Request builder
+ * @classdesc
+ */
+var RequestBuilder = function () {
+
+  /**
+   * @constructor
+   * @param {Map<string, string>} headers The request headers
+   */
+
+  /**
+   * @member - Service method (POST,GET,DELETE etc..)
+   * @type {string}
+   */
+
+  /**
+   * @member - Service headers
+   * @type {Map<string, string>}
+   */
+
+  /**
+   * @member - Service action
+   * @type {string}
+   */
+  function RequestBuilder() {
+    var headers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Map();
+
+    _classCallCheck(this, RequestBuilder);
+
+    this.headers = headers;
+  }
+
+  /**
+   * Builds restful service URL
+   * @function getUrl
+   * @param {string} baseUrl - The service base URL
+   * @returns {string} The service URL
+   */
+
+  /**
+   * @member - Service tag
+   * @type {string}
+   */
+
+  /**
+   * @member - Service URL
+   * @type {string}
+   */
+
+  /**
+   * @member - Service params
+   * @type {any}
+   */
+
+
+  /**
+   * @member - Service name
+   * @type {string}
+   */
+
+
+  _createClass(RequestBuilder, [{
+    key: 'getUrl',
+    value: function getUrl(baseUrl) {
+      return baseUrl + '/service/' + this.service + (this.action ? '/action/' + this.action : '');
+    }
+
+    /**
+     * Executes service
+     * @function doHttpRequest
+     * @returns {Promise.<any>} Service response as promise
+     */
+
+  }, {
+    key: 'doHttpRequest',
+    value: function doHttpRequest() {
+      var _this = this;
+
+      if (!this.url) {
+        throw new Error("baseUrl is mandatory for request builder");
+      }
+      var request = new XMLHttpRequest();
+      return new Promise(function (resolve, reject) {
+        request.onreadystatechange = function () {
+          if (request.readyState === 4) {
+            if (request.status === 200) {
+              var jsonResponse = JSON.parse(request.responseText);
+              if (jsonResponse && (typeof jsonResponse === 'undefined' ? 'undefined' : _typeof(jsonResponse)) === 'object' && jsonResponse.code && jsonResponse.message) reject(jsonResponse);else resolve(jsonResponse);
+            } else {
+              reject(request.responseText);
+            }
+          }
+        };
+        request.open(_this.method, _this.url);
+        _this.headers.forEach(function (value, key) {
+          request.setRequestHeader(key, value);
+        });
+        request.send(_this.params);
+      });
+    }
+  }]);
+
+  return RequestBuilder;
+}();
+
+exports.default = RequestBuilder;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var defaultConfig = {
+  beUrl: "http://www.kaltura.com/api_v3",
+  baseUrl: "https://cdnapisec.kaltura.com",
+  serviceParams: {
+    apiVersion: '3.3.0',
+    format: 1
+  }
+};
+
+var Configuration = function () {
+  function Configuration() {
+    _classCallCheck(this, Configuration);
+  }
+
+  _createClass(Configuration, null, [{
+    key: "set",
+    value: function set(clientConfig) {
+      if (clientConfig) {
+        Object.assign(defaultConfig, clientConfig);
+      }
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      return defaultConfig;
+    }
+  }]);
+
+  return Configuration;
+}();
+
+exports.default = Configuration;
+exports.Configuration = Configuration;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Base service result
+ * @classdesc
+ */
+var ServiceResult =
+
+/**
+ * @constructor
+ * @param {Object} response - Service response
+ */
+
+/**
+ * @member - The service error
+ * @type {ServiceError}
+ */
+
+/**
+ * @member - The service result data
+ * @type {Object}
+ */
+function ServiceResult(response) {
+  _classCallCheck(this, ServiceResult);
+
+  this.hasError = false;
+
+  if (response.objectType === "KalturaAPIException") {
+    this.hasError = true;
+    this.error = new ServiceError(response.code, response.message);
+  } else {
+    this.data = response;
+  }
+}
+
+/**
+ * @member - Is service returned an error
+ * @type {boolean}
+ */
+;
+
+/**
+ * Service error
+ * @classdesc
+ */
+
+
+exports.default = ServiceResult;
+
+var ServiceError =
+
+/**
+ * @constructor
+ * @param {string} code - The result code
+ * @param {string} message - The result message
+ */
+
+/**
+ * @member - The error code
+ * @type {string}
+ */
+function ServiceError(code, message) {
+  _classCallCheck(this, ServiceError);
+
+  this.code = code;
+  this.message = message;
+}
+/**
+ * @member - The error message
+ * @type {string}
+ */
+;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _multiRequestBuilder = __webpack_require__(5);
+
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+var SERVICE_NAME = "multirequest";
+
+/**
+ * Base for all ovp services
+ * @classdesc
+ */
+
+var OvpService = function () {
+  function OvpService() {
+    _classCallCheck(this, OvpService);
+  }
+
+  _createClass(OvpService, null, [{
+    key: 'getMultirequest',
+
+    /**
+     * Gets a new instance of MultiRequestBuilder with ovp params
+     * @function getMultirequest
+     * @param {string} pVersion The player version
+     * @param {string} ks The ks
+     * @param {string} partnerId The partner ID
+     * @returns {MultiRequestBuilder} The multi request builder
+     * @static
+     */
+    value: function getMultirequest(pVersion, ks, partnerId) {
+      var ovpParams = config.serviceParams;
+      Object.assign(ovpParams, { ks: ks, clientTag: 'html5:v' + pVersion });
+      if (partnerId) {
+        Object.assign(ovpParams, { partnerId: partnerId });
+      }
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var multiReq = new _multiRequestBuilder2.default(headers);
+      multiReq.method = "POST";
+      multiReq.service = SERVICE_NAME;
+      multiReq.url = multiReq.getUrl(config.beUrl);
+      multiReq.params = ovpParams;
+      return multiReq;
+    }
+  }]);
+
+  return OvpService;
+}();
+
+exports.default = OvpService;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LOG_LEVEL = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jsLogger = __webpack_require__(6);
+
+var JsLogger = _interopRequireWildcard(_jsLogger);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LoggerFactory = function () {
+  function LoggerFactory(options) {
+    _classCallCheck(this, LoggerFactory);
+
+    JsLogger.useDefaults(options || {});
+  }
+
+  _createClass(LoggerFactory, [{
+    key: "get",
+    value: function get(name) {
+      if (!name) {
+        return JsLogger;
+      }
+      return JsLogger.get(name);
+    }
+  }]);
+
+  return LoggerFactory;
+}();
+
+var Logger = new LoggerFactory({ defaultLevel: JsLogger.DEBUG });
+var LOG_LEVEL = {
+  "DEBUG": JsLogger.DEBUG,
+  "INFO": JsLogger.INFO,
+  "TIME": JsLogger.TIME,
+  "WARN": JsLogger.WARN,
+  "ERROR": JsLogger.ERROR,
+  "OFF": JsLogger.OFF
+};
+
+exports.default = Logger;
+exports.LOG_LEVEL = LOG_LEVEL;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MultiRequestResult = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * Multi Request builder
+ * @classdesc
+ */
+
+var MultiRequestBuilder = function (_RequestBuilder) {
+  _inherits(MultiRequestBuilder, _RequestBuilder);
+
+  function MultiRequestBuilder() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, MultiRequestBuilder);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MultiRequestBuilder.__proto__ || Object.getPrototypeOf(MultiRequestBuilder)).call.apply(_ref, [this].concat(args))), _this), _this.requests = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  /**
+   * @member - Array of requests
+   * @type {Array<RequestBuilder>}
+   */
+
+
+  _createClass(MultiRequestBuilder, [{
+    key: 'add',
+
+
+    /**
+     * Adds request to requests array
+     * @function add
+     * @param {RequestBuilder} request The request
+     * @returns {MultiRequestBuilder} The multiRequest
+     */
+    value: function add(request) {
+      this.requests.push(request);
+      var requestParams = {};
+      var serviceDef = { service: request.service, action: request.action };
+      Object.assign(requestParams, _defineProperty({}, this.requests.length, Object.assign(serviceDef, request.params)));
+      Object.assign(requestParams, this.params);
+      this.params = requestParams;
+      return this;
+    }
+
+    /**
+     * Executes a multi request
+     * @function execute
+     * @returns {Promise} The multirequest execution promisie
+     */
+
+  }, {
+    key: 'execute',
+    value: function execute() {
+      var _this2 = this;
+
+      try {
+        this.params = JSON.stringify(this.params);
+      } catch (err) {
+        logger.error('' + err.message);
+      }
+      return new Promise(function (resolve, reject) {
+        _this2.doHttpRequest().then(function (data) {
+          resolve(new MultiRequestResult(data));
+        }, function (err) {
+          var errorText = 'Error on multiRequest execution, error <' + err + '>.';
+          reject(errorText);
+        });
+      });
+    }
+  }]);
+
+  return MultiRequestBuilder;
+}(_requestBuilder2.default);
+
+/**
+ * Multi Request result object
+ * @classdesc
+ */
+
+
+exports.default = MultiRequestBuilder;
+
+var MultiRequestResult =
+
+/**
+ * @constructor
+ * @param {Object}  response data
+ */
+
+
+/**
+ * @member - Is success
+ * @type {boolean}
+ */
+exports.MultiRequestResult = function MultiRequestResult(response) {
+  var _this3 = this;
+
+  _classCallCheck(this, MultiRequestResult);
+
+  this.results = [];
+
+  this.success = true;
+  response.forEach(function (result) {
+    var serviceResult = new _baseServiceResult2.default(result);
+    _this3.results.push(serviceResult);
+    if (serviceResult.hasError) {
+      logger.error('Service returned an error with error code: ' + serviceResult.error.code + ' and message: ' + serviceResult.error.message + '.');
+      _this3.success = false;
+      return;
+    }
+  });
+}
+/**
+ * @member - Multi request response data
+ * @type {Object}
+ */
+;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * js-logger - http://github.com/jonnyreeves/js-logger
+ * Jonny Reeves, http://jonnyreeves.co.uk/
+ * js-logger may be freely distributed under the MIT license.
+ */
+(function (global) {
+	"use strict";
+
+	// Top level module for the global, static logger instance.
+	var Logger = { };
+
+	// For those that are at home that are keeping score.
+	Logger.VERSION = "1.4.1";
+
+	// Function which handles all incoming log messages.
+	var logHandler;
+
+	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
+	var contextualLoggersByNameMap = {};
+
+	// Polyfill for ES5's Function.bind.
+	var bind = function(scope, func) {
+		return function() {
+			return func.apply(scope, arguments);
+		};
+	};
+
+	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
+	var merge = function () {
+		var args = arguments, target = args[0], key, i;
+		for (i = 1; i < args.length; i++) {
+			for (key in args[i]) {
+				if (!(key in target) && args[i].hasOwnProperty(key)) {
+					target[key] = args[i][key];
+				}
+			}
+		}
+		return target;
+	};
+
+	// Helper to define a logging level object; helps with optimisation.
+	var defineLogLevel = function(value, name) {
+		return { value: value, name: name };
+	};
+
+	// Predefined logging levels.
+	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
+	Logger.INFO = defineLogLevel(2, 'INFO');
+	Logger.TIME = defineLogLevel(3, 'TIME');
+	Logger.WARN = defineLogLevel(4, 'WARN');
+	Logger.ERROR = defineLogLevel(8, 'ERROR');
+	Logger.OFF = defineLogLevel(99, 'OFF');
+
+	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
+	// of each other.
+	var ContextualLogger = function(defaultContext) {
+		this.context = defaultContext;
+		this.setLevel(defaultContext.filterLevel);
+		this.log = this.info;  // Convenience alias.
+	};
+
+	ContextualLogger.prototype = {
+		// Changes the current logging level for the logging instance.
+		setLevel: function (newLevel) {
+			// Ensure the supplied Level object looks valid.
+			if (newLevel && "value" in newLevel) {
+				this.context.filterLevel = newLevel;
+			}
+		},
+		
+		// Gets the current logging level for the logging instance
+		getLevel: function () {
+			return this.context.filterLevel;
+		},
+
+		// Is the logger configured to output messages at the supplied level?
+		enabledFor: function (lvl) {
+			var filterLevel = this.context.filterLevel;
+			return lvl.value >= filterLevel.value;
+		},
+
+		debug: function () {
+			this.invoke(Logger.DEBUG, arguments);
+		},
+
+		info: function () {
+			this.invoke(Logger.INFO, arguments);
+		},
+
+		warn: function () {
+			this.invoke(Logger.WARN, arguments);
+		},
+
+		error: function () {
+			this.invoke(Logger.ERROR, arguments);
+		},
+
+		time: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'start' ]);
+			}
+		},
+
+		timeEnd: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'end' ]);
+			}
+		},
+
+		// Invokes the logger callback if it's not being filtered.
+		invoke: function (level, msgArgs) {
+			if (logHandler && this.enabledFor(level)) {
+				logHandler(msgArgs, merge({ level: level }, this.context));
+			}
+		}
+	};
+
+	// Protected instance which all calls to the to level `Logger` module will be routed through.
+	var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
+
+	// Configure the global Logger instance.
+	(function() {
+		// Shortcut for optimisers.
+		var L = Logger;
+
+		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
+		L.debug = bind(globalLogger, globalLogger.debug);
+		L.time = bind(globalLogger, globalLogger.time);
+		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
+		L.info = bind(globalLogger, globalLogger.info);
+		L.warn = bind(globalLogger, globalLogger.warn);
+		L.error = bind(globalLogger, globalLogger.error);
+
+		// Don't forget the convenience alias!
+		L.log = L.info;
+	}());
+
+	// Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
+	// object with the supplied log messages and the second being a context object which contains a hash of stateful
+	// parameters which the logging function can consume.
+	Logger.setHandler = function (func) {
+		logHandler = func;
+	};
+
+	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+	// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
+	Logger.setLevel = function(level) {
+		// Set the globalLogger's level.
+		globalLogger.setLevel(level);
+
+		// Apply this level to all registered contextual loggers.
+		for (var key in contextualLoggersByNameMap) {
+			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
+				contextualLoggersByNameMap[key].setLevel(level);
+			}
+		}
+	};
+
+	// Gets the global logging filter level
+	Logger.getLevel = function() {
+		return globalLogger.getLevel();
+	};
+
+	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
+	// default context and log handler.
+	Logger.get = function (name) {
+		// All logger instances are cached so they can be configured ahead of use.
+		return contextualLoggersByNameMap[name] ||
+			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
+	};
+
+	// CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
+	// write to the window's console object (if present); the optional options object can be used to customise the
+	// formatter used to format each log message.
+	Logger.createDefaultHandler = function (options) {
+		options = options || {};
+
+		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
+			// Prepend the logger's name to the log message for easy identification.
+			if (context.name) {
+				messages.unshift("[" + context.name + "]");
+			}
+		};
+
+		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+		// that don't offer a native console method.
+		var timerStartTimeByLabelMap = {};
+
+		// Support for IE8+ (and other, slightly more sane environments)
+		var invokeConsoleMethod = function (hdlr, messages) {
+			Function.prototype.apply.call(hdlr, console, messages);
+		};
+
+		// Check for the presence of a logger.
+		if (typeof console === "undefined") {
+			return function () { /* no console */ };
+		}
+
+		return function(messages, context) {
+			// Convert arguments object to Array.
+			messages = Array.prototype.slice.call(messages);
+
+			var hdlr = console.log;
+			var timerLabel;
+
+			if (context.level === Logger.TIME) {
+				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
+				if (messages[1] === 'start') {
+					if (console.time) {
+						console.time(timerLabel);
+					}
+					else {
+						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
+					}
+				}
+				else {
+					if (console.timeEnd) {
+						console.timeEnd(timerLabel);
+					}
+					else {
+						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
+					}
+				}
+			}
+			else {
+				// Delegate through to custom warn/error loggers if present on the console.
+				if (context.level === Logger.WARN && console.warn) {
+					hdlr = console.warn;
+				} else if (context.level === Logger.ERROR && console.error) {
+					hdlr = console.error;
+				} else if (context.level === Logger.INFO && console.info) {
+					hdlr = console.info;
+				} else if (context.level === Logger.DEBUG && console.debug) {
+					hdlr = console.debug;
+				}
+
+				options.formatter(messages, context);
+				invokeConsoleMethod(hdlr, messages);
+			}
+		};
+	};
+
+	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
+	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
+	Logger.useDefaults = function(options) {
+		Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
+		Logger.setHandler(Logger.createDefaultHandler(options));
+	};
+
+	// Export to popular environments boilerplate.
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (Logger),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Logger;
+	}
+	else {
+		Logger._prevLogger = global.Logger;
+
+		Logger.noConflict = function () {
+			global.Logger = Logger._prevLogger;
+			return Logger;
+		};
+
+		global.Logger = Logger;
+	}
+}(this));
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DrmScheme = exports.DrmScheme = {
+  'drm.PLAYREADY_CENC': 'com.microsoft.playready',
+  'drm.WIDEVINE_CENC': 'com.widevine.alpha',
+  'fairplay.FAIRPLAY': 'com.apple.fairplay'
+};
+
+var KalturaRuleActionTypes = exports.KalturaRuleActionTypes = function KalturaRuleActionTypes() {
+  _classCallCheck(this, KalturaRuleActionTypes);
+};
+
+KalturaRuleActionTypes.DRM_POLICY = "drm.DRM_POLICY";
+KalturaRuleActionTypes.BLOCK = 1;
+KalturaRuleActionTypes.PREVIEW = 2;
+KalturaRuleActionTypes.LIMIT_FLAVORS = 3;
+KalturaRuleActionTypes.ADD_TO_STORAGE = 4;
+KalturaRuleActionTypes.LIMIT_DELIVERY_PROFILES = 5;
+KalturaRuleActionTypes.SERVE_FROM_REMOTE_SERVER = 6;
+KalturaRuleActionTypes.REQUEST_HOST_REGEX = 7;
+KalturaRuleActionTypes.LIMIT_THUMBNAIL_CAPTURE = 8;
+
+var Status = exports.Status = function Status() {
+  _classCallCheck(this, Status);
+};
+
+Status.ERROR = -1;
+Status.QUEUED = 0;
+Status.CONVERTING = 1;
+Status.READY = 2;
+Status.DELETED = 3;
+Status.NOT_APPLICABLE = 4;
+Status.TEMP = 5;
+Status.WAIT_FOR_CONVERT = 6;
+Status.IMPORTING = 7;
+Status.VALIDATING = 8;
+Status.EXPORTING = 9;
+
+var MetadataObjectTypes = exports.MetadataObjectTypes = function MetadataObjectTypes() {
+  _classCallCheck(this, MetadataObjectTypes);
+};
+
+MetadataObjectTypes.AD_CUE_POINT = "adCuePointMetadata.AdCuePoint";
+MetadataObjectTypes.ANNOTATION = "annotationMetadata.Annotation";
+MetadataObjectTypes.CODE_CUE_POINT = "codeCuePointMetadata.CodeCuePoint";
+MetadataObjectTypes.THUMB_CUE_POINT = "thumbCuePointMetadata.thumbCuePoint";
+MetadataObjectTypes.ENTRY = 1;
+MetadataObjectTypes.CATEGORY = 2;
+MetadataObjectTypes.USER = 3;
+MetadataObjectTypes.PARTNER = 4;
+MetadataObjectTypes.DYNAMIC_OBJECT = 5;
+
+var MetadataStatuses = exports.MetadataStatuses = function MetadataStatuses() {
+  _classCallCheck(this, MetadataStatuses);
+};
+
+MetadataStatuses.VALID = 1;
+MetadataStatuses.INVALID = 2;
+MetadataStatuses.DELETED = 3;
+
+var EntryStatuses = exports.EntryStatuses = function EntryStatuses() {
+  _classCallCheck(this, EntryStatuses);
+};
+
+EntryStatuses.ERROR_IMPORTING = -2;
+EntryStatuses.ERROR_CONVERTING = -1;
+EntryStatuses.SCAN_FAILURE = "virusScan.ScanFailure";
+EntryStatuses.IMPORT = 0;
+EntryStatuses.INFECTED = "virusScan.Infected";
+EntryStatuses.PRECONVERT = 1;
+EntryStatuses.READY = 2;
+EntryStatuses.DELETED = 3;
+EntryStatuses.PENDING = 4;
+EntryStatuses.MODERATE = 5;
+EntryStatuses.BLOCKED = 6;
+EntryStatuses.NO_CONTENT = 7;
+
+var EntryModerationStatuses = exports.EntryModerationStatuses = function EntryModerationStatuses() {
+  _classCallCheck(this, EntryModerationStatuses);
+};
+
+EntryModerationStatuses.PENDING_MODERATION = 1;
+EntryModerationStatuses.APPROVED = 2;
+EntryModerationStatuses.REJECTED = 3;
+EntryModerationStatuses.FLAGGED_FOR_REVIEW = 4;
+EntryModerationStatuses.MODERATE = 5;
+EntryModerationStatuses.AUTO_APPROVED = 6;
+
+var EntryTypes = exports.EntryTypes = function EntryTypes() {
+  _classCallCheck(this, EntryTypes);
+};
+
+EntryTypes.AUTOMATIC = { value: -1 };
+EntryTypes.EXTERNAL_MEDIA = { value: "externalMedia.externalMedia" };
+EntryTypes.MEDIA_CLIP = { value: 1 };
+EntryTypes.MIX = { value: 2 };
+EntryTypes.PLAYLIST = { value: 5 };
+EntryTypes.DATA = { value: 6 };
+EntryTypes.LIVE_STREAM = { value: 7 };
+EntryTypes.LIVE_CHANNEL = { value: 8 };
+EntryTypes.DOCUMENT = { value: 10 };
+
+var MediaTypes = exports.MediaTypes = function MediaTypes() {
+  _classCallCheck(this, MediaTypes);
+};
+
+MediaTypes.VIDEO = { value: 1 };
+MediaTypes.IMAGE = { value: 2 };
+MediaTypes.AUDIO = { value: 5 };
+MediaTypes.LIVE_STREAM_FLASH = { value: 201 };
+MediaTypes.LIVE_STREAM_WINDOWS_MEDIA = { value: 202 };
+MediaTypes.LIVE_STREAM_REAL_MEDIA = { value: 203 };
+MediaTypes.LIVE_STREAM_QUICKTIME = { value: 204 };
+
+var MediaEntryTypes = exports.MediaEntryTypes = function MediaEntryTypes() {
+  _classCallCheck(this, MediaEntryTypes);
+};
+
+MediaEntryTypes.Vod = 'Vod';
+MediaEntryTypes.Live = 'Live';
+MediaEntryTypes.Image = 'Image';
+MediaEntryTypes.Audio = 'Audio';
+MediaEntryTypes.Unknown = 'Unknown';
+
+var UIConfTypes = exports.UIConfTypes = function UIConfTypes() {
+  _classCallCheck(this, UIConfTypes);
+};
+
+UIConfTypes.PLAYER = 1;
+UIConfTypes.CONTRIBUTION_WIZARD = 2;
+UIConfTypes.SIMPLE_EDITOR = 3;
+UIConfTypes.ADVANCED_EDITOR = 4;
+UIConfTypes.PLAYLIST = 5;
+UIConfTypes.APP_STUDIO = 6;
+UIConfTypes.KRECORD = 7;
+UIConfTypes.PLAYER_V3 = 8;
+UIConfTypes.KMC_ACCOUNT = 9;
+UIConfTypes.KMC_ANALYTICS = 10;
+UIConfTypes.KMC_CONTENT = 11;
+UIConfTypes.KMC_DASHBOARD = 12;
+UIConfTypes.KMC_LOGIN = 13;
+UIConfTypes.PLAYER_SL = 14;
+UIConfTypes.CLIENTSIDE_ENCODER = 15;
+UIConfTypes.KMC_GENERAL = 16;
+UIConfTypes.KMC_ROLES_AND_PERMISSIONS = 17;
+UIConfTypes.CLIPPER = 18;
+UIConfTypes.KSR = 19;
+UIConfTypes.KUPLOAD = 20;
+UIConfTypes.WEBCASTING = 21;
+
+var UIConfCreationModes = exports.UIConfCreationModes = function UIConfCreationModes() {
+  _classCallCheck(this, UIConfCreationModes);
+};
+
+UIConfCreationModes.WIZARD = 2;
+UIConfCreationModes.ADVANCED = 3;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mediaSource = __webpack_require__(13);
+
+var _mediaSource2 = _interopRequireDefault(_mediaSource);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Container for the media sources aggregated by stream format.
+ * @classdesc
+ */
+var MediaSources = function () {
+
+  /**
+   * @constructor
+   */
+
+  /**
+   * Dash media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+  function MediaSources() {
+    _classCallCheck(this, MediaSources);
+
+    this.progressive = [];
+    this.dash = [];
+    this.hls = [];
+  }
+
+  /**
+   * Maps the source to one of the containers according to his media format.
+   * @param {MediaSource} source - The source to add to one of the containers.
+   * @param {MediaFormat} mediaFormat - The media format of the source.
+   * @returns {void}
+   */
+
+  /**
+   * Hls media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+
+  /**
+   * Progressive download media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+
+
+  _createClass(MediaSources, [{
+    key: 'map',
+    value: function map(source, mediaFormat) {
+      if (mediaFormat) {
+        switch (mediaFormat.name) {
+          case 'mp4':
+            this.progressive.push(source);
+            break;
+          case 'dash':
+            this.dash.push(source);
+            break;
+          case 'hls':
+            this.hls.push(source);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }]);
+
+  return MediaSources;
+}();
+
+exports.default = MediaSources;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _kalturaDrmPlaybackPluginData = __webpack_require__(17);
+
+var _kalturaDrmPlaybackPluginData2 = _interopRequireDefault(_kalturaDrmPlaybackPluginData);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE playback source
+ * @classdesc
+ */
+var KalturaPlaybackSource = function () {
+
+  /**
+   * @constructor
+   * @param {Object} source The response
+   */
+
+  /**
+   * @member - comma separated string of flavor ids
+   * @type {string}
+   */
+
+  /**
+   * @member - The source URL
+   * @type {string}
+   */
+
+  /**
+   * @member - source format according to delivery profile streamer type (applehttp, mpegdash etc.)
+   * @type {string}
+   */
+  function KalturaPlaybackSource(source) {
+    var _this = this;
+
+    _classCallCheck(this, KalturaPlaybackSource);
+
+    this.drm = [];
+
+    this.format = source.format;
+    this.deliveryProfileId = source.deliveryProfileId;
+    this.url = source.url;
+    this.protocols = source.protocols;
+    this.flavorIds = source.flavorIds;
+
+    if (source.drm) {
+      source.drm.map(function (drm) {
+        return _this.drm.push(new _kalturaDrmPlaybackPluginData2.default(drm));
+      });
+    }
+  }
+
+  /**
+   * Checks if source has DRM data
+   * @function hasDrmData
+   * @returns {boolean} Is source has DRM
+   */
+
+  /**
+   * @member - drm data object containing relevant license url ,scheme name and certificate
+   * @type {Array<KalturaDrmPlaybackPluginData>}
+   */
+
+  /**
+   * @member - comma separated string according to deliveryProfile media protocols ('http,https' etc.)
+   * @type {string}
+   */
+
+  /**
+   * @member - delivery profile Id
+   * @type {string}
+   */
+
+
+  _createClass(KalturaPlaybackSource, [{
+    key: "hasDrmData",
+    value: function hasDrmData() {
+      return this.drm && this.drm.length > 0;
+    }
+
+    /**
+     * Checks if source has flavor IDs
+     * @function hasFlavorIds
+     * @returns {boolean} Is source ha flavor IDs
+     */
+
+  }, {
+    key: "hasFlavorIds",
+    value: function hasFlavorIds() {
+      return !!this.flavorIds && this.flavorIds.length > 0;
+    }
+
+    /**
+     * Returns source desired protocol if supported
+     * @param {string} protocol - the desired protocol for the source (base play url protocol)
+     * @returns {string} - protocol if protocol is in the protocols list - if not empty string returned
+     */
+
+  }, {
+    key: "getProtocol",
+    value: function getProtocol(protocol) {
+      var returnValue = "";
+      if (this.protocols && this.protocols.length > 0) {
+        var protocolsArr = this.protocols.split(",");
+        protocolsArr.forEach(function (p) {
+          if (p == protocol) {
+            returnValue = p;
+          }
+        });
+      } else if (protocol == "http") {
+        return protocol;
+      }
+      return returnValue;
+    }
+  }]);
+
+  return KalturaPlaybackSource;
+}();
+
+exports.default = KalturaPlaybackSource;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(7);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE FlavorAsset
+ * @classdesc
+ */
+var KalturaFlavorAsset =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The language of the flavor asset
+ * @type {Status}
+ */
+
+/**
+ *@member - The video codec
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is playable in KDP
+ * @type {boolean}
+ */
+
+/**
+ * @member - The frame rate (in FPS) of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The width of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member -The file extension
+ * @type {string}
+ */
+
+/**
+ * @member - The ID of the Flavor Asset
+ * @type {string}
+ */
+function KalturaFlavorAsset(data) {
+  _classCallCheck(this, KalturaFlavorAsset);
+
+  this.id = data.id;
+  this.flavorParamsId = data.flavorParamsId;
+  this.fileExt = data.fileExt;
+  this.bitrate = data.bitrate;
+  this.width = data.width;
+  this.height = data.height;
+  this.id = data.id;
+  this.frameRate = data.frameRate;
+  this.isOriginal = data.isOriginal;
+  this.isWeb = data.isWeb;
+  this.containerFormat = data.containerFormat;
+  this.videoCodecId = data.videoCodecId;
+  this.status = data.status;
+  this.language = data.language;
+  this.label = data.label;
+}
+/**
+ * @member - The label of the flavor asset
+ * @type {string}
+ */
+
+/**
+ * @member - The status of the Flavor Asset
+ * @type {string}
+ */
+
+/**
+ * @member - The container format
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is the original source
+ * @type {number}
+ */
+
+/**
+ * @member - The height of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The overall bitrate (in KBits) of the Flavor Asset
+ *  @type {string}
+ */
+
+/**
+ * @member -The Flavor Params used to create this Flavor Asset
+ * @type {string}
+ */
+;
+
+exports.default = KalturaFlavorAsset;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMetadata = __webpack_require__(18);
+
+var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Metadata list response
+ * @classdesc
+ */
+var KalturaMetadataListResponse = function (_ServiceResult) {
+  _inherits(KalturaMetadataListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The response
+   */
+  function KalturaMetadataListResponse(responseObj) {
+    _classCallCheck(this, KalturaMetadataListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.metas = [];
+        responseObj.objects.map(function (meta) {
+          return _this.metas.push(new _kalturaMetadata2.default(meta));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member -The mata data array
+   * @type {Array<KalturaMetadata>}
+   */
+
+
+  return KalturaMetadataListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaMetadataListResponse;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(7);
+
+var _mediaSources = __webpack_require__(8);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media entry
+ * @classdesc
+ */
+var MediaEntry =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - entry metadata
+ * @type {Object}
+ */
+
+/**
+ * @member - entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - entry name
+ * @type {string}
+ */
+function MediaEntry() {
+  _classCallCheck(this, MediaEntry);
+
+  this.metaData = new Map();
+  this.type = _enums.MediaEntryTypes.Unknown;
+}
+/**
+ * @member - DVR status
+ * @type {number}
+ */
+
+/**
+ * @member - entry type
+ * @type {MediaEntryType}
+ */
+
+/**
+ * @member - entry sources
+ * @type {MediaSources}
+ */
+
+
+/**
+ * @member - entry ID
+ * @type {string}
+ */
+;
+
+exports.default = MediaEntry;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _drm = __webpack_require__(14);
+
+var _drm2 = _interopRequireDefault(_drm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media source
+ * @classdesc
+ */
+var MediaSource =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - media source height
+ * @type {number}
+ */
+
+/**
+ * @member - media source bandwidth
+ * @type {number}
+ */
+
+/**
+ * @member - media source mimetype
+ * @type {string}
+ */
+
+/**
+ * @member - media source ID
+ * @type {string}
+ */
+function MediaSource() {
+  _classCallCheck(this, MediaSource);
+}
+/**
+ * @member - media source label
+ * @type {string}
+ */
+
+/**
+ * @member - media source width
+ * @type {number}
+ */
+
+/**
+ * @member - media source drm data
+ * @type {Array<Drm>}
+ */
+
+/**
+ * @member - media source URL
+ * @type {string}
+ */
+;
+
+exports.default = MediaSource;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Drm data
+ * @classdesc
+ */
+var Drm =
+
+/**
+ * @constructor
+ * @param {string} licenseUrl - the license URL
+ * @param {Scheme} scheme - the drm scheme
+ * @param {?string} certificate - the drm certificate
+ */
+
+/**
+ * @member - drm scheme
+ * @type {Scheme}
+ */
+function Drm(licenseUrl, scheme, certificate) {
+  _classCallCheck(this, Drm);
+
+  this.licenseUrl = licenseUrl;
+  this.scheme = scheme;
+  this.certificate = certificate;
+}
+
+/**
+ * @member - The drm certificate
+ * @type {?string}
+ */
+
+
+/**
+ * @member - license URL
+ * @type {string}
+ */
+;
+
+exports.default = Drm;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.OvpProvider = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _providerParser = __webpack_require__(16);
+
+var _providerParser2 = _interopRequireDefault(_providerParser);
+
+var _dataLoaderManager = __webpack_require__(22);
+
+var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
+
+var _mediaEntryLoader = __webpack_require__(23);
+
+var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
+
+var _sessionLoader = __webpack_require__(31);
+
+var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
+
+var _uiConfigLoader = __webpack_require__(33);
+
+var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _mediaEntry = __webpack_require__(12);
+
+var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
+
+var _mediaSources = __webpack_require__(8);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * Ovp provider
+ * @classdesc
+ */
+var OvpProvider = exports.OvpProvider = function () {
+
+  /**
+   * @constructor
+   * @param {string} pVersion The player version
+   * @param {number} partnerID The partner ID
+   * @param {string} [ks=""]  The provider ks (has empty string as default value)
+   * @param {Object} [config]  The provider config(optional)
+   */
+
+  /**
+   * @member - uiConf ID
+   * @type {number}
+   * @private
+   */
+
+  /**
+   * @member - pVersion the player version
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * @member - ks
+   * @type {string}
+   */
+  function OvpProvider(pVersion, partnerID) {
+    var ks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+    var config = arguments[3];
+
+    _classCallCheck(this, OvpProvider);
+
+    this._pVersion = pVersion;
+    this.partnerID = partnerID;
+    this.ks = ks;
+    this._isAnonymous = !this.ks;
+    _config2.default.set(config);
+  }
+
+  /**
+   * Returns player json configuration
+   * @function getConfig
+   * @param {string} entryId The entry ID
+   * @param {number} uiConfId The uiConf ID
+   * @returns {Promise} The provider config object as promise
+   */
+
+  /**
+   * @member - Data loader
+   * @type {DataLoaderManager}
+   * @private
+   */
+
+  /**
+   * @member - is anonymous
+   * @type {boolean}
+   * @private
+   */
+
+  /**
+   * @member - partner ID
+   * @type {number}
+   */
+
+
+  _createClass(OvpProvider, [{
+    key: 'getConfig',
+    value: function getConfig(entryId, uiConfId) {
+      var _this = this;
+
+      if (uiConfId != null) {
+        this._uiConfId = uiConfId;
+      }
+      this._dataLoader = new _dataLoaderManager2.default(this._pVersion, this.partnerID, this.ks);
+      return new Promise(function (resolve, reject) {
+        if (_this.validateParams(entryId, uiConfId)) {
+          var ks = _this.ks;
+          if (!ks) {
+            ks = "{1:result:ks}";
+            _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
+          }
+          _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
+          _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
+          _this._dataLoader.fetchData().then(function (response) {
+            resolve(_this.parseDataFromResponse(response));
+          }, function (err) {
+            reject(err);
+          });
+        } else {
+          reject({ success: false, data: "Missing mandatory parameter" });
+        }
+      });
+    }
+
+    /**
+     * Parses BE data to json configuration object
+     * @function parseDataFromResponse
+     * @param {Map<string,Function>} data The data to parse
+     * @returns {Object} The parsed config object
+     */
+
+  }, {
+    key: 'parseDataFromResponse',
+    value: function parseDataFromResponse(data) {
+      logger.debug("Data parsing started");
+      var config = {
+        id: "",
+        name: "",
+        session: {
+          partnerID: this.partnerID,
+          uiConfID: this._uiConfId
+        },
+        sources: new _mediaSources2.default(),
+        duration: 0,
+        type: "Unknown",
+        dvr: false,
+        metadata: {},
+        plugins: {}
+      };
+      if (data != null) {
+        if (data.has(_sessionLoader2.default.id)) {
+          var sessionLoader = data.get(_sessionLoader2.default.id);
+          if (sessionLoader != null && sessionLoader.response != null) {
+            this.ks = sessionLoader.response;
+            config.session.ks = this.ks;
+          }
+        }
+        if (data.has(_uiConfigLoader2.default.id)) {
+          var uiConfLoader = data.get(_uiConfigLoader2.default.id);
+          var pluginsJson = {};
+          if (uiConfLoader != null) {
+            pluginsJson = uiConfLoader.response;
+          }
+          config.plugins = pluginsJson;
+        }
+        if (data.has(_mediaEntryLoader2.default.id)) {
+          var mediaLoader = data.get(_mediaEntryLoader2.default.id);
+          if (mediaLoader != null && mediaLoader.response != null) {
+            var mediaEntry = _providerParser2.default.getMediaEntry(this._isAnonymous ? "" : this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
+            config.id = mediaEntry.id;
+            config.name = mediaEntry.name;
+            config.sources = mediaEntry.sources;
+            config.duration = mediaEntry.duration;
+            config.type = mediaEntry.type;
+            config.dvr = !!mediaEntry.dvrStatus;
+            config.metadata = mediaEntry.metaData;
+          }
+        }
+      }
+      logger.debug("Data parsing finished", config);
+      return config;
+    }
+
+    /**
+     * Parameters validation function
+     * @param {string} entryId The entry ID
+     * @param {number} uiConfId The uiConfID
+     * @returns {boolean} Is valid params
+     */
+
+  }, {
+    key: 'validateParams',
+    value: function validateParams(entryId, uiConfId) {
+      return !!entryId || !!uiConfId;
+    }
+  }]);
+
+  return OvpProvider;
+}();
+
+exports.default = OvpProvider;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _kalturaPlaybackSource = __webpack_require__(9);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaFlavorAsset = __webpack_require__(10);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+var _kalturaMetadataListResponse = __webpack_require__(11);
+
+var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+
+var _playSourceUrlBuilder = __webpack_require__(19);
+
+var _playSourceUrlBuilder2 = _interopRequireDefault(_playSourceUrlBuilder);
+
+var _xmlParser = __webpack_require__(20);
+
+var _xmlParser2 = _interopRequireDefault(_xmlParser);
+
+var _enums = __webpack_require__(7);
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _mediaFormat = __webpack_require__(21);
+
+var _mediaEntry = __webpack_require__(12);
+
+var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
+
+var _drm = __webpack_require__(14);
+
+var _drm2 = _interopRequireDefault(_drm);
+
+var _mediaSource = __webpack_require__(13);
+
+var _mediaSource2 = _interopRequireDefault(_mediaSource);
+
+var _mediaSources = __webpack_require__(8);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+/**
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * @constant
+ * @type {Map<string, MediaFormat>}
+ */
+var SUPPORTED_FORMATS = new Map([["mpegdash", _mediaFormat.MediaFormats.dash], ["applehttp", _mediaFormat.MediaFormats.hls], ["url", _mediaFormat.MediaFormats.mp4]]);
+
+/**
+ * Ovp provider parser
+ * @classdesc
+ */
+
+var ProviderParser = function () {
+  function ProviderParser() {
+    _classCallCheck(this, ProviderParser);
+  }
+
+  _createClass(ProviderParser, null, [{
+    key: 'getMediaEntry',
+
+
+    /**
+     * Returns parsed media entry by given OVP response objects
+     * @function getMediaEntry
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {any} mediaEntryResponse - The media entry response
+     * @returns {MediaEntry} - The media entry
+     * @static
+     * @public
+     */
+    value: function getMediaEntry(ks, partnerID, uiConfId, mediaEntryResponse) {
+      var mediaEntry = new _mediaEntry2.default();
+      var entry = mediaEntryResponse.entry;
+      var playbackContext = mediaEntryResponse.playBackContextResult;
+      var metadataList = mediaEntryResponse.metadataListResult;
+      var kalturaSources = playbackContext.sources;
+      var sources = ProviderParser._getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext);
+
+      mediaEntry.sources = sources;
+
+      var metadata = this._parseMetaData(metadataList);
+      mediaEntry.metaData = metadata;
+      mediaEntry.id = entry.id;
+      mediaEntry.name = entry.name;
+      mediaEntry.duration = entry.duration;
+      mediaEntry.metaData["description"] = entry.description;
+      mediaEntry.metaData["poster"] = entry.poster;
+
+      var type = _enums.MediaEntryTypes.Unknown;
+
+      switch (entry.entryType) {
+        case _enums.MediaTypes.IMAGE.value:
+          type = _enums.MediaEntryTypes.Image;
+          break;
+        case _enums.MediaTypes.AUDIO.value:
+          type = _enums.MediaEntryTypes.Audio;
+          break;
+        default:
+          switch (entry.type) {
+            case _enums.EntryTypes.MEDIA_CLIP.value:
+              type = _enums.MediaEntryTypes.Vod;
+              break;
+            case _enums.EntryTypes.LIVE_STREAM.value:
+            case _enums.EntryTypes.LIVE_CHANNEL.value:
+              type = _enums.MediaEntryTypes.Live;
+              mediaEntry.dvrStatus = entry.dvrStatus;
+              break;
+            default:
+              type = _enums.MediaEntryTypes.Unknown;
+          }
+      }
+      mediaEntry.type = type;
+
+      return mediaEntry;
+    }
+
+    /**
+     * Returns the parsed sources
+     * @function _getParsedSources
+     * @param {Array<KalturaPlaybackSource>} kalturaSources - The kaltura sources
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {Object} entry - The entry
+     * @param {Object} playbackContext - The playback context
+     * @return {MediaSources} - A media sources
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_getParsedSources',
+    value: function _getParsedSources(kalturaSources, ks, partnerID, uiConfId, entry, playbackContext) {
+      var sources = new _mediaSources2.default();
+
+      var addAdaptiveSource = function addAdaptiveSource(source) {
+        var parsedSource = ProviderParser._parseAdaptiveSource(source, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
+        var sourceFormat = SUPPORTED_FORMATS.get(source.format);
+        sources.map(parsedSource, sourceFormat);
+      };
+
+      var parseAdaptiveSources = function parseAdaptiveSources() {
+        kalturaSources.filter(function (source) {
+          return !ProviderParser._isProgressiveSource(source);
+        }).forEach(addAdaptiveSource);
+      };
+
+      var parseProgressiveSources = function parseProgressiveSources() {
+        var progressiveSource = kalturaSources.find(ProviderParser._isProgressiveSource);
+        sources.progressive = ProviderParser._parseProgressiveSources(progressiveSource, playbackContext.flavorAssets, ks, partnerID, uiConfId, entry.id);
+      };
+
+      if (kalturaSources && kalturaSources.length > 0) {
+        parseAdaptiveSources();
+        parseProgressiveSources();
+      }
+
+      return sources;
+    }
+
+    /**
+     * Returns a parsed adaptive source
+     * @function _parseAdaptiveSource
+     * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
+     * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {string} entryId - The entry id
+     * @returns {MediaSource} - The parsed adaptive kalturaSource
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_parseAdaptiveSource',
+    value: function _parseAdaptiveSource(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
+      var mediaSource = new _mediaSource2.default();
+      if (kalturaSource) {
+        var playUrl = "";
+        var mediaFormat = SUPPORTED_FORMATS.get(kalturaSource.format);
+        var extension = "";
+        if (mediaFormat) {
+          extension = mediaFormat.pathExt;
+          mediaSource.mimetype = mediaFormat.mimeType;
+        }
+        // in case playbackSource doesn't have flavors we don't need to build the url and we'll use the provided one.
+        if (kalturaSource.hasFlavorIds()) {
+          if (!extension && flavorAssets && flavorAssets.length > 0) {
+            extension = flavorAssets[0].fileExt;
+          }
+
+          playUrl = _playSourceUrlBuilder2.default.build({
+            entryId: entryId,
+            flavorIds: kalturaSource.flavorIds,
+            format: kalturaSource.format,
+            ks: ks,
+            partnerId: partnerID,
+            uiConfId: uiConfId,
+            extension: extension,
+            protocol: kalturaSource.getProtocol(this._getBaseProtocol())
+          });
+        } else {
+          playUrl = kalturaSource.url;
+        }
+
+        if (playUrl === "") {
+          logger.error('failed to create play url from source, discarding source: (' + entryId + '_' + kalturaSource.deliveryProfileId + '), ' + kalturaSource.format + '.');
+          return mediaSource;
+        }
+
+        mediaSource.url = playUrl;
+        mediaSource.id = entryId + "_" + kalturaSource.deliveryProfileId + "," + kalturaSource.format;
+        if (kalturaSource.hasDrmData()) {
+          var drmParams = [];
+          kalturaSource.drm.forEach(function (drm) {
+            drmParams.push(new _drm2.default(drm.licenseURL, _enums.DrmScheme[drm.scheme], drm.certificate));
+          });
+          mediaSource.drmData = drmParams;
+        }
+      }
+      return mediaSource;
+    }
+
+    /**
+     * Returns parsed progressive sources
+     * @function _parseProgressiveSources
+     * @param {KalturaPlaybackSource} kalturaSource - A kaltura source
+     * @param {Array<KalturaFlavorAsset>} flavorAssets - The flavor Assets of the kaltura source
+     * @param {string} ks - The ks
+     * @param {number} partnerID - The partner ID
+     * @param {number} uiConfId - The uiConf ID
+     * @param {string} entryId - The entry id
+     * @returns {Array<MediaSource>} - The parsed progressive kalturaSources
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_parseProgressiveSources',
+    value: function _parseProgressiveSources(kalturaSource, flavorAssets, ks, partnerID, uiConfId, entryId) {
+      var sources = [];
+      if (kalturaSource) {
+        var protocol = kalturaSource.getProtocol(this._getBaseProtocol());
+        var format = kalturaSource.format;
+        var sourceId = kalturaSource.deliveryProfileId + "," + kalturaSource.format;
+        flavorAssets.map(function (flavor) {
+          if (flavor.height && flavor.width) {
+            var mediaSource = new _mediaSource2.default();
+            mediaSource.id = flavor.id + sourceId;
+            mediaSource.mimetype = 'video/mp4';
+            mediaSource.height = flavor.height;
+            mediaSource.width = flavor.width;
+            mediaSource.bandwidth = flavor.bitrate * 1024;
+            mediaSource.label = flavor.label || flavor.language;
+            mediaSource.url = _playSourceUrlBuilder2.default.build({
+              entryId: entryId,
+              flavorIds: flavor.id,
+              format: format,
+              ks: ks,
+              partnerId: partnerID,
+              uiConfId: uiConfId,
+              extension: 'mp4',
+              protocol: protocol
+            });
+            sources.push(mediaSource);
+          }
+        });
+      }
+      return sources;
+    }
+
+    /**
+     * @function _isProgressiveSource
+     * @param {KalturaPlaybackSource} source - The kaltura source
+     * @return {boolean} - Is progressive source
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_isProgressiveSource',
+    value: function _isProgressiveSource(source) {
+      var sourceFormat = SUPPORTED_FORMATS.get(source.format);
+      return !!sourceFormat && sourceFormat.name === 'mp4';
+    }
+
+    /**
+     * Ovp metadata parser
+     * @function _parseMetaData
+     * @param {KalturaMetadataListResponse} metadataList The metadata list
+     * @returns {Map<string,string>} Parsed metadata
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_parseMetaData',
+    value: function _parseMetaData(metadataList) {
+      var metadata = {};
+      if (metadataList && metadataList.metas && metadataList.metas.length > 0) {
+        metadataList.metas.forEach(function (meta) {
+          var metaXml = void 0;
+          var domParser = new DOMParser();
+          meta.xml = meta.xml.replace(/\r?\n|\r/g, "");
+          meta.xml = meta.xml.replace(/>\s*/g, '>');
+          meta.xml = meta.xml.replace(/>\s*/g, '>');
+          metaXml = domParser.parseFromString(meta.xml, 'text/xml');
+          var metasObj = _xmlParser2.default.xmlToJson(metaXml);
+          var metaKeys = Object.keys(metasObj.metadata);
+          metaKeys.forEach(function (key) {
+            metadata[key] = metasObj.metadata[key]["#text"];
+          });
+        });
+      }
+      return metadata;
+    }
+
+    /**
+     * Returns the base protocol
+     * @function _getBaseProtocol
+     * @returns {string} - The base protocol
+     * @static
+     * @private
+     */
+
+  }, {
+    key: '_getBaseProtocol',
+    value: function _getBaseProtocol() {
+      var splittedUrl = config.baseUrl.split("/");
+      var baseProtocol = void 0;
+      if (splittedUrl && splittedUrl.length > 0) {
+        baseProtocol = splittedUrl[0].substring(0, splittedUrl[0].length - 1);
+      } else {
+        baseProtocol = "http";
+      }
+      return baseProtocol;
+    }
+  }]);
+
+  return ProviderParser;
+}();
+
+exports.default = ProviderParser;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE DrmPlaybackPluginData
+ * @classdesc
+ */
+var KalturaDrmPlaybackPluginData =
+
+/**
+ * @constructor
+ * @param {Object} drm The json response
+ */
+
+
+/**
+ * @member - The license URL
+ * @type {string}
+ */
+function KalturaDrmPlaybackPluginData(drm) {
+  _classCallCheck(this, KalturaDrmPlaybackPluginData);
+
+  this.scheme = drm.scheme;
+  this.licenseURL = drm.licenseURL;
+  this.certificate = drm.certificate;
+}
+
+/**
+ * @member - The drm certificate
+ * @type {?string}
+ */
+
+/**
+ * @member - The drm scheme
+ * @type {Scheme}
+ */
+;
+
+exports.default = KalturaDrmPlaybackPluginData;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE Metadata
+ * @classdesc
+ */
+var KalturaMetadata =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaMetadata(data) {
+  _classCallCheck(this, KalturaMetadata);
+
+  this.id = data.id;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataProfileVersion = data.metadataProfileVersion;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataObjectType = data.metadataObjectType;
+  this.objectId = data.objectId;
+  this.version = data.version;
+  this.created = new Date(0);
+  this.created.setUTCSeconds(data.createdAt);
+  this.updated = new Date(0);
+  this.updated.setUTCSeconds(data.updatedAt);
+  this.status = data.status;
+  this.xml = data.xml;
+}
+/**
+ * @member - The Metadata xml - represented as XML string
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMetadata;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+/**
+ * Media source url builder
+ * @classdesc
+ */
+
+var PlaySourceUrlBuilder = function () {
+  function PlaySourceUrlBuilder() {
+    _classCallCheck(this, PlaySourceUrlBuilder);
+  }
+
+  _createClass(PlaySourceUrlBuilder, null, [{
+    key: "build",
+
+
+    /**
+     * Returns source url by given url params
+     * @function build
+     * @param {Object} urlParams The params
+     * @returns {string} The URL
+     * @static
+     */
+    value: function build(urlParams) {
+      var baseUrl = config.baseUrl;
+      var partnerId = urlParams.partnerId;
+      var entryId = urlParams.entryId;
+      var ks = urlParams.ks;
+      var uiConfId = urlParams.uiConfId;
+      var format = urlParams.format;
+      var protocol = urlParams.protocol;
+      var extension = urlParams.extension;
+      var flavorIds = urlParams.flavorIds;
+
+      if (baseUrl == "" && partnerId == "" && entryId == "" && extension == "" && format == "") {
+        return "";
+      }
+
+      var playUrl = baseUrl;
+      if (!baseUrl.endsWith("/")) {
+        playUrl += "/";
+      }
+      playUrl += "p/" + partnerId + "/sp/" + partnerId + "00" + "/playManifest/entryId/" + entryId + "/protocol/" + protocol + "/format/" + format;
+
+      if (flavorIds != "") {
+        playUrl += "/flavorIds/" + flavorIds;
+      } else if (uiConfId != "") {
+        playUrl += "/uiConfId/" + uiConfId;
+      }
+
+      if (ks != "") {
+        playUrl += "/ks/" + ks;
+      }
+
+      playUrl += "/a." + extension;
+
+      if (uiConfId && flavorIds != "") {
+        playUrl += "?uiConfId=" + uiConfId;
+      }
+
+      return playUrl;
+    }
+  }]);
+
+  return PlaySourceUrlBuilder;
+}();
+
+exports.default = PlaySourceUrlBuilder;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Xml parser
+ * @classdesc
+ */
+var XmlParser = function () {
+  function XmlParser() {
+    _classCallCheck(this, XmlParser);
+  }
+
+  _createClass(XmlParser, null, [{
+    key: "xmlToJson",
+
+    /**
+     * Parses xml string to json object
+     * @param {string} xml The xml to parse
+     * @returns {{}} The parsed xml as Json object
+     * @static
+     */
+    value: function xmlToJson(xml) {
+      var obj = {};
+      if (xml.nodeType == 1) {
+        if (xml.attributes.length > 0) {
+          obj["@attributes"] = {};
+          for (var j = 0; j < xml.attributes.length; j++) {
+            var attribute = xml.attributes.item(j);
+            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+          }
+        }
+      } else if (xml.nodeType == 3) {
+        obj = xml.nodeValue;
+      }
+      if (xml.hasChildNodes()) {
+        for (var i = 0; i < xml.childNodes.length; i++) {
+          var item = xml.childNodes.item(i);
+          var nodeName = item.nodeName;
+          if (typeof obj[nodeName] == "undefined") {
+            obj[nodeName] = this.xmlToJson(item);
+          } else {
+            if (typeof obj[nodeName].push == "undefined") {
+              var old = obj[nodeName];
+              obj[nodeName] = [];
+              obj[nodeName].push(old);
+            }
+            obj[nodeName].push(this.xmlToJson(item));
+          }
+        }
+      }
+      return obj;
+    }
+  }]);
+
+  return XmlParser;
+}();
+
+exports.default = XmlParser;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MediaFormats = exports.MediaFormats = function MediaFormats() {
+  _classCallCheck(this, MediaFormats);
+};
+
+MediaFormats.dash = {
+  name: 'dash',
+  mimeType: "application/dash+xml",
+  pathExt: "mpd"
+};
+MediaFormats.hls = {
+  name: 'hls',
+  mimeType: "application/x-mpegURL",
+  pathExt: "m3u8"
+};
+MediaFormats.wvm = {
+  name: 'wvm',
+  mimeType: "video/wvm",
+  pathExt: "wvm"
+};
+MediaFormats.mp4 = {
+  name: 'mp4',
+  mimeType: "video/mp4",
+  pathExt: "mp4"
+};
+MediaFormats.mp3 = {
+  name: 'mp3',
+  mimeType: "audio/mpeg",
+  pathExt: "mp3"
+};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _multiRequestBuilder = __webpack_require__(5);
+
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Data loaders manager
+ * @classdesc
+ */
+var DataLoaderManager = function () {
+
+  /**
+   * @constructor
+   * @param {string} pVersion The player version
+   * @param {string} partnerID Then partner ID
+   * @param {string} ks The ks
+   */
+
+  /**
+   * @member - Lodaers response map index
+   * @type {Map<string,Array<number>>}
+   * @private
+   * @static
+   */
+  function DataLoaderManager(pVersion, partnerID) {
+    var ks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+
+    _classCallCheck(this, DataLoaderManager);
+
+    this._loaders = new Map();
+
+    this._multiRequest = _ovpService2.default.getMultirequest(pVersion, ks, partnerID);
+  }
+
+  /**
+   * Add loader too execution loaders map
+   * @function
+   * @param {Function} loader Loader to add
+   * @param {Object} params Loader params
+   * @returns {void}
+   */
+
+  /**
+   * @member - Loaders to execute
+   * @type {Map<string,Function>}
+   * @private
+   */
+
+  /**
+   * @member - Loaders multi request
+   * @type {MultiRequestBuilder}
+   * @private
+   */
+
+  /**
+   * @member - Loaders multi response
+   * @type {MultiRequestResult}
+   * @private
+   */
+
+
+  _createClass(DataLoaderManager, [{
+    key: 'add',
+    value: function add(loader, params) {
+      var _this = this;
+
+      var execution_loader = new loader(params);
+      if (execution_loader.isValid()) {
+        this._loaders.set(loader.id, execution_loader);
+        //Get the start index from the multiReqeust before adding current execution_loader requests
+        var startIndex = this._multiRequest.requests.length;
+        //Get the requests
+        var requests = execution_loader.requests;
+        //Add requests to muktiRequest queue
+        requests.forEach(function (request) {
+          _this._multiRequest.add(request);
+        });
+        //Create range array of current execution_loader requests
+        var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
+          return index + startIndex;
+        });
+        //Add to map
+        DataLoaderManager._loadersResponseMap.set(loader.id, executionLoaderResponseMap);
+      }
+    }
+
+    /**
+     * Get data from all loaders using multi request
+     * @function
+     * @returns {Promise} Promise
+     */
+
+  }, {
+    key: 'fetchData',
+    value: function fetchData() {
+      var _this2 = this;
+
+      return new Promise(function (resolve, reject) {
+        _this2._multiRequest.execute().then(function (response) {
+          _this2._multiResponse = response;
+          if (!response.success) {
+            reject(response);
+          } else {
+            var preparedData = _this2.prepareData(response);
+            if (preparedData.success) {
+              resolve(_this2._loaders);
+            } else {
+              reject({ success: false, data: preparedData.error });
+            }
+          }
+        }, function (err) {
+          reject(err);
+        });
+      });
+    }
+  }, {
+    key: 'prepareData',
+    value: function prepareData(response) {
+      this._loaders.forEach(function (loader, name) {
+        var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
+        try {
+          if (loaderDataIndexes != null) {
+            loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
+          }
+        } catch (err) {
+          return { success: false, error: err };
+        }
+      });
+      return { success: true, data: this._loaders };
+    }
+  }]);
+
+  return DataLoaderManager;
+}();
+
+DataLoaderManager._loadersResponseMap = new Map();
+exports.default = DataLoaderManager;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+var _baseEntryService = __webpack_require__(24);
+
+var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
+
+var _metaDataService = __webpack_require__(25);
+
+var _metaDataService2 = _interopRequireDefault(_metaDataService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _kalturaPlaybackContext = __webpack_require__(26);
+
+var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
+
+var _kalturaMetadataListResponse = __webpack_require__(11);
+
+var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+
+var _kalturaBaseEntryListResponse = __webpack_require__(29);
+
+var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var MediaEntryLoader = function () {
+  _createClass(MediaEntryLoader, null, [{
+    key: 'id',
+    get: function get() {
+      return "media";
+    }
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function MediaEntryLoader(params) {
+    _classCallCheck(this, MediaEntryLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._entryId = params.entryId;
+  }
+
+  _createClass(MediaEntryLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
+      requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
+      requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._entryId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
+      this._response.entry = mediaEntryResponse.entries[0];
+      this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
+      this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
+    },
+    get: function get() {
+      return this._response;
+    }
+  }]);
+
+  return MediaEntryLoader;
+}();
+
+exports.default = MediaEntryLoader;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "baseEntry";
+
+/**
+ * Ovp BaseEntry service methods
+ * @classdesc
+ */
+
+var BaseEntryService = function (_OvpService) {
+  _inherits(BaseEntryService, _OvpService);
+
+  function BaseEntryService() {
+    _classCallCheck(this, BaseEntryService);
+
+    return _possibleConstructorReturn(this, (BaseEntryService.__proto__ || Object.getPrototypeOf(BaseEntryService)).apply(this, arguments));
+  }
+
+  _createClass(BaseEntryService, null, [{
+    key: 'getPlaybackContext',
+
+
+    /**
+     * Creates an instance of RequestBuilder for baseentry.getPlaybackContext
+     * @function getPlaybackContext
+     * @param {string} baseUrl The service base URL
+     * @param {string} ks The ks
+     * @param {string} entryId The entry ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function getPlaybackContext(baseUrl, ks, entryId) {
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var request = new _requestBuilder2.default(headers);
+      request.service = SERVICE_NAME;
+      request.action = "getPlaybackContext";
+      request.method = "POST";
+      request.url = request.getUrl(baseUrl);
+      request.tag = "baseEntry-getPlaybackContext";
+      var contextDataParams = { objectType: "KalturaContextDataParams", flavorTags: "all" };
+      var params = { entryId: entryId, ks: ks, contextDataParams: contextDataParams };
+      request.params = params;
+      return request;
+    }
+
+    /**
+     * Creates an instance of RequestBuilder for baseentry.list
+     * @function list
+     * @param {string} baseUrl The base URL
+     * @param {string} ks The ks
+     * @param {string} entryId The entry ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+
+  }, {
+    key: 'list',
+    value: function list(baseUrl, ks, entryId) {
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var request = new _requestBuilder2.default(headers);
+      request.service = SERVICE_NAME;
+      request.action = "list";
+      request.method = "POST";
+      request.url = request.getUrl(baseUrl);
+      request.tag = "list";
+      request.params = BaseEntryService.getEntryListReqParams(entryId, ks);
+      return request;
+    }
+
+    /**
+     * Gets  baseentry.list service params
+     * @function getEntryListReqParams
+     * @param {string} entryId The entry ID
+     * @param {string} ks The ks
+     * @returns {{ks: string, filter: {redirectFromEntryId: string}, responseProfile: {fields: string, type: number}}} The service params object
+     * @static
+     */
+
+  }, {
+    key: 'getEntryListReqParams',
+    value: function getEntryListReqParams(entryId, ks) {
+      var filterParams = { redirectFromEntryId: entryId };
+      var responseProfileParams = {
+        fields: "id,name,description,thumbnailUrl,dataUrl,duration,msDuration,flavorParamsIds,mediaType,type,tags,dvrStatus",
+        type: 1
+      };
+      return { ks: ks, filter: filterParams, responseProfile: responseProfileParams };
+    }
+  }]);
+
+  return BaseEntryService;
+}(_ovpService2.default);
+
+exports.default = BaseEntryService;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "metadata_metadata";
+
+/**
+ * Ovp metadata_metadata service methods
+ * @classdesc
+ */
+
+var MetaDataService = function (_OvpService) {
+  _inherits(MetaDataService, _OvpService);
+
+  function MetaDataService() {
+    _classCallCheck(this, MetaDataService);
+
+    return _possibleConstructorReturn(this, (MetaDataService.__proto__ || Object.getPrototypeOf(MetaDataService)).apply(this, arguments));
+  }
+
+  _createClass(MetaDataService, null, [{
+    key: 'list',
+
+    /**
+     * Creates an instance of RequestBuilder for metadata_metadata.list
+     * @function getPlaybackContext
+     * @param {string} baseUrl The service base URL
+     * @param {string} ks The ks
+     * @param {string} entryId The entry ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function list(baseUrl, ks, entryId) {
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var request = new _requestBuilder2.default(headers);
+      request.service = SERVICE_NAME;
+      request.action = "list";
+      request.method = "POST";
+      request.url = request.getUrl(baseUrl);
+      request.tag = "metadata_metadata-list";
+      var filter = { objectType: "KalturaMetadataFilter", objectIdEqual: entryId, metadataObjectTypeEqual: "1" };
+      var params = { filter: filter, ks: ks };
+      request.params = params;
+      return request;
+    }
+  }]);
+
+  return MetaDataService;
+}(_ovpService2.default);
+
+exports.default = MetaDataService;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaAccessControlMessage = __webpack_require__(27);
+
+var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
+
+var _kalturaPlaybackSource = __webpack_require__(9);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaRuleAction = __webpack_require__(28);
+
+var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
+
+var _kalturaFlavorAsset = __webpack_require__(10);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE playback context response
+ * @classdesc
+ */
+var KalturaPlaybackContext = function (_ServiceResult) {
+  _inherits(KalturaPlaybackContext, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} response The response
+   */
+
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaAccessControlMessage>}
+   */
+
+  /**
+   * @member - The playback sources
+   * @type {Array<KalturaPlaybackSource>}
+   */
+  function KalturaPlaybackContext(response) {
+    _classCallCheck(this, KalturaPlaybackContext);
+
+    var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
+
+    _this.sources = [];
+    _this.actions = [];
+    _this.messages = [];
+    _this.flavorAssets = [];
+
+    if (!_this.hasError) {
+
+      var messages = response.messages;
+      if (messages) {
+        messages.map(function (message) {
+          return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
+        });
+      }
+
+      var actions = response.actions;
+      if (actions) {
+        actions.map(function (action) {
+          return _this.actions.push(new _kalturaRuleAction2.default(action));
+        });
+      }
+
+      var sources = response.sources;
+      if (sources) {
+        sources.map(function (source) {
+          return _this.sources.push(new _kalturaPlaybackSource2.default(source));
+        });
+      }
+
+      var flavorAssets = response.flavorAssets;
+      if (flavorAssets) {
+        flavorAssets.map(function (flavor) {
+          return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
+        });
+      }
+    }
+
+    return _this;
+  }
+  /**
+   * @member - The flavor assets
+   * @type {Array<KalturaFlavorAsset>}
+   */
+
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaRuleAction>}
+   */
+
+
+  return KalturaPlaybackContext;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaPlaybackContext;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE access control message
+ * @classdesc
+ */
+var KalturaAccessControlMessage =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The access control message
+ * @type {string}
+ */
+function KalturaAccessControlMessage(data) {
+  _classCallCheck(this, KalturaAccessControlMessage);
+
+  this.message = data.message;
+  this.code = data.code;
+}
+/**
+ *  @member - The access control message code
+ * @@type {string}
+ */
+;
+
+exports.default = KalturaAccessControlMessage;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE rule action
+ * @classdesc
+ */
+var KalturaRuleAction =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaRuleAction(data) {
+  _classCallCheck(this, KalturaRuleAction);
+
+  this.type = data.type;
+}
+/**
+ * @member - The type of the action
+ * @type {KalturaRuleActionType}
+ */
+;
+
+exports.default = KalturaRuleAction;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMediaEntry = __webpack_require__(30);
+
+var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE BaseEntryList service response
+ * @classdesc
+ */
+var KalturaBaseEntryListResponse = function (_ServiceResult) {
+  _inherits(KalturaBaseEntryListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The json response
+   */
+
+  /**
+   * @member - The total count
+   * @type {number}
+   */
+  function KalturaBaseEntryListResponse(responseObj) {
+    _classCallCheck(this, KalturaBaseEntryListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.entries = [];
+        responseObj.objects.map(function (entry) {
+          return _this.entries.push(new _kalturaMediaEntry2.default(entry));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member - The entries
+   * @type {Array<KalturaMediaEntry>}
+   */
+
+
+  return KalturaBaseEntryListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaBaseEntryListResponse;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE MediaEntry
+ * @classdesc
+ */
+var KalturaMediaEntry =
+
+/**
+ * @constructor
+ * @param {Object} entry The json response
+ */
+
+/**
+ * @member - Entry poster image
+ * @type {string}
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object
+ * @type {EntryType}
+ */
+
+/**
+ * @member - Comma separated flavor params ids that exists for this media entry
+ * @type {string}
+ */
+
+/**
+ * @member - Entry description
+ * @type {string}
+ */
+
+/**
+ * @member - The entry id
+ * @type {string}
+ */
+function KalturaMediaEntry(entry) {
+  _classCallCheck(this, KalturaMediaEntry);
+
+  this.id = entry.id;
+  this.name = entry.name;
+  this.description = entry.description;
+  this.dataUrl = entry.dataUrl;
+  this.type = entry.type;
+  this.entryType = entry.mediaType;
+  this.flavorParamsIds = entry.flavorParamsIds;
+  this.duration = entry.duration;
+  this.poster = entry.thumbnailUrl;
+  this.dvrStatus = entry.dvrStatus;
+}
+/**
+ * @member - DVR status
+ * @type {number}
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
+ * @type {MediaType}
+ */
+
+/**
+ * @member - The entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - The URL used for playback. This is not the download URL.
+ * @type {string}
+ */
+
+/**
+ * @member - Entry name (Min 1 chars)
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMediaEntry;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _sessionService = __webpack_require__(32);
+
+var _sessionService2 = _interopRequireDefault(_sessionService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var SessionLoader = function () {
+  _createClass(SessionLoader, null, [{
+    key: 'id',
+    get: function get() {
+      return "session";
+    }
+
+    /**
+     * @member - partner ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function SessionLoader(params) {
+    _classCallCheck(this, SessionLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._partnerId = params.partnerId;
+  }
+
+  _createClass(SessionLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._partnerId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.ks = response[0].data.ks;
+    },
+    get: function get() {
+      return this._response.ks;
+    }
+  }]);
+
+  return SessionLoader;
+}();
+
+exports.default = SessionLoader;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "session";
+
+/**
+ * Ovp session service methods
+ * @classdesc
+ */
+
+var SessionService = function (_OvpService) {
+  _inherits(SessionService, _OvpService);
+
+  function SessionService() {
+    _classCallCheck(this, SessionService);
+
+    return _possibleConstructorReturn(this, (SessionService.__proto__ || Object.getPrototypeOf(SessionService)).apply(this, arguments));
+  }
+
+  _createClass(SessionService, null, [{
+    key: 'anonymousSession',
+
+    /**
+     * Creates an instance of RequestBuilder for session.startWidgetSession
+     * @function anonymousSession
+     * @param {string} baseUrl The service base URL
+     * @param {string} partnerId The partner ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function anonymousSession(baseUrl, partnerId) {
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var request = new _requestBuilder2.default(headers);
+      request.service = SERVICE_NAME;
+      request.action = "startWidgetSession";
+      request.method = "POST";
+      request.url = request.getUrl(baseUrl);
+      request.tag = "session-startWidget";
+      request.params = { widgetId: "_" + partnerId };
+      return request;
+    }
+  }]);
+
+  return SessionService;
+}(_ovpService2.default);
+
+exports.default = SessionService;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _uiConfService = __webpack_require__(34);
+
+var _uiConfService2 = _interopRequireDefault(_uiConfService);
+
+var _kalturaUiConfResponse = __webpack_require__(35);
+
+var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+var UiConfigLoader = function () {
+  _createClass(UiConfigLoader, null, [{
+    key: 'id',
+    get: function get() {
+      return "uiConf";
+    }
+
+    /**
+     * @member - uiConf ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function UiConfigLoader(params) {
+    _classCallCheck(this, UiConfigLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._uiConfId = params.uiConfId;
+  }
+
+  _createClass(UiConfigLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._uiConfId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
+    },
+    get: function get() {
+      if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
+        return JSON.parse(this._response.uiConf.config).plugins;
+      } catch (err) {
+        return null;
+      } else return null;
+    }
+  }]);
+
+  return UiConfigLoader;
+}();
+
+exports.default = UiConfigLoader;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ovpService = __webpack_require__(3);
+
+var _ovpService2 = _interopRequireDefault(_ovpService);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SERVICE_NAME = "uiconf";
+
+/**
+ * Ovp uiconf service methods
+ * @classdesc
+ */
+
+var UiConfService = function (_OvpService) {
+  _inherits(UiConfService, _OvpService);
+
+  function UiConfService() {
+    _classCallCheck(this, UiConfService);
+
+    return _possibleConstructorReturn(this, (UiConfService.__proto__ || Object.getPrototypeOf(UiConfService)).apply(this, arguments));
+  }
+
+  _createClass(UiConfService, null, [{
+    key: 'get',
+
+    /**
+     * Creates an instance of RequestBuilder for uiconf.get
+     * @function get
+     * @param {string} baseUrl The service base URL
+     * @param {string} ks The ks
+     * @param {string} uiConfID The uiConf ID
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function get(baseUrl, ks, uiConfID) {
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var request = new _requestBuilder2.default(headers);
+      request.service = SERVICE_NAME;
+      request.action = "get";
+      request.method = "POST";
+      request.url = request.getUrl(baseUrl);
+      request.tag = "uiconf-get";
+      var responseProfileParams = {
+        fields: "config",
+        type: 1
+      };
+      request.params = { id: uiConfID, responseProfile: responseProfileParams, ks: ks };
+      return request;
+    }
+  }]);
+
+  return UiConfService;
+}(_ovpService2.default);
+
+exports.default = UiConfService;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(2);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Ui config response
+ * @classdesc
+ */
+var KalturaUiConfResponse = function (_ServiceResult) {
+  _inherits(KalturaUiConfResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} data The json response
+   */
+
+  /**
+   * @member -plugins configuration represented as Json string
+   * @type {string}
+   */
+
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+  function KalturaUiConfResponse(data) {
+    _classCallCheck(this, KalturaUiConfResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
+
+    if (!_this.hasError) {
+      _this.name = data.name;
+
+      _this.description = data.description;
+      _this.objTypeAsString = data.objTypeAsString;
+      _this.width = data.width;
+      _this.height = data.height;
+      _this.htmlParams = data.htmlParams;
+      _this.swfUrl = data.swfUrl;
+      _this.confFilePath = data.confFilePath;
+      _this.confFile = data.confFile;
+      _this.confFileFeatures = data.confFileFeatures;
+      _this.config = data.config;
+      _this.confVars = data.confVars;
+      _this.useCdn = data.useCdn;
+      _this.tags = data.tags;
+      _this.swfUrlVersion = data.swfUrlVersion;
+      _this.created = new Date(0);
+      _this.created.setUTCSeconds(data.createdAt);
+      _this.updated = new Date(0);
+      _this.updated.setUTCSeconds(data.updatedAt);
+      _this.html5Url = data.description;
+      _this.version = data.description;
+      _this.partnerTags = data.description;
+      _this.objType = data.description;
+      _this.creationMode = data.description;
+    }
+    return _this;
+  }
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+
+
+  return KalturaUiConfResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaUiConfResponse;
+
+/***/ })
+/******/ ]);
+});
+
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(true)
+		module.exports = factory(__webpack_require__(15));
+	else if(typeof define === 'function' && define.amd)
+		define(["playkit-js"], factory);
+	else if(typeof exports === 'object')
+		exports["PlaykitJsUi"] = factory(require("playkit-js"));
+	else
+		root["PlaykitJsUi"] = factory(root["Playkit"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_38__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -19884,7 +20034,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "connectAdvanced", function() { return connectAdvanced; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(10);
 
 
 
@@ -21072,7 +21222,7 @@ var index = { Provider: Provider, connect: connect, connectAdvanced: connectAdva
 /* harmony default export */ __webpack_exports__["default"] = (index);
 //# sourceMappingURL=preact-redux.esm.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19)))
 
 /***/ }),
 /* 2 */
@@ -21087,11 +21237,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _preact = __webpack_require__(0);
 
-var _playkitJs = __webpack_require__(35);
+var _playkitJs = __webpack_require__(38);
 
 var _playkitJs2 = _interopRequireDefault(_playkitJs);
 
-var _logger = __webpack_require__(65);
+var _logger = __webpack_require__(73);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -21139,6 +21289,447 @@ exports.default = BaseComponent;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(54);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21152,7 +21743,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.bindActions = bindActions;
 
-var _redux = __webpack_require__(7);
+var _redux = __webpack_require__(10);
 
 /**
  * Binding redux actions to props utility
@@ -21168,7 +21759,7 @@ function bindActions(actions) {
 }
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21179,7 +21770,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IconType = exports.default = undefined;
 
-var _icon = __webpack_require__(67);
+var _icon = __webpack_require__(75);
 
 Object.defineProperty(exports, 'IconType', {
   enumerable: true,
@@ -21195,14 +21786,45 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _icon2.default;
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function n(n){return n&&"object"==typeof n&&"default"in n?n.default:n}function t(n){return null!==n&&void 0!==n}function r(n,t){var o=e({},n);for(var i in t)t.hasOwnProperty(i)&&(o[i]=n[i]&&t[i]&&"object"==typeof n[i]&&"object"==typeof t[i]?r(n[i],t[i]):n[i]||t[i]);return o}function e(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r]);return n}function o(n){if(n=n||{},"string"==typeof n&&(n=n.split(",")),"join"in n){for(var t={},r=0;r<n.length;r++){var e=n[r].trim();e&&(t[e.split(".").pop()]=e)}return t}return n}function i(n,t){return v=t||h,n&&n.replace(/\{\{([\w.-]+)\}\}/g,u)}function u(n,t){for(var r=t.split("."),e=v,o=0;o<r.length;o++)if(null==(e=e[r[o]]))return"";return"string"==typeof e&&e.match(/\{\{/)&&(e=i(e,v)),e}function c(n,r,e,o,u,c){r&&(n=r+"."+n);var a=e&&f(e,n);return(u||0===u)&&a&&"object"==typeof a&&(a=a.splice?a[u]||a[0]:0===u&&t(a.none)?a.none:1===u&&t(a.one||a.singular)?a.one||a.singular:a.some||a.many||a.plural||a.other||a),a&&i(a,o)||c||null}function a(n,t,r){var i={};t=t||{},n=o(n);for(var u in n)if(n.hasOwnProperty(u)&&n[u]){var a=n[u];r||"string"!=typeof a?a.nodeName===g&&(a=e({fallback:a.children&&a.children[0]},a.attributes),i[u]=c(a.id,t.scope,t.dictionary,a.fields,a.plural,a.fallback)):i[u]=c(a,t.scope,t.dictionary)}return i}var l=__webpack_require__(0),f=n(__webpack_require__(71)),p=/[?&#]intl=show/,s=function(n){function t(){n.apply(this,arguments)}return n&&(t.__proto__=n),t.prototype=Object.create(n&&n.prototype),t.prototype.constructor=t,t.prototype.getChildContext=function(){var n=this.props,t=n.scope,o=n.definition,i=n.mark,u=e({},this.context.intl||{});return t&&(u.scope=t),o&&(u.dictionary=r(u.dictionary||{},o)),(i||"undefined"!=typeof location&&String(location).match(p))&&(u.mark=!0),{intl:u}},t.prototype.render=function(n){var t=n.children;return t&&t[0]||null},t}(l.Component),d=function(){for(var n=[],t=arguments.length;t--;)n[t]=arguments[t];if(n.length>1){return y(n[0],n[1])}var r=n[0];return function(n){return y(n,r)}},y=function(n,t){return function(r){return l.h(s,t||{},l.h(n,r))}},h={},v,g=function(n,t){var r=n.id,e=n.children,o=n.plural,i=n.fields,u=t.intl,a=e&&e[0],p=c(r,u&&u.scope,u&&u.dictionary,i,o,a);if(u&&u.mark){var s="dictionary"+(u&&u.scope?"."+u.scope:"")+"."+r;return l.h("mark",{style:"background: "+(p?f(u,s)?"rgba(119,231,117,.5)":"rgba(229,226,41,.5)":"rgba(228,147,51,.5)"),title:r},p)}return p},b=function(n,t){var r=n.children,e=t.intl,o=r&&r[0];return o&&l.cloneElement(o,a(o.attributes,e,!0))},m=function(n){return function(t){return function(r,e){var o="function"==typeof n?n(r):n,i=a(o,e.intl);return l.h(t,assign({},r,i))}}};d.intl=d,d.IntlProvider=s,d.Text=g,d.Localizer=b,d.withText=m,module.exports=d;
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(53);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function n(n){return n&&"object"==typeof n&&"default"in n?n.default:n}function t(n){return null!==n&&void 0!==n}function r(n,t){var o=e({},n);for(var i in t)t.hasOwnProperty(i)&&(o[i]=n[i]&&t[i]&&"object"==typeof n[i]&&"object"==typeof t[i]?r(n[i],t[i]):n[i]||t[i]);return o}function e(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r]);return n}function o(n){if(n=n||{},"string"==typeof n&&(n=n.split(",")),"join"in n){for(var t={},r=0;r<n.length;r++){var e=n[r].trim();e&&(t[e.split(".").pop()]=e)}return t}return n}function i(n,t){return v=t||h,n&&n.replace(/\{\{([\w.-]+)\}\}/g,u)}function u(n,t){for(var r=t.split("."),e=v,o=0;o<r.length;o++)if(null==(e=e[r[o]]))return"";return"string"==typeof e&&e.match(/\{\{/)&&(e=i(e,v)),e}function c(n,r,e,o,u,c){r&&(n=r+"."+n);var a=e&&f(e,n);return(u||0===u)&&a&&"object"==typeof a&&(a=a.splice?a[u]||a[0]:0===u&&t(a.none)?a.none:1===u&&t(a.one||a.singular)?a.one||a.singular:a.some||a.many||a.plural||a.other||a),a&&i(a,o)||c||null}function a(n,t,r){var i={};t=t||{},n=o(n);for(var u in n)if(n.hasOwnProperty(u)&&n[u]){var a=n[u];r||"string"!=typeof a?a.nodeName===g&&(a=e({fallback:a.children&&a.children[0]},a.attributes),i[u]=c(a.id,t.scope,t.dictionary,a.fields,a.plural,a.fallback)):i[u]=c(a,t.scope,t.dictionary)}return i}var l=__webpack_require__(0),f=n(__webpack_require__(85)),p=/[?&#]intl=show/,s=function(n){function t(){n.apply(this,arguments)}return n&&(t.__proto__=n),t.prototype=Object.create(n&&n.prototype),t.prototype.constructor=t,t.prototype.getChildContext=function(){var n=this.props,t=n.scope,o=n.definition,i=n.mark,u=e({},this.context.intl||{});return t&&(u.scope=t),o&&(u.dictionary=r(u.dictionary||{},o)),(i||"undefined"!=typeof location&&String(location).match(p))&&(u.mark=!0),{intl:u}},t.prototype.render=function(n){var t=n.children;return t&&t[0]||null},t}(l.Component),d=function(){for(var n=[],t=arguments.length;t--;)n[t]=arguments[t];if(n.length>1){return y(n[0],n[1])}var r=n[0];return function(n){return y(n,r)}},y=function(n,t){return function(r){return l.h(s,t||{},l.h(n,r))}},h={},v,g=function(n,t){var r=n.id,e=n.children,o=n.plural,i=n.fields,u=t.intl,a=e&&e[0],p=c(r,u&&u.scope,u&&u.dictionary,i,o,a);if(u&&u.mark){var s="dictionary"+(u&&u.scope?"."+u.scope:"")+"."+r;return l.h("mark",{style:"background: "+(p?f(u,s)?"rgba(119,231,117,.5)":"rgba(229,226,41,.5)":"rgba(228,147,51,.5)"),title:r},p)}return p},b=function(n,t){var r=n.children,e=t.intl,o=r&&r[0];return o&&l.cloneElement(o,a(o.attributes,e,!0))},m=function(n){return function(t){return function(r,e){var o="function"==typeof n?n(r):n,i=a(o,e.intl);return l.h(t,assign({},r,i))}}};d.intl=d,d.IntlProvider=s,d.Text=g,d.Localizer=b,d.withText=m,module.exports=d;
 //# sourceMappingURL=preact-i18n.js.map
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21306,17 +21928,17 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(33);
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(36);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__["a"]; });
@@ -21340,10 +21962,10 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 }
 
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(29)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21354,7 +21976,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _loading = __webpack_require__(69);
+var _loading = __webpack_require__(79);
 
 var _loading2 = _interopRequireDefault(_loading);
 
@@ -21363,7 +21985,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _loading2.default;
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21374,7 +21996,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _playPause = __webpack_require__(70);
+var _playPause = __webpack_require__(82);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
@@ -21383,7 +22005,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _playPause2.default;
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21445,66 +22067,6 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _seekbar = __webpack_require__(74);
-
-var _seekbar2 = _interopRequireDefault(_seekbar);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _seekbar2.default;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _volume = __webpack_require__(75);
-
-var _volume2 = _interopRequireDefault(_volume);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _volume2.default;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _fullscreen = __webpack_require__(85);
-
-var _fullscreen2 = _interopRequireDefault(_fullscreen);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _fullscreen2.default;
-
-/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21516,13 +22078,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _bottomBar = __webpack_require__(89);
+var _seekbar = __webpack_require__(88);
 
-var _bottomBar2 = _interopRequireDefault(_bottomBar);
+var _seekbar2 = _interopRequireDefault(_seekbar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _bottomBar2.default;
+exports.default = _seekbar2.default;
 
 /***/ }),
 /* 15 */
@@ -21536,7 +22098,67 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _overlayPlay = __webpack_require__(49);
+var _volume = __webpack_require__(91);
+
+var _volume2 = _interopRequireDefault(_volume);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _volume2.default;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _fullscreen = __webpack_require__(107);
+
+var _fullscreen2 = _interopRequireDefault(_fullscreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _fullscreen2.default;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _bottomBar = __webpack_require__(115);
+
+var _bottomBar2 = _interopRequireDefault(_bottomBar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _bottomBar2.default;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _overlayPlay = __webpack_require__(55);
 
 var _overlayPlay2 = _interopRequireDefault(_overlayPlay);
 
@@ -21545,7 +22167,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _overlayPlay2.default;
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports) {
 
 var g;
@@ -21572,7 +22194,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21614,7 +22236,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21625,7 +22247,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _prePlaybackPlayOverlay = __webpack_require__(68);
+var _prePlaybackPlayOverlay = __webpack_require__(76);
 
 var _prePlaybackPlayOverlay2 = _interopRequireDefault(_prePlaybackPlayOverlay);
 
@@ -21634,7 +22256,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _prePlaybackPlayOverlay2.default;
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21693,7 +22315,7 @@ exports.toHHMMSS = toHHMMSS;
 exports.toSecondsFromHHMMSS = toSecondsFromHHMMSS;
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21704,7 +22326,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _settings = __webpack_require__(76);
+var _settings = __webpack_require__(92);
 
 var _settings2 = _interopRequireDefault(_settings);
 
@@ -21713,7 +22335,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _settings2.default;
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -21834,7 +22456,7 @@ return Portal;
 
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21845,7 +22467,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _overlay = __webpack_require__(78);
+var _overlay = __webpack_require__(95);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
@@ -21854,7 +22476,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _overlay2.default;
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21865,7 +22487,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _language = __webpack_require__(82);
+var _language = __webpack_require__(99);
 
 var _language2 = _interopRequireDefault(_language);
 
@@ -21874,7 +22496,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _language2.default;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21926,7 +22548,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21937,7 +22559,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _timeDisplay = __webpack_require__(88);
+var _timeDisplay = __webpack_require__(112);
 
 var _timeDisplay2 = _interopRequireDefault(_timeDisplay);
 
@@ -21946,7 +22568,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _timeDisplay2.default;
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21957,7 +22579,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _overlayPortal = __webpack_require__(90);
+var _overlayPortal = __webpack_require__(118);
 
 var _overlayPortal2 = _interopRequireDefault(_overlayPortal);
 
@@ -21966,7 +22588,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _overlayPortal2.default;
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21977,7 +22599,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _keyboard = __webpack_require__(91);
+var _keyboard = __webpack_require__(119);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -21986,7 +22608,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _keyboard2.default;
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21997,57 +22619,61 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = playbackUI;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _overlayPlay = __webpack_require__(15);
+var _overlayPlay = __webpack_require__(18);
 
 var _overlayPlay2 = _interopRequireDefault(_overlayPlay);
 
-var _prePlaybackPlayOverlay = __webpack_require__(18);
+var _prePlaybackPlayOverlay = __webpack_require__(21);
 
 var _prePlaybackPlayOverlay2 = _interopRequireDefault(_prePlaybackPlayOverlay);
 
-var _loading = __webpack_require__(8);
+var _loading = __webpack_require__(11);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _playPause = __webpack_require__(9);
+var _playPause = __webpack_require__(12);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbarPlaybackContainer = __webpack_require__(72);
+var _seekbarPlaybackContainer = __webpack_require__(86);
 
 var _seekbarPlaybackContainer2 = _interopRequireDefault(_seekbarPlaybackContainer);
 
-var _volume = __webpack_require__(12);
+var _volume = __webpack_require__(15);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _settings = __webpack_require__(20);
+var _settings = __webpack_require__(23);
 
 var _settings2 = _interopRequireDefault(_settings);
 
-var _language = __webpack_require__(23);
+var _language = __webpack_require__(26);
 
 var _language2 = _interopRequireDefault(_language);
 
-var _fullscreen = __webpack_require__(13);
+var _fullscreen = __webpack_require__(16);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-var _timeDisplayPlaybackContainer = __webpack_require__(86);
+var _timeDisplayPlaybackContainer = __webpack_require__(110);
 
 var _timeDisplayPlaybackContainer2 = _interopRequireDefault(_timeDisplayPlaybackContainer);
 
-var _bottomBar = __webpack_require__(14);
+var _bottomBar = __webpack_require__(17);
 
 var _bottomBar2 = _interopRequireDefault(_bottomBar);
 
-var _overlayPortal = __webpack_require__(26);
+var _overlayPortal = __webpack_require__(29);
 
 var _overlayPortal2 = _interopRequireDefault(_overlayPortal);
 
-var _keyboard = __webpack_require__(27);
+var _keyboard = __webpack_require__(30);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -22063,12 +22689,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function playbackUI(props) {
   return (0, _preact.h)(
     'div',
-    { className: 'playback-gui-wrapper' },
+    { className: _style2.default.playbackGuiWWrapper },
     (0, _preact.h)(_keyboard2.default, { player: props.player, config: props.config }),
     (0, _preact.h)(_loading2.default, { player: props.player }),
     (0, _preact.h)(
       'div',
-      { className: 'player-gui', id: 'player-gui' },
+      { className: _style2.default.playerGui, id: 'player-gui' },
       (0, _preact.h)(_overlayPortal2.default, null),
       (0, _preact.h)(_overlayPlay2.default, { player: props.player }),
       (0, _preact.h)(
@@ -22077,13 +22703,13 @@ function playbackUI(props) {
         (0, _preact.h)(_seekbarPlaybackContainer2.default, { showFramePreview: true, showTimeBubble: true, player: props.player, config: props.config }),
         (0, _preact.h)(
           'div',
-          { className: 'left-controls' },
+          { className: _style2.default.leftControls },
           (0, _preact.h)(_playPause2.default, { player: props.player }),
           (0, _preact.h)(_timeDisplayPlaybackContainer2.default, { format: 'current / total' })
         ),
         (0, _preact.h)(
           'div',
-          { className: 'right-controls' },
+          { className: _style2.default.rightControls },
           (0, _preact.h)(_volume2.default, { player: props.player }),
           (0, _preact.h)(_language2.default, { player: props.player }),
           (0, _preact.h)(_settings2.default, { player: props.player }),
@@ -22096,7 +22722,7 @@ function playbackUI(props) {
 }
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -22286,14 +22912,14 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActionTypes; });
 /* harmony export (immutable) */ __webpack_exports__["b"] = createStore;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
 
 
@@ -22545,13 +23171,13 @@ var ActionTypes = {
 }
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(65);
 
 
 
@@ -22617,11 +23243,11 @@ function isPlainObject(value) {
 
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(59);
 
 
 /** Built-in value references. */
@@ -22631,7 +23257,7 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22659,7 +23285,7 @@ function warning(message) {
 }
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22698,13 +23324,13 @@ function compose() {
 }
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_35__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_38__;
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22746,7 +23372,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22808,7 +23434,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22860,7 +23486,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22871,7 +23497,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _smartContainer = __webpack_require__(77);
+var _smartContainer = __webpack_require__(93);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
@@ -22880,7 +23506,38 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _smartContainer2.default;
 
 /***/ }),
-/* 40 */
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(94);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_smart-container.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_smart-container.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22892,13 +23549,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _smartContainer = __webpack_require__(43);
+
+var _smartContainer2 = _interopRequireDefault(_smartContainer);
+
 var _preact = __webpack_require__(0);
 
-var _dropdown = __webpack_require__(41);
+var _dropdown = __webpack_require__(45);
 
 var _dropdown2 = _interopRequireDefault(_dropdown);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -22939,13 +23600,13 @@ var SmartContainerItem = function (_Component) {
     value: function render(props) {
       return (0, _preact.h)(
         'div',
-        { className: 'smart-container-item select-menu-item' },
+        { className: [_smartContainer2.default.smartContainerItem, _smartContainer2.default.selectMenuItem].join(' ') },
         (0, _preact.h)(
           'label',
           { htmlFor: _icon.IconType.Quality },
           props.icon ? (0, _preact.h)(
             'div',
-            { className: 'label-icon' },
+            { className: _smartContainer2.default.labelIcon },
             (0, _preact.h)(_icon2.default, { type: props.icon })
           ) : undefined,
           props.label
@@ -22963,7 +23624,7 @@ var SmartContainerItem = function (_Component) {
 exports.default = SmartContainerItem;
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22974,7 +23635,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _dropdown = __webpack_require__(79);
+var _dropdown = __webpack_require__(96);
 
 var _dropdown2 = _interopRequireDefault(_dropdown);
 
@@ -22983,7 +23644,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _dropdown2.default;
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23024,7 +23685,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 43 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23035,45 +23696,49 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = adsUI;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _loading = __webpack_require__(8);
+var _loading = __webpack_require__(11);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _playPause = __webpack_require__(9);
+var _playPause = __webpack_require__(12);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbarAdsContainer = __webpack_require__(92);
+var _seekbarAdsContainer = __webpack_require__(120);
 
 var _seekbarAdsContainer2 = _interopRequireDefault(_seekbarAdsContainer);
 
-var _volume = __webpack_require__(12);
+var _volume = __webpack_require__(15);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _fullscreen = __webpack_require__(13);
+var _fullscreen = __webpack_require__(16);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-var _timeDisplayAdsContainer = __webpack_require__(94);
+var _timeDisplayAdsContainer = __webpack_require__(122);
 
 var _timeDisplayAdsContainer2 = _interopRequireDefault(_timeDisplayAdsContainer);
 
-var _adSkip = __webpack_require__(96);
+var _adSkip = __webpack_require__(124);
 
 var _adSkip2 = _interopRequireDefault(_adSkip);
 
-var _adLearnMore = __webpack_require__(98);
+var _adLearnMore = __webpack_require__(128);
 
 var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
 
-var _topBar = __webpack_require__(44);
+var _topBar = __webpack_require__(48);
 
 var _topBar2 = _interopRequireDefault(_topBar);
 
-var _bottomBar = __webpack_require__(14);
+var _bottomBar = __webpack_require__(17);
 
 var _bottomBar2 = _interopRequireDefault(_bottomBar);
 
@@ -23087,25 +23752,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {HTMLElement} player ui tree
  */
 function adsUI(props) {
-  var useCustomSkipButton = false;
-  var isMobile = !!props.player.env.device.type;
-  var adsRenderingSettings = props.player.config.plugins.ima.adsRenderingSettings;
-  var useStyledLinearAds = adsRenderingSettings && adsRenderingSettings.useStyledLinearAds;
-  try {
-    if (!useStyledLinearAds && isMobile) {
-      useStyledLinearAds = true;
-    }
-  } catch (e) {
-    //TODO: add error handling
-  }
-
+  var adsUiCustomization = getAdsUiCustomization();
   return (0, _preact.h)(
     'div',
-    { className: 'ad-gui-wrapper' },
+    { className: _style2.default.adGuiWrapper },
     (0, _preact.h)(_loading2.default, { player: props.player }),
-    useStyledLinearAds ? undefined : (0, _preact.h)(
+    adsUiCustomization ? (0, _preact.h)(
       'div',
-      { className: 'player-gui', id: 'player-gui' },
+      { className: _style2.default.playerGui, id: 'player-gui' },
       (0, _preact.h)(
         'div',
         null,
@@ -23114,20 +23768,20 @@ function adsUI(props) {
           null,
           (0, _preact.h)(
             'div',
-            { className: 'left-controls' },
+            { className: _style2.default.leftControls },
             (0, _preact.h)(
               'span',
-              { className: 'font-size-base' },
+              { className: _style2.default.fontSizeBase },
               'Adverisment'
             )
           ),
           (0, _preact.h)(
             'div',
-            { className: 'right-controls' },
-            (0, _preact.h)(_adLearnMore2.default, null)
+            { className: _style2.default.rightControls },
+            adsUiCustomization.learnMoreButton ? (0, _preact.h)(_adLearnMore2.default, null) : undefined
           )
         ),
-        useCustomSkipButton ? (0, _preact.h)(_adSkip2.default, { player: props.player }) : undefined
+        adsUiCustomization.skipButton ? (0, _preact.h)(_adSkip2.default, { player: props.player }) : undefined
       ),
       (0, _preact.h)(
         _bottomBar2.default,
@@ -23135,23 +23789,70 @@ function adsUI(props) {
         (0, _preact.h)(_seekbarAdsContainer2.default, { adBreak: true, showFramePreview: true, showTimeBubble: true, player: props.player }),
         (0, _preact.h)(
           'div',
-          { className: 'left-controls' },
+          { className: _style2.default.leftControls },
           (0, _preact.h)(_playPause2.default, { player: props.player }),
           (0, _preact.h)(_timeDisplayAdsContainer2.default, null)
         ),
         (0, _preact.h)(
           'div',
-          { className: 'right-controls' },
+          { className: _style2.default.rightControls },
           (0, _preact.h)(_volume2.default, { player: props.player }),
           (0, _preact.h)(_fullscreen2.default, { player: props.player, config: props.config })
         )
       )
-    )
+    ) : undefined
   );
 }
 
+/**
+ * Gets the ads ui customization settings
+ * @returns {?Object} - undefined if the default ads ui should be shown,
+ * or customization object if playkit ads ui should be shown.
+ */
+function getAdsUiCustomization() {
+  if (useDefaultAdsUi()) {
+    return undefined;
+  }
+  return {
+    learnMoreButton: useCustomLearnMoreButton(),
+    skipButton: useCustomSkipButton()
+  };
+}
+
+/**
+ * Whether the default ads ui should be shown or not.
+ * @param {any} props - component props
+ * @returns {boolean} - Whether the default ads ui should be shown or not.
+ */
+function useDefaultAdsUi(props) {
+  try {
+    var isMobile = !!props.player.env.device.type;
+    var adsRenderingSettings = props.player.config.plugins.ima.adsRenderingSettings;
+    var useStyledLinearAds = adsRenderingSettings && adsRenderingSettings.useStyledLinearAds;
+    return isMobile || useStyledLinearAds;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * @returns {boolean} - Whether to use playkit skip button or not.
+ */
+function useCustomSkipButton() {
+  //TODO: false until we develop are own ads manager
+  return false;
+}
+
+/**
+ * @returns {boolean} - Whether to use playkit learn more button or not.
+ */
+function useCustomLearnMoreButton() {
+  //TODO: false until we develop are own ads manager
+  return false;
+}
+
 /***/ }),
-/* 44 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23162,7 +23863,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _topBar = __webpack_require__(100);
+var _topBar = __webpack_require__(132);
 
 var _topBar2 = _interopRequireDefault(_topBar);
 
@@ -23171,7 +23872,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _topBar2.default;
 
 /***/ }),
-/* 45 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23182,57 +23883,61 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = liveUI;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _overlayPlay = __webpack_require__(15);
+var _overlayPlay = __webpack_require__(18);
 
 var _overlayPlay2 = _interopRequireDefault(_overlayPlay);
 
-var _prePlaybackPlayOverlay = __webpack_require__(18);
+var _prePlaybackPlayOverlay = __webpack_require__(21);
 
 var _prePlaybackPlayOverlay2 = _interopRequireDefault(_prePlaybackPlayOverlay);
 
-var _loading = __webpack_require__(8);
+var _loading = __webpack_require__(11);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _playPause = __webpack_require__(9);
+var _playPause = __webpack_require__(12);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbarLivePlaybackContainer = __webpack_require__(101);
+var _seekbarLivePlaybackContainer = __webpack_require__(135);
 
 var _seekbarLivePlaybackContainer2 = _interopRequireDefault(_seekbarLivePlaybackContainer);
 
-var _volume = __webpack_require__(12);
+var _volume = __webpack_require__(15);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _settings = __webpack_require__(20);
+var _settings = __webpack_require__(23);
 
 var _settings2 = _interopRequireDefault(_settings);
 
-var _language = __webpack_require__(23);
+var _language = __webpack_require__(26);
 
 var _language2 = _interopRequireDefault(_language);
 
-var _fullscreen = __webpack_require__(13);
+var _fullscreen = __webpack_require__(16);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-var _bottomBar = __webpack_require__(14);
+var _bottomBar = __webpack_require__(17);
 
 var _bottomBar2 = _interopRequireDefault(_bottomBar);
 
-var _overlayPortal = __webpack_require__(26);
+var _overlayPortal = __webpack_require__(29);
 
 var _overlayPortal2 = _interopRequireDefault(_overlayPortal);
 
-var _keyboard = __webpack_require__(27);
+var _keyboard = __webpack_require__(30);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
-var _liveTag = __webpack_require__(103);
+var _liveTag = __webpack_require__(137);
 
 var _liveTag2 = _interopRequireDefault(_liveTag);
 
@@ -23248,12 +23953,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function liveUI(props) {
   return (0, _preact.h)(
     'div',
-    { className: 'playback-gui-wrapper' },
+    { className: _style2.default.playbackGuiWWrapper },
     (0, _preact.h)(_keyboard2.default, { player: props.player, config: props.config }),
     (0, _preact.h)(_loading2.default, { player: props.player }),
     (0, _preact.h)(
       'div',
-      { className: 'player-gui', id: 'player-gui' },
+      { className: _style2.default.playerGui, id: 'player-gui' },
       (0, _preact.h)(_overlayPortal2.default, null),
       (0, _preact.h)(_overlayPlay2.default, { player: props.player }),
       (0, _preact.h)(
@@ -23262,13 +23967,13 @@ function liveUI(props) {
         (0, _preact.h)(_seekbarLivePlaybackContainer2.default, { showFramePreview: true, showTimeBubble: true, player: props.player }),
         (0, _preact.h)(
           'div',
-          { className: 'left-controls' },
+          { className: _style2.default.leftControls },
           (0, _preact.h)(_playPause2.default, { player: props.player }),
           (0, _preact.h)(_liveTag2.default, { player: props.player })
         ),
         (0, _preact.h)(
           'div',
-          { className: 'right-controls' },
+          { className: _style2.default.rightControls },
           (0, _preact.h)(_volume2.default, { player: props.player }),
           (0, _preact.h)(_language2.default, { player: props.player }),
           (0, _preact.h)(_settings2.default, { player: props.player }),
@@ -23281,7 +23986,7 @@ function liveUI(props) {
 }
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23323,7 +24028,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 47 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23561,7 +24266,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23581,7 +24286,7 @@ Object.defineProperty(exports, 'h', {
   }
 });
 
-var _playback = __webpack_require__(28);
+var _playback = __webpack_require__(31);
 
 Object.defineProperty(exports, 'playbackUI', {
   enumerable: true,
@@ -23590,7 +24295,7 @@ Object.defineProperty(exports, 'playbackUI', {
   }
 });
 
-var _ads = __webpack_require__(43);
+var _ads = __webpack_require__(47);
 
 Object.defineProperty(exports, 'adsUI', {
   enumerable: true,
@@ -23599,7 +24304,7 @@ Object.defineProperty(exports, 'adsUI', {
   }
 });
 
-var _live = __webpack_require__(45);
+var _live = __webpack_require__(49);
 
 Object.defineProperty(exports, 'liveUI', {
   enumerable: true,
@@ -23608,7 +24313,7 @@ Object.defineProperty(exports, 'liveUI', {
   }
 });
 
-var _overlayPlay = __webpack_require__(15);
+var _overlayPlay = __webpack_require__(18);
 
 Object.defineProperty(exports, 'OverlayPlay', {
   enumerable: true,
@@ -23617,7 +24322,7 @@ Object.defineProperty(exports, 'OverlayPlay', {
   }
 });
 
-var _prePlaybackPlayOverlay = __webpack_require__(18);
+var _prePlaybackPlayOverlay = __webpack_require__(21);
 
 Object.defineProperty(exports, 'PrePlaybackPlayOverlay', {
   enumerable: true,
@@ -23626,7 +24331,7 @@ Object.defineProperty(exports, 'PrePlaybackPlayOverlay', {
   }
 });
 
-var _loading = __webpack_require__(8);
+var _loading = __webpack_require__(11);
 
 Object.defineProperty(exports, 'Loading', {
   enumerable: true,
@@ -23635,7 +24340,7 @@ Object.defineProperty(exports, 'Loading', {
   }
 });
 
-var _playPause = __webpack_require__(9);
+var _playPause = __webpack_require__(12);
 
 Object.defineProperty(exports, 'PlayPauseControl', {
   enumerable: true,
@@ -23644,7 +24349,7 @@ Object.defineProperty(exports, 'PlayPauseControl', {
   }
 });
 
-var _seekbar = __webpack_require__(11);
+var _seekbar = __webpack_require__(14);
 
 Object.defineProperty(exports, 'SeekBarControl', {
   enumerable: true,
@@ -23653,7 +24358,7 @@ Object.defineProperty(exports, 'SeekBarControl', {
   }
 });
 
-var _volume = __webpack_require__(12);
+var _volume = __webpack_require__(15);
 
 Object.defineProperty(exports, 'VolumeControl', {
   enumerable: true,
@@ -23662,7 +24367,7 @@ Object.defineProperty(exports, 'VolumeControl', {
   }
 });
 
-var _share = __webpack_require__(105);
+var _share = __webpack_require__(141);
 
 Object.defineProperty(exports, 'ShareControl', {
   enumerable: true,
@@ -23671,7 +24376,7 @@ Object.defineProperty(exports, 'ShareControl', {
   }
 });
 
-var _settings = __webpack_require__(20);
+var _settings = __webpack_require__(23);
 
 Object.defineProperty(exports, 'SettingsControl', {
   enumerable: true,
@@ -23680,7 +24385,7 @@ Object.defineProperty(exports, 'SettingsControl', {
   }
 });
 
-var _language = __webpack_require__(23);
+var _language = __webpack_require__(26);
 
 Object.defineProperty(exports, 'LanguageControl', {
   enumerable: true,
@@ -23689,7 +24394,7 @@ Object.defineProperty(exports, 'LanguageControl', {
   }
 });
 
-var _fullscreen = __webpack_require__(13);
+var _fullscreen = __webpack_require__(16);
 
 Object.defineProperty(exports, 'FullscreenControl', {
   enumerable: true,
@@ -23698,7 +24403,7 @@ Object.defineProperty(exports, 'FullscreenControl', {
   }
 });
 
-var _timeDisplay = __webpack_require__(25);
+var _timeDisplay = __webpack_require__(28);
 
 Object.defineProperty(exports, 'TimeDisplay', {
   enumerable: true,
@@ -23707,7 +24412,7 @@ Object.defineProperty(exports, 'TimeDisplay', {
   }
 });
 
-var _topBar = __webpack_require__(44);
+var _topBar = __webpack_require__(48);
 
 Object.defineProperty(exports, 'TopBar', {
   enumerable: true,
@@ -23716,7 +24421,7 @@ Object.defineProperty(exports, 'TopBar', {
   }
 });
 
-var _bottomBar = __webpack_require__(14);
+var _bottomBar = __webpack_require__(17);
 
 Object.defineProperty(exports, 'BottomBar', {
   enumerable: true,
@@ -23725,7 +24430,7 @@ Object.defineProperty(exports, 'BottomBar', {
   }
 });
 
-var _overlayPortal = __webpack_require__(26);
+var _overlayPortal = __webpack_require__(29);
 
 Object.defineProperty(exports, 'OverlayPortal', {
   enumerable: true,
@@ -23734,7 +24439,7 @@ Object.defineProperty(exports, 'OverlayPortal', {
   }
 });
 
-var _keyboard = __webpack_require__(27);
+var _keyboard = __webpack_require__(30);
 
 Object.defineProperty(exports, 'KeyboardControl', {
   enumerable: true,
@@ -23743,7 +24448,7 @@ Object.defineProperty(exports, 'KeyboardControl', {
   }
 });
 
-var _uiManager = __webpack_require__(109);
+var _uiManager = __webpack_require__(145);
 
 var _uiManager2 = _interopRequireDefault(_uiManager);
 
@@ -23752,7 +24457,379 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _uiManager2.default;
 
 /***/ }),
-/* 49 */
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-row {\n  display: block; }\n  .playkit-row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.playkit-d-inline-block {\n  display: inline-block; }\n\n.playkit-mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.playkit-font-size-base {\n  font-size: 15px; }\n\n.playkit-form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .playkit-form-group.playkit-has-error .playkit-form-control {\n    border-color: #db1f26; }\n    .playkit-form-group.playkit-has-error .playkit-form-control:focus {\n      border-color: #fff; }\n  .playkit-form-group.playkit-has-icon .playkit-form-control {\n    padding-left: 34px; }\n  .playkit-form-group .playkit-icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.playkit-form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .playkit-form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .playkit-form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .playkit-form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .playkit-form-control:focus + .playkit-icon {\n      fill: #999; }\n\ntextarea.playkit-form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.playkit-checkbox {\n  font-size: 15px;\n  position: relative; }\n  .playkit-checkbox input {\n    display: none; }\n  .playkit-checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .playkit-checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.playkit-form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .playkit-form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .playkit-form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .playkit-form-group-row .playkit-dropdown {\n    float: right; }\n\n.playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n\n@keyframes playkit-openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.playkit-dropdown {\n  position: relative;\n  font-size: 15px; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-button .playkit-icon {\n    transform: rotate(180deg); }\n  .playkit-dropdown .playkit-dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .playkit-dropdown .playkit-dropdown-button .playkit-icon {\n      width: 16px;\n      height: 16px;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.playkit-dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: playkit-openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .playkit-dropdown-menu.playkit-top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .playkit-dropdown-menu.playkit-bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .playkit-dropdown-menu.playkit-right {\n    left: 0; }\n  .playkit-dropdown-menu.playkit-left {\n    right: 0; }\n  .playkit-dropdown-menu .playkit-dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item:hover {\n      color: #fff; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active {\n      color: #01ACCD; }\n      .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active .playkit-icon-check {\n        background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%2301ACCD' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item .playkit-icon-check {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.playkit-tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.playkit-player .playkit-control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer; }\n  .playkit-player .playkit-control-button i {\n    width: 32px;\n    height: 32px; }\n  .playkit-player .playkit-control-button.playkit-active {\n    opacity: 1; }\n  .playkit-player .playkit-control-button.playkit-control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button:hover {\n  opacity: 1; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button.playkit-control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.playkit-player .playkit-control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.playkit-player.playkit-touch .playkit-player .playkit-control-button-container {\n  position: static; }\n\n.playkit-player.playkit-touch .playkit-control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.playkit-kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.playkit-player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .playkit-player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .playkit-player * {\n    box-sizing: border-box;\n    outline: none; }\n  .playkit-player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .playkit-player video {\n    width: 100%; }\n  .playkit-player .playkit-player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .playkit-player .playkit-player-gui input, .playkit-player .playkit-player-gui textarea {\n      font-family: sans-serif; }\n  .playkit-player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .playkit-player.playkit-overlay-active #overlay-portal {\n    z-index: 11; }\n  .playkit-player.playkit-metadata-loaded .playkit-player-gui,\n  .playkit-player.playkit-state-paused .playkit-player-gui,\n  .playkit-player.playkit-overlay-active .playkit-player-gui,\n  .playkit-player.playkit-menu-active .playkit-player-gui {\n    opacity: 1; }\n\n.playkit-player [id^=playkit-ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-hover [id^=playkit-ads-container],\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-state-paused [id^=playkit-ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\n.playkit-player.playkit-overlay-active .playkit-subtitles {\n  display: none; }\n\n.playkit-player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player:not(.playkit-overlay-active).playkit-state-paused .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active).playkit-hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes playkit-openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.playkit-overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: playkit-openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .playkit-overlay.playkit-active {\n    display: block;\n    opacity: 1; }\n  .playkit-overlay .playkit-overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .playkit-overlay .playkit-title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .playkit-overlay .playkit-close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    cursor: pointer; }\n    .playkit-overlay .playkit-close-overlay .playkit-icon-close {\n      width: 24px;\n      height: 24px; }\n  .playkit-overlay .playkit-overlay-screen {\n    display: none; }\n    .playkit-overlay .playkit-overlay-screen.playkit-active {\n      display: block; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-overlay-contents {\n  padding: 36px 20px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-close-overlay {\n  top: 38px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-title {\n  margin-bottom: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-overlay-contents {\n  padding: 16px 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n\n.playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 60px 0; }\n  .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:first-child {\n      margin-left: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:last-child {\n      margin-right: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-facebook-share-btn {\n      background-color: #3B5998; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-twitter-share-btn {\n      background-color: #1DA1F2; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-google-plus-share-btn {\n      background-color: #DD4B39; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.playkit-share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.playkit-link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .playkit-link-options-container .playkit-copy-url-row {\n    display: flex; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-input-copy-url {\n      margin: 0; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url {\n      margin-left: 16px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied {\n        background-color: #009444; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .playkit-link-options-container .playkit-video-start-options-row {\n    margin-top: 24px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-checkbox {\n      margin-right: 15px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-form-group {\n      margin: 0; }\n\n.playkit-player:not(.playkit-touch) .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.playkit-player.playkit-size-md .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 40px 0; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 20px 0; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-black-bg {\n    background-color: #000; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-yellow-text {\n    color: #FAFF00; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick .playkit-icon {\n      vertical-align: top; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 50px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form .playkit-slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:first-child {\n    margin-left: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:last-child {\n    margin-right: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-custom {\n    width: auto;\n    padding: 0 10px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa,\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: block !important; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-dragging-active .playkit-volume-control-bar {\n  display: block; }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves {\n  transform: translateX(0px); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves, .playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.playkit-control-button-container.playkit-volume-control i {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.playkit-volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .playkit-volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .playkit-volume-control-bar .playkit-bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .playkit-volume-control-bar .playkit-progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.playkit-touch .playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n\n.playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n\n.playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n\n.playkit-player .playkit-video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n\n.playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain;\n  background-repeat: no-repeat;\n  background-color: #000; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n", ""]);
+
+// exports
+exports.locals = {
+	"row": "playkit-row",
+	"d-inline-block": "playkit-d-inline-block",
+	"dInlineBlock": "playkit-d-inline-block",
+	"mobile-hidden-select": "playkit-mobile-hidden-select",
+	"mobileHiddenSelect": "playkit-mobile-hidden-select",
+	"font-size-base": "playkit-font-size-base",
+	"fontSizeBase": "playkit-font-size-base",
+	"form-group": "playkit-form-group",
+	"formGroup": "playkit-form-group",
+	"has-error": "playkit-has-error",
+	"hasError": "playkit-has-error",
+	"form-control": "playkit-form-control",
+	"formControl": "playkit-form-control",
+	"has-icon": "playkit-has-icon",
+	"hasIcon": "playkit-has-icon",
+	"icon": "playkit-icon",
+	"checkbox": "playkit-checkbox",
+	"form-group-row": "playkit-form-group-row",
+	"formGroupRow": "playkit-form-group-row",
+	"dropdown": "playkit-dropdown",
+	"btn": "playkit-btn",
+	"btn-block": "playkit-btn-block",
+	"btnBlock": "playkit-btn-block",
+	"btn-dark-transparent": "playkit-btn-dark-transparent",
+	"btnDarkTransparent": "playkit-btn-dark-transparent",
+	"btn-branded": "playkit-btn-branded",
+	"btnBranded": "playkit-btn-branded",
+	"btn-rounded": "playkit-btn-rounded",
+	"btnRounded": "playkit-btn-rounded",
+	"icon-maximize": "playkit-icon-maximize",
+	"iconMaximize": "playkit-icon-maximize",
+	"icon-minimize": "playkit-icon-minimize",
+	"iconMinimize": "playkit-icon-minimize",
+	"icon-play": "playkit-icon-play",
+	"iconPlay": "playkit-icon-play",
+	"icon-pause": "playkit-icon-pause",
+	"iconPause": "playkit-icon-pause",
+	"icon-volume-base": "playkit-icon-volume-base",
+	"iconVolumeBase": "playkit-icon-volume-base",
+	"icon-volume-waves": "playkit-icon-volume-waves",
+	"iconVolumeWaves": "playkit-icon-volume-waves",
+	"icon-volume-mute": "playkit-icon-volume-mute",
+	"iconVolumeMute": "playkit-icon-volume-mute",
+	"icon-close": "playkit-icon-close",
+	"iconClose": "playkit-icon-close",
+	"icon-share": "playkit-icon-share",
+	"iconShare": "playkit-icon-share",
+	"icon-settings": "playkit-icon-settings",
+	"iconSettings": "playkit-icon-settings",
+	"icon-check": "playkit-icon-check",
+	"iconCheck": "playkit-icon-check",
+	"icon-language": "playkit-icon-language",
+	"iconLanguage": "playkit-icon-language",
+	"icon-quality": "playkit-icon-quality",
+	"iconQuality": "playkit-icon-quality",
+	"icon-captions": "playkit-icon-captions",
+	"iconCaptions": "playkit-icon-captions",
+	"icon-speed": "playkit-icon-speed",
+	"iconSpeed": "playkit-icon-speed",
+	"icon-audio": "playkit-icon-audio",
+	"iconAudio": "playkit-icon-audio",
+	"icon-copy": "playkit-icon-copy",
+	"iconCopy": "playkit-icon-copy",
+	"icon-facebook": "playkit-icon-facebook",
+	"iconFacebook": "playkit-icon-facebook",
+	"icon-twitter": "playkit-icon-twitter",
+	"iconTwitter": "playkit-icon-twitter",
+	"icon-google-plus": "playkit-icon-google-plus",
+	"iconGooglePlus": "playkit-icon-google-plus",
+	"icon-linked-in": "playkit-icon-linked-in",
+	"iconLinkedIn": "playkit-icon-linked-in",
+	"icon-email": "playkit-icon-email",
+	"iconEmail": "playkit-icon-email",
+	"icon-embed": "playkit-icon-embed",
+	"iconEmbed": "playkit-icon-embed",
+	"icon-link": "playkit-icon-link",
+	"iconLink": "playkit-icon-link",
+	"icon-arrow-down": "playkit-icon-arrow-down",
+	"iconArrowDown": "playkit-icon-arrow-down",
+	"icon-start-over": "playkit-icon-start-over",
+	"iconStartOver": "playkit-icon-start-over",
+	"active": "playkit-active",
+	"dropdown-menu": "playkit-dropdown-menu",
+	"dropdownMenu": "playkit-dropdown-menu",
+	"dropdown-button": "playkit-dropdown-button",
+	"dropdownButton": "playkit-dropdown-button",
+	"openDropmenu": "playkit-openDropmenu",
+	"top": "playkit-top",
+	"bottom": "playkit-bottom",
+	"right": "playkit-right",
+	"left": "playkit-left",
+	"dropdown-menu-item": "playkit-dropdown-menu-item",
+	"dropdownMenuItem": "playkit-dropdown-menu-item",
+	"tooltip": "playkit-tooltip",
+	"player": "playkit-player",
+	"control-button": "playkit-control-button",
+	"controlButton": "playkit-control-button",
+	"control-button-rounded": "playkit-control-button-rounded",
+	"controlButtonRounded": "playkit-control-button-rounded",
+	"touch": "playkit-touch",
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"kaltura-player-container": "playkit-kaltura-player-container",
+	"kalturaPlayerContainer": "playkit-kaltura-player-container",
+	"player-gui": "playkit-player-gui",
+	"playerGui": "playkit-player-gui",
+	"overlay-active": "playkit-overlay-active",
+	"overlayActive": "playkit-overlay-active",
+	"metadata-loaded": "playkit-metadata-loaded",
+	"metadataLoaded": "playkit-metadata-loaded",
+	"state-paused": "playkit-state-paused",
+	"statePaused": "playkit-state-paused",
+	"menu-active": "playkit-menu-active",
+	"menuActive": "playkit-menu-active",
+	"ad-break": "playkit-ad-break",
+	"adBreak": "playkit-ad-break",
+	"hover": "playkit-hover",
+	"video-player": "playkit-video-player",
+	"videoPlayer": "playkit-video-player",
+	"overlay": "playkit-overlay",
+	"openOverlay": "playkit-openOverlay",
+	"overlay-contents": "playkit-overlay-contents",
+	"overlayContents": "playkit-overlay-contents",
+	"title": "playkit-title",
+	"close-overlay": "playkit-close-overlay",
+	"closeOverlay": "playkit-close-overlay",
+	"overlay-screen": "playkit-overlay-screen",
+	"overlayScreen": "playkit-overlay-screen",
+	"size-md": "playkit-size-md",
+	"sizeMd": "playkit-size-md",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm",
+	"smart-container": "playkit-smart-container",
+	"smartContainer": "playkit-smart-container",
+	"openSmartContainer": "playkit-openSmartContainer",
+	"leaving": "playkit-leaving",
+	"closeSmartContainer": "playkit-closeSmartContainer",
+	"smart-container-item": "playkit-smart-container-item",
+	"smartContainerItem": "playkit-smart-container-item",
+	"select-menu-item": "playkit-select-menu-item",
+	"selectMenuItem": "playkit-select-menu-item",
+	"label-icon": "playkit-label-icon",
+	"labelIcon": "playkit-label-icon",
+	"share-overlay": "playkit-share-overlay",
+	"shareOverlay": "playkit-share-overlay",
+	"share-icons": "playkit-share-icons",
+	"shareIcons": "playkit-share-icons",
+	"facebook-share-btn": "playkit-facebook-share-btn",
+	"facebookShareBtn": "playkit-facebook-share-btn",
+	"twitter-share-btn": "playkit-twitter-share-btn",
+	"twitterShareBtn": "playkit-twitter-share-btn",
+	"google-plus-share-btn": "playkit-google-plus-share-btn",
+	"googlePlusShareBtn": "playkit-google-plus-share-btn",
+	"linkedin-share-btn": "playkit-linkedin-share-btn",
+	"linkedinShareBtn": "playkit-linkedin-share-btn",
+	"share-main-container": "playkit-share-main-container",
+	"shareMainContainer": "playkit-share-main-container",
+	"link-options-container": "playkit-link-options-container",
+	"linkOptionsContainer": "playkit-link-options-container",
+	"copy-url-row": "playkit-copy-url-row",
+	"copyUrlRow": "playkit-copy-url-row",
+	"input-copy-url": "playkit-input-copy-url",
+	"inputCopyUrl": "playkit-input-copy-url",
+	"btn-copy-url": "playkit-btn-copy-url",
+	"btnCopyUrl": "playkit-btn-copy-url",
+	"check-icon": "playkit-check-icon",
+	"checkIcon": "playkit-check-icon",
+	"copied": "playkit-copied",
+	"copy-icon": "playkit-copy-icon",
+	"copyIcon": "playkit-copy-icon",
+	"video-start-options-row": "playkit-video-start-options-row",
+	"videoStartOptionsRow": "playkit-video-start-options-row",
+	"cvaa-overlay": "playkit-cvaa-overlay",
+	"cvaaOverlay": "playkit-cvaa-overlay",
+	"sample": "playkit-sample",
+	"black-bg": "playkit-black-bg",
+	"blackBg": "playkit-black-bg",
+	"yellow-text": "playkit-yellow-text",
+	"yellowText": "playkit-yellow-text",
+	"active-tick": "playkit-active-tick",
+	"activeTick": "playkit-active-tick",
+	"button-save-cvaa": "playkit-button-save-cvaa",
+	"buttonSaveCvaa": "playkit-button-save-cvaa",
+	"custom-captions-applied": "playkit-custom-captions-applied",
+	"customCaptionsApplied": "playkit-custom-captions-applied",
+	"custom-caption-form": "playkit-custom-caption-form",
+	"customCaptionForm": "playkit-custom-caption-form",
+	"slider": "playkit-slider",
+	"preview-container": "playkit-preview-container",
+	"previewContainer": "playkit-preview-container",
+	"custom": "playkit-custom",
+	"loading-backdrop": "playkit-loading-backdrop",
+	"loadingBackdrop": "playkit-loading-backdrop",
+	"show": "playkit-show",
+	"spinner-container": "playkit-spinner-container",
+	"spinnerContainer": "playkit-spinner-container",
+	"spinner": "playkit-spinner",
+	"kaltura-spinner": "playkit-kaltura-spinner",
+	"kalturaSpinner": "playkit-kaltura-spinner",
+	"control-play-pause": "playkit-control-play-pause",
+	"controlPlayPause": "playkit-control-play-pause",
+	"is-playing": "playkit-is-playing",
+	"isPlaying": "playkit-is-playing",
+	"volume-control": "playkit-volume-control",
+	"volumeControl": "playkit-volume-control",
+	"volume-control-bar": "playkit-volume-control-bar",
+	"volumeControlBar": "playkit-volume-control-bar",
+	"is-muted": "playkit-is-muted",
+	"isMuted": "playkit-is-muted",
+	"dragging-active": "playkit-dragging-active",
+	"draggingActive": "playkit-dragging-active",
+	"bar": "playkit-bar",
+	"progress": "playkit-progress",
+	"control-fullscreen": "playkit-control-fullscreen",
+	"controlFullscreen": "playkit-control-fullscreen",
+	"is-fullscreen": "playkit-is-fullscreen",
+	"isFullscreen": "playkit-is-fullscreen",
+	"seek-bar": "playkit-seek-bar",
+	"seekBar": "playkit-seek-bar",
+	"time-preview": "playkit-time-preview",
+	"timePreview": "playkit-time-preview",
+	"frame-preview": "playkit-frame-preview",
+	"framePreview": "playkit-frame-preview",
+	"progress-bar": "playkit-progress-bar",
+	"progressBar": "playkit-progress-bar",
+	"scrubber": "playkit-scrubber",
+	"virtual-progress": "playkit-virtual-progress",
+	"virtualProgress": "playkit-virtual-progress",
+	"live": "playkit-live",
+	"buffered": "playkit-buffered",
+	"frame-preview-img": "playkit-frame-preview-img",
+	"framePreviewImg": "playkit-frame-preview-img",
+	"time-display": "playkit-time-display",
+	"timeDisplay": "playkit-time-display",
+	"video-playing-title": "playkit-video-playing-title",
+	"videoPlayingTitle": "playkit-video-playing-title",
+	"bottom-bar": "playkit-bottom-bar",
+	"bottomBar": "playkit-bottom-bar",
+	"left-controls": "playkit-left-controls",
+	"leftControls": "playkit-left-controls",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
+	"top-bar": "playkit-top-bar",
+	"topBar": "playkit-top-bar",
+	"overlay-play": "playkit-overlay-play",
+	"overlayPlay": "playkit-overlay-play",
+	"in": "playkit-in",
+	"overlayPlayIconIn": "playkit-overlayPlayIconIn",
+	"pre-playback-play-overlay": "playkit-pre-playback-play-overlay",
+	"prePlaybackPlayOverlay": "playkit-pre-playback-play-overlay",
+	"pre-playback-play-button": "playkit-pre-playback-play-button",
+	"prePlaybackPlayButton": "playkit-pre-playback-play-button",
+	"pre-playback": "playkit-pre-playback",
+	"prePlayback": "playkit-pre-playback",
+	"btn-skip-ad": "playkit-btn-skip-ad",
+	"btnSkipAd": "playkit-btn-skip-ad",
+	"skip-ad": "playkit-skip-ad",
+	"skipAd": "playkit-skip-ad",
+	"live-tag": "playkit-live-tag",
+	"liveTag": "playkit-live-tag",
+	"non-live-playhead": "playkit-non-live-playhead",
+	"nonLivePlayhead": "playkit-non-live-playhead"
+};
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23766,19 +24843,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _overlayPlay = __webpack_require__(56);
+
+var _overlayPlay2 = _interopRequireDefault(_overlayPlay);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _playPause = __webpack_require__(17);
+var _playPause = __webpack_require__(20);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -23890,7 +24971,7 @@ var OverlayPlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
 
       return (0, _preact.h)(
         'div',
-        { className: 'overlay-play ' + (this.state.animation ? 'in' : ''), onClick: function onClick() {
+        { className: _overlayPlay2.default.overlayPlay + ' ' + (this.state.animation ? _overlayPlay2.default.in : ''), onClick: function onClick() {
             return _this3.onOverlayClick();
           } },
         this.isPlayingAdOrPlayback() ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play }) : (0, _preact.h)(_icon2.default, { type: _icon.IconType.Pause })
@@ -23903,13 +24984,64 @@ var OverlayPlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
 exports.default = OverlayPlay;
 
 /***/ }),
-/* 50 */
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(57);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_overlay-play.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_overlay-play.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n", ""]);
+
+// exports
+exports.locals = {
+	"overlay-play": "playkit-overlay-play",
+	"overlayPlay": "playkit-overlay-play",
+	"in": "playkit-in",
+	"icon": "playkit-icon",
+	"overlayPlayIconIn": "playkit-overlayPlayIconIn"
+};
+
+/***/ }),
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(62);
 
 
 
@@ -23941,11 +25073,11 @@ function baseGetTag(value) {
 
 
 /***/ }),
-/* 51 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(60);
 
 
 /** Detect free variable `self`. */
@@ -23958,7 +25090,7 @@ var root = __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__["a" /* default */] || fr
 
 
 /***/ }),
-/* 52 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23967,14 +25099,14 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 
 /* harmony default export */ __webpack_exports__["a"] = (freeGlobal);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19)))
 
 /***/ }),
-/* 53 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(35);
 
 
 /** Used for built-in method references. */
@@ -24024,7 +25156,7 @@ function getRawTag(value) {
 
 
 /***/ }),
-/* 54 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24053,11 +25185,11 @@ function objectToString(value) {
 
 
 /***/ }),
-/* 55 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(64);
 
 
 /** Built-in value references. */
@@ -24067,7 +25199,7 @@ var getPrototype = Object(__WEBPACK_IMPORTED_MODULE_0__overArg_js__["a" /* defau
 
 
 /***/ }),
-/* 56 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24089,7 +25221,7 @@ function overArg(func, transform) {
 
 
 /***/ }),
-/* 57 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24125,14 +25257,14 @@ function isObjectLike(value) {
 
 
 /***/ }),
-/* 58 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(59);
+module.exports = __webpack_require__(67);
 
 
 /***/ }),
-/* 59 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24142,7 +25274,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ponyfill = __webpack_require__(61);
+var _ponyfill = __webpack_require__(69);
 
 var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -24165,10 +25297,10 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16), __webpack_require__(60)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19), __webpack_require__(68)(module)))
 
 /***/ }),
-/* 60 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -24196,7 +25328,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 61 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24225,14 +25357,14 @@ function symbolObservablePonyfill(root) {
 };
 
 /***/ }),
-/* 62 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(36);
 
 
 
@@ -24363,10 +25495,10 @@ function combineReducers(reducers) {
     return hasChanged ? nextState : state;
   };
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(29)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
 
 /***/ }),
-/* 63 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24420,12 +25552,12 @@ function bindActionCreators(actionCreators, dispatch) {
 }
 
 /***/ }),
-/* 64 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = applyMiddleware;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(37);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -24476,7 +25608,7 @@ function applyMiddleware() {
 }
 
 /***/ }),
-/* 65 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24489,7 +25621,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(66);
+var _jsLogger = __webpack_require__(74);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -24552,7 +25684,7 @@ exports.default = lf;
 exports.LOG_LEVEL = LOG_LEVEL;
 
 /***/ }),
-/* 66 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -24819,7 +25951,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 67 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24832,7 +25964,13 @@ exports.IconType = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24866,7 +26004,7 @@ var IconType = {
   Embed: 'embed',
   Link: 'link',
   ArrowDown: 'arrow-down',
-  Startover: 'shartover'
+  StartOver: 'start-over'
   /**
    * Icon component
    *
@@ -24897,194 +26035,82 @@ var Icon = function (_Component) {
     value: function render(props) {
       switch (props.type) {
         case IconType.Maximize:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-maximize', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' }),
-            (0, _preact.h)('path', { d: 'M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconMaximize].join(' ') });
+
         case IconType.Minimize:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-minimize', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' }),
-            (0, _preact.h)('path', { d: 'M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconMinimize].join(' ') });
 
         case IconType.Play:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-play', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconPlay].join(' ') });
 
         case IconType.Pause:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-pause', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconPause].join(' ') });
 
         case IconType.VolumeBase:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon volume-base', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' }),
-            (0, _preact.h)('path', { d: 'M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconVolumeBase].join(' ') });
 
         case IconType.VolumeWaves:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon volume-waves', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' }),
-            (0, _preact.h)('path', { d: 'M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconVolumeWaves].join(' ') });
 
         case IconType.VolumeMute:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon volume-mute', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconVolumeMute].join(' ') });
 
         case IconType.Close:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-close', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconClose].join(' ') });
 
         case IconType.Share:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-share', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconShare].join(' ') });
 
         case IconType.Settings:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon icon-share', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconSettings].join(' ') });
 
         case IconType.Check:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon check-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconCheck].join(' ') });
+
         case IconType.Language:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon language-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' }),
-            (0, _preact.h)('path', { d: 'M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' }),
-            (0, _preact.h)('path', { d: 'M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' }),
-            (0, _preact.h)('path', { d: 'M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' }),
-            (0, _preact.h)('path', { d: 'M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' }),
-            (0, _preact.h)('path', { d: 'M480 192h64v640h-64v-640z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconLanguage].join(' ') });
 
         case IconType.Quality:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon quality-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconQuality].join(' ') });
 
         case IconType.Captions:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon captions-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' }),
-            (0, _preact.h)('path', { d: 'M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconCaptions].join(' ') });
 
         case IconType.Speed:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon speed-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconSpeed].join(' ') });
 
         case IconType.Audio:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon audio-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconAudio].join(' ') });
 
         case IconType.Copy:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon copy-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconCopy].join(' ') });
 
         case IconType.Facebook:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon facebook-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconFacebook].join(' ') });
 
         case IconType.Twitter:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon twitter-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconTwitter].join(' ') });
 
         case IconType.GooglePlus:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon google-plus-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { fill: '#fff', d: 'M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconGoogleplus].join(' ') });
 
         case IconType.Linkedin:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon linkedin-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconLinkedin].join(' ') });
 
         case IconType.Email:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon email-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconEmail].join(' ') });
 
         case IconType.Embed:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon embed-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconEmbed].join(' ') });
 
         case IconType.Link:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon link-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconLink].join(' ') });
 
         case IconType.ArrowDown:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon arrow-down-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' })
-          );
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconArrowDown].join(' ') });
 
-        case IconType.Startover:
-          return (0, _preact.h)(
-            'svg',
-            { className: 'icon startover-icon', viewBox: '0 0 1024 1024' },
-            (0, _preact.h)('path', { d: 'M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' })
-          );
+        case IconType.StartOver:
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconStartOver].join(' ') });
 
         default:
           break;
@@ -25099,7 +26125,7 @@ exports.default = Icon;
 exports.IconType = IconType;
 
 /***/ }),
-/* 68 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25113,19 +26139,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _prePlaybackPlayOverlay = __webpack_require__(77);
+
+var _prePlaybackPlayOverlay2 = _interopRequireDefault(_prePlaybackPlayOverlay);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _shell = __webpack_require__(6);
+var _shell = __webpack_require__(9);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -25170,7 +26200,12 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   function PrePlaybackPlayOverlay(obj) {
     _classCallCheck(this, PrePlaybackPlayOverlay);
 
-    return _possibleConstructorReturn(this, (PrePlaybackPlayOverlay.__proto__ || Object.getPrototypeOf(PrePlaybackPlayOverlay)).call(this, { name: 'PrePlaybackPlayOverlay', player: obj.player }));
+    var _this = _possibleConstructorReturn(this, (PrePlaybackPlayOverlay.__proto__ || Object.getPrototypeOf(PrePlaybackPlayOverlay)).call(this, { name: 'PrePlaybackPlayOverlay', player: obj.player }));
+
+    _this.player.addEventListener(_this.player.Event.CHANGE_SOURCE_ENDED, function () {
+      return _this._onChangeSourceEnded();
+    });
+    return _this;
   }
 
   /**
@@ -25185,20 +26220,19 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   _createClass(PrePlaybackPlayOverlay, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.props.addPlayerClass('pre-playback');
+      var _this2 = this;
 
+      this.props.addPlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
       try {
         this.autoplay = this.player.config.playback.autoplay;
+        if (this.autoplay === true) {
+          this.player.addEventListener(this.player.Event.AUTOPLAY_FAILED, function () {
+            _this2.autoplay = false;
+          });
+        }
       } catch (e) {
         // eslint-disable-line no-unused-vars
         this.autoplay = false;
-      }
-
-      try {
-        this.mobileAutoplay = this.player.config.playback.mobileAutoplay;
-      } catch (e) {
-        // eslint-disable-line no-unused-vars
-        this.mobileAutoplay = false;
       }
     }
 
@@ -25212,8 +26246,8 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      this.props.updatePrePlayback(false);
-      this.props.removePlayerClass('pre-playback');
+      this._hidePrePlayback();
+      this.props.removePlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
     }
 
     /**
@@ -25226,16 +26260,13 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.player.addEventListener(this.player.Event.PLAY, function () {
-        _this2.props.updatePrePlayback(false);
-        _this2.props.removePlayerClass('pre-playback');
+        return _this3._hidePrePlayback();
       });
-
       if (this.player.paused === false) {
-        this.props.updatePrePlayback(false);
-        this.props.removePlayerClass('pre-playback');
+        this._hidePrePlayback();
       }
     }
 
@@ -25249,13 +26280,13 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'handleClick',
     value: function handleClick() {
-      var _this3 = this;
+      var _this4 = this;
 
       // TODO: The promise handling should be in the play API of the player.
       new Promise(function (resolve, reject) {
         try {
-          if (_this3.player.config.playback.preload === "auto" && !_this3.player.config.plugins.ima) {
-            _this3.player.ready().then(resolve);
+          if (_this4.player.config.playback.preload === "auto" && !_this4.player.config.plugins.ima) {
+            _this4.player.ready().then(resolve);
           } else {
             resolve();
           }
@@ -25263,13 +26294,12 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
           reject(e);
         }
       }).then(function () {
-        _this3.player.play();
-        if (_this3.props.prePlayback) {
-          _this3.props.updatePrePlayback(false);
-          _this3.props.removePlayerClass('pre-playback');
+        _this4.player.play();
+        if (_this4.props.prePlayback) {
+          _this4._hidePrePlayback();
         }
       }).catch(function (e) {
-        _this3.logger.error(e.message);
+        _this4.logger.error(e.message);
       });
     }
 
@@ -25284,22 +26314,67 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'render',
     value: function render(props) {
-      var _this4 = this;
+      var _this5 = this;
 
-      if (!props.isEnded && !props.prePlayback || !props.isEnded && !props.isMobile && this.autoplay || !props.isEnded && props.isMobile && this.mobileAutoplay) return undefined;
-
+      if (!props.isEnded && !props.prePlayback || !props.isEnded && this.autoplay) {
+        return undefined;
+      }
       return (0, _preact.h)(
         'div',
-        { className: 'pre-playback-play-overlay', style: { backgroundImage: 'url(' + props.poster + ')' },
+        { className: _prePlaybackPlayOverlay2.default.prePlaybackPlayOverlay, style: { backgroundImage: 'url(' + props.poster + ')' },
           onClick: function onClick() {
-            return _this4.handleClick();
+            return _this5.handleClick();
           } },
         (0, _preact.h)(
           'a',
-          { className: 'pre-playback-play-button' },
-          props.isEnded ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.Startover }) : (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play })
+          { className: _prePlaybackPlayOverlay2.default.prePlaybackPlayButton },
+          props.isEnded ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.StartOver }) : (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play })
         )
       );
+    }
+
+    /**
+     * Change source ended event handler.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_onChangeSourceEnded',
+    value: function _onChangeSourceEnded() {
+      try {
+        if (!this.player.config.playback.autoplay) {
+          this._displayPrePlayback();
+        }
+      } catch (e) {
+        this.logger.error(e.message);
+      }
+    }
+
+    /**
+     * Displays the pre playback overlay.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_displayPrePlayback',
+    value: function _displayPrePlayback() {
+      this.props.updatePrePlayback(true);
+      this.props.addPlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
+    }
+
+    /**
+     * Hides the pre playback overlay.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_hidePrePlayback',
+    value: function _hidePrePlayback() {
+      this.props.updatePrePlayback(false);
+      this.props.removePlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
     }
   }]);
 
@@ -25308,7 +26383,61 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
 exports.default = PrePlaybackPlayOverlay;
 
 /***/ }),
-/* 69 */
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(78);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_pre-playback-play-overlay.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_pre-playback-play-overlay.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain;\n  background-repeat: no-repeat;\n  background-color: #000; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n", ""]);
+
+// exports
+exports.locals = {
+	"pre-playback-play-overlay": "playkit-pre-playback-play-overlay",
+	"prePlaybackPlayOverlay": "playkit-pre-playback-play-overlay",
+	"pre-playback-play-button": "playkit-pre-playback-play-button",
+	"prePlaybackPlayButton": "playkit-pre-playback-play-button",
+	"pre-playback": "playkit-pre-playback",
+	"prePlayback": "playkit-pre-playback",
+	"player-gui": "playkit-player-gui",
+	"playerGui": "playkit-player-gui"
+};
+
+/***/ }),
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25322,13 +26451,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _loading = __webpack_require__(80);
+
+var _loading2 = _interopRequireDefault(_loading);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _loading = __webpack_require__(36);
+var _loading3 = __webpack_require__(39);
 
 var _base = __webpack_require__(2);
 
@@ -25364,7 +26497,7 @@ var mapStateToProps = function mapStateToProps(state) {
  * @example <Loading />
  * @extends {BaseComponent}
  */
-var Loading = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_loading.actions)), _dec(_class = function (_BaseComponent) {
+var Loading = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_loading3.actions)), _dec(_class = function (_BaseComponent) {
   _inherits(Loading, _BaseComponent);
 
   /**
@@ -25462,13 +26595,13 @@ var Loading = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAction
 
       return (0, _preact.h)(
         'div',
-        { className: 'loading-backdrop show' },
+        { className: [_loading2.default.loadingBackdrop, _loading2.default.show].join(' ') },
         (0, _preact.h)(
           'div',
-          { className: 'spinner-container' },
+          { className: _loading2.default.spinnerContainer },
           (0, _preact.h)(
             'div',
-            { className: 'spinner' },
+            { className: _loading2.default.spinner },
             [].concat(_toConsumableArray(Array(8))).map(function (i) {
               return (0, _preact.h)('span', { key: i });
             })
@@ -25483,7 +26616,61 @@ var Loading = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAction
 exports.default = Loading;
 
 /***/ }),
-/* 70 */
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(81);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_loading.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_loading.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n", ""]);
+
+// exports
+exports.locals = {
+	"loading-backdrop": "playkit-loading-backdrop",
+	"loadingBackdrop": "playkit-loading-backdrop",
+	"show": "playkit-show",
+	"spinner-container": "playkit-spinner-container",
+	"spinnerContainer": "playkit-spinner-container",
+	"spinner": "playkit-spinner",
+	"kaltura-spinner": "playkit-kaltura-spinner",
+	"kalturaSpinner": "playkit-kaltura-spinner"
+};
+
+/***/ }),
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25497,21 +26684,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _playPause = __webpack_require__(83);
+
+var _playPause2 = _interopRequireDefault(_playPause);
+
 var _preact = __webpack_require__(0);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _playPause = __webpack_require__(17);
+var _playPause3 = __webpack_require__(20);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -25544,7 +26735,7 @@ var mapStateToProps = function mapStateToProps(state) {
  * @example <PlayPauseControl player={this.player} />
  * @extends {BaseComponent}
  */
-var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_playPause.actions)), _dec(_class = function (_BaseComponent) {
+var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_playPause3.actions)), _dec(_class = function (_BaseComponent) {
   _inherits(PlayPauseControl, _BaseComponent);
 
   /**
@@ -25599,11 +26790,11 @@ var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _b
     value: function render(props) {
       var _this2 = this;
 
-      var controlButtonClass = this.isPlayingAdOrPlayback() ? 'control-button is-playing' : 'control-button';
+      var controlButtonClass = this.isPlayingAdOrPlayback() ? [_playPause2.default.controlButton, _playPause2.default.isPlaying].join(' ') : _playPause2.default.controlButton;
 
       return (0, _preact.h)(
         'div',
-        { className: 'control-button-container control-play-pause' },
+        { className: [_playPause2.default.controlButtonContainer, _playPause2.default.controlPlayPause].join(' ') },
         (0, _preact.h)(
           _preactI18n.Localizer,
           null,
@@ -25616,7 +26807,7 @@ var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _b
                 return _this2.togglePlayPause();
               }
             },
-            props.isEnded && !props.adBreak ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.Startover }) : (0, _preact.h)(
+            props.isEnded && !props.adBreak ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.StartOver }) : (0, _preact.h)(
               'div',
               null,
               (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play }),
@@ -25633,13 +26824,75 @@ var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _b
 exports.default = PlayPauseControl;
 
 /***/ }),
-/* 71 */
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(84);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_play-pause.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_play-pause.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n", ""]);
+
+// exports
+exports.locals = {
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"control-play-pause": "playkit-control-play-pause",
+	"controlPlayPause": "playkit-control-play-pause",
+	"control-button": "playkit-control-button",
+	"controlButton": "playkit-control-button",
+	"icon-pause": "playkit-icon-pause",
+	"iconPause": "playkit-icon-pause",
+	"icon-play": "playkit-icon-play",
+	"iconPlay": "playkit-icon-play",
+	"is-playing": "playkit-is-playing",
+	"isPlaying": "playkit-is-playing",
+	"touch": "playkit-touch",
+	"player": "playkit-player",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
+};
+
+/***/ }),
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(e,n){ true?module.exports=n():"function"==typeof define&&define.amd?define(n):e.dlv=n()}(this,function(){function e(e,n,t,o){for(o=0,n=n.split?n.split("."):n;e&&o<n.length;)e=e[n[o++]];return void 0===e?t:e}return e});
 
 /***/ }),
-/* 72 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25650,7 +26903,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _seekbarPlaybackContainer = __webpack_require__(73);
+var _seekbarPlaybackContainer = __webpack_require__(87);
 
 var _seekbarPlaybackContainer2 = _interopRequireDefault(_seekbarPlaybackContainer);
 
@@ -25659,7 +26912,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _seekbarPlaybackContainer2.default;
 
 /***/ }),
-/* 73 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25677,15 +26930,15 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _seekbar = __webpack_require__(10);
+var _seekbar = __webpack_require__(13);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _seekbar2 = __webpack_require__(11);
+var _seekbar2 = __webpack_require__(14);
 
 var _seekbar3 = _interopRequireDefault(_seekbar2);
 
@@ -25794,7 +27047,7 @@ var SeekBarPlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps
 exports.default = SeekBarPlaybackContainer;
 
 /***/ }),
-/* 74 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25806,9 +27059,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _seekbar = __webpack_require__(89);
+
+var _seekbar2 = _interopRequireDefault(_seekbar);
+
 var _preact = __webpack_require__(0);
 
-var _timeFormat = __webpack_require__(19);
+var _timeFormat = __webpack_require__(22);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25885,7 +27144,7 @@ var SeekBarControl = function (_Component) {
   }, {
     key: 'componentWillUpdate',
     value: function componentWillUpdate(nextProps) {
-      if (this.props.playerPoster !== nextProps.playerPoster) {
+      if (nextProps.playerPoster && this.props.playerPoster !== nextProps.playerPoster) {
         this.framePreviewImg = this.getFramePreviewImg(nextProps.playerPoster);
       }
     }
@@ -26182,6 +27441,8 @@ var SeekBarControl = function (_Component) {
   }, {
     key: 'getFramePreviewImg',
     value: function getFramePreviewImg(posterUrl) {
+      if (!posterUrl) return '';
+
       var parts = posterUrl.split('/');
       var heightValueIndex = parts.indexOf('height') + 1;
       var widthValueIndex = parts.indexOf('width') + 1;
@@ -26212,13 +27473,13 @@ var SeekBarControl = function (_Component) {
       return (0, _preact.h)(
         'div',
         {
-          className: 'frame-preview',
+          className: _seekbar2.default.framePreview,
           style: framePreviewStyle,
           ref: function ref(c) {
             return _this3._framePreviewElement = c;
           }
         },
-        (0, _preact.h)('div', { className: 'frame-preview-img', style: framePreviewImgStyle })
+        (0, _preact.h)('div', { className: _seekbar2.default.framePreviewImg, style: framePreviewImgStyle })
       );
     }
 
@@ -26239,7 +27500,7 @@ var SeekBarControl = function (_Component) {
       var timeBubbleValue = this.props.isDvr ? '-' + (0, _timeFormat.toHHMMSS)(this.props.duration - this.state.virtualTime) : (0, _timeFormat.toHHMMSS)(this.state.virtualTime);
       return (0, _preact.h)(
         'div',
-        { className: 'time-preview', style: timeBubbleStyle, ref: function ref(c) {
+        { className: _seekbar2.default.timePreview, style: timeBubbleStyle, ref: function ref(c) {
             return _this4._timeBubbleElement = c;
           } },
         timeBubbleValue
@@ -26261,16 +27522,16 @@ var SeekBarControl = function (_Component) {
 
       var virtualProgressWidth = this.state.virtualTime / props.duration * 100 + '%';
       var progressWidth = props.currentTime / props.duration * 100 + '%';
-      var seekbarStyleClass = 'seek-bar';
-      if (props.adBreak) seekbarStyleClass += ' ad-break';
-      if (props.isDvr) seekbarStyleClass += ' live';
-      if (props.isMobile) seekbarStyleClass += ' hover';
-      if (props.isDraggingActive) seekbarStyleClass += ' hover';
+      var seekbarStyleClass = [_seekbar2.default.seekBar];
+      if (props.adBreak) seekbarStyleClass.push(_seekbar2.default.adBreak);
+      if (props.isDvr) seekbarStyleClass.push(_seekbar2.default.live);
+      if (props.isMobile) seekbarStyleClass.push(_seekbar2.default.hover);
+      if (props.isDraggingActive) seekbarStyleClass.push(_seekbar2.default.hover);
 
       return (0, _preact.h)(
         'div',
         {
-          className: seekbarStyleClass,
+          className: seekbarStyleClass.join(' '),
           ref: function ref(c) {
             return _this5._seekBarElement = c;
           },
@@ -26301,16 +27562,16 @@ var SeekBarControl = function (_Component) {
         },
         (0, _preact.h)(
           'div',
-          { className: 'progress-bar' },
+          { className: _seekbar2.default.progressBar },
           (0, _preact.h)(
             'div',
-            { className: 'progress', style: { width: progressWidth } },
-            props.adBreak ? undefined : (0, _preact.h)('a', { className: 'scrubber' })
+            { className: _seekbar2.default.progress, style: { width: progressWidth } },
+            props.adBreak ? undefined : (0, _preact.h)('a', { className: _seekbar2.default.scrubber })
           ),
-          (0, _preact.h)('div', { className: 'virtual-progress', style: { width: virtualProgressWidth } }),
+          (0, _preact.h)('div', { className: _seekbar2.default.virtualProgress, style: { width: virtualProgressWidth } }),
           this.renderTimeBubble(),
           this.renderFramePreview(),
-          (0, _preact.h)('div', { className: 'buffered', style: 'width: 60%;' })
+          (0, _preact.h)('div', { className: _seekbar2.default.buffered, style: 'width: 60%;' })
         )
       );
     }
@@ -26322,7 +27583,78 @@ var SeekBarControl = function (_Component) {
 exports.default = SeekBarControl;
 
 /***/ }),
-/* 75 */
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(90);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_seekbar.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_seekbar.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n", ""]);
+
+// exports
+exports.locals = {
+	"player": "playkit-player",
+	"seek-bar": "playkit-seek-bar",
+	"seekBar": "playkit-seek-bar",
+	"time-preview": "playkit-time-preview",
+	"timePreview": "playkit-time-preview",
+	"frame-preview": "playkit-frame-preview",
+	"framePreview": "playkit-frame-preview",
+	"hover": "playkit-hover",
+	"dragging-active": "playkit-dragging-active",
+	"draggingActive": "playkit-dragging-active",
+	"progress-bar": "playkit-progress-bar",
+	"progressBar": "playkit-progress-bar",
+	"scrubber": "playkit-scrubber",
+	"virtual-progress": "playkit-virtual-progress",
+	"virtualProgress": "playkit-virtual-progress",
+	"ad-break": "playkit-ad-break",
+	"adBreak": "playkit-ad-break",
+	"progress": "playkit-progress",
+	"live": "playkit-live",
+	"buffered": "playkit-buffered",
+	"frame-preview-img": "playkit-frame-preview-img",
+	"framePreviewImg": "playkit-frame-preview-img",
+	"touch": "playkit-touch",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
+};
+
+/***/ }),
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26336,19 +27668,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _volume = __webpack_require__(37);
+var _volume = __webpack_require__(40);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -26423,6 +27759,13 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
       this.player.addEventListener(this.player.Event.MUTE_CHANGE, function () {
         _this2.props.updateMuted(_this2.player.muted);
       });
+
+      document.addEventListener('mouseup', function (e) {
+        return _this2.onVolumeProgressBarMouseUp(e);
+      });
+      document.addEventListener('mousemove', function (e) {
+        return _this2.onVolumeProgressBarMouseMove(e);
+      });
     }
 
     /**
@@ -26482,8 +27825,10 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
   }, {
     key: 'onVolumeProgressBarMouseUp',
     value: function onVolumeProgressBarMouseUp(e) {
-      this.props.updateVolumeDraggingStatus(false);
-      this.changeVolume(e);
+      if (this.props.isDraggingActive) {
+        this.props.updateVolumeDraggingStatus(false);
+        this.changeVolume(e);
+      }
     }
 
     /**
@@ -26558,18 +27903,18 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
     value: function render() {
       var _this3 = this;
 
-      var controlButtonClass = 'control-button-container volume-control';
-      if (this.props.isDraggingActive) controlButtonClass += ' dragging-active';
-      if (this.props.muted || this.props.volume === 0) controlButtonClass += ' is-muted';
+      var controlButtonClass = [_style2.default.controlButtonContainer, _style2.default.volumeControl];
+      if (this.props.isDraggingActive) controlButtonClass.push(_style2.default.draggingActive);
+      if (this.props.muted || this.props.volume === 0) controlButtonClass.push(_style2.default.isMuted);
 
       return (0, _preact.h)(
         'div',
         { ref: function ref(c) {
             return _this3._volumeControlElement = c;
-          }, className: controlButtonClass },
+          }, className: controlButtonClass.join(' ') },
         (0, _preact.h)(
           'button',
-          { className: 'control-button', onClick: function onClick() {
+          { className: _style2.default.controlButton, onClick: function onClick() {
               return _this3.onVolumeControlButtonClick();
             }, 'aria-label': 'Volume' },
           (0, _preact.h)(_icon2.default, { type: _icon.IconType.VolumeBase }),
@@ -26578,27 +27923,21 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
         ),
         (0, _preact.h)(
           'div',
-          { className: 'volume-control-bar', role: 'slider',
+          { className: _style2.default.volumeControlBar, role: 'slider',
             'aria-valuemin': '0', 'aria-valuemaz': '100', 'aria-valuenow': this.player.volume * 100,
             'aria-valuetext': this.player.volume * 100 + '% volume ' + (this.player.muted ? 'muted' : '') },
           (0, _preact.h)(
             'div',
             {
-              className: 'bar',
+              className: _style2.default.bar,
               ref: function ref(c) {
                 return _this3._volumeProgressBarElement = c;
               },
               onMouseDown: function onMouseDown() {
                 return _this3.onVolumeProgressBarMouseDown();
-              },
-              onMouseUp: function onMouseUp(e) {
-                return _this3.onVolumeProgressBarMouseUp(e);
-              },
-              onMouseMove: function onMouseMove(e) {
-                return _this3.onVolumeProgressBarMouseMove(e);
               }
             },
-            (0, _preact.h)('div', { className: 'progress', style: { height: this.getVolumeProgressHeight() } })
+            (0, _preact.h)('div', { className: _style2.default.progress, style: { height: this.getVolumeProgressHeight() } })
           )
         )
       );
@@ -26610,7 +27949,7 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
 exports.default = VolumeControl;
 
 /***/ }),
-/* 76 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26624,29 +27963,33 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _settings = __webpack_require__(38);
+var _settings = __webpack_require__(41);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _smartContainer = __webpack_require__(39);
+var _smartContainer = __webpack_require__(42);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
-var _smartContainerItem = __webpack_require__(40);
+var _smartContainerItem = __webpack_require__(44);
 
 var _smartContainerItem2 = _interopRequireDefault(_smartContainerItem);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -26746,7 +28089,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
     key: 'handleClickOutside',
     value: function handleClickOutside(e) {
       if (!this.props.isMobile && !!this._controlSettingsElement && !this._controlSettingsElement.contains(e.target) && this.state.smartContainerOpen) {
-        if (e.target.classList.contains('overlay-play')) {
+        if (e.target.classList.contains(_style2.default.overlayPlay)) {
           e.stopPropagation();
         }
         this.setState({ smartContainerOpen: false });
@@ -26855,7 +28198,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
       var qualityOptions = props.videoTracks.filter(function (t) {
         return t.bandwidth || t.height;
       }).sort(function (a, b) {
-        return a.bandwidth < b.bandwidth;
+        return a.bandwidth < b.bandwidth ? 1 : -1;
       }).map(function (t) {
         return {
           label: _this2.getQualityOptionLabel(t),
@@ -26881,7 +28224,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
           ref: function ref(c) {
             return _this2._controlSettingsElement = c;
           },
-          className: 'control-button-container control-settings'
+          className: [_style2.default.controlButtonContainer, _style2.default.controlSettings].join(' ')
         },
         (0, _preact.h)(
           _preactI18n.Localizer,
@@ -26890,7 +28233,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
             'button',
             {
               'aria-label': (0, _preact.h)(_preactI18n.Text, { id: 'controls.settings' }),
-              className: this.state.smartContainerOpen ? 'control-button active' : 'control-button',
+              className: this.state.smartContainerOpen ? [_style2.default.controlButton, _style2.default.active].join(' ') : _style2.default.controlButton,
               onClick: function onClick() {
                 return _this2.onControlButtonClick();
               }
@@ -26927,7 +28270,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
 exports.default = SettingsControl;
 
 /***/ }),
-/* 77 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26941,15 +28284,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _smartContainer = __webpack_require__(43);
+
+var _smartContainer2 = _interopRequireDefault(_smartContainer);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _preactPortal = __webpack_require__(21);
+var _preactPortal = __webpack_require__(24);
 
 var _preactPortal2 = _interopRequireDefault(_preactPortal);
 
-var _overlay = __webpack_require__(22);
+var _overlay = __webpack_require__(25);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
@@ -27019,14 +28366,14 @@ var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_c
             } },
           (0, _preact.h)(
             'div',
-            { className: 'title' },
+            { className: _smartContainer2.default.title },
             props.title
           ),
           props.children
         )
       ) : (0, _preact.h)(
         'div',
-        { className: 'smart-container top left' },
+        { className: [_smartContainer2.default.smartContainer, _smartContainer2.default.top, _smartContainer2.default.left].join(' ') },
         props.children
       );
     }
@@ -27037,7 +28384,40 @@ var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_c
 exports.default = SmartContainer;
 
 /***/ }),
-/* 78 */
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n", ""]);
+
+// exports
+exports.locals = {
+	"player": "playkit-player",
+	"touch": "playkit-touch",
+	"smart-container": "playkit-smart-container",
+	"smartContainer": "playkit-smart-container",
+	"openSmartContainer": "playkit-openSmartContainer",
+	"leaving": "playkit-leaving",
+	"closeSmartContainer": "playkit-closeSmartContainer",
+	"top": "playkit-top",
+	"bottom": "playkit-bottom",
+	"right": "playkit-right",
+	"left": "playkit-left",
+	"smart-container-item": "playkit-smart-container-item",
+	"smartContainerItem": "playkit-smart-container-item",
+	"select-menu-item": "playkit-select-menu-item",
+	"selectMenuItem": "playkit-select-menu-item",
+	"label-icon": "playkit-label-icon",
+	"labelIcon": "playkit-label-icon",
+	"dropdown": "playkit-dropdown"
+};
+
+/***/ }),
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27051,17 +28431,21 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _shell = __webpack_require__(6);
+var _shell = __webpack_require__(9);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -27104,7 +28488,7 @@ var Overlay = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActio
      * @memberof Overlay
      */
     value: function componentWillMount() {
-      this.props.addPlayerClass('overlay-active');
+      this.props.addPlayerClass(_style2.default.overlayActive);
     }
 
     /**
@@ -27117,7 +28501,7 @@ var Overlay = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActio
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      this.props.removePlayerClass('overlay-active');
+      this.props.removePlayerClass(_style2.default.overlayActive);
     }
 
     /**
@@ -27131,16 +28515,16 @@ var Overlay = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActio
   }, {
     key: 'render',
     value: function render(props) {
-      var overlayClass = 'overlay';
-      if (props.type) overlayClass += ' ' + props.type + '-overlay';
-      if (props.open) overlayClass += ' active';
+      var overlayClass = [_style2.default.overlay];
+      if (props.type) overlayClass.push(_style2.default[props.type + '-overlay']);
+      if (props.open) overlayClass.push(_style2.default.active);
 
       return (0, _preact.h)(
         'div',
-        { className: overlayClass, role: 'dialog' },
+        { className: overlayClass.join(' '), role: 'dialog' },
         (0, _preact.h)(
           'div',
-          { className: 'overlay-contents' },
+          { className: _style2.default.overlayContents },
           props.children
         ),
         (0, _preact.h)(
@@ -27150,7 +28534,7 @@ var Overlay = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActio
             'a',
             { onClick: function onClick() {
                 return props.onClose();
-              }, 'aria-label': (0, _preact.h)(_preactI18n.Text, { id: 'core.close' }), className: 'close-overlay' },
+              }, 'aria-label': (0, _preact.h)(_preactI18n.Text, { id: 'core.close' }), className: _style2.default.closeOverlay },
             (0, _preact.h)(_icon2.default, { type: _icon.IconType.Close })
           )
         )
@@ -27163,7 +28547,7 @@ var Overlay = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActio
 exports.default = Overlay;
 
 /***/ }),
-/* 79 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27177,15 +28561,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _menu = __webpack_require__(80);
+var _menu = __webpack_require__(97);
 
 var _menu2 = _interopRequireDefault(_menu);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -27339,13 +28727,17 @@ var DropDown = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class =
 
       return props.isMobile ? this.renderNativeSelect() : (0, _preact.h)(
         'div',
-        { className: this.state.dropMenuActive ? 'dropdown active' : 'dropdown' },
+        { className: this.state.dropMenuActive ? [_style2.default.dropdown, _style2.default.active].join(' ') : _style2.default.dropdown },
         (0, _preact.h)(
           'div',
-          { className: 'dropdown-button', onClick: function onClick() {
+          { className: _style2.default.dropdownButton, onClick: function onClick() {
               return _this3.setState({ dropMenuActive: !_this3.state.dropMenuActive });
             } },
-          this.getActiveOptionLabel(),
+          (0, _preact.h)(
+            'span',
+            null,
+            this.getActiveOptionLabel()
+          ),
           (0, _preact.h)(_icon2.default, { type: _icon.IconType.ArrowDown })
         ),
         !this.state.dropMenuActive ? undefined : (0, _preact.h)(_menu2.default, {
@@ -27366,7 +28758,7 @@ var DropDown = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class =
 exports.default = DropDown;
 
 /***/ }),
-/* 80 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27377,7 +28769,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _menu = __webpack_require__(81);
+var _menu = __webpack_require__(98);
 
 var _menu2 = _interopRequireDefault(_menu);
 
@@ -27386,7 +28778,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _menu2.default;
 
 /***/ }),
-/* 81 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27400,15 +28792,21 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
 var _preactRedux = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27448,16 +28846,31 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
   }
 
   _createClass(Menu, [{
-    key: 'componentDidMount',
+    key: 'componentWillMount',
 
+
+    /**
+     * before component mounted, set initial state of the menu position
+     * @returns {void}
+     * @memberof Menu
+     */
+    value: function componentWillMount() {
+      this.setState({ position: [_style2.default.top, _style2.default.left] });
+    }
 
     /**
      * after component mounted, listen to click outside of the component
      * @returns {void}
      * @memberof Menu
      */
+
+  }, {
+    key: 'componentDidMount',
     value: function componentDidMount() {
       document.addEventListener('click', this.handleClickOutside.bind(this), true);
+      if (!this.props.isMobile) {
+        this.setState({ position: this.getPosition() });
+      }
     }
 
     /**
@@ -27474,6 +28887,24 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
     }
 
     /**
+     * get menu position based on document boundaries
+     *
+     * @returns {Array} position style classes array
+     * @memberof Menu
+     */
+
+  }, {
+    key: 'getPosition',
+    value: function getPosition() {
+      var box = this._menuElement.getBoundingClientRect();
+      if (box.top < 0) {
+        return [_style2.default.bottom, _style2.default.left];
+      } else {
+        return [_style2.default.top, _style2.default.left];
+      }
+    }
+
+    /**
      * handler to click outside of the component event listener.
      * if not mobile device and clicked outside the component, call the onClose callback
      *
@@ -27486,10 +28917,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
     key: 'handleClickOutside',
     value: function handleClickOutside(e) {
       if (!this.props.isMobile && this._menuElement && !this._menuElement.contains(e.target)) {
-
-        if (e.target.classList.contains('overlay-play') || e.target.parentElement.getElementsByClassName('dropdown-menu')[0] === this._menuElement) {
-          e.stopPropagation();
-        }
+        e.stopPropagation();
         this.props.onClose();
       }
     }
@@ -27564,7 +28992,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
       return (0, _preact.h)(
         'select',
         {
-          className: this.props.hideSelect ? 'mobile-hidden-select' : '',
+          className: this.props.hideSelect ? _style2.default.mobileHiddenSelect : '',
           onChange: function onChange(e) {
             return _this2.onSelect(_this2.props.options[e.target.value]);
           }
@@ -27599,12 +29027,12 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
           ref: function ref(c) {
             return _this3._menuElement = c;
           },
-          className: 'dropdown-menu top left'
+          className: [_style2.default.dropdownMenu].concat(_toConsumableArray(this.state.position)).join(' ')
         },
         props.options.map(function (o, index) {
           return (0, _preact.h)(
             'div',
-            { key: index, className: _this3.isSelected(o) ? 'dropdown-menu-item active' : 'dropdown-menu-item', onClick: function onClick() {
+            { key: index, className: _this3.isSelected(o) ? [_style2.default.dropdownMenuItem, _style2.default.active].join(' ') : _style2.default.dropdownMenuItem, onClick: function onClick() {
                 return _this3.onSelect(o);
               } },
             (0, _preact.h)(
@@ -27614,7 +29042,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
             ),
             (0, _preact.h)(
               'span',
-              { style: 'opacity: ' + (_this3.isSelected(o) ? 1 : 0) },
+              { className: _style2.default.menuIconContainer, style: 'opacity: ' + (_this3.isSelected(o) ? 1 : 0) },
               (0, _preact.h)(_icon2.default, { type: _icon.IconType.Check })
             )
           );
@@ -27628,7 +29056,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
 exports.default = Menu;
 
 /***/ }),
-/* 82 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27642,37 +29070,41 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _cvaa = __webpack_require__(24);
+var _cvaa = __webpack_require__(27);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _smartContainer = __webpack_require__(39);
+var _smartContainer = __webpack_require__(42);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
-var _smartContainerItem = __webpack_require__(40);
+var _smartContainerItem = __webpack_require__(44);
 
 var _smartContainerItem2 = _interopRequireDefault(_smartContainerItem);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
-var _cvaaOverlay = __webpack_require__(83);
+var _cvaaOverlay = __webpack_require__(100);
 
 var _cvaaOverlay2 = _interopRequireDefault(_cvaaOverlay);
 
-var _preactPortal = __webpack_require__(21);
+var _preactPortal = __webpack_require__(24);
 
 var _preactPortal2 = _interopRequireDefault(_preactPortal);
 
@@ -27852,7 +29284,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
           ref: function ref(c) {
             return _this2._controlLanguageElement = c;
           },
-          className: 'control-button-container control-language'
+          className: [_style2.default.controlButtonContainer, _style2.default.controlLanguage].join(' ')
         },
         (0, _preact.h)(
           _preactI18n.Localizer,
@@ -27861,7 +29293,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
             'button',
             {
               'aria-label': (0, _preact.h)(_preactI18n.Text, { id: 'controls.language' }),
-              className: this.state.smartContainerOpen ? 'control-button active' : 'control-button',
+              className: this.state.smartContainerOpen ? [_style2.default.controlButton, _style2.default.active].join(' ') : _style2.default.controlButton,
               onClick: function onClick() {
                 return _this2.onControlButtonClick();
               }
@@ -27900,7 +29332,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
           ),
           textOptions.length === 0 ? undefined : (0, _preact.h)(
             'div',
-            { className: 'smart-container-item' },
+            { className: _style2.default.smartContainerItem },
             (0, _preact.h)(
               'a',
               { onClick: function onClick() {
@@ -27912,11 +29344,13 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
         ),
         this.state.cvaaOverlay ? (0, _preact.h)(
           _preactPortal2.default,
-          { into: '#overlay-portal' },
-          (0, _preact.h)(_cvaaOverlay2.default, { onClose: function onClose() {
-              return _this2.toggleCVAAOverlay();
+          { into: '#overlay-portal', ref: function ref(_ref) {
+              return _this2._portal = _ref;
+            } },
+          (0, _preact.h)(_cvaaOverlay2.default, { player: this.player, onClose: function onClose() {
+              _this2.toggleCVAAOverlay();_this2.onControlButtonClick();
             } })
-        ) : null
+        ) : (0, _preact.h)('div', null)
       );
     }
 
@@ -27955,7 +29389,7 @@ var LanguageControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
 exports.default = LanguageControl;
 
 /***/ }),
-/* 83 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27966,7 +29400,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _cvaaOverlay = __webpack_require__(84);
+var _cvaaOverlay = __webpack_require__(101);
 
 var _cvaaOverlay2 = _interopRequireDefault(_cvaaOverlay);
 
@@ -27975,7 +29409,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _cvaaOverlay2.default;
 
 /***/ }),
-/* 84 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27991,27 +29425,43 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _isEqual = __webpack_require__(102);
 
-var _cvaa = __webpack_require__(24);
+var _isEqual2 = _interopRequireDefault(_isEqual);
 
-var _shell = __webpack_require__(6);
+var _bindActions = __webpack_require__(5);
+
+var _cvaa = __webpack_require__(27);
+
+var _shell = __webpack_require__(9);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _overlay = __webpack_require__(22);
+var _overlay = __webpack_require__(25);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
-var _dropdown = __webpack_require__(41);
+var _dropdown = __webpack_require__(45);
 
 var _dropdown2 = _interopRequireDefault(_dropdown);
+
+var _slider = __webpack_require__(103);
+
+var _slider2 = _interopRequireDefault(_slider);
+
+var _icon = __webpack_require__(6);
+
+var _icon2 = _interopRequireDefault(_icon);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28084,7 +29534,22 @@ var CVAAOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.setState({
-        state: cvaaOverlayState.Main
+        state: cvaaOverlayState.Main,
+        customTextStyle: this.props.player.textStyle
+      });
+
+      this.captionsStyleDefault = Object.assign(new this.props.player.TextStyle(), {
+        backgroundOpacity: this.props.player.TextStyle.StandardOpacities.TRANSPARENT
+      });
+
+      this.captionsStyleYellow = Object.assign(new this.props.player.TextStyle(), {
+        backgroundOpacity: this.props.player.TextStyle.StandardOpacities.TRANSPARENT,
+        fontColor: this.props.player.TextStyle.StandardColors.YELLOW
+      });
+
+      this.captionsStyleBlackBG = Object.assign(new this.props.player.TextStyle(), {
+        backgroundColor: this.props.player.TextStyle.StandardColors.BLACK,
+        fontColor: this.props.player.TextStyle.StandardColors.WHITE
       });
     }
 
@@ -28105,18 +29570,30 @@ var CVAAOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
     /**
      * changing the captions style
      *
-     * @param {string} style - style name
+     * @param {Object} textStyle - TextStyle object
      * @returns {void}
      * @memberof CVAAOverlay
      */
 
   }, {
     key: 'changeCaptionsStyle',
-    value: function changeCaptionsStyle(style) {
-      this.props.removePlayerClass('captions-' + this.props.style);
-      this.props.addPlayerClass('captions-' + style);
-      this.props.updateCaptionsStyle(style);
+    value: function changeCaptionsStyle(textStyle) {
+      this.props.updateCaptionsStyle(textStyle);
+      this.props.player.textStyle = textStyle;
       this.props.onClose();
+    }
+
+    /**
+     * detection if advanced style applied or one of the default presets applied
+     *
+     * @returns {boolean} advanced style applied boolean
+     * @memberof CVAAOverlay
+     */
+
+  }, {
+    key: 'isAdvancedStyleApplied',
+    value: function isAdvancedStyleApplied() {
+      return !(0, _isEqual2.default)(this.props.player.textStyle, this.captionsStyleDefault) && !(0, _isEqual2.default)(this.props.player.textStyle, this.captionsStyleBlackBG) && !(0, _isEqual2.default)(this.props.player.textStyle, this.captionsStyleYellow);
     }
 
     /**
@@ -28133,10 +29610,10 @@ var CVAAOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
 
       return (0, _preact.h)(
         'div',
-        { className: this.state.state === cvaaOverlayState.Main ? 'overlay-screen active' : 'overlay-screen' },
+        { className: this.state.state === cvaaOverlayState.Main ? [_style2.default.overlayScreen, _style2.default.active].join(' ') : _style2.default.overlayScreen },
         (0, _preact.h)(
           'div',
-          { className: 'title' },
+          { className: _style2.default.title },
           'Advanced captions settings'
         ),
         (0, _preact.h)(
@@ -28144,131 +29621,254 @@ var CVAAOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
           null,
           (0, _preact.h)(
             'div',
-            { className: 'sample', onClick: function onClick() {
-                return _this2.changeCaptionsStyle('default');
+            { className: _style2.default.sample, onClick: function onClick() {
+                return _this2.changeCaptionsStyle(_this2.captionsStyleDefault);
               } },
-            'Sample'
+            'Sample',
+            (0, _isEqual2.default)(this.props.player.textStyle, this.captionsStyleDefault) ? (0, _preact.h)(
+              'div',
+              { className: _style2.default.activeTick },
+              (0, _preact.h)(_icon2.default, { type: _icon.IconType.Check })
+            ) : undefined
           ),
           (0, _preact.h)(
             'div',
-            { className: 'sample black-bg', onClick: function onClick() {
-                return _this2.changeCaptionsStyle('black-bg');
+            { className: [_style2.default.sample, _style2.default.blackBg].join(' '), onClick: function onClick() {
+                return _this2.changeCaptionsStyle(_this2.captionsStyleBlackBG);
               } },
-            'Sample'
+            'Sample',
+            (0, _isEqual2.default)(this.props.player.textStyle, this.captionsStyleBlackBG) ? (0, _preact.h)(
+              'div',
+              { className: _style2.default.activeTick },
+              (0, _preact.h)(_icon2.default, { type: _icon.IconType.Check })
+            ) : undefined
           ),
           (0, _preact.h)(
             'div',
-            { className: 'sample yellow-text', onClick: function onClick() {
-                return _this2.changeCaptionsStyle('yellow-text');
+            { className: [_style2.default.sample, _style2.default.yellowText].join(' '), onClick: function onClick() {
+                return _this2.changeCaptionsStyle(_this2.captionsStyleYellow);
               } },
-            'Sample'
+            'Sample',
+            (0, _isEqual2.default)(this.props.player.textStyle, this.captionsStyleYellow) ? (0, _preact.h)(
+              'div',
+              { className: _style2.default.activeTick },
+              (0, _preact.h)(_icon2.default, { type: _icon.IconType.Check })
+            ) : undefined
           )
         ),
-        (0, _preact.h)(
+        !this.isAdvancedStyleApplied() ? (0, _preact.h)(
           'a',
-          { className: 'button-save-cvaa', onClick: function onClick() {
+          { className: _style2.default.buttonSaveCvaa, onClick: function onClick() {
               return _this2.transitionToState(cvaaOverlayState.CustomCaptions);
             } },
           'Set custom caption'
+        ) : (0, _preact.h)(
+          'div',
+          { className: _style2.default.customCaptionsApplied },
+          (0, _preact.h)(
+            'div',
+            { className: [_style2.default.sample, _style2.default.custom].join(' '), style: this.state.customTextStyle.toCSS() },
+            (0, _preact.h)(
+              'span',
+              null,
+              'Custom captions'
+            ),
+            (0, _preact.h)(
+              'div',
+              { className: _style2.default.activeTick },
+              (0, _preact.h)(_icon2.default, { type: _icon.IconType.Check })
+            )
+          ),
+          (0, _preact.h)(
+            'a',
+            { onClick: function onClick() {
+                return _this2.transitionToState(cvaaOverlayState.CustomCaptions);
+              } },
+            'Edit caption'
+          )
         )
       );
     }
 
     /**
+     * change one or more properties in customTextStyle object in the internal state
+     *
+     * @param {Object} styleChanges style changes object
+     * @returns {void}
+     * @memberof CVAAOverlay
+     */
+
+  }, {
+    key: 'changeCustomStyle',
+    value: function changeCustomStyle(styleChanges) {
+      this.setState({ customTextStyle: Object.assign(this.state.customTextStyle, styleChanges) });
+    }
+
+    /**
      * render custom captions state
      *
+     * @param {*} props - component props
      * @returns {React$Element} - custom captions elements
      * @memberof CVAAOverlay
      */
 
   }, {
     key: 'renderCustomCaptionsState',
-    value: function renderCustomCaptionsState() {
-      var speedOptions = [{ value: 1, label: 'Auto (360)', active: true }, { value: 2, label: '240' }, { value: 3, label: '144' }];
+    value: function renderCustomCaptionsState(props) {
+      var _this3 = this;
+
+      var fontFamily = this.props.player.TextStyle.FontFamily;
+      var edgeStyles = this.props.player.TextStyle.EdgeStyles;
+      var standardColors = props.player.TextStyle.StandardColors;
+
+      var fontSizeOptions = this.props.player.TextStyle.FontSizes.map(function (size) {
+        return {
+          value: size,
+          label: size,
+          active: _this3.state.customTextStyle.fontSize === size
+        };
+      });
+
+      var fontColorOptions = Object.keys(standardColors).map(function (key) {
+        return {
+          value: standardColors[key],
+          label: key.charAt(0).toUpperCase() + key.toLowerCase().slice(1),
+          active: _this3.state.customTextStyle.fontColor == standardColors[key]
+        };
+      });
+
+      var fontFamilyOptions = Object.keys(fontFamily).map(function (key) {
+        return {
+          value: fontFamily[key],
+          label: fontFamily[key],
+          active: _this3.state.customTextStyle.fontFamily == fontFamily[key]
+        };
+      });
+
+      var fontStyleOptions = Object.keys(edgeStyles).map(function (key) {
+        return {
+          value: edgeStyles[key],
+          label: key.charAt(0).toUpperCase() + key.toLowerCase().slice(1),
+          active: _this3.state.customTextStyle.fontEdge == edgeStyles[key]
+        };
+      });
+
+      var backgroundColorOptions = Object.keys(standardColors).map(function (key) {
+        return {
+          value: standardColors[key],
+          label: key.charAt(0).toUpperCase() + key.toLowerCase().slice(1),
+          active: _this3.state.customTextStyle.backgroundColor == standardColors[key]
+        };
+      });
 
       return (0, _preact.h)(
         'div',
-        { className: this.state.state === cvaaOverlayState.CustomCaptions ? 'overlay-screen active' : 'overlay-screen' },
+        { className: this.state.state === cvaaOverlayState.CustomCaptions ? [_style2.default.overlayScreen, _style2.default.active].join(' ') : _style2.default.overlayScreen },
         (0, _preact.h)(
           'form',
-          { className: 'form custom-caption-form' },
+          { className: [_style2.default.form, _style2.default.customCaptionForm].join(' ') },
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'label',
               null,
               'Size'
             ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
+            (0, _preact.h)(_dropdown2.default, { onSelect: function onSelect(fontSize) {
+                return _this3.changeCustomStyle({ fontSize: fontSize });
+              }, options: fontSizeOptions })
           ),
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'label',
               null,
               'Font color'
             ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
+            (0, _preact.h)(_dropdown2.default, { onSelect: function onSelect(fontColor) {
+                return _this3.changeCustomStyle({ fontColor: fontColor });
+              }, options: fontColorOptions })
           ),
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
-            (0, _preact.h)(
-              'label',
-              null,
-              'Font opacity'
-            ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
-          ),
-          (0, _preact.h)(
-            'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'label',
               null,
               'Font family'
             ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
+            (0, _preact.h)(_dropdown2.default, { onSelect: function onSelect(fontFamily) {
+                return _this3.changeCustomStyle({ fontFamily: fontFamily });
+              }, options: fontFamilyOptions })
           ),
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'label',
               null,
               'Font style'
             ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
+            (0, _preact.h)(_dropdown2.default, { onSelect: function onSelect(fontEdge) {
+                return _this3.changeCustomStyle({ fontEdge: fontEdge });
+              }, options: fontStyleOptions })
           ),
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
+            (0, _preact.h)(
+              'label',
+              null,
+              'Font opacity'
+            ),
+            (0, _preact.h)(_slider2.default, { min: 0, max: 100, value: this.state.customTextStyle.fontOpacity * 100, onChange: function onChange(fontOpacity) {
+                return _this3.changeCustomStyle({ fontOpacity: fontOpacity / 100 });
+              } })
+          ),
+          (0, _preact.h)(
+            'div',
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'label',
               null,
               'Background color'
             ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
+            (0, _preact.h)(_dropdown2.default, { onSelect: function onSelect(backgroundColor) {
+                return _this3.changeCustomStyle({ backgroundColor: backgroundColor });
+              }, options: backgroundColorOptions })
           ),
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'label',
               null,
               'Background opacity'
             ),
-            (0, _preact.h)(_dropdown2.default, { options: speedOptions })
+            (0, _preact.h)(_slider2.default, { min: 0, max: 100, value: this.state.customTextStyle.backgroundOpacity * 100, onChange: function onChange(backgroundOpacity) {
+                return _this3.changeCustomStyle({ backgroundOpacity: backgroundOpacity / 100 });
+              } })
           ),
           (0, _preact.h)(
             'div',
-            { className: 'form-group-row' },
+            { className: _style2.default.formGroupRow },
             (0, _preact.h)(
               'a',
-              { className: 'btn btn-branded btn-block' },
+              { onClick: function onClick() {
+                  return _this3.changeCaptionsStyle(_this3.state.customTextStyle);
+                }, className: [_style2.default.btn, _style2.default.btnBranded, _style2.default.btnBlock].join(' ') },
               'Apply'
+            )
+          ),
+          (0, _preact.h)(
+            'div',
+            { className: _style2.default.previewContainer },
+            (0, _preact.h)(
+              'span',
+              { style: this.state.customTextStyle.toCSS() },
+              'This is your caption preview'
             )
           )
         )
@@ -28292,7 +29892,7 @@ var CVAAOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
             return props.onClose();
           }, type: 'cvaa' },
         this.renderMainState(),
-        this.renderCustomCaptionsState()
+        this.renderCustomCaptionsState(props)
       );
     }
   }]);
@@ -28302,7 +29902,373 @@ var CVAAOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
 exports.default = CVAAOverlay;
 
 /***/ }),
-/* 85 */
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+/**
+ * Shallow comparison of two objects
+ *
+ * @param {Object} objA object A
+ * @param {Object} objB object B
+ * @returns {boolean} objects equal or not
+ */
+function isEqual(objA, objB) {
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  for (var i = 0; i < keysA.length; i++) {
+    if (objA[keysA[i]] !== objB[keysA[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+exports.default = isEqual;
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _slider = __webpack_require__(104);
+
+var _slider2 = _interopRequireDefault(_slider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _slider2.default;
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _slider = __webpack_require__(105);
+
+var _slider2 = _interopRequireDefault(_slider);
+
+var _preact = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Slider component
+ *
+ * @class Slider
+ * @example <Slider onChange={value => this.onOpacityChange(value)} value={this.initialOpacity} min={0} max={100} />
+ * @extends {Component}
+ */
+var Slider = function (_Component) {
+  _inherits(Slider, _Component);
+
+  function Slider() {
+    _classCallCheck(this, Slider);
+
+    return _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).apply(this, arguments));
+  }
+
+  _createClass(Slider, [{
+    key: 'componentWillMount',
+
+
+    /**
+     * before component mounted, set initial state of the slider
+     *
+     * @returns {void}
+     * @memberof Slider
+     */
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      this.setState({
+        value: this.props.value || 0,
+        min: this.props.min || 0,
+        max: this.props.max || 100,
+        dragging: false
+      });
+
+      document.addEventListener('mouseup', function (e) {
+        return _this2.mouseUpHandler(e);
+      });
+      document.addEventListener('mousemove', function (e) {
+        return _this2.mouseMoveHandler(e);
+      });
+
+      document.addEventListener('touchend', function (e) {
+        return _this2.mouseUpHandler(e);
+      });
+      document.addEventListener('touchmove', function (e) {
+        return _this2.mouseMoveHandler(e);
+      });
+    }
+
+    /**
+     * after component mounted, save the sliderWidth
+     *
+     * @returns {void}
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.sliderWidth = this._sliderElement.clientWidth;
+      this._sliderElementOffsetLeft = this._sliderElement.getBoundingClientRect().left;
+    }
+
+    /**
+     * mousedown slider handler
+     *
+     * @param {*} e event
+     * @returns {void}
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'mouseDownHandler',
+    value: function mouseDownHandler(e) {
+      this._sliderElementOffsetLeft = this._sliderElement.getBoundingClientRect().left;
+      if (!this.state.dragging) {
+        this.setState({
+          dragging: true,
+          value: this.mouseEventToValue(e)
+        });
+        this.props.onChange(this.mouseEventToValue(e));
+      }
+    }
+
+    /**
+     * document mousemove handler if dragging active
+     *
+     * @param {*} e event
+     * @returns {void}
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'mouseMoveHandler',
+    value: function mouseMoveHandler(e) {
+      if (this.state.dragging) {
+        this.setState({
+          value: this.mouseEventToValue(e)
+        });
+        this.props.onChange(this.mouseEventToValue(e));
+      }
+    }
+
+    /**
+     * document mouseup handler if dragging active
+     *
+     * @param {*} e event
+     * @returns {void}
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'mouseUpHandler',
+    value: function mouseUpHandler(e) {
+      if (this.state.dragging) {
+        this.setState({
+          value: this.mouseEventToValue(e),
+          dragging: false
+        });
+        this.props.onChange(this.mouseEventToValue(e));
+      }
+    }
+
+    /**
+     * get slider value based on mouse event
+     *
+     * @param {*} e event
+     * @returns {number} slider value
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'mouseEventToValue',
+    value: function mouseEventToValue(e) {
+      var clientX = void 0;
+      if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+      } else if (e.changedTouches) {
+        clientX = e.changedTouches[0].pageX;
+      } else {
+        clientX = e.clientX;
+      }
+
+      var offsetLeft = clientX - this._sliderElement.getBoundingClientRect().left;
+      var offsetLeftPercentage = Math.round(offsetLeft / this._sliderElement.clientWidth * 100);
+
+      if (this.getValueByPersentage(offsetLeftPercentage) < this.state.min) return this.state.min;
+      if (this.getValueByPersentage(offsetLeftPercentage) > this.state.max) return this.state.max;
+
+      return this.getValueByPersentage(offsetLeftPercentage);
+    }
+
+    /**
+     * get slider value based on persentage value
+     *
+     * @param {any} persentage progress persentage of slider
+     * @returns {number} slider value
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'getValueByPersentage',
+    value: function getValueByPersentage(persentage) {
+      return this.state.max / 100 * persentage;
+    }
+
+    /**
+     * get progress presentage by slider value
+     *
+     * @returns {number} presentage
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'getPersentageByValue',
+    value: function getPersentageByValue() {
+      return Math.round(this.state.value / this.state.max * 100);
+    }
+
+    /**
+     * component render function
+     *
+     * @returns {React$Element<any>} component element
+     * @memberof Slider
+     */
+
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      return (0, _preact.h)(
+        'div',
+        {
+          ref: function ref(c) {
+            return _this3._sliderElement = c;
+          },
+          className: _slider2.default.slider,
+          onMouseDown: function onMouseDown(e) {
+            return _this3.mouseDownHandler(e);
+          },
+          onTouchStart: function onTouchStart(e) {
+            return _this3.mouseDownHandler(e);
+          }
+        },
+        (0, _preact.h)(
+          'div',
+          {
+            className: _slider2.default.progress,
+            style: { width: this.getPersentageByValue() + '%' }
+          },
+          (0, _preact.h)('div', {
+            className: _slider2.default.handle,
+            onMouseDown: function onMouseDown(e) {
+              return _this3.mouseDownHandler(e);
+            },
+            onTouchStart: function onTouchStart(e) {
+              return _this3.mouseDownHandler(e);
+            }
+          })
+        )
+      );
+    }
+  }]);
+
+  return Slider;
+}(_preact.Component);
+
+exports.default = Slider;
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(106);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_slider.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_slider.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-slider {\n  height: 8px;\n  border-radius: 4px;\n  background-color: rgba(255, 255, 255, 0.2); }\n  .playkit-slider .playkit-progress {\n    background-color: #01ACCD;\n    height: 8px;\n    border-radius: 4px;\n    position: relative; }\n    .playkit-slider .playkit-progress .playkit-handle {\n      height: 12px;\n      width: 12px;\n      border-radius: 5px;\n      background-color: #FFFFFF;\n      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n      position: absolute;\n      right: 0;\n      top: 0px;\n      transform: translate3d(6px, -2px, 0);\n      cursor: pointer; }\n", ""]);
+
+// exports
+exports.locals = {
+	"slider": "playkit-slider",
+	"progress": "playkit-progress",
+	"handle": "playkit-handle"
+};
+
+/***/ }),
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28316,21 +30282,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _fullscreen = __webpack_require__(108);
+
+var _fullscreen2 = _interopRequireDefault(_fullscreen);
+
 var _preact = __webpack_require__(0);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _fullscreen = __webpack_require__(42);
+var _fullscreen3 = __webpack_require__(46);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -28361,7 +30331,7 @@ var mapStateToProps = function mapStateToProps(state) {
  * @example <FullscreenControl player={this.player} />
  * @extends {BaseComponent}
  */
-var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_fullscreen.actions)), _dec(_class = function (_BaseComponent) {
+var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_fullscreen3.actions)), _dec(_class = function (_BaseComponent) {
   _inherits(FullscreenControl, _BaseComponent);
 
   /**
@@ -28516,14 +30486,14 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
 
       return (0, _preact.h)(
         'div',
-        { className: 'control-button-container control-fullscreen' },
+        { className: [_fullscreen2.default.controlButtonContainer, _fullscreen2.default.controlFullscreen].join(' ') },
         (0, _preact.h)(
           _preactI18n.Localizer,
           null,
           (0, _preact.h)(
             'button',
             { 'aria-label': (0, _preact.h)(_preactI18n.Text, { id: 'controls.fullscreen' }),
-              className: this.props.fullscreen ? 'control-button is-fullscreen' : 'control-button',
+              className: this.props.fullscreen ? [_fullscreen2.default.controlButton, _fullscreen2.default.isFullscreen].join(' ') : _fullscreen2.default.controlButton,
               onClick: function onClick() {
                 return _this3.toggleFullscreen();
               } },
@@ -28540,7 +30510,67 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
 exports.default = FullscreenControl;
 
 /***/ }),
-/* 86 */
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(109);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_fullscreen.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_fullscreen.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n", ""]);
+
+// exports
+exports.locals = {
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"control-fullscreen": "playkit-control-fullscreen",
+	"controlFullscreen": "playkit-control-fullscreen",
+	"control-button": "playkit-control-button",
+	"controlButton": "playkit-control-button",
+	"icon-minimize": "playkit-icon-minimize",
+	"iconMinimize": "playkit-icon-minimize",
+	"is-fullscreen": "playkit-is-fullscreen",
+	"isFullscreen": "playkit-is-fullscreen",
+	"icon-maximize": "playkit-icon-maximize",
+	"iconMaximize": "playkit-icon-maximize",
+	"player": "playkit-player",
+	"touch": "playkit-touch"
+};
+
+/***/ }),
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28551,7 +30581,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _timeDisplayPlaybackContainer = __webpack_require__(87);
+var _timeDisplayPlaybackContainer = __webpack_require__(111);
 
 var _timeDisplayPlaybackContainer2 = _interopRequireDefault(_timeDisplayPlaybackContainer);
 
@@ -28560,7 +30590,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _timeDisplayPlaybackContainer2.default;
 
 /***/ }),
-/* 87 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28584,7 +30614,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _timeDisplay = __webpack_require__(25);
+var _timeDisplay = __webpack_require__(28);
 
 var _timeDisplay2 = _interopRequireDefault(_timeDisplay);
 
@@ -28652,7 +30682,7 @@ var TimeDisplayPlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToP
 exports.default = TimeDisplayPlaybackContainer;
 
 /***/ }),
-/* 88 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28664,9 +30694,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _timeDisplay = __webpack_require__(113);
+
+var _timeDisplay2 = _interopRequireDefault(_timeDisplay);
+
 var _preact = __webpack_require__(0);
 
-var _timeFormat = __webpack_require__(19);
+var _timeFormat = __webpack_require__(22);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28735,7 +30771,7 @@ var TimeDisplay = function (_Component) {
     value: function render(props) {
       return (0, _preact.h)(
         'div',
-        { className: 'time-display' },
+        { className: _timeDisplay2.default.timeDisplay },
         (0, _preact.h)(
           'span',
           null,
@@ -28751,7 +30787,59 @@ var TimeDisplay = function (_Component) {
 exports.default = TimeDisplay;
 
 /***/ }),
-/* 89 */
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(114);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_time-display.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_time-display.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n", ""]);
+
+// exports
+exports.locals = {
+	"player": "playkit-player",
+	"time-display": "playkit-time-display",
+	"timeDisplay": "playkit-time-display",
+	"touch": "playkit-touch",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
+};
+
+/***/ }),
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28763,7 +30851,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _bottomBar = __webpack_require__(116);
+
+var _bottomBar2 = _interopRequireDefault(_bottomBar);
+
 var _preact = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28800,7 +30894,7 @@ var BottomBar = function (_Component) {
     value: function render(props) {
       return (0, _preact.h)(
         'div',
-        { className: 'bottom-bar' },
+        { className: _bottomBar2.default.bottomBar },
         props.children
       );
     }
@@ -28812,7 +30906,73 @@ var BottomBar = function (_Component) {
 exports.default = BottomBar;
 
 /***/ }),
-/* 90 */
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(117);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_bottom-bar.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_bottom-bar.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n", ""]);
+
+// exports
+exports.locals = {
+	"player": "playkit-player",
+	"bottom-bar": "playkit-bottom-bar",
+	"bottomBar": "playkit-bottom-bar",
+	"left-controls": "playkit-left-controls",
+	"leftControls": "playkit-left-controls",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"hover": "playkit-hover",
+	"state-paused": "playkit-state-paused",
+	"statePaused": "playkit-state-paused",
+	"menu-active": "playkit-menu-active",
+	"menuActive": "playkit-menu-active",
+	"overlay-active": "playkit-overlay-active",
+	"overlayActive": "playkit-overlay-active",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm",
+	"time-display": "playkit-time-display",
+	"timeDisplay": "playkit-time-display"
+};
+
+/***/ }),
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28887,7 +31047,7 @@ var OverlayPortal = function (_Component) {
 exports.default = OverlayPortal;
 
 /***/ }),
-/* 91 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29018,7 +31178,7 @@ var KeyboardControl = function (_BaseComponent) {
 exports.default = KeyboardControl;
 
 /***/ }),
-/* 92 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29029,7 +31189,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _seekbarAdsContainer = __webpack_require__(93);
+var _seekbarAdsContainer = __webpack_require__(121);
 
 var _seekbarAdsContainer2 = _interopRequireDefault(_seekbarAdsContainer);
 
@@ -29038,7 +31198,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _seekbarAdsContainer2.default;
 
 /***/ }),
-/* 93 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29056,15 +31216,15 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _seekbar = __webpack_require__(10);
+var _seekbar = __webpack_require__(13);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _seekbar2 = __webpack_require__(11);
+var _seekbar2 = __webpack_require__(14);
 
 var _seekbar3 = _interopRequireDefault(_seekbar2);
 
@@ -29143,7 +31303,7 @@ var SeekBarAdsContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0,
 exports.default = SeekBarAdsContainer;
 
 /***/ }),
-/* 94 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29154,7 +31314,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _timeDisplayAdsContainer = __webpack_require__(95);
+var _timeDisplayAdsContainer = __webpack_require__(123);
 
 var _timeDisplayAdsContainer2 = _interopRequireDefault(_timeDisplayAdsContainer);
 
@@ -29163,7 +31323,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _timeDisplayAdsContainer2.default;
 
 /***/ }),
-/* 95 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29187,7 +31347,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _timeDisplay = __webpack_require__(25);
+var _timeDisplay = __webpack_require__(28);
 
 var _timeDisplay2 = _interopRequireDefault(_timeDisplay);
 
@@ -29254,7 +31414,7 @@ var TimeDisplayAdsContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps)
 exports.default = TimeDisplayAdsContainer;
 
 /***/ }),
-/* 96 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29265,7 +31425,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _adSkip = __webpack_require__(97);
+var _adSkip = __webpack_require__(125);
 
 var _adSkip2 = _interopRequireDefault(_adSkip);
 
@@ -29274,7 +31434,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _adSkip2.default;
 
 /***/ }),
-/* 97 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29287,6 +31447,10 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _dec, _class;
+
+var _adSkip = __webpack_require__(126);
+
+var _adSkip2 = _interopRequireDefault(_adSkip);
 
 var _preact = __webpack_require__(0);
 
@@ -29385,13 +31549,13 @@ var AdSkip = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = f
       if (!this.props.adSkippableState && this.skipSupport) {
         return this.getSkipTimeOffset() <= 0 ? (0, _preact.h)(
           'a',
-          { className: 'btn btn-branded btn-skip-ad', onClick: function onClick() {
+          { className: [_adSkip2.default.btn, _adSkip2.default.btnBranded, _adSkip2.default.btnSkipAd].join(' '), onClick: function onClick() {
               return _this2.player.skipAd();
             } },
           this.skipSupport.label || 'Skip ad'
         ) : (0, _preact.h)(
           'span',
-          { className: 'skip-ad' },
+          { className: _adSkip2.default.skipAd },
           'Skip in ',
           this.getSkipTimeOffset()
         );
@@ -29406,7 +31570,57 @@ var AdSkip = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = f
 exports.default = AdSkip;
 
 /***/ }),
-/* 98 */
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(127);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_ad-skip.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_ad-skip.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n", ""]);
+
+// exports
+exports.locals = {
+	"btn-skip-ad": "playkit-btn-skip-ad",
+	"btnSkipAd": "playkit-btn-skip-ad",
+	"skip-ad": "playkit-skip-ad",
+	"skipAd": "playkit-skip-ad"
+};
+
+/***/ }),
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29417,7 +31631,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _adLearnMore = __webpack_require__(99);
+var _adLearnMore = __webpack_require__(129);
 
 var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
 
@@ -29426,7 +31640,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _adLearnMore2.default;
 
 /***/ }),
-/* 99 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29440,9 +31654,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _adLearnMore = __webpack_require__(130);
+
+var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
+
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29490,7 +31710,7 @@ var AdLearnMore = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_clas
     value: function render(props) {
       return (0, _preact.h)(
         'a',
-        { href: props.url, target: 'new', className: 'btn btn-dark-transparent' },
+        { href: props.url, target: '_blank', className: [_adLearnMore2.default.btn, _adLearnMore2.default.btnDarkTransparent].join(' ') },
         'Learn more'
       );
     }
@@ -29501,7 +31721,62 @@ var AdLearnMore = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_clas
 exports.default = AdLearnMore;
 
 /***/ }),
-/* 100 */
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(131);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_ad-learn-more.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_ad-learn-more.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n", ""]);
+
+// exports
+exports.locals = {
+	"btn": "playkit-btn",
+	"btn-block": "playkit-btn-block",
+	"btnBlock": "playkit-btn-block",
+	"btn-dark-transparent": "playkit-btn-dark-transparent",
+	"btnDarkTransparent": "playkit-btn-dark-transparent",
+	"btn-branded": "playkit-btn-branded",
+	"btnBranded": "playkit-btn-branded",
+	"btn-rounded": "playkit-btn-rounded",
+	"btnRounded": "playkit-btn-rounded"
+};
+
+/***/ }),
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29513,7 +31788,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _topBar = __webpack_require__(133);
+
+var _topBar2 = _interopRequireDefault(_topBar);
+
 var _preact = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29550,7 +31831,7 @@ var TopBar = function (_Component) {
     value: function render(props) {
       return (0, _preact.h)(
         'div',
-        { className: 'top-bar' },
+        { className: _topBar2.default.topBar },
         props.children
       );
     }
@@ -29562,7 +31843,71 @@ var TopBar = function (_Component) {
 exports.default = TopBar;
 
 /***/ }),
-/* 101 */
+/* 133 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(134);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_top-bar.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_top-bar.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n", ""]);
+
+// exports
+exports.locals = {
+	"player": "playkit-player",
+	"top-bar": "playkit-top-bar",
+	"topBar": "playkit-top-bar",
+	"left-controls": "playkit-left-controls",
+	"leftControls": "playkit-left-controls",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
+	"control-button-container": "playkit-control-button-container",
+	"controlButtonContainer": "playkit-control-button-container",
+	"hover": "playkit-hover",
+	"state-paused": "playkit-state-paused",
+	"statePaused": "playkit-state-paused",
+	"menu-active": "playkit-menu-active",
+	"menuActive": "playkit-menu-active",
+	"overlay-active": "playkit-overlay-active",
+	"overlayActive": "playkit-overlay-active",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
+};
+
+/***/ }),
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29573,7 +31918,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _seekbarLivePlaybackContainer = __webpack_require__(102);
+var _seekbarLivePlaybackContainer = __webpack_require__(136);
 
 var _seekbarLivePlaybackContainer2 = _interopRequireDefault(_seekbarLivePlaybackContainer);
 
@@ -29582,7 +31927,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _seekbarLivePlaybackContainer2.default;
 
 /***/ }),
-/* 102 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29600,15 +31945,15 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _seekbar = __webpack_require__(10);
+var _seekbar = __webpack_require__(13);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _seekbar2 = __webpack_require__(11);
+var _seekbar2 = __webpack_require__(14);
 
 var _seekbar3 = _interopRequireDefault(_seekbar2);
 
@@ -29720,7 +32065,7 @@ var SeekBarLivePlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToP
 exports.default = SeekBarLivePlaybackContainer;
 
 /***/ }),
-/* 103 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29731,7 +32076,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _liveTag = __webpack_require__(104);
+var _liveTag = __webpack_require__(138);
 
 var _liveTag2 = _interopRequireDefault(_liveTag);
 
@@ -29740,7 +32085,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _liveTag2.default;
 
 /***/ }),
-/* 104 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29753,6 +32098,10 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _dec, _class;
+
+var _liveTag = __webpack_require__(139);
+
+var _liveTag2 = _interopRequireDefault(_liveTag);
 
 var _preact = __webpack_require__(0);
 
@@ -29851,12 +32200,12 @@ var LiveTag = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = 
     value: function render(props) {
       var _this2 = this;
 
-      var tagStyleClass = 'live-tag';
-      if (props.isDvr && !this.isOnLiveEdge()) tagStyleClass += ' non-live-playhead';
+      var tagStyleClass = [_liveTag2.default.liveTag];
+      if (props.isDvr && !this.isOnLiveEdge()) tagStyleClass.push(_liveTag2.default.nonLivePlayhead);
 
       return (0, _preact.h)(
         'div',
-        { className: tagStyleClass, onClick: function onClick() {
+        { className: tagStyleClass.join(' '), onClick: function onClick() {
             return _this2.onClick();
           } },
         'Live'
@@ -29869,7 +32218,60 @@ var LiveTag = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = 
 exports.default = LiveTag;
 
 /***/ }),
-/* 105 */
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(140);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_live-tag.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_live-tag.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n", ""]);
+
+// exports
+exports.locals = {
+	"live-tag": "playkit-live-tag",
+	"liveTag": "playkit-live-tag",
+	"non-live-playhead": "playkit-non-live-playhead",
+	"nonLivePlayhead": "playkit-non-live-playhead",
+	"player": "playkit-player",
+	"size-sm": "playkit-size-sm",
+	"sizeSm": "playkit-size-sm"
+};
+
+/***/ }),
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29880,7 +32282,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _share = __webpack_require__(106);
+var _share = __webpack_require__(142);
 
 var _share2 = _interopRequireDefault(_share);
 
@@ -29889,7 +32291,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _share2.default;
 
 /***/ }),
-/* 106 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29907,15 +32309,15 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
-var _shareOverlay = __webpack_require__(107);
+var _shareOverlay = __webpack_require__(143);
 
 var _shareOverlay2 = _interopRequireDefault(_shareOverlay);
 
-var _preactPortal = __webpack_require__(21);
+var _preactPortal = __webpack_require__(24);
 
 var _preactPortal2 = _interopRequireDefault(_preactPortal);
 
@@ -30014,7 +32416,7 @@ var ShareControl = function (_BaseComponent) {
 exports.default = ShareControl;
 
 /***/ }),
-/* 107 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30025,7 +32427,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _shareOverlay = __webpack_require__(108);
+var _shareOverlay = __webpack_require__(144);
 
 var _shareOverlay2 = _interopRequireDefault(_shareOverlay);
 
@@ -30034,7 +32436,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _shareOverlay2.default;
 
 /***/ }),
-/* 108 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30050,25 +32452,25 @@ var _dec, _class;
 
 var _preact = __webpack_require__(0);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _share = __webpack_require__(46);
+var _share = __webpack_require__(50);
 
-var _timeFormat = __webpack_require__(19);
+var _timeFormat = __webpack_require__(22);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _overlay = __webpack_require__(22);
+var _overlay = __webpack_require__(25);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
-var _icon = __webpack_require__(4);
+var _icon = __webpack_require__(6);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -30623,7 +33025,7 @@ var ShareOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindA
 exports.default = ShareOverlay;
 
 /***/ }),
-/* 109 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30645,49 +33047,49 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _preactI18n = __webpack_require__(5);
+var _preactI18n = __webpack_require__(8);
 
-var _redux = __webpack_require__(7);
+var _redux = __webpack_require__(10);
 
-var _store = __webpack_require__(110);
+var _store = __webpack_require__(146);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _fr = __webpack_require__(111);
+var _fr = __webpack_require__(147);
 
 var _fr2 = _interopRequireDefault(_fr);
 
-var _playkitJs = __webpack_require__(35);
+var _playkitJs = __webpack_require__(38);
 
-var _engineConnector = __webpack_require__(112);
+var _engineConnector = __webpack_require__(148);
 
 var _engineConnector2 = _interopRequireDefault(_engineConnector);
 
-var _shell = __webpack_require__(114);
+var _shell = __webpack_require__(150);
 
 var _shell2 = _interopRequireDefault(_shell);
 
-var _videoPlayer = __webpack_require__(116);
+var _videoPlayer = __webpack_require__(152);
 
 var _videoPlayer2 = _interopRequireDefault(_videoPlayer);
 
-var _playerGui = __webpack_require__(118);
+var _playerGui = __webpack_require__(156);
 
 var _playerGui2 = _interopRequireDefault(_playerGui);
 
-var _ads = __webpack_require__(43);
+var _ads = __webpack_require__(47);
 
 var _ads2 = _interopRequireDefault(_ads);
 
-var _playback = __webpack_require__(28);
+var _playback = __webpack_require__(31);
 
 var _playback2 = _interopRequireDefault(_playback);
 
-var _live = __webpack_require__(45);
+var _live = __webpack_require__(49);
 
 var _live2 = _interopRequireDefault(_live);
 
-__webpack_require__(119);
+__webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30804,7 +33206,7 @@ var UIManager = function () {
 exports.default = UIManager;
 
 /***/ }),
-/* 110 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30814,45 +33216,45 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(7);
+var _redux = __webpack_require__(10);
 
-var _engine = __webpack_require__(47);
+var _engine = __webpack_require__(51);
 
 var _engine2 = _interopRequireDefault(_engine);
 
-var _shell = __webpack_require__(6);
+var _shell = __webpack_require__(9);
 
 var _shell2 = _interopRequireDefault(_shell);
 
-var _playPause = __webpack_require__(17);
+var _playPause = __webpack_require__(20);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbar = __webpack_require__(10);
+var _seekbar = __webpack_require__(13);
 
 var _seekbar2 = _interopRequireDefault(_seekbar);
 
-var _volume = __webpack_require__(37);
+var _volume = __webpack_require__(40);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _fullscreen = __webpack_require__(42);
+var _fullscreen = __webpack_require__(46);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-var _loading = __webpack_require__(36);
+var _loading = __webpack_require__(39);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _share = __webpack_require__(46);
+var _share = __webpack_require__(50);
 
 var _share2 = _interopRequireDefault(_share);
 
-var _cvaa = __webpack_require__(24);
+var _cvaa = __webpack_require__(27);
 
 var _cvaa2 = _interopRequireDefault(_cvaa);
 
-var _settings = __webpack_require__(38);
+var _settings = __webpack_require__(41);
 
 var _settings2 = _interopRequireDefault(_settings);
 
@@ -30873,7 +33275,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 111 */
+/* 147 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30906,7 +33308,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 112 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30917,7 +33319,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _engineConnector = __webpack_require__(113);
+var _engineConnector = __webpack_require__(149);
 
 var _engineConnector2 = _interopRequireDefault(_engineConnector);
 
@@ -30926,7 +33328,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _engineConnector2.default;
 
 /***/ }),
-/* 113 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30944,9 +33346,9 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _engine = __webpack_require__(47);
+var _engine = __webpack_require__(51);
 
 var _engine2 = _interopRequireDefault(_engine);
 
@@ -30998,6 +33400,16 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
 
       var TrackType = this.player.Track;
 
+      this.player.addEventListener(this.player.Event.CHANGE_SOURCE_STARTED, function () {
+        _this2.props.updateAdBreak(false);
+        _this2.props.updateAdIsPlaying(false);
+        _this2.props.updateIsPlaying(false);
+      });
+
+      this.player.addEventListener(this.player.Event.CHANGE_SOURCE_ENDED, function () {
+        _this2.props.updatePlayerPoster(_this2.player.poster);
+      });
+
       this.player.addEventListener(this.player.Event.PLAYER_STATE_CHANGED, function (e) {
         _this2.props.updatePlayerState(e.payload.oldState.type, e.payload.newState.type);
       });
@@ -31010,8 +33422,11 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
         _this2.props.updateDuration(_this2.player.duration);
       });
 
-      this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
+      this.player.addEventListener(this.player.Event.LOADED_DATA, function () {
         _this2.props.updateDuration(_this2.player.duration);
+      });
+
+      this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
         _this2.props.updateMuted(_this2.player.muted);
         _this2.props.updateMetadataLoadingStatus(true);
         _this2.props.updatePlayerPoster(_this2.player.poster);
@@ -31138,7 +33553,7 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
 exports.default = EngineConnector;
 
 /***/ }),
-/* 114 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31149,7 +33564,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _shell = __webpack_require__(115);
+var _shell = __webpack_require__(151);
 
 var _shell2 = _interopRequireDefault(_shell);
 
@@ -31158,7 +33573,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _shell2.default;
 
 /***/ }),
-/* 115 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31172,6 +33587,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
+var _style = __webpack_require__(7);
+
+var _style2 = _interopRequireDefault(_style);
+
 var _preact = __webpack_require__(0);
 
 var _base = __webpack_require__(2);
@@ -31180,9 +33599,9 @@ var _base2 = _interopRequireDefault(_base);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(3);
+var _bindActions = __webpack_require__(5);
 
-var _shell = __webpack_require__(6);
+var _shell = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31229,7 +33648,13 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
   function Shell(obj) {
     _classCallCheck(this, Shell);
 
-    return _possibleConstructorReturn(this, (Shell.__proto__ || Object.getPrototypeOf(Shell)).call(this, { name: 'Shell', player: obj.player }));
+    var _this = _possibleConstructorReturn(this, (Shell.__proto__ || Object.getPrototypeOf(Shell)).call(this, { name: 'Shell', player: obj.player }));
+
+    _this.fallbackToMutedAutoPlayMode = false;
+    _this.player.addEventListener(_this.player.Event.FALLBACK_TO_MUTED_AUTOPLAY, function () {
+      _this.fallbackToMutedAutoPlayMode = true;
+    });
+    return _this;
   }
 
   /**
@@ -31293,6 +33718,22 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
     }
 
     /**
+     * if the ui is in fallback to muted autoplay mode, unmute the player on any click
+     *
+     * @returns {void}
+     * @memberof Shell
+     */
+
+  }, {
+    key: 'onClick',
+    value: function onClick() {
+      if (this.fallbackToMutedAutoPlayMode) {
+        this.player.muted = false;
+        this.fallbackToMutedAutoPlayMode = false;
+      }
+    }
+
+    /**
      * after component mounted, update the isMobile indication in the store state,
      * add event listener to get the player width and update these on resize as well.
      * also, update document width initially and on resize.
@@ -31338,21 +33779,26 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
     value: function render(props) {
       var _this4 = this;
 
-      var playerClasses = 'player skin-default';
-      playerClasses += ' ' + props.playerClasses.join(' ');
+      var playerClasses = [_style2.default.player, _style2.default.skinDefault];
+      playerClasses.push(props.playerClasses);
 
-      if (this.props.isMobile) playerClasses += ' touch';
-      if (this.props.playerHover) playerClasses += ' hover';
-      if (this.props.metadataLoaded) playerClasses += ' metadata-loaded';
-      if (this.props.adBreak) playerClasses += ' ad-break';
-      if (this.props.metadataLoaded) playerClasses += ' state-' + this.props.currentState;
-      if (this.props.playerWidth <= 480) playerClasses += ' size-sm';else if (this.props.playerWidth <= 768) playerClasses += ' size-md';
-      if (this.props.seekbarDraggingActive) playerClasses += ' hover';
+      if (this.props.isMobile) playerClasses.push(_style2.default.touch);
+      if (this.props.playerHover) playerClasses.push(_style2.default.hover);
+      if (this.props.metadataLoaded) playerClasses.push(_style2.default.metadataLoaded);
+      if (this.props.adBreak) playerClasses.push(_style2.default.adBreak);
+      if (this.props.metadataLoaded) playerClasses.push(_style2.default['state-' + this.props.currentState]);
+      if (this.props.playerWidth <= 480) playerClasses.push(_style2.default.sizeSm);else if (this.props.playerWidth <= 768) playerClasses.push(_style2.default.sizeMd);
+      if (this.props.seekbarDraggingActive) playerClasses.push(_style2.default.hover);
+
+      playerClasses = playerClasses.join(' ');
 
       return (0, _preact.h)(
         'div',
         {
           className: playerClasses,
+          onClick: function onClick() {
+            return _this4.onClick();
+          },
           onMouseOver: function onMouseOver() {
             return _this4.onMouseOver();
           },
@@ -31373,7 +33819,7 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
 exports.default = Shell;
 
 /***/ }),
-/* 116 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31384,7 +33830,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _videoPlayer = __webpack_require__(117);
+var _videoPlayer = __webpack_require__(153);
 
 var _videoPlayer2 = _interopRequireDefault(_videoPlayer);
 
@@ -31393,7 +33839,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _videoPlayer2.default;
 
 /***/ }),
-/* 117 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31405,7 +33851,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _videoPlayer = __webpack_require__(154);
+
+var _videoPlayer2 = _interopRequireDefault(_videoPlayer);
+
 var _preact = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31430,7 +33882,7 @@ var VideoPlayer = function (_Component) {
   }
 
   _createClass(VideoPlayer, [{
-    key: "shouldComponentUpdate",
+    key: 'shouldComponentUpdate',
 
 
     /**
@@ -31451,7 +33903,7 @@ var VideoPlayer = function (_Component) {
      */
 
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       this._el.appendChild(this.props.player.getView());
     }
@@ -31464,11 +33916,11 @@ var VideoPlayer = function (_Component) {
      */
 
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this2 = this;
 
-      return (0, _preact.h)("div", { className: "video-player", ref: function ref(c) {
+      return (0, _preact.h)('div', { className: _videoPlayer2.default.videoPlayer, ref: function ref(c) {
           return _this2._el = c;
         } });
     }
@@ -31480,7 +33932,55 @@ var VideoPlayer = function (_Component) {
 exports.default = VideoPlayer;
 
 /***/ }),
-/* 118 */
+/* 154 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(155);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_video-player.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_video-player.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 155 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n", ""]);
+
+// exports
+exports.locals = {
+	"video-player": "playkit-video-player",
+	"videoPlayer": "playkit-video-player"
+};
+
+/***/ }),
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31607,587 +34107,6 @@ var PlayerGUI = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class 
 }(_preact.Component)) || _class);
 exports.default = PlayerGUI;
 
-/***/ }),
-/* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(120);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(122)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(121)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".row {\n  display: block; }\n  .row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.d-inline-block {\n  display: inline-block; }\n\n.mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.font-size-base {\n  font-size: 15px; }\n\n.form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .form-group.has-error .form-control {\n    border-color: #db1f26; }\n    .form-group.has-error .form-control:focus {\n      border-color: #fff; }\n  .form-group.has-icon .form-control {\n    padding-left: 34px; }\n  .form-group .icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .form-control:focus + .icon {\n      fill: #999; }\n\ntextarea.form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: \"Lato\", sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.checkbox {\n  font-size: 15px;\n  position: relative; }\n  .checkbox input {\n    display: none; }\n  .checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .form-group-row .dropdown {\n    float: right; }\n\n.btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .btn.btn-block {\n    display: block; }\n  .btn.btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .btn.btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .btn.btn-branded {\n    background-color: #01ACCD; }\n    .btn.btn-branded:hover {\n      color: #fff; }\n\n.btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px;\n  fill: #fff; }\n\n@keyframes openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.dropdown {\n  position: relative;\n  font-size: 15px; }\n  .dropdown.active .dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .dropdown.active .dropdown-button .icon {\n    transform: rotate(180deg); }\n  .dropdown .dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .dropdown .dropdown-button .icon {\n      width: 16px;\n      height: 16px;\n      fill: #fff;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px; }\n  .dropdown-menu.top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .dropdown-menu.bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .dropdown-menu.right {\n    left: 0; }\n  .dropdown-menu.left {\n    right: 0; }\n  .dropdown-menu .dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .dropdown-menu .dropdown-menu-item:hover {\n      color: #fff; }\n    .dropdown-menu .dropdown-menu-item.active {\n      color: #01ACCD;\n      fill: #01ACCD; }\n    .dropdown-menu .dropdown-menu-item .check-icon {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .dropdown-menu .dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.player .control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer;\n  fill: #fff; }\n  .player .control-button svg {\n    width: 32px;\n    height: 32px; }\n  .player .control-button.active {\n    opacity: 1; }\n  .player .control-button.control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.player:not(.touch) .control-button:hover {\n  opacity: 1; }\n\n.player:not(.touch) .control-button.control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.player .control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.player.touch .player .control-button-container {\n  position: static; }\n\n.player.touch .control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .player * {\n    box-sizing: border-box;\n    outline: none; }\n  .player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .player video {\n    width: 100%; }\n  .player .player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: \"Lato\", sans-serif; }\n    .player .player-gui input, .player .player-gui textarea {\n      font-family: \"Lato\", sans-serif; }\n  .player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .player.metadata-loaded .player-gui,\n  .player.state-paused .player-gui,\n  .player.overlay-active .player-gui,\n  .player.menu-active .player-gui {\n    opacity: 1; }\n\n.player [id^=ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.player:not(.ad-break).metadata-loaded.hover [id^=ads-container],\n.player:not(.ad-break).metadata-loaded.state-paused [id^=ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\nvideo::cue {\n  background-color: transparent;\n  font-family: \"Lato\", sans-serif; }\n\n.player.captions-yellow-text video::cue {\n  color: #FAFF00; }\n\n.player.captions-black-bg video::cue {\n  background-color: #000; }\n\n.player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.player.state-paused video::-webkit-media-text-track-display,\n.player.hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: openOverlay 100ms ease-in-out forwards;\n  z-index: 4; }\n  .overlay.active {\n    display: block;\n    opacity: 1; }\n  .overlay .overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 80px 20px;\n    overflow-y: auto; }\n  .overlay .title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .overlay .close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    fill: #fff;\n    cursor: pointer; }\n    .overlay .close-overlay .icon-close {\n      width: 24px;\n      height: 24px; }\n  .overlay .overlay-screen {\n    display: none; }\n    .overlay .overlay-screen.active {\n      display: block; }\n\n.player.size-md .overlay .overlay-contents {\n  padding: 36px 20px; }\n\n.player.size-md .overlay .close-overlay {\n  top: 38px; }\n\n.player.size-md .overlay .title {\n  margin-bottom: 24px; }\n\n.player.size-sm .overlay .overlay-contents {\n  padding: 16px 24px; }\n\n.player.size-sm .overlay .close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.player.size-sm .overlay .title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.player:not(.touch) .smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: openSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.leaving {\n    animation: closeSmartContainer 100ms ease-out forwards; }\n  .player:not(.touch) .smart-container.top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .player:not(.touch) .smart-container.top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .player:not(.touch) .smart-container.bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .player:not(.touch) .smart-container.right {\n    left: 0px; }\n  .player:not(.touch) .smart-container.left {\n    right: 0px; }\n  .player:not(.touch) .smart-container .smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap; }\n    .player:not(.touch) .smart-container .smart-container-item:after {\n      display: block;\n      content: ' ';\n      clear: both; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item label {\n      float: left; }\n      .player:not(.touch) .smart-container .smart-container-item.select-menu-item label .label-icon {\n        display: none; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item .dropdown, .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      float: right; }\n    .player:not(.touch) .smart-container .smart-container-item.select-menu-item select {\n      text-align-last: right; }\n\n.touch .smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left; }\n  .touch .smart-container-item:after {\n    display: block;\n    content: ' ';\n    clear: both; }\n  .touch .smart-container-item.select-menu-item label {\n    float: left;\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    fill: #fff; }\n    .touch .smart-container-item.select-menu-item label .label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .touch .smart-container-item.select-menu-item .dropdown, .touch .smart-container-item.select-menu-item select {\n    float: right; }\n  .touch .smart-container-item.select-menu-item select {\n    text-align-last: right; }\n\n.overlay.share-overlay .share-icons {\n  margin: 60px 0; }\n  .overlay.share-overlay .share-icons .btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .overlay.share-overlay .share-icons .btn-rounded:first-child {\n      margin-left: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded:last-child {\n      margin-right: 0; }\n    .overlay.share-overlay .share-icons .btn-rounded.facebook-share-btn {\n      background-color: #3B5998; }\n    .overlay.share-overlay .share-icons .btn-rounded.twitter-share-btn {\n      background-color: #1DA1F2; }\n    .overlay.share-overlay .share-icons .btn-rounded.google-plus-share-btn {\n      background-color: #DD4B39; }\n    .overlay.share-overlay .share-icons .btn-rounded.linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .link-options-container .copy-url-row {\n    display: flex; }\n    .link-options-container .copy-url-row .input-copy-url {\n      margin: 0; }\n    .link-options-container .copy-url-row .btn-copy-url {\n      margin-left: 16px; }\n      .link-options-container .copy-url-row .btn-copy-url .icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .link-options-container .copy-url-row .btn-copy-url .check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .link-options-container .copy-url-row .btn-copy-url.copied {\n        background-color: #009444; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .link-options-container .copy-url-row .btn-copy-url.copied .check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .link-options-container .video-start-options-row {\n    margin-top: 24px; }\n    .link-options-container .video-start-options-row .checkbox {\n      margin-right: 15px; }\n    .link-options-container .video-start-options-row .form-group {\n      margin: 0; }\n\n.player:not(.touch) .overlay.share-overlay .share-icons .btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.player.size-md .overlay.share-overlay .share-icons {\n  margin: 40px 0; }\n\n.player.size-sm .overlay.share-overlay .share-icons {\n  margin: 20px 0; }\n\n.overlay.cvaa-overlay .sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer; }\n  .overlay.cvaa-overlay .sample.black-bg {\n    background-color: #000; }\n  .overlay.cvaa-overlay .sample.yellow-text {\n    color: #FAFF00; }\n\n.overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.overlay.cvaa-overlay .custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n\n.player.size-sm .overlay.cvaa-overlay .sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .player.size-sm .overlay.cvaa-overlay .sample:first-child {\n    margin-left: 0; }\n  .player.size-sm .overlay.cvaa-overlay .sample:last-child {\n    margin-right: 0; }\n\n.player.size-sm .overlay.cvaa-overlay .button-save-cvaa {\n  margin-top: 20px; }\n\n@keyframes kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .loading-backdrop.show {\n    opacity: 1; }\n    .loading-backdrop.show .spinner-container {\n      display: block; }\n  .loading-backdrop .spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: kaltura-spinner 2.5s infinite; }\n  .spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.control-button-container.control-play-pause .control-button {\n  transition: 400ms transform; }\n  .control-button-container.control-play-pause .control-button .icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .control-button-container.control-play-pause .control-button .icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .control-button-container.control-play-pause .control-button.is-playing {\n    transform: rotate(360deg); }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-pause {\n      opacity: 1;\n      display: block; }\n    .control-button-container.control-play-pause .control-button.is-playing .icon-play {\n      opacity: 0;\n      display: none; }\n\n.touch .control-button-container.control-play-pause {\n  display: none; }\n\n.player.size-sm .control-button-container.control-play-pause {\n  display: none; }\n\n.control-button-container.volume-control:hover .volume-control-bar {\n  display: block !important; }\n\n.control-button-container.volume-control.is-muted .volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.control-button-container.volume-control.is-muted .volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.control-button-container.volume-control.dragging-active .volume-control-bar {\n  display: block; }\n\n.control-button-container.volume-control .volume-waves {\n  transform: translateX(0px); }\n\n.control-button-container.volume-control .volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.control-button-container.volume-control .volume-waves, .control-button-container.volume-control .volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.control-button-container.volume-control svg {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .volume-control-bar .bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .volume-control-bar .progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.touch .control-button-container.volume-control:hover .volume-control-bar {\n  display: none !important; }\n\n.control-button-container.control-fullscreen .control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .control-button-container.control-fullscreen .control-button .icon-minimize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-maximize {\n    display: none; }\n  .control-button-container.control-fullscreen .control-button.is-fullscreen .icon-minimize {\n    display: block; }\n\n.player:not(.touch) .control-button-container.control-fullscreen .control-button:hover {\n  transform: scale(1.1); }\n\n.player .seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .player .seek-bar:hover .time-preview,\n  .player .seek-bar:hover .frame-preview, .player .seek-bar.hover .time-preview,\n  .player .seek-bar.hover .frame-preview, .player .seek-bar.dragging-active .time-preview,\n  .player .seek-bar.dragging-active .frame-preview {\n    display: block; }\n  .player .seek-bar:hover .progress-bar .scrubber, .player .seek-bar.hover .progress-bar .scrubber, .player .seek-bar.dragging-active .progress-bar .scrubber {\n    transform: scale(1); }\n  .player .seek-bar:hover .progress-bar .virtual-progress, .player .seek-bar.hover .progress-bar .virtual-progress, .player .seek-bar.dragging-active .progress-bar .virtual-progress {\n    display: block; }\n  .player .seek-bar.ad-break {\n    cursor: initial; }\n    .player .seek-bar.ad-break .progress-bar .progress {\n      background-color: #F9A71B; }\n  .player .seek-bar.live .progress-bar .progress {\n    background-color: #DA1F26; }\n  .player .seek-bar .progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .player .seek-bar .progress-bar .progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .player .seek-bar .progress-bar .virtual-progress {\n      display: none; }\n    .player .seek-bar .progress-bar .buffered, .player .seek-bar .progress-bar .virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .player .seek-bar .progress-bar .scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .player .seek-bar .progress-bar .scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .player .seek-bar .frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .player .seek-bar .frame-preview .frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .player .seek-bar .time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .player .seek-bar .time-preview,\n  .player .seek-bar .frame-preview {\n    display: none; }\n\n.touch .virtual-progress, .touch .time-preview, .touch .frame-preview {\n  display: none !important; }\n\n.player.size-sm .virtual-progress, .player.size-sm .time-preview, .player.size-sm .frame-preview {\n  display: none; }\n\n.player .time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.touch .time-display {\n  padding-left: 0; }\n\n.player.size-sm .player .time-display {\n  padding: 0 12px 0 0; }\n\n.player .video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.player .bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .player .bottom-bar .left-controls {\n    float: left;\n    text-align: left; }\n    .player .bottom-bar .left-controls:first-child {\n      margin-left: 0px; }\n  .player .bottom-bar .right-controls {\n    float: right;\n    text-align: left; }\n    .player .bottom-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .bottom-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .bottom-bar,\n.player.state-paused .bottom-bar,\n.player.menu-active .bottom-bar {\n  opacity: 1; }\n\n.player.overlay-active .bottom-bar {\n  opacity: 0; }\n\n.player.size-sm .bottom-bar {\n  padding: 6px 8px; }\n  .player.size-sm .bottom-bar .time-display {\n    padding-left: 0; }\n\n.player .top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .player .top-bar .left-controls {\n    text-align: left;\n    min-width: 0; }\n  .player .top-bar .right-controls {\n    text-align: left; }\n    .player .top-bar .right-controls .control-button-container {\n      margin: 0 6px; }\n      .player .top-bar .right-controls .control-button-container:last-child {\n        margin-right: 0; }\n\n.player.hover .top-bar,\n.player.state-paused .top-bar,\n.player.menu-active .top-bar {\n  opacity: 1; }\n\n.player.overlay-active .top-bar {\n  opacity: 0; }\n\n.player.size-sm .player .top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .overlay-play.in .icon {\n    animation: overlayPlayIconIn 400ms linear forwards; }\n  .overlay-play .icon {\n    width: 144px;\n    height: 144px;\n    fill: #fff;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: cover; }\n  .pre-playback-play-overlay .pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    fill: #fff;\n    padding: 20px;\n    cursor: pointer; }\n    .pre-playback-play-overlay .pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .pre-playback-play-overlay .pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.pre-playback .player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .live-tag.non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.player.size-sm .live-tag {\n  margin-left: 0; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 121 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(123);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 123 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
 /***/ })
 /******/ ]);
 });
@@ -32207,9 +34126,9 @@ exports.isIos = exports.isSafari = exports.checkNativeTextTracksSupport = export
 
 var _playkitJs = __webpack_require__(15);
 
-var _validationError = __webpack_require__(348);
+var _validationError = __webpack_require__(347);
 
-var _storageManager = __webpack_require__(349);
+var _storageManager = __webpack_require__(348);
 
 var _storageManager2 = _interopRequireDefault(_storageManager);
 
@@ -32217,12 +34136,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CONTAINER_CLASS_NAME = 'kaltura-player-container';
 
+
+var DEFAULT_ANALYTICS_BE_URL = "//stats.kaltura.com/api_v3";
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
  * @returns {void}
  */
-
 function validateProvidersConfig(config) {
   if (!config) {
     throw new Error(_validationError.ValidationErrorType.INITIAL_CONFIG_REQUIRED);
@@ -32251,13 +34171,9 @@ function validateTargetId(targetId) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The player configuration.
  */
-function extractPlayerConfig(config, uiConf) {
+function extractPlayerConfig(config) {
   var playerConfig = {};
-  var configMergedWithUIConf = {};
-  if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
-    _playkitJs.Utils.Object.mergeDeep(configMergedWithUIConf, vm.UiConf[config.uiConfId].config, config);
-  }
-  _playkitJs.Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
+  _playkitJs.Utils.Object.mergeDeep(playerConfig, config);
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   delete playerConfig.uiConfId;
@@ -32271,16 +34187,12 @@ function extractPlayerConfig(config, uiConf) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The provider configuration.
  */
-function extractProvidersConfig(config, uiConf) {
+function extractProvidersConfig(config) {
   var providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
-    providerConfig.loadUiConf = true;
-    if (config && config.uiConfId && uiConf && uiConf[config.uiConfId]) {
-      providerConfig.loadUiConf = false;
-    }
     providerConfig.env = config.env;
     providerConfig.ks = config.ks;
   }
@@ -32323,6 +34235,7 @@ function addKalturaPoster(metadata, width, height) {
 function setDefaultPlayerConfig(playerConfig) {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
+  setDefaultAnalyticsPlugin(playerConfig);
 }
 
 /**
@@ -32360,6 +34273,24 @@ function checkNativeTextTracksSupport(playerConfig) {
         }
       });
     }
+  }
+}
+
+/**
+ * Sets the player default analyics service
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDefaultAnalyticsPlugin(playerConfig) {
+  var kanalyticsBeUrl = _playkitJs.Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics.beUrl');
+  if (typeof kanalyticsBeUrl !== 'string') {
+    _playkitJs.Utils.Object.mergeDeep(playerConfig, {
+      plugins: {
+        kanalytics: {
+          beUrl: DEFAULT_ANALYTICS_BE_URL
+        }
+      }
+    });
   }
 }
 
@@ -32442,11 +34373,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.evaluatePluginsConfig = undefined;
 
-var _pluginsConfig = __webpack_require__(351);
+var _pluginsConfig = __webpack_require__(350);
 
 var _pluginsConfig2 = _interopRequireDefault(_pluginsConfig);
 
-var _evaluate = __webpack_require__(352);
+var _evaluate = __webpack_require__(351);
 
 var _evaluate2 = _interopRequireDefault(_evaluate);
 
@@ -32463,7 +34394,7 @@ function evaluatePluginsConfig() {
 
   if (playerConfig.plugins) {
     var dataModel = {
-      pVersion: "0.10.0",
+      pVersion: "0.12.0",
       pName: "kaltura-player-js"
     };
     if (playerConfig.session) {
@@ -32537,23 +34468,23 @@ var _playkitJsUi = __webpack_require__(128);
 
 var _playkitJsUi2 = _interopRequireDefault(_playkitJsUi);
 
-__webpack_require__(338);
+__webpack_require__(337);
 
-__webpack_require__(340);
+__webpack_require__(339);
+
+__webpack_require__(341);
 
 __webpack_require__(342);
 
 __webpack_require__(343);
 
-__webpack_require__(344);
-
-var _setup = __webpack_require__(345);
+var _setup = __webpack_require__(344);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.10.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
+_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.12.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
 
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/kaltura-player-js", "color: #98ff98;");
 
@@ -32579,7 +34510,7 @@ exports.Playkit = Playkit;
 exports.OvpProvider = _ovpProvider2.default;
 exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup.setup;
-exports.VERSION = "0.10.0";
+exports.VERSION = "0.12.0";
 exports.PLAYER_NAME = "kaltura-player-js";
 
 /***/ }),
@@ -38240,39 +40171,11 @@ _polyfillManager2.default.register(PerformanceNowPolyfill);
 
 /***/ }),
 /* 337 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(339), __webpack_require__(15));
+		module.exports = factory(__webpack_require__(338), __webpack_require__(15));
 	else if(typeof define === 'function' && define.amd)
 		define(["hls.js", "playkit-js"], factory);
 	else if(typeof exports === 'object')
@@ -38560,21 +40463,25 @@ var HlsAdapter = function (_BaseMediaSourceAdapt) {
     }
 
     /**
-     * Destroying the hls adapter.
+     * Destroys the hls adapter.
      * @function destroy
      * @override
+     * @returns {Promise<*>} - The destroy promise.
      */
 
   }, {
     key: 'destroy',
     value: function destroy() {
-      HlsAdapter._logger.debug('destroy');
-      _get(HlsAdapter.prototype.__proto__ || Object.getPrototypeOf(HlsAdapter.prototype), 'destroy', this).call(this);
-      this._loadPromise = null;
-      this._sourceObj = null;
-      this._removeBindings();
-      this._hls.detachMedia();
-      this._hls.destroy();
+      var _this3 = this;
+
+      return _get(HlsAdapter.prototype.__proto__ || Object.getPrototypeOf(HlsAdapter.prototype), 'destroy', this).call(this).then(function () {
+        HlsAdapter._logger.debug('destroy');
+        _this3._loadPromise = null;
+        _this3._playerTracks = [];
+        _this3._removeBindings();
+        _this3._hls.detachMedia();
+        _this3._hls.destroy();
+      });
     }
 
     /**
@@ -38589,7 +40496,7 @@ var HlsAdapter = function (_BaseMediaSourceAdapt) {
     value: function _parseTracks(data) {
       var audioTracks = this._parseAudioTracks(data.audioTracks || []);
       var videoTracks = this._parseVideoTracks(data.levels || []);
-      var textTracks = this._parseTextTracks(this._videoElement.textTracks || []);
+      var textTracks = this._parseTextTracks(this._hls.subtitleTracks || []);
       return audioTracks.concat(videoTracks).concat(textTracks);
     }
 
@@ -38646,23 +40553,24 @@ var HlsAdapter = function (_BaseMediaSourceAdapt) {
     }
 
     /**
-     * Parse native video tag text tracks into player text tracks.
-     * @param {TextTrackList} vidTextTracks - The native video tag text tracks.
+     * Parse hls text tracks into player text tracks.
+     * @param {Array<Object>} hlsTextTracks - The hls text tracks.
      * @returns {Array<TextTrack>} - The parsed text tracks.
      * @private
      */
 
   }, {
     key: '_parseTextTracks',
-    value: function _parseTextTracks(vidTextTracks) {
+    value: function _parseTextTracks(hlsTextTracks) {
       var textTracks = [];
-      for (var i = 0; i < vidTextTracks.length; i++) {
+      for (var i = 0; i < hlsTextTracks.length; i++) {
         // Create text tracks
         var settings = {
-          active: vidTextTracks[i].mode === 'showing',
-          label: vidTextTracks[i].label,
-          kind: vidTextTracks[i].kind,
-          language: vidTextTracks[i].language,
+          id: hlsTextTracks[i].id,
+          active: hlsTextTracks[i].default,
+          label: hlsTextTracks[i].name,
+          kind: hlsTextTracks[i].type.toLowerCase(),
+          language: hlsTextTracks[i].lang,
           index: i
         };
         textTracks.push(new _playkitJs.TextTrack(settings));
@@ -39021,7 +40929,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 
 /***/ }),
-/* 339 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -54500,12 +56408,12 @@ var DemuxerWorker = function DemuxerWorker(self) {
 
 
 /***/ }),
-/* 340 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(15), __webpack_require__(341));
+		module.exports = factory(__webpack_require__(15), __webpack_require__(340));
 	else if(typeof define === 'function' && define.amd)
 		define(["playkit-js", "shaka-player"], factory);
 	else if(typeof exports === 'object')
@@ -54645,6 +56553,63 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
      */
 
     /**
+     * Whether 'waiting' event has been sent by the HTMLVideoElement
+     * @member {boolean} - _waitingSent
+     * @type {boolean}
+     * @private
+     */
+
+    /**
+     * The DRM protocol for the current playback.
+     * @type {?Function}
+     * @private
+     * @static
+     */
+
+    /**
+     * The supported mime type by the dash adapter
+     * @member {string} _dashMimeType
+     * @static
+     * @private
+     */
+
+    /**
+     * The id of Adapter
+     * @member {string} id
+     * @static
+     * @public
+     */
+    value: function createAdapter(videoElement, source, config) {
+      var dashConfig = {};
+      if (_playkitJs.Utils.Object.hasPropertyPath(config, 'playback.options.html5.dash')) {
+        dashConfig = config.playback.options.html5.dash;
+      }
+      return new this(videoElement, source, dashConfig);
+    }
+
+    /**
+     * Checks if dash adapter can play a given mime type
+     * @function canPlayType
+     * @param {string} mimeType - The mime type to check
+     * @returns {boolean} - Whether the dash adapter can play a specific mime type
+     * @static
+     */
+
+    /**
+     * Whether 'playing' event has been sent by the HTMLVideoElement
+     * @member {boolean} - _playingSent
+     * @type {boolean}
+     * @private
+     */
+
+    /**
+     * The buffering state flag
+     * @member {boolean} - _buffering
+     * @type {boolean}
+     * @private
+     */
+
+    /**
      * The shaka player instance
      * @member {any} _shaka
      * @private
@@ -54669,42 +56634,6 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
      * @member {any} _logger
      * @private
      * @static
-     */
-    value: function createAdapter(videoElement, source, config) {
-      var dashConfig = {};
-      if (_playkitJs.Utils.Object.hasPropertyPath(config, 'playback.options.html5.dash')) {
-        dashConfig = config.playback.options.html5.dash;
-      }
-      return new this(videoElement, source, dashConfig);
-    }
-
-    /**
-     * Checks if dash adapter can play a given mime type
-     * @function canPlayType
-     * @param {string} mimeType - The mime type to check
-     * @returns {boolean} - Whether the dash adapter can play a specific mime type
-     * @static
-     */
-
-    /**
-     * The DRM protocol for the current playback.
-     * @type {?Function}
-     * @private
-     * @static
-     */
-
-    /**
-     * The supported mime type by the dash adapter
-     * @member {string} _dashMimeType
-     * @static
-     * @private
-     */
-
-    /**
-     * The id of Adapter
-     * @member {string} id
-     * @static
-     * @public
      */
 
   }, {
@@ -54803,7 +56732,13 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
     _classCallCheck(this, DashAdapter);
 
     DashAdapter._logger.debug('Creating adapter. Shaka version: ' + _shakaPlayer2.default.Player.version);
-    return _possibleConstructorReturn(this, (DashAdapter.__proto__ || Object.getPrototypeOf(DashAdapter)).call(this, videoElement, source, config));
+
+    var _this = _possibleConstructorReturn(this, (DashAdapter.__proto__ || Object.getPrototypeOf(DashAdapter)).call(this, videoElement, source, config));
+
+    _this._buffering = false;
+    _this._waitingSent = false;
+    _this._playingSent = false;
+    return _this;
   }
 
   /**
@@ -54851,6 +56786,10 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
     value: function _addBindings() {
       this._shaka.addEventListener('adaptation', this._onAdaptation.bind(this));
       this._shaka.addEventListener('error', this._onError.bind(this));
+      this._shaka.addEventListener('buffering', this._onBuffering.bind(this));
+      //TODO use events enum when available
+      this._videoElement.addEventListener('waiting', this._onWaiting.bind(this));
+      this._videoElement.addEventListener('playing', this._onPlaying.bind(this));
     }
 
     /**
@@ -54865,6 +56804,10 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
     value: function _removeBindings() {
       this._shaka.removeEventListener('adaptation', this._onAdaptation);
       this._shaka.removeEventListener('error', this._onError);
+      this._shaka.removeEventListener('buffering', this._onBuffering.bind(this));
+      //TODO use events enum when available
+      this._videoElement.removeEventListener('waiting', this._onWaiting.bind(this));
+      this._videoElement.removeEventListener('playing', this._onPlaying.bind(this));
     }
 
     /**
@@ -54899,26 +56842,32 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
     }
 
     /**
-     * Destroying the dash adapter
+     * Destroys the dash adapter
      * @function destroy
      * @override
+     * @returns {Promise<*>} - The destroy promise.
      */
 
   }, {
     key: 'destroy',
     value: function destroy() {
-      DashAdapter._logger.debug('destroy');
-      _get(DashAdapter.prototype.__proto__ || Object.getPrototypeOf(DashAdapter.prototype), 'destroy', this).call(this);
-      this._loadPromise = null;
-      this._sourceObj = null;
-      if (this._shaka) {
-        this._removeBindings();
-        this._shaka.destroy();
-      }
-      if (DashAdapter._drmProtocol) {
-        DashAdapter._drmProtocol.destroy();
-        DashAdapter._drmProtocol = null;
-      }
+      var _this3 = this;
+
+      return _get(DashAdapter.prototype.__proto__ || Object.getPrototypeOf(DashAdapter.prototype), 'destroy', this).call(this).then(function () {
+        DashAdapter._logger.debug('destroy');
+        _this3._loadPromise = null;
+        _this3._buffering = false;
+        _this3._waitingSent = false;
+        _this3._playingSent = false;
+        if (DashAdapter._drmProtocol) {
+          DashAdapter._drmProtocol.destroy();
+          DashAdapter._drmProtocol = null;
+        }
+        if (_this3._shaka) {
+          _this3._removeBindings();
+          return _this3._shaka.destroy();
+        }
+      });
     }
 
     /**
@@ -55237,6 +57186,66 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
     }
 
     /**
+     * An handler to shaka buffering event
+     * @function _onBuffering
+     * @param {any} event - the buffering event
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_onBuffering',
+    value: function _onBuffering(event) {
+      if (event.buffering) {
+        if (!this._waitingSent) {
+          //the player enters the buffering state. and 'waiting' event hasn't been sent by the HTMLVideoElement.
+          //TODO use events enum when available
+          this._videoElement.dispatchEvent(new window.Event('waiting'));
+          this._buffering = true;
+        }
+      } else {
+        this._buffering = false;
+        if (!this._videoElement.paused && !this._playingSent) {
+          //the player leaves the buffering state. and 'playing' event hasn't been sent by the HTMLVideoElement.
+          this._videoElement.dispatchEvent(new window.Event('playing'));
+        }
+      }
+    }
+
+    /**
+     * An handler to HTMLVideoElement waiting event
+     * @function _onWaiting
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_onWaiting',
+    value: function _onWaiting() {
+      this._waitingSent = true;
+      this._playingSent = false;
+    }
+
+    /**
+     * An handler to HTMLVideoElement playing event
+     * @function _onPlaying
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_onPlaying',
+    value: function _onPlaying() {
+      this._playingSent = true;
+      this._waitingSent = false;
+      if (this._buffering) {
+        //the player is in buffering state.
+        //TODO use events enum when available
+        this._videoElement.dispatchEvent(new window.Event('waiting'));
+      }
+    }
+
+    /**
      * Getter for the src that the adapter plays on the video element.
      * In case the adapter preformed a load it will return the manifest url.
      * @public
@@ -55495,7 +57504,7 @@ exports.default = PlayReady;
 
 
 /***/ }),
-/* 341 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function(){var g={};
@@ -55903,7 +57912,7 @@ else this.shaka=g.shaka;
 
 
 /***/ }),
-/* 342 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -56018,6 +58027,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var pluginName = "kanalytics";
 var SEEK_OFFSET = 2000;
+var LIVE = 'Live';
 
 /**
  * @classdesc
@@ -56045,12 +58055,16 @@ var KAnalytics = function (_BasePlugin) {
      */
 
     /**
+     * @static
+     */
+
+    /**
      * Whether seeking occurred
      * @private
      */
 
     /**
-     * Indicate whether time percent event already sent
+     * The ended flag
      * @private
      */
 
@@ -56060,7 +58074,8 @@ var KAnalytics = function (_BasePlugin) {
      */
 
     /**
-     * @static
+     * Indicate whether time percent event already sent
+     * @private
      */
 
   }]);
@@ -56076,22 +58091,37 @@ var KAnalytics = function (_BasePlugin) {
 
     var _this = _possibleConstructorReturn(this, (KAnalytics.__proto__ || Object.getPrototypeOf(KAnalytics)).call(this, name, player, config));
 
-    _this._initializeMembers();
+    _this._lastSeekEvent = 0;
+    _this._hasSeeked = false;
+    _this._ended = false;
+    _this._ks = "";
+    _this._timePercentEvent = {};
+
     _this._registerListeners();
-    _this._sendAnalytics(_eventTypes2.default.WIDGET_LOADED);
-    player.ready().then(function () {
-      _this._sendAnalytics(_eventTypes2.default.MEDIA_LOADED);
-    });
     return _this;
   }
 
   /**
-   * @public
+   * Reset the plugin flags
    * @return {void}
    */
 
 
   _createClass(KAnalytics, [{
+    key: 'reset',
+    value: function reset() {
+      this._hasSeeked = false;
+      this._ended = false;
+      this._ks = "";
+      this._timePercentEvent = {};
+    }
+
+    /**
+     * @public
+     * @return {void}
+     */
+
+  }, {
     key: 'destroy',
     value: function destroy() {
       this.eventManager.destroy();
@@ -56107,12 +58137,30 @@ var KAnalytics = function (_BasePlugin) {
     key: '_registerListeners',
     value: function _registerListeners() {
       var PlayerEvent = this.player.Event;
+      this.eventManager.listen(this.player, PlayerEvent.SOURCE_SELECTED, this._onSourceSelected.bind(this));
       this.eventManager.listen(this.player, PlayerEvent.FIRST_PLAY, this._sendAnalytics.bind(this, _eventTypes2.default.PLAY));
       this.eventManager.listen(this.player, PlayerEvent.PLAY, this._onPlay.bind(this));
       this.eventManager.listen(this.player, PlayerEvent.ENDED, this._onEnded.bind(this));
       this.eventManager.listen(this.player, PlayerEvent.SEEKED, this._sendSeekAnalytic.bind(this));
       this.eventManager.listen(this.player, PlayerEvent.TIME_UPDATE, this._sendTimePercentAnalytic.bind(this));
       this.eventManager.listen(this.player, PlayerEvent.PLAYER_STATE_CHANGED, this._onPlayerStateChanged.bind(this));
+    }
+
+    /**
+     * The source selected event listener
+     * @private
+     * @return {void}
+     */
+
+  }, {
+    key: '_onSourceSelected',
+    value: function _onSourceSelected() {
+      var _this2 = this;
+
+      this.player.ready().then(function () {
+        _this2._sendAnalytics(_eventTypes2.default.WIDGET_LOADED);
+        _this2._sendAnalytics(_eventTypes2.default.MEDIA_LOADED);
+      });
     }
 
     /**
@@ -56170,12 +58218,12 @@ var KAnalytics = function (_BasePlugin) {
     key: '_sendSeekAnalytic',
     value: function _sendSeekAnalytic() {
       var now = new Date().getTime();
-      if (this._lastSeekEvent === 0 || this._lastSeekEvent + SEEK_OFFSET < now) {
+      if (this._lastSeekEvent + SEEK_OFFSET < now && (this.player.config.type !== LIVE || this.player.config.dvr)) {
         // avoid sending lots of seeking while scrubbing
         this._sendAnalytics(_eventTypes2.default.SEEK);
+        this._hasSeeked = true;
       }
       this._lastSeekEvent = now;
-      this._hasSeeked = true;
     }
 
     /**
@@ -56187,22 +58235,24 @@ var KAnalytics = function (_BasePlugin) {
   }, {
     key: '_sendTimePercentAnalytic',
     value: function _sendTimePercentAnalytic() {
-      var percent = this.player.currentTime / this.player.duration;
-      if (!this._timePercentEvent.PLAY_REACHED_25 && percent >= .25) {
-        this._timePercentEvent.PLAY_REACHED_25 = true;
-        this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_25);
-      }
-      if (!this._timePercentEvent.PLAY_REACHED_50 && percent >= .50) {
-        this._timePercentEvent.PLAY_REACHED_50 = true;
-        this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_50);
-      }
-      if (!this._timePercentEvent.PLAY_REACHED_75 && percent >= .75) {
-        this._timePercentEvent.PLAY_REACHED_75 = true;
-        this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_75);
-      }
-      if (!this._timePercentEvent.PLAY_REACHED_100 && percent >= .98) {
-        this._timePercentEvent.PLAY_REACHED_100 = true;
-        this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_100);
+      if (this.player.config.type !== LIVE) {
+        var percent = this.player.currentTime / this.player.duration;
+        if (!this._timePercentEvent.PLAY_REACHED_25 && percent >= .25) {
+          this._timePercentEvent.PLAY_REACHED_25 = true;
+          this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_25);
+        }
+        if (!this._timePercentEvent.PLAY_REACHED_50 && percent >= .50) {
+          this._timePercentEvent.PLAY_REACHED_50 = true;
+          this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_50);
+        }
+        if (!this._timePercentEvent.PLAY_REACHED_75 && percent >= .75) {
+          this._timePercentEvent.PLAY_REACHED_75 = true;
+          this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_75);
+        }
+        if (!this._timePercentEvent.PLAY_REACHED_100 && percent >= .98) {
+          this._timePercentEvent.PLAY_REACHED_100 = true;
+          this._sendAnalytics(_eventTypes2.default.PLAY_REACHED_100);
+        }
       }
     }
 
@@ -56223,7 +58273,7 @@ var KAnalytics = function (_BasePlugin) {
      * @return {void}
      */
     value: function _sendAnalytics(eventType) {
-      var _this2 = this;
+      var _this3 = this;
 
       var statsEvent = new _event2.default(eventType);
       statsEvent.currentPoint = this.player.currentTime;
@@ -56234,26 +58284,10 @@ var KAnalytics = function (_BasePlugin) {
 
       var request = _statsService2.default.collect(this.config.playerVersion, this._ks, { "event": statsEvent }, this.config.baseUrl);
       request.doHttpRequest().then(function () {
-        _this2.logger.debug('Analytics event sent ', statsEvent);
+        _this3.logger.debug('Analytics event sent ', statsEvent);
       }, function (err) {
-        _this2.logger.error('Failed to send analytics event ', statsEvent, err);
+        _this3.logger.error('Failed to send analytics event ', statsEvent, err);
       });
-    }
-
-    /**
-     * Initialize the plugin members
-     * @private
-     * @return {void}
-     */
-
-  }, {
-    key: '_initializeMembers',
-    value: function _initializeMembers() {
-      this._ks = "";
-      this._ended = false;
-      this._timePercentEvent = {};
-      this._lastSeekEvent = 0;
-      this._hasSeeked = false;
     }
   }, {
     key: '_playerParams',
@@ -57524,7 +59558,7 @@ exports.default = Event;
 
 
 /***/ }),
-/* 343 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -57703,6 +59737,19 @@ var Youbora = function (_BasePlugin) {
     }
 
     /**
+     * Reset the plugin
+     * @return {void}
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      if (this._youbora) {
+        this._youbora.reset();
+      }
+    }
+
+    /**
      * Add the player metadata to the plugin config.
      * @function
      * @private
@@ -57838,6 +59885,14 @@ _youboraLib2.default.plugins.KalturaV3.bindLogger = function (logger) {
   _youboraLib2.default.warn = logger.warn.bind(logger);
   _youboraLib2.default.debug = logger.debug.bind(logger);
   _youboraLib2.default.verbose = function () {};
+};
+
+/**
+ * @returns {void}
+ */
+_youboraLib2.default.plugins.KalturaV3.prototype.reset = function () {
+  this.endedHandler();
+  this.viewManager.comm.view++;
 };
 
 /**
@@ -58991,7 +61046,7 @@ var $YB = $YB || { version: "5.4.6", plugins: {}, adnalyzers: {}, utils: {}, man
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"playkit-js-youbora","version":"0.1.2","main":"dist/playkit-youbora.js","scripts":{"clean":"rm -rf ./dist","prebuild":"npm run clean","build:prod":"NODE_ENV=production webpack","build":"webpack","dev":"webpack --progress --colors --watch","test":"NODE_ENV=test karma start --color","test:chrome":"NODE_ENV=test karma start --color --browsers Chrome","test:chrome:dots":"NODE_ENV=test karma start --color --browsers Chrome --reporters dots","test:firefox":"NODE_ENV=test karma start --color --browsers Firefox","test:safari":"NODE_ENV=test karma start --color --browsers Safari","test:watch":"NODE_ENV=test karma start --color --auto-watch","start":"webpack-dev-server","release":"standard-version","publish":"git push --follow-tags --no-verify origin master","eslint":"eslint . --color","flow":"flow check","eslint:flow:test":"npm run eslint && npm run flow && npm run test","commit:dist":"git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"},"standard-version":{"scripts":{"postbump":"yarn run build && yarn run build:prod && npm run commit:dist"}},"devDependencies":{"babel-cli":"^6.18.0","babel-core":"^6.18.2","babel-eslint":"^7.1.1","babel-loader":"^6.2.7","babel-plugin-istanbul":"^4.0.0","babel-plugin-transform-class-properties":"^6.22.0","babel-plugin-transform-flow-strip-types":"^6.22.0","babel-preset-es2015":"^6.18.0","babel-register":"^6.23.0","chai":"^3.5.0","cross-env":"^3.1.4","css-loader":"^0.28.4","eslint":"^3.10.0","eslint-loader":"^1.6.1","eslint-plugin-flowtype":"^2.30.0","eslint-plugin-import":"^2.2.0","eslint-plugin-mocha-no-only":"^0.0.5","flow-bin":"latest","istanbul":"^0.4.5","karma":"^1.5.0","karma-chai":"^0.1.0","karma-chrome-launcher":"^2.0.0","karma-cli":"^1.0.1","karma-coverage":"^1.1.1","karma-firefox-launcher":"^1.0.1","karma-ie-launcher":"^1.0.0","karma-mocha":"^1.3.0","karma-safari-launcher":"^1.0.0","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^2.0.2","mocha":"^3.2.0","mocha-cli":"^1.0.1","playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.9.0","pre-push":"^0.1.1","sinon":"^2.0.0","sinon-chai":"^2.8.0","standard-version":"^4.2.0","style-loader":"^0.18.2","uglifyjs-webpack-plugin":"^0.4.3","webpack":"latest","webpack-dev-server":"latest"},"peerDependencies":{"playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.9.0"},"keywords":[],"license":"AGPL-3.0","repository":{"type":"git","url":"git+https://github.com/kaltura/playkit-js-youbora.git"},"bugs":{"url":"https://github.com/kaltura/playkit-js-youbora/issues"},"homepage":"https://github.com/kaltura/playkit-js-youbora#readme"}
+module.exports = {"name":"playkit-js-youbora","version":"0.2.0","main":"dist/playkit-youbora.js","scripts":{"clean":"rm -rf ./dist","prebuild":"npm run clean","build:prod":"NODE_ENV=production webpack","build":"webpack","dev":"webpack --progress --colors --watch","test":"NODE_ENV=test karma start --color","test:chrome":"NODE_ENV=test karma start --color --browsers Chrome","test:chrome:dots":"NODE_ENV=test karma start --color --browsers Chrome --reporters dots","test:firefox":"NODE_ENV=test karma start --color --browsers Firefox","test:safari":"NODE_ENV=test karma start --color --browsers Safari","test:watch":"NODE_ENV=test karma start --color --auto-watch","start":"webpack-dev-server","release":"standard-version","publish":"git push --follow-tags --no-verify origin master","eslint":"eslint . --color","flow":"flow check","eslint:flow:test":"npm run eslint && npm run flow && npm run test","commit:dist":"git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)"},"standard-version":{"scripts":{"postbump":"yarn run build && yarn run build:prod && npm run commit:dist"}},"devDependencies":{"babel-cli":"^6.18.0","babel-core":"^6.18.2","babel-eslint":"^7.1.1","babel-loader":"^6.2.7","babel-plugin-istanbul":"^4.0.0","babel-plugin-transform-class-properties":"^6.22.0","babel-plugin-transform-flow-strip-types":"^6.22.0","babel-preset-es2015":"^6.18.0","babel-register":"^6.23.0","chai":"^3.5.0","cross-env":"^3.1.4","css-loader":"^0.28.4","eslint":"^3.10.0","eslint-loader":"^1.6.1","eslint-plugin-flowtype":"^2.30.0","eslint-plugin-import":"^2.2.0","eslint-plugin-mocha-no-only":"^0.0.5","flow-bin":"latest","istanbul":"^0.4.5","karma":"^1.5.0","karma-chai":"^0.1.0","karma-chrome-launcher":"^2.0.0","karma-cli":"^1.0.1","karma-coverage":"^1.1.1","karma-firefox-launcher":"^1.0.1","karma-ie-launcher":"^1.0.0","karma-mocha":"^1.3.0","karma-safari-launcher":"^1.0.0","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^2.0.2","mocha":"^3.2.0","mocha-cli":"^1.0.1","playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.12.0","pre-push":"^0.1.1","sinon":"^2.0.0","sinon-chai":"^2.8.0","standard-version":"^4.2.0","style-loader":"^0.18.2","uglifyjs-webpack-plugin":"^0.4.3","webpack":"latest","webpack-dev-server":"latest"},"peerDependencies":{"playkit-js":"git+https://github.com/kaltura/playkit-js.git#v0.12.0"},"keywords":[],"license":"AGPL-3.0","repository":{"type":"git","url":"git+https://github.com/kaltura/playkit-js-youbora.git"},"bugs":{"url":"https://github.com/kaltura/playkit-js-youbora/issues"},"homepage":"https://github.com/kaltura/playkit-js-youbora#readme"}
 
 /***/ })
 /******/ ]);
@@ -58999,7 +61054,7 @@ module.exports = {"name":"playkit-js-youbora","version":"0.1.2","main":"dist/pla
 
 
 /***/ }),
-/* 344 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -59011,7 +61066,7 @@ module.exports = {"name":"playkit-js-youbora","version":"0.1.2","main":"dist/pla
 		exports["PlaykitJsIma"] = factory(require("playkit-js"));
 	else
 		root["PlaykitJsIma"] = factory(root["Playkit"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -59074,7 +61129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -59100,12 +61155,6 @@ exports.default = State;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59129,7 +61178,7 @@ var _state = __webpack_require__(0);
 
 var _state2 = _interopRequireDefault(_state);
 
-var _playkitJs = __webpack_require__(1);
+var _playkitJs = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59150,7 +61199,7 @@ var pluginName = "ima";
  * @type {string}
  * @const
  */
-var ADS_CONTAINER_ID = "ads-container";
+var ADS_CONTAINER_ID = "playkit-ads-container";
 
 /**
  * The ima plugin.
@@ -59270,6 +61319,12 @@ var Ima = function (_BasePlugin) {
      * @private
      */
 
+    /**
+     * The bounded handler of the ads container click.
+     * @member
+     * @private
+     */
+
 
     /**
      * The sdk lib url.
@@ -59308,13 +61363,7 @@ var Ima = function (_BasePlugin) {
     var _this = _possibleConstructorReturn(this, (Ima.__proto__ || Object.getPrototypeOf(Ima)).call(this, name, player, config));
 
     _this._stateMachine = new _imaStateMachine2.default(_this);
-    _this._intervalTimer = null;
-    _this._videoLastCurrentTime = null;
-    _this._adsManager = null;
-    _this._contentComplete = false;
-    _this._hasUserAction = false;
-    _this._isAdsManagerLoaded = false;
-    _this._contentPlayheadTracker = { currentTime: 0, previousTime: 0, seeking: false, duration: 0 };
+    _this._initMembers();
     _this._addBindings();
     _this._init();
     return _this;
@@ -59407,6 +61456,39 @@ var Ima = function (_BasePlugin) {
     }
 
     /**
+     * Resets the plugin.
+     * @override
+     * @public
+     * @returns {void}
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      this.logger.debug("reset");
+      this.eventManager.removeAll();
+      this._stopAdInterval();
+      this._hideAdsContainer();
+      if (this._adsManager) {
+        this._adsManager.destroy();
+      }
+      if (this._adsLoader && !this._contentComplete) {
+        this._adsLoader.contentComplete();
+      }
+      this._initMembers();
+      this._addBindings();
+      if (!this._adsLoader) {
+        this._initAdsLoader();
+      }
+      this._requestAds();
+      if (this.config.adTagUrl) {
+        this._stateMachine.loaded();
+      } else {
+        this._stateMachine.goto(_state2.default.DONE);
+      }
+    }
+
+    /**
      * Destroys the plugin.
      * @override
      * @public
@@ -59426,15 +61508,8 @@ var Ima = function (_BasePlugin) {
       if (this._adsLoader && !this._contentComplete) {
         this._adsLoader.contentComplete();
       }
-      this._currentAd = null;
-      this._adsManager = null;
       this._adsLoader = null;
-      this._contentComplete = false;
-      this._hasUserAction = false;
-      this._isAdsManagerLoaded = false;
-      this._intervalTimer = null;
-      this._videoLastCurrentTime = null;
-      this._contentPlayheadTracker = { currentTime: 0, previousTime: 0, seeking: false, duration: 0 };
+      this._initMembers();
     }
 
     /**
@@ -59499,6 +61574,30 @@ var Ima = function (_BasePlugin) {
           _this2._contentSrc = selectedSource[0].url;
         }
       });
+    }
+
+    /**
+     * Init the members of the plugin.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_initMembers',
+    value: function _initMembers() {
+      this._setTogglePlayPauseOnAdsContainerEnabled(false);
+      this._setContentPlayheadTrackerEventsEnabled(false);
+      this._setVideoEndedCallbackEnabled(false);
+      this._nextPromise = null;
+      this._currentAd = null;
+      this._adsManager = null;
+      this._contentComplete = false;
+      this._isAdsManagerLoaded = false;
+      this._intervalTimer = null;
+      this._videoLastCurrentTime = null;
+      this._contentPlayheadTracker = { currentTime: 0, previousTime: 0, seeking: false, duration: 0 };
+      this._hasUserAction = false;
+      this._togglePlayPauseOnAdsContainerCallback = null;
     }
 
     /**
@@ -60011,6 +62110,38 @@ var Ima = function (_BasePlugin) {
     }
 
     /**
+     * Toggle play/pause when click on the ads container.
+     * Relevant only for overlay ads.
+     * @param {boolean} enable - Whether to add or remove the listener.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_setTogglePlayPauseOnAdsContainerEnabled',
+    value: function _setTogglePlayPauseOnAdsContainerEnabled(enable) {
+      if (this._adsContainerDiv && this._togglePlayPauseOnAdsContainerCallback) {
+        if (enable) {
+          this._adsContainerDiv.addEventListener("click", this._togglePlayPauseOnAdsContainerCallback);
+        } else {
+          this._adsContainerDiv.removeEventListener("click", this._togglePlayPauseOnAdsContainerCallback);
+        }
+      }
+    }
+
+    /**
+     * On ads container click handler.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_onAdsContainerClicked',
+    value: function _onAdsContainerClicked() {
+      this.player.paused ? this.player.play() : this.player.pause();
+    }
+
+    /**
      * Displays companion ads using the Ad API.
      * @private
      * @returns {void}
@@ -60083,6 +62214,12 @@ exports.default = Ima;
 (0, _playkitJs.registerPlugin)(pluginName, Ima);
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -60095,7 +62232,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _playkitJs = __webpack_require__(1);
+var _playkitJs = __webpack_require__(2);
+
+var _ima = __webpack_require__(1);
+
+var _ima2 = _interopRequireDefault(_ima);
 
 var _state = __webpack_require__(0);
 
@@ -60118,17 +62259,17 @@ var ImaMiddleware = function (_BaseMiddleware) {
 
   /**
    * @constructor
-   * @param {any} context - The plugin context.
+   * @param {Ima} context - The ima plugin context.
    */
 
   /**
-   * The plugin context.
+   * Whether the player has been loaded.
    * @member
    * @private
    */
 
   /**
-   * Whether the player has been loaded.
+   * The plugin context.
    * @member
    * @private
    */
@@ -60140,6 +62281,9 @@ var ImaMiddleware = function (_BaseMiddleware) {
     _this.id = "ImaMiddleware";
 
     _this._context = context;
+    context.player.addEventListener(context.player.Event.CHANGE_SOURCE_STARTED, function () {
+      return _this._isPlayerLoaded = false;
+    });
     return _this;
   }
 
@@ -60170,18 +62314,34 @@ var ImaMiddleware = function (_BaseMiddleware) {
         var sm = _this2._context.getStateMachine();
         switch (sm.state) {
           case _state2.default.LOADED:
-            _this2._context.initialUserAction().then(function () {
-              _this2.callNext(next);
-            });
-            break;
+            {
+              var initialUserAction = _this2._context.initialUserAction();
+              if (initialUserAction) {
+                initialUserAction.then(function () {
+                  _this2.callNext(next);
+                });
+              } else {
+                _this2.callNext(next);
+              }
+              break;
+            }
           case _state2.default.PAUSED:
-            _this2._context.resumeAd().then(function () {
-              _this2.callNext(next);
-            });
-            break;
+            {
+              var resumeAd = _this2._context.resumeAd();
+              if (resumeAd) {
+                resumeAd.then(function () {
+                  _this2.callNext(next);
+                });
+              } else {
+                _this2.callNext(next);
+              }
+              break;
+            }
           default:
-            _this2.callNext(next);
-            break;
+            {
+              _this2.callNext(next);
+              break;
+            }
         }
       }).catch(function (e) {
         _this2._context.destroy();
@@ -60202,11 +62362,15 @@ var ImaMiddleware = function (_BaseMiddleware) {
       var sm = this._context.getStateMachine();
       switch (sm.state) {
         case _state2.default.PLAYING:
-          this._context.pauseAd();
-          break;
+          {
+            this._context.pauseAd();
+            break;
+          }
         default:
-          this.callNext(next);
-          break;
+          {
+            this.callNext(next);
+            break;
+          }
       }
     }
   }]);
@@ -60259,7 +62423,7 @@ function ImaStateMachine(context) {
     init: _state2.default.LOADING,
     transitions: [{
       name: 'loaded',
-      from: [_state2.default.LOADING, _state2.default.IDLE, _state2.default.DONE],
+      from: [_state2.default.LOADING, _state2.default.LOADED, _state2.default.IDLE, _state2.default.PAUSED, _state2.default.PLAYING, _state2.default.DONE],
       to: _state2.default.LOADED
     }, {
       name: context.player.Event.AD_STARTED,
@@ -60326,6 +62490,10 @@ function ImaStateMachine(context) {
     }, {
       name: context.player.Event.AD_CLICKED,
       from: [_state2.default.PLAYING, _state2.default.PAUSED, _state2.default.IDLE]
+    }, {
+      name: 'goto', from: '*', to: function to(s) {
+        return s;
+      }
     }],
     methods: {
       onAdloaded: onAdLoaded.bind(context),
@@ -60375,10 +62543,13 @@ function onAdStarted(options, adEvent) {
   this.logger.debug(adEvent.type.toUpperCase());
   this._currentAd = adEvent.getAd();
   this._resizeAd();
+  this._showAdsContainer();
   this._maybeDisplayCompanionAds();
   if (!this._currentAd.isLinear()) {
     this._setContentPlayheadTrackerEventsEnabled(true);
     this._setVideoEndedCallbackEnabled(true);
+    this._togglePlayPauseOnAdsContainerCallback = this._onAdsContainerClicked.bind(this);
+    this._setTogglePlayPauseOnAdsContainerEnabled(true);
     if (this._nextPromise) {
       this._resolveNextPromise();
     } else {
@@ -60402,6 +62573,8 @@ function onAdClicked(options, adEvent) {
   if (this._currentAd.isLinear()) {
     if (this._stateMachine.is(_state2.default.PLAYING)) {
       this.pauseAd();
+    } else if (this._stateMachine.is(_state2.default.PAUSED)) {
+      this.resumeAd();
     }
   } else {
     if (!this.player.paused) {
@@ -60419,9 +62592,6 @@ function onAdClicked(options, adEvent) {
  */
 function onAdPaused(options, adEvent) {
   this.logger.debug(adEvent.type.toUpperCase());
-  if (this._nextPromise) {
-    this._resolveNextPromise();
-  }
   this.dispatchEvent(options.transition);
 }
 
@@ -60463,7 +62633,6 @@ function onAllAdsCompleted(options, adEvent) {
  */
 function onAdBreakStart(options, adEvent) {
   this.logger.debug(adEvent.type.toUpperCase());
-  this._showAdsContainer();
   this.player.pause();
   this._setVideoEndedCallbackEnabled(false);
   this._maybeSaveVideoCurrentTime();
@@ -61478,7 +63647,7 @@ module.exports = function(options) { options = options || {};
 
 
 /***/ }),
-/* 345 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61491,7 +63660,7 @@ exports.setup = undefined;
 
 var _playkitJs = __webpack_require__(15);
 
-var _kalturaPlayer = __webpack_require__(346);
+var _kalturaPlayer = __webpack_require__(345);
 
 var _kalturaPlayer2 = _interopRequireDefault(_kalturaPlayer);
 
@@ -61509,8 +63678,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function setup(targetId, options) {
   (0, _setupHelpers.validateTargetId)(targetId);
   (0, _setupHelpers.validateProvidersConfig)(options);
-  var userPlayerConfig = (0, _setupHelpers.extractPlayerConfig)(options, this.Uiconf);
-  var userProvidersConfig = (0, _setupHelpers.extractProvidersConfig)(options, this.Uiconf);
+  var userPlayerConfig = (0, _setupHelpers.extractPlayerConfig)(options);
+  var userProvidersConfig = (0, _setupHelpers.extractProvidersConfig)(options);
   var containerId = (0, _setupHelpers.createKalturaPlayerContainer)(targetId);
   (0, _setupHelpers.setDefaultPlayerConfig)(userPlayerConfig);
   (0, _pluginsConfig.evaluatePluginsConfig)(userPlayerConfig);
@@ -61526,7 +63695,7 @@ function setup(targetId, options) {
 exports.setup = setup;
 
 /***/ }),
-/* 346 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61552,13 +63721,13 @@ var _logger = __webpack_require__(47);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _kalturaParams = __webpack_require__(347);
+var _kalturaParams = __webpack_require__(346);
 
 var _setupHelpers = __webpack_require__(129);
 
 var _pluginsConfig = __webpack_require__(130);
 
-__webpack_require__(353);
+__webpack_require__(352);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61571,7 +63740,7 @@ var KalturaPlayer = function () {
     this._player = player;
     this._logger = _logger2.default.getLogger('KalturaPlayer' + _playkitJs.Utils.Generator.uniqueId(5));
     this._uiManager = new _playkitJsUi2.default(this._player, { targetId: targetId });
-    this._provider = new _ovpProvider2.default({ pVersion: "0.10.0", partnerID: config.partnerId, ks: config.ks, config: config.env, loadUiConf: config.loadUiConf });
+    this._provider = new _ovpProvider2.default("0.12.0", config.partnerId, config.ks, config.env);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -61584,7 +63753,7 @@ var KalturaPlayer = function () {
       var _this = this;
 
       this._logger.debug('loadMedia', { entryId: entryId, uiConfId: uiConfId });
-      return this._provider.getConfig({ entryId: entryId, uiConfId: uiConfId }).then(function (data) {
+      return this._provider.getConfig(entryId, uiConfId).then(function (data) {
         var dimensions = _this._player.dimensions;
         (0, _setupHelpers.addKalturaPoster)(data.metadata, dimensions.width, dimensions.height);
         (0, _kalturaParams.addKalturaParams)(data.sources, _this._player);
@@ -61602,7 +63771,7 @@ var KalturaPlayer = function () {
 exports.default = KalturaPlayer;
 
 /***/ }),
-/* 347 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61701,7 +63870,7 @@ function addReferrer(source) {
 function addClientTag(source) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     var delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + "0.10.0";
+    source.url += delimiter + CLIENT_TAG + "0.12.0";
   }
 }
 
@@ -61731,7 +63900,7 @@ exports.addReferrer = addReferrer;
 exports.addClientTag = addClientTag;
 
 /***/ }),
-/* 348 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61750,7 +63919,7 @@ var ValidationErrorType = {
 exports.ValidationErrorType = ValidationErrorType;
 
 /***/ }),
-/* 349 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61762,7 +63931,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _storageWrapper = __webpack_require__(350);
+var _storageWrapper = __webpack_require__(349);
 
 var _storageWrapper2 = _interopRequireDefault(_storageWrapper);
 
@@ -61911,7 +64080,7 @@ StorageManager._logger = _logger2.default.getLogger('StorageManager');
 exports.default = StorageManager;
 
 /***/ }),
-/* 350 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62064,13 +64233,13 @@ StorageWrapper._logger = _logger2.default.getLogger('StorageWrapper');
 exports.default = StorageWrapper;
 
 /***/ }),
-/* 351 */
+/* 350 */
 /***/ (function(module, exports) {
 
 module.exports = {"youbora":{"playerVersion":"{{pVersion}}","playerName":"{{pName}}","entryId":"{{entryId}}","entryName":"{{entryName}}","entryType":"{{entryType}}","sessionId":"{{sessionId}}","uiConfId":"{{uiConfId}}"},"kanalytics":{"playerVersion":"{{pVersion}}","entryId":"{{entryId}}","entryType":"{{entryType}}","sessionId":"{{sessionId}}","ks":"{{ks}}","uiConfId":"{{uiConfId}}","partnerId":"{{partnerId}}"},"ima":{"playerVersion":"{{pVersion}}","playerName":"{{pName}}"}}
 
 /***/ }),
-/* 352 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62105,13 +64274,13 @@ function evaluate(template) {
 exports.default = evaluate;
 
 /***/ }),
-/* 353 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(354);
+var content = __webpack_require__(353);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -62119,7 +64288,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(356)(content, options);
+var update = __webpack_require__(355)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -62136,10 +64305,10 @@ if(false) {
 }
 
 /***/ }),
-/* 354 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(355)(undefined);
+exports = module.exports = __webpack_require__(354)(undefined);
 // imports
 
 
@@ -62150,7 +64319,7 @@ exports.push([module.i, ".kaltura-player-container {\n  width: 100%;\n  height: 
 
 
 /***/ }),
-/* 355 */
+/* 354 */
 /***/ (function(module, exports) {
 
 /*
@@ -62232,7 +64401,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 356 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -62278,7 +64447,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(357);
+var	fixUrls = __webpack_require__(356);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -62591,7 +64760,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 357 */
+/* 356 */
 /***/ (function(module, exports) {
 
 
