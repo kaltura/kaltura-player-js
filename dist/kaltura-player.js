@@ -481,148 +481,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Create an Event work-alike object based on the dictionary.
- * The event should contain all of the same properties from the dict.
- * @param {string} type -
- * @param {Object=} opt_dict -
- * @constructor
- * @extends {Event}
- */
-var FakeEvent = function () {
-
-  /**
-   * Non-standard property read by FakeEventTarget to stop processing listeners.
-   * @type {boolean}
-   */
-
-
-  /** @type {EventTarget} */
-
-
-  /** @const {string} */
-
-
-  /** @const {boolean} */
-
-  /** @const {boolean} */
-  function FakeEvent(type, payload) {
-    _classCallCheck(this, FakeEvent);
-
-    // These Properties below cannot be set by dict.  They are all provided for
-    // compatibility with native events.
-
-    /** @const {boolean} */
-    this.bubbles = false;
-
-    /** @const {boolean} */
-    this.cancelable = false;
-
-    /** @const {boolean} */
-    this.defaultPrevented = false;
-
-    /**
-     * According to MDN, Chrome uses high-res timers instead of epoch time.
-     * Follow suit so that timeStamps on FakeEvents use the same base as
-     * on native Events.
-     * @const {number}
-     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
-     */
-    this.timeStamp = window.performance ? window.performance.now() : Date.now();
-
-    /** @const {string} */
-    this.type = type;
-
-    /** @const {boolean} */
-    this.isTrusted = false;
-
-    /** @type {EventTarget} */
-    this.currentTarget = null;
-
-    /** @type {EventTarget} */
-    this.target = null;
-
-    /**
-     * Non-standard property read by FakeEventTarget to stop processing listeners.
-     * @type {boolean}
-     */
-    this.stopped = false;
-
-    this.payload = payload;
-  }
-
-  /**
-   * Does nothing, since FakeEvents have no default.  Provided for compatibility
-   * with native Events.
-   * @override
-   */
-
-
-  /** @type {EventTarget} */
-
-
-  /** @const {boolean} */
-
-
-  /**
-   * According to MDN, Chrome uses high-res timers instead of epoch time.
-   * Follow suit so that timeStamps on FakeEvents use the same base as
-   * on native Events.
-   * @const {number}
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
-   */
-
-
-  /** @const {boolean} */
-
-
-  _createClass(FakeEvent, [{
-    key: "preventDefault",
-    value: function preventDefault() {}
-
-    /**
-     * Stops processing event listeners for this event.  Provided for compatibility
-     * with native Events.
-     * @override
-     */
-
-  }, {
-    key: "stopImmediatePropagation",
-    value: function stopImmediatePropagation() {
-      this.stopped = true;
-    }
-
-    /**
-     * Does nothing, since FakeEvents do not bubble.  Provided for compatibility
-     * with native Events.
-     * @override
-     */
-
-  }, {
-    key: "stopPropagation",
-    value: function stopPropagation() {}
-  }]);
-
-  return FakeEvent;
-}();
-
-exports.default = FakeEvent;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -1085,6 +943,148 @@ exports.Dom = _Dom;
 exports.Http = _Http;
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Create an Event work-alike object based on the dictionary.
+ * The event should contain all of the same properties from the dict.
+ * @param {string} type -
+ * @param {Object=} opt_dict -
+ * @constructor
+ * @extends {Event}
+ */
+var FakeEvent = function () {
+
+  /**
+   * Non-standard property read by FakeEventTarget to stop processing listeners.
+   * @type {boolean}
+   */
+
+
+  /** @type {EventTarget} */
+
+
+  /** @const {string} */
+
+
+  /** @const {boolean} */
+
+  /** @const {boolean} */
+  function FakeEvent(type, payload) {
+    _classCallCheck(this, FakeEvent);
+
+    // These Properties below cannot be set by dict.  They are all provided for
+    // compatibility with native events.
+
+    /** @const {boolean} */
+    this.bubbles = false;
+
+    /** @const {boolean} */
+    this.cancelable = false;
+
+    /** @const {boolean} */
+    this.defaultPrevented = false;
+
+    /**
+     * According to MDN, Chrome uses high-res timers instead of epoch time.
+     * Follow suit so that timeStamps on FakeEvents use the same base as
+     * on native Events.
+     * @const {number}
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
+     */
+    this.timeStamp = window.performance ? window.performance.now() : Date.now();
+
+    /** @const {string} */
+    this.type = type;
+
+    /** @const {boolean} */
+    this.isTrusted = false;
+
+    /** @type {EventTarget} */
+    this.currentTarget = null;
+
+    /** @type {EventTarget} */
+    this.target = null;
+
+    /**
+     * Non-standard property read by FakeEventTarget to stop processing listeners.
+     * @type {boolean}
+     */
+    this.stopped = false;
+
+    this.payload = payload;
+  }
+
+  /**
+   * Does nothing, since FakeEvents have no default.  Provided for compatibility
+   * with native Events.
+   * @override
+   */
+
+
+  /** @type {EventTarget} */
+
+
+  /** @const {boolean} */
+
+
+  /**
+   * According to MDN, Chrome uses high-res timers instead of epoch time.
+   * Follow suit so that timeStamps on FakeEvents use the same base as
+   * on native Events.
+   * @const {number}
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp
+   */
+
+
+  /** @const {boolean} */
+
+
+  _createClass(FakeEvent, [{
+    key: "preventDefault",
+    value: function preventDefault() {}
+
+    /**
+     * Stops processing event listeners for this event.  Provided for compatibility
+     * with native Events.
+     * @override
+     */
+
+  }, {
+    key: "stopImmediatePropagation",
+    value: function stopImmediatePropagation() {
+      this.stopped = true;
+    }
+
+    /**
+     * Does nothing, since FakeEvents do not bubble.  Provided for compatibility
+     * with native Events.
+     * @override
+     */
+
+  }, {
+    key: "stopPropagation",
+    value: function stopPropagation() {}
+  }]);
+
+  return FakeEvent;
+}();
+
+exports.default = FakeEvent;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1270,7 +1270,7 @@ var _multiMap = __webpack_require__(12);
 
 var _multiMap2 = _interopRequireDefault(_multiMap);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -1486,7 +1486,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CUSTOM_EVENTS = exports.HTML5_EVENTS = exports.PLAYER_EVENTS = undefined;
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -1585,6 +1585,14 @@ var HTML5_EVENTS = {
 
 
 var CUSTOM_EVENTS = {
+  /**
+   * Fires when browser fails to autoplay with sound
+   */
+  AUTOPLAY_FAILED: 'autoplayfailed',
+  /**
+   * Fires when browser fails to autoplay with sound but start muted autoplay instead
+   */
+  FALLBACK_TO_MUTED_AUTOPLAY: 'fallbacktomutedautoplay',
   /**
    * Fires when change source flow started
    */
@@ -1974,7 +1982,7 @@ var _posterManager = __webpack_require__(28);
 
 var _posterManager2 = _interopRequireDefault(_posterManager);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -1988,7 +1996,7 @@ var _stateTypes = __webpack_require__(16);
 
 var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -2012,17 +2020,17 @@ var _basePlugin = __webpack_require__(14);
 
 var _basePlugin2 = _interopRequireDefault(_basePlugin);
 
-var _stateManager = __webpack_require__(36);
+var _stateManager = __webpack_require__(39);
 
 var _stateManager2 = _interopRequireDefault(_stateManager);
 
-var _trackTypes = __webpack_require__(38);
+var _trackTypes = __webpack_require__(41);
 
 var _trackTypes2 = _interopRequireDefault(_trackTypes);
 
-var _track2 = __webpack_require__(3);
+var _track = __webpack_require__(3);
 
-var _track3 = _interopRequireDefault(_track2);
+var _track2 = _interopRequireDefault(_track);
 
 var _videoTrack = __webpack_require__(6);
 
@@ -2044,15 +2052,15 @@ var _vttCue = __webpack_require__(21);
 
 var _textTrackDisplay = __webpack_require__(22);
 
-var _playbackMiddleware = __webpack_require__(39);
+var _playbackMiddleware = __webpack_require__(42);
 
 var _playbackMiddleware2 = _interopRequireDefault(_playbackMiddleware);
 
-var _playerConfig = __webpack_require__(41);
+var _playerConfig = __webpack_require__(44);
 
 var _playerConfig2 = _interopRequireDefault(_playerConfig);
 
-__webpack_require__(42);
+__webpack_require__(45);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2136,124 +2144,203 @@ var DURATION_OFFSET = 0.1;
 var Player = function (_FakeEventTarget) {
   _inherits(Player, _FakeEventTarget);
 
+  _createClass(Player, null, [{
+    key: 'runCapabilities',
+
+
+    /**
+     * Runs the engines capabilities tests.
+     * @returns {void}
+     * @public
+     * @static
+     */
+
+    /**
+     * The player capabilities result object.
+     * @type {Object}
+     * @private
+     * @static
+     */
+
+    /**
+     * The player class logger.
+     * @type {any}
+     * @static
+     * @private
+     */
+    value: function runCapabilities() {
+      Player._logger.debug("Running player capabilities");
+      Player._engines.forEach(function (Engine) {
+        return Engine.runCapabilities();
+      });
+    }
+
+    /**
+     * Gets the engines capabilities.
+     * @param {?string} engineType - The engine type.
+     * @return {Promise<Object>} - The engines capabilities object.
+     * @public
+     * @static
+     */
+
+    /**
+     * The available engines of the player.
+     * @type {Array<typeof IEngine>}
+     * @private
+     * @static
+     */
+
+  }, {
+    key: 'getCapabilities',
+    value: function getCapabilities(engineType) {
+      Player._logger.debug("Get player capabilities", engineType);
+      if (Player._playerCapabilities) {
+        return engineType ? Promise.resolve(Player._playerCapabilities[engineType]) : Promise.resolve(Player._playerCapabilities);
+      }
+      var promises = [];
+      Player._engines.forEach(function (Engine) {
+        return promises.push(Engine.getCapabilities());
+      });
+      return Promise.all(promises).then(function (arrayOfResults) {
+        Player._playerCapabilities = {};
+        arrayOfResults.forEach(function (res) {
+          return Object.assign(Player._playerCapabilities, res);
+        });
+        return engineType ? Promise.resolve(Player._playerCapabilities[engineType]) : Promise.resolve(Player._playerCapabilities);
+      });
+    }
+
+    /**
+     * The plugin manager of the player.
+     * @type {PluginManager}
+     * @private
+     */
+
+    /**
+     * The event manager of the player.
+     * @type {EventManager}
+     * @private
+     */
+
+    /**
+     * The poster manager of the player.
+     * @type {PosterManager}
+     * @private
+     */
+
+    /**
+     * The runtime configuration of the player.
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The playback engine.
+     * @type {IEngine}
+     * @private
+     */
+
+    /**
+     * The state manager of the player.
+     * @type {StateManager}
+     * @private
+     */
+
+    /**
+     * The tracks of the player.
+     * @type {Array<Track>}
+     * @private
+     */
+
+    /**
+     * The player ready promise
+     * @type {Promise<*>}
+     * @private
+     */
+
+    /**
+     * Whether the play is the first or not
+     * @type {boolean}
+     * @private
+     */
+
+    /**
+     * The player DOM element container.
+     * @type {HTMLDivElement}
+     * @private
+     */
+
+    /**
+     * The player text DOM element container.
+     * @type {HTMLDivElement}
+     * @private
+     */
+
+    /**
+     * The player DOM id.
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The player last updated text cues list
+     * @type {Array<any>}
+     * @private
+     */
+
+    /**
+     * The player text disaply settings
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The current playback attributes state
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The player text style settings
+     * @type {TextStyle}
+     * @private
+     */
+
+    /**
+     * The playback middleware of the player.
+     * @type {PlaybackMiddleware}
+     * @private
+     */
+
+    /**
+     * The environment(os,device,browser) object of the player.
+     * @type {Object}
+     * @private
+     */
+
+    /**
+     * The currently selected engine type
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * The currently selected stream type
+     * @type {string}
+     * @private
+     */
+
+    /**
+     * Flag to indicate whether is the first play in the current session.
+     * @type {boolean}
+     * @private
+     */
+
+  }]);
+
   /**
    * @param {Object} config - The configuration for the player instance.
    * @constructor
-   */
-
-  /**
-   * The player text style settings
-   * @type {TextStyle}
-   * @private
-   */
-
-  /**
-   * The playback middleware of the player.
-   * @type {PlaybackMiddleware}
-   * @private
-   */
-
-  /**
-   * The environment(os,device,browser) object of the player.
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The currently selected engine type
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The currently selected stream type
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The player last updated text cues list
-   * @type {Array<any>}
-   * @private
-   */
-
-  /**
-   * The plugin manager of the player.
-   * @type {PluginManager}
-   * @private
-   */
-
-  /**
-   * The event manager of the player.
-   * @type {EventManager}
-   * @private
-   */
-
-  /**
-   * The poster manager of the player.
-   * @type {PosterManager}
-   * @private
-   */
-
-  /**
-   * The runtime configuration of the player.
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The playback engine.
-   * @type {IEngine}
-   * @private
-   */
-
-  /**
-   * The state manager of the player.
-   * @type {StateManager}
-   * @private
-   */
-
-  /**
-   * The tracks of the player.
-   * @type {Array<Track>}
-   * @private
-   */
-
-  /**
-   * The player ready promise
-   * @type {Promise<*>}
-   * @private
-   */
-
-  /**
-   * Whether the play is the first or not
-   * @type {boolean}
-   * @private
-   */
-
-  /**
-   * The player DOM element container.
-   * @type {HTMLDivElement}
-   * @private
-   */
-
-  /**
-   * The player text DOM element container.
-   * @type {HTMLDivElement}
-   * @private
-   */
-
-  /**
-   * The player DOM id.
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * The player class logger.
-   * @type {any}
-   * @static
-   * @private
    */
   function Player() {
     var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2264,10 +2351,18 @@ var Player = function (_FakeEventTarget) {
 
     _this._activeTextCues = [];
     _this._textDisplaySettings = {};
+    _this._playbackAttributesState = {
+      muted: undefined,
+      volume: undefined,
+      rate: undefined,
+      audioLanguage: "",
+      textLanguage: ""
+    };
 
     _this._env = _env2.default;
     _this._tracks = [];
     _this._firstPlay = true;
+    _this._firstPlayInCurrentSession = true;
     _this._config = Player._defaultConfig;
     _this._eventManager = new _eventManager2.default();
     _this._posterManager = new _posterManager2.default();
@@ -2292,19 +2387,6 @@ var Player = function (_FakeEventTarget) {
    * @returns {void}
    */
 
-  /**
-   * The player text disaply settings
-   * @type {Object}
-   * @private
-   */
-
-  /**
-   * The available engines of the player.
-   * @type {Array<typeof IEngine>}
-   * @private
-   * @static
-   */
-
 
   _createClass(Player, [{
     key: 'configure',
@@ -2323,7 +2405,9 @@ var Player = function (_FakeEventTarget) {
           this._posterManager.setSrc(this._config.metadata.poster);
           this._posterManager.show();
           this._attachMedia();
-          this._handlePlaybackConfig();
+          this._handlePlaybackOptions();
+          this._handlePreload();
+          this._handleAutoPlay();
           if (receivedSourcesWhenHasEngine) {
             Player._logger.debug('Change source ended');
             this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.CHANGE_SOURCE_ENDED));
@@ -2445,6 +2529,7 @@ var Player = function (_FakeEventTarget) {
       this._streamType = '';
       this._readyPromise = null;
       this._firstPlay = true;
+      this._playbackAttributesState = {};
       if (this._el) {
         Utils.Dom.removeChild(this._el.parentNode, this._el);
       }
@@ -2547,7 +2632,7 @@ var Player = function (_FakeEventTarget) {
     /**
      * Select a track
      * @function selectTrack
-     * @param {Track} track - the track to select
+     * @param {?Track} track - the track to select
      * @returns {void}
      * @public
      */
@@ -2561,8 +2646,9 @@ var Player = function (_FakeEventTarget) {
         } else if (track instanceof _audioTrack2.default) {
           this._engine.selectAudioTrack(track);
         } else if (track instanceof _textTrack2.default) {
-          if (track.language === "off") {
+          if (track.language === OFF) {
             this.hideTextTrack();
+            this._playbackAttributesState.textLanguage = OFF;
           } else {
             this._engine.selectTextTrack(track);
           }
@@ -2588,7 +2674,7 @@ var Player = function (_FakeEventTarget) {
           return track.active = false;
         });
         var textTrack = textTracks.find(function (track) {
-          return track.language === "off";
+          return track.language === OFF;
         });
         if (textTrack) {
           textTrack.active = true;
@@ -2919,10 +3005,12 @@ var Player = function (_FakeEventTarget) {
           return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.AUDIO_TRACK_CHANGED, function (event) {
+          _this6._playbackAttributesState.audioLanguage = event.payload.selectedAudioTrack.language;
           _this6._markActiveTrack(event.payload.selectedAudioTrack);
           return _this6.dispatchEvent(event);
         });
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.TEXT_TRACK_CHANGED, function (event) {
+          _this6._playbackAttributesState.textLanguage = event.payload.selectedTextTrack.language;
           _this6._markActiveTrack(event.payload.selectedTextTrack);
           return _this6.dispatchEvent(event);
         });
@@ -2932,65 +3020,105 @@ var Player = function (_FakeEventTarget) {
         this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.ABR_MODE_CHANGED, function (event) {
           return _this6.dispatchEvent(event);
         });
+        this._eventManager.listen(this._engine, _events.CUSTOM_EVENTS.AUTOPLAY_FAILED, function (event) {
+          _this6.pause();
+          _this6.dispatchEvent(event);
+        });
         this._eventManager.listen(this, _events.HTML5_EVENTS.PLAY, this._onPlay.bind(this));
         this._eventManager.listen(this, _events.HTML5_EVENTS.ENDED, this._onEnded.bind(this));
+        this._eventManager.listen(this, _events.CUSTOM_EVENTS.MUTE_CHANGE, function () {
+          _this6._playbackAttributesState.muted = _this6.muted;
+        });
+        this._eventManager.listen(this, _events.HTML5_EVENTS.VOLUME_CHANGE, function () {
+          _this6._playbackAttributesState.volume = _this6.volume;
+        });
+        this._eventManager.listen(this, _events.HTML5_EVENTS.RATE_CHANGE, function () {
+          _this6._playbackAttributesState.rate = _this6.playbackRate;
+        });
       }
     }
 
     /**
-     * Handles the playback config.
+     * Handles the playback options, from current state or config.
      * @returns {void}
      * @private
      */
 
   }, {
-    key: '_handlePlaybackConfig',
-    value: function _handlePlaybackConfig() {
-      if (this._config.playback) {
-        if (typeof this._config.playback.volume === 'number') {
-          this.volume = this._config.playback.volume;
-        }
-        if (typeof this._config.playback.muted === 'boolean') {
-          this.muted = this._config.playback.muted;
-        }
-        if (typeof this._config.playback.playsinline === 'boolean') {
-          this.playsinline = this._config.playback.playsinline;
-        }
-        if (this._config.playback.preload === "auto") {
-          /**
-           * If ads plugin enabled it's his responsibility to preload the content player.
-           * So to avoid loading the player twice which can cause errors on MSEs we are not
-           * calling load from the player.
-           * TODO: Change it to check the ads configuration when we will develop the ads manager.
-           */
-          if (!this._config.plugins.ima) {
-            this.load();
-          }
-        }
-        if (this._canAutoPlay()) {
-          this.play();
-        }
+    key: '_handlePlaybackOptions',
+    value: function _handlePlaybackOptions() {
+      this._config.playback = this._config.playback || {};
+      if (typeof this._playbackAttributesState.muted === 'boolean') {
+        this.muted = this._playbackAttributesState.muted;
+      } else if (typeof this._config.playback.muted === 'boolean') {
+        this.muted = this._config.playback.muted;
+      }
+      if (typeof this._playbackAttributesState.volume === 'number') {
+        this.volume = this._playbackAttributesState.volume;
+      } else if (typeof this._config.playback.volume === 'number') {
+        this.volume = this._config.playback.volume;
+      }
+      if (typeof this._config.playback.playsinline === 'boolean') {
+        this.playsinline = this._config.playback.playsinline;
       }
     }
 
     /**
-     * Determine whether we can auto playing or not.
-     * @returns {boolean} - Whether an auto play can be done.
+     * Handles preload.
+     * If ads plugin enabled it's his responsibility to preload the content player.
+     * So to avoid loading the player twice which can cause errors on MSEs we are not
+     * calling load from the player.
+     * TODO: Change it to check the ads configuration when we will develop the ads manager.
+     * @returns {void}
      * @private
      */
 
   }, {
-    key: '_canAutoPlay',
-    value: function _canAutoPlay() {
-      if (!this._config.playback.autoplay) {
-        return false;
+    key: '_handlePreload',
+    value: function _handlePreload() {
+      if (this._config.playback.preload === "auto" && !this._config.plugins.ima) {
+        this.load();
       }
-      var device = this._env.device.type;
-      var os = this._env.os.name;
-      if (device) {
-        return os === 'iOS' ? this.muted && this.playsinline : this.muted;
+    }
+
+    /**
+     * Handles auto play.
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_handleAutoPlay',
+    value: function _handleAutoPlay() {
+      var _this7 = this;
+
+      if (this._config.playback.autoplay === true) {
+        if (this.muted || !this._firstPlayInCurrentSession) {
+          this.play();
+        } else {
+          var allowMutedAutoPlay = this._config.playback.allowMutedAutoPlay;
+          Player.getCapabilities(this.engineType).then(function (capabilities) {
+            if (capabilities.autoplay) {
+              Player._logger.debug("Start autoplay");
+              _this7.play();
+            } else {
+              if (allowMutedAutoPlay) {
+                Player._logger.debug("Fallback to muted autoplay");
+                _this7.muted = true;
+                _this7.play();
+                _this7.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FALLBACK_TO_MUTED_AUTOPLAY));
+              } else {
+                Player._logger.warn("Autoplay failed, pause player");
+                _this7.load();
+                _this7.ready().then(function () {
+                  return _this7.pause();
+                });
+                _this7.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.AUTOPLAY_FAILED));
+              }
+            }
+          });
+        }
       }
-      return true;
     }
 
     /**
@@ -3002,7 +3130,7 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_play',
     value: function _play() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this._engine.src) {
         if (this.isLive() && !this.isDvr()) {
@@ -3012,7 +3140,7 @@ var Player = function (_FakeEventTarget) {
       } else {
         this.load();
         this.ready().then(function () {
-          _this7._engine.play();
+          _this8._engine.play();
         });
       }
     }
@@ -3042,6 +3170,9 @@ var Player = function (_FakeEventTarget) {
         this._firstPlay = false;
         this.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.FIRST_PLAY));
         this._posterManager.hide();
+        if (typeof this._playbackAttributesState.rate === 'number') {
+          this.playbackRate = this._playbackAttributesState.rate;
+        }
       }
     }
 
@@ -3076,6 +3207,7 @@ var Player = function (_FakeEventTarget) {
       this._activeTextCues = [];
       this._tracks = [];
       this._firstPlay = true;
+      this._firstPlayInCurrentSession = false;
       this._engineType = '';
       this._streamType = '';
       this._createReadyPromise();
@@ -3235,8 +3367,10 @@ var Player = function (_FakeEventTarget) {
 
       this.hideTextTrack();
 
-      this._setDefaultTrack(_trackTypes2.default.TEXT, this._getLanguage(playbackConfig.textLanguage, activeTracks.text, _trackTypes2.default.TEXT), offTextTrack);
-      this._setDefaultTrack(_trackTypes2.default.AUDIO, playbackConfig.audioLanguage, activeTracks.audio);
+      var currentOrConfiguredTextLang = this._playbackAttributesState.textLanguage || this._getLanguage(playbackConfig.textLanguage, activeTracks.text, _trackTypes2.default.TEXT);
+      var currentOrConfiguredAudioLang = this._playbackAttributesState.audioLanguage || playbackConfig.audioLanguage;
+      this._setDefaultTrack(_trackTypes2.default.TEXT, currentOrConfiguredTextLang, offTextTrack);
+      this._setDefaultTrack(_trackTypes2.default.AUDIO, currentOrConfiguredAudioLang, activeTracks.audio);
     }
 
     /**
@@ -3255,7 +3389,7 @@ var Player = function (_FakeEventTarget) {
       if (language === AUTO) {
         var tracks = this._getTracksByType(type);
         var localeTrack = tracks.find(function (track) {
-          return _track3.default.langComparer(_locale2.default.language, track.language);
+          return _track2.default.langComparer(_locale2.default.language, track.language);
         });
         if (localeTrack) {
           language = localeTrack.language;
@@ -3272,7 +3406,7 @@ var Player = function (_FakeEventTarget) {
      * Sets a specific default track.
      * @param {string} type - The track type.
      * @param {string} language - The track language.
-     * @param {?Track} defaultTrack - The default track to set in case there in case no language configured.
+     * @param {?Track} defaultTrack - The default track to set in case there is no language configured.
      * @returns {void}
      * @private
      */
@@ -3280,14 +3414,12 @@ var Player = function (_FakeEventTarget) {
   }, {
     key: '_setDefaultTrack',
     value: function _setDefaultTrack(type, language, defaultTrack) {
-      if (language) {
-        var _track = this._getTracksByType(type).find(function (track) {
-          return _track3.default.langComparer(language, track.language);
-        });
-        if (_track) {
-          this.selectTrack(_track);
-        }
-      } else if (defaultTrack) {
+      var track = this._getTracksByType(type).find(function (track) {
+        return _track2.default.langComparer(language, track.language);
+      });
+      if (track) {
+        this.selectTrack(track);
+      } else {
         this.selectTrack(defaultTrack);
       }
     }
@@ -3957,7 +4089,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -4111,7 +4243,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -4123,7 +4255,7 @@ var _playerError = __webpack_require__(11);
 
 var _playerError2 = _interopRequireDefault(_playerError);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -4589,7 +4721,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -6583,7 +6715,7 @@ exports.default = TextStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BaseDrmProtocol = exports.Env = exports.PLAYER_NAME = exports.VERSION = exports.Utils = exports.TextStyle = exports.TextTrack = exports.AudioTrack = exports.VideoTrack = exports.Track = exports.BaseMiddleware = exports.BasePlugin = exports.registerPlugin = exports.BaseMediaSourceAdapter = exports.registerMediaSourceAdapter = undefined;
+exports.getCapabilities = exports.BaseDrmProtocol = exports.Env = exports.PLAYER_NAME = exports.VERSION = exports.Utils = exports.TextStyle = exports.TextTrack = exports.AudioTrack = exports.VideoTrack = exports.Track = exports.BaseMiddleware = exports.BasePlugin = exports.registerPlugin = exports.BaseMediaSourceAdapter = exports.registerMediaSourceAdapter = undefined;
 exports.loadPlayer = loadPlayer;
 
 var _player = __webpack_require__(9);
@@ -6638,7 +6770,7 @@ var _env = __webpack_require__(10);
 
 var _env2 = _interopRequireDefault(_env);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -6646,8 +6778,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.13.0", "color: #98ff98;  font-size: large");
+_player2.default.runCapabilities();
 
+
+_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.14.0", "color: #98ff98;  font-size: large");
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/playkit-js", "color: #98ff98;");
 
 /**
@@ -6682,7 +6816,7 @@ exports.Utils = Utils;
 
 // Export version
 
-exports.VERSION = "0.13.0";
+exports.VERSION = "0.14.0";
 
 // Export player name
 
@@ -6695,6 +6829,11 @@ exports.Env = _env2.default;
 // Export base DRM protocol
 
 exports.BaseDrmProtocol = _baseDrmProtocol2.default;
+
+// Export the player capabilities
+
+var getCapabilities = _player2.default.getCapabilities;
+exports.getCapabilities = getCapabilities;
 exports.default = loadPlayer;
 
 /***/ }),
@@ -7676,7 +7815,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -8176,7 +8315,7 @@ var _fakeEventTarget = __webpack_require__(13);
 
 var _fakeEventTarget2 = _interopRequireDefault(_fakeEventTarget);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -8202,13 +8341,23 @@ var _textTrack = __webpack_require__(8);
 
 var _vttCue = __webpack_require__(21);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
+
+var _html5Autoplay = __webpack_require__(36);
+
+var _html5Autoplay2 = _interopRequireDefault(_html5Autoplay);
+
+var _html5IsSupported = __webpack_require__(38);
+
+var _html5IsSupported2 = _interopRequireDefault(_html5IsSupported);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8236,39 +8385,11 @@ var Html5 = function (_FakeEventTarget) {
      * @static
      */
 
-    /**
-     * Flag to indicate first time text track cue change.
-     * @type {Object<number, boolean>}
-     * @private
-     */
 
     /**
-     * The selected media source adapter of the engine.
-     * @type {?IMediaSourceAdapter}
+     * The html5 capabilities handlers.
      * @private
-     */
-
-    /**
-     * The video element.
-     * @type {HTMLVideoElement}
-     * @private
-     */
-    value: function createEngine(source, config) {
-      return new this(source, config);
-    }
-
-    /**
-     * Checks if the engine can play a given source.
-     * @param {Source} source - The source object to check.
-     * @param {boolean} preferNative - prefer native flag
-     * @returns {boolean} - Whether the engine can play the source.
-     * @public
      * @static
-     */
-
-
-    /**
-     * @type {string} - The engine id.
      */
 
     /**
@@ -8288,11 +8409,86 @@ var Html5 = function (_FakeEventTarget) {
      * @type {EventManager}
      * @private
      */
+    value: function createEngine(source, config) {
+      return new this(source, config);
+    }
+
+    /**
+     * Checks if the engine can play a given source.
+     * @param {Source} source - The source object to check.
+     * @param {boolean} preferNative - prefer native flag
+     * @returns {boolean} - Whether the engine can play the source.
+     * @public
+     * @static
+     */
+
+
+    /**
+     * @type {string} - The engine id.
+     * @public
+     * @static
+     */
+
+    /**
+     * Flag to indicate first time text track cue change.
+     * @type {Object<number, boolean>}
+     * @private
+     */
+
+    /**
+     * The selected media source adapter of the engine.
+     * @type {?IMediaSourceAdapter}
+     * @private
+     */
+
+    /**
+     * The video element.
+     * @type {HTMLVideoElement}
+     * @private
+     */
 
   }, {
     key: 'canPlaySource',
     value: function canPlaySource(source, preferNative) {
       return _mediaSourceProvider2.default.canPlaySource(source, preferNative);
+    }
+
+    /**
+     * Runs the html5 capabilities tests.
+     * @returns {void}
+     * @public
+     * @static
+     */
+
+  }, {
+    key: 'runCapabilities',
+    value: function runCapabilities() {
+      Html5._capabilities.forEach(function (capability) {
+        return capability.runCapability();
+      });
+    }
+
+    /**
+     * Gets the html5 capabilities.
+     * @return {Promise<Object>} - The html5 capabilities object.
+     * @public
+     * @static
+     */
+
+  }, {
+    key: 'getCapabilities',
+    value: function getCapabilities() {
+      var promises = [];
+      Html5._capabilities.forEach(function (capability) {
+        return promises.push(capability.getCapability());
+      });
+      return Promise.all(promises).then(function (arrayOfResults) {
+        var mergedResults = {};
+        arrayOfResults.forEach(function (res) {
+          return Object.assign(mergedResults, res);
+        });
+        return _defineProperty({}, Html5.id, mergedResults);
+      });
     }
 
     /**
@@ -8559,7 +8755,14 @@ var Html5 = function (_FakeEventTarget) {
   }, {
     key: 'play',
     value: function play() {
-      this._el.play();
+      var _this4 = this;
+
+      var playPromise = this._el.play();
+      if (playPromise) {
+        playPromise.catch(function () {
+          return _this4.dispatchEvent(new _fakeEvent2.default(_events.CUSTOM_EVENTS.AUTOPLAY_FAILED));
+        });
+      }
     }
 
     /**
@@ -8584,12 +8787,12 @@ var Html5 = function (_FakeEventTarget) {
   }, {
     key: 'load',
     value: function load(startTime) {
-      var _this4 = this;
+      var _this5 = this;
 
       this._el.load();
       return this._canLoadMediaSourceAdapterPromise.then(function () {
-        if (_this4._mediaSourceAdapter) {
-          return _this4._mediaSourceAdapter.load(startTime);
+        if (_this5._mediaSourceAdapter) {
+          return _this5._mediaSourceAdapter.load(startTime);
         }
         return Promise.resolve({});
       });
@@ -8668,7 +8871,7 @@ var Html5 = function (_FakeEventTarget) {
   }, {
     key: '_addCueChangeListener',
     value: function _addCueChangeListener(textTrack) {
-      var _this5 = this;
+      var _this6 = this;
 
       var textTrackEl = this._getSelectedTextTrackElement();
       if (textTrackEl) {
@@ -8686,7 +8889,7 @@ var Html5 = function (_FakeEventTarget) {
           textTrackEl.mode = this._showTextTrackFirstTime[textTrack.index] ? "hidden" : "showing";
           this._showTextTrackFirstTime[textTrack.index] = true;
           textTrackEl.oncuechange = function (e) {
-            return _this5._onCueChange(e);
+            return _this6._onCueChange(e);
           };
         }
       }
@@ -9200,35 +9403,12 @@ var Html5 = function (_FakeEventTarget) {
     get: function get() {
       return this._el.getAttribute('playsinline') === '';
     }
-
-    /**
-     * Test video element to check if html5 engine is supported.
-     */
-
-  }], [{
-    key: 'isSupported',
-
-
-    /**
-     * Checks if the html5 engine is supported.
-     * @returns {boolean} - The isSupported result.
-     * @static
-     * @public
-     */
-    value: function isSupported() {
-      try {
-        Html5.TEST_VID = Utils.Dom.createElement('video');
-        Html5.TEST_VID.volume = 0.5;
-      } catch (e) {
-        return false;
-      }
-      return !!Html5.TEST_VID.canPlayType;
-    }
   }]);
 
   return Html5;
 }(_fakeEventTarget2.default);
 
+Html5._capabilities = [_html5Autoplay2.default, _html5IsSupported2.default];
 Html5.id = "html5";
 exports.default = Html5;
 
@@ -9273,7 +9453,7 @@ var _baseMediaSourceAdapter2 = _interopRequireDefault(_baseMediaSourceAdapter);
 
 var _resolution = __webpack_require__(33);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_util);
 
@@ -10281,14 +10461,14 @@ var FairPlay = function (_BaseDrmProtocol) {
       try {
         responseObj = JSON.parse(keyText);
       } catch (error) {
-        this._licenseRequestFailed();
+        FairPlay._licenseRequestFailed();
       }
-      var isValidResponse = this._validateResponse(responseObj);
+      var isValidResponse = FairPlay._validateResponse(responseObj);
       if (isValidResponse.valid) {
         var key = FairPlay._base64DecodeUint8Array(responseObj.ckc);
         FairPlay._keySession.update(key);
       } else {
-        this._licenseRequestFailed(isValidResponse);
+        FairPlay._licenseRequestFailed();
       }
     }
   }, {
@@ -10552,6 +10732,152 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _util = __webpack_require__(1);
+
+var Utils = _interopRequireWildcard(_util);
+
+var _encodingSources = __webpack_require__(37);
+
+var EncodingSources = _interopRequireWildcard(_encodingSources);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Html5AutoPlayCapability = function () {
+  function Html5AutoPlayCapability() {
+    _classCallCheck(this, Html5AutoPlayCapability);
+  }
+
+  _createClass(Html5AutoPlayCapability, null, [{
+    key: 'runCapability',
+
+
+    /***
+     * Runs the test for autoplay capability.
+     * @public
+     * @static
+     * @returns {void}
+     */
+    value: function runCapability() {
+      try {
+        Html5AutoPlayCapability._vid.src = EncodingSources.Base64Mp4Source;
+        Html5AutoPlayCapability._promise = Html5AutoPlayCapability._vid.play() || Promise.resolve();
+      } catch (e) {
+        Html5AutoPlayCapability._promise = Promise.reject();
+      }
+    }
+
+    /**
+     * Gets the test result for autoplay capability.
+     * @returns {Promise<CapabilityResult>} - The result object for autoplay capability.
+     * @static
+     * @public
+     */
+
+  }, {
+    key: 'getCapability',
+    value: function getCapability() {
+      return Html5AutoPlayCapability._promise.then(function () {
+        return { autoplay: true };
+      }).catch(function () {
+        return { autoplay: false };
+      });
+    }
+  }]);
+
+  return Html5AutoPlayCapability;
+}();
+
+Html5AutoPlayCapability._vid = Utils.Dom.createElement('video');
+exports.default = Html5AutoPlayCapability;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"Base64Mp4Source": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAABPptZGF0AAACrQYF//+p3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0OCByMjcyMSA3MmQ1M2FiIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAxNiAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOjA6MCBhbmFseXNlPTB4MzoweDExMyBtZT1oZXggc3VibWU9NyBwc3k9MSBwc3lfcmQ9MS4wMDowLjAwIG1peGVkX3JlZj0xIG1lX3JhbmdlPTE2IGNocm9tYV9tZT0xIHRyZWxsaXM9MSA4eDhkY3Q9MSBjcW09MCBkZWFkem9uZT0yMSwxMSBmYXN0X3Bza2lwPTEgY2hyb21hX3FwX29mZnNldD00IHRocmVhZHM9MSBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MjUgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAwAIAAAAAQZYiEADf//vaH+BTZWBP/gd4CAExhdmM1Ny42NC4xMDAAQiAIwRg4AAAACEGaJGxDf/7gAAAACEGeQniFf8SBIRAEYIwcAAAACAGeYXRCf8eAIRAEYIwcAAAACAGeY2pCf8eBIRAEYIwcAAAADkGaaEmoQWiZTAhv//7hAAAACkGehkURLCv/xIEhEARgjBwAAAAIAZ6ldEJ/x4EhEARgjBwAAAAIAZ6nakJ/x4AhEARgjBwAAAAOQZqsSahBbJlMCG///uAAAAAKQZ7KRRUsK//EgSEQBGCMHAAAAAgBnul0Qn/HgCEQBGCMHAAAAAgBnutqQn/HgAAAAA5BmvBJqEFsmUwIb//+4SEQBGCMHAAAAApBnw5FFSwr/8SBIRAEYIwcAAAACAGfLXRCf8eBIRAEYIwcAAAACAGfL2pCf8eAAAAADkGbNEmoQWyZTAhv//7gIRAEYIwcAAAACkGfUkUVLCv/xIEhEARgjBwAAAAIAZ9xdEJ/x4AAAAAIAZ9zakJ/x4AhEARgjBwAAAAOQZt4SahBbJlMCGf//uEhEARgjBwAAAAKQZ+WRRUsK//EgCEQBGCMHAAAAAgBn7V0Qn/HgQAAAAgBn7dqQn/HgSEQBGCMHAAAAA5Bm7xJqEFsmUwIV//+wCEQBGCMHAAAAApBn9pFFSwr/8SBAAAACAGf+XRCf8eAIRAEYIwcAAAACAGf+2pCf8eBIRAEYIwcAAAADkGb/UmoQWyZTAhP//7BIRAEYIwcIRAEYIwcAAAIOG1vb3YAAABsbXZoZAAAAAAAAAAAAAAAAAAAA+gAAAQXAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAS3dHJhawAAAFx0a2hkAAAAAwAAAAAAAAAAAAAAAQAAAAAAAAPoAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAIAAAACAAAAAAAJGVkdHMAAAAcZWxzdAAAAAAAAAABAAAD6AAABAAAAQAAAAAEL21kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAPAAAADwAVcQAAAAAAC1oZGxyAAAAAAAAAAB2aWRlAAAAAAAAAAAAAAAAVmlkZW9IYW5kbGVyAAAAA9ptaW5mAAAAFHZtaGQAAAABAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAOac3RibAAAAJZzdHNkAAAAAAAAAAEAAACGYXZjMQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIAAgASAAAAEgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABj//wAAADBhdmNDAfQACv/hABdn9AAKkZsr8TEwgAAAAwCAAAAeB4kSywEABmjr48RIRAAAABhzdHRzAAAAAAAAAAEAAAAeAAACAAAAABRzdHNzAAAAAAAAAAEAAAABAAABAGN0dHMAAAAAAAAAHgAAAAEAAAQAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAABAAAAAABAAAAAAAAAAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAABAAAAAABAAAAAAAAAAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAEAAAAANxzdHNjAAAAAAAAABEAAAABAAAAAQAAAAEAAAACAAAAAgAAAAEAAAADAAAAAQAAAAEAAAAFAAAAAgAAAAEAAAAGAAAAAQAAAAEAAAAIAAAAAgAAAAEAAAAJAAAAAQAAAAEAAAAKAAAAAgAAAAEAAAALAAAAAQAAAAEAAAANAAAAAgAAAAEAAAAOAAAAAQAAAAEAAAAPAAAAAgAAAAEAAAAQAAAAAQAAAAEAAAASAAAAAgAAAAEAAAATAAAAAQAAAAEAAAAUAAAAAgAAAAEAAAAVAAAAAQAAAAEAAACMc3RzegAAAAAAAAAAAAAAHgAAAsUAAAAMAAAADAAAAAwAAAAMAAAAEgAAAA4AAAAMAAAADAAAABIAAAAOAAAADAAAAAwAAAASAAAADgAAAAwAAAAMAAAAEgAAAA4AAAAMAAAADAAAABIAAAAOAAAADAAAAAwAAAASAAAADgAAAAwAAAAMAAAAEgAAAGhzdGNvAAAAAAAAABYAAAAwAAADDAAAAyoAAAM8AAADTgAAA3QAAAOGAAADmAAAA74AAAPQAAAD9AAABAgAAAQaAAAEPgAABFIAAARwAAAEiAAABJwAAAS6AAAE0gAABPIAAAUEAAACq3RyYWsAAABcdGtoZAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAEFwAAAAAAAAAAAAAAAQEAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACRlZHRzAAAAHGVsc3QAAAAAAAAAAQAAA+gAAAQAAAEAAAAAAiNtZGlhAAAAIG1kaGQAAAAAAAAAAAAAAAAAAFYiAABaIlXEAAAAAAAtaGRscgAAAAAAAAAAc291bgAAAAAAAAAAAAAAAFNvdW5kSGFuZGxlcgAAAAHObWluZgAAABBzbWhkAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAGSc3RibAAAAGpzdHNkAAAAAAAAAAEAAABabXA0YQAAAAAAAAABAAAAAAAAAAAAAgAQAAAAAFYiAAAAAAA2ZXNkcwAAAAADgICAJQACAASAgIAXQBUAAAAAAfQAAAAEoAWAgIAFE5BW5QAGgICAAQIAAAAgc3R0cwAAAAAAAAACAAAAFgAABAAAAAABAAACIgAAAChzdHNjAAAAAAAAAAIAAAABAAAAAQAAAAEAAAAWAAAAAgAAAAEAAABwc3RzegAAAAAAAAAAAAAAFwAAABcAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAAaHN0Y28AAAAAAAAAFgAAAvUAAAMkAAADNgAAA0gAAANuAAADgAAAA5IAAAO4AAADygAAA+4AAAQCAAAEFAAABDgAAARMAAAEagAABIIAAASWAAAEtAAABMwAAATsAAAE/gAABRYAAABidWR0YQAAAFptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABtZGlyYXBwbAAAAAAAAAAAAAAAAC1pbHN0AAAAJal0b28AAAAdZGF0YQAAAAEAAAAATGF2ZjU3LjU2LjEwMA=="
+};
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(1);
+
+var Utils = _interopRequireWildcard(_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Html5IsSupportedCapability = function () {
+  function Html5IsSupportedCapability() {
+    _classCallCheck(this, Html5IsSupportedCapability);
+  }
+
+  _createClass(Html5IsSupportedCapability, null, [{
+    key: 'runCapability',
+
+
+    /***
+     * Runs the test for isSupported capability.
+     * @public
+     * @static
+     * @returns {void}
+     */
+    value: function runCapability() {
+      try {
+        Html5IsSupportedCapability._vid.volume = 0.5;
+        Html5IsSupportedCapability._result = !!Html5IsSupportedCapability._vid.canPlayType;
+      } catch (e) {
+        Html5IsSupportedCapability._result = false;
+      }
+    }
+
+    /**
+     * Gets the test result for isSupported capability.
+     * @returns {Promise<CapabilityResult>} - The result object for isSupported capability.
+     * @static
+     * @public
+     */
+
+  }, {
+    key: 'getCapability',
+    value: function getCapability() {
+      return Promise.resolve({ isSupported: Html5IsSupportedCapability._result });
+    }
+  }]);
+
+  return Html5IsSupportedCapability;
+}();
+
+Html5IsSupportedCapability._vid = Utils.Dom.createElement('video');
+exports.default = Html5IsSupportedCapability;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _player = __webpack_require__(9);
 
 var _player2 = _interopRequireDefault(_player);
@@ -10560,7 +10886,7 @@ var _eventManager = __webpack_require__(4);
 
 var _eventManager2 = _interopRequireDefault(_eventManager);
 
-var _state = __webpack_require__(37);
+var _state = __webpack_require__(40);
 
 var _state2 = _interopRequireDefault(_state);
 
@@ -10570,7 +10896,7 @@ var _stateTypes2 = _interopRequireDefault(_stateTypes);
 
 var _events = __webpack_require__(5);
 
-var _fakeEvent = __webpack_require__(1);
+var _fakeEvent = __webpack_require__(2);
 
 var _fakeEvent2 = _interopRequireDefault(_fakeEvent);
 
@@ -10633,11 +10959,7 @@ var StateManager = function () {
       _this._updateState(_stateTypes2.default.BUFFERING);
       _this._dispatchEvent();
     }), _PlayerStates$IDLE)), _defineProperty(_transitions, _stateTypes2.default.LOADING, (_PlayerStates$LOADING = {}, _defineProperty(_PlayerStates$LOADING, _events.HTML5_EVENTS.LOADED_METADATA, function () {
-      if (_this._player.config.playback.autoplay) {
-        _this._updateState(_stateTypes2.default.PLAYING);
-      } else {
-        _this._updateState(_stateTypes2.default.PAUSED);
-      }
+      _this._updateState(_stateTypes2.default.PAUSED);
       _this._dispatchEvent();
     }), _defineProperty(_PlayerStates$LOADING, _events.HTML5_EVENTS.ERROR, function () {
       _this._updateState(_stateTypes2.default.IDLE);
@@ -10853,7 +11175,7 @@ var StateManager = function () {
 exports.default = StateManager;
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10935,7 +11257,7 @@ var State = function () {
 exports.default = State;
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10953,7 +11275,7 @@ var TRACK_TYPES = {
 exports.default = TRACK_TYPES;
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10965,7 +11287,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _middleware = __webpack_require__(40);
+var _middleware = __webpack_require__(43);
 
 var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -11053,7 +11375,7 @@ PlaybackMiddleware.Actions = {
 exports.default = PlaybackMiddleware;
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11186,7 +11508,7 @@ var Middleware = function () {
 exports.default = Middleware;
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -11200,9 +11522,10 @@ module.exports = {
 		"textLanguage": "",
 		"useNativeTextTrack": false,
 		"volume": 1,
-		"playsinline": false,
+		"playsinline": true,
 		"preload": "none",
 		"autoplay": false,
+		"allowMutedAutoPlay": true,
 		"muted": false,
 		"options": {
 			"html5": {
@@ -11232,13 +11555,13 @@ module.exports = {
 };
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(43);
+var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -11246,7 +11569,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(45)(content, options);
+var update = __webpack_require__(48)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -11263,10 +11586,10 @@ if(false) {
 }
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(44)(undefined);
+exports = module.exports = __webpack_require__(47)(undefined);
 // imports
 
 
@@ -11277,7 +11600,7 @@ exports.push([module.i, ".playkit-container {\n  position: relative;\n  width: 1
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports) {
 
 /*
@@ -11359,7 +11682,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11405,7 +11728,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(46);
+var	fixUrls = __webpack_require__(49);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -11718,7 +12041,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports) {
 
 
@@ -23429,23 +23752,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {HTMLElement} player ui tree
  */
 function adsUI(props) {
-  var useCustomSkipButton = false;
-  var isMobile = !!props.player.env.device.type;
-  var adsRenderingSettings = props.player.config.plugins.ima.adsRenderingSettings;
-  var useStyledLinearAds = adsRenderingSettings && adsRenderingSettings.useStyledLinearAds;
-  try {
-    if (!useStyledLinearAds && isMobile) {
-      useStyledLinearAds = true;
-    }
-  } catch (e) {
-    //TODO: add error handling
-  }
-
+  var adsUiCustomization = getAdsUiCustomization();
   return (0, _preact.h)(
     'div',
     { className: _style2.default.adGuiWrapper },
     (0, _preact.h)(_loading2.default, { player: props.player }),
-    useStyledLinearAds ? undefined : (0, _preact.h)(
+    adsUiCustomization ? (0, _preact.h)(
       'div',
       { className: _style2.default.playerGui, id: 'player-gui' },
       (0, _preact.h)(
@@ -23466,10 +23778,10 @@ function adsUI(props) {
           (0, _preact.h)(
             'div',
             { className: _style2.default.rightControls },
-            (0, _preact.h)(_adLearnMore2.default, null)
+            adsUiCustomization.learnMoreButton ? (0, _preact.h)(_adLearnMore2.default, null) : undefined
           )
         ),
-        useCustomSkipButton ? (0, _preact.h)(_adSkip2.default, { player: props.player }) : undefined
+        adsUiCustomization.skipButton ? (0, _preact.h)(_adSkip2.default, { player: props.player }) : undefined
       ),
       (0, _preact.h)(
         _bottomBar2.default,
@@ -23488,8 +23800,55 @@ function adsUI(props) {
           (0, _preact.h)(_fullscreen2.default, { player: props.player, config: props.config })
         )
       )
-    )
+    ) : undefined
   );
+}
+
+/**
+ * Gets the ads ui customization settings
+ * @returns {?Object} - undefined if the default ads ui should be shown,
+ * or customization object if playkit ads ui should be shown.
+ */
+function getAdsUiCustomization() {
+  if (useDefaultAdsUi()) {
+    return undefined;
+  }
+  return {
+    learnMoreButton: useCustomLearnMoreButton(),
+    skipButton: useCustomSkipButton()
+  };
+}
+
+/**
+ * Whether the default ads ui should be shown or not.
+ * @param {any} props - component props
+ * @returns {boolean} - Whether the default ads ui should be shown or not.
+ */
+function useDefaultAdsUi(props) {
+  try {
+    var isMobile = !!props.player.env.device.type;
+    var adsRenderingSettings = props.player.config.plugins.ima.adsRenderingSettings;
+    var useStyledLinearAds = adsRenderingSettings && adsRenderingSettings.useStyledLinearAds;
+    return isMobile || useStyledLinearAds;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * @returns {boolean} - Whether to use playkit skip button or not.
+ */
+function useCustomSkipButton() {
+  //TODO: false until we develop are own ads manager
+  return false;
+}
+
+/**
+ * @returns {boolean} - Whether to use playkit learn more button or not.
+ */
+function useCustomLearnMoreButton() {
+  //TODO: false until we develop are own ads manager
+  return false;
 }
 
 /***/ }),
@@ -24106,7 +24465,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".playkit-row {\n  display: block; }\n  .playkit-row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.playkit-d-inline-block {\n  display: inline-block; }\n\n.playkit-mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.playkit-font-size-base {\n  font-size: 15px; }\n\n.playkit-form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .playkit-form-group.playkit-has-error .playkit-form-control {\n    border-color: #db1f26; }\n    .playkit-form-group.playkit-has-error .playkit-form-control:focus {\n      border-color: #fff; }\n  .playkit-form-group.playkit-has-icon .playkit-form-control {\n    padding-left: 34px; }\n  .playkit-form-group .playkit-icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.playkit-form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .playkit-form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .playkit-form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .playkit-form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .playkit-form-control:focus + .playkit-icon {\n      fill: #999; }\n\ntextarea.playkit-form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.playkit-checkbox {\n  font-size: 15px;\n  position: relative; }\n  .playkit-checkbox input {\n    display: none; }\n  .playkit-checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .playkit-checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.playkit-form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .playkit-form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .playkit-form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .playkit-form-group-row .playkit-dropdown {\n    float: right; }\n\n.playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n\n@keyframes playkit-openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.playkit-dropdown {\n  position: relative;\n  font-size: 15px; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-button .playkit-icon {\n    transform: rotate(180deg); }\n  .playkit-dropdown .playkit-dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .playkit-dropdown .playkit-dropdown-button .playkit-icon {\n      width: 16px;\n      height: 16px;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.playkit-dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: playkit-openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .playkit-dropdown-menu.playkit-top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .playkit-dropdown-menu.playkit-bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .playkit-dropdown-menu.playkit-right {\n    left: 0; }\n  .playkit-dropdown-menu.playkit-left {\n    right: 0; }\n  .playkit-dropdown-menu .playkit-dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item:hover {\n      color: #fff; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active {\n      color: #01ACCD; }\n      .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active .playkit-icon-check {\n        background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%2301ACCD' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item .playkit-icon-check {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.playkit-tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.playkit-player .playkit-control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer; }\n  .playkit-player .playkit-control-button i {\n    width: 32px;\n    height: 32px; }\n  .playkit-player .playkit-control-button.playkit-active {\n    opacity: 1; }\n  .playkit-player .playkit-control-button.playkit-control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button:hover {\n  opacity: 1; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button.playkit-control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.playkit-player .playkit-control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.playkit-player.playkit-touch .playkit-player .playkit-control-button-container {\n  position: static; }\n\n.playkit-player.playkit-touch .playkit-control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.playkit-kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.playkit-player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .playkit-player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .playkit-player * {\n    box-sizing: border-box;\n    outline: none; }\n  .playkit-player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .playkit-player video {\n    width: 100%; }\n  .playkit-player .playkit-player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .playkit-player .playkit-player-gui input, .playkit-player .playkit-player-gui textarea {\n      font-family: sans-serif; }\n  .playkit-player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .playkit-player.playkit-overlay-active #overlay-portal {\n    z-index: 11; }\n  .playkit-player.playkit-metadata-loaded .playkit-player-gui,\n  .playkit-player.playkit-state-paused .playkit-player-gui,\n  .playkit-player.playkit-overlay-active .playkit-player-gui,\n  .playkit-player.playkit-menu-active .playkit-player-gui {\n    opacity: 1; }\n\n.playkit-player [id^=playkit-ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-hover [id^=playkit-ads-container],\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-state-paused [id^=playkit-ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\n.playkit-player.playkit-overlay-active .playkit-subtitles {\n  display: none; }\n\n.playkit-player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player:not(.playkit-overlay-active).playkit-state-paused .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active).playkit-hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes playkit-openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.playkit-overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: playkit-openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .playkit-overlay.playkit-active {\n    display: block;\n    opacity: 1; }\n  .playkit-overlay .playkit-overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .playkit-overlay .playkit-title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .playkit-overlay .playkit-close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    cursor: pointer; }\n    .playkit-overlay .playkit-close-overlay .playkit-icon-close {\n      width: 24px;\n      height: 24px; }\n  .playkit-overlay .playkit-overlay-screen {\n    display: none; }\n    .playkit-overlay .playkit-overlay-screen.playkit-active {\n      display: block; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-overlay-contents {\n  padding: 36px 20px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-close-overlay {\n  top: 38px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-title {\n  margin-bottom: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-overlay-contents {\n  padding: 16px 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n\n.playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 60px 0; }\n  .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:first-child {\n      margin-left: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:last-child {\n      margin-right: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-facebook-share-btn {\n      background-color: #3B5998; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-twitter-share-btn {\n      background-color: #1DA1F2; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-google-plus-share-btn {\n      background-color: #DD4B39; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.playkit-share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.playkit-link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .playkit-link-options-container .playkit-copy-url-row {\n    display: flex; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-input-copy-url {\n      margin: 0; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url {\n      margin-left: 16px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied {\n        background-color: #009444; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .playkit-link-options-container .playkit-video-start-options-row {\n    margin-top: 24px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-checkbox {\n      margin-right: 15px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-form-group {\n      margin: 0; }\n\n.playkit-player:not(.playkit-touch) .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.playkit-player.playkit-size-md .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 40px 0; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 20px 0; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-black-bg {\n    background-color: #000; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-yellow-text {\n    color: #FAFF00; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick .playkit-icon {\n      vertical-align: top; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 50px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form .playkit-slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:first-child {\n    margin-left: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:last-child {\n    margin-right: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-custom {\n    width: auto;\n    padding: 0 10px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa,\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: block !important; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-dragging-active .playkit-volume-control-bar {\n  display: block; }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves {\n  transform: translateX(0px); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves, .playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.playkit-control-button-container.playkit-volume-control i {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.playkit-volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .playkit-volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .playkit-volume-control-bar .playkit-bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .playkit-volume-control-bar .playkit-progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.playkit-touch .playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n\n.playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n\n.playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n\n.playkit-player .playkit-video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n\n.playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n", ""]);
+exports.push([module.i, ".playkit-row {\n  display: block; }\n  .playkit-row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.playkit-d-inline-block {\n  display: inline-block; }\n\n.playkit-mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.playkit-font-size-base {\n  font-size: 15px; }\n\n.playkit-form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .playkit-form-group.playkit-has-error .playkit-form-control {\n    border-color: #db1f26; }\n    .playkit-form-group.playkit-has-error .playkit-form-control:focus {\n      border-color: #fff; }\n  .playkit-form-group.playkit-has-icon .playkit-form-control {\n    padding-left: 34px; }\n  .playkit-form-group .playkit-icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.playkit-form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .playkit-form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .playkit-form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .playkit-form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .playkit-form-control:focus + .playkit-icon {\n      fill: #999; }\n\ntextarea.playkit-form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.playkit-checkbox {\n  font-size: 15px;\n  position: relative; }\n  .playkit-checkbox input {\n    display: none; }\n  .playkit-checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .playkit-checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.playkit-form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .playkit-form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .playkit-form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .playkit-form-group-row .playkit-dropdown {\n    float: right; }\n\n.playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n\n@keyframes playkit-openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.playkit-dropdown {\n  position: relative;\n  font-size: 15px; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-button .playkit-icon {\n    transform: rotate(180deg); }\n  .playkit-dropdown .playkit-dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .playkit-dropdown .playkit-dropdown-button .playkit-icon {\n      width: 16px;\n      height: 16px;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.playkit-dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: playkit-openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .playkit-dropdown-menu.playkit-top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .playkit-dropdown-menu.playkit-bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .playkit-dropdown-menu.playkit-right {\n    left: 0; }\n  .playkit-dropdown-menu.playkit-left {\n    right: 0; }\n  .playkit-dropdown-menu .playkit-dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item:hover {\n      color: #fff; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active {\n      color: #01ACCD; }\n      .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active .playkit-icon-check {\n        background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%2301ACCD' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item .playkit-icon-check {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.playkit-tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.playkit-player .playkit-control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer; }\n  .playkit-player .playkit-control-button i {\n    width: 32px;\n    height: 32px; }\n  .playkit-player .playkit-control-button.playkit-active {\n    opacity: 1; }\n  .playkit-player .playkit-control-button.playkit-control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button:hover {\n  opacity: 1; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button.playkit-control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.playkit-player .playkit-control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.playkit-player.playkit-touch .playkit-player .playkit-control-button-container {\n  position: static; }\n\n.playkit-player.playkit-touch .playkit-control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.playkit-kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.playkit-player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .playkit-player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .playkit-player * {\n    box-sizing: border-box;\n    outline: none; }\n  .playkit-player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .playkit-player video {\n    width: 100%; }\n  .playkit-player .playkit-player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .playkit-player .playkit-player-gui input, .playkit-player .playkit-player-gui textarea {\n      font-family: sans-serif; }\n  .playkit-player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .playkit-player.playkit-overlay-active #overlay-portal {\n    z-index: 11; }\n  .playkit-player.playkit-metadata-loaded .playkit-player-gui,\n  .playkit-player.playkit-state-paused .playkit-player-gui,\n  .playkit-player.playkit-overlay-active .playkit-player-gui,\n  .playkit-player.playkit-menu-active .playkit-player-gui {\n    opacity: 1; }\n\n.playkit-player [id^=playkit-ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-hover [id^=playkit-ads-container],\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-state-paused [id^=playkit-ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\n.playkit-player.playkit-overlay-active .playkit-subtitles {\n  display: none; }\n\n.playkit-player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player:not(.playkit-overlay-active).playkit-state-paused .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active).playkit-hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes playkit-openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.playkit-overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: playkit-openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .playkit-overlay.playkit-active {\n    display: block;\n    opacity: 1; }\n  .playkit-overlay .playkit-overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .playkit-overlay .playkit-title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .playkit-overlay .playkit-close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    cursor: pointer; }\n    .playkit-overlay .playkit-close-overlay .playkit-icon-close {\n      width: 24px;\n      height: 24px; }\n  .playkit-overlay .playkit-overlay-screen {\n    display: none; }\n    .playkit-overlay .playkit-overlay-screen.playkit-active {\n      display: block; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-overlay-contents {\n  padding: 36px 20px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-close-overlay {\n  top: 38px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-title {\n  margin-bottom: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-overlay-contents {\n  padding: 16px 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n\n.playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 60px 0; }\n  .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:first-child {\n      margin-left: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:last-child {\n      margin-right: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-facebook-share-btn {\n      background-color: #3B5998; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-twitter-share-btn {\n      background-color: #1DA1F2; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-google-plus-share-btn {\n      background-color: #DD4B39; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.playkit-share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.playkit-link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .playkit-link-options-container .playkit-copy-url-row {\n    display: flex; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-input-copy-url {\n      margin: 0; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url {\n      margin-left: 16px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied {\n        background-color: #009444; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .playkit-link-options-container .playkit-video-start-options-row {\n    margin-top: 24px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-checkbox {\n      margin-right: 15px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-form-group {\n      margin: 0; }\n\n.playkit-player:not(.playkit-touch) .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.playkit-player.playkit-size-md .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 40px 0; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 20px 0; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-black-bg {\n    background-color: #000; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-yellow-text {\n    color: #FAFF00; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick .playkit-icon {\n      vertical-align: top; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 50px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form .playkit-slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:first-child {\n    margin-left: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:last-child {\n    margin-right: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-custom {\n    width: auto;\n    padding: 0 10px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa,\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: block !important; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-dragging-active .playkit-volume-control-bar {\n  display: block; }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves {\n  transform: translateX(0px); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves, .playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.playkit-control-button-container.playkit-volume-control i {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.playkit-volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .playkit-volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .playkit-volume-control-bar .playkit-bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .playkit-volume-control-bar .playkit-progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.playkit-touch .playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n\n.playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n\n.playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n\n.playkit-player .playkit-video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n\n.playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain;\n  background-repeat: no-repeat;\n  background-color: #000; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n", ""]);
 
 // exports
 exports.locals = {
@@ -25645,7 +26004,7 @@ var IconType = {
   Embed: 'embed',
   Link: 'link',
   ArrowDown: 'arrow-down',
-  Startover: 'shartover'
+  StartOver: 'start-over'
   /**
    * Icon component
    *
@@ -25750,8 +26109,8 @@ var Icon = function (_Component) {
         case IconType.ArrowDown:
           return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconArrowDown].join(' ') });
 
-        case IconType.Startover:
-          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconStartover].join(' ') });
+        case IconType.StartOver:
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconStartOver].join(' ') });
 
         default:
           break;
@@ -25861,20 +26220,19 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   _createClass(PrePlaybackPlayOverlay, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.props.addPlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
+      var _this2 = this;
 
+      this.props.addPlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
       try {
         this.autoplay = this.player.config.playback.autoplay;
+        if (this.autoplay === true) {
+          this.player.addEventListener(this.player.Event.AUTOPLAY_FAILED, function () {
+            _this2.autoplay = false;
+          });
+        }
       } catch (e) {
         // eslint-disable-line no-unused-vars
         this.autoplay = false;
-      }
-
-      try {
-        this.mobileAutoplay = this.player.config.playback.mobileAutoplay;
-      } catch (e) {
-        // eslint-disable-line no-unused-vars
-        this.mobileAutoplay = false;
       }
     }
 
@@ -25902,10 +26260,10 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.player.addEventListener(this.player.Event.PLAY, function () {
-        return _this2._hidePrePlayback();
+        return _this3._hidePrePlayback();
       });
       if (this.player.paused === false) {
         this._hidePrePlayback();
@@ -25922,13 +26280,13 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'handleClick',
     value: function handleClick() {
-      var _this3 = this;
+      var _this4 = this;
 
       // TODO: The promise handling should be in the play API of the player.
       new Promise(function (resolve, reject) {
         try {
-          if (_this3.player.config.playback.preload === "auto" && !_this3.player.config.plugins.ima) {
-            _this3.player.ready().then(resolve);
+          if (_this4.player.config.playback.preload === "auto" && !_this4.player.config.plugins.ima) {
+            _this4.player.ready().then(resolve);
           } else {
             resolve();
           }
@@ -25936,12 +26294,12 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
           reject(e);
         }
       }).then(function () {
-        _this3.player.play();
-        if (_this3.props.prePlayback) {
-          _this3._hidePrePlayback();
+        _this4.player.play();
+        if (_this4.props.prePlayback) {
+          _this4._hidePrePlayback();
         }
       }).catch(function (e) {
-        _this3.logger.error(e.message);
+        _this4.logger.error(e.message);
       });
     }
 
@@ -25956,20 +26314,21 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
   }, {
     key: 'render',
     value: function render(props) {
-      var _this4 = this;
+      var _this5 = this;
 
-      if (!props.isEnded && !props.prePlayback || !props.isEnded && !props.isMobile && this.autoplay || !props.isEnded && props.isMobile && this.mobileAutoplay) return undefined;
-
+      if (!props.isEnded && !props.prePlayback || !props.isEnded && this.autoplay) {
+        return undefined;
+      }
       return (0, _preact.h)(
         'div',
         { className: _prePlaybackPlayOverlay2.default.prePlaybackPlayOverlay, style: { backgroundImage: 'url(' + props.poster + ')' },
           onClick: function onClick() {
-            return _this4.handleClick();
+            return _this5.handleClick();
           } },
         (0, _preact.h)(
           'a',
           { className: _prePlaybackPlayOverlay2.default.prePlaybackPlayButton },
-          props.isEnded ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.Startover }) : (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play })
+          props.isEnded ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.StartOver }) : (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play })
         )
       );
     }
@@ -26063,7 +26422,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n", ""]);
+exports.push([module.i, ".playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain;\n  background-repeat: no-repeat;\n  background-color: #000; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n", ""]);
 
 // exports
 exports.locals = {
@@ -26448,7 +26807,7 @@ var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _b
                 return _this2.togglePlayPause();
               }
             },
-            props.isEnded && !props.adBreak ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.Startover }) : (0, _preact.h)(
+            props.isEnded && !props.adBreak ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.StartOver }) : (0, _preact.h)(
               'div',
               null,
               (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play }),
@@ -28538,7 +28897,7 @@ var Menu = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = fun
     key: 'getPosition',
     value: function getPosition() {
       var box = this._menuElement.getBoundingClientRect();
-      if (box.y < 0) {
+      if (box.top < 0) {
         return [_style2.default.bottom, _style2.default.left];
       } else {
         return [_style2.default.top, _style2.default.left];
@@ -33063,8 +33422,11 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
         _this2.props.updateDuration(_this2.player.duration);
       });
 
-      this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
+      this.player.addEventListener(this.player.Event.LOADED_DATA, function () {
         _this2.props.updateDuration(_this2.player.duration);
+      });
+
+      this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
         _this2.props.updateMuted(_this2.player.muted);
         _this2.props.updateMetadataLoadingStatus(true);
         _this2.props.updatePlayerPoster(_this2.player.poster);
@@ -33286,7 +33648,13 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
   function Shell(obj) {
     _classCallCheck(this, Shell);
 
-    return _possibleConstructorReturn(this, (Shell.__proto__ || Object.getPrototypeOf(Shell)).call(this, { name: 'Shell', player: obj.player }));
+    var _this = _possibleConstructorReturn(this, (Shell.__proto__ || Object.getPrototypeOf(Shell)).call(this, { name: 'Shell', player: obj.player }));
+
+    _this.fallbackToMutedAutoPlayMode = false;
+    _this.player.addEventListener(_this.player.Event.FALLBACK_TO_MUTED_AUTOPLAY, function () {
+      _this.fallbackToMutedAutoPlayMode = true;
+    });
+    return _this;
   }
 
   /**
@@ -33346,6 +33714,22 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
       if (!this.state.hover) {
         this.setState({ hover: true });
         this.props.updatePlayerHoverState(true);
+      }
+    }
+
+    /**
+     * if the ui is in fallback to muted autoplay mode, unmute the player on any click
+     *
+     * @returns {void}
+     * @memberof Shell
+     */
+
+  }, {
+    key: 'onClick',
+    value: function onClick() {
+      if (this.fallbackToMutedAutoPlayMode) {
+        this.player.muted = false;
+        this.fallbackToMutedAutoPlayMode = false;
       }
     }
 
@@ -33412,6 +33796,9 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
         'div',
         {
           className: playerClasses,
+          onClick: function onClick() {
+            return _this4.onClick();
+          },
           onMouseOver: function onMouseOver() {
             return _this4.onMouseOver();
           },
@@ -33749,12 +34136,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CONTAINER_CLASS_NAME = 'kaltura-player-container';
 
+
+var DEFAULT_ANALYTICS_BE_URL = "//stats.kaltura.com/api_v3";
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
  * @returns {void}
  */
-
 function validateProvidersConfig(config) {
   if (!config) {
     throw new Error(_validationError.ValidationErrorType.INITIAL_CONFIG_REQUIRED);
@@ -33847,6 +34235,7 @@ function addKalturaPoster(metadata, width, height) {
 function setDefaultPlayerConfig(playerConfig) {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
+  setDefaultAnalyticsPlugin(playerConfig);
 }
 
 /**
@@ -33884,6 +34273,24 @@ function checkNativeTextTracksSupport(playerConfig) {
         }
       });
     }
+  }
+}
+
+/**
+ * Sets the player default analyics service
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDefaultAnalyticsPlugin(playerConfig) {
+  var kanalyticsBeUrl = _playkitJs.Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics.beUrl');
+  if (typeof kanalyticsBeUrl !== 'string') {
+    _playkitJs.Utils.Object.mergeDeep(playerConfig, {
+      plugins: {
+        kanalytics: {
+          beUrl: DEFAULT_ANALYTICS_BE_URL
+        }
+      }
+    });
   }
 }
 
@@ -33987,7 +34394,7 @@ function evaluatePluginsConfig() {
 
   if (playerConfig.plugins) {
     var dataModel = {
-      pVersion: "0.11.0",
+      pVersion: "0.12.0",
       pName: "kaltura-player-js"
     };
     if (playerConfig.session) {
@@ -34077,7 +34484,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.11.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
+_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.12.0", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
 
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/kaltura-player-js", "color: #98ff98;");
 
@@ -34103,7 +34510,7 @@ exports.Playkit = Playkit;
 exports.OvpProvider = _ovpProvider2.default;
 exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup.setup;
-exports.VERSION = "0.11.0";
+exports.VERSION = "0.12.0";
 exports.PLAYER_NAME = "kaltura-player-js";
 
 /***/ }),
@@ -56146,6 +56553,13 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
      */
 
     /**
+     * Whether 'waiting' event has been sent by the HTMLVideoElement
+     * @member {boolean} - _waitingSent
+     * @type {boolean}
+     * @private
+     */
+
+    /**
      * The DRM protocol for the current playback.
      * @type {?Function}
      * @private
@@ -56179,6 +56593,13 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
      * @param {string} mimeType - The mime type to check
      * @returns {boolean} - Whether the dash adapter can play a specific mime type
      * @static
+     */
+
+    /**
+     * Whether 'playing' event has been sent by the HTMLVideoElement
+     * @member {boolean} - _playingSent
+     * @type {boolean}
+     * @private
      */
 
     /**
@@ -56315,6 +56736,8 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
     var _this = _possibleConstructorReturn(this, (DashAdapter.__proto__ || Object.getPrototypeOf(DashAdapter)).call(this, videoElement, source, config));
 
     _this._buffering = false;
+    _this._waitingSent = false;
+    _this._playingSent = false;
     return _this;
   }
 
@@ -56365,6 +56788,7 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
       this._shaka.addEventListener('error', this._onError.bind(this));
       this._shaka.addEventListener('buffering', this._onBuffering.bind(this));
       //TODO use events enum when available
+      this._videoElement.addEventListener('waiting', this._onWaiting.bind(this));
       this._videoElement.addEventListener('playing', this._onPlaying.bind(this));
     }
 
@@ -56382,6 +56806,7 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
       this._shaka.removeEventListener('error', this._onError);
       this._shaka.removeEventListener('buffering', this._onBuffering.bind(this));
       //TODO use events enum when available
+      this._videoElement.removeEventListener('waiting', this._onWaiting.bind(this));
       this._videoElement.removeEventListener('playing', this._onPlaying.bind(this));
     }
 
@@ -56432,6 +56857,8 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
         DashAdapter._logger.debug('destroy');
         _this3._loadPromise = null;
         _this3._buffering = false;
+        _this3._waitingSent = false;
+        _this3._playingSent = false;
         if (DashAdapter._drmProtocol) {
           DashAdapter._drmProtocol.destroy();
           DashAdapter._drmProtocol = null;
@@ -56769,15 +57196,34 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
   }, {
     key: '_onBuffering',
     value: function _onBuffering(event) {
-      this._buffering = event.buffering;
-      if (this._buffering) {
-        //the player enters the buffering state.
-        //TODO use events enum when available
-        this._videoElement.dispatchEvent(new window.Event('waiting'));
-      } else if (!this._videoElement.paused) {
-        //the player leaves the buffering state.
-        this._videoElement.dispatchEvent(new window.Event('playing'));
+      if (event.buffering) {
+        if (!this._waitingSent) {
+          //the player enters the buffering state. and 'waiting' event hasn't been sent by the HTMLVideoElement.
+          //TODO use events enum when available
+          this._videoElement.dispatchEvent(new window.Event('waiting'));
+          this._buffering = true;
+        }
+      } else {
+        this._buffering = false;
+        if (!this._videoElement.paused && !this._playingSent) {
+          //the player leaves the buffering state. and 'playing' event hasn't been sent by the HTMLVideoElement.
+          this._videoElement.dispatchEvent(new window.Event('playing'));
+        }
       }
+    }
+
+    /**
+     * An handler to HTMLVideoElement waiting event
+     * @function _onWaiting
+     * @returns {void}
+     * @private
+     */
+
+  }, {
+    key: '_onWaiting',
+    value: function _onWaiting() {
+      this._waitingSent = true;
+      this._playingSent = false;
     }
 
     /**
@@ -56790,6 +57236,8 @@ var DashAdapter = function (_BaseMediaSourceAdapt) {
   }, {
     key: '_onPlaying',
     value: function _onPlaying() {
+      this._playingSent = true;
+      this._waitingSent = false;
       if (this._buffering) {
         //the player is in buffering state.
         //TODO use events enum when available
@@ -57650,7 +58098,6 @@ var KAnalytics = function (_BasePlugin) {
     _this._timePercentEvent = {};
 
     _this._registerListeners();
-    _this._sendAnalytics(_eventTypes2.default.WIDGET_LOADED);
     return _this;
   }
 
@@ -57711,6 +58158,7 @@ var KAnalytics = function (_BasePlugin) {
       var _this2 = this;
 
       this.player.ready().then(function () {
+        _this2._sendAnalytics(_eventTypes2.default.WIDGET_LOADED);
         _this2._sendAnalytics(_eventTypes2.default.MEDIA_LOADED);
       });
     }
@@ -61033,7 +61481,11 @@ var Ima = function (_BasePlugin) {
         this._initAdsLoader();
       }
       this._requestAds();
-      this._stateMachine.loaded();
+      if (this.config.adTagUrl) {
+        this._stateMachine.loaded();
+      } else {
+        this._stateMachine.goto(_state2.default.DONE);
+      }
     }
 
     /**
@@ -62038,6 +62490,10 @@ function ImaStateMachine(context) {
     }, {
       name: context.player.Event.AD_CLICKED,
       from: [_state2.default.PLAYING, _state2.default.PAUSED, _state2.default.IDLE]
+    }, {
+      name: 'goto', from: '*', to: function to(s) {
+        return s;
+      }
     }],
     methods: {
       onAdloaded: onAdLoaded.bind(context),
@@ -63284,7 +63740,7 @@ var KalturaPlayer = function () {
     this._player = player;
     this._logger = _logger2.default.getLogger('KalturaPlayer' + _playkitJs.Utils.Generator.uniqueId(5));
     this._uiManager = new _playkitJsUi2.default(this._player, { targetId: targetId });
-    this._provider = new _ovpProvider2.default("0.11.0", config.partnerId, config.ks, config.env);
+    this._provider = new _ovpProvider2.default("0.12.0", config.partnerId, config.ks, config.env);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -63414,7 +63870,7 @@ function addReferrer(source) {
 function addClientTag(source) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     var delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + "0.11.0";
+    source.url += delimiter + CLIENT_TAG + "0.12.0";
   }
 }
 
