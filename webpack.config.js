@@ -3,13 +3,15 @@
 const webpack = require("webpack");
 const path = require("path");
 const PROD = (process.env.NODE_ENV === 'production');
+const playerType = (process.env.PLAYER_TYPE === 'ott' ? 'ott' : 'ovp');
 const packageData = require("./package.json");
 
 let plugins = [
   new webpack.DefinePlugin({
     __VERSION__: JSON.stringify(packageData.version),
     __NAME__: JSON.stringify(packageData.name),
-    __PACKAGE_URL__: JSON.stringify(packageData.repository.url)
+    __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
+    __PLAYER_TYPE__: JSON.stringify(playerType)
   })
 ];
 
@@ -19,9 +21,9 @@ if (PROD) {
 
 module.exports = {
   context: __dirname + "/src",
-  entry: PROD ? {"kaltura-player.min": "index.js", "kaltura-player-ott.min": "index-ott.js"} : {"kaltura-player": "index.js", "kaltura-player-ott": "index-ott.js"},
+  entry: PROD ? {[playerType + "-kaltura-player.min"]: "index.js"} : {[playerType +"-kaltura-player"]: "index.js"},
   output: {
-    path: path.join(__dirname, "dist"),
+    path: __dirname + "/dist",
     filename: '[name].js',
     library: 'KalturaPlayer',
     libraryTarget: 'umd',

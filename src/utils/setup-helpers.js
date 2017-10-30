@@ -5,6 +5,7 @@ import StorageManager from '../storage/storage-manager'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
+const DEFAULT_ANALYTICS_BE_URL: string = "//stats.kaltura.com/api_v3";
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
@@ -38,13 +39,19 @@ function validateTargetId(targetId: string) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The player configuration.
  */
-function extractPlayerConfig(config: ?Object): Object {
+function extractPlayerConfig(config: ?Object, uiConf: ?Object): Object {
   let playerConfig = {};
-  let configMergedWithUIConf = {};
-  if (config.uiConfId && KalturaPlayer.UiConf && KalturaPlayer.UiConf[config.uiConfId]) {
-    Utils.Object.mergeDeep(configMergedWithUIConf,  KalturaPlayer.UiConf[config.uiConfId].config, config);
+  let playerUiConf = {};
+  if(config){
+    playerUiConf = getUiConf(uiConf, config.uiConfId);
   }
-  Utils.Object.mergeDeep(playerConfig, configMergedWithUIConf);
+  if (playerUiConf) {
+    Utils.Object.mergeDeep(playerConfig, playerUiConf.config, config);
+  }
+  else {
+    Utils.Object.mergeDeep(playerConfig, config);
+  }
+
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   delete playerConfig.uiConfId;
@@ -58,14 +65,14 @@ function extractPlayerConfig(config: ?Object): Object {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The provider configuration.
  */
-function extractProvidersConfig(config: ?Object): Object {
+function extractProvidersConfig(config: ?Object, uiConf: ?Object): Object {
   let providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
     providerConfig.loadUiConf = true;
-    if (config.uiConfId && KalturaPlayer.UiConf[config.uiConfId]) {
+    if (getUiConf(uiConf, config.uiConfId)) {
       providerConfig.loadUiConf = false;
     }
     providerConfig.env = config.env;
@@ -110,6 +117,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
+  setDefaultAnalyticsPlugin(playerConfig);
 }
 
 /**
@@ -147,6 +155,24 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
         }
       });
     }
+  }
+}
+
+/**
+ * Sets the player default analyics service
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDefaultAnalyticsPlugin(playerConfig: any): void {
+  let kanalyticsBeUrl = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics.beUrl');
+  if (typeof kanalyticsBeUrl !== 'string') {
+    Utils.Object.mergeDeep(playerConfig, {
+      plugins: {
+        kanalytics: {
+          beUrl: DEFAULT_ANALYTICS_BE_URL
+        }
+      }
+    });
   }
 }
 
@@ -200,6 +226,15 @@ function isSafari(): boolean {
  */
 function isIos(): boolean {
   return (Env.os.name === "iOS");
+}
+
+function getUiConf(uiConf: Object, uiConfId: number): Object {
+  if (uiConfId > 0 && uiConf && uiConf[uiConfId]) {
+    return uiConf[uiConfId];
+  }
+  else {
+    return null;
+  }
 }
 
 export {

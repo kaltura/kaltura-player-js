@@ -28,7 +28,8 @@
       background-color: #000;
     }
   </style>
-  <script src="./kaltura-player.js" type="text/javascript"></script>
+
+  <script src="./ott-kaltura-player.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="player-placeholder-container">
@@ -36,18 +37,28 @@
 </div>
 <script>
   var config = {
-    partnerId: 1091,
+    partnerId: 198,
     env: {
-      baseUrl: "http://qa-apache-php7.dev.kaltura.com/",
-      beUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+      beUrl: "http://api-preprod.ott.kaltura.com/v4_6/api_v3"
+    },
+    plugins: {
+      ottAnalytics: {
+        entryId: 258550,
+        fileId: "392026",
+        ks: "djJ8MTk4fMxSfqRpHPFms9_8F5LJLvutpbHDDehitdYxxXQr9K2G98F_6FCj8PCq5Xb_rUCps0sQ_16VRvksGklK3h8rulfs3P_4Yi_qVU5udNUNn1IUZWS4QzwxFSrXMdg153PBvrRSvualgVAOtca6dGdk9Ax5vv0q6_3b91pzPEm1W2UKMcvHp89460ReysmaaCMBuw==",
+        partnerId: 198,
+        mediaHitInterval: 2
+      }
     }
   };
+
   try {
     var kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
-    kalturaPlayer.loadMedia('0_wifqaipd');
+    kalturaPlayer.loadMedia(480097, undefined, {assetId: 480097, type: "media", contextType: "PLAYBACK", protocol: "https", fileIds: "728184"});
   } catch (e) {
     console.error(e.message)
   }
 </script>
 </body>
 </html>
+
