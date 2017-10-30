@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.1"></a>
+## [0.13.1](https://github.com/kaltura/kaltura-player-js/compare/v0.13.0...v0.13.1) (2017-10-30)
+
+
+
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/kaltura/kaltura-player-js/compare/v0.12.0...v0.13.0) (2017-10-26)
+
+
+### Bug Fixes
+
+* import index.js to e2e tests ([#50](https://github.com/kaltura/kaltura-player-js/issues/50)) ([ccd8dbc](https://github.com/kaltura/kaltura-player-js/commit/ccd8dbc))
+
+
+### Features
+
+* update platkit-js-* versions ([fa1a37e](https://github.com/kaltura/kaltura-player-js/commit/fa1a37e))
+
+
+
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/kaltura/kaltura-player-js/compare/v0.8.0...v0.9.0) (2017-10-16)
+
+
+
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/kaltura/kaltura-player-js/compare/v0.11.0...v0.12.0) (2017-10-25)
+
+
+### Features
+
+* **FEC-7336:** set default analyticsd plugins settings ([#48](https://github.com/kaltura/kaltura-player-js/issues/48)) ([ebdec97](https://github.com/kaltura/kaltura-player-js/commit/ebdec97))
+* upgrade playkit-js-* libs ([81437fe](https://github.com/kaltura/kaltura-player-js/commit/81437fe))
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/kaltura/kaltura-player-js/compare/v0.10.0...v0.11.0) (2017-10-24)
 
