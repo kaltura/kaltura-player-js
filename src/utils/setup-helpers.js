@@ -39,9 +39,19 @@ function validateTargetId(targetId: string) {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The player configuration.
  */
-function extractPlayerConfig(config: ?Object): Object {
+function extractPlayerConfig(config: ?Object, uiConf: ?Object): Object {
   let playerConfig = {};
-  Utils.Object.mergeDeep(playerConfig, config);
+  let playerUiConf = {};
+  if(config){
+    playerUiConf = getUiConf(uiConf, config.uiConfId);
+  }
+  if (playerUiConf) {
+    Utils.Object.mergeDeep(playerConfig, playerUiConf.config, config);
+  }
+  else {
+    Utils.Object.mergeDeep(playerConfig, config);
+  }
+
   delete playerConfig.partnerId;
   delete playerConfig.entryId;
   delete playerConfig.uiConfId;
@@ -55,12 +65,16 @@ function extractPlayerConfig(config: ?Object): Object {
  * @param {Object} config - The fully user configuration.
  * @returns {Object} - The provider configuration.
  */
-function extractProvidersConfig(config: ?Object): Object {
+function extractProvidersConfig(config: ?Object, uiConf: ?Object): Object {
   let providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
+    providerConfig.loadUiConf = true;
+    if (getUiConf(uiConf, config.uiConfId)) {
+      providerConfig.loadUiConf = false;
+    }
     providerConfig.env = config.env;
     providerConfig.ks = config.ks;
   }
@@ -212,6 +226,15 @@ function isSafari(): boolean {
  */
 function isIos(): boolean {
   return (Env.os.name === "iOS");
+}
+
+function getUiConf(uiConf: Object, uiConfId: number): Object {
+  if (uiConfId > 0 && uiConf && uiConf[uiConfId]) {
+    return uiConf[uiConfId];
+  }
+  else {
+    return null;
+  }
 }
 
 export {

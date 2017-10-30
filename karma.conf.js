@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const packageData = require("./package.json");
+const playerType = (process.env.PLAYER_TYPE === 'ott' ? 'ott' : 'ovp');
 
 const isWindows = /^win/.test(process.platform);
 const isMacOS = /^darwin/.test(process.platform);
@@ -46,7 +47,8 @@ module.exports = function (config) {
         new webpack.DefinePlugin({
           __VERSION__: JSON.stringify(packageData.version),
           __NAME__: JSON.stringify(packageData.name),
-          __PACKAGE_URL__: JSON.stringify(packageData.repository.url)
+          __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
+          __PLAYER_TYPE__: JSON.stringify(playerType)
         })
       ],
       devtool: 'inline-source-map',

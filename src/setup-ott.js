@@ -1,6 +1,6 @@
 // @flow
 import {loadPlayer} from 'playkit-js'
-import KalturaPlayer from './kaltura-player'
+import KalturaPlayer from './kaltura-player-ott'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
 import {
   extractPlayerConfig,
@@ -10,8 +10,7 @@ import {
   validateProvidersConfig,
   setDefaultPlayerConfig,
   setStorageConfig,
-  applyStorageSupport,
-  setStorageTextStyle
+  applyStorageSupport
 } from "./utils/setup-helpers"
 
 /**
@@ -22,16 +21,15 @@ import {
 function setup(targetId: string, options: Object): KalturaPlayer {
   validateTargetId(targetId);
   validateProvidersConfig(options);
-  let userPlayerConfig = extractPlayerConfig(options, this.UiConf);
-  let userProvidersConfig = extractProvidersConfig(options, this.UiConf);
+  let userPlayerConfig = extractPlayerConfig(options);
+  let userProvidersConfig = extractProvidersConfig(options);
   let containerId = createKalturaPlayerContainer(targetId);
   setDefaultPlayerConfig(userPlayerConfig);
   evaluatePluginsConfig(userPlayerConfig);
-  setStorageConfig(userPlayerConfig);
+  setStorageConfig(options.disableUserCache, userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
   let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
-  setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);
   return kalturaPlayer;
 }

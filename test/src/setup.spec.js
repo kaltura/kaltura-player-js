@@ -6,10 +6,11 @@ import StorageWrapper from "../../src/storage/storage-wrapper";
 const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function () {
-  let providerConfig, kalturaPlayer, sandbox;
+  let providerConfig, kalturaPlayer, sandbox, testSetup;
 
   before(function () {
     TestUtils.createElement('DIV', targetId);
+    testSetup = setup.bind({});
   });
 
   beforeEach(function () {
@@ -31,7 +32,7 @@ describe('setup', function () {
   });
 
   it('should create a full player', function (done) {
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = testSetup(targetId, providerConfig);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia(providerConfig.entryId)
       .then(() => {
@@ -42,12 +43,12 @@ describe('setup', function () {
   });
 
   it('should create an empty player', function () {
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = testSetup(targetId, providerConfig);
     (!kalturaPlayer.config.id).should.be.true;
   });
 
   it('should decorate the selected source by session id', function (done) {
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = testSetup(targetId, providerConfig);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia(providerConfig.entryId)
       .then(() => {
@@ -71,7 +72,7 @@ describe('setup', function () {
       "fontEdge": []
     };
     sandbox.stub(StorageWrapper, 'getItem').withArgs('textStyle').returns(textStyle);
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = testSetup(targetId, providerConfig);
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
 });

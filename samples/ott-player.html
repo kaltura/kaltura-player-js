@@ -29,7 +29,7 @@
     }
   </style>
 
-  <script src="./ott-kaltura-player.js" type="text/javascript"></script>
+  <script src="./kaltura-player-ott.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="player-placeholder-container">
@@ -45,7 +45,7 @@
       ottAnalytics: {
         entryId: 258550,
         fileId: "392026",
-        ks: "djJ8MTk4fMxSfqRpHPFms9_8F5LJLvutpbHDDehitdYxxXQr9K2G98F_6FCj8PCq5Xb_rUCps0sQ_16VRvksGklK3h8rulfs3P_4Yi_qVU5udNUNn1IUZWS4QzwxFSrXMdg153PBvrRSvualgVAOtca6dGdk9Ax5vv0q6_3b91pzPEm1W2UKMcvHp89460ReysmaaCMBuw==",
+        ks: "djJ8MTk4fCrazdfPq20pi3nT4doGK16zOLAGteLKufJYsdB0U4W4NnplgIfZpeMpsiTZBbj6WaKi7n2p0_M7WRMjA4gGEQCP0gh2LjlB5vW_kdfmnYPxAgHU-l4VQHIcNobc3v-Fv4aPaaCTak2ZYHuI5EO76Thvz3OyyKp9M_qs--ptrftnEpqAig8b5R0dv51y-v30Jw==",
         partnerId: 198,
         mediaHitInterval: 2
       }
@@ -54,7 +54,7 @@
 
   try {
     var kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
-    kalturaPlayer.loadMedia(480097, undefined, {assetId: 480097, type: "media", contextType: "PLAYBACK", protocol: "https", fileIds: "728184"});
+    kalturaPlayer.loadMedia({assetId: 480097, type: "media", contextType: "PLAYBACK", protocol: "https", fileIds: "728184"});
   } catch (e) {
     console.error(e.message)
   }

@@ -7,7 +7,6 @@ import LoggerFactory from './utils/logger'
 declare var __VERSION__: string;
 declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
-declare var __PLAYER_TYPE__: string;
 
 LoggerFactory.getLogger().log(`%c ${__NAME__} ${__VERSION__}`, "color: #98ff98;  font-size: large");
 LoggerFactory.getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, "color: #98ff98;");
@@ -18,13 +17,7 @@ PolyfillManager.installAll();
 import * as Playkit from 'playkit-js'
 
 // Import OVP and OTT providers
-let Provider = {};
-if (__PLAYER_TYPE__ === "ott") {
-  Provider = require('playkit-js-providers/dist/ottProvider').OttProvider;
-}
-else {
-  Provider = require('playkit-js-providers/dist/ovpProvider').OvpProvider;
-}
+import OttProvider from 'playkit-js-providers/dist/ottProvider'
 
 // Import UI
 import PlaykitUI from 'playkit-js-ui'
@@ -34,14 +27,10 @@ import 'playkit-js-hls'
 import 'playkit-js-dash'
 
 // Import plugins
-import 'playkit-js-kanalytics'
-import 'playkit-js-youbora'
-import 'playkit-js-ima'
 import 'playkit-ott-analytics/dist/playkit-ott-analytics'
 
-
 // Import setup method
-import {setup} from './setup'
+import {setup} from './setup-ott'
 
-export {Playkit, Provider, PlaykitUI, setup, __VERSION__ as VERSION, __NAME__ as PLAYER_NAME};
+export {Playkit, OttProvider, PlaykitUI, setup, __VERSION__ as VERSION, __NAME__ as PLAYER_NAME};
 
