@@ -5,7 +5,6 @@ import StorageManager from '../storage/storage-manager'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
-const DEFAULT_ANALYTICS_BE_URL: string = "//stats.kaltura.com/api_v3";
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
@@ -154,9 +153,7 @@ function setDefaultAnalyticsPlugin(playerConfig: any): void {
   if (typeof kanalyticsBeUrl !== 'string') {
     Utils.Object.mergeDeep(playerConfig, {
       plugins: {
-        kanalytics: {
-          beUrl: DEFAULT_ANALYTICS_BE_URL
-        }
+        kanalytics: {}
       }
     });
   }
