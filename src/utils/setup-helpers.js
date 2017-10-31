@@ -149,8 +149,8 @@ function checkNativeTextTracksSupport(playerConfig: Object): void {
  * @returns {void}
  */
 function setDefaultAnalyticsPlugin(playerConfig: any): void {
-  let kanalyticsBeUrl = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics.beUrl');
-  if (typeof kanalyticsBeUrl !== 'string') {
+  let kanalyticsPlugin = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics');
+  if (!kanalyticsPlugin) {
     Utils.Object.mergeDeep(playerConfig, {
       plugins: {
         kanalytics: {}
