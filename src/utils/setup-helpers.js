@@ -131,7 +131,7 @@ function checkNativeHlsSupport(playerConfig: Object): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(playerConfig: Object): void {
-  if (isIos()) {
+  if (isSafari()) {
     let useNativeTextTrack = Utils.Object.getPropertyPath(playerConfig, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(playerConfig, {
