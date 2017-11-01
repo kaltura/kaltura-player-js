@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.2"></a>
+## [0.13.2](https://github.com/kaltura/kaltura-player-js/compare/v0.13.1...v0.13.2) (2017-11-01)
+
+
+### Bug Fixes
+
+* remove kanalytics base url ([#54](https://github.com/kaltura/kaltura-player-js/issues/54)) ([d6c0251](https://github.com/kaltura/kaltura-player-js/commit/d6c0251))
+* **FEC-7364:** player save values in cache before play request ([#52](https://github.com/kaltura/kaltura-player-js/issues/52)) ([a72e9c4](https://github.com/kaltura/kaltura-player-js/commit/a72e9c4))
+* use native captions on safari ([#53](https://github.com/kaltura/kaltura-player-js/issues/53)) ([fe5aa16](https://github.com/kaltura/kaltura-player-js/commit/fe5aa16))
+
+
+
 <a name="0.13.1"></a>
 ## [0.13.1](https://github.com/kaltura/kaltura-player-js/compare/v0.13.0...v0.13.1) (2017-10-30)
 
