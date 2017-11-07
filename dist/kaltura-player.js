@@ -1196,7 +1196,7 @@ var Track = function () {
       try {
         inputLang = inputLang.toLowerCase();
         trackLang = trackLang.toLowerCase();
-        return inputLang.startsWith(trackLang) || trackLang.startsWith(inputLang);
+        return inputLang ? inputLang.startsWith(trackLang) || trackLang.startsWith(inputLang) : false;
       } catch (e) {
         return false;
       }
@@ -8638,6 +8638,12 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
      */
 
     /**
+     * The player tracks.
+     * @member {Array<Track>} - _playerTracks
+     * @private
+     */
+
+    /**
      * The DRM protocols implementations for native adapter.
      * @type {Array<Function>}
      * @private
@@ -8853,9 +8859,11 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
       var _this3 = this;
 
       var parseTracksAndResolve = function parseTracksAndResolve() {
-        var data = { tracks: _this3._getParsedTracks() };
+        _this3._playerTracks = _this3._getParsedTracks();
+        _this3._addNativeAudioTrackChangeListener();
+        _this3._addNativeTextTrackChangeListener();
         NativeAdapter._logger.debug('The source has been loaded successfully');
-        resolve(data);
+        resolve({ tracks: _this3._playerTracks });
       };
       if (this._videoElement.textTracks.length > 0) {
         parseTracksAndResolve();
@@ -8995,7 +9003,7 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     /**
      * Get the parsed audio tracks
      * @function _getParsedAudioTracks
-     * @returns {Array<Track>} - The parsed audio tracks
+     * @returns {Array<AudioTrack>} - The parsed audio tracks
      * @private
      */
 
@@ -9022,7 +9030,7 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     /**
      * Get the parsed text tracks
      * @function _getParsedTextTracks
-     * @returns {Array<Track>} - The parsed text tracks
+     * @returns {Array<PKTextTrack>} - The parsed text tracks
      * @private
      */
 
@@ -9143,9 +9151,86 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     value: function selectAudioTrack(audioTrack) {
       var audioTracks = this._videoElement.audioTracks;
       if (audioTrack instanceof _audioTrack2.default && audioTracks && audioTracks[audioTrack.index]) {
+        this._removeNativeAudioTrackChangeListener();
         this._disableAudioTracks();
         audioTracks[audioTrack.index].enabled = true;
         this._onTrackChanged(audioTrack);
+        this._addNativeAudioTrackChangeListener();
+      }
+    }
+
+    /**
+     * Remove the onchange listenr of the video element AudioTrackList.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_removeNativeAudioTrackChangeListener',
+    value: function _removeNativeAudioTrackChangeListener() {
+      if (this._videoElement.audioTracks) {
+        this._eventManager.unlisten(this._videoElement.audioTracks, 'change');
+      }
+    }
+
+    /**
+     * Add the onchange listenr of the video element AudioTrackList.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_addNativeAudioTrackChangeListener',
+    value: function _addNativeAudioTrackChangeListener() {
+      var _this6 = this;
+
+      if (this._videoElement.audioTracks) {
+        this._eventManager.listen(this._videoElement.audioTracks, 'change', function () {
+          return _this6._onNativeAudioTrackChange();
+        });
+      }
+    }
+
+    /**
+     * Handler of the video element AudioTrackList onchange event.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_onNativeAudioTrackChange',
+    value: function _onNativeAudioTrackChange() {
+      var _this7 = this;
+
+      var pkAudioTracks = this._playerTracks.filter(function (track) {
+        return track instanceof _audioTrack2.default;
+      });
+      var getActivePKAudioTrackIndex = function getActivePKAudioTrackIndex() {
+        var activeAudioTrack = pkAudioTracks.find(function (track) {
+          return track.active === true;
+        });
+        return activeAudioTrack ? activeAudioTrack.index : -1;
+      };
+      var getActiveVidAudioTrackIndex = function getActiveVidAudioTrackIndex() {
+        for (var i = 0; i < _this7._videoElement.audioTracks.length; i++) {
+          var audioTrack = _this7._videoElement.audioTracks[i];
+          if (audioTrack.enabled) {
+            return i;
+          }
+        }
+        return -1;
+      };
+      NativeAdapter._logger.debug('Video element audio track change');
+      var vidIndex = getActiveVidAudioTrackIndex();
+      var pkIndex = getActivePKAudioTrackIndex();
+      if (vidIndex !== pkIndex) {
+        var pkAudioTrack = pkAudioTracks.find(function (track) {
+          return track.index === vidIndex;
+        });
+        if (pkAudioTrack) {
+          NativeAdapter._logger.debug('Native selection of track, update the player audio track (' + pkIndex + ' -> ' + vidIndex + ')');
+          this._onTrackChanged(pkAudioTrack);
+        }
       }
     }
 
@@ -9162,10 +9247,102 @@ var NativeAdapter = function (_BaseMediaSourceAdapt) {
     value: function selectTextTrack(textTrack) {
       var textTracks = this._videoElement.textTracks;
       if (textTrack instanceof _textTrack.TextTrack && (textTrack.kind === 'subtitles' || textTrack.kind === 'captions') && textTracks && textTracks[textTrack.index]) {
+        this._removeNativeTextTrackChangeListener();
         this._disableTextTracks();
         textTracks[textTrack.index].mode = 'hidden';
         NativeAdapter._logger.debug('Text track changed', textTrack);
         this._onTrackChanged(textTrack);
+        this._addNativeTextTrackChangeListener();
+      }
+    }
+
+    /**
+     * Remove the onchange listenr of the video element TextTrackList.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_removeNativeTextTrackChangeListener',
+    value: function _removeNativeTextTrackChangeListener() {
+      if (this._videoElement.textTracks) {
+        this._eventManager.unlisten(this._videoElement.textTracks, 'change');
+      }
+    }
+
+    /**
+     * Add the onchange listenr of the video element TextTrackList.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_addNativeTextTrackChangeListener',
+    value: function _addNativeTextTrackChangeListener() {
+      var _this8 = this;
+
+      if (this._videoElement.textTracks) {
+        this._eventManager.listen(this._videoElement.textTracks, 'change', function () {
+          return _this8._onNativeTextTrackChange();
+        });
+      }
+    }
+
+    /**
+     * Handler of the video element TextTrackList onchange event.
+     * @private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_onNativeTextTrackChange',
+    value: function _onNativeTextTrackChange() {
+      var _this9 = this;
+
+      var pkTextTracks = this._playerTracks.filter(function (track) {
+        return track instanceof _textTrack.TextTrack;
+      });
+      var pkOffTrack = pkTextTracks.find(function (track) {
+        return track.language === 'off';
+      });
+      var getActivePKTextTrackIndex = function getActivePKTextTrackIndex() {
+        var activeTextTrack = pkTextTracks.find(function (track) {
+          return track.active === true;
+        });
+        return activeTextTrack ? activeTextTrack.index : -1;
+      };
+      var getActiveVidTextTrackIndex = function getActiveVidTextTrackIndex() {
+        for (var i = 0; i < _this9._videoElement.textTracks.length; i++) {
+          var textTrack = _this9._videoElement.textTracks[i];
+          if (textTrack.mode === 'showing') {
+            return i;
+          }
+        }
+        return -1;
+      };
+      NativeAdapter._logger.debug('Video element text track change');
+      var vidIndex = getActiveVidTextTrackIndex();
+      var pkIndex = getActivePKTextTrackIndex();
+      if (vidIndex !== pkIndex) {
+        // In case no text track with 'showing' mode
+        // we need to set the off track
+        if (vidIndex == -1) {
+          if (pkOffTrack) {
+            NativeAdapter._logger.debug('Native selection of track, update the player text track (' + pkIndex + ' -> off)');
+            this._onTrackChanged(pkOffTrack);
+          }
+        } else {
+          // In case the text track on the video element is
+          // different then the text track of the player
+          // we need to set the correct one
+          var pkTextTrack = pkTextTracks.find(function (track) {
+            return track.index === vidIndex;
+          });
+          if (pkTextTrack) {
+            NativeAdapter._logger.debug('Native selection of track, update the player text track (' + pkIndex + ' -> ' + vidIndex + ')');
+            this._onTrackChanged(pkTextTrack);
+          }
+        }
       }
     }
 
@@ -9657,7 +9834,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _player2.default.runCapabilities();
 
 
-_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.15.0", "color: #98ff98;  font-size: large");
+_logger2.default.getLogger().log('%c ' + "playkit-js" + ' ' + "0.16.0", "color: #98ff98;  font-size: large");
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/playkit-js", "color: #98ff98;");
 
 /**
@@ -9692,7 +9869,7 @@ exports.Utils = Utils;
 
 // Export version
 
-exports.VERSION = "0.15.0";
+exports.VERSION = "0.16.0";
 
 // Export player name
 
@@ -15875,6 +16052,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -15902,7 +16082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -16046,8 +16226,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var defaultConfig = {
-  beUrl: "http://www.kaltura.com/api_v3",
-  baseUrl: "https://cdnapisec.kaltura.com",
+  beUrl: "//www.kaltura.com/api_v3",
+  baseUrl: "//cdnapisec.kaltura.com",
   serviceParams: {
     apiVersion: '3.3.0',
     format: 1
@@ -16081,6 +16261,78 @@ exports.Configuration = Configuration;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _multiRequestBuilder = __webpack_require__(5);
+
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+var SERVICE_NAME = "multirequest";
+
+/**
+ * Base for all ovp services
+ * @classdesc
+ */
+
+var OvpService = function () {
+  function OvpService() {
+    _classCallCheck(this, OvpService);
+  }
+
+  _createClass(OvpService, null, [{
+    key: 'getMultirequest',
+
+    /**
+     * Gets a new instance of MultiRequestBuilder with ovp params
+     * @function getMultirequest
+     * @param {string} pVersion The player version
+     * @param {string} ks The ks
+     * @param {string} partnerId The partner ID
+     * @returns {MultiRequestBuilder} The multi request builder
+     * @static
+     */
+    value: function getMultirequest(pVersion, ks, partnerId) {
+      var ovpParams = config.serviceParams;
+      Object.assign(ovpParams, { ks: ks, clientTag: 'html5:v' + pVersion });
+      if (partnerId) {
+        Object.assign(ovpParams, { partnerId: partnerId });
+      }
+      var headers = new Map();
+      headers.set("Content-Type", "application/json");
+      var multiReq = new _multiRequestBuilder2.default(headers);
+      multiReq.method = "POST";
+      multiReq.service = SERVICE_NAME;
+      multiReq.url = multiReq.getUrl(config.beUrl);
+      multiReq.params = ovpParams;
+      return multiReq;
+    }
+  }]);
+
+  return OvpService;
+}();
+
+exports.default = OvpService;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16164,78 +16416,6 @@ function ServiceError(code, message) {
 ;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _multiRequestBuilder = __webpack_require__(5);
-
-var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-var SERVICE_NAME = "multirequest";
-
-/**
- * Base for all ovp services
- * @classdesc
- */
-
-var OvpService = function () {
-  function OvpService() {
-    _classCallCheck(this, OvpService);
-  }
-
-  _createClass(OvpService, null, [{
-    key: 'getMultirequest',
-
-    /**
-     * Gets a new instance of MultiRequestBuilder with ovp params
-     * @function getMultirequest
-     * @param {string} pVersion The player version
-     * @param {string} ks The ks
-     * @param {string} partnerId The partner ID
-     * @returns {MultiRequestBuilder} The multi request builder
-     * @static
-     */
-    value: function getMultirequest(pVersion, ks, partnerId) {
-      var ovpParams = config.serviceParams;
-      Object.assign(ovpParams, { ks: ks, clientTag: 'html5:v' + pVersion });
-      if (partnerId) {
-        Object.assign(ovpParams, { partnerId: partnerId });
-      }
-      var headers = new Map();
-      headers.set("Content-Type", "application/json");
-      var multiReq = new _multiRequestBuilder2.default(headers);
-      multiReq.method = "POST";
-      multiReq.service = SERVICE_NAME;
-      multiReq.url = multiReq.getUrl(config.beUrl);
-      multiReq.params = ovpParams;
-      return multiReq;
-    }
-  }]);
-
-  return OvpService;
-}();
-
-exports.default = OvpService;
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16249,7 +16429,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(6);
+var _jsLogger = __webpack_require__(8);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -16308,7 +16488,7 @@ var _requestBuilder = __webpack_require__(0);
 
 var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
 
-var _baseServiceResult = __webpack_require__(2);
+var _baseServiceResult = __webpack_require__(3);
 
 var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
 
@@ -16457,280 +16637,91 @@ exports.MultiRequestResult = function MultiRequestResult(response) {
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * js-logger - http://github.com/jonnyreeves/js-logger
- * Jonny Reeves, http://jonnyreeves.co.uk/
- * js-logger may be freely distributed under the MIT license.
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mediaSource = __webpack_require__(11);
+
+var _mediaSource2 = _interopRequireDefault(_mediaSource);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Container for the media sources aggregated by stream format.
+ * @classdesc
  */
-(function (global) {
-	"use strict";
+var MediaSources = function () {
 
-	// Top level module for the global, static logger instance.
-	var Logger = { };
+  /**
+   * @constructor
+   */
 
-	// For those that are at home that are keeping score.
-	Logger.VERSION = "1.4.1";
+  /**
+   * Dash media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
+  function MediaSources() {
+    _classCallCheck(this, MediaSources);
 
-	// Function which handles all incoming log messages.
-	var logHandler;
+    this.progressive = [];
+    this.dash = [];
+    this.hls = [];
+  }
 
-	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
-	var contextualLoggersByNameMap = {};
+  /**
+   * Maps the source to one of the containers according to his media format.
+   * @param {MediaSource} source - The source to add to one of the containers.
+   * @param {MediaFormat} mediaFormat - The media format of the source.
+   * @returns {void}
+   */
 
-	// Polyfill for ES5's Function.bind.
-	var bind = function(scope, func) {
-		return function() {
-			return func.apply(scope, arguments);
-		};
-	};
+  /**
+   * Hls media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
 
-	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
-	var merge = function () {
-		var args = arguments, target = args[0], key, i;
-		for (i = 1; i < args.length; i++) {
-			for (key in args[i]) {
-				if (!(key in target) && args[i].hasOwnProperty(key)) {
-					target[key] = args[i][key];
-				}
-			}
-		}
-		return target;
-	};
+  /**
+   * Progressive download media sources container.
+   * @type {Array<MediaSource>}
+   * @public
+   */
 
-	// Helper to define a logging level object; helps with optimisation.
-	var defineLogLevel = function(value, name) {
-		return { value: value, name: name };
-	};
 
-	// Predefined logging levels.
-	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
-	Logger.INFO = defineLogLevel(2, 'INFO');
-	Logger.TIME = defineLogLevel(3, 'TIME');
-	Logger.WARN = defineLogLevel(4, 'WARN');
-	Logger.ERROR = defineLogLevel(8, 'ERROR');
-	Logger.OFF = defineLogLevel(99, 'OFF');
+  _createClass(MediaSources, [{
+    key: 'map',
+    value: function map(source, mediaFormat) {
+      if (mediaFormat) {
+        switch (mediaFormat.name) {
+          case 'mp4':
+            this.progressive.push(source);
+            break;
+          case 'dash':
+            this.dash.push(source);
+            break;
+          case 'hls':
+            this.hls.push(source);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }]);
 
-	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
-	// of each other.
-	var ContextualLogger = function(defaultContext) {
-		this.context = defaultContext;
-		this.setLevel(defaultContext.filterLevel);
-		this.log = this.info;  // Convenience alias.
-	};
+  return MediaSources;
+}();
 
-	ContextualLogger.prototype = {
-		// Changes the current logging level for the logging instance.
-		setLevel: function (newLevel) {
-			// Ensure the supplied Level object looks valid.
-			if (newLevel && "value" in newLevel) {
-				this.context.filterLevel = newLevel;
-			}
-		},
-		
-		// Gets the current logging level for the logging instance
-		getLevel: function () {
-			return this.context.filterLevel;
-		},
-
-		// Is the logger configured to output messages at the supplied level?
-		enabledFor: function (lvl) {
-			var filterLevel = this.context.filterLevel;
-			return lvl.value >= filterLevel.value;
-		},
-
-		debug: function () {
-			this.invoke(Logger.DEBUG, arguments);
-		},
-
-		info: function () {
-			this.invoke(Logger.INFO, arguments);
-		},
-
-		warn: function () {
-			this.invoke(Logger.WARN, arguments);
-		},
-
-		error: function () {
-			this.invoke(Logger.ERROR, arguments);
-		},
-
-		time: function (label) {
-			if (typeof label === 'string' && label.length > 0) {
-				this.invoke(Logger.TIME, [ label, 'start' ]);
-			}
-		},
-
-		timeEnd: function (label) {
-			if (typeof label === 'string' && label.length > 0) {
-				this.invoke(Logger.TIME, [ label, 'end' ]);
-			}
-		},
-
-		// Invokes the logger callback if it's not being filtered.
-		invoke: function (level, msgArgs) {
-			if (logHandler && this.enabledFor(level)) {
-				logHandler(msgArgs, merge({ level: level }, this.context));
-			}
-		}
-	};
-
-	// Protected instance which all calls to the to level `Logger` module will be routed through.
-	var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
-
-	// Configure the global Logger instance.
-	(function() {
-		// Shortcut for optimisers.
-		var L = Logger;
-
-		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
-		L.debug = bind(globalLogger, globalLogger.debug);
-		L.time = bind(globalLogger, globalLogger.time);
-		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
-		L.info = bind(globalLogger, globalLogger.info);
-		L.warn = bind(globalLogger, globalLogger.warn);
-		L.error = bind(globalLogger, globalLogger.error);
-
-		// Don't forget the convenience alias!
-		L.log = L.info;
-	}());
-
-	// Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
-	// object with the supplied log messages and the second being a context object which contains a hash of stateful
-	// parameters which the logging function can consume.
-	Logger.setHandler = function (func) {
-		logHandler = func;
-	};
-
-	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
-	// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
-	Logger.setLevel = function(level) {
-		// Set the globalLogger's level.
-		globalLogger.setLevel(level);
-
-		// Apply this level to all registered contextual loggers.
-		for (var key in contextualLoggersByNameMap) {
-			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
-				contextualLoggersByNameMap[key].setLevel(level);
-			}
-		}
-	};
-
-	// Gets the global logging filter level
-	Logger.getLevel = function() {
-		return globalLogger.getLevel();
-	};
-
-	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
-	// default context and log handler.
-	Logger.get = function (name) {
-		// All logger instances are cached so they can be configured ahead of use.
-		return contextualLoggersByNameMap[name] ||
-			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
-	};
-
-	// CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
-	// write to the window's console object (if present); the optional options object can be used to customise the
-	// formatter used to format each log message.
-	Logger.createDefaultHandler = function (options) {
-		options = options || {};
-
-		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
-			// Prepend the logger's name to the log message for easy identification.
-			if (context.name) {
-				messages.unshift("[" + context.name + "]");
-			}
-		};
-
-		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
-		// that don't offer a native console method.
-		var timerStartTimeByLabelMap = {};
-
-		// Support for IE8+ (and other, slightly more sane environments)
-		var invokeConsoleMethod = function (hdlr, messages) {
-			Function.prototype.apply.call(hdlr, console, messages);
-		};
-
-		// Check for the presence of a logger.
-		if (typeof console === "undefined") {
-			return function () { /* no console */ };
-		}
-
-		return function(messages, context) {
-			// Convert arguments object to Array.
-			messages = Array.prototype.slice.call(messages);
-
-			var hdlr = console.log;
-			var timerLabel;
-
-			if (context.level === Logger.TIME) {
-				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
-
-				if (messages[1] === 'start') {
-					if (console.time) {
-						console.time(timerLabel);
-					}
-					else {
-						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
-					}
-				}
-				else {
-					if (console.timeEnd) {
-						console.timeEnd(timerLabel);
-					}
-					else {
-						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
-							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
-					}
-				}
-			}
-			else {
-				// Delegate through to custom warn/error loggers if present on the console.
-				if (context.level === Logger.WARN && console.warn) {
-					hdlr = console.warn;
-				} else if (context.level === Logger.ERROR && console.error) {
-					hdlr = console.error;
-				} else if (context.level === Logger.INFO && console.info) {
-					hdlr = console.info;
-				} else if (context.level === Logger.DEBUG && console.debug) {
-					hdlr = console.debug;
-				}
-
-				options.formatter(messages, context);
-				invokeConsoleMethod(hdlr, messages);
-			}
-		};
-	};
-
-	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
-	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
-	Logger.useDefaults = function(options) {
-		Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
-		Logger.setHandler(Logger.createDefaultHandler(options));
-	};
-
-	// Export to popular environments boilerplate.
-	if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (Logger),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}
-	else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = Logger;
-	}
-	else {
-		Logger._prevLogger = global.Logger;
-
-		Logger.noConflict = function () {
-			global.Logger = Logger._prevLogger;
-			return Logger;
-		};
-
-		global.Logger = Logger;
-	}
-}(this));
-
+exports.default = MediaSources;
 
 /***/ }),
 /* 7 */
@@ -16904,91 +16895,268 @@ UIConfCreationModes.ADVANCED = 3;
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _mediaSource = __webpack_require__(13);
-
-var _mediaSource2 = _interopRequireDefault(_mediaSource);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Container for the media sources aggregated by stream format.
- * @classdesc
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * js-logger - http://github.com/jonnyreeves/js-logger
+ * Jonny Reeves, http://jonnyreeves.co.uk/
+ * js-logger may be freely distributed under the MIT license.
  */
-var MediaSources = function () {
+(function (global) {
+	"use strict";
 
-  /**
-   * @constructor
-   */
+	// Top level module for the global, static logger instance.
+	var Logger = { };
 
-  /**
-   * Dash media sources container.
-   * @type {Array<MediaSource>}
-   * @public
-   */
-  function MediaSources() {
-    _classCallCheck(this, MediaSources);
+	// For those that are at home that are keeping score.
+	Logger.VERSION = "1.3.0";
 
-    this.progressive = [];
-    this.dash = [];
-    this.hls = [];
-  }
+	// Function which handles all incoming log messages.
+	var logHandler;
 
-  /**
-   * Maps the source to one of the containers according to his media format.
-   * @param {MediaSource} source - The source to add to one of the containers.
-   * @param {MediaFormat} mediaFormat - The media format of the source.
-   * @returns {void}
-   */
+	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
+	var contextualLoggersByNameMap = {};
 
-  /**
-   * Hls media sources container.
-   * @type {Array<MediaSource>}
-   * @public
-   */
+	// Polyfill for ES5's Function.bind.
+	var bind = function(scope, func) {
+		return function() {
+			return func.apply(scope, arguments);
+		};
+	};
 
-  /**
-   * Progressive download media sources container.
-   * @type {Array<MediaSource>}
-   * @public
-   */
+	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
+	var merge = function () {
+		var args = arguments, target = args[0], key, i;
+		for (i = 1; i < args.length; i++) {
+			for (key in args[i]) {
+				if (!(key in target) && args[i].hasOwnProperty(key)) {
+					target[key] = args[i][key];
+				}
+			}
+		}
+		return target;
+	};
 
+	// Helper to define a logging level object; helps with optimisation.
+	var defineLogLevel = function(value, name) {
+		return { value: value, name: name };
+	};
 
-  _createClass(MediaSources, [{
-    key: 'map',
-    value: function map(source, mediaFormat) {
-      if (mediaFormat) {
-        switch (mediaFormat.name) {
-          case 'mp4':
-            this.progressive.push(source);
-            break;
-          case 'dash':
-            this.dash.push(source);
-            break;
-          case 'hls':
-            this.hls.push(source);
-            break;
-          default:
-            break;
-        }
-      }
-    }
-  }]);
+	// Predefined logging levels.
+	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
+	Logger.INFO = defineLogLevel(2, 'INFO');
+	Logger.TIME = defineLogLevel(3, 'TIME');
+	Logger.WARN = defineLogLevel(4, 'WARN');
+	Logger.ERROR = defineLogLevel(8, 'ERROR');
+	Logger.OFF = defineLogLevel(99, 'OFF');
 
-  return MediaSources;
-}();
+	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
+	// of each other.
+	var ContextualLogger = function(defaultContext) {
+		this.context = defaultContext;
+		this.setLevel(defaultContext.filterLevel);
+		this.log = this.info;  // Convenience alias.
+	};
 
-exports.default = MediaSources;
+	ContextualLogger.prototype = {
+		// Changes the current logging level for the logging instance.
+		setLevel: function (newLevel) {
+			// Ensure the supplied Level object looks valid.
+			if (newLevel && "value" in newLevel) {
+				this.context.filterLevel = newLevel;
+			}
+		},
+
+		// Is the logger configured to output messages at the supplied level?
+		enabledFor: function (lvl) {
+			var filterLevel = this.context.filterLevel;
+			return lvl.value >= filterLevel.value;
+		},
+
+		debug: function () {
+			this.invoke(Logger.DEBUG, arguments);
+		},
+
+		info: function () {
+			this.invoke(Logger.INFO, arguments);
+		},
+
+		warn: function () {
+			this.invoke(Logger.WARN, arguments);
+		},
+
+		error: function () {
+			this.invoke(Logger.ERROR, arguments);
+		},
+
+		time: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'start' ]);
+			}
+		},
+
+		timeEnd: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'end' ]);
+			}
+		},
+
+		// Invokes the logger callback if it's not being filtered.
+		invoke: function (level, msgArgs) {
+			if (logHandler && this.enabledFor(level)) {
+				logHandler(msgArgs, merge({ level: level }, this.context));
+			}
+		}
+	};
+
+	// Protected instance which all calls to the to level `Logger` module will be routed through.
+	var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
+
+	// Configure the global Logger instance.
+	(function() {
+		// Shortcut for optimisers.
+		var L = Logger;
+
+		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
+		L.debug = bind(globalLogger, globalLogger.debug);
+		L.time = bind(globalLogger, globalLogger.time);
+		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
+		L.info = bind(globalLogger, globalLogger.info);
+		L.warn = bind(globalLogger, globalLogger.warn);
+		L.error = bind(globalLogger, globalLogger.error);
+
+		// Don't forget the convenience alias!
+		L.log = L.info;
+	}());
+
+	// Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
+	// object with the supplied log messages and the second being a context object which contains a hash of stateful
+	// parameters which the logging function can consume.
+	Logger.setHandler = function (func) {
+		logHandler = func;
+	};
+
+	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+	// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
+	Logger.setLevel = function(level) {
+		// Set the globalLogger's level.
+		globalLogger.setLevel(level);
+
+		// Apply this level to all registered contextual loggers.
+		for (var key in contextualLoggersByNameMap) {
+			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
+				contextualLoggersByNameMap[key].setLevel(level);
+			}
+		}
+	};
+
+	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
+	// default context and log handler.
+	Logger.get = function (name) {
+		// All logger instances are cached so they can be configured ahead of use.
+		return contextualLoggersByNameMap[name] ||
+			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
+	};
+
+	// CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
+	// write to the window's console object (if present); the optional options object can be used to customise the
+	// formatter used to format each log message.
+	Logger.createDefaultHandler = function (options) {
+		options = options || {};
+
+		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
+			// Prepend the logger's name to the log message for easy identification.
+			if (context.name) {
+				messages.unshift("[" + context.name + "]");
+			}
+		};
+
+		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+		// that don't offer a native console method.
+		var timerStartTimeByLabelMap = {};
+
+		// Support for IE8+ (and other, slightly more sane environments)
+		var invokeConsoleMethod = function (hdlr, messages) {
+			Function.prototype.apply.call(hdlr, console, messages);
+		};
+
+		// Check for the presence of a logger.
+		if (typeof console === "undefined") {
+			return function () { /* no console */ };
+		}
+
+		return function(messages, context) {
+			// Convert arguments object to Array.
+			messages = Array.prototype.slice.call(messages);
+
+			var hdlr = console.log;
+			var timerLabel;
+
+			if (context.level === Logger.TIME) {
+				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
+				if (messages[1] === 'start') {
+					if (console.time) {
+						console.time(timerLabel);
+					}
+					else {
+						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
+					}
+				}
+				else {
+					if (console.timeEnd) {
+						console.timeEnd(timerLabel);
+					}
+					else {
+						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
+					}
+				}
+			}
+			else {
+				// Delegate through to custom warn/error loggers if present on the console.
+				if (context.level === Logger.WARN && console.warn) {
+					hdlr = console.warn;
+				} else if (context.level === Logger.ERROR && console.error) {
+					hdlr = console.error;
+				} else if (context.level === Logger.INFO && console.info) {
+					hdlr = console.info;
+				}
+
+				options.formatter(messages, context);
+				invokeConsoleMethod(hdlr, messages);
+			}
+		};
+	};
+
+	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
+	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
+	Logger.useDefaults = function(options) {
+		Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
+		Logger.setHandler(Logger.createDefaultHandler(options));
+	};
+
+	// Export to popular environments boilerplate.
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (Logger),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Logger;
+	}
+	else {
+		Logger._prevLogger = global.Logger;
+
+		Logger.noConflict = function () {
+			global.Logger = Logger._prevLogger;
+			return Logger;
+		};
+
+		global.Logger = Logger;
+	}
+}(this));
+
 
 /***/ }),
 /* 9 */
@@ -17001,9 +17169,392 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _enums = __webpack_require__(7);
+
+var _mediaSources = __webpack_require__(6);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media entry
+ * @classdesc
+ */
+var MediaEntry =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - entry metadata
+ * @type {Object}
+ */
+
+/**
+ * @member - entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - entry name
+ * @type {string}
+ */
+function MediaEntry() {
+  _classCallCheck(this, MediaEntry);
+
+  this.metaData = new Map();
+  this.type = _enums.MediaEntryTypes.Unknown;
+}
+/**
+ * @member - DVR status
+ * @type {number}
+ */
+
+/**
+ * @member - entry type
+ * @type {MediaEntryType}
+ */
+
+/**
+ * @member - entry sources
+ * @type {MediaSources}
+ */
+
+
+/**
+ * @member - entry ID
+ * @type {string}
+ */
+;
+
+exports.default = MediaEntry;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Drm data
+ * @classdesc
+ */
+var Drm =
+
+/**
+ * @constructor
+ * @param {string} licenseUrl - the license URL
+ * @param {Scheme} scheme - the drm scheme
+ * @param {?string} certificate - the drm certificate
+ */
+
+/**
+ * @member - drm scheme
+ * @type {Scheme}
+ */
+function Drm(licenseUrl, scheme, certificate) {
+  _classCallCheck(this, Drm);
+
+  this.licenseUrl = licenseUrl;
+  this.scheme = scheme;
+  this.certificate = certificate;
+}
+
+/**
+ * @member - The drm certificate
+ * @type {?string}
+ */
+
+
+/**
+ * @member - license URL
+ * @type {string}
+ */
+;
+
+exports.default = Drm;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _drm = __webpack_require__(10);
+
+var _drm2 = _interopRequireDefault(_drm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Media source
+ * @classdesc
+ */
+var MediaSource =
+
+/**
+ * @constructor
+ */
+
+/**
+ * @member - media source height
+ * @type {number}
+ */
+
+/**
+ * @member - media source bandwidth
+ * @type {number}
+ */
+
+/**
+ * @member - media source mimetype
+ * @type {string}
+ */
+
+/**
+ * @member - media source ID
+ * @type {string}
+ */
+function MediaSource() {
+  _classCallCheck(this, MediaSource);
+}
+/**
+ * @member - media source label
+ * @type {string}
+ */
+
+/**
+ * @member - media source width
+ * @type {number}
+ */
+
+/**
+ * @member - media source drm data
+ * @type {Array<Drm>}
+ */
+
+/**
+ * @member - media source URL
+ * @type {string}
+ */
+;
+
+exports.default = MediaSource;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _enums = __webpack_require__(7);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE FlavorAsset
+ * @classdesc
+ */
+var KalturaFlavorAsset =
+
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
+
+/**
+ * @member - The language of the flavor asset
+ * @type {Status}
+ */
+
+/**
+ *@member - The video codec
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is playable in KDP
+ * @type {boolean}
+ */
+
+/**
+ * @member - The frame rate (in FPS) of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The width of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member -The file extension
+ * @type {string}
+ */
+
+/**
+ * @member - The ID of the Flavor Asset
+ * @type {string}
+ */
+function KalturaFlavorAsset(data) {
+  _classCallCheck(this, KalturaFlavorAsset);
+
+  this.id = data.id;
+  this.flavorParamsId = data.flavorParamsId;
+  this.fileExt = data.fileExt;
+  this.bitrate = data.bitrate;
+  this.width = data.width;
+  this.height = data.height;
+  this.id = data.id;
+  this.frameRate = data.frameRate;
+  this.isOriginal = data.isOriginal;
+  this.isWeb = data.isWeb;
+  this.containerFormat = data.containerFormat;
+  this.videoCodecId = data.videoCodecId;
+  this.status = data.status;
+  this.language = data.language;
+  this.label = data.label;
+}
+/**
+ * @member - The label of the flavor asset
+ * @type {string}
+ */
+
+/**
+ * @member - The status of the Flavor Asset
+ * @type {string}
+ */
+
+/**
+ * @member - The container format
+ * @type {boolean}
+ */
+
+/**
+ * @member - True if this Flavor Asset is the original source
+ * @type {number}
+ */
+
+/**
+ * @member - The height of the Flavor Asset
+ * @type {number}
+ */
+
+/**
+ * @member - The overall bitrate (in KBits) of the Flavor Asset
+ *  @type {string}
+ */
+
+/**
+ * @member -The Flavor Params used to create this Flavor Asset
+ * @type {string}
+ */
+;
+
+exports.default = KalturaFlavorAsset;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaMetadata = __webpack_require__(29);
+
+var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Metadata list response
+ * @classdesc
+ */
+var KalturaMetadataListResponse = function (_ServiceResult) {
+  _inherits(KalturaMetadataListResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} responseObj The response
+   */
+  function KalturaMetadataListResponse(responseObj) {
+    _classCallCheck(this, KalturaMetadataListResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
+
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.metas = [];
+        responseObj.objects.map(function (meta) {
+          return _this.metas.push(new _kalturaMetadata2.default(meta));
+        });
+      }
+    }
+    return _this;
+  }
+  /**
+   * @member -The mata data array
+   * @type {Array<KalturaMetadata>}
+   */
+
+
+  return KalturaMetadataListResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaMetadataListResponse;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _kalturaDrmPlaybackPluginData = __webpack_require__(17);
+var _kalturaDrmPlaybackPluginData = __webpack_require__(27);
 
 var _kalturaDrmPlaybackPluginData2 = _interopRequireDefault(_kalturaDrmPlaybackPluginData);
 
@@ -17126,389 +17677,6 @@ var KalturaPlaybackSource = function () {
 exports.default = KalturaPlaybackSource;
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _enums = __webpack_require__(7);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE FlavorAsset
- * @classdesc
- */
-var KalturaFlavorAsset =
-
-/**
- * @constructor
- * @param {Object} data The json response
- */
-
-/**
- * @member - The language of the flavor asset
- * @type {Status}
- */
-
-/**
- *@member - The video codec
- * @type {boolean}
- */
-
-/**
- * @member - True if this Flavor Asset is playable in KDP
- * @type {boolean}
- */
-
-/**
- * @member - The frame rate (in FPS) of the Flavor Asset
- * @type {number}
- */
-
-/**
- * @member - The width of the Flavor Asset
- * @type {number}
- */
-
-/**
- * @member -The file extension
- * @type {string}
- */
-
-/**
- * @member - The ID of the Flavor Asset
- * @type {string}
- */
-function KalturaFlavorAsset(data) {
-  _classCallCheck(this, KalturaFlavorAsset);
-
-  this.id = data.id;
-  this.flavorParamsId = data.flavorParamsId;
-  this.fileExt = data.fileExt;
-  this.bitrate = data.bitrate;
-  this.width = data.width;
-  this.height = data.height;
-  this.id = data.id;
-  this.frameRate = data.frameRate;
-  this.isOriginal = data.isOriginal;
-  this.isWeb = data.isWeb;
-  this.containerFormat = data.containerFormat;
-  this.videoCodecId = data.videoCodecId;
-  this.status = data.status;
-  this.language = data.language;
-  this.label = data.label;
-}
-/**
- * @member - The label of the flavor asset
- * @type {string}
- */
-
-/**
- * @member - The status of the Flavor Asset
- * @type {string}
- */
-
-/**
- * @member - The container format
- * @type {boolean}
- */
-
-/**
- * @member - True if this Flavor Asset is the original source
- * @type {number}
- */
-
-/**
- * @member - The height of the Flavor Asset
- * @type {number}
- */
-
-/**
- * @member - The overall bitrate (in KBits) of the Flavor Asset
- *  @type {string}
- */
-
-/**
- * @member -The Flavor Params used to create this Flavor Asset
- * @type {string}
- */
-;
-
-exports.default = KalturaFlavorAsset;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-var _kalturaMetadata = __webpack_require__(18);
-
-var _kalturaMetadata2 = _interopRequireDefault(_kalturaMetadata);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Ovp BE Metadata list response
- * @classdesc
- */
-var KalturaMetadataListResponse = function (_ServiceResult) {
-  _inherits(KalturaMetadataListResponse, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} responseObj The response
-   */
-  function KalturaMetadataListResponse(responseObj) {
-    _classCallCheck(this, KalturaMetadataListResponse);
-
-    var _this = _possibleConstructorReturn(this, (KalturaMetadataListResponse.__proto__ || Object.getPrototypeOf(KalturaMetadataListResponse)).call(this, responseObj));
-
-    if (!_this.hasError) {
-      _this.totalCount = responseObj.totalCount;
-      if (_this.totalCount > 0) {
-        _this.metas = [];
-        responseObj.objects.map(function (meta) {
-          return _this.metas.push(new _kalturaMetadata2.default(meta));
-        });
-      }
-    }
-    return _this;
-  }
-  /**
-   * @member -The mata data array
-   * @type {Array<KalturaMetadata>}
-   */
-
-
-  return KalturaMetadataListResponse;
-}(_baseServiceResult2.default);
-
-exports.default = KalturaMetadataListResponse;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _enums = __webpack_require__(7);
-
-var _mediaSources = __webpack_require__(8);
-
-var _mediaSources2 = _interopRequireDefault(_mediaSources);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Media entry
- * @classdesc
- */
-var MediaEntry =
-
-/**
- * @constructor
- */
-
-/**
- * @member - entry metadata
- * @type {Object}
- */
-
-/**
- * @member - entry duration
- * @type {number}
- */
-
-/**
- * @member - entry name
- * @type {string}
- */
-function MediaEntry() {
-  _classCallCheck(this, MediaEntry);
-
-  this.metaData = new Map();
-  this.type = _enums.MediaEntryTypes.Unknown;
-}
-/**
- * @member - DVR status
- * @type {number}
- */
-
-/**
- * @member - entry type
- * @type {MediaEntryType}
- */
-
-/**
- * @member - entry sources
- * @type {MediaSources}
- */
-
-
-/**
- * @member - entry ID
- * @type {string}
- */
-;
-
-exports.default = MediaEntry;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _drm = __webpack_require__(14);
-
-var _drm2 = _interopRequireDefault(_drm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Media source
- * @classdesc
- */
-var MediaSource =
-
-/**
- * @constructor
- */
-
-/**
- * @member - media source height
- * @type {number}
- */
-
-/**
- * @member - media source bandwidth
- * @type {number}
- */
-
-/**
- * @member - media source mimetype
- * @type {string}
- */
-
-/**
- * @member - media source ID
- * @type {string}
- */
-function MediaSource() {
-  _classCallCheck(this, MediaSource);
-}
-/**
- * @member - media source label
- * @type {string}
- */
-
-/**
- * @member - media source width
- * @type {number}
- */
-
-/**
- * @member - media source drm data
- * @type {Array<Drm>}
- */
-
-/**
- * @member - media source URL
- * @type {string}
- */
-;
-
-exports.default = MediaSource;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Drm data
- * @classdesc
- */
-var Drm =
-
-/**
- * @constructor
- * @param {string} licenseUrl - the license URL
- * @param {Scheme} scheme - the drm scheme
- * @param {?string} certificate - the drm certificate
- */
-
-/**
- * @member - drm scheme
- * @type {Scheme}
- */
-function Drm(licenseUrl, scheme, certificate) {
-  _classCallCheck(this, Drm);
-
-  this.licenseUrl = licenseUrl;
-  this.scheme = scheme;
-  this.certificate = certificate;
-}
-
-/**
- * @member - The drm certificate
- * @type {?string}
- */
-
-
-/**
- * @member - license URL
- * @type {string}
- */
-;
-
-exports.default = Drm;
-
-/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17518,230 +17686,153 @@ exports.default = Drm;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.OvpProvider = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _logger = __webpack_require__(4);
+var _ovpService = __webpack_require__(2);
 
-var _logger2 = _interopRequireDefault(_logger);
+var _ovpService2 = _interopRequireDefault(_ovpService);
 
-var _providerParser = __webpack_require__(16);
+var _multiRequestBuilder = __webpack_require__(5);
 
-var _providerParser2 = _interopRequireDefault(_providerParser);
-
-var _dataLoaderManager = __webpack_require__(22);
-
-var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
-
-var _mediaEntryLoader = __webpack_require__(23);
-
-var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
-
-var _sessionLoader = __webpack_require__(31);
-
-var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
-
-var _uiConfigLoader = __webpack_require__(33);
-
-var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _mediaEntry = __webpack_require__(12);
-
-var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
-
-var _mediaSources = __webpack_require__(8);
-
-var _mediaSources2 = _interopRequireDefault(_mediaSources);
+var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @constant
- */
-var logger = _logger2.default.get("OvpProvider");
-
-/**
- * Ovp provider
+ * Data loaders manager
  * @classdesc
  */
-var OvpProvider = exports.OvpProvider = function () {
+var DataLoaderManager = function () {
 
   /**
    * @constructor
    * @param {string} pVersion The player version
-   * @param {number} partnerID The partner ID
-   * @param {string} [ks=""]  The provider ks (has empty string as default value)
-   * @param {Object} [config]  The provider config(optional)
+   * @param {string} partnerID Then partner ID
+   * @param {string} ks The ks
    */
 
   /**
-   * @member - uiConf ID
-   * @type {number}
+   * @member - Lodaers response map index
+   * @type {Map<string,Array<number>>}
    * @private
+   * @static
    */
-
-  /**
-   * @member - pVersion the player version
-   * @type {string}
-   * @private
-   */
-
-  /**
-   * @member - ks
-   * @type {string}
-   */
-  function OvpProvider(pVersion, partnerID) {
+  function DataLoaderManager(pVersion, partnerID) {
     var ks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-    var config = arguments[3];
 
-    _classCallCheck(this, OvpProvider);
+    _classCallCheck(this, DataLoaderManager);
 
-    this._pVersion = pVersion;
-    this.partnerID = partnerID;
-    this.ks = ks;
-    this._isAnonymous = !this.ks;
-    _config2.default.set(config);
+    this._loaders = new Map();
+
+    this._multiRequest = _ovpService2.default.getMultirequest(pVersion, ks, partnerID);
   }
 
   /**
-   * Returns player json configuration
-   * @function getConfig
-   * @param {string} entryId The entry ID
-   * @param {number} uiConfId The uiConf ID
-   * @returns {Promise} The provider config object as promise
+   * Add loader too execution loaders map
+   * @function
+   * @param {Function} loader Loader to add
+   * @param {Object} params Loader params
+   * @returns {void}
    */
 
   /**
-   * @member - Data loader
-   * @type {DataLoaderManager}
+   * @member - Loaders to execute
+   * @type {Map<string,Function>}
    * @private
    */
 
   /**
-   * @member - is anonymous
-   * @type {boolean}
+   * @member - Loaders multi request
+   * @type {MultiRequestBuilder}
    * @private
    */
 
   /**
-   * @member - partner ID
-   * @type {number}
+   * @member - Loaders multi response
+   * @type {MultiRequestResult}
+   * @private
    */
 
 
-  _createClass(OvpProvider, [{
-    key: 'getConfig',
-    value: function getConfig(entryId, uiConfId) {
+  _createClass(DataLoaderManager, [{
+    key: 'add',
+    value: function add(loader, params) {
       var _this = this;
 
-      if (uiConfId != null) {
-        this._uiConfId = uiConfId;
+      var execution_loader = new loader(params);
+      if (execution_loader.isValid()) {
+        this._loaders.set(loader.id, execution_loader);
+        //Get the start index from the multiReqeust before adding current execution_loader requests
+        var startIndex = this._multiRequest.requests.length;
+        //Get the requests
+        var requests = execution_loader.requests;
+        //Add requests to muktiRequest queue
+        requests.forEach(function (request) {
+          _this._multiRequest.add(request);
+        });
+        //Create range array of current execution_loader requests
+        var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
+          return index + startIndex;
+        });
+        //Add to map
+        DataLoaderManager._loadersResponseMap.set(loader.id, executionLoaderResponseMap);
       }
-      this._dataLoader = new _dataLoaderManager2.default(this._pVersion, this.partnerID, this.ks);
+    }
+
+    /**
+     * Get data from all loaders using multi request
+     * @function
+     * @returns {Promise} Promise
+     */
+
+  }, {
+    key: 'fetchData',
+    value: function fetchData() {
+      var _this2 = this;
+
       return new Promise(function (resolve, reject) {
-        if (_this.validateParams(entryId, uiConfId)) {
-          var ks = _this.ks;
-          if (!ks) {
-            ks = "{1:result:ks}";
-            _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
+        _this2._multiRequest.execute().then(function (response) {
+          _this2._multiResponse = response;
+          if (!response.success) {
+            reject(response);
+          } else {
+            var preparedData = _this2.prepareData(response);
+            if (preparedData.success) {
+              resolve(_this2._loaders);
+            } else {
+              reject({ success: false, data: preparedData.error });
+            }
           }
-          _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
-          _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
-          _this._dataLoader.fetchData().then(function (response) {
-            resolve(_this.parseDataFromResponse(response));
-          }, function (err) {
-            reject(err);
-          });
-        } else {
-          reject({ success: false, data: "Missing mandatory parameter" });
-        }
+        }, function (err) {
+          reject(err);
+        });
       });
     }
-
-    /**
-     * Parses BE data to json configuration object
-     * @function parseDataFromResponse
-     * @param {Map<string,Function>} data The data to parse
-     * @returns {Object} The parsed config object
-     */
-
   }, {
-    key: 'parseDataFromResponse',
-    value: function parseDataFromResponse(data) {
-      logger.debug("Data parsing started");
-      var config = {
-        id: "",
-        name: "",
-        session: {
-          partnerID: this.partnerID,
-          uiConfID: this._uiConfId
-        },
-        sources: new _mediaSources2.default(),
-        duration: 0,
-        type: "Unknown",
-        dvr: false,
-        metadata: {},
-        plugins: {}
-      };
-      if (data != null) {
-        if (data.has(_sessionLoader2.default.id)) {
-          var sessionLoader = data.get(_sessionLoader2.default.id);
-          if (sessionLoader != null && sessionLoader.response != null) {
-            this.ks = sessionLoader.response;
-            config.session.ks = this.ks;
+    key: 'prepareData',
+    value: function prepareData(response) {
+      this._loaders.forEach(function (loader, name) {
+        var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
+        try {
+          if (loaderDataIndexes != null) {
+            loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
           }
+        } catch (err) {
+          return { success: false, error: err };
         }
-        if (data.has(_uiConfigLoader2.default.id)) {
-          var uiConfLoader = data.get(_uiConfigLoader2.default.id);
-          var pluginsJson = {};
-          if (uiConfLoader != null) {
-            pluginsJson = uiConfLoader.response;
-          }
-          config.plugins = pluginsJson;
-        }
-        if (data.has(_mediaEntryLoader2.default.id)) {
-          var mediaLoader = data.get(_mediaEntryLoader2.default.id);
-          if (mediaLoader != null && mediaLoader.response != null) {
-            var mediaEntry = _providerParser2.default.getMediaEntry(this._isAnonymous ? "" : this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
-            config.id = mediaEntry.id;
-            config.name = mediaEntry.name;
-            config.sources = mediaEntry.sources;
-            config.duration = mediaEntry.duration;
-            config.type = mediaEntry.type;
-            config.dvr = !!mediaEntry.dvrStatus;
-            config.metadata = mediaEntry.metaData;
-          }
-        }
-      }
-      logger.debug("Data parsing finished", config);
-      return config;
-    }
-
-    /**
-     * Parameters validation function
-     * @param {string} entryId The entry ID
-     * @param {number} uiConfId The uiConfID
-     * @returns {boolean} Is valid params
-     */
-
-  }, {
-    key: 'validateParams',
-    value: function validateParams(entryId, uiConfId) {
-      return !!entryId || !!uiConfId;
+      });
+      return { success: true, data: this._loaders };
     }
   }]);
 
-  return OvpProvider;
+  return DataLoaderManager;
 }();
 
-exports.default = OvpProvider;
+DataLoaderManager._loadersResponseMap = new Map();
+exports.default = DataLoaderManager;
 
 /***/ }),
 /* 16 */
@@ -17756,23 +17847,384 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _kalturaPlaybackSource = __webpack_require__(9);
+var _requestBuilder = __webpack_require__(0);
 
-var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
 
-var _kalturaFlavorAsset = __webpack_require__(10);
+var _baseEntryService = __webpack_require__(33);
 
-var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
 
-var _kalturaMetadataListResponse = __webpack_require__(11);
+var _metaDataService = __webpack_require__(34);
+
+var _metaDataService2 = _interopRequireDefault(_metaDataService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _kalturaPlaybackContext = __webpack_require__(30);
+
+var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
+
+var _kalturaMetadataListResponse = __webpack_require__(13);
 
 var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
 
-var _playSourceUrlBuilder = __webpack_require__(19);
+var _kalturaBaseEntryListResponse = __webpack_require__(26);
+
+var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var MediaEntryLoader = function () {
+  _createClass(MediaEntryLoader, null, [{
+    key: 'id',
+    get: function get() {
+      return "media";
+    }
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function MediaEntryLoader(params) {
+    _classCallCheck(this, MediaEntryLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._entryId = params.entryId;
+  }
+
+  _createClass(MediaEntryLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
+      requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
+      requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._entryId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
+      this._response.entry = mediaEntryResponse.entries[0];
+      this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
+      this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
+    },
+    get: function get() {
+      return this._response;
+    }
+  }]);
+
+  return MediaEntryLoader;
+}();
+
+exports.default = MediaEntryLoader;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _sessionService = __webpack_require__(35);
+
+var _sessionService2 = _interopRequireDefault(_sessionService);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+/**
+ * Media entry loader
+ * @classdesc
+ */
+
+var SessionLoader = function () {
+  _createClass(SessionLoader, null, [{
+    key: 'id',
+    get: function get() {
+      return "session";
+    }
+
+    /**
+     * @member - partner ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function SessionLoader(params) {
+    _classCallCheck(this, SessionLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._partnerId = params.partnerId;
+  }
+
+  _createClass(SessionLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._partnerId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.ks = response[0].data.ks;
+    },
+    get: function get() {
+      return this._response.ks;
+    }
+  }]);
+
+  return SessionLoader;
+}();
+
+exports.default = SessionLoader;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _uiConfService = __webpack_require__(37);
+
+var _uiConfService2 = _interopRequireDefault(_uiConfService);
+
+var _kalturaUiConfResponse = __webpack_require__(32);
+
+var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _requestBuilder = __webpack_require__(0);
+
+var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var config = _config2.default.get();
+
+var UiConfigLoader = function () {
+  _createClass(UiConfigLoader, null, [{
+    key: 'id',
+    get: function get() {
+      return "uiConf";
+    }
+
+    /**
+     * @member - uiConf ID
+     * @type {number}
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @constructor
+   * @param {Object} params loader params
+   */
+  function UiConfigLoader(params) {
+    _classCallCheck(this, UiConfigLoader);
+
+    this._response = {};
+
+    this.requests = this.buildRequests(params);
+    this._uiConfId = params.uiConfId;
+  }
+
+  _createClass(UiConfigLoader, [{
+    key: 'buildRequests',
+
+
+    /**
+     * Builds loader requests
+     * @function
+     * @param {Object} params Requests parameters
+     * @returns {RequestBuilder} The request builder
+     * @static
+     */
+    value: function buildRequests(params) {
+      var requests = [];
+      requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
+      return requests;
+    }
+
+    /**
+     * Loader validation function
+     * @function
+     * @returns {boolean} Is valid
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid() {
+      return !!this._uiConfId;
+    }
+  }, {
+    key: 'requests',
+    set: function set(requests) {
+      this._requests = requests;
+    },
+    get: function get() {
+      return this._requests;
+    }
+  }, {
+    key: 'response',
+    set: function set(response) {
+      this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
+    },
+    get: function get() {
+      if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
+        return JSON.parse(this._response.uiConf.config).plugins;
+      } catch (err) {
+        return null;
+      } else return null;
+    }
+  }]);
+
+  return UiConfigLoader;
+}();
+
+exports.default = UiConfigLoader;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _kalturaPlaybackSource = __webpack_require__(14);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaFlavorAsset = __webpack_require__(12);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
+
+var _kalturaMetadataListResponse = __webpack_require__(13);
+
+var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+
+var _playSourceUrlBuilder = __webpack_require__(24);
 
 var _playSourceUrlBuilder2 = _interopRequireDefault(_playSourceUrlBuilder);
 
-var _xmlParser = __webpack_require__(20);
+var _xmlParser = __webpack_require__(38);
 
 var _xmlParser2 = _interopRequireDefault(_xmlParser);
 
@@ -17788,19 +18240,19 @@ var _config2 = _interopRequireDefault(_config);
 
 var _mediaFormat = __webpack_require__(21);
 
-var _mediaEntry = __webpack_require__(12);
+var _mediaEntry = __webpack_require__(9);
 
 var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
 
-var _drm = __webpack_require__(14);
+var _drm = __webpack_require__(10);
 
 var _drm2 = _interopRequireDefault(_drm);
 
-var _mediaSource = __webpack_require__(13);
+var _mediaSource = __webpack_require__(11);
 
 var _mediaSource2 = _interopRequireDefault(_mediaSource);
 
-var _mediaSources = __webpack_require__(8);
+var _mediaSources = __webpack_require__(6);
 
 var _mediaSources2 = _interopRequireDefault(_mediaSources);
 
@@ -18104,14 +18556,13 @@ var ProviderParser = function () {
   }, {
     key: '_getBaseProtocol',
     value: function _getBaseProtocol() {
-      var splittedUrl = config.baseUrl.split("/");
-      var baseProtocol = void 0;
-      if (splittedUrl && splittedUrl.length > 0) {
-        baseProtocol = splittedUrl[0].substring(0, splittedUrl[0].length - 1);
-      } else {
-        baseProtocol = "http";
+      var protocolRegex = /^https?:/;
+      var result = protocolRegex.exec(config.baseUrl);
+      var protocol = result ? result[0] : document.location.protocol;
+      if (typeof protocol === "string") {
+        return protocol.slice(0, -1); // remove ':' from the end
       }
-      return baseProtocol;
+      return "https";
     }
   }]);
 
@@ -18121,7 +18572,8 @@ var ProviderParser = function () {
 exports.default = ProviderParser;
 
 /***/ }),
-/* 17 */
+/* 20 */,
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18133,45 +18585,39 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * Ovp BE DrmPlaybackPluginData
- * @classdesc
- */
-var KalturaDrmPlaybackPluginData =
+var MediaFormats = exports.MediaFormats = function MediaFormats() {
+  _classCallCheck(this, MediaFormats);
+};
 
-/**
- * @constructor
- * @param {Object} drm The json response
- */
-
-
-/**
- * @member - The license URL
- * @type {string}
- */
-function KalturaDrmPlaybackPluginData(drm) {
-  _classCallCheck(this, KalturaDrmPlaybackPluginData);
-
-  this.scheme = drm.scheme;
-  this.licenseURL = drm.licenseURL;
-  this.certificate = drm.certificate;
-}
-
-/**
- * @member - The drm certificate
- * @type {?string}
- */
-
-/**
- * @member - The drm scheme
- * @type {Scheme}
- */
-;
-
-exports.default = KalturaDrmPlaybackPluginData;
+MediaFormats.dash = {
+  name: 'dash',
+  mimeType: "application/dash+xml",
+  pathExt: "mpd"
+};
+MediaFormats.hls = {
+  name: 'hls',
+  mimeType: "application/x-mpegURL",
+  pathExt: "m3u8"
+};
+MediaFormats.wvm = {
+  name: 'wvm',
+  mimeType: "video/wvm",
+  pathExt: "wvm"
+};
+MediaFormats.mp4 = {
+  name: 'mp4',
+  mimeType: "video/mp4",
+  pathExt: "mp4"
+};
+MediaFormats.mp3 = {
+  name: 'mp3',
+  mimeType: "audio/mpeg",
+  pathExt: "mp3"
+};
 
 /***/ }),
-/* 18 */
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18180,46 +18626,233 @@ exports.default = KalturaDrmPlaybackPluginData;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.OvpProvider = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(4);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _providerParser = __webpack_require__(19);
+
+var _providerParser2 = _interopRequireDefault(_providerParser);
+
+var _dataLoaderManager = __webpack_require__(15);
+
+var _dataLoaderManager2 = _interopRequireDefault(_dataLoaderManager);
+
+var _mediaEntryLoader = __webpack_require__(16);
+
+var _mediaEntryLoader2 = _interopRequireDefault(_mediaEntryLoader);
+
+var _sessionLoader = __webpack_require__(17);
+
+var _sessionLoader2 = _interopRequireDefault(_sessionLoader);
+
+var _uiConfigLoader = __webpack_require__(18);
+
+var _uiConfigLoader2 = _interopRequireDefault(_uiConfigLoader);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _mediaEntry = __webpack_require__(9);
+
+var _mediaEntry2 = _interopRequireDefault(_mediaEntry);
+
+var _mediaSources = __webpack_require__(6);
+
+var _mediaSources2 = _interopRequireDefault(_mediaSources);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Ovp BE Metadata
+ * @constant
+ */
+var logger = _logger2.default.get("OvpProvider");
+
+/**
+ * Ovp provider
  * @classdesc
  */
-var KalturaMetadata =
+var OvpProvider = exports.OvpProvider = function () {
 
-/**
- * @constructor
- * @param {Object} data The response
- */
-function KalturaMetadata(data) {
-  _classCallCheck(this, KalturaMetadata);
+  /**
+   * @constructor
+   * @param {string} pVersion The player version
+   * @param {number} partnerID The partner ID
+   * @param {string} [ks=""]  The provider ks (has empty string as default value)
+   * @param {Object} [config]  The provider config(optional)
+   */
 
-  this.id = data.id;
-  this.metadataProfileId = data.metadataProfileId;
-  this.metadataProfileVersion = data.metadataProfileVersion;
-  this.metadataProfileId = data.metadataProfileId;
-  this.metadataObjectType = data.metadataObjectType;
-  this.objectId = data.objectId;
-  this.version = data.version;
-  this.created = new Date(0);
-  this.created.setUTCSeconds(data.createdAt);
-  this.updated = new Date(0);
-  this.updated.setUTCSeconds(data.updatedAt);
-  this.status = data.status;
-  this.xml = data.xml;
-}
-/**
- * @member - The Metadata xml - represented as XML string
- * @type {string}
- */
-;
+  /**
+   * @member - uiConf ID
+   * @type {number}
+   * @private
+   */
 
-exports.default = KalturaMetadata;
+  /**
+   * @member - pVersion the player version
+   * @type {string}
+   * @private
+   */
+
+  /**
+   * @member - ks
+   * @type {string}
+   */
+  function OvpProvider(pVersion, partnerID) {
+    var ks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+    var config = arguments[3];
+
+    _classCallCheck(this, OvpProvider);
+
+    this._pVersion = pVersion;
+    this.partnerID = partnerID;
+    this.ks = ks;
+    this._isAnonymous = !this.ks;
+    _config2.default.set(config);
+  }
+
+  /**
+   * Returns player json configuration
+   * @function getConfig
+   * @param {string} entryId The entry ID
+   * @param {number} uiConfId The uiConf ID
+   * @returns {Promise} The provider config object as promise
+   */
+
+  /**
+   * @member - Data loader
+   * @type {DataLoaderManager}
+   * @private
+   */
+
+  /**
+   * @member - is anonymous
+   * @type {boolean}
+   * @private
+   */
+
+  /**
+   * @member - partner ID
+   * @type {number}
+   */
+
+
+  _createClass(OvpProvider, [{
+    key: 'getConfig',
+    value: function getConfig(entryId, uiConfId) {
+      var _this = this;
+
+      if (uiConfId != null) {
+        this._uiConfId = uiConfId;
+      }
+      this._dataLoader = new _dataLoaderManager2.default(this._pVersion, this.partnerID, this.ks);
+      return new Promise(function (resolve, reject) {
+        if (_this.validateParams(entryId, uiConfId)) {
+          var ks = _this.ks;
+          if (!ks) {
+            ks = "{1:result:ks}";
+            _this._dataLoader.add(_sessionLoader2.default, { partnerId: _this.partnerID });
+          }
+          _this._dataLoader.add(_mediaEntryLoader2.default, { entryId: entryId, ks: ks });
+          _this._dataLoader.add(_uiConfigLoader2.default, { uiConfId: uiConfId, ks: ks });
+          _this._dataLoader.fetchData().then(function (response) {
+            resolve(_this.parseDataFromResponse(response));
+          }, function (err) {
+            reject(err);
+          });
+        } else {
+          reject({ success: false, data: "Missing mandatory parameter" });
+        }
+      });
+    }
+
+    /**
+     * Parses BE data to json configuration object
+     * @function parseDataFromResponse
+     * @param {Map<string,Function>} data The data to parse
+     * @returns {Object} The parsed config object
+     */
+
+  }, {
+    key: 'parseDataFromResponse',
+    value: function parseDataFromResponse(data) {
+      logger.debug("Data parsing started");
+      var config = {
+        id: "",
+        name: "",
+        session: {
+          partnerID: this.partnerID,
+          uiConfID: this._uiConfId
+        },
+        sources: new _mediaSources2.default(),
+        duration: 0,
+        type: "Unknown",
+        dvr: false,
+        metadata: {},
+        plugins: {}
+      };
+      if (data != null) {
+        if (data.has(_sessionLoader2.default.id)) {
+          var sessionLoader = data.get(_sessionLoader2.default.id);
+          if (sessionLoader != null && sessionLoader.response != null) {
+            this.ks = sessionLoader.response;
+            config.session.ks = this.ks;
+          }
+        }
+        if (data.has(_uiConfigLoader2.default.id)) {
+          var uiConfLoader = data.get(_uiConfigLoader2.default.id);
+          var pluginsJson = {};
+          if (uiConfLoader != null) {
+            pluginsJson = uiConfLoader.response;
+          }
+          config.plugins = pluginsJson;
+        }
+        if (data.has(_mediaEntryLoader2.default.id)) {
+          var mediaLoader = data.get(_mediaEntryLoader2.default.id);
+          if (mediaLoader != null && mediaLoader.response != null) {
+            var mediaEntry = _providerParser2.default.getMediaEntry(this._isAnonymous ? "" : this.ks, this.partnerID, this._uiConfId, mediaLoader.response);
+            config.id = mediaEntry.id;
+            config.name = mediaEntry.name;
+            config.sources = mediaEntry.sources;
+            config.duration = mediaEntry.duration;
+            config.type = mediaEntry.type;
+            config.dvr = !!mediaEntry.dvrStatus;
+            config.metadata = mediaEntry.metaData;
+          }
+        }
+      }
+      logger.debug("Data parsing finished", config);
+      return config;
+    }
+
+    /**
+     * Parameters validation function
+     * @param {string} entryId The entry ID
+     * @param {number} uiConfId The uiConfID
+     * @returns {boolean} Is valid params
+     */
+
+  }, {
+    key: 'validateParams',
+    value: function validateParams(entryId, uiConfId) {
+      return !!entryId || !!uiConfId;
+    }
+  }]);
+
+  return OvpProvider;
+}();
+
+exports.default = OvpProvider;
 
 /***/ }),
-/* 19 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18309,7 +18942,7 @@ var PlaySourceUrlBuilder = function () {
 exports.default = PlaySourceUrlBuilder;
 
 /***/ }),
-/* 20 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18318,69 +18951,40 @@ exports.default = PlaySourceUrlBuilder;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Xml parser
+ * Ovp BE access control message
  * @classdesc
  */
-var XmlParser = function () {
-  function XmlParser() {
-    _classCallCheck(this, XmlParser);
-  }
+var KalturaAccessControlMessage =
 
-  _createClass(XmlParser, null, [{
-    key: "xmlToJson",
+/**
+ * @constructor
+ * @param {Object} data The json response
+ */
 
-    /**
-     * Parses xml string to json object
-     * @param {string} xml The xml to parse
-     * @returns {{}} The parsed xml as Json object
-     * @static
-     */
-    value: function xmlToJson(xml) {
-      var obj = {};
-      if (xml.nodeType == 1) {
-        if (xml.attributes.length > 0) {
-          obj["@attributes"] = {};
-          for (var j = 0; j < xml.attributes.length; j++) {
-            var attribute = xml.attributes.item(j);
-            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-          }
-        }
-      } else if (xml.nodeType == 3) {
-        obj = xml.nodeValue;
-      }
-      if (xml.hasChildNodes()) {
-        for (var i = 0; i < xml.childNodes.length; i++) {
-          var item = xml.childNodes.item(i);
-          var nodeName = item.nodeName;
-          if (typeof obj[nodeName] == "undefined") {
-            obj[nodeName] = this.xmlToJson(item);
-          } else {
-            if (typeof obj[nodeName].push == "undefined") {
-              var old = obj[nodeName];
-              obj[nodeName] = [];
-              obj[nodeName].push(old);
-            }
-            obj[nodeName].push(this.xmlToJson(item));
-          }
-        }
-      }
-      return obj;
-    }
-  }]);
+/**
+ * @member - The access control message
+ * @type {string}
+ */
+function KalturaAccessControlMessage(data) {
+  _classCallCheck(this, KalturaAccessControlMessage);
 
-  return XmlParser;
-}();
+  this.message = data.message;
+  this.code = data.code;
+}
+/**
+ *  @member - The access control message code
+ * @@type {string}
+ */
+;
 
-exports.default = XmlParser;
+exports.default = KalturaAccessControlMessage;
 
 /***/ }),
-/* 21 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18390,198 +18994,67 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _baseServiceResult = __webpack_require__(3);
 
-var MediaFormats = exports.MediaFormats = function MediaFormats() {
-  _classCallCheck(this, MediaFormats);
-};
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
 
-MediaFormats.dash = {
-  name: 'dash',
-  mimeType: "application/dash+xml",
-  pathExt: "mpd"
-};
-MediaFormats.hls = {
-  name: 'hls',
-  mimeType: "application/x-mpegURL",
-  pathExt: "m3u8"
-};
-MediaFormats.wvm = {
-  name: 'wvm',
-  mimeType: "video/wvm",
-  pathExt: "wvm"
-};
-MediaFormats.mp4 = {
-  name: 'mp4',
-  mimeType: "video/mp4",
-  pathExt: "mp4"
-};
-MediaFormats.mp3 = {
-  name: 'mp3',
-  mimeType: "audio/mpeg",
-  pathExt: "mp3"
-};
+var _kalturaMediaEntry = __webpack_require__(28);
 
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ovpService = __webpack_require__(3);
-
-var _ovpService2 = _interopRequireDefault(_ovpService);
-
-var _multiRequestBuilder = __webpack_require__(5);
-
-var _multiRequestBuilder2 = _interopRequireDefault(_multiRequestBuilder);
+var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 /**
- * Data loaders manager
+ * Ovp BE BaseEntryList service response
  * @classdesc
  */
-var DataLoaderManager = function () {
+var KalturaBaseEntryListResponse = function (_ServiceResult) {
+  _inherits(KalturaBaseEntryListResponse, _ServiceResult);
 
   /**
    * @constructor
-   * @param {string} pVersion The player version
-   * @param {string} partnerID Then partner ID
-   * @param {string} ks The ks
+   * @param {Object} responseObj The json response
    */
 
   /**
-   * @member - Lodaers response map index
-   * @type {Map<string,Array<number>>}
-   * @private
-   * @static
+   * @member - The total count
+   * @type {number}
    */
-  function DataLoaderManager(pVersion, partnerID) {
-    var ks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+  function KalturaBaseEntryListResponse(responseObj) {
+    _classCallCheck(this, KalturaBaseEntryListResponse);
 
-    _classCallCheck(this, DataLoaderManager);
+    var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
 
-    this._loaders = new Map();
-
-    this._multiRequest = _ovpService2.default.getMultirequest(pVersion, ks, partnerID);
-  }
-
-  /**
-   * Add loader too execution loaders map
-   * @function
-   * @param {Function} loader Loader to add
-   * @param {Object} params Loader params
-   * @returns {void}
-   */
-
-  /**
-   * @member - Loaders to execute
-   * @type {Map<string,Function>}
-   * @private
-   */
-
-  /**
-   * @member - Loaders multi request
-   * @type {MultiRequestBuilder}
-   * @private
-   */
-
-  /**
-   * @member - Loaders multi response
-   * @type {MultiRequestResult}
-   * @private
-   */
-
-
-  _createClass(DataLoaderManager, [{
-    key: 'add',
-    value: function add(loader, params) {
-      var _this = this;
-
-      var execution_loader = new loader(params);
-      if (execution_loader.isValid()) {
-        this._loaders.set(loader.id, execution_loader);
-        //Get the start index from the multiReqeust before adding current execution_loader requests
-        var startIndex = this._multiRequest.requests.length;
-        //Get the requests
-        var requests = execution_loader.requests;
-        //Add requests to muktiRequest queue
-        requests.forEach(function (request) {
-          _this._multiRequest.add(request);
+    if (!_this.hasError) {
+      _this.totalCount = responseObj.totalCount;
+      if (_this.totalCount > 0) {
+        _this.entries = [];
+        responseObj.objects.map(function (entry) {
+          return _this.entries.push(new _kalturaMediaEntry2.default(entry));
         });
-        //Create range array of current execution_loader requests
-        var executionLoaderResponseMap = Array.from(new Array(requests.length), function (val, index) {
-          return index + startIndex;
-        });
-        //Add to map
-        DataLoaderManager._loadersResponseMap.set(loader.id, executionLoaderResponseMap);
       }
     }
+    return _this;
+  }
+  /**
+   * @member - The entries
+   * @type {Array<KalturaMediaEntry>}
+   */
 
-    /**
-     * Get data from all loaders using multi request
-     * @function
-     * @returns {Promise} Promise
-     */
 
-  }, {
-    key: 'fetchData',
-    value: function fetchData() {
-      var _this2 = this;
+  return KalturaBaseEntryListResponse;
+}(_baseServiceResult2.default);
 
-      return new Promise(function (resolve, reject) {
-        _this2._multiRequest.execute().then(function (response) {
-          _this2._multiResponse = response;
-          if (!response.success) {
-            reject(response);
-          } else {
-            var preparedData = _this2.prepareData(response);
-            if (preparedData.success) {
-              resolve(_this2._loaders);
-            } else {
-              reject({ success: false, data: preparedData.error });
-            }
-          }
-        }, function (err) {
-          reject(err);
-        });
-      });
-    }
-  }, {
-    key: 'prepareData',
-    value: function prepareData(response) {
-      this._loaders.forEach(function (loader, name) {
-        var loaderDataIndexes = DataLoaderManager._loadersResponseMap.get(name);
-        try {
-          if (loaderDataIndexes != null) {
-            loader.response = response.results.slice(loaderDataIndexes[0], loaderDataIndexes[loaderDataIndexes.length - 1] + 1);
-          }
-        } catch (err) {
-          return { success: false, error: err };
-        }
-      });
-      return { success: true, data: this._loaders };
-    }
-  }]);
-
-  return DataLoaderManager;
-}();
-
-DataLoaderManager._loadersResponseMap = new Map();
-exports.default = DataLoaderManager;
+exports.default = KalturaBaseEntryListResponse;
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18591,126 +19064,429 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _requestBuilder = __webpack_require__(0);
+/**
+ * Ovp BE DrmPlaybackPluginData
+ * @classdesc
+ */
+var KalturaDrmPlaybackPluginData =
 
-var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
+/**
+ * @constructor
+ * @param {Object} drm The json response
+ */
 
-var _baseEntryService = __webpack_require__(24);
 
-var _baseEntryService2 = _interopRequireDefault(_baseEntryService);
+/**
+ * @member - The license URL
+ * @type {string}
+ */
+function KalturaDrmPlaybackPluginData(drm) {
+  _classCallCheck(this, KalturaDrmPlaybackPluginData);
 
-var _metaDataService = __webpack_require__(25);
+  this.scheme = drm.scheme;
+  this.licenseURL = drm.licenseURL;
+  this.certificate = drm.certificate;
+}
 
-var _metaDataService2 = _interopRequireDefault(_metaDataService);
+/**
+ * @member - The drm certificate
+ * @type {?string}
+ */
 
-var _config = __webpack_require__(1);
+/**
+ * @member - The drm scheme
+ * @type {Scheme}
+ */
+;
 
-var _config2 = _interopRequireDefault(_config);
+exports.default = KalturaDrmPlaybackPluginData;
 
-var _kalturaPlaybackContext = __webpack_require__(26);
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var _kalturaPlaybackContext2 = _interopRequireDefault(_kalturaPlaybackContext);
+"use strict";
 
-var _kalturaMetadataListResponse = __webpack_require__(11);
 
-var _kalturaMetadataListResponse2 = _interopRequireDefault(_kalturaMetadataListResponse);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _kalturaBaseEntryListResponse = __webpack_require__(29);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _kalturaBaseEntryListResponse2 = _interopRequireDefault(_kalturaBaseEntryListResponse);
+/**
+ * Ovp BE MediaEntry
+ * @classdesc
+ */
+var KalturaMediaEntry =
+
+/**
+ * @constructor
+ * @param {Object} entry The json response
+ */
+
+/**
+ * @member - Entry poster image
+ * @type {string}
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object
+ * @type {EntryType}
+ */
+
+/**
+ * @member - Comma separated flavor params ids that exists for this media entry
+ * @type {string}
+ */
+
+/**
+ * @member - Entry description
+ * @type {string}
+ */
+
+/**
+ * @member - The entry id
+ * @type {string}
+ */
+function KalturaMediaEntry(entry) {
+  _classCallCheck(this, KalturaMediaEntry);
+
+  this.id = entry.id;
+  this.name = entry.name;
+  this.description = entry.description;
+  this.dataUrl = entry.dataUrl;
+  this.type = entry.type;
+  this.entryType = entry.mediaType;
+  this.flavorParamsIds = entry.flavorParamsIds;
+  this.duration = entry.duration;
+  this.poster = entry.thumbnailUrl;
+  this.dvrStatus = entry.dvrStatus;
+}
+/**
+ * @member - DVR status
+ * @type {number}
+ */
+
+/**
+ * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
+ * @type {MediaType}
+ */
+
+/**
+ * @member - The entry duration
+ * @type {number}
+ */
+
+/**
+ * @member - The URL used for playback. This is not the download URL.
+ * @type {string}
+ */
+
+/**
+ * @member - Entry name (Min 1 chars)
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMediaEntry;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE Metadata
+ * @classdesc
+ */
+var KalturaMetadata =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaMetadata(data) {
+  _classCallCheck(this, KalturaMetadata);
+
+  this.id = data.id;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataProfileVersion = data.metadataProfileVersion;
+  this.metadataProfileId = data.metadataProfileId;
+  this.metadataObjectType = data.metadataObjectType;
+  this.objectId = data.objectId;
+  this.version = data.version;
+  this.created = new Date(0);
+  this.created.setUTCSeconds(data.createdAt);
+  this.updated = new Date(0);
+  this.updated.setUTCSeconds(data.updatedAt);
+  this.status = data.status;
+  this.xml = data.xml;
+}
+/**
+ * @member - The Metadata xml - represented as XML string
+ * @type {string}
+ */
+;
+
+exports.default = KalturaMetadata;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+var _kalturaAccessControlMessage = __webpack_require__(25);
+
+var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
+
+var _kalturaPlaybackSource = __webpack_require__(14);
+
+var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
+
+var _kalturaRuleAction = __webpack_require__(31);
+
+var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
+
+var _kalturaFlavorAsset = __webpack_require__(12);
+
+var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var config = _config2.default.get();
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Media entry loader
+ * Ovp BE playback context response
  * @classdesc
  */
-
-var MediaEntryLoader = function () {
-  _createClass(MediaEntryLoader, null, [{
-    key: 'id',
-    get: function get() {
-      return "media";
-    }
-  }]);
+var KalturaPlaybackContext = function (_ServiceResult) {
+  _inherits(KalturaPlaybackContext, _ServiceResult);
 
   /**
    * @constructor
-   * @param {Object} params loader params
+   * @param {Object} response The response
    */
-  function MediaEntryLoader(params) {
-    _classCallCheck(this, MediaEntryLoader);
 
-    this._response = {};
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaAccessControlMessage>}
+   */
 
-    this.requests = this.buildRequests(params);
-    this._entryId = params.entryId;
+  /**
+   * @member - The playback sources
+   * @type {Array<KalturaPlaybackSource>}
+   */
+  function KalturaPlaybackContext(response) {
+    _classCallCheck(this, KalturaPlaybackContext);
+
+    var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
+
+    _this.sources = [];
+    _this.actions = [];
+    _this.messages = [];
+    _this.flavorAssets = [];
+
+    if (!_this.hasError) {
+
+      var messages = response.messages;
+      if (messages) {
+        messages.map(function (message) {
+          return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
+        });
+      }
+
+      var actions = response.actions;
+      if (actions) {
+        actions.map(function (action) {
+          return _this.actions.push(new _kalturaRuleAction2.default(action));
+        });
+      }
+
+      var sources = response.sources;
+      if (sources) {
+        sources.map(function (source) {
+          return _this.sources.push(new _kalturaPlaybackSource2.default(source));
+        });
+      }
+
+      var flavorAssets = response.flavorAssets;
+      if (flavorAssets) {
+        flavorAssets.map(function (flavor) {
+          return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
+        });
+      }
+    }
+
+    return _this;
   }
+  /**
+   * @member - The flavor assets
+   * @type {Array<KalturaFlavorAsset>}
+   */
 
-  _createClass(MediaEntryLoader, [{
-    key: 'buildRequests',
+  /**
+   * @member - Array of actions as received from the rules that invalidated
+   * @type {Array<KalturaRuleAction>}
+   */
 
 
-    /**
-     * Builds loader requests
-     * @function
-     * @param {Object} params Requests parameters
-     * @returns {RequestBuilder} The request builder
-     * @static
-     */
-    value: function buildRequests(params) {
-      var requests = [];
-      requests.push(_baseEntryService2.default.list(config.beUrl, params.ks, params.entryId));
-      requests.push(_baseEntryService2.default.getPlaybackContext(config.beUrl, params.ks, params.entryId));
-      requests.push(_metaDataService2.default.list(config.beUrl, params.ks, params.entryId));
-      return requests;
-    }
+  return KalturaPlaybackContext;
+}(_baseServiceResult2.default);
 
-    /**
-     * Loader validation function
-     * @function
-     * @returns {boolean} Is valid
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return !!this._entryId;
-    }
-  }, {
-    key: 'requests',
-    set: function set(requests) {
-      this._requests = requests;
-    },
-    get: function get() {
-      return this._requests;
-    }
-  }, {
-    key: 'response',
-    set: function set(response) {
-      var mediaEntryResponse = new _kalturaBaseEntryListResponse2.default(response[0].data);
-      this._response.entry = mediaEntryResponse.entries[0];
-      this._response.playBackContextResult = new _kalturaPlaybackContext2.default(response[1].data);
-      this._response.metadataListResult = new _kalturaMetadataListResponse2.default(response[2].data);
-    },
-    get: function get() {
-      return this._response;
-    }
-  }]);
-
-  return MediaEntryLoader;
-}();
-
-exports.default = MediaEntryLoader;
+exports.default = KalturaPlaybackContext;
 
 /***/ }),
-/* 24 */
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Ovp BE rule action
+ * @classdesc
+ */
+var KalturaRuleAction =
+
+/**
+ * @constructor
+ * @param {Object} data The response
+ */
+function KalturaRuleAction(data) {
+  _classCallCheck(this, KalturaRuleAction);
+
+  this.type = data.type;
+}
+/**
+ * @member - The type of the action
+ * @type {KalturaRuleActionType}
+ */
+;
+
+exports.default = KalturaRuleAction;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _baseServiceResult = __webpack_require__(3);
+
+var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Ovp BE Ui config response
+ * @classdesc
+ */
+var KalturaUiConfResponse = function (_ServiceResult) {
+  _inherits(KalturaUiConfResponse, _ServiceResult);
+
+  /**
+   * @constructor
+   * @param {Object} data The json response
+   */
+
+  /**
+   * @member -plugins configuration represented as Json string
+   * @type {string}
+   */
+
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+  function KalturaUiConfResponse(data) {
+    _classCallCheck(this, KalturaUiConfResponse);
+
+    var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
+
+    if (!_this.hasError) {
+      _this.name = data.name;
+
+      _this.description = data.description;
+      _this.objTypeAsString = data.objTypeAsString;
+      _this.width = data.width;
+      _this.height = data.height;
+      _this.htmlParams = data.htmlParams;
+      _this.swfUrl = data.swfUrl;
+      _this.confFilePath = data.confFilePath;
+      _this.confFile = data.confFile;
+      _this.confFileFeatures = data.confFileFeatures;
+      _this.config = data.config;
+      _this.confVars = data.confVars;
+      _this.useCdn = data.useCdn;
+      _this.tags = data.tags;
+      _this.swfUrlVersion = data.swfUrlVersion;
+      _this.created = new Date(0);
+      _this.created.setUTCSeconds(data.createdAt);
+      _this.updated = new Date(0);
+      _this.updated.setUTCSeconds(data.updatedAt);
+      _this.html5Url = data.description;
+      _this.version = data.description;
+      _this.partnerTags = data.description;
+      _this.objType = data.description;
+      _this.creationMode = data.description;
+    }
+    return _this;
+  }
+  /**
+   * @member -Name of the uiConf, this is not a primary key
+   * @type {string}
+   */
+
+
+  return KalturaUiConfResponse;
+}(_baseServiceResult2.default);
+
+exports.default = KalturaUiConfResponse;
+
+/***/ }),
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18722,7 +19498,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -18834,7 +19610,7 @@ var BaseEntryService = function (_OvpService) {
 exports.default = BaseEntryService;
 
 /***/ }),
-/* 25 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18846,7 +19622,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -18912,364 +19688,7 @@ var MetaDataService = function (_OvpService) {
 exports.default = MetaDataService;
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-var _kalturaAccessControlMessage = __webpack_require__(27);
-
-var _kalturaAccessControlMessage2 = _interopRequireDefault(_kalturaAccessControlMessage);
-
-var _kalturaPlaybackSource = __webpack_require__(9);
-
-var _kalturaPlaybackSource2 = _interopRequireDefault(_kalturaPlaybackSource);
-
-var _kalturaRuleAction = __webpack_require__(28);
-
-var _kalturaRuleAction2 = _interopRequireDefault(_kalturaRuleAction);
-
-var _kalturaFlavorAsset = __webpack_require__(10);
-
-var _kalturaFlavorAsset2 = _interopRequireDefault(_kalturaFlavorAsset);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Ovp BE playback context response
- * @classdesc
- */
-var KalturaPlaybackContext = function (_ServiceResult) {
-  _inherits(KalturaPlaybackContext, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} response The response
-   */
-
-  /**
-   * @member - Array of actions as received from the rules that invalidated
-   * @type {Array<KalturaAccessControlMessage>}
-   */
-
-  /**
-   * @member - The playback sources
-   * @type {Array<KalturaPlaybackSource>}
-   */
-  function KalturaPlaybackContext(response) {
-    _classCallCheck(this, KalturaPlaybackContext);
-
-    var _this = _possibleConstructorReturn(this, (KalturaPlaybackContext.__proto__ || Object.getPrototypeOf(KalturaPlaybackContext)).call(this, response));
-
-    _this.sources = [];
-    _this.actions = [];
-    _this.messages = [];
-    _this.flavorAssets = [];
-
-    if (!_this.hasError) {
-
-      var messages = response.messages;
-      if (messages) {
-        messages.map(function (message) {
-          return _this.messages.push(new _kalturaAccessControlMessage2.default(message));
-        });
-      }
-
-      var actions = response.actions;
-      if (actions) {
-        actions.map(function (action) {
-          return _this.actions.push(new _kalturaRuleAction2.default(action));
-        });
-      }
-
-      var sources = response.sources;
-      if (sources) {
-        sources.map(function (source) {
-          return _this.sources.push(new _kalturaPlaybackSource2.default(source));
-        });
-      }
-
-      var flavorAssets = response.flavorAssets;
-      if (flavorAssets) {
-        flavorAssets.map(function (flavor) {
-          return _this.flavorAssets.push(new _kalturaFlavorAsset2.default(flavor));
-        });
-      }
-    }
-
-    return _this;
-  }
-  /**
-   * @member - The flavor assets
-   * @type {Array<KalturaFlavorAsset>}
-   */
-
-  /**
-   * @member - Array of actions as received from the rules that invalidated
-   * @type {Array<KalturaRuleAction>}
-   */
-
-
-  return KalturaPlaybackContext;
-}(_baseServiceResult2.default);
-
-exports.default = KalturaPlaybackContext;
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE access control message
- * @classdesc
- */
-var KalturaAccessControlMessage =
-
-/**
- * @constructor
- * @param {Object} data The json response
- */
-
-/**
- * @member - The access control message
- * @type {string}
- */
-function KalturaAccessControlMessage(data) {
-  _classCallCheck(this, KalturaAccessControlMessage);
-
-  this.message = data.message;
-  this.code = data.code;
-}
-/**
- *  @member - The access control message code
- * @@type {string}
- */
-;
-
-exports.default = KalturaAccessControlMessage;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE rule action
- * @classdesc
- */
-var KalturaRuleAction =
-
-/**
- * @constructor
- * @param {Object} data The response
- */
-function KalturaRuleAction(data) {
-  _classCallCheck(this, KalturaRuleAction);
-
-  this.type = data.type;
-}
-/**
- * @member - The type of the action
- * @type {KalturaRuleActionType}
- */
-;
-
-exports.default = KalturaRuleAction;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-var _kalturaMediaEntry = __webpack_require__(30);
-
-var _kalturaMediaEntry2 = _interopRequireDefault(_kalturaMediaEntry);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Ovp BE BaseEntryList service response
- * @classdesc
- */
-var KalturaBaseEntryListResponse = function (_ServiceResult) {
-  _inherits(KalturaBaseEntryListResponse, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} responseObj The json response
-   */
-
-  /**
-   * @member - The total count
-   * @type {number}
-   */
-  function KalturaBaseEntryListResponse(responseObj) {
-    _classCallCheck(this, KalturaBaseEntryListResponse);
-
-    var _this = _possibleConstructorReturn(this, (KalturaBaseEntryListResponse.__proto__ || Object.getPrototypeOf(KalturaBaseEntryListResponse)).call(this, responseObj));
-
-    if (!_this.hasError) {
-      _this.totalCount = responseObj.totalCount;
-      if (_this.totalCount > 0) {
-        _this.entries = [];
-        responseObj.objects.map(function (entry) {
-          return _this.entries.push(new _kalturaMediaEntry2.default(entry));
-        });
-      }
-    }
-    return _this;
-  }
-  /**
-   * @member - The entries
-   * @type {Array<KalturaMediaEntry>}
-   */
-
-
-  return KalturaBaseEntryListResponse;
-}(_baseServiceResult2.default);
-
-exports.default = KalturaBaseEntryListResponse;
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Ovp BE MediaEntry
- * @classdesc
- */
-var KalturaMediaEntry =
-
-/**
- * @constructor
- * @param {Object} entry The json response
- */
-
-/**
- * @member - Entry poster image
- * @type {string}
- */
-
-/**
- * @member - The type of the entry, this is auto filled by the derived entry object
- * @type {EntryType}
- */
-
-/**
- * @member - Comma separated flavor params ids that exists for this media entry
- * @type {string}
- */
-
-/**
- * @member - Entry description
- * @type {string}
- */
-
-/**
- * @member - The entry id
- * @type {string}
- */
-function KalturaMediaEntry(entry) {
-  _classCallCheck(this, KalturaMediaEntry);
-
-  this.id = entry.id;
-  this.name = entry.name;
-  this.description = entry.description;
-  this.dataUrl = entry.dataUrl;
-  this.type = entry.type;
-  this.entryType = entry.mediaType;
-  this.flavorParamsIds = entry.flavorParamsIds;
-  this.duration = entry.duration;
-  this.poster = entry.thumbnailUrl;
-  this.dvrStatus = entry.dvrStatus;
-}
-/**
- * @member - DVR status
- * @type {number}
- */
-
-/**
- * @member - The type of the entry, this is auto filled by the derived entry object (Image, Audio etc.)
- * @type {MediaType}
- */
-
-/**
- * @member - The entry duration
- * @type {number}
- */
-
-/**
- * @member - The URL used for playback. This is not the download URL.
- * @type {string}
- */
-
-/**
- * @member - Entry name (Min 1 chars)
- * @type {string}
- */
-;
-
-exports.default = KalturaMediaEntry;
-
-/***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19281,121 +19700,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _sessionService = __webpack_require__(32);
-
-var _sessionService2 = _interopRequireDefault(_sessionService);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _requestBuilder = __webpack_require__(0);
-
-var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-/**
- * Media entry loader
- * @classdesc
- */
-
-var SessionLoader = function () {
-  _createClass(SessionLoader, null, [{
-    key: 'id',
-    get: function get() {
-      return "session";
-    }
-
-    /**
-     * @member - partner ID
-     * @type {number}
-     * @private
-     */
-
-  }]);
-
-  /**
-   * @constructor
-   * @param {Object} params loader params
-   */
-  function SessionLoader(params) {
-    _classCallCheck(this, SessionLoader);
-
-    this._response = {};
-
-    this.requests = this.buildRequests(params);
-    this._partnerId = params.partnerId;
-  }
-
-  _createClass(SessionLoader, [{
-    key: 'buildRequests',
-
-
-    /**
-     * Builds loader requests
-     * @function
-     * @param {Object} params Requests parameters
-     * @returns {RequestBuilder} The request builder
-     * @static
-     */
-    value: function buildRequests(params) {
-      var requests = [];
-      requests.push(_sessionService2.default.anonymousSession(config.beUrl, params.partnerId));
-      return requests;
-    }
-
-    /**
-     * Loader validation function
-     * @function
-     * @returns {boolean} Is valid
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return !!this._partnerId;
-    }
-  }, {
-    key: 'requests',
-    set: function set(requests) {
-      this._requests = requests;
-    },
-    get: function get() {
-      return this._requests;
-    }
-  }, {
-    key: 'response',
-    set: function set(response) {
-      this._response.ks = response[0].data.ks;
-    },
-    get: function get() {
-      return this._response.ks;
-    }
-  }]);
-
-  return SessionLoader;
-}();
-
-exports.default = SessionLoader;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -19458,7 +19763,8 @@ var SessionService = function (_OvpService) {
 exports.default = SessionService;
 
 /***/ }),
-/* 33 */
+/* 36 */,
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19470,125 +19776,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _uiConfService = __webpack_require__(34);
-
-var _uiConfService2 = _interopRequireDefault(_uiConfService);
-
-var _kalturaUiConfResponse = __webpack_require__(35);
-
-var _kalturaUiConfResponse2 = _interopRequireDefault(_kalturaUiConfResponse);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _requestBuilder = __webpack_require__(0);
-
-var _requestBuilder2 = _interopRequireDefault(_requestBuilder);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var config = _config2.default.get();
-
-var UiConfigLoader = function () {
-  _createClass(UiConfigLoader, null, [{
-    key: 'id',
-    get: function get() {
-      return "uiConf";
-    }
-
-    /**
-     * @member - uiConf ID
-     * @type {number}
-     * @private
-     */
-
-  }]);
-
-  /**
-   * @constructor
-   * @param {Object} params loader params
-   */
-  function UiConfigLoader(params) {
-    _classCallCheck(this, UiConfigLoader);
-
-    this._response = {};
-
-    this.requests = this.buildRequests(params);
-    this._uiConfId = params.uiConfId;
-  }
-
-  _createClass(UiConfigLoader, [{
-    key: 'buildRequests',
-
-
-    /**
-     * Builds loader requests
-     * @function
-     * @param {Object} params Requests parameters
-     * @returns {RequestBuilder} The request builder
-     * @static
-     */
-    value: function buildRequests(params) {
-      var requests = [];
-      requests.push(_uiConfService2.default.get(config.beUrl, params.ks, params.uiConfId));
-      return requests;
-    }
-
-    /**
-     * Loader validation function
-     * @function
-     * @returns {boolean} Is valid
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return !!this._uiConfId;
-    }
-  }, {
-    key: 'requests',
-    set: function set(requests) {
-      this._requests = requests;
-    },
-    get: function get() {
-      return this._requests;
-    }
-  }, {
-    key: 'response',
-    set: function set(response) {
-      this._response.uiConf = new _kalturaUiConfResponse2.default(response[0].data);
-    },
-    get: function get() {
-      if (this._response != null && this._response.uiConf != null && this._response.uiConf.config != null) try {
-        return JSON.parse(this._response.uiConf.config).plugins;
-      } catch (err) {
-        return null;
-      } else return null;
-    }
-  }]);
-
-  return UiConfigLoader;
-}();
-
-exports.default = UiConfigLoader;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ovpService = __webpack_require__(3);
+var _ovpService = __webpack_require__(2);
 
 var _ovpService2 = _interopRequireDefault(_ovpService);
 
@@ -19656,7 +19844,7 @@ var UiConfService = function (_OvpService) {
 exports.default = UiConfService;
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19666,83 +19854,65 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _baseServiceResult = __webpack_require__(2);
-
-var _baseServiceResult2 = _interopRequireDefault(_baseServiceResult);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 /**
- * Ovp BE Ui config response
+ * Xml parser
  * @classdesc
  */
-var KalturaUiConfResponse = function (_ServiceResult) {
-  _inherits(KalturaUiConfResponse, _ServiceResult);
-
-  /**
-   * @constructor
-   * @param {Object} data The json response
-   */
-
-  /**
-   * @member -plugins configuration represented as Json string
-   * @type {string}
-   */
-
-  /**
-   * @member -Name of the uiConf, this is not a primary key
-   * @type {string}
-   */
-  function KalturaUiConfResponse(data) {
-    _classCallCheck(this, KalturaUiConfResponse);
-
-    var _this = _possibleConstructorReturn(this, (KalturaUiConfResponse.__proto__ || Object.getPrototypeOf(KalturaUiConfResponse)).call(this, data));
-
-    if (!_this.hasError) {
-      _this.name = data.name;
-
-      _this.description = data.description;
-      _this.objTypeAsString = data.objTypeAsString;
-      _this.width = data.width;
-      _this.height = data.height;
-      _this.htmlParams = data.htmlParams;
-      _this.swfUrl = data.swfUrl;
-      _this.confFilePath = data.confFilePath;
-      _this.confFile = data.confFile;
-      _this.confFileFeatures = data.confFileFeatures;
-      _this.config = data.config;
-      _this.confVars = data.confVars;
-      _this.useCdn = data.useCdn;
-      _this.tags = data.tags;
-      _this.swfUrlVersion = data.swfUrlVersion;
-      _this.created = new Date(0);
-      _this.created.setUTCSeconds(data.createdAt);
-      _this.updated = new Date(0);
-      _this.updated.setUTCSeconds(data.updatedAt);
-      _this.html5Url = data.description;
-      _this.version = data.description;
-      _this.partnerTags = data.description;
-      _this.objType = data.description;
-      _this.creationMode = data.description;
-    }
-    return _this;
+var XmlParser = function () {
+  function XmlParser() {
+    _classCallCheck(this, XmlParser);
   }
-  /**
-   * @member -Name of the uiConf, this is not a primary key
-   * @type {string}
-   */
 
+  _createClass(XmlParser, null, [{
+    key: "xmlToJson",
 
-  return KalturaUiConfResponse;
-}(_baseServiceResult2.default);
+    /**
+     * Parses xml string to json object
+     * @param {string} xml The xml to parse
+     * @returns {{}} The parsed xml as Json object
+     * @static
+     */
+    value: function xmlToJson(xml) {
+      var obj = {};
+      if (xml.nodeType == 1) {
+        if (xml.attributes.length > 0) {
+          obj["@attributes"] = {};
+          for (var j = 0; j < xml.attributes.length; j++) {
+            var attribute = xml.attributes.item(j);
+            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+          }
+        }
+      } else if (xml.nodeType == 3) {
+        obj = xml.nodeValue;
+      }
+      if (xml.hasChildNodes()) {
+        for (var i = 0; i < xml.childNodes.length; i++) {
+          var item = xml.childNodes.item(i);
+          var nodeName = item.nodeName;
+          if (typeof obj[nodeName] == "undefined") {
+            obj[nodeName] = this.xmlToJson(item);
+          } else {
+            if (typeof obj[nodeName].push == "undefined") {
+              var old = obj[nodeName];
+              obj[nodeName] = [];
+              obj[nodeName].push(old);
+            }
+            obj[nodeName].push(this.xmlToJson(item));
+          }
+        }
+      }
+      return obj;
+    }
+  }]);
 
-exports.default = KalturaUiConfResponse;
+  return XmlParser;
+}();
+
+exports.default = XmlParser;
 
 /***/ })
 /******/ ]);
@@ -19762,7 +19932,7 @@ exports.default = KalturaUiConfResponse;
 		exports["PlaykitJsUi"] = factory(require("playkit-js"));
 	else
 		root["PlaykitJsUi"] = factory(root["Playkit"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_38__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_39__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -19825,7 +19995,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 52);
+/******/ 	return __webpack_require__(__webpack_require__.s = 51);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -21447,11 +21617,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _preact = __webpack_require__(0);
 
-var _playkitJs = __webpack_require__(38);
+var _playkitJs = __webpack_require__(39);
 
 var _playkitJs2 = _interopRequireDefault(_playkitJs);
 
-var _logger = __webpack_require__(73);
+var _logger = __webpack_require__(72);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -21499,6 +21669,94 @@ exports.default = BaseComponent;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.bindActions = bindActions;
+
+var _redux = __webpack_require__(10);
+
+/**
+ * Binding redux actions to props utility
+ *
+ * @export
+ * @param {Array<any>} actions redux actions
+ * @returns {Function} function
+ */
+function bindActions(actions) {
+  return function (dispatch) {
+    return _extends({}, (0, _redux.bindActionCreators)(actions, dispatch));
+  };
+}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(52);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IconType = exports.default = undefined;
+
+var _icon = __webpack_require__(74);
+
+Object.defineProperty(exports, 'IconType', {
+  enumerable: true,
+  get: function get() {
+    return _icon.IconType;
+  }
+});
+
+var _icon2 = _interopRequireDefault(_icon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _icon2.default;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 /*
@@ -21580,7 +21838,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -21626,7 +21884,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(54);
+var	fixUrls = __webpack_require__(53);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -21939,98 +22197,10 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-exports.bindActions = bindActions;
-
-var _redux = __webpack_require__(10);
-
-/**
- * Binding redux actions to props utility
- *
- * @export
- * @param {Array<any>} actions redux actions
- * @returns {Function} function
- */
-function bindActions(actions) {
-  return function (dispatch) {
-    return _extends({}, (0, _redux.bindActionCreators)(actions, dispatch));
-  };
-}
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IconType = exports.default = undefined;
-
-var _icon = __webpack_require__(75);
-
-Object.defineProperty(exports, 'IconType', {
-  enumerable: true,
-  get: function get() {
-    return _icon.IconType;
-  }
-});
-
-var _icon2 = _interopRequireDefault(_icon);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _icon2.default;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(53);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function n(n){return n&&"object"==typeof n&&"default"in n?n.default:n}function t(n){return null!==n&&void 0!==n}function r(n,t){var o=e({},n);for(var i in t)t.hasOwnProperty(i)&&(o[i]=n[i]&&t[i]&&"object"==typeof n[i]&&"object"==typeof t[i]?r(n[i],t[i]):n[i]||t[i]);return o}function e(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r]);return n}function o(n){if(n=n||{},"string"==typeof n&&(n=n.split(",")),"join"in n){for(var t={},r=0;r<n.length;r++){var e=n[r].trim();e&&(t[e.split(".").pop()]=e)}return t}return n}function i(n,t){return v=t||h,n&&n.replace(/\{\{([\w.-]+)\}\}/g,u)}function u(n,t){for(var r=t.split("."),e=v,o=0;o<r.length;o++)if(null==(e=e[r[o]]))return"";return"string"==typeof e&&e.match(/\{\{/)&&(e=i(e,v)),e}function c(n,r,e,o,u,c){r&&(n=r+"."+n);var a=e&&f(e,n);return(u||0===u)&&a&&"object"==typeof a&&(a=a.splice?a[u]||a[0]:0===u&&t(a.none)?a.none:1===u&&t(a.one||a.singular)?a.one||a.singular:a.some||a.many||a.plural||a.other||a),a&&i(a,o)||c||null}function a(n,t,r){var i={};t=t||{},n=o(n);for(var u in n)if(n.hasOwnProperty(u)&&n[u]){var a=n[u];r||"string"!=typeof a?a.nodeName===g&&(a=e({fallback:a.children&&a.children[0]},a.attributes),i[u]=c(a.id,t.scope,t.dictionary,a.fields,a.plural,a.fallback)):i[u]=c(a,t.scope,t.dictionary)}return i}var l=__webpack_require__(0),f=n(__webpack_require__(85)),p=/[?&#]intl=show/,s=function(n){function t(){n.apply(this,arguments)}return n&&(t.__proto__=n),t.prototype=Object.create(n&&n.prototype),t.prototype.constructor=t,t.prototype.getChildContext=function(){var n=this.props,t=n.scope,o=n.definition,i=n.mark,u=e({},this.context.intl||{});return t&&(u.scope=t),o&&(u.dictionary=r(u.dictionary||{},o)),(i||"undefined"!=typeof location&&String(location).match(p))&&(u.mark=!0),{intl:u}},t.prototype.render=function(n){var t=n.children;return t&&t[0]||null},t}(l.Component),d=function(){for(var n=[],t=arguments.length;t--;)n[t]=arguments[t];if(n.length>1){return y(n[0],n[1])}var r=n[0];return function(n){return y(n,r)}},y=function(n,t){return function(r){return l.h(s,t||{},l.h(n,r))}},h={},v,g=function(n,t){var r=n.id,e=n.children,o=n.plural,i=n.fields,u=t.intl,a=e&&e[0],p=c(r,u&&u.scope,u&&u.dictionary,i,o,a);if(u&&u.mark){var s="dictionary"+(u&&u.scope?"."+u.scope:"")+"."+r;return l.h("mark",{style:"background: "+(p?f(u,s)?"rgba(119,231,117,.5)":"rgba(229,226,41,.5)":"rgba(228,147,51,.5)"),title:r},p)}return p},b=function(n,t){var r=n.children,e=t.intl,o=r&&r[0];return o&&l.cloneElement(o,a(o.attributes,e,!0))},m=function(n){return function(t){return function(r,e){var o="function"==typeof n?n(r):n,i=a(o,e.intl);return l.h(t,assign({},r,i))}}};d.intl=d,d.IntlProvider=s,d.Text=g,d.Localizer=b,d.withText=m,module.exports=d;
+function n(n){return n&&"object"==typeof n&&"default"in n?n.default:n}function t(n){return null!==n&&void 0!==n}function r(n,t){var o=e({},n);for(var i in t)t.hasOwnProperty(i)&&(o[i]=n[i]&&t[i]&&"object"==typeof n[i]&&"object"==typeof t[i]?r(n[i],t[i]):n[i]||t[i]);return o}function e(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r]);return n}function o(n){if(n=n||{},"string"==typeof n&&(n=n.split(",")),"join"in n){for(var t={},r=0;r<n.length;r++){var e=n[r].trim();e&&(t[e.split(".").pop()]=e)}return t}return n}function i(n,t){return v=t||h,n&&n.replace(/\{\{([\w.-]+)\}\}/g,u)}function u(n,t){for(var r=t.split("."),e=v,o=0;o<r.length;o++)if(null==(e=e[r[o]]))return"";return"string"==typeof e&&e.match(/\{\{/)&&(e=i(e,v)),e}function c(n,r,e,o,u,c){r&&(n=r+"."+n);var a=e&&f(e,n);return(u||0===u)&&a&&"object"==typeof a&&(a=a.splice?a[u]||a[0]:0===u&&t(a.none)?a.none:1===u&&t(a.one||a.singular)?a.one||a.singular:a.some||a.many||a.plural||a.other||a),a&&i(a,o)||c||null}function a(n,t,r){var i={};t=t||{},n=o(n);for(var u in n)if(n.hasOwnProperty(u)&&n[u]){var a=n[u];r||"string"!=typeof a?a.nodeName===g&&(a=e({fallback:a.children&&a.children[0]},a.attributes),i[u]=c(a.id,t.scope,t.dictionary,a.fields,a.plural,a.fallback)):i[u]=c(a,t.scope,t.dictionary)}return i}var l=__webpack_require__(0),f=n(__webpack_require__(82)),p=/[?&#]intl=show/,s=function(n){function t(){n.apply(this,arguments)}return n&&(t.__proto__=n),t.prototype=Object.create(n&&n.prototype),t.prototype.constructor=t,t.prototype.getChildContext=function(){var n=this.props,t=n.scope,o=n.definition,i=n.mark,u=e({},this.context.intl||{});return t&&(u.scope=t),o&&(u.dictionary=r(u.dictionary||{},o)),(i||"undefined"!=typeof location&&String(location).match(p))&&(u.mark=!0),{intl:u}},t.prototype.render=function(n){var t=n.children;return t&&t[0]||null},t}(l.Component),d=function(){for(var n=[],t=arguments.length;t--;)n[t]=arguments[t];if(n.length>1){return y(n[0],n[1])}var r=n[0];return function(n){return y(n,r)}},y=function(n,t){return function(r){return l.h(s,t||{},l.h(n,r))}},h={},v,g=function(n,t){var r=n.id,e=n.children,o=n.plural,i=n.fields,u=t.intl,a=e&&e[0],p=c(r,u&&u.scope,u&&u.dictionary,i,o,a);if(u&&u.mark){var s="dictionary"+(u&&u.scope?"."+u.scope:"")+"."+r;return l.h("mark",{style:"background: "+(p?f(u,s)?"rgba(119,231,117,.5)":"rgba(229,226,41,.5)":"rgba(228,147,51,.5)"),title:r},p)}return p},b=function(n,t){var r=n.children,e=t.intl,o=r&&r[0];return o&&l.cloneElement(o,a(o.attributes,e,!0))},m=function(n){return function(t){return function(r,e){var o="function"==typeof n?n(r):n,i=a(o,e.intl);return l.h(t,assign({},r,i))}}};d.intl=d,d.IntlProvider=s,d.Text=g,d.Localizer=b,d.withText=m,module.exports=d;
 //# sourceMappingURL=preact-i18n.js.map
 
 /***/ }),
@@ -22143,12 +22313,12 @@ var actions = exports.actions = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(37);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__["a"]; });
@@ -22167,12 +22337,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 */
 function isCrushed() {}
 
-if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
+if ("development" !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
   Object(__WEBPACK_IMPORTED_MODULE_5__utils_warning__["a" /* default */])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 }
 
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
 
 /***/ }),
 /* 11 */
@@ -22186,7 +22355,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _loading = __webpack_require__(79);
+var _loading = __webpack_require__(76);
 
 var _loading2 = _interopRequireDefault(_loading);
 
@@ -22206,7 +22375,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _playPause = __webpack_require__(82);
+var _playPause = __webpack_require__(79);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
@@ -22288,7 +22457,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _seekbar = __webpack_require__(88);
+var _seekbar = __webpack_require__(87);
 
 var _seekbar2 = _interopRequireDefault(_seekbar);
 
@@ -22308,7 +22477,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _volume = __webpack_require__(91);
+var _volume = __webpack_require__(90);
 
 var _volume2 = _interopRequireDefault(_volume);
 
@@ -22368,7 +22537,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _overlayPlay = __webpack_require__(55);
+var _overlayPlay = __webpack_require__(54);
 
 var _overlayPlay2 = _interopRequireDefault(_overlayPlay);
 
@@ -22457,7 +22626,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _prePlaybackPlayOverlay = __webpack_require__(76);
+var _prePlaybackPlayOverlay = __webpack_require__(75);
 
 var _prePlaybackPlayOverlay2 = _interopRequireDefault(_prePlaybackPlayOverlay);
 
@@ -22534,9 +22703,71 @@ exports.toSecondsFromHHMMSS = toSecondsFromHHMMSS;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var types = exports.types = {
+  UPDATE_VOLUME: 'volume/UPDATE_VOLUME',
+  UPDATE_VOLUME_DRAGGING_STATUS: 'volume/UPDATE_VOLUME_DRAGGING_STATUS',
+  UPDATE_MUTED: 'volume/UPDATE_MUTED'
+};
+
+var initialState = exports.initialState = {
+  draggingActive: false,
+  volume: 1,
+  muted: false
+};
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  switch (action.type) {
+    case types.UPDATE_VOLUME:
+      return _extends({}, state, {
+        volume: action.volume
+      });
+
+    case types.UPDATE_VOLUME_DRAGGING_STATUS:
+      return _extends({}, state, {
+        draggingActive: action.draggingActive
+      });
+
+    case types.UPDATE_MUTED:
+      return _extends({}, state, {
+        muted: action.muted
+      });
+
+    default:
+      return state;
+  }
+};
+
+var actions = exports.actions = {
+  updateVolume: function updateVolume(volume) {
+    return { type: types.UPDATE_VOLUME, volume: volume };
+  },
+  updateVolumeDraggingStatus: function updateVolumeDraggingStatus(draggingActive) {
+    return { type: types.UPDATE_VOLUME_DRAGGING_STATUS, draggingActive: draggingActive };
+  },
+  updateMuted: function updateMuted(muted) {
+    return { type: types.UPDATE_MUTED, muted: muted };
+  }
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = undefined;
 
-var _settings = __webpack_require__(92);
+var _settings = __webpack_require__(91);
 
 var _settings2 = _interopRequireDefault(_settings);
 
@@ -22545,7 +22776,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _settings2.default;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -22666,7 +22897,7 @@ return Portal;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22677,7 +22908,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _overlay = __webpack_require__(95);
+var _overlay = __webpack_require__(93);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
@@ -22686,7 +22917,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _overlay2.default;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22706,7 +22937,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _language2.default;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22758,7 +22989,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22778,7 +23009,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _timeDisplay2.default;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22798,7 +23029,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _overlayPortal2.default;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22818,7 +23049,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _keyboard2.default;
 
 /***/ }),
-/* 31 */
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _unmuteIndication = __webpack_require__(120);
+
+var _unmuteIndication2 = _interopRequireDefault(_unmuteIndication);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _unmuteIndication2.default;
+
+/***/ }),
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22829,7 +23080,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = playbackUI;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -22851,7 +23102,11 @@ var _playPause = __webpack_require__(12);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbarPlaybackContainer = __webpack_require__(86);
+var _rewind = __webpack_require__(83);
+
+var _rewind2 = _interopRequireDefault(_rewind);
+
+var _seekbarPlaybackContainer = __webpack_require__(85);
 
 var _seekbarPlaybackContainer2 = _interopRequireDefault(_seekbarPlaybackContainer);
 
@@ -22859,11 +23114,11 @@ var _volume = __webpack_require__(15);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _settings = __webpack_require__(23);
+var _settings = __webpack_require__(24);
 
 var _settings2 = _interopRequireDefault(_settings);
 
-var _language = __webpack_require__(26);
+var _language = __webpack_require__(27);
 
 var _language2 = _interopRequireDefault(_language);
 
@@ -22879,13 +23134,17 @@ var _bottomBar = __webpack_require__(17);
 
 var _bottomBar2 = _interopRequireDefault(_bottomBar);
 
-var _overlayPortal = __webpack_require__(29);
+var _overlayPortal = __webpack_require__(30);
 
 var _overlayPortal2 = _interopRequireDefault(_overlayPortal);
 
-var _keyboard = __webpack_require__(30);
+var _keyboard = __webpack_require__(31);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
+
+var _unmuteIndication = __webpack_require__(32);
+
+var _unmuteIndication2 = _interopRequireDefault(_unmuteIndication);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22906,6 +23165,7 @@ function playbackUI(props) {
       'div',
       { className: _style2.default.playerGui, id: 'player-gui' },
       (0, _preact.h)(_overlayPortal2.default, null),
+      (0, _preact.h)(_unmuteIndication2.default, { player: props.player }),
       (0, _preact.h)(_overlayPlay2.default, { player: props.player }),
       (0, _preact.h)(
         _bottomBar2.default,
@@ -22915,6 +23175,7 @@ function playbackUI(props) {
           'div',
           { className: _style2.default.leftControls },
           (0, _preact.h)(_playPause2.default, { player: props.player }),
+          (0, _preact.h)(_rewind2.default, { player: props.player, step: 10 }),
           (0, _preact.h)(_timeDisplayPlaybackContainer2.default, { format: 'current / total' })
         ),
         (0, _preact.h)(
@@ -22932,204 +23193,14 @@ function playbackUI(props) {
 }
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActionTypes; });
 /* harmony export (immutable) */ __webpack_exports__["b"] = createStore;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
 
 
@@ -23381,13 +23452,13 @@ var ActionTypes = {
 }
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(64);
 
 
 
@@ -23453,11 +23524,11 @@ function isPlainObject(value) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(58);
 
 
 /** Built-in value references. */
@@ -23467,7 +23538,7 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23495,7 +23566,7 @@ function warning(message) {
 }
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23534,13 +23605,13 @@ function compose() {
 }
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_38__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_39__;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23578,68 +23649,6 @@ exports.default = function () {
 var actions = exports.actions = {
   updateLoadingSpinnerState: function updateLoadingSpinnerState(show) {
     return { type: types.UPDATE_LOADING_SPINNER_STATE, show: show };
-  }
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var types = exports.types = {
-  UPDATE_VOLUME: 'volume/UPDATE_VOLUME',
-  UPDATE_VOLUME_DRAGGING_STATUS: 'volume/UPDATE_VOLUME_DRAGGING_STATUS',
-  UPDATE_MUTED: 'volume/UPDATE_MUTED'
-};
-
-var initialState = exports.initialState = {
-  draggingActive: false,
-  volume: 1,
-  muted: false
-};
-
-exports.default = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments[1];
-
-  switch (action.type) {
-    case types.UPDATE_VOLUME:
-      return _extends({}, state, {
-        volume: action.volume
-      });
-
-    case types.UPDATE_VOLUME_DRAGGING_STATUS:
-      return _extends({}, state, {
-        draggingActive: action.draggingActive
-      });
-
-    case types.UPDATE_MUTED:
-      return _extends({}, state, {
-        muted: action.muted
-      });
-
-    default:
-      return state;
-  }
-};
-
-var actions = exports.actions = {
-  updateVolume: function updateVolume(volume) {
-    return { type: types.UPDATE_VOLUME, volume: volume };
-  },
-  updateVolumeDraggingStatus: function updateVolumeDraggingStatus(draggingActive) {
-    return { type: types.UPDATE_VOLUME_DRAGGING_STATUS, draggingActive: draggingActive };
-  },
-  updateMuted: function updateMuted(muted) {
-    return { type: types.UPDATE_MUTED, muted: muted };
   }
 };
 
@@ -23707,7 +23716,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _smartContainer = __webpack_require__(93);
+var _smartContainer = __webpack_require__(92);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
@@ -23719,37 +23728,6 @@ exports.default = _smartContainer2.default;
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(94);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_smart-container.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_smart-container.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -23759,17 +23737,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _smartContainer = __webpack_require__(43);
+var _smartContainer = __webpack_require__(94);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
 var _preact = __webpack_require__(0);
 
-var _dropdown = __webpack_require__(45);
+var _dropdown = __webpack_require__(44);
 
 var _dropdown2 = _interopRequireDefault(_dropdown);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -23834,7 +23812,7 @@ var SmartContainerItem = function (_Component) {
 exports.default = SmartContainerItem;
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23854,7 +23832,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _dropdown2.default;
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23895,7 +23873,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23906,7 +23884,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = adsUI;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -23920,7 +23898,7 @@ var _playPause = __webpack_require__(12);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbarAdsContainer = __webpack_require__(120);
+var _seekbarAdsContainer = __webpack_require__(121);
 
 var _seekbarAdsContainer2 = _interopRequireDefault(_seekbarAdsContainer);
 
@@ -23932,25 +23910,29 @@ var _fullscreen = __webpack_require__(16);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-var _timeDisplayAdsContainer = __webpack_require__(122);
+var _timeDisplayAdsContainer = __webpack_require__(123);
 
 var _timeDisplayAdsContainer2 = _interopRequireDefault(_timeDisplayAdsContainer);
 
-var _adSkip = __webpack_require__(124);
+var _adSkip = __webpack_require__(125);
 
 var _adSkip2 = _interopRequireDefault(_adSkip);
 
-var _adLearnMore = __webpack_require__(128);
+var _adLearnMore = __webpack_require__(129);
 
 var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
 
-var _topBar = __webpack_require__(48);
+var _topBar = __webpack_require__(47);
 
 var _topBar2 = _interopRequireDefault(_topBar);
 
 var _bottomBar = __webpack_require__(17);
 
 var _bottomBar2 = _interopRequireDefault(_bottomBar);
+
+var _unmuteIndication = __webpack_require__(32);
+
+var _unmuteIndication2 = _interopRequireDefault(_unmuteIndication);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23973,6 +23955,7 @@ function adsUI(props) {
     (0, _preact.h)(
       'div',
       { className: _style2.default.playerGui, id: 'player-gui' },
+      (0, _preact.h)(_unmuteIndication2.default, { player: props.player, hasTopBar: true }),
       (0, _preact.h)(
         'div',
         null,
@@ -24021,6 +24004,7 @@ function adsUI(props) {
  * Gets the ads ui customization settings
  * @returns {Object} - Customization object
  */
+
 function getAdsUiCustomization() {
   return {
     learnMoreButton: useCustomLearnMoreButton(),
@@ -24061,7 +24045,7 @@ function useCustomLearnMoreButton() {
 }
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24072,7 +24056,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _topBar = __webpack_require__(132);
+var _topBar = __webpack_require__(133);
 
 var _topBar2 = _interopRequireDefault(_topBar);
 
@@ -24081,7 +24065,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _topBar2.default;
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24092,7 +24076,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = liveUI;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -24114,7 +24098,7 @@ var _playPause = __webpack_require__(12);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
-var _seekbarLivePlaybackContainer = __webpack_require__(135);
+var _seekbarLivePlaybackContainer = __webpack_require__(136);
 
 var _seekbarLivePlaybackContainer2 = _interopRequireDefault(_seekbarLivePlaybackContainer);
 
@@ -24122,11 +24106,11 @@ var _volume = __webpack_require__(15);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _settings = __webpack_require__(23);
+var _settings = __webpack_require__(24);
 
 var _settings2 = _interopRequireDefault(_settings);
 
-var _language = __webpack_require__(26);
+var _language = __webpack_require__(27);
 
 var _language2 = _interopRequireDefault(_language);
 
@@ -24138,17 +24122,21 @@ var _bottomBar = __webpack_require__(17);
 
 var _bottomBar2 = _interopRequireDefault(_bottomBar);
 
-var _overlayPortal = __webpack_require__(29);
+var _overlayPortal = __webpack_require__(30);
 
 var _overlayPortal2 = _interopRequireDefault(_overlayPortal);
 
-var _keyboard = __webpack_require__(30);
+var _keyboard = __webpack_require__(31);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
-var _liveTag = __webpack_require__(137);
+var _liveTag = __webpack_require__(138);
 
 var _liveTag2 = _interopRequireDefault(_liveTag);
+
+var _unmuteIndication = __webpack_require__(32);
+
+var _unmuteIndication2 = _interopRequireDefault(_unmuteIndication);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24169,6 +24157,7 @@ function liveUI(props) {
       'div',
       { className: _style2.default.playerGui, id: 'player-gui' },
       (0, _preact.h)(_overlayPortal2.default, null),
+      (0, _preact.h)(_unmuteIndication2.default, null),
       (0, _preact.h)(_overlayPlay2.default, { player: props.player }),
       (0, _preact.h)(
         _bottomBar2.default,
@@ -24195,7 +24184,7 @@ function liveUI(props) {
 }
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24237,7 +24226,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24263,6 +24252,7 @@ var types = exports.types = {
   UPDATE_TEXT_TRACKS: 'engine/UPDATE_TEXT_TRACKS',
   UPDATE_AD_BREAK: 'engine/UPDATE_AD_BREAK',
   UPDATE_AD_BREAK_PROGRESS: 'engine/UPDATE_AD_BREAK_PROGRESS',
+  UPDATE_AD_BREAK_COMPLETED: 'engine/UPDATE_AD_BREAK_COMPLETED',
   UPDATE_AD_IS_PLAYING: 'engine/UPDATE_AD_IS_PLAYING',
   UPDATE_AD_SKIP_TIME_OFFSET: 'engine/UPDATE_AD_SKIP_TIME_OFFSET',
   UPDATE_AD_SKIPPABLE_STATE: 'engine/UPDATE_AD_SKIPPABLE_STATE',
@@ -24371,6 +24361,14 @@ exports.default = function () {
         adProgress: action.adProgress
       });
 
+    case types.UPDATE_AD_BREAK_COMPLETED:
+      return _extends({}, state, {
+        adProgress: {
+          currentTime: state.adProgress.duration,
+          duration: state.adProgress.duration
+        }
+      });
+
     case types.UPDATE_AD_IS_PLAYING:
       return _extends({}, state, {
         adIsPlaying: action.adIsPlaying
@@ -24451,6 +24449,9 @@ var actions = exports.actions = {
   updateAdBreakProgress: function updateAdBreakProgress(currentTime, duration) {
     return { type: types.UPDATE_AD_BREAK_PROGRESS, adProgress: { currentTime: currentTime, duration: duration } };
   },
+  updateAdBreakCompleted: function updateAdBreakCompleted() {
+    return { type: types.UPDATE_AD_BREAK_COMPLETED };
+  },
   updateAdIsPlaying: function updateAdIsPlaying(adIsPlaying) {
     return { type: types.UPDATE_AD_IS_PLAYING, adIsPlaying: adIsPlaying };
   },
@@ -24475,7 +24476,7 @@ var actions = exports.actions = {
 };
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24495,7 +24496,7 @@ Object.defineProperty(exports, 'h', {
   }
 });
 
-var _playback = __webpack_require__(31);
+var _playback = __webpack_require__(33);
 
 Object.defineProperty(exports, 'playbackUI', {
   enumerable: true,
@@ -24504,7 +24505,7 @@ Object.defineProperty(exports, 'playbackUI', {
   }
 });
 
-var _ads = __webpack_require__(47);
+var _ads = __webpack_require__(46);
 
 Object.defineProperty(exports, 'adsUI', {
   enumerable: true,
@@ -24513,7 +24514,7 @@ Object.defineProperty(exports, 'adsUI', {
   }
 });
 
-var _live = __webpack_require__(49);
+var _live = __webpack_require__(48);
 
 Object.defineProperty(exports, 'liveUI', {
   enumerable: true,
@@ -24576,7 +24577,7 @@ Object.defineProperty(exports, 'VolumeControl', {
   }
 });
 
-var _share = __webpack_require__(141);
+var _share = __webpack_require__(142);
 
 Object.defineProperty(exports, 'ShareControl', {
   enumerable: true,
@@ -24585,7 +24586,7 @@ Object.defineProperty(exports, 'ShareControl', {
   }
 });
 
-var _settings = __webpack_require__(23);
+var _settings = __webpack_require__(24);
 
 Object.defineProperty(exports, 'SettingsControl', {
   enumerable: true,
@@ -24594,7 +24595,7 @@ Object.defineProperty(exports, 'SettingsControl', {
   }
 });
 
-var _language = __webpack_require__(26);
+var _language = __webpack_require__(27);
 
 Object.defineProperty(exports, 'LanguageControl', {
   enumerable: true,
@@ -24612,7 +24613,7 @@ Object.defineProperty(exports, 'FullscreenControl', {
   }
 });
 
-var _timeDisplay = __webpack_require__(28);
+var _timeDisplay = __webpack_require__(29);
 
 Object.defineProperty(exports, 'TimeDisplay', {
   enumerable: true,
@@ -24621,7 +24622,7 @@ Object.defineProperty(exports, 'TimeDisplay', {
   }
 });
 
-var _topBar = __webpack_require__(48);
+var _topBar = __webpack_require__(47);
 
 Object.defineProperty(exports, 'TopBar', {
   enumerable: true,
@@ -24639,7 +24640,7 @@ Object.defineProperty(exports, 'BottomBar', {
   }
 });
 
-var _overlayPortal = __webpack_require__(29);
+var _overlayPortal = __webpack_require__(30);
 
 Object.defineProperty(exports, 'OverlayPortal', {
   enumerable: true,
@@ -24648,7 +24649,7 @@ Object.defineProperty(exports, 'OverlayPortal', {
   }
 });
 
-var _keyboard = __webpack_require__(30);
+var _keyboard = __webpack_require__(31);
 
 Object.defineProperty(exports, 'KeyboardControl', {
   enumerable: true,
@@ -24657,7 +24658,7 @@ Object.defineProperty(exports, 'KeyboardControl', {
   }
 });
 
-var _uiManager = __webpack_require__(145);
+var _uiManager = __webpack_require__(146);
 
 var _uiManager2 = _interopRequireDefault(_uiManager);
 
@@ -24666,15 +24667,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _uiManager2.default;
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".playkit-row {\n  display: block; }\n  .playkit-row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.playkit-d-inline-block {\n  display: inline-block; }\n\n.playkit-mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.playkit-font-size-base {\n  font-size: 15px; }\n\n.playkit-form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .playkit-form-group.playkit-has-error .playkit-form-control {\n    border-color: #db1f26; }\n    .playkit-form-group.playkit-has-error .playkit-form-control:focus {\n      border-color: #fff; }\n  .playkit-form-group.playkit-has-icon .playkit-form-control {\n    padding-left: 34px; }\n  .playkit-form-group .playkit-icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.playkit-form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .playkit-form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .playkit-form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .playkit-form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .playkit-form-control:focus + .playkit-icon {\n      fill: #999; }\n\ntextarea.playkit-form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.playkit-checkbox {\n  font-size: 15px;\n  position: relative; }\n  .playkit-checkbox input {\n    display: none; }\n  .playkit-checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .playkit-checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.playkit-form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .playkit-form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .playkit-form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .playkit-form-group-row .playkit-dropdown {\n    float: right; }\n\n.playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n\n@keyframes playkit-openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.playkit-dropdown {\n  position: relative;\n  font-size: 15px; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-button .playkit-icon {\n    transform: rotate(180deg); }\n  .playkit-dropdown .playkit-dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .playkit-dropdown .playkit-dropdown-button .playkit-icon {\n      width: 16px;\n      height: 16px;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.playkit-dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: playkit-openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .playkit-dropdown-menu.playkit-top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .playkit-dropdown-menu.playkit-bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .playkit-dropdown-menu.playkit-right {\n    left: 0; }\n  .playkit-dropdown-menu.playkit-left {\n    right: 0; }\n  .playkit-dropdown-menu .playkit-dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item:hover {\n      color: #fff; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active {\n      color: #01ACCD; }\n      .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active .playkit-icon-check {\n        background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%2301ACCD' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item .playkit-icon-check {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.playkit-tooltip {\n  display: inline-block;\n  height: 22px;\n  border-radius: 4px;\n  background-color: #FFFFFF;\n  padding: 3px 13px;\n  color: #333333;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 16px;\n  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); }\n\n.playkit-player .playkit-control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer; }\n  .playkit-player .playkit-control-button i {\n    width: 32px;\n    height: 32px; }\n  .playkit-player .playkit-control-button.playkit-active {\n    opacity: 1; }\n  .playkit-player .playkit-control-button.playkit-control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button:hover {\n  opacity: 1; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button.playkit-control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.playkit-player .playkit-control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.playkit-player.playkit-touch .playkit-player .playkit-control-button-container {\n  position: static; }\n\n.playkit-player.playkit-touch .playkit-control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.playkit-player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .playkit-player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .playkit-player * {\n    box-sizing: border-box;\n    outline: none; }\n  .playkit-player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .playkit-player video {\n    width: 100%; }\n  .playkit-player .playkit-player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .playkit-player .playkit-player-gui input, .playkit-player .playkit-player-gui textarea {\n      font-family: sans-serif; }\n  .playkit-player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .playkit-player.playkit-overlay-active #overlay-portal {\n    z-index: 11; }\n  .playkit-player.playkit-metadata-loaded .playkit-player-gui,\n  .playkit-player.playkit-state-paused .playkit-player-gui,\n  .playkit-player.playkit-overlay-active .playkit-player-gui,\n  .playkit-player.playkit-menu-active .playkit-player-gui {\n    opacity: 1; }\n\n.playkit-player [id^=playkit-ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-hover [id^=playkit-ads-container],\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-state-paused [id^=playkit-ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n\n.playkit-player.playkit-overlay-active .playkit-subtitles {\n  display: none; }\n\n.playkit-player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player:not(.playkit-overlay-active).playkit-state-paused .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active):hover .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active).playkit-hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes playkit-openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.playkit-overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: playkit-openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .playkit-overlay.playkit-active {\n    display: block;\n    opacity: 1; }\n  .playkit-overlay .playkit-overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .playkit-overlay .playkit-title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .playkit-overlay .playkit-close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    cursor: pointer; }\n    .playkit-overlay .playkit-close-overlay .playkit-icon-close {\n      width: 24px;\n      height: 24px; }\n  .playkit-overlay .playkit-overlay-screen {\n    display: none; }\n    .playkit-overlay .playkit-overlay-screen.playkit-active {\n      display: block; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-overlay-contents {\n  padding: 36px 20px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-close-overlay {\n  top: 38px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-title {\n  margin-bottom: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-overlay-contents {\n  padding: 16px 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n\n.playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 60px 0; }\n  .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:first-child {\n      margin-left: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:last-child {\n      margin-right: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-facebook-share-btn {\n      background-color: #3B5998; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-twitter-share-btn {\n      background-color: #1DA1F2; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-google-plus-share-btn {\n      background-color: #DD4B39; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.playkit-share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.playkit-link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .playkit-link-options-container .playkit-copy-url-row {\n    display: flex; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-input-copy-url {\n      margin: 0; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url {\n      margin-left: 16px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied {\n        background-color: #009444; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .playkit-link-options-container .playkit-video-start-options-row {\n    margin-top: 24px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-checkbox {\n      margin-right: 15px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-form-group {\n      margin: 0; }\n\n.playkit-player:not(.playkit-touch) .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.playkit-player.playkit-size-md .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 40px 0; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 20px 0; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-black-bg {\n    background-color: #000; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-yellow-text {\n    color: #FAFF00; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick .playkit-icon {\n      vertical-align: top; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 50px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form .playkit-slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:first-child {\n    margin-left: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:last-child {\n    margin-right: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-custom {\n    width: auto;\n    padding: 0 10px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa,\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: block !important; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-dragging-active .playkit-volume-control-bar {\n  display: block; }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves {\n  transform: translateX(0px); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves, .playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.playkit-control-button-container.playkit-volume-control i {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.playkit-volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .playkit-volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .playkit-volume-control-bar .playkit-bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .playkit-volume-control-bar .playkit-progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.playkit-touch .playkit-control-button-container.playkit-volume-control:hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n\n.playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n\n.playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n\n.playkit-player .playkit-video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n\n.playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n", ""]);
+exports.push([module.i, ".playkit-row {\n  display: block; }\n  .playkit-row:after {\n    content: '';\n    clear: both;\n    display: block; }\n\n.playkit-d-inline-block {\n  display: inline-block; }\n\n.playkit-mobile-hidden-select {\n  display: block;\n  opacity: 0;\n  position: absolute;\n  top: 0;\n  left: 0px;\n  width: 100%;\n  height: 100%; }\n\n.playkit-font-size-base {\n  font-size: 15px; }\n\n.playkit-form-group {\n  margin: 10px 0;\n  position: relative;\n  max-width: 100%; }\n  .playkit-form-group.playkit-has-error .playkit-form-control {\n    border-color: #db1f26; }\n    .playkit-form-group.playkit-has-error .playkit-form-control:focus {\n      border-color: #fff; }\n  .playkit-form-group.playkit-has-icon .playkit-form-control {\n    padding-left: 34px; }\n  .playkit-form-group .playkit-icon {\n    position: absolute;\n    top: 2px;\n    left: 2px;\n    width: 32px;\n    height: 32px;\n    fill: rgba(255, 255, 255, 0.4); }\n\n.playkit-form-control {\n  height: 36px;\n  width: 100%;\n  min-width: 72px;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.4);\n  font-size: 15px;\n  line-height: 18px;\n  color: #fff;\n  padding: 8px 10px;\n  text-overflow: ellipsis; }\n  .playkit-form-control::-webkit-input-placeholder {\n    color: rgba(255, 255, 255, 0.6); }\n  .playkit-form-control:focus {\n    background-color: #fff;\n    border-color: #fff;\n    color: #333; }\n    .playkit-form-control:focus::-webkit-input-placeholder {\n      color: #ccc; }\n    .playkit-form-control:focus + .playkit-icon {\n      fill: #999; }\n\ntextarea.playkit-form-control {\n  min-height: 72px; }\n\nselect {\n  font-size: 15px;\n  font-family: sans-serif;\n  color: #fff;\n  -webkit-appearance: none;\n  border: 0;\n  background: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFFFFF' viewBox='0 0 1024 1024'><path d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /></svg>\") no-repeat;\n  background-size: 16px;\n  background-position: 100% center;\n  background-repeat: no-repeat;\n  padding-right: 24px; }\n\n.playkit-checkbox {\n  font-size: 15px;\n  position: relative; }\n  .playkit-checkbox input {\n    display: none; }\n  .playkit-checkbox label:before {\n    height: 16px;\n    width: 16px;\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    background-color: rgba(0, 0, 0, 0.4);\n    margin-right: 8px;\n    display: inline-block;\n    content: '';\n    vertical-align: middle; }\n  .playkit-checkbox input:checked + label:before {\n    border: 1px solid #fff;\n    background: #fff; }\n\n.playkit-form-group-row {\n  font-size: 15px;\n  margin: 24px 0; }\n  .playkit-form-group-row:after {\n    clear: both;\n    content: ' ';\n    display: block; }\n  .playkit-form-group-row label {\n    float: left;\n    color: rgba(244, 244, 244, 0.8); }\n  .playkit-form-group-row .playkit-dropdown {\n    float: right; }\n\n.playkit-btn {\n  text-decoration: none;\n  height: 36px;\n  border-radius: 18px;\n  color: #fff;\n  line-height: 36px;\n  font-weight: bold;\n  cursor: pointer;\n  display: inline-block;\n  padding: 0 24px; }\n  .playkit-btn.playkit-btn-block {\n    display: block; }\n  .playkit-btn.playkit-btn-dark-transparent {\n    background-color: rgba(0, 0, 0, 0.5);\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    line-height: 32px; }\n    .playkit-btn.playkit-btn-dark-transparent:hover {\n      color: #fff;\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n  .playkit-btn.playkit-btn-branded {\n    background-color: #01ACCD; }\n    .playkit-btn.playkit-btn-branded:hover {\n      color: #fff; }\n\n.playkit-btn-rounded {\n  height: 36px;\n  width: 36px;\n  min-width: 36px;\n  min-height: 36px;\n  border-radius: 18px;\n  background-color: rgba(0, 0, 0, 0.4);\n  display: inline-block;\n  padding: 2px; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-rewind {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' opacity='0.5' d='M258.471 323.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z'%3E%3C/path%3E%3Cpath fill='%23fff' d='M816.068 431.974c-20.553-78.699-71.369-149.456-147.375-193.338-139.923-80.785-316.040-42.095-410.222 84.418l89.738-4.499c20.299-1.018 37.579 14.613 38.596 34.911s-14.613 37.579-34.911 38.596l-159.799 8.011c-16.335 0.819-31.25-9.242-36.61-24.694l-52.434-151.164c-6.66-19.202 3.506-40.167 22.708-46.828s40.167 3.506 46.828 22.708l27.226 78.49c116.254-155.703 333.248-203.244 505.682-103.69 91.184 52.645 152.976 136.648 179.618 230.523l-69.044 26.555z'%3E%3C/path%3E%3C/svg%3E\"); }\n\n.playkit-icon-rewind-10 {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M258.471 323.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z'%3E%3C/path%3E%3Cpath fill='%23fff' d='M413.327 636.083h67.358v-252.083h-48.527c-2.173 7.358-4.949 13.589-8.329 18.693s-7.726 9.139-13.037 12.106c-5.311 2.967-11.709 5.103-19.193 6.409s-16.417 1.958-26.798 1.958v41.302h48.527v171.616zM596.807 554.192c0 17.803 1.569 29.849 4.708 36.139s8.208 9.435 15.21 9.435c7.001 0 12.071-3.145 15.21-9.435s4.708-18.336 4.708-36.139v-83.316c0-17.803-1.569-29.849-4.708-36.139s-8.208-9.435-15.21-9.435c-7.001 0-12.071 3.145-15.21 9.435s-4.708 18.336-4.708 36.139v83.316zM529.449 512.534c0-25.398 1.75-46.405 5.251-63.021s8.812-29.789 15.934-39.522c7.122-9.732 16.176-16.497 27.16-20.295s23.962-5.697 38.93-5.697c14.969 0 27.945 1.899 38.93 5.697s20.038 10.563 27.16 20.295c7.122 9.732 12.433 22.906 15.934 39.522s5.251 37.622 5.251 63.021c0 25.636-1.75 46.702-5.251 63.199s-8.812 29.552-15.934 39.166c-7.122 9.613-16.176 16.2-27.16 19.761s-23.962 5.341-38.93 5.341c-14.969 0-27.945-1.78-38.93-5.341s-20.038-10.147-27.16-19.761c-7.122-9.613-12.433-22.668-15.934-39.166s-5.251-37.563-5.251-63.199z'%3E%3C/path%3E%3C/svg%3E\"); }\n\n@keyframes playkit-openDropmenu {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n.playkit-dropdown {\n  position: relative;\n  font-size: 15px; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-menu {\n    display: block;\n    opacity: 1; }\n  .playkit-dropdown.playkit-active .playkit-dropdown-button .playkit-icon {\n    transform: rotate(180deg); }\n  .playkit-dropdown .playkit-dropdown-button {\n    font-weight: bold;\n    line-height: 18px;\n    color: #fff;\n    cursor: pointer;\n    padding-left: 20px; }\n    .playkit-dropdown .playkit-dropdown-button .playkit-icon {\n      width: 16px;\n      height: 16px;\n      vertical-align: middle;\n      margin-left: 6px;\n      transition: 150ms transform;\n      will-change: transform; }\n\n.playkit-dropdown-menu {\n  display: block;\n  opacity: 1;\n  position: absolute;\n  background-color: #333333;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  padding: 6px 0;\n  z-index: 5;\n  animation: playkit-openDropmenu 100ms ease-out forwards;\n  max-height: 173px;\n  overflow-y: auto;\n  font-size: 15px;\n  text-align: left; }\n  .playkit-dropdown-menu.playkit-top {\n    margin-bottom: 10px;\n    bottom: 100%; }\n  .playkit-dropdown-menu.playkit-bottom {\n    margin-top: 10px;\n    top: 100%; }\n  .playkit-dropdown-menu.playkit-right {\n    left: 0; }\n  .playkit-dropdown-menu.playkit-left {\n    right: 0; }\n  .playkit-dropdown-menu .playkit-dropdown-menu-item {\n    padding: 2px 10px 2px 16px;\n    white-space: nowrap;\n    min-height: 30px;\n    cursor: pointer; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item:hover {\n      color: #fff; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active {\n      color: #01ACCD; }\n      .playkit-dropdown-menu .playkit-dropdown-menu-item.playkit-active .playkit-icon-check {\n        background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%2301ACCD' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item .playkit-icon-check {\n      display: inline-block;\n      margin-left: 16px;\n      vertical-align: middle;\n      width: 24px;\n      height: 24px; }\n    .playkit-dropdown-menu .playkit-dropdown-menu-item span {\n      vertical-align: middle;\n      line-height: 26px; }\n\n.playkit-player .playkit-control-button {\n  width: 32px;\n  height: 32px;\n  background: transparent;\n  display: inline-block;\n  opacity: 0.8;\n  border: none;\n  padding: 0;\n  cursor: pointer; }\n  .playkit-player .playkit-control-button i {\n    width: 32px;\n    height: 32px; }\n  .playkit-player .playkit-control-button.playkit-active {\n    opacity: 1; }\n  .playkit-player .playkit-control-button.playkit-control-button-rounded {\n    width: 36px;\n    height: 36px;\n    padding: 2px; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button:hover {\n  opacity: 1; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button.playkit-control-button-rounded:hover {\n  background-color: rgba(0, 0, 0, 0.4);\n  border-radius: 18px; }\n\n.playkit-player .playkit-control-button-container {\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n\n.playkit-player.playkit-touch .playkit-player .playkit-control-button-container {\n  position: static; }\n\n.playkit-player.playkit-touch .playkit-control-button {\n  position: relative; }\n\na {\n  color: #01ACCD;\n  text-decoration: underline;\n  font-size: 15px;\n  line-height: 18px;\n  cursor: pointer; }\n  a:hover {\n    color: #01819a; }\n  a:active {\n    opacity: 0.7; }\n\n.kaltura-player-container {\n  position: absolute !important;\n  top: 0;\n  background-color: #000; }\n\n.playkit-player {\n  overflow: hidden;\n  user-select: none;\n  width: 100%; }\n  .playkit-player:-webkit-full-screen {\n    width: 100%;\n    height: 100%;\n    max-width: none; }\n  .playkit-player * {\n    box-sizing: border-box;\n    outline: none; }\n  .playkit-player ::selection {\n    background-color: rgba(0, 0, 0, 0.1); }\n  .playkit-player video {\n    width: 100%; }\n  .playkit-player .playkit-player-gui {\n    opacity: 0;\n    overflow: hidden;\n    font-size: 0;\n    font-family: sans-serif; }\n    .playkit-player .playkit-player-gui input, .playkit-player .playkit-player-gui textarea {\n      font-family: sans-serif; }\n  .playkit-player #overlay-portal {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%; }\n  .playkit-player.playkit-overlay-active #overlay-portal {\n    z-index: 11; }\n  .playkit-player.playkit-metadata-loaded .playkit-player-gui,\n  .playkit-player.playkit-state-paused .playkit-player-gui,\n  .playkit-player.playkit-overlay-active .playkit-player-gui,\n  .playkit-player.playkit-menu-active .playkit-player-gui {\n    opacity: 1; }\n\n.playkit-player [id^=playkit-ads-container] {\n  z-index: 5;\n  transition: transform 100ms; }\n\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-hover [id^=playkit-ads-container],\n.playkit-player:not(.playkit-ad-break).playkit-metadata-loaded.playkit-state-paused [id^=playkit-ads-container] {\n  transform: translateY(-60px); }\n\nvideo {\n  left: 0; }\n  video::-webkit-media-controls-panel-container, video::-webkit-media-controls {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-controls-start-playback-button {\n    display: none !important;\n    -webkit-appearance: none; }\n  video::-webkit-media-text-track-container {\n    bottom: 0;\n    height: 100% !important; }\n\n.playkit-player video::-webkit-media-text-track-display {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player.playkit-state-paused video::-webkit-media-text-track-display,\n.playkit-player.playkit-hover video::-webkit-media-text-track-display {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-player.playkit-overlay-active .playkit-subtitles {\n  display: none; }\n\n.playkit-player .playkit-subtitles {\n  transform: translateY(0px);\n  transition: ease-in 100ms; }\n\n.playkit-player:not(.playkit-overlay-active).playkit-state-paused .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active):hover .playkit-subtitles,\n.playkit-player:not(.playkit-overlay-active).playkit-hover .playkit-subtitles {\n  transform: translateY(-60px);\n  transition: ease-out 100ms; }\n\n.playkit-video-player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black; }\n\n@keyframes playkit-openOverlay {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.playkit-overlay {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: none;\n  opacity: 0;\n  animation: playkit-openOverlay 100ms ease-in-out forwards;\n  z-index: 11; }\n  .playkit-overlay.playkit-active {\n    display: block;\n    opacity: 1; }\n  .playkit-overlay .playkit-overlay-contents {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.42);\n    z-index: 4;\n    text-align: center;\n    color: #fff;\n    padding: 60px 20px 30px 20px;\n    overflow-y: auto; }\n  .playkit-overlay .playkit-title {\n    font-size: 24px;\n    font-weight: bold;\n    line-height: 29px;\n    margin-bottom: 60px; }\n  .playkit-overlay .playkit-close-overlay {\n    position: absolute;\n    top: 48px;\n    right: 48px;\n    z-index: 5;\n    cursor: pointer; }\n    .playkit-overlay .playkit-close-overlay .playkit-icon-close {\n      width: 24px;\n      height: 24px; }\n  .playkit-overlay .playkit-overlay-screen {\n    display: none; }\n    .playkit-overlay .playkit-overlay-screen.playkit-active {\n      display: block; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-overlay-contents {\n  padding: 36px 20px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-close-overlay {\n  top: 38px; }\n\n.playkit-player.playkit-size-md .playkit-overlay .playkit-title {\n  margin-bottom: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-overlay-contents {\n  padding: 16px 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-close-overlay {\n  top: 15px;\n  right: 24px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay .playkit-title {\n  font-size: 16px;\n  line-height: 19px;\n  margin-bottom: 24px; }\n\n@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n\n.playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 60px 0; }\n  .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded {\n    margin: 0 8px;\n    transition: transform 100ms;\n    will-change: transform; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:first-child {\n      margin-left: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:last-child {\n      margin-right: 0; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-facebook-share-btn {\n      background-color: #3B5998; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-twitter-share-btn {\n      background-color: #1DA1F2; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-google-plus-share-btn {\n      background-color: #DD4B39; }\n    .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded.playkit-linkedin-share-btn {\n      background-color: #00A0DC; }\n\n.playkit-share-main-container {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto;\n  text-align: center; }\n\n.playkit-link-options-container {\n  width: 400px;\n  max-width: 100%;\n  text-align: left;\n  margin: 0 auto; }\n  .playkit-link-options-container .playkit-copy-url-row {\n    display: flex; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-input-copy-url {\n      margin: 0; }\n    .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url {\n      margin-left: 16px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-icon {\n        will-change: transform;\n        transition: 100ms transform;\n        position: absolute;\n        width: 32px; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url .playkit-check-icon {\n        transform: scale(0);\n        opacity: 0; }\n      .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied {\n        background-color: #009444; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-copy-icon {\n          transform: scale(0);\n          opacity: 0; }\n        .playkit-link-options-container .playkit-copy-url-row .playkit-btn-copy-url.playkit-copied .playkit-check-icon {\n          transform: scale(1);\n          opacity: 1; }\n  .playkit-link-options-container .playkit-video-start-options-row {\n    margin-top: 24px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-checkbox {\n      margin-right: 15px; }\n    .playkit-link-options-container .playkit-video-start-options-row .playkit-form-group {\n      margin: 0; }\n\n.playkit-player:not(.playkit-touch) .playkit-overlay.playkit-share-overlay .playkit-share-icons .playkit-btn-rounded:hover {\n  transform: scale(1.1667); }\n\n.playkit-player.playkit-size-md .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 40px 0; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-share-overlay .playkit-share-icons {\n  margin: 20px 0; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 36px;\n  text-align: center;\n  padding: 0 31px;\n  display: inline-block;\n  margin: 0 12px;\n  cursor: pointer;\n  position: relative; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-black-bg {\n    background-color: #000; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-yellow-text {\n    color: #FAFF00; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick {\n    height: 16px;\n    width: 16px;\n    border-radius: 8px;\n    background-color: #01ACCD;\n    position: absolute;\n    top: -5px;\n    right: -5px; }\n    .playkit-overlay.playkit-cvaa-overlay .playkit-sample .playkit-active-tick .playkit-icon {\n      vertical-align: top; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-sample span {\n    font-size: 16px !important;\n    line-height: 1;\n    vertical-align: middle; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa {\n  margin-top: 50px;\n  height: 40px;\n  width: 400px;\n  max-width: 100%;\n  border: 2px solid rgba(255, 255, 255, 0.2);\n  border-radius: 4px;\n  font-size: 16px;\n  font-weight: bold;\n  line-height: 38px;\n  text-align: center;\n  display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 50px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form {\n  width: 300px;\n  max-width: 100%;\n  margin: 0 auto; }\n  .playkit-overlay.playkit-cvaa-overlay .playkit-custom-caption-form .playkit-slider {\n    float: right;\n    width: 100px;\n    margin-top: 5px; }\n\n.playkit-overlay.playkit-cvaa-overlay .playkit-preview-container {\n  width: 100%;\n  text-align: center;\n  font-size: 16px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample {\n  width: 30%;\n  margin: 2.33%;\n  padding: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:first-child {\n    margin-left: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample:last-child {\n    margin-right: 0; }\n  .playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-sample.playkit-custom {\n    width: auto;\n    padding: 0 10px; }\n\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-button-save-cvaa,\n.playkit-player.playkit-size-sm .playkit-overlay.playkit-cvaa-overlay .playkit-custom-captions-applied {\n  margin-top: 20px; }\n\n@keyframes playkit-kaltura-spinner {\n  0% {\n    transform: rotate(0deg) scale(0.7);\n    opacity: 1; }\n  70% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; }\n  82% {\n    transform: rotate(360deg) scale(0);\n    opacity: 0; }\n  87% {\n    transform: rotate(360deg) scale(0.9);\n    opacity: 1; }\n  100% {\n    transform: rotate(360deg) scale(0.7);\n    opacity: 1; } }\n\n.playkit-loading-backdrop {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.3);\n  transition: 100ms opacity;\n  opacity: 0; }\n  .playkit-loading-backdrop.playkit-show {\n    opacity: 1; }\n    .playkit-loading-backdrop.playkit-show .playkit-spinner-container {\n      display: block; }\n  .playkit-loading-backdrop .playkit-spinner-container {\n    display: none;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate3d(-50px, -50px, 0); }\n\n.playkit-spinner {\n  width: 100px;\n  height: 100px;\n  position: relative;\n  animation: playkit-kaltura-spinner 2.5s infinite; }\n  .playkit-spinner span {\n    width: 8px;\n    height: 8px;\n    background-color: #fff;\n    display: block;\n    border-radius: 8px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin-top: -4px;\n    margin-left: -4px; }\n    .playkit-spinner span:nth-child(1) {\n      transform: rotate(45deg) translateX(-25px) translateY(-25px);\n      background-color: #da1f26; }\n    .playkit-spinner span:nth-child(2) {\n      transform: rotate(90deg) translateX(-25px) translateY(-25px);\n      background-color: #06a885; }\n    .playkit-spinner span:nth-child(3) {\n      transform: rotate(135deg) translateX(-25px) translateY(-25px);\n      background-color: #009344; }\n    .playkit-spinner span:nth-child(4) {\n      transform: rotate(180deg) translateX(-25px) translateY(-25px);\n      background-color: #f8a61a; }\n    .playkit-spinner span:nth-child(5) {\n      transform: rotate(225deg) translateX(-25px) translateY(-25px);\n      background-color: #1b4a97; }\n    .playkit-spinner span:nth-child(6) {\n      transform: rotate(270deg) translateX(-25px) translateY(-25px);\n      background-color: #00abcc; }\n    .playkit-spinner span:nth-child(7) {\n      transform: rotate(315deg) translateX(-25px) translateY(-25px);\n      background-color: #b1d238; }\n    .playkit-spinner span:nth-child(8) {\n      transform: rotate(360deg) translateX(-25px) translateY(-25px);\n      background-color: #fcd203; }\n\n.playkit-control-button-container.playkit-control-play-pause .playkit-control-button {\n  transition: 400ms transform; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-pause {\n    transition: 400ms opacity;\n    opacity: 0;\n    display: none; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button .playkit-icon-play {\n    transition: 400ms opacity;\n    opacity: 1;\n    display: block; }\n  .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing {\n    transform: rotate(360deg); }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-pause {\n      opacity: 1;\n      display: block; }\n    .playkit-control-button-container.playkit-control-play-pause .playkit-control-button.playkit-is-playing .playkit-icon-play {\n      opacity: 0;\n      display: none; }\n\n.playkit-touch .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-player.playkit-size-sm .playkit-control-button-container.playkit-control-play-pause {\n  display: none; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-hover .playkit-volume-control-bar {\n  display: block !important; }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-waves {\n  opacity: 0;\n  transform: translateX(-5px); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-is-muted .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(1); }\n\n.playkit-control-button-container.playkit-volume-control.playkit-dragging-active .playkit-volume-control-bar {\n  display: block; }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves {\n  transform: translateX(0px); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  opacity: 1;\n  transform: scale(0); }\n\n.playkit-control-button-container.playkit-volume-control .playkit-icon-volume-waves, .playkit-control-button-container.playkit-volume-control .playkit-icon-volume-mute {\n  transition: 300ms transform, 300ms opacity; }\n\n.playkit-control-button-container.playkit-volume-control i {\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.playkit-volume-control-bar {\n  position: absolute;\n  z-index: 2;\n  bottom: 38px;\n  left: 0px;\n  display: block;\n  height: 112px;\n  width: 34px;\n  border-radius: 4px;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  background-color: #333333;\n  padding: 6px;\n  display: none; }\n  .playkit-volume-control-bar:before {\n    position: absolute;\n    width: 34px;\n    height: 14px;\n    bottom: -8px;\n    left: 0;\n    content: ' ';\n    display: block; }\n  .playkit-volume-control-bar .playkit-bar {\n    background-color: #424242;\n    height: 100%;\n    position: relative;\n    cursor: pointer; }\n  .playkit-volume-control-bar .playkit-progress {\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%;\n    border-radius: 0 0 2px 2px;\n    background-color: #01ACCD; }\n\n.playkit-player.playkit-smart-container-open .playkit-control-button-container.playkit-volume-control.playkit-hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-touch .playkit-control-button-container.playkit-volume-control.playkit-hover .playkit-volume-control-bar {\n  display: none !important; }\n\n.playkit-control-button-container.playkit-control-fullscreen .playkit-control-button {\n  transition: 100ms transform;\n  transform: scale(1); }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button .playkit-icon-minimize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-maximize {\n    display: none; }\n  .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button.playkit-is-fullscreen .playkit-icon-minimize {\n    display: block; }\n\n.playkit-player:not(.playkit-touch) .playkit-control-button-container.playkit-control-fullscreen .playkit-control-button:hover {\n  transform: scale(1.1); }\n\n.playkit-player .playkit-seek-bar {\n  padding: 6px 0;\n  cursor: pointer;\n  position: relative; }\n  .playkit-player .playkit-seek-bar:hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar:hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-hover .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-hover .playkit-frame-preview, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-time-preview,\n  .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-frame-preview {\n    display: block; }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-scrubber, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-scrubber {\n    transform: scale(1); }\n  .playkit-player .playkit-seek-bar:hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-hover .playkit-progress-bar .playkit-virtual-progress, .playkit-player .playkit-seek-bar.playkit-dragging-active .playkit-progress-bar .playkit-virtual-progress {\n    display: block; }\n  .playkit-player .playkit-seek-bar.playkit-ad-break {\n    cursor: initial; }\n    .playkit-player .playkit-seek-bar.playkit-ad-break .playkit-progress-bar .playkit-progress {\n      background-color: #F9A71B; }\n  .playkit-player .playkit-seek-bar.playkit-live .playkit-progress-bar .playkit-progress {\n    background-color: #DA1F26; }\n  .playkit-player .playkit-seek-bar .playkit-progress-bar {\n    height: 4px;\n    background-color: rgba(255, 255, 255, 0.3);\n    border-radius: 2px;\n    position: relative; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 2;\n      border-radius: 2px 0 0 2px;\n      background-color: #01ACCD; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      display: none; }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-buffered, .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-virtual-progress {\n      position: absolute;\n      top: 0;\n      left: 0;\n      height: 100%;\n      z-index: 1;\n      border-radius: 2px 0 0 2px;\n      background-color: rgba(255, 255, 255, 0.3); }\n    .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber {\n      position: absolute;\n      z-index: 3;\n      cursor: pointer;\n      display: block;\n      top: -6px;\n      right: -8px;\n      border-radius: 8px;\n      height: 16px;\n      width: 16px;\n      background-color: #FFFFFF;\n      box-shadow: 0 0 31px 0 rgba(0, 0, 0, 0.3);\n      transform: scale(0);\n      transition: 100ms transform; }\n      .playkit-player .playkit-seek-bar .playkit-progress-bar .playkit-scrubber:active {\n        opacity: 1;\n        cursor: grabbing; }\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    position: absolute;\n    bottom: 16px;\n    left: 0;\n    height: 94px;\n    width: 164px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    border-radius: 4px;\n    z-index: 10; }\n    .playkit-player .playkit-seek-bar .playkit-frame-preview .playkit-frame-preview-img {\n      background-size: auto 100%;\n      width: 100%;\n      height: 100%;\n      position: relative; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview {\n    position: absolute;\n    bottom: 22px;\n    left: 0;\n    z-index: 11;\n    height: 22px;\n    min-width: 48px;\n    padding: 0 3px;\n    text-align: center;\n    border-radius: 3px;\n    background-color: rgba(0, 0, 0, 0.7);\n    font-size: 13px;\n    font-weight: bold;\n    line-height: 22px;\n    color: #fff; }\n  .playkit-player .playkit-seek-bar .playkit-time-preview,\n  .playkit-player .playkit-seek-bar .playkit-frame-preview {\n    display: none; }\n\n.playkit-touch .playkit-virtual-progress, .playkit-touch .playkit-time-preview, .playkit-touch .playkit-frame-preview {\n  display: none !important; }\n\n.playkit-player.playkit-size-sm .playkit-virtual-progress, .playkit-player.playkit-size-sm .playkit-time-preview, .playkit-player.playkit-size-sm .playkit-frame-preview {\n  display: none; }\n\n.playkit-player .playkit-time-display {\n  display: inline-block;\n  line-height: 32px;\n  vertical-align: top;\n  font-size: 14px;\n  padding: 0 23px;\n  font-weight: bold; }\n\n.playkit-touch .playkit-time-display {\n  padding-left: 0; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-time-display {\n  padding: 0 12px 0 0; }\n\n.playkit-player .playkit-video-playing-title {\n  font-size: 15px;\n  font-weight: bold;\n  line-height: 18px;\n  padding: 6px 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap; }\n\n.playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls .playkit-control-button-container:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n      margin-right: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-control-button-container {\n    margin: 0 6px; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n\n.playkit-player .playkit-top-bar {\n  background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 14px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  position: absolute;\n  z-index: 10;\n  top: 0;\n  left: 0; }\n  .playkit-player .playkit-top-bar .playkit-left-controls {\n    text-align: left;\n    min-width: 0; }\n  .playkit-player .playkit-top-bar .playkit-right-controls {\n    text-align: left; }\n    .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-top-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-top-bar,\n.playkit-player.playkit-state-paused .playkit-top-bar,\n.playkit-player.playkit-menu-active .playkit-top-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-top-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-player .playkit-top-bar {\n  padding: 8px 8px 20px 8px; }\n\n@keyframes playkit-overlayPlayIconIn {\n  from {\n    opacity: 1;\n    transform: scale(0); }\n  to {\n    opacity: 0;\n    transform: scale(1); } }\n\n.playkit-overlay-play {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n  .playkit-overlay-play.playkit-in .playkit-icon {\n    animation: playkit-overlayPlayIconIn 400ms linear forwards; }\n  .playkit-overlay-play .playkit-icon {\n    width: 144px;\n    height: 144px;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    margin: -72px 0 0 -72px;\n    opacity: 0; }\n\n.playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain;\n  background-repeat: no-repeat; }\n  .playkit-pre-playback-play-overlay.playkit-has-poster {\n    background-color: #000; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n\n.playkit-btn-skip-ad {\n  position: absolute;\n  bottom: 60px;\n  right: 16px; }\n\n.playkit-skip-ad {\n  color: #fff;\n  font-size: 20px;\n  font-weight: bold;\n  line-height: 24px;\n  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);\n  position: absolute;\n  bottom: 66px;\n  right: 16px; }\n\n.playkit-live-tag {\n  color: #DA1F26;\n  font-size: 14px;\n  font-weight: bold;\n  letter-spacing: 1px;\n  line-height: 19px;\n  border: 2px solid #DA1F26;\n  border-radius: 4px;\n  text-transform: uppercase;\n  text-align: center;\n  display: inline-block;\n  padding: 0 3px 0 5px;\n  margin: 5px 23px;\n  cursor: default; }\n  .playkit-live-tag.playkit-non-live-playhead {\n    background-color: rgba(255, 255, 255, 0.2);\n    border: none;\n    color: #fff;\n    line-height: 23px;\n    padding: 0 5px 0 7px;\n    cursor: pointer; }\n\n.playkit-player.playkit-size-sm .playkit-live-tag {\n  margin-left: 0; }\n\n.playkit-icon {\n  display: inline-block;\n  font-size: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: 50% 50%; }\n\n.playkit-icon-maximize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M800 269.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E %3Cpath fill='%23fff' d='M224 754.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-minimize {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M672 306.745v-114.745c0-17.673-14.327-32-32-32s-32 14.327-32 32v192c0 17.673 14.327 32 32 32h192c17.673 0 32-14.327 32-32s-14.327-32-32-32h-114.745l137.373-137.373c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0l-137.373 137.373z' /%3E%3Cpath fill='%23fff' d='M352 717.255v114.745c0 17.673 14.327 32 32 32s32-14.327 32-32v-192c0-17.673-14.327-32-32-32h-192c-17.673 0-32 14.327-32 32s14.327 32 32 32h114.745l-137.373 137.373c-12.497 12.497-12.497 32.758 0 45.255s32.758 12.497 45.255 0l137.373-137.373z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-play {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M796.806 461.202c44.919 28.075 44.739 73.706 0 101.668l-459.472 287.171c-44.919 28.075-81.334 7.915-81.334-45.305v-585.4c0-53.096 36.595-73.266 81.334-45.305l459.472 287.171z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-pause {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314zM640 287.843c0-35.259 28.407-63.843 64-63.843 35.346 0 64 28.564 64 63.843v448.314c0 35.259-28.407 63.843-64 63.843-35.346 0-64-28.564-64-63.843v-448.314z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-base {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M128 416v192h96v-192h-96zM64 383.853c0-17.592 14.012-31.853 32.094-31.853h159.813c17.725 0 32.094 14.581 32.094 31.853v256.295c0 17.592-14.012 31.853-32.094 31.853h-159.813c-17.725 0-32.094-14.581-32.094-31.853v-256.295z' /%3E%3Cpath fill='%23fff' d='M288 634.342l160 88.889v-422.462l-160 88.889v244.684zM224 352l231.787-128.771c31.046-17.248 56.213-2.487 56.213 32.476v512.589c0 35.184-25.054 49.786-56.213 32.476l-231.787-128.771v-320z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-waves {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M802.017 837.177c82.359-86.627 129.183-201.774 129.183-324.26 0-123.976-47.976-240.409-132.127-327.329-12.293-12.697-32.552-13.025-45.249-0.732s-13.025 32.552-0.732 45.249c72.692 75.084 114.109 175.597 114.109 282.812 0 105.928-40.422 205.331-111.566 280.162-12.177 12.808-11.666 33.063 1.143 45.24s33.063 11.666 45.24-1.143z' /%3E%3Cpath fill='%23fff' d='M667.436 743.221c67.761-60.884 107.273-147.888 107.273-241.233 0-87.318-34.552-169.203-94.836-229.446-12.501-12.493-32.762-12.486-45.255 0.015s-12.486 32.762 0.015 45.255c48.375 48.342 76.075 113.989 76.075 184.176 0 75.021-31.679 144.776-86.048 193.627-13.146 11.812-14.227 32.044-2.416 45.19s32.044 14.227 45.19 2.416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-volume-mute {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 466.745l-67.986-67.986c-12.213-12.213-32.654-12.393-45.151 0.104-12.584 12.584-12.543 32.711-0.104 45.151l67.986 67.986-67.986 67.986c-12.213 12.213-12.393 32.654 0.104 45.151 12.584 12.584 32.711 12.543 45.151 0.104l67.986-67.986 67.986 67.986c12.213 12.213 32.654 12.393 45.151-0.104 12.584-12.584 12.543-32.711 0.104-45.151l-67.986-67.986 67.986-67.986c12.213-12.213 12.393-32.654-0.104-45.151-12.584-12.584-32.711-12.543-45.151-0.104l-67.986 67.986z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-close {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M573.162 512l214.269-214.269c16.772-16.772 16.688-44.071-0.202-60.96-17.007-17.007-44.182-16.98-60.96-0.202l-214.269 214.269-214.269-214.269c-16.772-16.772-44.071-16.688-60.96 0.202-17.007 17.007-16.98 44.182-0.202 60.96l214.269 214.269-214.269 214.269c-16.772 16.772-16.688 44.071 0.202 60.96 17.007 17.007 44.182 16.98 60.96 0.202l214.269-214.269 214.269 214.269c16.772 16.772 44.071 16.688 60.96-0.202 17.007-17.007 16.98-44.182 0.202-60.96l-214.269-214.269z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-share {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M318.641 446.219l236.155-142.257c-0.086-1.754-0.129-3.52-0.129-5.295 0-58.91 47.756-106.667 106.667-106.667s106.667 47.756 106.667 106.667c0 58.91-47.756 106.667-106.667 106.667-33.894 0-64.095-15.808-83.633-40.454l-236.467 142.445c-0.132-3.064-0.394-6.095-0.779-9.087l7.271-12.835-0.117 53.333-7.183-12.743c0.399-3.046 0.67-6.131 0.806-9.252l236.467 142.383c19.538-24.648 49.741-40.457 83.636-40.457 58.91 0 106.667 47.756 106.667 106.667s-47.756 106.667-106.667 106.667c-58.91 0-106.667-47.756-106.667-106.667 0-1.775 0.043-3.539 0.129-5.293l-236.19-142.216c-19.528 24.867-49.868 40.841-83.939 40.841-58.91 0-106.667-47.756-106.667-106.667s47.756-106.667 106.667-106.667c34.091 0 64.447 15.993 83.974 40.886zM234.667 554.667c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 341.333c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667zM661.333 768c23.564 0 42.667-19.103 42.667-42.667s-19.103-42.667-42.667-42.667c-23.564 0-42.667 19.103-42.667 42.667s19.103 42.667 42.667 42.667z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-settings {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M803.451 546.033c2.552-22.107 2.552-44.408 0.246-64.81-1.084-6.208-6.499-10.721-12.535-10.671-30.286 0.533-57.727-17.773-68.866-45.941s-3.64-60.291 18.795-80.593c3.935-3.569 4.416-9.583 0.92-13.959-13.595-17.35-29.146-33.073-46.311-46.83-4.23-3.38-10.359-2.886-14.783 1.966-14.421 14.721-34.212 22.938-54.434 22.761-9.009 0.041-17.942-1.652-26.865-5.212-28.414-11.992-46.226-40.546-44.49-71.542 0.335-5.319-3.547-9.972-8.785-10.588-21.926-2.538-44.068-2.595-65.961-0.176-5.349 0.6-9.341 5.207-9.175 10.514 1.027 30.384-16.802 58.251-45.764 70.431-8.238 3.138-16.993 4.701-25.207 4.609-20.599 0.206-40.395-7.982-55.482-23.363-2.014-2.187-4.849-3.435-7.553-3.445-2.441 0.015-4.811 0.83-6.513 2.139-17.541 13.798-33.455 29.547-47.262 46.729-3.418 4.337-2.922 10.575 0.97 14.162 22.816 20.692 30.19 53.479 17.807 83.351-13.035 27.396-41.135 44.394-71.446 43.222-5.112-0.197-9.499 3.606-10.086 9.179-2.673 22.023-2.673 44.289-0.212 64.867 1.080 6.27 6.559 10.824 13.309 10.737l2.225 0.006c28.935 0.604 54.726 18.391 65.634 45.374 11.22 28.205 3.921 60.407-18.565 81.204-3.866 3.509-4.341 9.418-0.895 13.742 13.545 17.354 29.027 33.106 46.042 46.867 4.303 3.449 10.547 2.954 14.986-1.907 14.414-14.76 34.226-23.001 54.43-22.82 9.070-0.052 18.063 1.668 27.041 5.299 28.19 12.071 45.891 40.41 44.347 71.468-0.342 5.312 3.536 9.962 8.802 10.578 21.915 2.548 44.049 2.605 65.929 0.176 5.364-0.604 9.364-5.227 9.191-10.598-0.997-30.358 16.84-58.183 45.452-70.201 8.263-3.256 17.070-4.908 25.521-4.865 20.676-0.206 40.533 8.070 55.398 23.38 2.039 2.195 4.898 3.446 7.673 3.455 2.268-0.011 4.468-0.776 6.321-2.228 17.625-13.724 33.599-29.444 47.415-46.611 3.426-4.348 2.928-10.6-0.863-14.097-22.358-20.082-30.057-51.85-19.372-79.939s37.55-46.71 67.745-46.857h5.229c5.12-0.026 9.413-3.875 9.996-8.962zM861.733 552.735c-3.961 34.572-33.157 60.748-68.129 60.926h-5.235c-5.803 0.028-10.991 3.624-13.054 9.048s-0.577 11.558 4.020 15.69c26.602 24.519 29.853 65.381 7.275 94.034-16.847 20.934-36.063 39.845-57.197 56.302-12.034 9.427-26.861 14.584-42.368 14.658-19.254-0.051-37.623-8.090-50.269-21.718-3.221-3.315-7.66-5.165-12.712-5.118-1.425-0.007-2.839 0.258-3.554 0.532-5.581 2.346-9.136 7.892-8.937 13.966 1.152 35.958-25.509 66.771-61.307 70.804-26.332 2.923-52.909 2.854-79.246-0.208-36.286-4.245-62.897-36.157-60.576-72.186 0.304-6.123-3.235-11.788-8.302-13.964-1.328-0.536-2.748-0.808-4.606-0.8-4.651-0.041-9.118 1.817-11.635 4.367-24.544 27.036-65.886 30.311-94.481 7.394-20.587-16.65-39.207-35.595-55.308-56.226-22.552-28.277-19.261-69.208 7.317-93.334 4.474-4.138 5.939-10.604 3.748-16.115-2.052-5.076-6.932-8.442-11.794-8.55-36.436 0.464-66.759-24.741-72.949-60.89-3.243-26.718-3.243-53.731-0.055-79.964 3.744-35.827 34.642-62.605 70.642-61.219 6.877 0.266 13.251-3.59 15.584-8.401 2.309-5.59 0.861-12.028-3.789-16.247-26.603-24.51-29.856-65.368-7.293-93.994 16.767-20.868 35.856-39.76 57.129-56.491 12.099-9.322 26.921-14.42 42.463-14.513 19.308 0.059 37.717 8.166 50.145 21.684 3.263 3.322 7.737 5.172 12.994 5.126 1.471 0.015 2.933-0.245 3.363-0.39 5.601-2.359 9.165-7.93 8.957-14.077-1.126-35.941 25.542-66.721 61.322-70.731 26.322-2.909 52.889-2.84 79.251 0.212 36.244 4.265 62.828 36.125 60.546 72.343-0.339 6.047 3.159 11.654 8.186 13.782 1.381 0.55 2.855 0.829 4.726 0.823 4.663 0.040 9.142-1.819 11.615-4.312 24.439-26.99 65.656-30.312 94.137-7.557 20.721 16.607 39.456 35.549 55.655 56.225 22.667 28.35 19.38 69.439-7.531 93.846-4.33 3.918-5.776 10.112-3.628 15.542s7.438 8.96 13.543 8.854c34.999-0.298 65.076 24.766 71.337 60.925 3.065 26.552 3.065 53.368 0 79.92zM511.956 589.951c43.215-0.108 78.137-35.17 78.072-78.385 0-31.732-19.132-60.334-48.461-72.448s-63.068-5.35-85.461 17.133c-22.393 22.483-29.022 56.249-16.791 85.529s40.909 48.298 72.641 48.171zM512.146 648.617c-55.438 0.221-105.58-33.029-126.965-84.224s-9.796-110.233 29.358-149.543c39.153-39.31 98.144-51.136 149.424-29.956s84.731 71.189 84.732 126.627c0.114 75.549-60.999 136.907-136.548 137.096z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-check {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M342.481 563.894c-12.577-12.416-32.838-12.285-45.254 0.292s-12.285 32.838 0.292 45.254l118.857 117.333c13.275 13.105 34.901 12.123 46.933-2.131l297.143-352c11.4-13.505 9.694-33.694-3.811-45.094s-33.694-9.694-45.094 3.811l-274.828 325.566-94.238-93.030z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-language {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 800c159.058 0 288-128.942 288-288s-128.942-288-288-288c-159.058 0-288 128.942-288 288s128.942 288 288 288zM512 864c-194.404 0-352-157.596-352-352s157.596-352 352-352c194.404 0 352 157.596 352 352s-157.596 352-352 352z' /%3E%3Cpath fill='%23fff' d='M441.231 173.324c-76.632 84.62-121.231 207.208-121.231 338.676 0 134.304 46.556 259.282 126.083 343.936l46.646-43.82c-68.041-72.429-108.728-181.651-108.728-300.116 0-116.001 39.001-223.203 104.669-295.716l-47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M584.297 173.324c76.632 84.62 121.231 207.208 121.231 338.676 0 134.304-46.556 259.282-126.083 343.936l-46.646-43.82c68.041-72.429 108.728-181.651 108.728-300.116 0-116.001-39.001-223.203-104.669-295.716l47.438-42.96z' /%3E%3Cpath fill='%23fff' d='M840.432 419.786c-81.65-22.637-200.551-35.786-328.432-35.786-128.056 0-247.103 13.185-328.758 35.876l17.136 61.663c75.47-20.972 188.938-33.539 311.622-33.539 122.521 0 235.854 12.533 311.334 33.459l17.099-61.674z' /%3E%3Cpath fill='%23fff' d='M840.432 605.754c-81.65 22.637-200.551 35.786-328.432 35.786-128.056 0-247.103-13.185-328.758-35.876l17.136-61.663c75.47 20.972 188.938 33.539 311.622 33.539 122.521 0 235.854-12.533 311.334-33.459l17.099 61.674z' /%3E%3Cpath fill='%23fff' d='M480 192h64v640h-64v-640z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-quality {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M159.904 192h288.234c17.277 0 31.862 14.323 31.862 31.992 0 17.792-14.261 31.993-31.853 31.994l-288.147 0.014v544.174c-0.017-0.18 704-0.174 704-0.174v-128.006c0-17.795 14.327-31.994 32-31.994 17.796 0 32 14.34 32 32.029v128.145c0 35.25-28.639 63.826-63.904 63.826h-704.192c-35.293 0-63.904-28.875-63.904-63.826v-544.348c0-35.25 28.639-63.826 63.904-63.826zM501.818 378.182c108.449 0 196.364-87.915 196.364-196.364 0-29.091 43.636-29.091 43.636 0 0 108.449 87.915 196.364 196.364 196.364 29.091 0 29.091 43.636 0 43.636-108.449 0-196.364 87.915-196.364 196.364 0 29.091-43.636 29.091-43.636 0 0-108.449-87.915-196.364-196.364-196.364-29.091 0-29.091-43.636 0-43.636z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-captions {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M160 771.213c-0.017-0.172 704-0.166 704-0.166v-518.261c0.017 0.172-704 0.166-704 0.166v518.261zM96 252.787c0-33.572 28.639-60.787 63.904-60.787h704.192c35.293 0 63.904 27.5 63.904 60.787v518.427c0 33.572-28.639 60.787-63.904 60.787h-704.192c-35.293 0-63.904-27.5-63.904-60.787v-518.427z' /%3E%3Cpath fill='%23fff' d='M490.583 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412zM767.219 568.655c0 7.729-2.311 15.987-6.933 24.777s-11.668 17.162-21.14 25.118c-9.471 7.956-21.405 14.358-35.801 19.208s-30.611 7.274-48.644 7.274c-38.34 0-68.268-11.176-89.787-33.528s-32.278-52.319-32.278-89.901c0-25.459 4.925-47.962 14.775-67.511s24.095-34.665 42.734-45.348c18.639-10.684 40.916-16.025 66.829-16.025 16.063 0 30.8 2.349 44.212 7.047s24.777 10.759 34.096 18.185c9.32 7.425 16.442 15.343 21.367 23.754s7.388 16.253 7.388 23.527c0 7.425-2.766 13.714-8.297 18.867s-12.237 7.729-20.117 7.729c-5.152 0-9.433-1.326-12.843-3.978s-7.236-6.933-11.479-12.843c-7.577-11.517-15.495-20.155-23.754-25.913s-18.753-8.638-31.482-8.638c-18.336 0-33.111 7.16-44.325 21.481s-16.821 33.907-16.821 58.759c0 11.669 1.44 22.39 4.319 32.164s7.047 18.109 12.502 25.004c5.455 6.895 12.047 12.123 19.776 15.684s16.215 5.342 25.459 5.342c12.426 0 23.072-2.879 31.937-8.638s16.707-14.548 23.527-26.368c3.789-6.971 7.88-12.426 12.275-16.366s9.774-5.91 16.139-5.91c7.577 0 13.866 2.879 18.867 8.638s7.501 11.896 7.501 18.412z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-speed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M512 832c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM480.239 643.971c-0.158-1.272-0.239-2.566-0.239-3.876v-192.19c0-17.621 14.204-31.905 32-31.905 17.673 0 32 14.497 32 31.905v192.19c0 1.313-0.079 2.607-0.232 3.878 55.325 14.128 96.232 64.301 96.232 124.027 0 70.692-57.308 128-128 128s-128-57.308-128-128c0-59.729 40.91-109.903 96.239-124.029zM928 576c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-194.404-157.596-352-352-352s-352 157.596-352 352c0 17.673-14.327 32-32 32s-32-14.327-32-32c0-229.75 186.25-416 416-416s416 186.25 416 416z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-audio {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M768 625.124v-354.531l-352 135.385v330.022c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124v-241.124c0-13.241 8.155-25.114 20.513-29.867l416-160c20.96-8.062 43.487 7.41 43.487 29.867v512c0 70.692-57.308 128-128 128s-128-57.308-128-128c0-70.692 57.308-128 128-128 23.314 0 45.173 6.233 64 17.124zM288 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64zM704 800c35.346 0 64-28.654 64-64s-28.654-64-64-64c-35.346 0-64 28.654-64 64s28.654 64 64 64z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-copy {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M703.727 320c35.497 0 64.273 28.482 64.273 64.003v351.993c0 35.348-28.862 64.003-64.273 64.003h-191.454c-35.496 0-64.271-28.48-64.273-64.001l255.727 0.001v-352c0 0-28.356 0.147-63.727 0.001v-63.912l63.727-0.088zM256 288.187c0-35.45 28.398-64.187 63.988-64.187h192.025c35.339 0 63.988 28.706 63.988 64.187v319.625c0 35.45-28.398 64.187-63.988 64.187h-192.025c-35.339 0-63.988-28.706-63.988-64.187v-319.625zM320 288v320h192v-320h-192z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-facebook {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M432 405.333h-80v106.667h80v320h133.333v-320h97.12l9.547-106.667h-106.667v-44.453c0-25.467 5.12-35.547 29.733-35.547h76.933v-133.333h-101.547c-95.893 0-138.453 42.213-138.453 123.067v90.267z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-twitter {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M832 316.614c-23.547 10.29-48.853 17.221-75.413 20.345 27.12-15.987 47.947-41.319 57.733-71.508-25.36 14.806-53.467 25.568-83.387 31.37-23.92-25.122-58.080-40.82-95.84-40.82-84.773 0-147.067 77.861-127.92 158.687-109.093-5.381-205.84-56.833-270.613-135.035-34.4 58.094-17.84 134.090 40.613 172.574-21.493-0.683-41.76-6.484-59.44-16.171-1.44 59.879 42.16 115.898 105.307 128.368-18.48 4.935-38.72 6.090-59.307 2.205 16.693 51.347 65.173 88.702 122.667 89.752-55.2 42.605-124.747 61.637-194.4 53.552 58.107 36.673 127.147 58.067 201.28 58.067 243.787 0 381.52-202.684 373.2-384.473 25.653-18.244 47.92-41.004 65.52-66.914v0z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-google-plus {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M352 556.8h127.040c-5.12 32.928-38.4 96.64-127.040 96.64-76.48 0-138.88-63.328-138.88-141.44 0-78.080 62.4-141.44 138.88-141.44 43.52 0 72.64 18.56 89.28 34.56l60.8-58.56c-39.040-36.48-89.6-58.56-150.080-58.56-123.84 0-224 100.16-224 224s100.16 224 224 224c129.28 0 215.072-90.88 215.072-218.88 0-14.72-1.632-25.92-3.552-37.12h-211.52v76.8zM800 544v96h-64v-96h-96v-64h96v-96h64v96h96v64h-96z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-linked-in {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M324.8 290.087c0 36.506-29.6 66.087-66.133 66.087s-66.133-29.581-66.133-66.087c0-36.48 29.6-66.087 66.133-66.087s66.133 29.607 66.133 66.087zM325.333 409.043h-133.333v422.957h133.333v-422.957zM538.187 409.043h-132.48v422.957h132.507v-222.026c0-123.45 160.773-133.549 160.773 0v222.026h133.013v-267.811c0-208.306-237.92-200.719-293.813-98.179v-56.967z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-email {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M256 768c-35.346 0-64-28.654-64-64v-352c0-35.346 28.654-64 64-64h512c35.346 0 64 28.654 64 64v352c0 35.346-28.654 64-64 64h-512zM512 467.488l147.52-115.488h-295.040l147.52 115.488zM748.48 352l-211.2 179.2c-0.713 1.308-1.572 2.532-2.56 3.648-12.707 12.158-32.733 12.158-45.44 0-0.988-1.116-1.847-2.34-2.56-3.648l-211.2-179.2h-19.52v352h512v-352h-19.52z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-embed {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M377.989 579.335c12.669 12.904 12.669 33.777 0 46.68-12.733 12.969-33.427 12.969-46.16 0l-104.727-106.667c-12.669-12.904-12.669-33.777 0-46.68l104.727-106.667c12.733-12.969 33.427-12.969 46.16 0 12.669 12.904 12.669 33.777 0 46.68l-81.812 83.327 81.812 83.327zM646.011 412.68c-12.669-12.904-12.669-33.777 0-46.68 12.733-12.969 33.427-12.969 46.16 0l104.727 106.667c12.669 12.904 12.669 33.777 0 46.68l-104.727 106.667c-12.733 12.969-33.427 12.969-46.16 0-12.669-12.904-12.669-33.777 0-46.68l81.812-83.327-81.812-83.327zM572.293 250.6c17.455 4.445 28.025 22.388 23.686 40.066l-104.727 426.669c-4.349 17.719-22.048 28.535-39.545 24.079-17.455-4.445-28.025-22.388-23.686-40.066l104.727-426.669c4.349-17.719 22.048-28.535 39.545-24.079z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-link {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M355.028 445.537c12.497 12.497 12.497 32.758 0 45.255s-32.758 12.497-45.255 0l-24.141-24.141c-49.92-49.92-49.832-130.999 0.094-180.925 49.984-49.984 130.995-50.025 180.955-0.064l113.266 113.266c49.964 49.964 49.935 130.955-0.064 180.955-12.497 12.497-32.758 12.497-45.255 0s-12.497-32.758 0-45.255c25.013-25.013 25.027-65.482 0.064-90.445l-113.266-113.266c-24.957-24.957-65.445-24.936-90.445 0.064-24.955 24.955-24.998 65.511-0.094 90.416l24.141 24.141zM668.972 578.463c-12.497-12.497-12.497-32.758 0-45.255s32.758-12.497 45.255 0l24.141 24.141c49.92 49.92 49.832 130.999-0.094 180.925-49.984 49.984-130.995 50.025-180.955 0.064l-113.266-113.266c-49.964-49.964-49.935-130.955 0.064-180.955 12.497-12.497 32.758-12.497 45.255 0s12.497 32.758 0 45.255c-25.013 25.013-25.027 65.482-0.064 90.445l113.266 113.266c24.957 24.957 65.445 24.936 90.445-0.064 24.955-24.955 24.998-65.511 0.094-90.416l-24.141-24.141z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-arrow-down {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M301.255 338.745c-24.994-24.994-65.516-24.994-90.51 0s-24.994 65.516 0 90.51l256 256c24.994 24.994 65.516 24.994 90.51 0l256-256c24.994-24.994 24.994-65.516 0-90.51s-65.516-24.994-90.51 0l-210.745 210.745-210.745-210.745z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-start-over {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M255.271 339.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z' /%3E%3C/svg%3E\"); }\n\n.playkit-icon-rewind {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' opacity='0.5' d='M258.471 323.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z'%3E%3C/path%3E%3Cpath fill='%23fff' d='M816.068 431.974c-20.553-78.699-71.369-149.456-147.375-193.338-139.923-80.785-316.040-42.095-410.222 84.418l89.738-4.499c20.299-1.018 37.579 14.613 38.596 34.911s-14.613 37.579-34.911 38.596l-159.799 8.011c-16.335 0.819-31.25-9.242-36.61-24.694l-52.434-151.164c-6.66-19.202 3.506-40.167 22.708-46.828s40.167 3.506 46.828 22.708l27.226 78.49c116.254-155.703 333.248-203.244 505.682-103.69 91.184 52.645 152.976 136.648 179.618 230.523l-69.044 26.555z'%3E%3C/path%3E%3C/svg%3E\"); }\n\n.playkit-icon-rewind-10 {\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 1024 1024' width='36' height='36'%3E%3Cpath fill='%23fff' d='M258.471 323.053c94.182-126.513 270.298-165.203 410.222-84.418 150.758 87.040 202.411 279.813 115.371 430.571s-279.813 202.411-430.571 115.371c-61.424-35.463-107.948-89.4-134.169-153.673-7.677-18.818-29.156-27.85-47.974-20.173s-27.85 29.156-20.173 47.974c32.339 79.269 89.818 145.906 165.517 189.611 185.96 107.364 423.747 43.649 531.111-142.311s43.649-423.747-142.311-531.111c-172.433-99.554-389.428-52.014-505.682 103.69l-27.226-78.49c-6.66-19.202-27.626-29.368-46.828-22.708s-29.368 27.626-22.708 46.828l52.434 151.164c5.36 15.452 20.275 25.513 36.61 24.694l159.799-8.011c20.299-1.018 35.929-18.298 34.911-38.596s-18.298-35.929-38.596-34.911l-89.738 4.499z'%3E%3C/path%3E%3Cpath fill='%23fff' d='M413.327 636.083h67.358v-252.083h-48.527c-2.173 7.358-4.949 13.589-8.329 18.693s-7.726 9.139-13.037 12.106c-5.311 2.967-11.709 5.103-19.193 6.409s-16.417 1.958-26.798 1.958v41.302h48.527v171.616zM596.807 554.192c0 17.803 1.569 29.849 4.708 36.139s8.208 9.435 15.21 9.435c7.001 0 12.071-3.145 15.21-9.435s4.708-18.336 4.708-36.139v-83.316c0-17.803-1.569-29.849-4.708-36.139s-8.208-9.435-15.21-9.435c-7.001 0-12.071 3.145-15.21 9.435s-4.708 18.336-4.708 36.139v83.316zM529.449 512.534c0-25.398 1.75-46.405 5.251-63.021s8.812-29.789 15.934-39.522c7.122-9.732 16.176-16.497 27.16-20.295s23.962-5.697 38.93-5.697c14.969 0 27.945 1.899 38.93 5.697s20.038 10.563 27.16 20.295c7.122 9.732 12.433 22.906 15.934 39.522s5.251 37.622 5.251 63.021c0 25.636-1.75 46.702-5.251 63.199s-8.812 29.552-15.934 39.166c-7.122 9.613-16.176 16.2-27.16 19.761s-23.962 5.341-38.93 5.341c-14.969 0-27.945-1.78-38.93-5.341s-20.038-10.147-27.16-19.761c-7.122-9.613-12.433-22.668-15.934-39.166s-5.251-37.563-5.251-63.199z'%3E%3C/path%3E%3C/svg%3E\"); }\n\n.playkit-unmute-button-container {\n  display: inline-block;\n  position: absolute;\n  top: 13px;\n  left: 16px;\n  z-index: 15; }\n  .playkit-unmute-button-container.playkit-show-icon-only .playkit-btn.playkit-unmute-button {\n    max-width: 64px; }\n    .playkit-unmute-button-container.playkit-show-icon-only .playkit-btn.playkit-unmute-button span {\n      transform: translateX(10px);\n      opacity: 0; }\n\n.playkit-btn.playkit-unmute-button {\n  font-size: 15px;\n  max-width: 200px;\n  transition: max-width 200ms;\n  padding: 0 16px;\n  white-space: nowrap; }\n  .playkit-btn.playkit-unmute-button span {\n    transform: translateX(0px);\n    opacity: 1;\n    transition: transform 100ms, opacity 100ms;\n    display: inline-block; }\n  .playkit-btn.playkit-unmute-button.playkit-has-top-bar {\n    transition: 100ms transform; }\n\n.playkit-unmute-icon-container {\n  width: 32px;\n  height: 32px;\n  display: inline-block;\n  vertical-align: top;\n  position: relative;\n  margin-right: 3px; }\n  .playkit-unmute-icon-container i {\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.playkit-player.playkit-hover .playkit-unmute-button-container.playkit-has-top-bar,\n.playkit-player.playkit-state-paused .playkit-unmute-button-container.playkit-has-top-bar,\n.playkit-player.playkit-menu-active .playkit-unmute-button-container.playkit-has-top-bar {\n  transform: translateY(32px); }\n", ""]);
 
 // exports
 exports.locals = {
@@ -24759,6 +24760,10 @@ exports.locals = {
 	"iconArrowDown": "playkit-icon-arrow-down",
 	"icon-start-over": "playkit-icon-start-over",
 	"iconStartOver": "playkit-icon-start-over",
+	"icon-rewind": "playkit-icon-rewind",
+	"iconRewind": "playkit-icon-rewind",
+	"icon-rewind-10": "playkit-icon-rewind-10",
+	"iconRewind10": "playkit-icon-rewind-10",
 	"active": "playkit-active",
 	"dropdown-menu": "playkit-dropdown-menu",
 	"dropdownMenu": "playkit-dropdown-menu",
@@ -24771,7 +24776,6 @@ exports.locals = {
 	"left": "playkit-left",
 	"dropdown-menu-item": "playkit-dropdown-menu-item",
 	"dropdownMenuItem": "playkit-dropdown-menu-item",
-	"tooltip": "playkit-tooltip",
 	"player": "playkit-player",
 	"control-button": "playkit-control-button",
 	"controlButton": "playkit-control-button",
@@ -24889,6 +24893,8 @@ exports.locals = {
 	"draggingActive": "playkit-dragging-active",
 	"bar": "playkit-bar",
 	"progress": "playkit-progress",
+	"smart-container-open": "playkit-smart-container-open",
+	"smartContainerOpen": "playkit-smart-container-open",
 	"control-fullscreen": "playkit-control-fullscreen",
 	"controlFullscreen": "playkit-control-fullscreen",
 	"is-fullscreen": "playkit-is-fullscreen",
@@ -24926,6 +24932,8 @@ exports.locals = {
 	"overlayPlayIconIn": "playkit-overlayPlayIconIn",
 	"pre-playback-play-overlay": "playkit-pre-playback-play-overlay",
 	"prePlaybackPlayOverlay": "playkit-pre-playback-play-overlay",
+	"has-poster": "playkit-has-poster",
+	"hasPoster": "playkit-has-poster",
 	"pre-playback-play-button": "playkit-pre-playback-play-button",
 	"prePlaybackPlayButton": "playkit-pre-playback-play-button",
 	"pre-playback": "playkit-pre-playback",
@@ -24937,11 +24945,21 @@ exports.locals = {
 	"live-tag": "playkit-live-tag",
 	"liveTag": "playkit-live-tag",
 	"non-live-playhead": "playkit-non-live-playhead",
-	"nonLivePlayhead": "playkit-non-live-playhead"
+	"nonLivePlayhead": "playkit-non-live-playhead",
+	"unmute-button-container": "playkit-unmute-button-container",
+	"unmuteButtonContainer": "playkit-unmute-button-container",
+	"show-icon-only": "playkit-show-icon-only",
+	"showIconOnly": "playkit-show-icon-only",
+	"unmute-button": "playkit-unmute-button",
+	"unmuteButton": "playkit-unmute-button",
+	"has-top-bar": "playkit-has-top-bar",
+	"hasTopBar": "playkit-has-top-bar",
+	"unmute-icon-container": "playkit-unmute-icon-container",
+	"unmuteIconContainer": "playkit-unmute-icon-container"
 };
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports) {
 
 
@@ -25036,7 +25054,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25050,7 +25068,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _overlayPlay = __webpack_require__(56);
+var _overlayPlay = __webpack_require__(55);
 
 var _overlayPlay2 = _interopRequireDefault(_overlayPlay);
 
@@ -25058,7 +25076,7 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _playPause = __webpack_require__(20);
 
@@ -25066,7 +25084,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -25191,13 +25209,13 @@ var OverlayPlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAc
 exports.default = OverlayPlay;
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(57);
+var content = __webpack_require__(56);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -25205,7 +25223,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -25222,10 +25240,10 @@ if(false) {
 }
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -25242,13 +25260,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(61);
 
 
 
@@ -25280,11 +25298,11 @@ function baseGetTag(value) {
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(59);
 
 
 /** Detect free variable `self`. */
@@ -25297,7 +25315,7 @@ var root = __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__["a" /* default */] || fr
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25309,11 +25327,11 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19)))
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(36);
 
 
 /** Used for built-in method references. */
@@ -25363,7 +25381,7 @@ function getRawTag(value) {
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25392,11 +25410,11 @@ function objectToString(value) {
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(63);
 
 
 /** Built-in value references. */
@@ -25406,7 +25424,7 @@ var getPrototype = Object(__WEBPACK_IMPORTED_MODULE_0__overArg_js__["a" /* defau
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25428,7 +25446,7 @@ function overArg(func, transform) {
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25464,14 +25482,14 @@ function isObjectLike(value) {
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(67);
+module.exports = __webpack_require__(66);
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25481,7 +25499,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ponyfill = __webpack_require__(69);
+var _ponyfill = __webpack_require__(68);
 
 var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -25504,10 +25522,10 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19), __webpack_require__(68)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19), __webpack_require__(67)(module)))
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -25535,7 +25553,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25564,14 +25582,14 @@ function symbolObservablePonyfill(root) {
 };
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(36);
+/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(37);
 
 
 
@@ -25646,7 +25664,7 @@ function combineReducers(reducers) {
   for (var i = 0; i < reducerKeys.length; i++) {
     var key = reducerKeys[i];
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (true) {
       if (typeof reducers[key] === 'undefined') {
         Object(__WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */])('No reducer provided for key "' + key + '"');
       }
@@ -25659,7 +25677,7 @@ function combineReducers(reducers) {
   var finalReducerKeys = Object.keys(finalReducers);
 
   var unexpectedKeyCache = void 0;
-  if (process.env.NODE_ENV !== 'production') {
+  if (true) {
     unexpectedKeyCache = {};
   }
 
@@ -25678,7 +25696,7 @@ function combineReducers(reducers) {
       throw shapeAssertionError;
     }
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (true) {
       var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
       if (warningMessage) {
         Object(__WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */])(warningMessage);
@@ -25702,10 +25720,9 @@ function combineReducers(reducers) {
     return hasChanged ? nextState : state;
   };
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25759,12 +25776,12 @@ function bindActionCreators(actionCreators, dispatch) {
 }
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = applyMiddleware;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(38);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -25815,7 +25832,7 @@ function applyMiddleware() {
 }
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25828,7 +25845,7 @@ exports.LOG_LEVEL = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsLogger = __webpack_require__(74);
+var _jsLogger = __webpack_require__(73);
 
 var JsLogger = _interopRequireWildcard(_jsLogger);
 
@@ -25891,7 +25908,7 @@ exports.default = lf;
 exports.LOG_LEVEL = LOG_LEVEL;
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -26158,7 +26175,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26171,7 +26188,7 @@ exports.IconType = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -26211,7 +26228,9 @@ var IconType = {
   Embed: 'embed',
   Link: 'link',
   ArrowDown: 'arrow-down',
-  StartOver: 'start-over'
+  StartOver: 'start-over',
+  Rewind: 'rewind',
+  Rewind10: 'rewind10'
   /**
    * Icon component
    *
@@ -26319,6 +26338,12 @@ var Icon = function (_Component) {
         case IconType.StartOver:
           return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconStartOver].join(' ') });
 
+        case IconType.Rewind:
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconRewind].join(' ') });
+
+        case IconType.Rewind10:
+          return (0, _preact.h)('i', { className: [_style2.default.icon, _style2.default.iconRewind10].join(' ') });
+
         default:
           break;
       }
@@ -26332,7 +26357,7 @@ exports.default = Icon;
 exports.IconType = IconType;
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26346,15 +26371,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _prePlaybackPlayOverlay = __webpack_require__(77);
+var _style = __webpack_require__(4);
 
-var _prePlaybackPlayOverlay2 = _interopRequireDefault(_prePlaybackPlayOverlay);
+var _style2 = _interopRequireDefault(_style);
 
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _shell = __webpack_require__(9);
 
@@ -26362,7 +26387,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -26429,7 +26454,7 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
     value: function componentWillMount() {
       var _this2 = this;
 
-      this.props.addPlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
+      this.props.addPlayerClass(_style2.default.prePlayback);
       try {
         this.autoplay = this.player.config.playback.autoplay;
         if (this.autoplay === true) {
@@ -26454,7 +26479,7 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       this._hidePrePlayback();
-      this.props.removePlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
+      this.props.removePlayerClass(_style2.default.prePlayback);
     }
 
     /**
@@ -26526,15 +26551,26 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
       if (!props.isEnded && !props.prePlayback || !props.isEnded && this.autoplay) {
         return undefined;
       }
+      var rootStyle = {},
+          rootClass = [_style2.default.prePlaybackPlayOverlay];
+
+      if (!props.prePlayback && props.poster) {
+        rootStyle = { backgroundImage: 'url(' + props.poster + ')' };
+        rootClass.push(_style2.default.hasPoster);
+      }
+
       return (0, _preact.h)(
         'div',
-        { className: _prePlaybackPlayOverlay2.default.prePlaybackPlayOverlay, style: { backgroundImage: 'url(' + props.poster + ')' },
+        {
+          className: rootClass.join(' '),
+          style: rootStyle,
           onClick: function onClick() {
             return _this5.handleClick();
-          } },
+          }
+        },
         (0, _preact.h)(
           'a',
-          { className: _prePlaybackPlayOverlay2.default.prePlaybackPlayButton },
+          { className: _style2.default.prePlaybackPlayButton },
           props.isEnded ? (0, _preact.h)(_icon2.default, { type: _icon.IconType.StartOver }) : (0, _preact.h)(_icon2.default, { type: _icon.IconType.Play })
         )
       );
@@ -26568,7 +26604,7 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
     key: '_displayPrePlayback',
     value: function _displayPrePlayback() {
       this.props.updatePrePlayback(true);
-      this.props.addPlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
+      this.props.addPlayerClass(_style2.default.prePlayback);
     }
 
     /**
@@ -26581,7 +26617,7 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
     key: '_hidePrePlayback',
     value: function _hidePrePlayback() {
       this.props.updatePrePlayback(false);
-      this.props.removePlayerClass(_prePlaybackPlayOverlay2.default.prePlayback);
+      this.props.removePlayerClass(_style2.default.prePlayback);
     }
   }]);
 
@@ -26590,61 +26626,7 @@ var PrePlaybackPlayOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, 
 exports.default = PrePlaybackPlayOverlay;
 
 /***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(78);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_pre-playback-play-overlay.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_pre-playback-play-overlay.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".playkit-pre-playback-play-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10;\n  background-position: center center;\n  background-size: contain; }\n  .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    height: 108px;\n    width: 108px;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    background-color: rgba(0, 0, 0, 0.5);\n    margin: -54px 0 0 -54px;\n    border-radius: 54px;\n    padding: 20px;\n    cursor: pointer; }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:hover {\n      border: 2px solid rgba(255, 255, 255, 0.4); }\n    .playkit-pre-playback-play-overlay .playkit-pre-playback-play-button:active {\n      opacity: 0.7;\n      transform: scale(1); }\n\n.playkit-pre-playback .playkit-player-gui {\n  opacity: 0 !important;\n  display: none; }\n", ""]);
-
-// exports
-exports.locals = {
-	"pre-playback-play-overlay": "playkit-pre-playback-play-overlay",
-	"prePlaybackPlayOverlay": "playkit-pre-playback-play-overlay",
-	"pre-playback-play-button": "playkit-pre-playback-play-button",
-	"prePlaybackPlayButton": "playkit-pre-playback-play-button",
-	"pre-playback": "playkit-pre-playback",
-	"prePlayback": "playkit-pre-playback",
-	"player-gui": "playkit-player-gui",
-	"playerGui": "playkit-player-gui"
-};
-
-/***/ }),
-/* 79 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26658,7 +26640,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _loading = __webpack_require__(80);
+var _loading = __webpack_require__(77);
 
 var _loading2 = _interopRequireDefault(_loading);
 
@@ -26666,9 +26648,9 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _loading3 = __webpack_require__(39);
+var _loading3 = __webpack_require__(40);
 
 var _base = __webpack_require__(2);
 
@@ -26839,13 +26821,13 @@ var Loading = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindAction
 exports.default = Loading;
 
 /***/ }),
-/* 80 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(81);
+var content = __webpack_require__(78);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -26853,7 +26835,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -26870,10 +26852,10 @@ if(false) {
 }
 
 /***/ }),
-/* 81 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -26893,7 +26875,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 82 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26907,7 +26889,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _playPause = __webpack_require__(83);
+var _playPause = __webpack_require__(80);
 
 var _playPause2 = _interopRequireDefault(_playPause);
 
@@ -26917,7 +26899,7 @@ var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _playPause3 = __webpack_require__(20);
 
@@ -26925,7 +26907,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -27047,13 +27029,13 @@ var PlayPauseControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _b
 exports.default = PlayPauseControl;
 
 /***/ }),
-/* 83 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(84);
+var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -27061,7 +27043,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -27078,10 +27060,10 @@ if(false) {
 }
 
 /***/ }),
-/* 84 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -27109,13 +27091,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 85 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(e,n){ true?module.exports=n():"function"==typeof define&&define.amd?define(n):e.dlv=n()}(this,function(){function e(e,n,t,o){for(o=0,n=n.split?n.split("."):n;e&&o<n.length;)e=e[n[o++]];return void 0===e?t:e}return e});
 
 /***/ }),
-/* 86 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27126,7 +27108,153 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _seekbarPlaybackContainer = __webpack_require__(87);
+var _rewind = __webpack_require__(84);
+
+var _rewind2 = _interopRequireDefault(_rewind);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _rewind2.default;
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _style = __webpack_require__(4);
+
+var _style2 = _interopRequireDefault(_style);
+
+var _preact = __webpack_require__(0);
+
+var _preactI18n = __webpack_require__(8);
+
+var _base = __webpack_require__(2);
+
+var _base2 = _interopRequireDefault(_base);
+
+var _icon = __webpack_require__(5);
+
+var _icon2 = _interopRequireDefault(_icon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Default rewind step
+ * @type {number} number of seconds
+ * @const
+ */
+var DEFAULT_STEP = 10;
+
+/**
+ * RewindControl component
+ *
+ * @class RewindControl
+ * @example <RewindControl player={this.player} step={5} />
+ * @extends {BaseComponent}
+ */
+
+var RewindControl = function (_BaseComponent) {
+  _inherits(RewindControl, _BaseComponent);
+
+  /**
+   * Creates an instance of RewindControl.
+   * @param {Object} obj obj
+   * @memberof RewindControl
+   */
+  function RewindControl(obj) {
+    _classCallCheck(this, RewindControl);
+
+    return _possibleConstructorReturn(this, (RewindControl.__proto__ || Object.getPrototypeOf(RewindControl)).call(this, { name: 'Rewind', player: obj.player }));
+  }
+
+  /**
+   * rewind click handler
+   *
+   * @returns {void}
+   * @memberof RewindControl
+   */
+
+
+  _createClass(RewindControl, [{
+    key: 'onClick',
+    value: function onClick() {
+      var step = this.props.step || DEFAULT_STEP;
+
+      if (this.player.currentTime - step < 0) {
+        this.player.currentTime = 0;
+      } else {
+        this.player.currentTime = this.player.currentTime - step;
+      }
+    }
+
+    /**
+     * render component
+     *
+     * @param {*} props - component props
+     * @returns {React$Element} - component element
+     * @memberof RewindControl
+     */
+
+  }, {
+    key: 'render',
+    value: function render(props) {
+      var _this2 = this;
+
+      return (0, _preact.h)(
+        'div',
+        { className: [_style2.default.controlButtonContainer, _style2.default.controlRewind].join(' ') },
+        (0, _preact.h)(
+          _preactI18n.Localizer,
+          null,
+          (0, _preact.h)(
+            'button',
+            {
+              'aria-label': (0, _preact.h)(_preactI18n.Text, { id: 'controls.rewind' }),
+              className: _style2.default.controlButton,
+              onClick: function onClick() {
+                return _this2.onClick();
+              }
+            },
+            (0, _preact.h)(_icon2.default, { type: !props.step || props.step === 10 ? _icon.IconType.Rewind10 : _icon.IconType.Rewind })
+          )
+        )
+      );
+    }
+  }]);
+
+  return RewindControl;
+}(_base2.default);
+
+exports.default = RewindControl;
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _seekbarPlaybackContainer = __webpack_require__(86);
 
 var _seekbarPlaybackContainer2 = _interopRequireDefault(_seekbarPlaybackContainer);
 
@@ -27135,7 +27263,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _seekbarPlaybackContainer2.default;
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27153,7 +27281,7 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _seekbar = __webpack_require__(13);
 
@@ -27270,7 +27398,7 @@ var SeekBarPlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps
 exports.default = SeekBarPlaybackContainer;
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27282,7 +27410,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _seekbar = __webpack_require__(89);
+var _seekbar = __webpack_require__(88);
 
 var _seekbar2 = _interopRequireDefault(_seekbar);
 
@@ -27806,13 +27934,13 @@ var SeekBarControl = function (_Component) {
 exports.default = SeekBarControl;
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(90);
+var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -27820,7 +27948,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -27837,10 +27965,10 @@ if(false) {
 }
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -27877,7 +28005,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27891,7 +28019,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -27899,15 +28027,15 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _volume = __webpack_require__(40);
+var _volume = __webpack_require__(23);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -27976,11 +28104,8 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
       });
 
       this.player.addEventListener(this.player.Event.VOLUME_CHANGE, function () {
-        _this2.props.updateVolume(_this2.player.volume);
-      });
-
-      this.player.addEventListener(this.player.Event.MUTE_CHANGE, function () {
         _this2.props.updateMuted(_this2.player.muted);
+        _this2.props.updateVolume(_this2.player.volume);
       });
 
       document.addEventListener('mouseup', function (e) {
@@ -28129,12 +28254,22 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
       var controlButtonClass = [_style2.default.controlButtonContainer, _style2.default.volumeControl];
       if (this.props.isDraggingActive) controlButtonClass.push(_style2.default.draggingActive);
       if (this.props.muted || this.props.volume === 0) controlButtonClass.push(_style2.default.isMuted);
+      if (this.state.hover && !this.props.smartContainerOpen) controlButtonClass.push(_style2.default.hover);
 
       return (0, _preact.h)(
         'div',
-        { ref: function ref(c) {
+        {
+          ref: function ref(c) {
             return _this3._volumeControlElement = c;
-          }, className: controlButtonClass.join(' ') },
+          },
+          className: controlButtonClass.join(' '),
+          onMouseOver: function onMouseOver() {
+            return _this3.setState({ hover: true });
+          },
+          onMouseOut: function onMouseOut() {
+            return _this3.setState({ hover: false });
+          }
+        },
         (0, _preact.h)(
           'button',
           { className: _style2.default.controlButton, onClick: function onClick() {
@@ -28172,7 +28307,7 @@ var VolumeControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bind
 exports.default = VolumeControl;
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28186,7 +28321,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -28196,7 +28331,7 @@ var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _settings = __webpack_require__(41);
 
@@ -28208,11 +28343,11 @@ var _smartContainer = __webpack_require__(42);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
-var _smartContainerItem = __webpack_require__(44);
+var _smartContainerItem = __webpack_require__(43);
 
 var _smartContainerItem2 = _interopRequireDefault(_smartContainerItem);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -28393,6 +28528,33 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
     }
 
     /**
+     * This function gets an array and increases it if needed in each iteration. The function checks if the last element
+     * in the sorted array has the same resolution as the new current track element. If so, it compares their bandwidth
+     * and the the one with the higher. If the resolution is different then it just adds it to the array
+     *
+     * @param {Array} qualities - sorted (!) video tracks array
+     * @param {object} currentTrack - a track
+     * @returns {Array<any>} - an array with unique values, compared by their height. if the new track (currenttrack) has
+     * the same height value, then we take the one with the higher bandwidth (replace it if needed)
+     * @memberof SettingsControl
+     */
+
+  }, {
+    key: 'filterUniqueQualities',
+    value: function filterUniqueQualities(qualities, currentTrack) {
+      var arrLength = qualities.length - 1;
+      var previousTrack = qualities[arrLength];
+      if (arrLength > -1 && currentTrack.height === previousTrack.height) {
+        if (currentTrack.bandwidth > previousTrack.bandwidth) {
+          qualities[arrLength] = currentTrack;
+        }
+      } else {
+        qualities.push(currentTrack);
+      }
+      return qualities;
+    }
+
+    /**
      * render component
      *
      * @param {*} props - component props
@@ -28418,11 +28580,11 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
         return acc;
       }, []);
 
-      var qualityOptions = props.videoTracks.filter(function (t) {
-        return t.bandwidth || t.height;
-      }).sort(function (a, b) {
+      var qualityOptions = props.videoTracks.sort(function (a, b) {
         return a.bandwidth < b.bandwidth ? 1 : -1;
-      }).map(function (t) {
+      }).filter(function (t) {
+        return t.bandwidth || t.height;
+      }).reduce(this.filterUniqueQualities, []).map(function (t) {
         return {
           label: _this2.getQualityOptionLabel(t),
           active: !_this2.player.isAdaptiveBitrateEnabled() && t.active,
@@ -28469,17 +28631,19 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
           { title: 'Settings', onClose: function onClose() {
               return _this2.onControlButtonClick();
             } },
-          qualityOptions.length === 0 ? '' : (0, _preact.h)(
+          qualityOptions.length <= 1 ? '' : (0, _preact.h)(
             _preactI18n.Localizer,
             null,
-            (0, _preact.h)(_smartContainerItem2.default, { icon: 'quality', label: (0, _preact.h)(_preactI18n.Text, { id: 'settings.quality' }), options: qualityOptions, onSelect: function onSelect(o) {
+            (0, _preact.h)(_smartContainerItem2.default, { icon: 'quality', label: (0, _preact.h)(_preactI18n.Text, { id: 'settings.quality' }), options: qualityOptions,
+              onSelect: function onSelect(o) {
                 return _this2.onQualityChange(o);
               } })
           ),
           props.isLive ? '' : (0, _preact.h)(
             _preactI18n.Localizer,
             null,
-            (0, _preact.h)(_smartContainerItem2.default, { icon: 'speed', label: (0, _preact.h)(_preactI18n.Text, { id: 'settings.speed' }), options: speedOptions, onSelect: function onSelect(o) {
+            (0, _preact.h)(_smartContainerItem2.default, { icon: 'speed', label: (0, _preact.h)(_preactI18n.Text, { id: 'settings.speed' }), options: speedOptions,
+              onSelect: function onSelect(o) {
                 return _this2.onSpeedChange(o);
               } })
           )
@@ -28493,7 +28657,7 @@ var SettingsControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bi
 exports.default = SettingsControl;
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28507,19 +28671,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _smartContainer = __webpack_require__(43);
+var _style = __webpack_require__(4);
 
-var _smartContainer2 = _interopRequireDefault(_smartContainer);
+var _style2 = _interopRequireDefault(_style);
 
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _preactPortal = __webpack_require__(24);
+var _bindActions = __webpack_require__(3);
+
+var _shell = __webpack_require__(9);
+
+var _preactPortal = __webpack_require__(25);
 
 var _preactPortal2 = _interopRequireDefault(_preactPortal);
 
-var _overlay = __webpack_require__(25);
+var _overlay = __webpack_require__(26);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
@@ -28557,7 +28725,7 @@ var mapStateToProps = function mapStateToProps(state) {
  * </SmartContainer>
  * @extends {Component}
  */
-var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = function (_Component) {
+var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.bindActions)(_shell.actions)), _dec(_class = function (_Component) {
   _inherits(SmartContainer, _Component);
 
   function SmartContainer() {
@@ -28567,8 +28735,31 @@ var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_c
   }
 
   _createClass(SmartContainer, [{
-    key: 'render',
+    key: 'componentWillMount',
 
+
+    /**
+     * before component mounted, add player css class
+     *
+     * @returns {void}
+     * @memberof SmartContainer
+     */
+    value: function componentWillMount() {
+      this.props.addPlayerClass(_style2.default.smartContainerOpen);
+    }
+
+    /**
+     * after component unmounted, remove player css class
+     *
+     * @returns {void}
+     * @memberof SmartContainer
+     */
+
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.removePlayerClass(_style2.default.smartContainerOpen);
+    }
 
     /**
      * if mobile detected, smart container representation is an overlay. hence, render overlay with its children.
@@ -28578,6 +28769,9 @@ var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_c
      * @returns {React$Element} - component element
      * @memberof SmartContainer
      */
+
+  }, {
+    key: 'render',
     value: function render(props) {
       return props.isMobile ? (0, _preact.h)(
         _preactPortal2.default,
@@ -28589,14 +28783,14 @@ var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_c
             } },
           (0, _preact.h)(
             'div',
-            { className: _smartContainer2.default.title },
+            { className: _style2.default.title },
             props.title
           ),
           props.children
         )
       ) : (0, _preact.h)(
         'div',
-        { className: [_smartContainer2.default.smartContainer, _smartContainer2.default.top, _smartContainer2.default.left].join(' ') },
+        { className: [_style2.default.smartContainer, _style2.default.top, _style2.default.left].join(' ') },
         props.children
       );
     }
@@ -28607,40 +28801,7 @@ var SmartContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_c
 exports.default = SmartContainer;
 
 /***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n", ""]);
-
-// exports
-exports.locals = {
-	"player": "playkit-player",
-	"touch": "playkit-touch",
-	"smart-container": "playkit-smart-container",
-	"smartContainer": "playkit-smart-container",
-	"openSmartContainer": "playkit-openSmartContainer",
-	"leaving": "playkit-leaving",
-	"closeSmartContainer": "playkit-closeSmartContainer",
-	"top": "playkit-top",
-	"bottom": "playkit-bottom",
-	"right": "playkit-right",
-	"left": "playkit-left",
-	"smart-container-item": "playkit-smart-container-item",
-	"smartContainerItem": "playkit-smart-container-item",
-	"select-menu-item": "playkit-select-menu-item",
-	"selectMenuItem": "playkit-select-menu-item",
-	"label-icon": "playkit-label-icon",
-	"labelIcon": "playkit-label-icon",
-	"dropdown": "playkit-dropdown"
-};
-
-/***/ }),
-/* 95 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28654,7 +28815,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -28664,11 +28825,11 @@ var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _shell = __webpack_require__(9);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -28770,6 +28931,70 @@ var Overlay = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActio
 exports.default = Overlay;
 
 /***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(95);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_smart-container.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--2-1!../../../node_modules/sass-loader/lib/loader.js!./_smart-container.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "@keyframes playkit-openSmartContainer {\n  from {\n    opacity: 0;\n    transform: translateY(10px); }\n  to {\n    opacity: 1;\n    transform: translateY(0); } }\n\n@keyframes playkit-closeSmartContainer {\n  from {\n    opacity: 1;\n    transform: translateY(0); }\n  to {\n    opacity: 0;\n    transform: translateY(10px); } }\n\n.playkit-player:not(.playkit-touch) .playkit-smart-container {\n  background-color: #222222;\n  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);\n  border-radius: 4px;\n  position: absolute;\n  right: 0px;\n  min-width: 193px;\n  font-size: 15px;\n  z-index: 10;\n  display: block;\n  animation: playkit-openSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-leaving {\n    animation: playkit-closeSmartContainer 100ms ease-out forwards; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top {\n    bottom: 100%;\n    margin-bottom: 6px; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-top:before {\n      display: block;\n      content: ' ';\n      position: absolute;\n      bottom: -6px;\n      left: 0;\n      width: 100%;\n      height: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-bottom {\n    top: 100%;\n    margin-top: 6px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-right {\n    left: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container.playkit-left {\n    right: 0px; }\n  .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item {\n    margin: 16px;\n    color: rgba(244, 244, 244, 0.8);\n    white-space: nowrap;\n    display: flex;\n    justify-content: space-between; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      display: none; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      align-self: flex-end; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown span {\n      max-width: 100px;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      display: inline-block;\n      vertical-align: middle; }\n    .playkit-player:not(.playkit-touch) .playkit-smart-container .playkit-smart-container-item.playkit-select-menu-item select {\n      text-align-last: right; }\n\n.playkit-touch .playkit-smart-container-item {\n  width: 300px;\n  max-width: 100%;\n  margin: 16px auto;\n  color: rgba(244, 244, 244, 0.8);\n  white-space: nowrap;\n  text-align: left;\n  display: flex;\n  justify-content: space-between; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label {\n    font-size: 16px;\n    color: rgba(255, 255, 255, 0.8);\n    margin-right: 20px; }\n    .playkit-touch .playkit-smart-container-item.playkit-select-menu-item label .playkit-label-icon {\n      width: 24px;\n      height: 24px;\n      display: inline-block;\n      vertical-align: middle;\n      margin-right: 16px; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item .playkit-dropdown, .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    align-self: flex-end; }\n  .playkit-touch .playkit-smart-container-item.playkit-select-menu-item select {\n    text-align-last: right;\n    min-width: 1px;\n    line-height: 24px; }\n", ""]);
+
+// exports
+exports.locals = {
+	"player": "playkit-player",
+	"touch": "playkit-touch",
+	"smart-container": "playkit-smart-container",
+	"smartContainer": "playkit-smart-container",
+	"openSmartContainer": "playkit-openSmartContainer",
+	"leaving": "playkit-leaving",
+	"closeSmartContainer": "playkit-closeSmartContainer",
+	"top": "playkit-top",
+	"bottom": "playkit-bottom",
+	"right": "playkit-right",
+	"left": "playkit-left",
+	"smart-container-item": "playkit-smart-container-item",
+	"smartContainerItem": "playkit-smart-container-item",
+	"select-menu-item": "playkit-select-menu-item",
+	"selectMenuItem": "playkit-select-menu-item",
+	"label-icon": "playkit-label-icon",
+	"labelIcon": "playkit-label-icon",
+	"dropdown": "playkit-dropdown"
+};
+
+/***/ }),
 /* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28784,7 +29009,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -28796,7 +29021,7 @@ var _menu = __webpack_require__(97);
 
 var _menu2 = _interopRequireDefault(_menu);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -29015,13 +29240,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
 var _preact = __webpack_require__(0);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -29293,7 +29518,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -29303,9 +29528,9 @@ var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _cvaa = __webpack_require__(27);
+var _cvaa = __webpack_require__(28);
 
 var _base = __webpack_require__(2);
 
@@ -29315,11 +29540,11 @@ var _smartContainer = __webpack_require__(42);
 
 var _smartContainer2 = _interopRequireDefault(_smartContainer);
 
-var _smartContainerItem = __webpack_require__(44);
+var _smartContainerItem = __webpack_require__(43);
 
 var _smartContainerItem2 = _interopRequireDefault(_smartContainerItem);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -29327,7 +29552,7 @@ var _cvaaOverlay = __webpack_require__(100);
 
 var _cvaaOverlay2 = _interopRequireDefault(_cvaaOverlay);
 
-var _preactPortal = __webpack_require__(24);
+var _preactPortal = __webpack_require__(25);
 
 var _preactPortal2 = _interopRequireDefault(_preactPortal);
 
@@ -29648,7 +29873,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -29660,9 +29885,9 @@ var _isEqual = __webpack_require__(102);
 
 var _isEqual2 = _interopRequireDefault(_isEqual);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _cvaa = __webpack_require__(27);
+var _cvaa = __webpack_require__(28);
 
 var _shell = __webpack_require__(9);
 
@@ -29670,11 +29895,11 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _overlay = __webpack_require__(25);
+var _overlay = __webpack_require__(26);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
-var _dropdown = __webpack_require__(45);
+var _dropdown = __webpack_require__(44);
 
 var _dropdown2 = _interopRequireDefault(_dropdown);
 
@@ -29682,7 +29907,7 @@ var _slider = __webpack_require__(103);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -30456,7 +30681,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -30476,7 +30701,7 @@ if(false) {
 /* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -30515,15 +30740,15 @@ var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _fullscreen3 = __webpack_require__(46);
+var _fullscreen3 = __webpack_require__(45);
 
 var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -30613,6 +30838,7 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
     value: function fullscreenChangeHandler() {
       var isFullscreen = typeof document.fullscreenElement !== 'undefined' && Boolean(document.fullscreenElement) || typeof document.webkitFullscreenElement !== 'undefined' && Boolean(document.webkitFullscreenElement) || typeof document.mozFullScreenElement !== 'undefined' && Boolean(document.mozFullScreenElement) || typeof document.msFullscreenElement !== 'undefined' && Boolean(document.msFullscreenElement);
 
+      isFullscreen ? this.player.notifyEnterFullscreen() : this.player.notifyExitFullscreen();
       this.props.updateFullscreen(isFullscreen);
     }
 
@@ -30659,12 +30885,10 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
         this.player.getView().getElementsByTagName('video')[0].webkitEnterFullscreen();
       } else {
         var elementToFullscreen = document.getElementById(this.config.targetId);
-
         if (elementToFullscreen) {
           this.requestFullscreen(elementToFullscreen);
         }
       }
-      this.player.notifyEnterFullscreen();
     }
 
     /**
@@ -30686,7 +30910,6 @@ var FullscreenControl = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _
       } else if (typeof document.msExitFullscreen === 'function') {
         document.msExitFullscreen();
       }
-      this.player.notifyExitFullscreen();
     }
 
     /**
@@ -30755,7 +30978,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -30775,7 +30998,7 @@ if(false) {
 /* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -30845,7 +31068,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _timeDisplay = __webpack_require__(28);
+var _timeDisplay = __webpack_require__(29);
 
 var _timeDisplay2 = _interopRequireDefault(_timeDisplay);
 
@@ -31032,7 +31255,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -31052,7 +31275,7 @@ if(false) {
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -31151,7 +31374,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -31171,12 +31394,12 @@ if(false) {
 /* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container {\n      margin: 0 6px; }\n      .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n        margin-right: 0; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n", ""]);
+exports.push([module.i, ".playkit-player .playkit-bottom-bar {\n  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);\n  padding: 6px 16px;\n  color: #fff;\n  opacity: 0;\n  visibility: hidden;\n  transition: 100ms opacity;\n  width: 100%;\n  margin-top: auto;\n  position: absolute;\n  z-index: 10;\n  bottom: 0;\n  left: 0; }\n  .playkit-player .playkit-bottom-bar .playkit-left-controls {\n    float: left;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-left-controls .playkit-control-button-container:first-child {\n      margin-left: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-right-controls {\n    float: right;\n    text-align: left; }\n    .playkit-player .playkit-bottom-bar .playkit-right-controls .playkit-control-button-container:last-child {\n      margin-right: 0px; }\n  .playkit-player .playkit-bottom-bar .playkit-control-button-container {\n    margin: 0 6px; }\n\n.playkit-player.playkit-hover .playkit-bottom-bar,\n.playkit-player.playkit-state-paused .playkit-bottom-bar,\n.playkit-player.playkit-menu-active .playkit-bottom-bar {\n  opacity: 1;\n  visibility: visible; }\n\n.playkit-player.playkit-overlay-active .playkit-bottom-bar {\n  opacity: 0;\n  visibility: hidden; }\n\n.playkit-player.playkit-size-sm .playkit-bottom-bar {\n  padding: 6px 8px; }\n  .playkit-player.playkit-size-sm .playkit-bottom-bar .playkit-time-display {\n    padding-left: 0; }\n", ""]);
 
 // exports
 exports.locals = {
@@ -31185,10 +31408,10 @@ exports.locals = {
 	"bottomBar": "playkit-bottom-bar",
 	"left-controls": "playkit-left-controls",
 	"leftControls": "playkit-left-controls",
-	"right-controls": "playkit-right-controls",
-	"rightControls": "playkit-right-controls",
 	"control-button-container": "playkit-control-button-container",
 	"controlButtonContainer": "playkit-control-button-container",
+	"right-controls": "playkit-right-controls",
+	"rightControls": "playkit-right-controls",
 	"hover": "playkit-hover",
 	"state-paused": "playkit-state-paused",
 	"statePaused": "playkit-state-paused",
@@ -31418,9 +31641,197 @@ exports.default = KeyboardControl;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _dec, _class;
+
+var _style = __webpack_require__(4);
+
+var _style2 = _interopRequireDefault(_style);
+
+var _preact = __webpack_require__(0);
+
+var _preactRedux = __webpack_require__(1);
+
+var _bindActions = __webpack_require__(3);
+
+var _volume = __webpack_require__(23);
+
+var _base = __webpack_require__(2);
+
+var _base2 = _interopRequireDefault(_base);
+
+var _icon = __webpack_require__(5);
+
+var _icon2 = _interopRequireDefault(_icon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * The icon only timeout
+ * @type {number}
+ * @const
+ */
+var ICON_ONLY_TIMEOUT = 3000;
+
+/**
+ * UnmuteIndication component
+ *
+ * @class UnmuteIndication
+ * @example <UnmuteIndication player={this.player} />
+ * @extends {BaseComponent}
+ */
+var UnmuteIndication = (_dec = (0, _preactRedux.connect)(null, (0, _bindActions.bindActions)(_volume.actions)), _dec(_class = function (_BaseComponent) {
+  _inherits(UnmuteIndication, _BaseComponent);
+
+  /**
+   * Creates an instance of UnmuteIndication.
+   * @param {Object} obj obj
+   * @memberof UnmuteIndication
+   */
+  function UnmuteIndication(obj) {
+    _classCallCheck(this, UnmuteIndication);
+
+    var _this = _possibleConstructorReturn(this, (UnmuteIndication.__proto__ || Object.getPrototypeOf(UnmuteIndication)).call(this, { name: 'UnmuteIndication', player: obj.player }));
+
+    _this._iconOnlyTimeoutCallback = _this._iconOnlyTimeout.bind(_this);
+    return _this;
+  }
+
+  /**
+   * after component mounted, listen to relevant player event for updating the state of the component
+   *
+   * @method componentDidMount
+   * @returns {void}
+   * @memberof UnmuteIndication
+   */
+
+  /**
+   * The icon only timeout bounded method reference
+   * @private
+   * @memberof UnmuteIndication
+   * @type {Function}
+   */
+
+
+  _createClass(UnmuteIndication, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      this.player.addEventListener(this.player.Event.MUTE_CHANGE, function (e) {
+        _this2.props.updateMuted(e.payload.mute);
+
+        // hide tooltip on user interaction
+        if (!e.payload.mute && _this2.state.unmuteHint) {
+          _this2.setState({ unmuteHint: false });
+        }
+      });
+
+      this.player.addEventListener(this.player.Event.FALLBACK_TO_MUTED_AUTOPLAY, function () {
+        _this2.setState({ unmuteHint: true });
+        _this2.player.addEventListener(_this2.player.Event.PLAYING, _this2._iconOnlyTimeoutCallback);
+        _this2.player.addEventListener(_this2.player.Event.AD_STARTED, _this2._iconOnlyTimeoutCallback);
+      });
+    }
+
+    /**
+     * The icon only timeout handler
+     * @private
+     * @memberof UnmuteIndication
+     * @returns {void}
+     */
+
+  }, {
+    key: '_iconOnlyTimeout',
+    value: function _iconOnlyTimeout() {
+      var _this3 = this;
+
+      this.player.removeEventListener(this.player.Event.PLAYING, this._iconOnlyTimeoutCallback);
+      this.player.removeEventListener(this.player.Event.AD_STARTED, this._iconOnlyTimeoutCallback);
+      setTimeout(function () {
+        _this3.setState({ iconOnly: true });
+      }, ICON_ONLY_TIMEOUT);
+    }
+
+    /**
+     * render component
+     *
+     * @param {*} props - component props
+     * @returns {?React$Element} component element
+     * @memberof UnmuteIndication
+     */
+
+  }, {
+    key: 'render',
+    value: function render(props) {
+      var _this4 = this;
+
+      if (!this.state.unmuteHint) return undefined;
+
+      var styleClass = [_style2.default.unmuteButtonContainer];
+      if (props.hasTopBar) styleClass.push(_style2.default.hasTopBar);
+      if (this.state.iconOnly) styleClass.push(_style2.default.showIconOnly);
+
+      return (0, _preact.h)(
+        'div',
+        {
+          className: styleClass.join(' '),
+          onMouseOver: function onMouseOver() {
+            return _this4.setState({ iconOnly: false });
+          },
+          onMouseOut: function onMouseOut() {
+            return _this4.setState({ iconOnly: true });
+          },
+          onClick: function onClick() {
+            return _this4.player.muted = !_this4.player.muted;
+          }
+        },
+        (0, _preact.h)(
+          'a',
+          {
+            className: [_style2.default.btn, _style2.default.btnDarkTransparent, _style2.default.unmuteButton].join(' ')
+          },
+          (0, _preact.h)(
+            'div',
+            { className: _style2.default.unmuteIconContainer },
+            (0, _preact.h)(_icon2.default, { type: _icon.IconType.VolumeBase }),
+            (0, _preact.h)(_icon2.default, { type: _icon.IconType.VolumeMute })
+          ),
+          (0, _preact.h)(
+            'span',
+            null,
+            'Unmute'
+          )
+        )
+      );
+    }
+  }]);
+
+  return UnmuteIndication;
+}(_base2.default)) || _class);
+exports.default = UnmuteIndication;
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = undefined;
 
-var _seekbarAdsContainer = __webpack_require__(121);
+var _seekbarAdsContainer = __webpack_require__(122);
 
 var _seekbarAdsContainer2 = _interopRequireDefault(_seekbarAdsContainer);
 
@@ -31429,7 +31840,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _seekbarAdsContainer2.default;
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31447,7 +31858,7 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _seekbar = __webpack_require__(13);
 
@@ -31534,7 +31945,7 @@ var SeekBarAdsContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0,
 exports.default = SeekBarAdsContainer;
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31545,7 +31956,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _timeDisplayAdsContainer = __webpack_require__(123);
+var _timeDisplayAdsContainer = __webpack_require__(124);
 
 var _timeDisplayAdsContainer2 = _interopRequireDefault(_timeDisplayAdsContainer);
 
@@ -31554,7 +31965,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _timeDisplayAdsContainer2.default;
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31578,7 +31989,7 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _timeDisplay = __webpack_require__(28);
+var _timeDisplay = __webpack_require__(29);
 
 var _timeDisplay2 = _interopRequireDefault(_timeDisplay);
 
@@ -31645,7 +32056,7 @@ var TimeDisplayAdsContainer = (_dec = (0, _preactRedux.connect)(mapStateToProps)
 exports.default = TimeDisplayAdsContainer;
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31656,7 +32067,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _adSkip = __webpack_require__(125);
+var _adSkip = __webpack_require__(126);
 
 var _adSkip2 = _interopRequireDefault(_adSkip);
 
@@ -31665,7 +32076,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _adSkip2.default;
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31679,7 +32090,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _adSkip = __webpack_require__(126);
+var _adSkip = __webpack_require__(127);
 
 var _adSkip2 = _interopRequireDefault(_adSkip);
 
@@ -31801,13 +32212,13 @@ var AdSkip = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = f
 exports.default = AdSkip;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(127);
+var content = __webpack_require__(128);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -31815,7 +32226,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -31832,10 +32243,10 @@ if(false) {
 }
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -31851,7 +32262,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31862,7 +32273,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _adLearnMore = __webpack_require__(129);
+var _adLearnMore = __webpack_require__(130);
 
 var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
 
@@ -31871,7 +32282,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _adLearnMore2.default;
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31885,7 +32296,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _adLearnMore = __webpack_require__(130);
+var _adLearnMore = __webpack_require__(131);
 
 var _adLearnMore2 = _interopRequireDefault(_adLearnMore);
 
@@ -31952,13 +32363,13 @@ var AdLearnMore = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_clas
 exports.default = AdLearnMore;
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(131);
+var content = __webpack_require__(132);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -31966,7 +32377,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -31983,10 +32394,10 @@ if(false) {
 }
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -32007,7 +32418,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32019,7 +32430,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _topBar = __webpack_require__(133);
+var _topBar = __webpack_require__(134);
 
 var _topBar2 = _interopRequireDefault(_topBar);
 
@@ -32074,13 +32485,13 @@ var TopBar = function (_Component) {
 exports.default = TopBar;
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(134);
+var content = __webpack_require__(135);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -32088,7 +32499,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -32105,10 +32516,10 @@ if(false) {
 }
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -32138,7 +32549,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32149,7 +32560,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _seekbarLivePlaybackContainer = __webpack_require__(136);
+var _seekbarLivePlaybackContainer = __webpack_require__(137);
 
 var _seekbarLivePlaybackContainer2 = _interopRequireDefault(_seekbarLivePlaybackContainer);
 
@@ -32158,7 +32569,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _seekbarLivePlaybackContainer2.default;
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32176,7 +32587,7 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _seekbar = __webpack_require__(13);
 
@@ -32296,7 +32707,7 @@ var SeekBarLivePlaybackContainer = (_dec = (0, _preactRedux.connect)(mapStateToP
 exports.default = SeekBarLivePlaybackContainer;
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32307,7 +32718,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _liveTag = __webpack_require__(138);
+var _liveTag = __webpack_require__(139);
 
 var _liveTag2 = _interopRequireDefault(_liveTag);
 
@@ -32316,7 +32727,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _liveTag2.default;
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32330,7 +32741,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _liveTag = __webpack_require__(139);
+var _liveTag = __webpack_require__(140);
 
 var _liveTag2 = _interopRequireDefault(_liveTag);
 
@@ -32449,13 +32860,13 @@ var LiveTag = (_dec = (0, _preactRedux.connect)(mapStateToProps), _dec(_class = 
 exports.default = LiveTag;
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(140);
+var content = __webpack_require__(141);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -32463,7 +32874,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -32480,10 +32891,10 @@ if(false) {
 }
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -32502,7 +32913,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32513,7 +32924,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _share = __webpack_require__(142);
+var _share = __webpack_require__(143);
 
 var _share2 = _interopRequireDefault(_share);
 
@@ -32522,7 +32933,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _share2.default;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32540,15 +32951,15 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
-var _shareOverlay = __webpack_require__(143);
+var _shareOverlay = __webpack_require__(144);
 
 var _shareOverlay2 = _interopRequireDefault(_shareOverlay);
 
-var _preactPortal = __webpack_require__(24);
+var _preactPortal = __webpack_require__(25);
 
 var _preactPortal2 = _interopRequireDefault(_preactPortal);
 
@@ -32647,7 +33058,7 @@ var ShareControl = function (_BaseComponent) {
 exports.default = ShareControl;
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32658,7 +33069,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _shareOverlay = __webpack_require__(144);
+var _shareOverlay = __webpack_require__(145);
 
 var _shareOverlay2 = _interopRequireDefault(_shareOverlay);
 
@@ -32667,7 +33078,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _shareOverlay2.default;
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32687,9 +33098,9 @@ var _preactI18n = __webpack_require__(8);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _share = __webpack_require__(50);
+var _share = __webpack_require__(49);
 
 var _timeFormat = __webpack_require__(22);
 
@@ -32697,11 +33108,11 @@ var _base = __webpack_require__(2);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _overlay = __webpack_require__(25);
+var _overlay = __webpack_require__(26);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
-var _icon = __webpack_require__(6);
+var _icon = __webpack_require__(5);
 
 var _icon2 = _interopRequireDefault(_icon);
 
@@ -33256,7 +33667,7 @@ var ShareOverlay = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindA
 exports.default = ShareOverlay;
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33265,6 +33676,7 @@ exports.default = ShareOverlay;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.NAME = exports.VERSION = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33282,45 +33694,45 @@ var _preactI18n = __webpack_require__(8);
 
 var _redux = __webpack_require__(10);
 
-var _store = __webpack_require__(146);
+var _store = __webpack_require__(147);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _fr = __webpack_require__(147);
+var _fr = __webpack_require__(148);
 
 var _fr2 = _interopRequireDefault(_fr);
 
-var _playkitJs = __webpack_require__(38);
+var _playkitJs = __webpack_require__(39);
 
-var _engineConnector = __webpack_require__(148);
+var _engineConnector = __webpack_require__(149);
 
 var _engineConnector2 = _interopRequireDefault(_engineConnector);
 
-var _shell = __webpack_require__(150);
+var _shell = __webpack_require__(151);
 
 var _shell2 = _interopRequireDefault(_shell);
 
-var _videoPlayer = __webpack_require__(152);
+var _videoPlayer = __webpack_require__(153);
 
 var _videoPlayer2 = _interopRequireDefault(_videoPlayer);
 
-var _playerGui = __webpack_require__(156);
+var _playerGui = __webpack_require__(157);
 
 var _playerGui2 = _interopRequireDefault(_playerGui);
 
-var _ads = __webpack_require__(47);
+var _ads = __webpack_require__(46);
 
 var _ads2 = _interopRequireDefault(_ads);
 
-var _playback = __webpack_require__(31);
+var _playback = __webpack_require__(33);
 
 var _playback2 = _interopRequireDefault(_playback);
 
-var _live = __webpack_require__(49);
+var _live = __webpack_require__(48);
 
 var _live2 = _interopRequireDefault(_live);
 
-__webpack_require__(7);
+__webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33435,9 +33847,11 @@ var UIManager = function () {
 }();
 
 exports.default = UIManager;
+exports.VERSION = "0.11.0";
+exports.NAME = "playkit-js-ui";
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33449,7 +33863,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(10);
 
-var _engine = __webpack_require__(51);
+var _engine = __webpack_require__(50);
 
 var _engine2 = _interopRequireDefault(_engine);
 
@@ -33465,23 +33879,23 @@ var _seekbar = __webpack_require__(13);
 
 var _seekbar2 = _interopRequireDefault(_seekbar);
 
-var _volume = __webpack_require__(40);
+var _volume = __webpack_require__(23);
 
 var _volume2 = _interopRequireDefault(_volume);
 
-var _fullscreen = __webpack_require__(46);
+var _fullscreen = __webpack_require__(45);
 
 var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-var _loading = __webpack_require__(39);
+var _loading = __webpack_require__(40);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _share = __webpack_require__(50);
+var _share = __webpack_require__(49);
 
 var _share2 = _interopRequireDefault(_share);
 
-var _cvaa = __webpack_require__(27);
+var _cvaa = __webpack_require__(28);
 
 var _cvaa2 = _interopRequireDefault(_cvaa);
 
@@ -33506,7 +33920,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -33521,7 +33935,8 @@ module.exports = {
 		"share": "Share",
 		"language": "Language",
 		"settings": "Settings",
-		"fullscreen": "Fullscreen"
+		"fullscreen": "Fullscreen",
+		"rewind": "Rewind"
 	},
 	"settings": {
 		"quality": "Quality",
@@ -33539,7 +33954,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33550,7 +33965,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _engineConnector = __webpack_require__(149);
+var _engineConnector = __webpack_require__(150);
 
 var _engineConnector2 = _interopRequireDefault(_engineConnector);
 
@@ -33559,7 +33974,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _engineConnector2.default;
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33577,9 +33992,9 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
-var _engine = __webpack_require__(51);
+var _engine = __webpack_require__(50);
 
 var _engine2 = _interopRequireDefault(_engine);
 
@@ -33660,9 +34075,9 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
       this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
         _this2.props.updateMuted(_this2.player.muted);
         _this2.props.updateMetadataLoadingStatus(true);
-        _this2.props.updatePlayerPoster(_this2.player.poster);
         _this2.props.updateIsLive(_this2.player.isLive());
         _this2.props.updateIsDvr(_this2.player.isDvr());
+        _this2.props.updatePlayerPoster(_this2.player.poster);
       });
 
       this.player.addEventListener(this.player.Event.VOLUME_CHANGE, function () {
@@ -33733,6 +34148,10 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
         _this2.props.updateAdBreakProgress(currentTime, duration);
       });
 
+      this.player.addEventListener(this.player.Event.AD_COMPLETED, function () {
+        _this2.props.updateAdBreakCompleted();
+      });
+
       this.player.addEventListener(this.player.Event.AD_STARTED, function () {
         _this2.props.updateAdIsPlaying(true);
       });
@@ -33784,7 +34203,7 @@ var EngineConnector = (_dec = (0, _preactRedux.connect)(_engine2.default, (0, _b
 exports.default = EngineConnector;
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33795,7 +34214,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _shell = __webpack_require__(151);
+var _shell = __webpack_require__(152);
 
 var _shell2 = _interopRequireDefault(_shell);
 
@@ -33804,7 +34223,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _shell2.default;
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33818,7 +34237,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _style = __webpack_require__(7);
+var _style = __webpack_require__(4);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -33830,7 +34249,7 @@ var _base2 = _interopRequireDefault(_base);
 
 var _preactRedux = __webpack_require__(1);
 
-var _bindActions = __webpack_require__(5);
+var _bindActions = __webpack_require__(3);
 
 var _shell = __webpack_require__(9);
 
@@ -33860,6 +34279,13 @@ var mapStateToProps = function mapStateToProps(state) {
     adBreak: state.engine.adBreak
   };
 };
+
+/**
+ * The default control bar hover time rendering timeout value
+ * @type {number}
+ * @const
+ */
+var DEFAULT_CONTROL_BAR_HOVER_TIME = 3000;
 
 /**
  * Shell component
@@ -33899,21 +34325,7 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
   _createClass(Shell, [{
     key: 'onMouseOver',
     value: function onMouseOver() {
-      var _this2 = this;
-
-      if (!this.state.hover) {
-        this.props.updatePlayerHoverState(true);
-        this.setState({ hover: true });
-      }
-      if (this.hoverTimeout) {
-        clearTimeout(this.hoverTimeout);
-      }
-      this.hoverTimeout = setTimeout(function () {
-        if (!_this2.props.seekbarDraggingActive) {
-          _this2.props.updatePlayerHoverState(false);
-          _this2.setState({ hover: false });
-        }
-      }, this.props.hoverTimeout || 3000);
+      this._showAndHideControlBar();
     }
 
     /**
@@ -33976,25 +34388,52 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.props.updateIsMobile(!!this.player.env.device.type);
       if (document.body) {
         this.props.updateDocumentWidth(document.body.clientWidth);
       }
       this.player.addEventListener(this.player.Event.LOADED_METADATA, function () {
-        _this3.props.updatePlayerWidth(_this3.player.getView().parentElement.clientWidth);
+        _this2.props.updatePlayerWidth(_this2.player.getView().parentElement.clientWidth);
       });
       window.addEventListener('resize', function () {
-        _this3.props.updatePlayerWidth(_this3.player.getView().parentElement.clientWidth);
+        _this2.props.updatePlayerWidth(_this2.player.getView().parentElement.clientWidth);
 
         if (document.body) {
-          _this3.props.updateDocumentWidth(document.body.clientWidth);
+          _this2.props.updateDocumentWidth(document.body.clientWidth);
         }
       });
       if (this.player.env.device.type) {
         this.props.updatePlayerHoverState(true);
       }
+      this._showAndHideControlBar();
+    }
+
+    /**
+     * show the control bar for few seconds and then hide it
+     * @returns {void}
+     * @memberof Shell
+     */
+
+  }, {
+    key: '_showAndHideControlBar',
+    value: function _showAndHideControlBar() {
+      var _this3 = this;
+
+      if (!this.state.hover) {
+        this.props.updatePlayerHoverState(true);
+        this.setState({ hover: true });
+      }
+      if (this.hoverTimeout) {
+        clearTimeout(this.hoverTimeout);
+      }
+      this.hoverTimeout = setTimeout(function () {
+        if (!_this3.props.seekbarDraggingActive) {
+          _this3.props.updatePlayerHoverState(false);
+          _this3.setState({ hover: false });
+        }
+      }, this.props.hoverTimeout || DEFAULT_CONTROL_BAR_HOVER_TIME);
     }
 
     /**
@@ -34050,7 +34489,7 @@ var Shell = (_dec = (0, _preactRedux.connect)(mapStateToProps, (0, _bindActions.
 exports.default = Shell;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34061,7 +34500,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _videoPlayer = __webpack_require__(153);
+var _videoPlayer = __webpack_require__(154);
 
 var _videoPlayer2 = _interopRequireDefault(_videoPlayer);
 
@@ -34070,7 +34509,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _videoPlayer2.default;
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34082,7 +34521,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _videoPlayer = __webpack_require__(154);
+var _videoPlayer = __webpack_require__(155);
 
 var _videoPlayer2 = _interopRequireDefault(_videoPlayer);
 
@@ -34163,13 +34602,13 @@ var VideoPlayer = function (_Component) {
 exports.default = VideoPlayer;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(155);
+var content = __webpack_require__(156);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -34177,7 +34616,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -34194,10 +34633,10 @@ if(false) {
 }
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -34211,7 +34650,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34622,7 +35061,7 @@ function evaluatePluginsConfig() {
 
   if (playerConfig.plugins) {
     var dataModel = {
-      pVersion: "0.13.2",
+      pVersion: "0.13.3",
       pName: "kaltura-player-js"
     };
     if (playerConfig.session) {
@@ -34712,7 +35151,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.13.2", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
+_logger2.default.getLogger().log('%c ' + "kaltura-player-js" + ' ' + "0.13.3", "color: #98ff98;  font-size: large"); // Important! must be first import to support older browsers compatibility
 
 _logger2.default.getLogger().log('%c For more details see ' + "https://github.com/kaltura/kaltura-player-js", "color: #98ff98;");
 
@@ -34738,7 +35177,7 @@ exports.Playkit = Playkit;
 exports.OvpProvider = _ovpProvider2.default;
 exports.PlaykitUI = _playkitJsUi2.default;
 exports.setup = _setup.setup;
-exports.VERSION = "0.13.2";
+exports.VERSION = "0.13.3";
 exports.PLAYER_NAME = "kaltura-player-js";
 
 /***/ }),
@@ -62043,9 +62482,14 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_startAdsManager',
     value: function _startAdsManager() {
+      var _this2 = this;
+
       this.logger.debug("Start ads manager");
-      this._adsManager.init(this.player.dimensions.width, this.player.dimensions.height, this._sdk.ViewMode.NORMAL);
-      this._adsManager.start();
+      var readyPromise = this._adsManager.isCustomPlaybackUsed() ? this.player.ready() : Promise.resolve();
+      readyPromise.then(function () {
+        _this2._adsManager.init(_this2.player.dimensions.width, _this2.player.dimensions.height, _this2._sdk.ViewMode.NORMAL);
+        _this2._adsManager.start();
+      });
     }
 
     /**
@@ -62057,10 +62501,10 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_addBindings',
     value: function _addBindings() {
-      var _this2 = this;
+      var _this3 = this;
 
       ['fullscreenchange', 'mozfullscreenchange', 'webkitfullscreenchange'].forEach(function (fullScreenEvent) {
-        return _this2.eventManager.listen(document, fullScreenEvent, _this2._resizeAd.bind(_this2));
+        return _this3.eventManager.listen(document, fullScreenEvent, _this3._resizeAd.bind(_this3));
       });
       this.eventManager.listen(window, 'resize', this._resizeAd.bind(this));
       this.eventManager.listen(this.player, this.player.Event.MUTE_CHANGE, this._syncPlayerVolume.bind(this));
@@ -62068,7 +62512,7 @@ var Ima = function (_BasePlugin) {
       this.eventManager.listen(this.player, this.player.Event.SOURCE_SELECTED, function (event) {
         var selectedSource = event.payload.selectedSource;
         if (selectedSource && selectedSource.length > 0) {
-          _this2._contentSrc = selectedSource[0].url;
+          _this3._contentSrc = selectedSource[0].url;
         }
       });
     }
@@ -62106,20 +62550,20 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_init',
     value: function _init() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.loadPromise = _playkitJs.Utils.Object.defer();
       (this._isImaSDKLibLoaded() ? Promise.resolve() : _playkitJs.Utils.Dom.loadScriptAsync(this.config.debug ? Ima.IMA_SDK_DEBUG_LIB_URL : Ima.IMA_SDK_LIB_URL)).then(function () {
-        _this3._sdk = window.google.ima;
-        _this3.logger.debug("IMA SDK version: " + _this3._sdk.VERSION);
-        _this3._initImaSettings();
-        _this3._initAdsContainer();
-        _this3._initAdsLoader();
-        _this3._requestAds();
-        _this3._stateMachine.loaded();
-        _this3.loadPromise.resolve();
+        _this4._sdk = window.google.ima;
+        _this4.logger.debug("IMA SDK version: " + _this4._sdk.VERSION);
+        _this4._initImaSettings();
+        _this4._initAdsContainer();
+        _this4._initAdsLoader();
+        _this4._requestAds();
+        _this4._stateMachine.loaded();
+        _this4.loadPromise.resolve();
       }).catch(function (e) {
-        _this3.loadPromise.reject(e);
+        _this4.loadPromise.reject(e);
       });
     }
 
@@ -62164,7 +62608,7 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_initAdsContainer',
     value: function _initAdsContainer() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.logger.debug("Init ads container");
       var playerView = this.player.getView();
@@ -62177,7 +62621,7 @@ var Ima = function (_BasePlugin) {
       this._adsCoverDiv.id = ADS_COVER_CLASS + playerView.id;
       this._adsCoverDiv.className = ADS_COVER_CLASS;
       this._adsCoverDiv.onclick = function () {
-        return _this4.resumeAd();
+        return _this5.resumeAd();
       };
       // Append the ads container to the dom
       _playkitJs.Utils.Dom.appendChild(playerView, this._adsContainerDiv);
@@ -62193,13 +62637,13 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_initAdsLoader',
     value: function _initAdsLoader() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.logger.debug("Init ads loader");
       this._adsLoader = new this._sdk.AdsLoader(this._adDisplayContainer);
       this._adsLoader.addEventListener(this._sdk.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, this._onAdsManagerLoaded.bind(this));
       this._adsLoader.addEventListener(this._sdk.AdErrorEvent.Type.AD_ERROR, function (adEvent) {
-        return _this5._stateMachine.aderror(adEvent);
+        return _this6._stateMachine.aderror(adEvent);
       });
     }
 
@@ -62241,22 +62685,9 @@ var Ima = function (_BasePlugin) {
     key: '_resizeAd',
     value: function _resizeAd() {
       if (this._sdk && this._adsManager) {
-        var isFullScreen = this._isFullScreen();
-        var viewMode = isFullScreen ? this._sdk.ViewMode.FULLSCREEN : this._sdk.ViewMode.NORMAL;
+        var viewMode = this.player.isFullscreen() ? this._sdk.ViewMode.FULLSCREEN : this._sdk.ViewMode.NORMAL;
         this._adsManager.resize(this.player.dimensions.width, this.player.dimensions.height, viewMode);
       }
-    }
-
-    /**
-     * Helper for checking if the document is in full screen mode.
-     * @private
-     * @returns {boolean} - Whether the document is in full screen mode.
-     */
-
-  }, {
-    key: '_isFullScreen',
-    value: function _isFullScreen() {
-      return typeof document.fullscreenElement !== 'undefined' && Boolean(document.fullscreenElement) || typeof document.webkitFullscreenElement !== 'undefined' && Boolean(document.webkitFullscreenElement) || typeof document.mozFullScreenElement !== 'undefined' && Boolean(document.mozFullScreenElement) || typeof document.msFullscreenElement !== 'undefined' && Boolean(document.msFullscreenElement);
     }
 
     /**
@@ -62436,13 +62867,13 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_onAdsManagerLoaded',
     value: function _onAdsManagerLoaded(adsManagerLoadedEvent) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.logger.debug('Ads manager loaded');
       var adsRenderingSettings = new this._sdk.AdsRenderingSettings();
       Object.keys(this.config.adsRenderingSettings).forEach(function (setting) {
         if (adsRenderingSettings[setting] != null) {
-          adsRenderingSettings[setting] = _this6.config.adsRenderingSettings[setting];
+          adsRenderingSettings[setting] = _this7.config.adsRenderingSettings[setting];
         }
       });
       this._adsManager = adsManagerLoadedEvent.getAdsManager(this._contentPlayheadTracker, adsRenderingSettings);
@@ -62464,61 +62895,61 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_attachAdsManagerListeners',
     value: function _attachAdsManagerListeners() {
-      var _this7 = this;
+      var _this8 = this;
 
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.CONTENT_PAUSE_REQUESTED, function (adEvent) {
-        return _this7._stateMachine.adbreakstart(adEvent);
+        return _this8._stateMachine.adbreakstart(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.LOADED, function (adEvent) {
-        return _this7._stateMachine.adloaded(adEvent);
+        return _this8._stateMachine.adloaded(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.STARTED, function (adEvent) {
-        return _this7._stateMachine.adstarted(adEvent);
+        return _this8._stateMachine.adstarted(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.PAUSED, function (adEvent) {
-        return _this7._stateMachine.adpaused(adEvent);
+        return _this8._stateMachine.adpaused(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.RESUMED, function (adEvent) {
-        return _this7._stateMachine.adresumed(adEvent);
+        return _this8._stateMachine.adresumed(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.FIRST_QUARTILE, function (adEvent) {
-        return _this7._stateMachine.adfirstquartile(adEvent);
+        return _this8._stateMachine.adfirstquartile(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.MIDPOINT, function (adEvent) {
-        return _this7._stateMachine.admidpoint(adEvent);
+        return _this8._stateMachine.admidpoint(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.THIRD_QUARTILE, function (adEvent) {
-        return _this7._stateMachine.adthirdquartile(adEvent);
+        return _this8._stateMachine.adthirdquartile(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.CLICK, function (adEvent) {
-        return _this7._stateMachine.adclicked(adEvent);
+        return _this8._stateMachine.adclicked(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.SKIPPED, function (adEvent) {
-        return _this7._stateMachine.adskipped(adEvent);
+        return _this8._stateMachine.adskipped(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.COMPLETE, function (adEvent) {
-        return _this7._stateMachine.adcompleted(adEvent);
+        return _this8._stateMachine.adcompleted(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.CONTENT_RESUME_REQUESTED, function (adEvent) {
-        return _this7._stateMachine.adbreakend(adEvent);
+        return _this8._stateMachine.adbreakend(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.ALL_ADS_COMPLETED, function (adEvent) {
-        return _this7._stateMachine.alladscompleted(adEvent);
+        return _this8._stateMachine.alladscompleted(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.USER_CLOSE, function (adEvent) {
-        return _this7._stateMachine.userclosedad(adEvent);
+        return _this8._stateMachine.userclosedad(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.VOLUME_CHANGED, function (adEvent) {
-        return _this7._stateMachine.advolumechanged(adEvent);
+        return _this8._stateMachine.advolumechanged(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.VOLUME_MUTED, function (adEvent) {
-        return _this7._stateMachine.admuted(adEvent);
+        return _this8._stateMachine.admuted(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdEvent.Type.LOG, function (adEvent) {
-        return _this7._stateMachine.aderror(adEvent);
+        return _this8._stateMachine.aderror(adEvent);
       });
       this._adsManager.addEventListener(this._sdk.AdErrorEvent.Type.AD_ERROR, function (adEvent) {
-        return _this7._stateMachine.aderror(adEvent);
+        return _this8._stateMachine.aderror(adEvent);
       });
     }
 
@@ -62551,16 +62982,16 @@ var Ima = function (_BasePlugin) {
   }, {
     key: '_startAdInterval',
     value: function _startAdInterval() {
-      var _this8 = this;
+      var _this9 = this;
 
       this._stopAdInterval();
       this._intervalTimer = setInterval(function () {
-        if (_this8._stateMachine.is(_state2.default.PLAYING)) {
-          var remainingTime = _this8._adsManager.getRemainingTime();
-          var duration = _this8._adsManager.getCurrentAd().getDuration();
+        if (_this9._stateMachine.is(_state2.default.PLAYING)) {
+          var remainingTime = _this9._adsManager.getRemainingTime();
+          var duration = _this9._adsManager.getCurrentAd().getDuration();
           var currentTime = duration - remainingTime;
           if (_playkitJs.Utils.Number.isNumber(duration) && _playkitJs.Utils.Number.isNumber(currentTime)) {
-            _this8.dispatchEvent(_this8.player.Event.AD_PROGRESS, {
+            _this9.dispatchEvent(_this9.player.Event.AD_PROGRESS, {
               adProgress: {
                 currentTime: currentTime,
                 duration: duration
@@ -63046,6 +63477,11 @@ function ImaStateMachine(context) {
 exports.default = ImaStateMachine;
 function onAdLoaded(options, adEvent) {
   this.logger.debug(adEvent.type.toUpperCase());
+  // When we are using the same video element on iOS, native captions still
+  // appearing on the video element, so need to hide them before ad start.
+  if (this._adsManager.isCustomPlaybackUsed()) {
+    this.player.hideTextTrack();
+  }
   this.dispatchEvent(options.transition, normalizeAdEvent(adEvent));
 }
 
@@ -64837,7 +65273,7 @@ var KalturaPlayer = function () {
     this._player = player;
     this._logger = _logger2.default.getLogger('KalturaPlayer' + _playkitJs.Utils.Generator.uniqueId(5));
     this._uiManager = new _playkitJsUi2.default(this._player, { targetId: targetId });
-    this._provider = new _ovpProvider2.default("0.13.2", config.partnerId, config.ks, config.env);
+    this._provider = new _ovpProvider2.default("0.13.3", config.partnerId, config.ks, config.env);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -64967,7 +65403,7 @@ function addReferrer(source) {
 function addClientTag(source) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     var delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + "0.13.2";
+    source.url += delimiter + CLIENT_TAG + "0.13.3";
   }
 }
 
