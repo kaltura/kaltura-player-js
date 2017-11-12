@@ -29,7 +29,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   evaluatePluginsConfig(userPlayerConfig);
   setStorageConfig(userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
-  let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
+  let kalturaPlayerApi = new KalturaPlayer(player, containerId, userPlayerConfig, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
   setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);

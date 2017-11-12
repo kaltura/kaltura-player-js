@@ -2,7 +2,7 @@
 import {Utils} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
-import LoggerFactory from './utils/logger'
+import getLogger from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
 import {addKalturaPoster} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
@@ -14,11 +14,11 @@ export default class KalturaPlayer {
   _uiManager: PlaykitUI;
   _logger: any;
 
-  constructor(player: Player, targetId: string, config: Object) {
+  constructor(player: Player, targetId: string, playerConfig: Object, providerConfig: Object) {
     this._player = player;
-    this._logger = LoggerFactory.getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._uiManager = new PlaykitUI(this._player, {targetId: targetId});
-    this._provider = new OvpProvider(__VERSION__, config.partnerId, config.ks, config.env);
+    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    this._uiManager = new PlaykitUI(this._player, {targetId: targetId, logLevel: playerConfig.logLevel});
+    this._provider = new OvpProvider(__VERSION__, providerConfig.partnerId, providerConfig.ks, providerConfig.env, playerConfig.logLevel);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)

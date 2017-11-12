@@ -103,6 +103,7 @@ function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
   setDefaultAnalyticsPlugin(playerConfig);
+  setDebugMode(playerConfig);
 }
 
 /**
@@ -210,6 +211,38 @@ function isSafari(): boolean {
 function isIos(): boolean {
   return (Env.os.name === "iOS");
 }
+
+/**
+ * sets player debug mode according to config or URL query string params
+ * @param {Object} playerConfig - the player config
+ * @returns {void}
+ */
+function setDebugMode(playerConfig: Object): void{
+  let isDebugMode = false;
+  if (!!window.DEBUG_KALTURA_PLAYER) {
+    isDebugMode = true;
+  } else if (window.URLSearchParams){
+    const urlParams = new URLSearchParams(window.location.search);
+    isDebugMode = urlParams.has("debugKalturaPlayer");
+  } else {
+    isDebugMode = !!getUrlParameter("debugKalturaPlayer");
+  }
+  if (isDebugMode) {
+    playerConfig.logLevel = "DEBUG";
+  }
+}
+
+/**
+ * gets the url query striung parmater
+ * @param {string} name - name of query string param
+ * @returns {string} - value of the query string param
+ */
+function getUrlParameter(name: string) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
 
 export {
   setStorageConfig,
