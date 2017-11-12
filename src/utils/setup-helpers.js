@@ -219,7 +219,7 @@ function isIos(): boolean {
  */
 function setDebugMode(playerConfig: Object): void{
   let isDebugMode = false;
-  if (!!window.DEBUG_KALTURA_PLAYER) {
+  if (window.DEBUG_KALTURA_PLAYER === true) {
     isDebugMode = true;
   } else if (window.URLSearchParams){
     const urlParams = new URLSearchParams(window.location.search);
@@ -242,7 +242,7 @@ function getUrlParameter(name: string) {
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = regex.exec(location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
+}
 
 export {
   setStorageConfig,
