@@ -103,7 +103,9 @@ function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
   setDefaultAnalyticsPlugin(playerConfig);
-  setDebugMode(playerConfig);
+  if (isDebugMode(playerConfig)){
+    playerConfig.logLevel = "DEBUG";
+  }
 }
 
 /**
@@ -213,11 +215,10 @@ function isIos(): boolean {
 }
 
 /**
- * sets player debug mode according to config or URL query string params
- * @param {Object} playerConfig - the player config
- * @returns {void}
+ * check the player debug mode according to config or URL query string params
+ * @returns {boolean} - if to set debug mode or not
  */
-function setDebugMode(playerConfig: Object): void{
+function isDebugMode(): void{
   let isDebugMode = false;
   if (window.DEBUG_KALTURA_PLAYER === true) {
     isDebugMode = true;
@@ -227,9 +228,7 @@ function setDebugMode(playerConfig: Object): void{
   } else {
     isDebugMode = !!getUrlParameter("debugKalturaPlayer");
   }
-  if (isDebugMode) {
-    playerConfig.logLevel = "DEBUG";
-  }
+  return isDebugMode;
 }
 
 /**
@@ -258,5 +257,6 @@ export {
   checkNativeHlsSupport,
   checkNativeTextTracksSupport,
   isSafari,
-  isIos
+  isIos,
+  isDebugMode
 };
