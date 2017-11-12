@@ -2,14 +2,14 @@
 import 'babel-polyfill' // Important! must be first import to support older browsers compatibility
 import PolyfillManager from './polyfills/polyfill-manager'
 import './polyfills/all'
-import getLogger, {getLogLevel, setLogLevel, LOG_LEVEL} from './utils/logger'
+import getLogger, {getLogLevel, setLogLevel, LogLevel} from './utils/logger'
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
 
 const currentLogLevel = getLogLevel();
-setLogLevel(LOG_LEVEL.INFO);
+setLogLevel(LogLevel.INFO);
 getLogger().log(`%c ${__NAME__} ${__VERSION__}`, "color: #ff98f9;  font-size: large");
 getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, "color: #ff98f9;");
 setLogLevel(currentLogLevel);
