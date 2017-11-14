@@ -2,6 +2,8 @@
 import {Env, Utils, TextStyle} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
+import {setLogLevel as _setLogLevel, LogLevel} from './logger'
+import type LogLevelType from './logger'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
@@ -103,8 +105,8 @@ function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
   setDefaultAnalyticsPlugin(playerConfig);
-  if (isDebugMode(playerConfig)){
-    playerConfig.logLevel = "DEBUG";
+  if (isDebugMode()) {
+    playerConfig.logLevel = LogLevel.DEBUG.name;
   }
 }
 
@@ -218,11 +220,11 @@ function isIos(): boolean {
  * check the player debug mode according to config or URL query string params
  * @returns {boolean} - if to set debug mode or not
  */
-function isDebugMode(): void{
+function isDebugMode(): boolean {
   let isDebugMode = false;
   if (window.DEBUG_KALTURA_PLAYER === true) {
     isDebugMode = true;
-  } else if (window.URLSearchParams){
+  } else if (window.URLSearchParams) {
     const urlParams = new URLSearchParams(window.location.search);
     isDebugMode = urlParams.has("debugKalturaPlayer");
   } else {
@@ -231,6 +233,21 @@ function isDebugMode(): void{
   return isDebugMode;
 }
 
+/**
+ * set the logger
+ * @param options
+ */
+function setLogLevel(options: Object): void {
+  let logLevel: LogLevelType = LogLevel.ERROR;
+  if (isDebugMode()){
+    logLevel = LogLevel.DEBUG;
+  } else {
+    if (options.logLevel && LogLevel[options.logLevel]){
+      logLevel = LogLevel[options.logLevel];
+    }
+  }
+  _setLogLevel(logLevel);
+}
 /**
  * gets the url query striung parmater
  * @param {string} name - name of query string param
@@ -258,5 +275,5 @@ export {
   checkNativeTextTracksSupport,
   isSafari,
   isIos,
-  isDebugMode
+  setLogLevel
 };

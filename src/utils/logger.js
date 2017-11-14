@@ -1,7 +1,9 @@
 //@flow
 import * as JsLogger from 'js-logger';
 
-const LogLevel: { [level: string]: Object } = {
+export type LogLevelType = { [level: string]: {value: number; name: string} };
+
+const LogLevel: LogLevelType = {
   "DEBUG": JsLogger.DEBUG,
   "INFO": JsLogger.INFO,
   "TIME": JsLogger.TIME,
@@ -27,19 +29,19 @@ function getLogger(name?: string): Object {
 /**
  * get the log level
  * @param {?string} name - the logger name
- * @returns {Object} - the log level
+ * @returns {LogLevelType} - the log level
  */
-function getLogLevel(name?: string): Object{
+function getLogLevel(name?: string): LogLevelType{
   return getLogger(name).getLevel();
 }
 
 /**
  * sets the logger level
- * @param {Object} level - the log level
+ * @param {LogLevelType} level - the log level
  * @param {?string} name - the logger name
  * @returns {void}
  */
-function setLogLevel(level: Object, name?: string): void{
+function setLogLevel(level: LogLevelType, name?: string): void{
   getLogger(name).setLevel(level);
 }
 

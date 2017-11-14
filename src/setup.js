@@ -1,7 +1,6 @@
 // @flow
 import {loadPlayer} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
-import {setLogLevel, LogLevel} from './utils/logger'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
 import {
   extractPlayerConfig,
@@ -13,7 +12,7 @@ import {
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
-  isDebugMode
+  setLogLevel
 } from "./utils/setup-helpers"
 
 /**
@@ -21,14 +20,8 @@ import {
  * @param {Object} options - options
  * @returns {Player} - Player
  */
-function setup(targetId: string, options: Object): KalturaPlayer {
-  if (isDebugMode()){
-    setLogLevel(LogLevel.DEBUG)
-  } else {
-    if (options.logLevel && LogLevel[options.logLevel]){
-      setLogLevel(LogLevel[options.logLevel]);
-    }
-  }
+function setup(targetId: string, options: Object = {}): KalturaPlayer {
+  setLogLevel(options);
   validateTargetId(targetId);
   validateProvidersConfig(options);
   let userPlayerConfig = extractPlayerConfig(options);
