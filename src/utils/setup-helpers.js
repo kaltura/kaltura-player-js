@@ -237,7 +237,7 @@ function isDebugMode(): boolean {
 
 /**
  * set the logger
- * @param options
+ * @param {Object} options - the player options
  */
 function setLogLevel(options: Object): void {
   let logLevel: LogLevelType = LogLevel.ERROR;
