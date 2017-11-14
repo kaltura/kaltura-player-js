@@ -7,6 +7,8 @@ import type LogLevelType from './logger'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
+const KALTURA_PLAYER_DEBUG_QS: string = "debugKalturaPlayer";
+
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
@@ -226,9 +228,9 @@ function isDebugMode(): boolean {
     isDebugMode = true;
   } else if (window.URLSearchParams) {
     const urlParams = new URLSearchParams(window.location.search);
-    isDebugMode = urlParams.has("debugKalturaPlayer");
+    isDebugMode = urlParams.has(KALTURA_PLAYER_DEBUG_QS);
   } else {
-    isDebugMode = !!getUrlParameter("debugKalturaPlayer");
+    isDebugMode = !!getUrlParameter(KALTURA_PLAYER_DEBUG_QS);
   }
   return isDebugMode;
 }
