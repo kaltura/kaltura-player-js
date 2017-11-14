@@ -5,6 +5,9 @@ import StorageManager from '../storage/storage-manager'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 
+
+
+
 /**
  * Validate the initial user input for the providers.
  * @param {Object} config - The fully user provider configuration.
