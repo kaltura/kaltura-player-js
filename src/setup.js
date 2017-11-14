@@ -11,7 +11,8 @@ import {
   setDefaultPlayerConfig,
   setStorageConfig,
   applyStorageSupport,
-  setStorageTextStyle
+  setStorageTextStyle,
+  setLogLevel
 } from "./utils/setup-helpers"
 
 /**
@@ -19,7 +20,8 @@ import {
  * @param {Object} options - options
  * @returns {Player} - Player
  */
-function setup(targetId: string, options: Object): KalturaPlayer {
+function setup(targetId: string, options: Object = {}): KalturaPlayer {
+  setLogLevel(options);
   validateTargetId(targetId);
   validateProvidersConfig(options);
   let userPlayerConfig = extractPlayerConfig(options);
@@ -29,7 +31,7 @@ function setup(targetId: string, options: Object): KalturaPlayer {
   evaluatePluginsConfig(userPlayerConfig);
   setStorageConfig(userPlayerConfig);
   let player = loadPlayer(userPlayerConfig);
-  let kalturaPlayerApi = new KalturaPlayer(player, containerId, userProvidersConfig);
+  let kalturaPlayerApi = new KalturaPlayer(player, containerId, userPlayerConfig, userProvidersConfig);
   let kalturaPlayer = Object.assign(player, kalturaPlayerApi);
   setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);

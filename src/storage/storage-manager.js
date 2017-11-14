@@ -1,6 +1,6 @@
 // @flow
 import StorageWrapper from './storage-wrapper'
-import LoggerFactory from '../utils/logger'
+import getLogger from '../utils/logger'
 import {Utils} from 'playkit-js'
 
 export default class StorageManager {
@@ -12,7 +12,7 @@ export default class StorageManager {
     TEXT_STYLE: 'textStyle'
   };
 
-  static _logger: any = LoggerFactory.getLogger('StorageManager');
+  static _logger: any = getLogger('StorageManager');
 
   static isLocalStorageAvailable(): boolean {
     return StorageWrapper.isLocalStorageAvailable();

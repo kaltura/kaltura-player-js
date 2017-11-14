@@ -2,8 +2,12 @@
 import {Env, Utils, TextStyle} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
+import {setLogLevel as _setLogLevel, LogLevel} from './logger'
+import type LogLevelType from './logger'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
+
+const KALTURA_PLAYER_DEBUG_QS: string = "debugKalturaPlayer";
 
 /**
  * Validate the initial user input for the providers.
@@ -103,6 +107,9 @@ function setDefaultPlayerConfig(playerConfig: Object): void {
   checkNativeHlsSupport(playerConfig);
   checkNativeTextTracksSupport(playerConfig);
   setDefaultAnalyticsPlugin(playerConfig);
+  if (isDebugMode()) {
+    playerConfig.logLevel = LogLevel.DEBUG.name;
+  }
 }
 
 /**
@@ -211,6 +218,52 @@ function isIos(): boolean {
   return (Env.os.name === "iOS");
 }
 
+/**
+ * check the player debug mode according to config or URL query string params
+ * @returns {boolean} - if to set debug mode or not
+ */
+function isDebugMode(): boolean {
+  let isDebugMode = false;
+  if (window.DEBUG_KALTURA_PLAYER === true) {
+    isDebugMode = true;
+  } else if (window.URLSearchParams) {
+    const urlParams = new URLSearchParams(window.location.search);
+    isDebugMode = urlParams.has(KALTURA_PLAYER_DEBUG_QS);
+  } else {
+    isDebugMode = !!getUrlParameter(KALTURA_PLAYER_DEBUG_QS);
+  }
+  return isDebugMode;
+}
+
+/**
+ * set the logger
+ * @param {Object} options - the player options
+ * @returns {void}
+ */
+function setLogLevel(options: Object): void {
+  let logLevel: LogLevelType = LogLevel.ERROR;
+  if (isDebugMode()) {
+    logLevel = LogLevel.DEBUG;
+  } else {
+    if (options.logLevel && LogLevel[options.logLevel]) {
+      logLevel = LogLevel[options.logLevel];
+    }
+  }
+  _setLogLevel(logLevel);
+}
+
+/**
+ * gets the url query striung parmater
+ * @param {string} name - name of query string param
+ * @returns {string} - value of the query string param
+ */
+function getUrlParameter(name: string) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
 export {
   setStorageConfig,
   applyStorageSupport,
@@ -225,5 +278,6 @@ export {
   checkNativeHlsSupport,
   checkNativeTextTracksSupport,
   isSafari,
-  isIos
+  isIos,
+  setLogLevel
 };

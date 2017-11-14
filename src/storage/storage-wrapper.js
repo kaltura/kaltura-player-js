@@ -1,10 +1,10 @@
 // @flow
-import LoggerFactory from '../utils/logger'
+import getLogger from '../utils/logger'
 
 const STORAGE_PREFIX = __NAME__ + '_';
 
 export default class StorageWrapper {
-  static _logger: any = LoggerFactory.getLogger('StorageWrapper');
+  static _logger: any = getLogger('StorageWrapper');
 
   /**
    * @static

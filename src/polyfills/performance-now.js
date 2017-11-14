@@ -1,10 +1,10 @@
 // @flow
 import PolyfillManager from './polyfill-manager'
-import LoggerFactory from '../utils/logger'
+import getLogger from '../utils/logger'
 
 export default class PerformanceNowPolyfill {
   static id: string = 'performance.now';
-  static _logger: any = LoggerFactory.getLogger('PerformanceNowPolyfill');
+  static _logger: any = getLogger('PerformanceNowPolyfill');
 
   static install(): void {
     if (global.performance && global.performance.now) {
