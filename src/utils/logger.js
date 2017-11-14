@@ -1,7 +1,7 @@
 //@flow
 import * as JsLogger from 'js-logger';
 
-export type LogLevelType = { [level: string]: {value: number; name: string} };
+export type LogLevelType = { [level: string]: {value: number, name: string} };
 
 const LogLevel: LogLevelType = {
   "DEBUG": JsLogger.DEBUG,
