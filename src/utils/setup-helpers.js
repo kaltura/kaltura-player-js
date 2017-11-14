@@ -242,15 +242,16 @@ function isDebugMode(): boolean {
  */
 function setLogLevel(options: Object): void {
   let logLevel: LogLevelType = LogLevel.ERROR;
-  if (isDebugMode()){
+  if (isDebugMode()) {
     logLevel = LogLevel.DEBUG;
   } else {
-    if (options.logLevel && LogLevel[options.logLevel]){
+    if (options.logLevel && LogLevel[options.logLevel]) {
       logLevel = LogLevel[options.logLevel];
     }
   }
   _setLogLevel(logLevel);
 }
+
 /**
  * gets the url query striung parmater
  * @param {string} name - name of query string param
