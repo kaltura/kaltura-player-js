@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/kaltura/kaltura-player-js/compare/v0.13.3...v0.14.0) (2017-11-16)
+
+
+### Bug Fixes
+
+* logLevel type syntax ([#57](https://github.com/kaltura/kaltura-player-js/issues/57)) ([6dd55a6](https://github.com/kaltura/kaltura-player-js/commit/6dd55a6))
+
+
+### Features
+
+* set log level from config and API ([#56](https://github.com/kaltura/kaltura-player-js/issues/56)) ([1c31f5d](https://github.com/kaltura/kaltura-player-js/commit/1c31f5d))
+
+
+
 <a name="0.13.3"></a>
 ## [0.13.3](https://github.com/kaltura/kaltura-player-js/compare/v0.13.2...v0.13.3) (2017-11-07)
 
