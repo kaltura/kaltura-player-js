@@ -4,7 +4,7 @@ import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import getLogger from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
-import {addKalturaPoster} from './utils/setup-helpers'
+import {addKalturaPoster, setUISeekbarConfig} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
 import './assets/style.css'
 
@@ -30,6 +30,7 @@ export default class KalturaPlayer {
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
         const dimensions = this._player.dimensions;
+        setUISeekbarConfig(data, this._uiManager);
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);

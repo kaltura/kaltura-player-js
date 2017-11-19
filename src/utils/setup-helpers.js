@@ -1,8 +1,10 @@
 // @flow
 import {Env, Utils, TextStyle} from 'playkit-js'
+import PlaykitUI from 'playkit-js-ui'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import {setLogLevel as _setLogLevel, LogLevel} from './logger'
+import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './thumbs'
 import type LogLevelType from './logger'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -259,9 +261,23 @@ function setLogLevel(options: Object): void {
  */
 function getUrlParameter(name: string) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var results = regex.exec(location.search);
+  const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  const results = regex.exec(location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+/**
+ * Sets the preview thumbnail config for the ui seekbar component.
+ * @param {Object} data - The provider data.
+ * @param {PlaykitUI} uiManager - The ui manager.
+ * @returns {void}
+ */
+function setUISeekbarConfig(data: Object, uiManager: PlaykitUI): void {
+  uiManager.setConfig({
+    thumbsSprite: getThumbSlicesUrl(data),
+    thumbsWidth: DEFAULT_THUMBS_WIDTH,
+    thumbsSlices: DEFAULT_THUMBS_SLICES
+  }, "seekbar");
 }
 
 export {
@@ -279,5 +295,6 @@ export {
   checkNativeTextTracksSupport,
   isSafari,
   isIos,
-  setLogLevel
+  setLogLevel,
+  setUISeekbarConfig
 };
