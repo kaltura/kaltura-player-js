@@ -5,22 +5,14 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
-    "build:prod": "NODE_ENV=production webpack",
-    "build": "webpack",
-    "dev": "webpack --progress --colors --watch",
+    "build": "NODE_ENV=production webpack",
+    "dev": "webpack-dev-server",
+    "watch": "webpack --progress --colors --watch",
     "test": "NODE_ENV=test karma start --color",
-    "test:chrome": "NODE_ENV=test karma start --color --browsers Chrome",
-    "test:chrome:dots": "NODE_ENV=test karma start --color --browsers Chrome --reporters dots",
-    "test:firefox": "NODE_ENV=test karma start --color --browsers Firefox",
-    "test:safari": "NODE_ENV=test karma start --color --browsers Safari",
-    "test:watch": "NODE_ENV=test karma start --color --auto-watch",
-    "start": "webpack-dev-server",
-    "release:dry-run": "standard-version --dry-run",
     "release": "standard-version",
     "publish": "git push --follow-tags --no-verify origin master",
     "eslint": "eslint . --color",
     "flow": "flow check",
-    "eslint:flow:test": "npm run eslint && npm run flow && npm run test",
     "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)",
     "playkit-dev:start": "playkit-dev start",
     "playkit-dev:stop": "playkit-dev stop",
@@ -32,7 +24,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "yarn run build && yarn run build:prod && npm run commit:dist"
+      "postbump": "yarn run build && npm run commit:dist"
     }
   },
   "devDependencies": {
