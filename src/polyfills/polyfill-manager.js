@@ -1,6 +1,10 @@
 // @flow
 import getLogger from '../utils/logger'
 
+if (!window._babelPolyfill){
+  require("babel-polyfill");
+}
+
 export default class PolyfillManager {
   static _polyfills: Array<Function> = [];
   static _logger: any = getLogger('PolyfillManager');
