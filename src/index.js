@@ -1,5 +1,4 @@
 // @flow
-import 'babel-polyfill' // Important! must be first import to support older browsers compatibility
 import PolyfillManager from './polyfills/polyfill-manager'
 import './polyfills/all'
 import getLogger, {getLogLevel, setLogLevel, LogLevel} from './utils/logger'
