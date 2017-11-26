@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.15.1"></a>
+## [0.15.1](https://github.com/kaltura/kaltura-player-js/compare/v0.15.0...v0.15.1) (2017-11-26)
+
+
+### Bug Fixes
+
+* **FEC-7528:** multiple players cannot be loaded ([#60](https://github.com/kaltura/kaltura-player-js/issues/60)) ([b6b9bb6](https://github.com/kaltura/kaltura-player-js/commit/b6b9bb6))
+
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/kaltura/kaltura-player-js/compare/v0.14.0...v0.15.0) (2017-11-23)
 
