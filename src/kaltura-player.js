@@ -35,6 +35,7 @@ export default class KalturaPlayer {
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
         Utils.Object.mergeDeep(data.session, this._player.config.session);
+        this._uiManager.setSessionId(data.session.id);
         evaluatePluginsConfig(data);
         this._player.configure(data);
       });
