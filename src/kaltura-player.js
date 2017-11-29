@@ -1,11 +1,14 @@
 // @flow
 import {Utils} from 'playkit-js'
+import {Error, Severity, Category, Code} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import getLogger from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
 import {addKalturaPoster, setUISeekbarConfig} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
+import {FakeEvent} from 'playkit-js'
+import {CUSTOM_EVENTS} from 'playkit-js'
 import './assets/style.css'
 
 export default class KalturaPlayer {
@@ -35,9 +38,10 @@ export default class KalturaPlayer {
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
         Utils.Object.mergeDeep(data.session, this._player.config.session);
-        this._uiManager.setSessionId(data.session.id);
         evaluatePluginsConfig(data);
         this._player.configure(data);
+      }).catch(e => {
+        this._player.dispatchEvent(new FakeEvent(CUSTOM_EVENTS.ERROR, new Error(Severity.CRITICAL, Category.PLAYER, Code.LOAD_FAILED, {info: e})));
       });
   }
 }
