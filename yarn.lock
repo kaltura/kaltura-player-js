@@ -2459,7 +2459,7 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@^0.59.0:
+flow-bin@latest:
   version "0.59.0"
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.59.0.tgz#8c151ee7f09f1deed9bf0b9d1f2e8ab9d470f1bb"
 
@@ -4361,9 +4361,9 @@ pkginfo@0.x.x:
   version "1.4.0"
   resolved "https://github.com/kaltura/playkit-js-dash.git#a07282d741cafdc2be14e6bd35dfb8b14817e631"
 
-"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.1.1":
-  version "3.1.1"
-  resolved "https://github.com/kaltura/playkit-js-env-manager.git#a63c604b087a15ba7fb68e2a0f9a8dc0dfa84c11"
+"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.1.2":
+  version "3.1.2"
+  resolved "https://github.com/kaltura/playkit-js-env-manager.git#ace83a59a251bfe687d64de1d49244eccaa9ade7"
   dependencies:
     chalk "^2.1.0"
     fs "0.0.1-security"
@@ -5994,7 +5994,7 @@ webpack-dev-middleware@^1.0.11, webpack-dev-middleware@^1.11.0:
     range-parser "^1.0.3"
     time-stamp "^2.0.0"
 
-webpack-dev-server@^2.9.5:
+webpack-dev-server@latest:
   version "2.9.5"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.5.tgz#79336fba0087a66ae491f4869f6545775b18daa8"
   dependencies:
@@ -6033,7 +6033,7 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^3.8.1:
+webpack@latest:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.8.1.tgz#b16968a81100abe61608b0153c9159ef8bb2bd83"
   dependencies:
