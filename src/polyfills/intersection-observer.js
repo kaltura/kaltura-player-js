@@ -1,10 +1,10 @@
 // @flow
 import PolyfillManager from './polyfill-manager'
-import LoggerFactory from '../utils/logger'
+import getLogger from '../utils/logger'
 
 export default class IntersectionObserverPolyfill {
   static id: string = 'IntersectionObserver';
-  static _logger: any = LoggerFactory.getLogger('IntersectionObserverPolyfill');
+  static _logger: any = getLogger('IntersectionObserverPolyfill');
 
   static install(): void {
 
