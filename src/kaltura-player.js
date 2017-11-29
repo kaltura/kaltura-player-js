@@ -19,6 +19,8 @@ export default class KalturaPlayer {
   _visibilityManager: VisibilityManager;
 
   constructor(player: Player, targetId: string, playerConfig: Object = {}, providerConfig: Object) {
+    this._playerIsReadyToPlay = false;
+    this._targetObj = document.getElementById( targetId );
     this._player = player;
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiManager = new PlaykitUI(this._player, {targetId: targetId, logLevel: playerConfig.logLevel});
@@ -27,14 +29,14 @@ export default class KalturaPlayer {
     this._provider = new OvpProvider(__VERSION__, providerConfig.partnerId, providerConfig.ks, providerConfig.env, playerConfig.logLevel);
     this._uiManager.buildDefaultUI();
     return {
-      loadMedia: this.loadMedia.bind(this)
+      loadMedia: this.loadMedia.bind( this )
     }
   }
 
-  loadMedia(entryId: string, uiConfId: ?number): Promise<*> {
-    this._logger.debug('loadMedia', {entryId: entryId, uiConfId: uiConfId});
-    return this._provider.getConfig(entryId, uiConfId)
-      .then((data) => {
+  loadMedia( entryId: string , uiConfId: ?number ): Promise<*> {
+    this._logger.debug( 'loadMedia' , {entryId: entryId , uiConfId: uiConfId} );
+    return this._provider.getConfig( entryId , uiConfId )
+      .then( ( data ) => {
         const dimensions = this._player.dimensions;
         setUISeekbarConfig(data, this._uiManager);
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
@@ -46,26 +48,32 @@ export default class KalturaPlayer {
       });
   }
 
-  configurePlayer(config: Object){
-    if (this._player.config && this._player.config.playback && this._player.config.playback.playWhenVisibile){
-      this._player.config.playback.autoplay = false;
-      this._player.config.playback.preload = "none";
-      if (!this._visibilityManager) {
-        this._visibilityManager = new VisibilityManager();
+  configurePlayer( config: Object ) {
+    if ( this._player.config &&
+      this._player.config.playback &&
+      this._player.config.playback.playWhenVisibile ) {
+      this._player.configure( {
+        playback:{autoplay: false ,
+        preload: "none" }
+      } );
+      if ( !this._visibilityManager ) {
+        this._visibilityManager = new VisibilityManager(this._player.config.visiblityRatio);
         let [loadPromise , playPromise] = this._visibilityManager.attach( this._targetObj );
+
         loadPromise.then( result => {
+          //TODO send event with the precentage
           this._player.configure( config );
           this._player.load();
           this._playerIsReadyToPlay = true;
 
-        } )
+        } );
 
         playPromise.then( result => {
-          this._player._config.playback.autoplay = true;
           if ( this._playerIsReadyToPlay ) {
-            this._player._handleAutoPlay();
+            this._player.play();
           } else {
             this._player.configure( config );
+            this._player.play();
           }
         } )
       } else {
@@ -73,7 +81,7 @@ export default class KalturaPlayer {
       }
 
     } else {
-      this._player.configure(config);
+      this._player.configure( config );
     }
 
   }

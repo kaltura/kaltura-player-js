@@ -13,20 +13,28 @@ class VisibilityManager {
   _resolveLoad: any;
   _resolvePlay: any;
   _waitingForPlaybackUponVisibility: boolean;
+  _visbilityRatio: number;
+  _playerIsVisible: boolean;
+  _lastvisiblePct: number;
 
-  constructor() {
+
+  constructor(visbiltiyRatio: number) {
     let _observerOptions = {
       root: null ,
       rootMargin: "0px" ,
-      threshold: [0 , 0.2 , 0.3 , 0.4 , 0.45 , 0.5 , 0.75 , 1.0]
+      threshold: [0 , 0.2 , 0.3 , 0.4 , 0.45 , 0.5 ,0.65, 0.75, 0.9 , 1.0]
     };
     this._waitingForPlaybackUponVisibility = true;
+    this._visbilityRatio = 0.5;
+    if (visbiltiyRatio && visbiltiyRatio >=0 && visbiltiyRatio<=1){
+      this._visbilityRatio = visbiltiyRatio;
+    }
 
     this._visibilityObserver = new IntersectionObserver( this._intersectionCallback.bind( this ) , _observerOptions );
 
   }
 
-  attach( htmlObject: any ): Array {
+  attach( htmlObject: any ): Array<Promise<*>> {
     this._visibilityObserver.observe( htmlObject );
     this._loadPromise = new Promise((resolve, reject) => {
       this._resolveLoad = resolve;
@@ -42,8 +50,7 @@ class VisibilityManager {
   _intersectionCallback( entries: any ): void {
     let visiblePct = entries[0].intersectionRatio;
     let visibleDiff = visiblePct - this._lastvisiblePct;
-    this._playerIsVisible = visiblePct >= 0.5;    //TODO: Add to configuration
-    //this.dispatchEvent( new FakeEvent( CustomEvents.PLAYER_VISIBILITY_CHANGE , {ratio: visiblePct} ) );
+    this._playerIsVisible = visiblePct >= this._visbilityRatio;
     if ( this._waitingForPlaybackUponVisibility && visibleDiff > 0.05 && !this._playerIsVisible ) {
       this._resolveLoad( visiblePct );
     }

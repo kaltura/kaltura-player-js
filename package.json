@@ -19,7 +19,10 @@
     "playkit-rel": "playkit-rel start"
   },
   "envManager": {
-    "devMode": {},
+    "devMode": {
+      "core": "local",
+      "ima": "local"
+    },
     "releaseMode": []
   },
   "standard-version": {
