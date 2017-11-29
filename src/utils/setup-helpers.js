@@ -8,7 +8,6 @@ import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './
 import type LogLevelType from './logger'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
-
 const KALTURA_PLAYER_DEBUG_QS: string = "debugKalturaPlayer";
 
 /**

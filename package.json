@@ -19,7 +19,8 @@
     "playkit-rel": "playkit-rel start"
   },
   "envManager": {
-    "devMode": {},
+    "devMode": {
+    },
     "releaseMode": []
   },
   "standard-version": {
