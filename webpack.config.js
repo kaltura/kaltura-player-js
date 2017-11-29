@@ -19,7 +19,7 @@ if (PROD) {
 
 module.exports = {
   context: __dirname + "/src",
-  entry: PROD ? {"kaltura-player.min": "index.js"} : {"kaltura-player": "index.js"},
+  entry: {"kaltura-player": "index.js"},
   output: {
     path: __dirname + "/dist",
     filename: '[name].js',

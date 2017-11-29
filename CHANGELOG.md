@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.16.1"></a>
+## [0.16.1](https://github.com/kaltura/kaltura-player-js/compare/v0.16.0...v0.16.1) (2017-11-29)
+
+
+
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/kaltura/kaltura-player-js/compare/v0.15.1...v0.16.0) (2017-11-28)
+
+
+### Features
+
+* add config for forcing touch ui ([#61](https://github.com/kaltura/kaltura-player-js/issues/61)) ([93898b1](https://github.com/kaltura/kaltura-player-js/commit/93898b1))
+
+
+
+<a name="0.15.1"></a>
+## [0.15.1](https://github.com/kaltura/kaltura-player-js/compare/v0.15.0...v0.15.1) (2017-11-26)
+
+
+### Bug Fixes
+
+* **FEC-7528:** multiple players cannot be loaded ([#60](https://github.com/kaltura/kaltura-player-js/issues/60)) ([b6b9bb6](https://github.com/kaltura/kaltura-player-js/commit/b6b9bb6))
+
+
+
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/kaltura/kaltura-player-js/compare/v0.14.0...v0.15.0) (2017-11-23)
+
+
+### Features
+
+* set ui seekbar config ([#59](https://github.com/kaltura/kaltura-player-js/issues/59)) ([304bc0a](https://github.com/kaltura/kaltura-player-js/commit/304bc0a))
+
+
+
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/kaltura/kaltura-player-js/compare/v0.13.3...v0.14.0) (2017-11-16)
+
+
+### Bug Fixes
+
+* logLevel type syntax ([#57](https://github.com/kaltura/kaltura-player-js/issues/57)) ([6dd55a6](https://github.com/kaltura/kaltura-player-js/commit/6dd55a6))
+
+
+### Features
+
+* set log level from config and API ([#56](https://github.com/kaltura/kaltura-player-js/issues/56)) ([1c31f5d](https://github.com/kaltura/kaltura-player-js/commit/1c31f5d))
+
+
+
 <a name="0.13.3"></a>
 ## [0.13.3](https://github.com/kaltura/kaltura-player-js/compare/v0.13.2...v0.13.3) (2017-11-07)
 

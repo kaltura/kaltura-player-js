@@ -2,9 +2,9 @@
 import {Utils} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
-import LoggerFactory from './utils/logger'
+import getLogger from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
-import {addKalturaPoster} from './utils/setup-helpers'
+import {addKalturaPoster, setUISeekbarConfig, setUITouchConfig} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
 import './assets/style.css'
 import VisibilityManager from "./visibility/visibility-manager";
@@ -18,12 +18,13 @@ export default class KalturaPlayer {
   _playerIsReadyToPlay: boolean;
   _visibilityManager: VisibilityManager;
 
-  constructor(player: Player, targetId: string, config: Object) {  this._playerIsReadyToPlay=false;
-    this._targetObj = document.getElementById(targetId);
+  constructor(player: Player, targetId: string, playerConfig: Object = {}, providerConfig: Object) {
     this._player = player;
-    this._logger = LoggerFactory.getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._uiManager = new PlaykitUI(this._player, {targetId: targetId});
-    this._provider = new OvpProvider(__VERSION__, config.partnerId, config.ks, config.env);
+    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    this._uiManager = new PlaykitUI(this._player, {targetId: targetId, logLevel: playerConfig.logLevel});
+    const forceTouchUI = playerConfig.ui ? playerConfig.ui.forceTouchUI : false;
+    setUITouchConfig(forceTouchUI, this._uiManager);
+    this._provider = new OvpProvider(__VERSION__, providerConfig.partnerId, providerConfig.ks, providerConfig.env, playerConfig.logLevel);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)
@@ -35,6 +36,7 @@ export default class KalturaPlayer {
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
         const dimensions = this._player.dimensions;
+        setUISeekbarConfig(data, this._uiManager);
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
