@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -20,8 +20,6 @@
   },
   "envManager": {
     "devMode": {
-      "core": "local",
-      "ima": "local"
     },
     "releaseMode": []
   },
@@ -84,7 +82,7 @@
     "playkit-js-ima": "https://github.com/kaltura/playkit-js-ima.git#v0.3.0",
     "playkit-js-kanalytics": "https://github.com/kaltura/playkit-js-kanalytics.git#v0.7.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v1.4.1",
-    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.15.1",
+    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.15.2",
     "playkit-js-youbora": "https://github.com/kaltura/playkit-js-youbora.git#v0.3.0",
     "shaka-player": "2.2.2"
   },
