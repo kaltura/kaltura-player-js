@@ -1,6 +1,6 @@
 // @flow
 import {Utils} from 'playkit-js'
-import {Error, Severity, Category, Code} from 'playkit-js'
+import {Error} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import getLogger from './utils/logger'
@@ -42,7 +42,7 @@ export default class KalturaPlayer {
         evaluatePluginsConfig(data);
         this._player.configure(data);
       }).catch(e => {
-        this._player.dispatchEvent(new FakeEvent(CUSTOM_EVENTS.ERROR, new Error(Severity.CRITICAL, Category.PLAYER, Code.LOAD_FAILED, {info: e})));
+        this._player.dispatchEvent(new FakeEvent(CUSTOM_EVENTS.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, {info: e})));
       });
   }
 }
