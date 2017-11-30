@@ -30,6 +30,7 @@ export default class KalturaPlayer {
 
   loadMedia(entryId: string, uiConfId: ?number): Promise<*> {
     this._logger.debug('loadMedia', {entryId: entryId, uiConfId: uiConfId});
+    this._uiManager.setConfig({entryId: entryId}, "errorOverlay");
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
         const dimensions = this._player.dimensions;
