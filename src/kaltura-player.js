@@ -20,7 +20,15 @@ export default class KalturaPlayer {
     this._uiManager = new PlaykitUI(this._player, {targetId: targetId, logLevel: playerConfig.logLevel});
     const forceTouchUI = playerConfig.ui ? playerConfig.ui.forceTouchUI : false;
     setUITouchConfig(forceTouchUI, this._uiManager);
-    this._provider = new OvpProvider(__VERSION__, providerConfig.partnerId, providerConfig.ks, providerConfig.env, playerConfig.logLevel);
+    const providerConf = {
+      ks: providerConfig.ks,
+      playerVersion: __VERSION__,
+      config: providerConfig.env,
+      logLevel: playerConfig.logLevel,
+      partnerID: providerConfig.partnerId,
+      loadUiConf: providerConfig.loadUiConf
+    }
+    this._provider = new OvpProvider(providerConf);
     this._uiManager.buildDefaultUI();
     return {
       loadMedia: this.loadMedia.bind(this)

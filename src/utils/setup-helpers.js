@@ -46,12 +46,15 @@ function validateTargetId(targetId: string) {
  */
 function extractPlayerConfig(config: ?Object): Object {
   let playerConfig = {};
-  Utils.Object.mergeDeep(playerConfig, config);
-  delete playerConfig.partnerId;
-  delete playerConfig.entryId;
-  delete playerConfig.uiConfId;
-  delete playerConfig.env;
-  delete playerConfig.ks;
+  if (config) {
+    const serverUIConf = extractServerUiconf(config.uiConfId);
+    Utils.Object.mergeDeep(playerConfig, serverUIConf, config);
+    delete playerConfig.partnerId;
+    delete playerConfig.entryId;
+    delete playerConfig.uiConfId;
+    delete playerConfig.env;
+    delete playerConfig.ks;
+  }
   return playerConfig;
 }
 
@@ -66,10 +69,37 @@ function extractProvidersConfig(config: ?Object): Object {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
-    providerConfig.env = config.env;
+    providerConfig.loadUiConf = serverUiconfExist(config.uiConfId);
+    const serverUIConf = extractServerUiconf(config.uiConfId);
+    providerConfig.env = Utils.Object.mergeDeep({}, serverUIConf.env, config.env);
     providerConfig.ks = config.ks;
   }
   return providerConfig;
+}
+
+/**
+ * checks if the server UIConf exist
+ * @param {number} uiConfId - The server UIConf
+ * @returns {boolean} - server UIConf exist
+ */
+function serverUiconfExist(uiConfId: number): boolean{
+  return (uiConfId !== null) && (uiConfId !== undefined) &&
+    window.__kalturaplayerdata &&
+    window.__kalturaplayerdata.UIConf &&
+    (window.__kalturaplayerdata.UIConf[uiConfId] !== undefined);
+}
+
+/**
+ * Extracts the server UIConf
+ * @param {number} uiConfId - The server UIConf
+ * @returns {Object} - The server UIConf
+ */
+function extractServerUiconf(uiConfId: number): Object{
+  let config = {};
+  if (serverUiconfExist(uiConfId)){
+    config = window.__kalturaplayerdata.UIConf[uiConfId];
+  }
+  return config;
 }
 
 /**
