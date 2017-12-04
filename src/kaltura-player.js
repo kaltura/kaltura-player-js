@@ -8,7 +8,6 @@ import {addKalturaParams} from './utils/kaltura-params'
 import {addKalturaPoster, setUISeekbarConfig} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
 import {FakeEvent} from 'playkit-js'
-import {CUSTOM_EVENTS} from 'playkit-js'
 import './assets/style.css'
 
 export default class KalturaPlayer {
@@ -42,7 +41,7 @@ export default class KalturaPlayer {
         evaluatePluginsConfig(data);
         this._player.configure(data);
       }).catch(e => {
-        this._player.dispatchEvent(new FakeEvent(CUSTOM_EVENTS.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, {info: e})));
+        this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, {info: e})));
       });
   }
 }
