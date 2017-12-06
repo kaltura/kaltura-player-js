@@ -29,7 +29,7 @@ export default class KalturaPlayer {
 
   loadMedia(entryId: string, uiConfId: ?number): Promise<*> {
     this._logger.debug('loadMedia', {entryId: entryId, uiConfId: uiConfId});
-    this._uiManager.setConfig({entryId: entryId}, "errorOverlay");
+    this._uiManager.setConfig({entryId: entryId}, 'errorOverlay');
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
         const dimensions = this._player.dimensions;
@@ -38,7 +38,6 @@ export default class KalturaPlayer {
         addKalturaParams(data.sources, this._player);
         Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
         Utils.Object.mergeDeep(data.session, this._player.config.session);
-        this._uiManager.setSessionId(data.session.id);
         evaluatePluginsConfig(data);
         this._player.configure(data);
       }).catch(e => {
