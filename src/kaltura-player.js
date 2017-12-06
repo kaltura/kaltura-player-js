@@ -5,7 +5,7 @@ import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import getLogger from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
-import {addKalturaPoster, setUISeekbarConfig} from './utils/setup-helpers'
+import {addKalturaPoster, setUISeekbarConfig, setUITouchConfig} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
 import {FakeEvent} from 'playkit-js'
 import './assets/style.css'
@@ -16,10 +16,12 @@ export default class KalturaPlayer {
   _uiManager: PlaykitUI;
   _logger: any;
 
-  constructor(player: Player, targetId: string, playerConfig: Object, providerConfig: Object) {
+  constructor(player: Player, targetId: string, playerConfig: Object = {}, providerConfig: Object) {
     this._player = player;
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiManager = new PlaykitUI(this._player, {targetId: targetId, logLevel: playerConfig.logLevel});
+    const forceTouchUI = playerConfig.ui ? playerConfig.ui.forceTouchUI : false;
+    setUITouchConfig(forceTouchUI, this._uiManager);
     this._provider = new OvpProvider(__VERSION__, providerConfig.partnerId, providerConfig.ks, providerConfig.env, playerConfig.logLevel);
     this._uiManager.buildDefaultUI();
     return {

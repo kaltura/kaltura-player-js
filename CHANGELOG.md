@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.16.2"></a>
+## [0.16.2](https://github.com/kaltura/kaltura-player-js/compare/v0.16.1...v0.16.2) (2017-11-29)
+
+
+
+<a name="0.16.1"></a>
+## [0.16.1](https://github.com/kaltura/kaltura-player-js/compare/v0.16.0...v0.16.1) (2017-11-29)
+
+
+
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/kaltura/kaltura-player-js/compare/v0.15.1...v0.16.0) (2017-11-28)
+
+
+### Features
+
+* add config for forcing touch ui ([#61](https://github.com/kaltura/kaltura-player-js/issues/61)) ([93898b1](https://github.com/kaltura/kaltura-player-js/commit/93898b1))
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/kaltura/kaltura-player-js/compare/v0.15.0...v0.15.1) (2017-11-26)
 
