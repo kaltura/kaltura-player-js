@@ -280,6 +280,18 @@ function setUISeekbarConfig(data: Object, uiManager: PlaykitUI): void {
   }, "seekbar");
 }
 
+/**
+ * Sets the shell component whether to force touch ui.
+ * @param {boolean} isTouch - If is touch.
+ * @param {PlaykitUI} uiManager - The ui manager.
+ * @returns {void}
+ */
+function setUITouchConfig(isTouch: boolean, uiManager: PlaykitUI): void {
+  uiManager.setConfig({
+    forceTouchUI: isTouch
+  }, "shell");
+}
+
 export {
   setStorageConfig,
   applyStorageSupport,
@@ -296,5 +308,6 @@ export {
   isSafari,
   isIos,
   setLogLevel,
-  setUISeekbarConfig
+  setUISeekbarConfig,
+  setUITouchConfig
 };
