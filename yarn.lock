@@ -4357,9 +4357,9 @@ pkginfo@0.x.x:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.4.1.tgz#b5418ef0439de5425fc4995042dced14fb2a84ff"
 
-"playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#v1.4.0":
-  version "1.4.0"
-  resolved "https://github.com/kaltura/playkit-js-dash.git#a07282d741cafdc2be14e6bd35dfb8b14817e631"
+"playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#v1.4.1":
+  version "1.4.1"
+  resolved "https://github.com/kaltura/playkit-js-dash.git#441005dbd61da2df0b249f02d825425970472904"
 
 "playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.1.2":
   version "3.1.2"
@@ -4372,13 +4372,13 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.4.0":
-  version "1.4.0"
-  resolved "https://github.com/kaltura/playkit-js-hls.git#6a0944b96fd01f8a5b6d8d5069ab858583aef565"
+"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.4.1":
+  version "1.4.1"
+  resolved "https://github.com/kaltura/playkit-js-hls.git#210eb7b3c8575ce4d67db254c1e0b389f6b90a8a"
 
-"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.3.0":
-  version "0.3.0"
-  resolved "https://github.com/kaltura/playkit-js-ima.git#baf4c81bc7f3f639c44b0c3d028a6d2ba5e67850"
+"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.3.1":
+  version "0.3.1"
+  resolved "https://github.com/kaltura/playkit-js-ima.git#38fe56999acd9155418cdae8e2677df29627be37"
   dependencies:
     javascript-state-machine "^3.0.1"
 
@@ -4392,9 +4392,9 @@ pkginfo@0.x.x:
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.15.2":
-  version "0.15.2"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#7804a755d69c9ca5eb9f31002fc685bf14e31224"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.16.0":
+  version "0.16.0"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#9672486107200e03247fdabc39ee8c3784f1fb4d"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
