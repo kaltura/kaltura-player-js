@@ -1,5 +1,5 @@
 // @flow
-import {Utils} from 'playkit-js'
+import {Utils, Error, FakeEvent} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import getLogger from './utils/logger'
@@ -29,6 +29,7 @@ export default class KalturaPlayer {
 
   loadMedia(entryId: string, uiConfId: ?number): Promise<*> {
     this._logger.debug('loadMedia', {entryId: entryId, uiConfId: uiConfId});
+    this._uiManager.setConfig({entryId: entryId}, "errorOverlay");
     return this._provider.getConfig(entryId, uiConfId)
       .then((data) => {
         const dimensions = this._player.dimensions;
@@ -40,6 +41,8 @@ export default class KalturaPlayer {
         this._uiManager.setSessionId(data.session.id);
         evaluatePluginsConfig(data);
         this._player.configure(data);
+      }).catch(e => {
+        this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
       });
   }
 }
