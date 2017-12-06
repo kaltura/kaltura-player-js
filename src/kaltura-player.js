@@ -1,13 +1,11 @@
 // @flow
-import {Utils} from 'playkit-js'
-import {Error} from 'playkit-js'
+import {Utils, Error, FakeEvent} from 'playkit-js'
 import PlaykitUI from 'playkit-js-ui'
 import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
 import getLogger from './utils/logger'
 import {addKalturaParams} from './utils/kaltura-params'
 import {addKalturaPoster, setUISeekbarConfig} from './utils/setup-helpers'
 import {evaluatePluginsConfig} from './plugins/plugins-config'
-import {FakeEvent} from 'playkit-js'
 import './assets/style.css'
 
 export default class KalturaPlayer {
