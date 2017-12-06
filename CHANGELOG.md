@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.16.4"></a>
+## [0.16.4](https://github.com/kaltura/kaltura-player-js/compare/v0.16.3...v0.16.4) (2017-12-06)
+
+
+### Bug Fixes
+
+* remove non existing method in uiManager ([89da254](https://github.com/kaltura/kaltura-player-js/commit/89da254))
+
+
+
 <a name="0.16.3"></a>
 ## [0.16.3](https://github.com/kaltura/kaltura-player-js/compare/v0.16.2...v0.16.3) (2017-12-06)
 
