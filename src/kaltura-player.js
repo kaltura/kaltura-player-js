@@ -41,7 +41,7 @@ export default class KalturaPlayer {
         evaluatePluginsConfig(data);
         this._player.configure(data);
       }).catch(e => {
-        this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, {info: e})));
+        this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
       });
   }
 }
