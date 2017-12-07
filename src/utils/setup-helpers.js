@@ -45,7 +45,7 @@ function validateTargetId(targetId: string) {
  * @returns {Object} - The player configuration.
  */
 function extractPlayerConfig(config: ?Object): Object {
-  let playerConfig = {};
+  const playerConfig = {};
   if (config) {
     const serverUIConf = extractServerUiconf(config.uiConfId);
     Utils.Object.mergeDeep(playerConfig, serverUIConf, config);
@@ -64,7 +64,7 @@ function extractPlayerConfig(config: ?Object): Object {
  * @returns {Object} - The provider configuration.
  */
 function extractProvidersConfig(config: ?Object): Object {
-  let providerConfig = {};
+  const providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
