@@ -97,6 +97,7 @@ describe('extractProvidersConfig', function () {
       partnerId: 1914121,
       entryId: '1_umer46fd',
       uiConfId: '12345',
+      loadUiConf: true,
       ks: 'sdsf87s8f7s8fjsf',
       env: {
         beUrl: 'http://some/be/url',
@@ -110,6 +111,7 @@ describe('extractProvidersConfig', function () {
     extractProvidersConfig(config).should.deep.equals({
       partnerId: 1914121,
       entryId: undefined,
+      loadUiConf: true,
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
       env: {
@@ -124,6 +126,7 @@ describe('extractProvidersConfig', function () {
     extractProvidersConfig(config).should.deep.equals({
       partnerId: undefined,
       entryId: '1_umer46fd',
+      loadUiConf: true,
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
       env: {
@@ -138,6 +141,7 @@ describe('extractProvidersConfig', function () {
     extractProvidersConfig(config).should.deep.equals({
       partnerId: 1914121,
       entryId: '1_umer46fd',
+      loadUiConf: true,
       uiConfId: '12345',
       ks: undefined,
       env: {
@@ -152,9 +156,10 @@ describe('extractProvidersConfig', function () {
     extractProvidersConfig(config).should.deep.equals({
       partnerId: 1914121,
       entryId: '1_umer46fd',
+      loadUiConf: true,
       uiConfId: '12345',
       ks: 'sdsf87s8f7s8fjsf',
-      env: undefined
+      env: {}
     });
   });
 
