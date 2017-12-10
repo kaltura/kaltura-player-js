@@ -1,7 +1,8 @@
 .kaltura-player-container {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: relative;
+  background-color: #000;
   outline: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
