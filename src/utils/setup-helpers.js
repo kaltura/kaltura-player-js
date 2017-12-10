@@ -69,7 +69,7 @@ function extractProvidersConfig(config: ?Object): Object {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
-    providerConfig.loadUiConf = serverUiconfExist(config.uiConfId);
+    providerConfig.loadUiConf = !serverUiconfExist(config.uiConfId);
     const serverUIConf = extractServerUiconf(config.uiConfId);
     providerConfig.env = Utils.Object.mergeDeep({}, serverUIConf.env, config.env);
     providerConfig.ks = config.ks;
@@ -83,10 +83,10 @@ function extractProvidersConfig(config: ?Object): Object {
  * @returns {boolean} - server UIConf exist
  */
 function serverUiconfExist(uiConfId: number): boolean{
-  return (uiConfId !== null) && (uiConfId !== undefined) &&
-    window.__kalturaplayerdata &&
-    window.__kalturaplayerdata.UIConf &&
-    (window.__kalturaplayerdata.UIConf[uiConfId] !== undefined);
+  const UIConf = Utils.Object.getPropertyPath(window, "__kalturaplayerdata.UIConf");
+  const hasUiConfId = (uiConfId !== null) && (uiConfId !== undefined);
+  return hasUiConfId &&
+    ((UIConf !== undefined && (UIConf[uiConfId] !== undefined)) || false);
 }
 
 /**
