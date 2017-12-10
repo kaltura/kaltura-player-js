@@ -45,13 +45,16 @@ function validateTargetId(targetId: string) {
  * @returns {Object} - The player configuration.
  */
 function extractPlayerConfig(config: ?Object): Object {
-  let playerConfig = {};
-  Utils.Object.mergeDeep(playerConfig, config);
-  delete playerConfig.partnerId;
-  delete playerConfig.entryId;
-  delete playerConfig.uiConfId;
-  delete playerConfig.env;
-  delete playerConfig.ks;
+  const playerConfig = {};
+  if (config) {
+    const serverUIConf = extractServerUiconf(config.uiConfId);
+    Utils.Object.mergeDeep(playerConfig, serverUIConf, config);
+    delete playerConfig.partnerId;
+    delete playerConfig.entryId;
+    delete playerConfig.uiConfId;
+    delete playerConfig.env;
+    delete playerConfig.ks;
+  }
   return playerConfig;
 }
 
@@ -61,15 +64,42 @@ function extractPlayerConfig(config: ?Object): Object {
  * @returns {Object} - The provider configuration.
  */
 function extractProvidersConfig(config: ?Object): Object {
-  let providerConfig = {};
+  const providerConfig = {};
   if (config) {
     providerConfig.partnerId = config.partnerId;
     providerConfig.entryId = config.entryId;
     providerConfig.uiConfId = config.uiConfId;
-    providerConfig.env = config.env;
+    providerConfig.loadUiConf = !serverUiconfExist(config.uiConfId);
+    const serverUIConf = extractServerUiconf(config.uiConfId);
+    providerConfig.env = Utils.Object.mergeDeep({}, serverUIConf.env, config.env);
     providerConfig.ks = config.ks;
   }
   return providerConfig;
+}
+
+/**
+ * checks if the server UIConf exist
+ * @param {number} uiConfId - The server UIConf
+ * @returns {boolean} - server UIConf exist
+ */
+function serverUiconfExist(uiConfId: number): boolean{
+  const UIConf = Utils.Object.getPropertyPath(window, "__kalturaplayerdata.UIConf");
+  const hasUiConfId = (uiConfId !== null) && (uiConfId !== undefined);
+  return hasUiConfId &&
+    ((UIConf !== undefined && (UIConf[uiConfId] !== undefined)) || false);
+}
+
+/**
+ * Extracts the server UIConf
+ * @param {number} uiConfId - The server UIConf
+ * @returns {Object} - The server UIConf
+ */
+function extractServerUiconf(uiConfId: number): Object{
+  let config = {};
+  if (serverUiconfExist(uiConfId)){
+    config = window.__kalturaplayerdata.UIConf[uiConfId];
+  }
+  return config;
 }
 
 /**
