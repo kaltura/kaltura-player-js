@@ -4386,9 +4386,9 @@ pkginfo@0.x.x:
   version "0.7.0"
   resolved "https://github.com/kaltura/playkit-js-kanalytics.git#d35ba75116e7a3438d4dd0010b88b2a9670d363f"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v1.4.1":
-  version "1.4.1"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#7057503adfb34b188691409f95500b7ed9295536"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v1.5.0":
+  version "1.5.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#dcd66f069704e714018747df0ffb7eb72075880d"
   dependencies:
     js-logger "^1.3.0"
 
