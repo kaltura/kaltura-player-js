@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/kaltura/kaltura-player-js/compare/v0.16.4...v0.17.0) (2017-12-12)
+
+
+### Bug Fixes
+
+* adjust player positioning in host DOM ([56b8550](https://github.com/kaltura/kaltura-player-js/commit/56b8550))
+
+
+### Features
+
+* support server side config ([#65](https://github.com/kaltura/kaltura-player-js/issues/65)) ([2f75dd4](https://github.com/kaltura/kaltura-player-js/commit/2f75dd4))
+
+
+
 <a name="0.16.4"></a>
 ## [0.16.4](https://github.com/kaltura/kaltura-player-js/compare/v0.16.3...v0.16.4) (2017-12-06)
 
