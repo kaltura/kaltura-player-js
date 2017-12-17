@@ -2,10 +2,11 @@
 
 const webpack = require("webpack");
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 const PROD = (process.env.NODE_ENV === 'production');
 const packageData = require("./package.json");
 
-let plugins = [
+const plugins = [
   new webpack.DefinePlugin({
     __VERSION__: JSON.stringify(packageData.version),
     __NAME__: JSON.stringify(packageData.name),
@@ -15,6 +16,11 @@ let plugins = [
 
 if (PROD) {
   plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
+} else {
+  plugins.push(new CopyPlugin([{
+    from: '../samples/style.css',
+    to: '.'
+  }]));
 }
 
 module.exports = {
