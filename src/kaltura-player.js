@@ -26,6 +26,7 @@ export default class KalturaPlayer {
       config: providerConfig.env,
       logLevel: playerConfig.logLevel,
       partnerID: providerConfig.partnerId,
+      uiConfId: providerConfig.uiConfId,
       loadUiConf: providerConfig.loadUiConf
     }
     this._provider = new OvpProvider(providerConf);
@@ -44,6 +45,7 @@ export default class KalturaPlayer {
         setUISeekbarConfig(data, this._uiManager);
         addKalturaPoster(data.metadata, dimensions.width, dimensions.height);
         addKalturaParams(data.sources, this._player);
+        data.plugins = data.plugins ? data.plugins : {};
         Utils.Object.mergeDeep(data.plugins, this._player.config.plugins);
         Utils.Object.mergeDeep(data.session, this._player.config.session);
         evaluatePluginsConfig(data);
