@@ -1,0 +1,28 @@
+{
+  "youbora": {
+    "playerVersion": "{{pVersion}}",
+    "playerName": "{{pName}}",
+    "entryId": "{{entryId}}",
+    "entryName": "{{entryName}}",
+    "entryType": "{{entryType}}",
+    "sessionId": "{{sessionId}}",
+    "uiConfId": "{{uiConfId}}"
+  },
+  "kanalytics": {
+    "playerVersion": "{{pVersion}}",
+    "entryId": "{{entryId}}",
+    "entryType": "{{entryType}}",
+    "sessionId": "{{sessionId}}",
+    "ks": "{{ks}}",
+    "uiConfId": "{{uiConfId}}",
+    "partnerId": "{{partnerId}}"
+  },
+  "ottAnalytics": {
+    "entryId": "{{entryId}}",
+    "ks": "{{ks}}"
+  },
+  "ima": {
+    "playerVersion": "{{pVersion}}",
+    "playerName": "{{pName}}"
+  }
+}

@@ -1,0 +1,2 @@
+import './performance-now'
+
