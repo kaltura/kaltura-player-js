@@ -27,7 +27,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "yarn run build && npm run commit:dist"
+      "postbump": "yarn run build:ovp && yarn run build:ott && npm run commit:dist"
     }
   },
   "devDependencies": {
