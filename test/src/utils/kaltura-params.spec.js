@@ -4,7 +4,7 @@ import {
   updateSessionIdInUrl,
   addReferrer,
   addClientTag
-} from '../../../src/utils/kaltura-params'
+} from '../../../src/common/utils/kaltura-params'
 
 class Player {
   set sessionId(s) {

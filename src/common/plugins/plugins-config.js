@@ -4,10 +4,10 @@ import evaluate from '../utils/evaluate'
 import {Utils} from 'playkit-js'
 
 /**
- * @param {Object} [playerConfig = {}] - The player config
+ * @param {PKPlayerOptionsObject} playerConfig - The player config
  * @return {void}
  */
-function evaluatePluginsConfig(playerConfig: Object = {}): void {
+function evaluatePluginsConfig(playerConfig: PKPlayerOptionsObject): void {
   if (playerConfig.plugins) {
     const dataModel = {
       pVersion: __VERSION__,
@@ -45,9 +45,13 @@ function evaluatePluginsConfig(playerConfig: Object = {}): void {
         }
       });
     });
-    Object.keys(playerConfig.plugins).forEach((pluginName) => {
-      Utils.Object.mergeDeep(playerConfig.plugins[pluginName], evaluatedConfigObj[pluginName]);
-    });
+    if (playerConfig.plugins) {
+      Object.keys(playerConfig.plugins).forEach((pluginName) => {
+        if (playerConfig.plugins && playerConfig.plugins[pluginName]) {
+          Utils.Object.mergeDeep(playerConfig.plugins[pluginName], evaluatedConfigObj[pluginName]);
+        }
+      });
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
-import {ValidationErrorType} from '../../../src/utils/validation-error'
-import StorageManager from '../../../src/storage/storage-manager'
+import {ValidationErrorType} from '../../../src/common/utils/validation-error'
+import StorageManager from '../../../src/common/storage/storage-manager'
 import {
   extractPlayerConfig,
   extractProvidersConfig,
@@ -12,7 +12,7 @@ import {
   isSafari,
   isIos,
   setStorageConfig
-} from '../../../src/utils/setup-helpers'
+} from '../../../src/common/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 

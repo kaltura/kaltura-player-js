@@ -1,38 +1,28 @@
 // @flow
-import {loadPlayer} from 'playkit-js'
 import KalturaPlayer from './kaltura-player'
-import {evaluatePluginsConfig} from './plugins/plugins-config'
+import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import {
-  extractPlayerConfig,
-  extractProvidersConfig,
-  createKalturaPlayerContainer,
   validateTargetId,
-  validateProvidersConfig,
-  setDefaultPlayerConfig,
+  validateProviderConfig,
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
-  setLogLevel
-} from "./utils/setup-helpers"
+  setLogLevel,
+  getDefaultOptions
+} from './common/utils/setup-helpers'
 
 /**
- * @param {string} targetId - target id
- * @param {Object} options - options
- * @returns {Player} - Player
+ * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options
+ * @returns {KalturaPlayer} - kaltura player
  */
-function setup(targetId: string, options: Object = {}): KalturaPlayer {
-  setLogLevel(options);
-  validateTargetId(targetId);
-  validateProvidersConfig(options);
-  const playerConfig = extractPlayerConfig(options);
-  const providersConfig = extractProvidersConfig(options);
-  const containerId = createKalturaPlayerContainer(targetId);
-  setDefaultPlayerConfig(playerConfig);
-  evaluatePluginsConfig(playerConfig);
-  setStorageConfig(playerConfig);
-  const player = loadPlayer(playerConfig);
-  const kalturaPlayerApi = new KalturaPlayer(player, containerId, playerConfig, providersConfig);
-  const kalturaPlayer = Object.assign(player, kalturaPlayerApi);
+function setup(options: PartialKalturaPlayerOptionsObject): KalturaPlayer {
+  validateTargetId(options.targetId);
+  validateProviderConfig(options);
+  const defaultOptions = getDefaultOptions(options);
+  setLogLevel(defaultOptions);
+  evaluatePluginsConfig(defaultOptions.player);
+  setStorageConfig(defaultOptions);
+  const kalturaPlayer = new KalturaPlayer(defaultOptions);
   setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);
   return kalturaPlayer;

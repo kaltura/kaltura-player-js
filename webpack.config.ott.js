@@ -36,6 +36,7 @@ const alias = {
   'player-defaults': path.resolve('./src/ott/player-defaults')
 };
 
+// TODO: Webpack merge?
 Object.assign(webpackConfig.resolve.alias, alias);
 
 webpackConfig.entry = entry;

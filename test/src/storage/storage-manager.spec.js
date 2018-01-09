@@ -1,5 +1,5 @@
-import StorageManager from '../../../src/storage/storage-manager'
-import StorageWrapper from "../../../src/storage/storage-wrapper";
+import StorageManager from '../../../src/common/storage/storage-manager'
+import StorageWrapper from "../../../src/common/storage/storage-wrapper";
 
 describe('StorageManager', function () {
   let sandbox;

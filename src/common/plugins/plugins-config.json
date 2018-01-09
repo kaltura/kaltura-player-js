@@ -19,7 +19,8 @@
   },
   "ottAnalytics": {
     "entryId": "{{entryId}}",
-    "ks": "{{ks}}"
+    "ks": "{{ks}}",
+    "partnerId": "{{partnerId}}"
   },
   "ima": {
     "playerVersion": "{{pVersion}}",

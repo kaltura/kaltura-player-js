@@ -1,6 +1,7 @@
 let webpackConfig = require('./webpack.config.js');
 //Need to remove externals otherwise they won't be included in test
 delete webpackConfig.externals;
+webpackConfig.devtool = 'inline-source-map';
 
 const isWindows = /^win/.test(process.platform);
 const isMacOS = /^darwin/.test(process.platform);

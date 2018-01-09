@@ -1,4 +1,4 @@
-import {getThumbSlicesUrl} from '../../../src/utils/thumbs'
+import {getThumbSlicesUrl} from '../../../src/common/utils/thumbs'
 
 describe('getThumbSlicesUrl', function () {
   const fakeData = {

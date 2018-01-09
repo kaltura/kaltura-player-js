@@ -1,13 +1,12 @@
 // @flow
-import {Utils, TextStyle} from 'playkit-js'
-import {ProviderMediaInfo} from 'playkit-js-providers'
-import {UIManager, UIComponentConfig} from 'playkit-js-ui'
+import {setDefaultAnalyticsPlugin} from 'player-defaults'
+import {Utils, TextStyle, Env} from 'playkit-js'
+import {UIManager} from 'playkit-js-ui'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import {setLogLevel as _setLogLevel, LogLevel} from './logger'
+import type {LogLevelObject} from './logger'
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './thumbs'
-import type LogLevelType from './logger'
-import type {KalturaPlayerOptionsObject} from '../player-options/player-options'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
@@ -20,6 +19,17 @@ const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
 function validateTargetId(targetId: string) {
   if (!document.getElementById(targetId)) {
     throw new Error(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
+  }
+}
+
+/**
+ * Validate the initial user input for the providers.
+ * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options.
+ * @returns {void}
+ */
+function validateProviderConfig(options: PartialKalturaPlayerOptionsObject) {
+  if (!options.provider || !options.provider.partnerId) {
+    throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
   }
 }
 
@@ -48,7 +58,9 @@ function createKalturaPlayerContainer(targetId: string): string {
  * @returns {void}
  */
 function addKalturaPoster(metadata: Object, width: number, height: number): void {
-  metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
+  if (metadata.poster) {
+    metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
+  }
 }
 
 /**
@@ -110,20 +122,19 @@ function isDebugMode(): boolean {
  * @returns {void}
  */
 function setLogLevel(options: KalturaPlayerOptionsObject): void {
-  let logLevel: LogLevelType = LogLevel.ERROR;
+  let logLevelObj: LogLevelObject = LogLevel.ERROR;
   if (isDebugMode()) {
+    logLevelObj = LogLevel.DEBUG;
     options.logLevel = LogLevel.DEBUG.name;
-    logLevel = LogLevel.DEBUG;
-  } else {
-    if (options.logLevel && LogLevel[options.logLevel]) {
-      logLevel = LogLevel[options.logLevel];
-    }
+  } else if (options.logLevel && LogLevel[options.logLevel]) {
+    logLevelObj = LogLevel[options.logLevel];
   }
-  _setLogLevel(logLevel);
+  options.ui.logLevel = options.player.logLevel = options.provider.logLevel = logLevelObj.name;
+  _setLogLevel(logLevelObj);
 }
 
 /**
- * gets the url query striung parmater
+ * gets the url query string parameter
  * @param {string} name - name of query string param
  * @returns {string} - value of the query string param
  */
@@ -141,11 +152,11 @@ function getUrlParameter(name: string) {
  * @returns {void}
  */
 function setUISeekbarConfig(data: Object, uiManager: UIManager): void {
-  uiManager.setComponentConfig(new UIComponentConfig("seekbar", {
+  uiManager.setConfig({
     thumbsSprite: getThumbSlicesUrl(data),
     thumbsWidth: DEFAULT_THUMBS_WIDTH,
     thumbsSlices: DEFAULT_THUMBS_SLICES
-  }));
+  }, "seekbar");
 }
 
 /**
@@ -154,32 +165,142 @@ function setUISeekbarConfig(data: Object, uiManager: UIManager): void {
  * @param {UIManager} uiManager - The ui manager.
  * @returns {void}
  */
-function setUITouchConfig(isTouch: boolean, uiManager: UIManager): void {
-  uiManager.setComponentConfig(new UIComponentConfig("shell", {
-    forceTouchUI: isTouch
-  }));
+function setUITouchConfig(isTouch: ?boolean, uiManager: UIManager): void {
+  uiManager.setConfig({
+    forceTouchUI: !!isTouch
+  }, "shell");
 }
 
 /**
  * Sets the media info on error component to the "retry" functionality.
- * @param {ProviderMediaInfo} mediaInfo - The media info.
+ * @param {ProviderMediaInfoObject} mediaInfo - The media info.
  * @param {UIManager} uiManager - The ui manager.
  * @returns {void}
  */
-function setUIErrorOverlayConfig(mediaInfo: ProviderMediaInfo, uiManager: UIManager): void {
-  uiManager.setComponentConfig(new UIComponentConfig("errorOverlay", {
+function setUIErrorOverlayConfig(mediaInfo: ProviderMediaInfoObject, uiManager: UIManager): void {
+  uiManager.setConfig({
     mediaInfo: mediaInfo
-  }));
+  }, "errorOverlay");
+}
+
+/**
+ * Checks if the server UIConf exist
+ * @param {number} uiConfId - The server UIConf
+ * @returns {boolean} - server UIConf exist
+ */
+function serverUIConfExist(uiConfId: ?number): boolean {
+  const UIConf = Utils.Object.getPropertyPath(window, "__kalturaplayerdata.UIConf");
+  const hasUiConfId = (uiConfId !== null) && (uiConfId !== undefined);
+  return hasUiConfId &&
+    ((UIConf !== undefined && (UIConf[uiConfId] !== undefined)) || false);
+}
+
+/**
+ * Extracts the server UIConf
+ * @param {number} uiConfId - The server UIConf
+ * @returns {Object} - The server UIConf
+ */
+function extractServerUIConf(uiConfId: number): Object {
+  let config = {};
+  if (serverUIConfExist(uiConfId)) {
+    config = window.__kalturaplayerdata.UIConf[uiConfId];
+  }
+  return config;
+}
+
+/**
+ * Gets the default options after merging the user options with the uiConf options and the default internal options.
+ * @param {PartialKalturaPlayerOptionsObject} options - partial user kaltura player options.
+ * @returns {KalturaPlayerOptionsObject} - default kaltura player options.
+ */
+function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaPlayerOptionsObject {
+  const targetId = createKalturaPlayerContainer(options.targetId);
+  const defaultOptions: KalturaPlayerOptionsObject = {
+    targetId: options.targetId,
+    provider: {
+      partnerId: options.provider.partnerId
+    },
+    player: {},
+    ui: {
+      targetId: targetId
+    }
+  };
+  Utils.Object.mergeDeep(defaultOptions, options);
+  if (defaultOptions.provider.uiConfId) {
+    const uiConf = extractServerUIConf(defaultOptions.provider.uiConfId);
+    defaultOptions.provider = Utils.Object.mergeDeep({}, uiConf.provider, defaultOptions.provider);
+    defaultOptions.player = Utils.Object.mergeDeep({}, uiConf.player, defaultOptions.player);
+    defaultOptions.ui = Utils.Object.mergeDeep({}, uiConf.ui, defaultOptions.ui);
+  }
+  checkNativeHlsSupport(defaultOptions.player);
+  checkNativeTextTracksSupport(defaultOptions.player);
+  setDefaultAnalyticsPlugin(defaultOptions.player);
+  return defaultOptions;
+}
+
+/**
+ * Sets config option for native HLS playback
+ * @param {PKPlayerOptionsObject} playerConfig - the player config
+ * @returns {void}
+ */
+function checkNativeHlsSupport(playerConfig: PKPlayerOptionsObject): void {
+  if (isSafari() || isIos()) {
+    const preferNativeHlsValue = Utils.Object.getPropertyPath(playerConfig, 'playback.preferNative.hls');
+    if (typeof preferNativeHlsValue !== 'boolean') {
+      Utils.Object.mergeDeep(playerConfig, {
+        playback: {
+          preferNative: {
+            hls: true
+          }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Sets config option for native text track support
+ * @param {PKPlayerOptionsObject} playerConfig - the player config
+ * @returns {void}
+ */
+function checkNativeTextTracksSupport(playerConfig: PKPlayerOptionsObject): void {
+  if (isSafari()) {
+    const useNativeTextTrack = Utils.Object.getPropertyPath(playerConfig, 'playback.useNativeTextTrack');
+    if (typeof useNativeTextTrack !== 'boolean') {
+      Utils.Object.mergeDeep(playerConfig, {
+        playback: {
+          useNativeTextTrack: true
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Returns true if user agent indicate that browser is Safari
+ * @returns {boolean} - if browser is Safari
+ */
+function isSafari(): boolean {
+  return Env.browser.name.includes("Safari");
+}
+
+/**
+ * Returns true if user agent indicate that browser is Chrome on iOS
+ * @returns {boolean} - if browser is Chrome on iOS
+ */
+function isIos(): boolean {
+  return (Env.os.name === "iOS");
 }
 
 export {
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
-  createKalturaPlayerContainer,
   addKalturaPoster,
+  validateProviderConfig,
   validateTargetId,
   setLogLevel,
+  getDefaultOptions,
   setUISeekbarConfig,
   setUITouchConfig,
   setUIErrorOverlayConfig
