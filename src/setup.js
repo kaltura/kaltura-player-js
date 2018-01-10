@@ -2,8 +2,7 @@
 import KalturaPlayer from './kaltura-player'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import {
-  validateTargetId,
-  validateProviderConfig,
+  validateConfig,
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
@@ -16,8 +15,7 @@ import {
  * @returns {KalturaPlayer} - kaltura player
  */
 function setup(options: PartialKalturaPlayerOptionsObject): KalturaPlayer {
-  validateTargetId(options.targetId);
-  validateProviderConfig(options);
+  validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
   setLogLevel(defaultOptions);
   evaluatePluginsConfig(defaultOptions.player);

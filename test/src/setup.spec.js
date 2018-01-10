@@ -1,12 +1,14 @@
 import '../../src/index'
 import {setup} from '../../src/setup'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
-import StorageWrapper from "../../src/common/storage/storage-wrapper";
+import StorageWrapper from '../../src/common/storage/storage-wrapper'
 
 const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function () {
-  let providerConfig, kalturaPlayer, sandbox;
+  let config, kalturaPlayer, sandbox;
+  const entryId = '1_h14v9eug';
+  const partnerId = 2196781;
 
   before(function () {
     TestUtils.createElement('DIV', targetId);
@@ -14,9 +16,11 @@ describe('setup', function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    providerConfig = {
-      partnerId: 2196781,
-      entryId: '1_h14v9eug'
+    config = {
+      targetId: targetId,
+      provider: {
+        partnerId: partnerId
+      }
     };
   });
 
@@ -31,25 +35,25 @@ describe('setup', function () {
   });
 
   it('should create a full player', function (done) {
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
-    kalturaPlayer.loadMedia(providerConfig.entryId)
+    kalturaPlayer.loadMedia({entryId: entryId})
       .then(() => {
-        kalturaPlayer.config.id.should.equal(providerConfig.entryId);
-        kalturaPlayer.config.session.partnerID.should.equal(providerConfig.partnerId);
+        kalturaPlayer.config.id.should.equal(entryId);
+        kalturaPlayer.config.session.partnerId.should.equal(partnerId);
         done();
       });
   });
 
   it('should create an empty player', function () {
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = setup(config);
     (!kalturaPlayer.config.id).should.be.true;
   });
 
   it('should decorate the selected source by session id', function (done) {
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
-    kalturaPlayer.loadMedia(providerConfig.entryId)
+    kalturaPlayer.loadMedia({entryId: entryId})
       .then(() => {
         kalturaPlayer.ready().then(() => {
           let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
@@ -71,7 +75,7 @@ describe('setup', function () {
       "fontEdge": []
     };
     sandbox.stub(StorageWrapper, 'getItem').withArgs('textStyle').returns(textStyle);
-    kalturaPlayer = setup(targetId, providerConfig);
+    kalturaPlayer = setup(config);
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
 });

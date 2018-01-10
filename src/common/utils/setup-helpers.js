@@ -12,23 +12,39 @@ const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
 
 /**
+ * Validate the initial user config.
+ * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options.
+ * @returns {void}
+ */
+function validateConfig(options: PartialKalturaPlayerOptionsObject): void {
+  if (!options) {
+    throw new Error(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
+  }
+  validateTargetId(options.targetId);
+  validateProviderConfig(options.provider);
+}
+
+/**
  * Validate the user input for target id.
  * @param {string} targetId - The DOM element id which the player will be append to.
  * @returns {void}
  */
-function validateTargetId(targetId: string) {
+function validateTargetId(targetId: string): void {
+  if (!targetId) {
+    throw new Error(ValidationErrorType.TARGET_ID_REQUIRED);
+  }
   if (!document.getElementById(targetId)) {
     throw new Error(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
   }
 }
 
 /**
- * Validate the initial user input for the providers.
- * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options.
+ * Validate the initial user input for the provider options.
+ * @param {ProviderOptionsObject} providerOptions - provider options.
  * @returns {void}
  */
-function validateProviderConfig(options: PartialKalturaPlayerOptionsObject) {
-  if (!options.provider || !options.provider.partnerId) {
+function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
+  if (!providerOptions.partnerId) {
     throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
   }
 }
@@ -297,11 +313,14 @@ export {
   applyStorageSupport,
   setStorageTextStyle,
   addKalturaPoster,
-  validateProviderConfig,
-  validateTargetId,
+  validateConfig,
   setLogLevel,
+  createKalturaPlayerContainer,
+  checkNativeHlsSupport,
   getDefaultOptions,
   setUISeekbarConfig,
   setUITouchConfig,
-  setUIErrorOverlayConfig
+  setUIErrorOverlayConfig,
+  isSafari,
+  isIos
 };

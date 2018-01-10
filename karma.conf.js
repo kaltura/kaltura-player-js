@@ -1,4 +1,4 @@
-let webpackConfig = require('./webpack.config.js');
+let webpackConfig = require('./webpack.config.ovp.js');
 //Need to remove externals otherwise they won't be included in test
 delete webpackConfig.externals;
 webpackConfig.devtool = 'inline-source-map';
