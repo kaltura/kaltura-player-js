@@ -1,11 +1,12 @@
 // @flow
-import PolyfillManager from './polyfills/polyfill-manager'
-import './polyfills/all'
-import getLogger, {getLogLevel, setLogLevel, LogLevel} from './utils/logger'
+import PolyfillManager from './common/polyfills/polyfill-manager'
+import './common/polyfills/all'
+import getLogger, {getLogLevel, setLogLevel, LogLevel} from './common/utils/logger'
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
+declare var __PLAYER_TYPE__: string;
 
 const currentLogLevel = getLogLevel();
 setLogLevel(LogLevel.INFO);
@@ -16,25 +17,34 @@ setLogLevel(currentLogLevel);
 PolyfillManager.installAll();
 
 // Import core
-import * as Playkit from 'playkit-js'
+import * as core from 'playkit-js'
 
-// Import OVP and OTT providers
-import OvpProvider from 'playkit-js-providers/dist/ovpProvider'
+// Import ui
+import * as ui from 'playkit-js-ui'
 
-// Import UI
-import PlaykitUI from 'playkit-js-ui'
+// Import provider
+import * as providers from 'playkit-js-providers'
 
 // Import media source adapters
 import 'playkit-js-hls'
 import 'playkit-js-dash'
 
-// Import plugins
-import 'playkit-js-kanalytics'
+// Import common plugins
 import 'playkit-js-youbora'
 import 'playkit-js-ima'
+
+// Import analytics plugin
+import 'playkit-js-analytics'
 
 // Import setup method
 import {setup} from './setup'
 
-export {Playkit, OvpProvider, PlaykitUI, setup, __VERSION__ as VERSION, __NAME__ as PLAYER_NAME};
-
+export {
+  core,
+  ui,
+  providers,
+  setup,
+  __PLAYER_TYPE__ as PLAYER_TYPE,
+  __VERSION__ as VERSION,
+  __NAME__ as PLAYER_NAME
+};
