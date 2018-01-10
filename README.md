@@ -1,6 +1,6 @@
 # Kaltura Player JS Platform - OTT and OVP media players based on the [PlayKit JS Player]
 
-[![Build Status](https://travis-ci.com/kaltura/kaltura-player-js.svg?token=gqrEinH8aKLBu6rEc9Mx&branch=master)](https://travis-ci.com/kaltura/kaltura-player-js)
+[![Build Status](https://travis-ci.org/kaltura/kaltura-player-js.svg?branch=master)](https://travis-ci.org/kaltura/kaltura-player-js)
  
 Kaltura Player JS is written in [ECMAScript6], statically analysed using [Flow] and transpiled in ECMAScript5 using [Babel].
 
