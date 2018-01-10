@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/kaltura/kaltura-player-js/compare/v0.16.2...v0.18.0) (2018-01-10)
+
+
+### Bug Fixes
+
+* **FEC-7476:** error handling ([#63](https://github.com/kaltura/kaltura-player-js/issues/63)) ([b2cdc1b](https://github.com/kaltura/kaltura-player-js/commit/b2cdc1b))
+* adjust player positioning in host DOM ([56b8550](https://github.com/kaltura/kaltura-player-js/commit/56b8550))
+* remove non existing method in uiManager ([89da254](https://github.com/kaltura/kaltura-player-js/commit/89da254))
+
+
+### Features
+
+* ott player ([#67](https://github.com/kaltura/kaltura-player-js/issues/67)) ([c740a33](https://github.com/kaltura/kaltura-player-js/commit/c740a33))
+* support server side config ([#65](https://github.com/kaltura/kaltura-player-js/issues/65)) ([2f75dd4](https://github.com/kaltura/kaltura-player-js/commit/2f75dd4))
+
+
+
 <a name="0.17.0"></a>
 # [0.17.0](https://github.com/kaltura/kaltura-player-js/compare/v0.16.4...v0.17.0) (2017-12-12)
 
