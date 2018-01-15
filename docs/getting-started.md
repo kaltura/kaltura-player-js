@@ -36,7 +36,7 @@ Here you can manage your loaded entries, playlists and etc.<br>
 Browse the entry you desire to embed, open the *Select Action* dropdown and select *Preview & Embed*.
 ![content preview & embed](./images/content-preview&embed.png) 
 
-Here you can choose the player you want to use in the embed code, And the embed type - Auto, Dynamic or Iframe. For more details see [Embed Types](./embedTypes.md).<br>
+Here you can choose the player you want to use in the embed code, And the embed type - Auto, Dynamic or Iframe. For more details see [Embed Types](./embed-types.md).<br>
 For now:
  - Select *My first Kaltura Player* you just created from the player list.
  - Click *Show Advanced Options* and select *Dynamic Embed* option.
@@ -93,7 +93,7 @@ Paste the embed code from the clipboard to the `body`:
 </html>
 ```
 That's all!<br>
-You have an embeded player in your website!
+You have an embedded player in your website!
 
 ## Config the Player <a name="config"></a>
 For all player options see [Player Configuration](./configuration.md).
