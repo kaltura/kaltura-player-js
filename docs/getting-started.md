@@ -1,6 +1,6 @@
 # Getting Started
 
-### Table of content
+### Table of Contents
  - [Create Your Own Kaltura Player](#create)
  - [Generate Kaltura Player Embed Code](#generate)
  - [Embed the Kaltura Player into Your Website](#embed)
