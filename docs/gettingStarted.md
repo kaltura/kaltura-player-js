@@ -1,10 +1,14 @@
-
-
 # Getting Started
 
+### Table of content
+ - [Create Your Own Kaltura Player](#create)
+ - [Generate Kaltura Player Embed Code](#generate)
+ - [Embed the Kaltura Player into Your Website](#embed)
+ - [Config the Player ](#config)
+ 
 To getting started with Kaltura Player you should have an active Kaltura Management Console (KMC) account. For more Information see [here](https://corp.kaltura.com/Products/Video-Applications/Kaltura-Video-Management-Console).
 
-## Create Your Own Kaltura Player 
+## Create Your Own Kaltura Player <a name="create"></a>
 
 Go to [KMC](https://kmc.kaltura.com/index.php/kmc/kmc4#studio%7Cuniversal_studio) and select the *Studio* tab.
 ![kmc](./images/kmc.png)
@@ -23,7 +27,7 @@ Lets call the new player *"My first Kaltura Player"* and click *Save Player Sett
 Congratulations!!<br> 
 You have a Kaltura Player.
 
-## Create Kaltura Player Embed Code
+## Generate Kaltura Player Embed Code <a name="generate"></a>
 
 Go to the *Content* tab.
 ![content tab](./images/content-tab.png) 
@@ -39,7 +43,7 @@ For now:
  - Click *Copy* to copy the embed code to clipboard. 
 ![preview & embed](./images/preview&embed-dynamic-copy.png) 
 
-## Embed the Kaltura Player into Your Website
+## Embed the Kaltura Player into Your Website <a name="embed"></a>
 
 Lets create a simple html file:
 ```html
@@ -53,7 +57,7 @@ Lets create a simple html file:
 </body>
 </html>
 ```
-Add a Div element for the player:  
+Add a `div` element for the player (the `id` must be compatible with the `targetId` of the embed code):  
 ```html
 <!DOCTYPE html>
 <html>
@@ -66,7 +70,7 @@ Add a Div element for the player:
 </body>
 </html>
 ```
-Paste the embed code from the clipboard to a script tag:
+Paste the embed code from the clipboard to the `body`:
 ```html
 <!DOCTYPE html>
 <html>
@@ -88,6 +92,9 @@ Paste the embed code from the clipboard to a script tag:
 </body>
 </html>
 ```
-That is all! You have an embeded player in your website!
+That's all!<br>
+You have an embeded player in your website!
 
+## Config the Player <a name="config"></a>
+For all player options see [Player Configuration](./configuration.md).
 
