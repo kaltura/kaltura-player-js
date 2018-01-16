@@ -342,11 +342,11 @@ Use the factory `registerPlugin` method to register your plugin in the player fr
 All that's left now is to make sure the player will activate the plugin in runtime. To do so, we should include our new plugin name and plugin configuration in the player configuration. i.e:
 ```js
 var config = {
-	plugins: {
-		myPlugin: {
-			myValue: 10
-		}
-	}
+  plugins: {
+    myPlugin: {
+      myValue: 10
+      }
+  }
 };
 ```
 
@@ -358,22 +358,22 @@ Let's expand our test page and add:
 ```
 2. Basic player configuration.
 ```js
-var config = {
-	logLevel: "DEBUG",
-	sources: {
-		progressive: [
-			{
-				mimetype: "video/mp4",
-				url: "http://www.html5videoplayer.net/videos/toystory.mp4"
-			}
-		]
-	},
-	plugins: {
-		myPlugin: {
-			myValue: 10
-			}
-		}
-};
+  var config = {
+  logLevel: "DEBUG",
+  sources: {
+    progressive: [
+      {
+        mimetype: "video/mp4",
+        url: "http://www.html5videoplayer.net/videos/toystory.mp4"
+      }
+    ]
+  },
+  plugins: {
+    myPlugin: {
+      myValue: 10
+      }
+    }
+  };
 ```
 3. Setup code.
 ```js
@@ -395,30 +395,29 @@ Connect everything together and we'll get:
 </head>
 <body>
 <script>
-	KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
+  KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
+  
+  var config = {
+  logLevel: "DEBUG",
+  sources: {
+    progressive: [
+      {
+        mimetype: "video/mp4",
+        url: "http://www.html5videoplayer.net/videos/toystory.mp4"
+      }
+    ]
+  },
+  plugins: {
+    myPlugin: {
+      myValue: 10
+      }
+    }
+  };
 
-    var config = {
-        logLevel: "DEBUG",
-        sources: {
-            progressive: [
-                {
-                    mimetype: "video/mp4",
-                    url: "http://www.html5videoplayer.net/videos/toystory.mp4"
-
-                }
-            ]
-        },
-        plugins: {
-            myPlugin: {
-                myValue: 10
-            }
-        }
-    };
-
-    var playerDiv = document.getElementById("player-div");
-    var player = KalturaPlayer.core.loadPlayer(config);
-    playerDiv.appendChild(player.getView());
-    player.play();
+  var playerDiv = document.getElementById("player-div");
+  var player = KalturaPlayer.core.loadPlayer(config);
+  playerDiv.appendChild(player.getView());
+  player.play();
 </script>
 </body>
 </html>
