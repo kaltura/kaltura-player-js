@@ -2,7 +2,7 @@
 # How to Build a Plugin
 
 To build your own plugin, you'll have to go through a few simple steps.
-First, you'll need to import the player library. Then, you'll need to write your plugin logic and implement the plugin API methods and properties, and finally, you'll need to register the plugin in the player framework.
+<br>First, you'll need to import the player library. Then, you'll need to write your plugin logic and implement the plugin API methods and properties, and finally, you'll need to register the plugin in the player framework.
 
 In this guide we will go through and elaborate each step with examples of both Plain JavaScript & ES6 ways.
 
@@ -87,7 +87,7 @@ Returns: ```void``` - Dispatches an event from the player.
 
 Returns: ```boolean``` - Whether the plugin is valid or not.
 
-You can help the player instance API with your decision logic. For example, if you want to enable your plugin only on Chrome browser, you can simply do:
+You can help the player instance API with your decision logic. <br>For example, if you want to enable your plugin only on Chrome browser, you can simply do:
 ```js
 // Plain JavaScript
 MyPlugin.isValid = function() {
@@ -427,4 +427,5 @@ Connect everything together and we'll get:
 
 # Writing an Advanced Plugin
 An advanced plugin is such that comes as a self project and handles a version, tests, documentation, dev scripts and so on.
-All of the goods describes above can be achieved by using the `PlayKit JS Plugin Generator` tool. Read [here](https://github.com/kaltura/playkit-js-plugin-generator)  to learn how to do it!
+All of the goods describes above can be achieved by using the `PlayKit JS Plugin Generator` tool. 
+<br>Read [here](https://github.com/kaltura/playkit-js-plugin-generator)  to learn how to do it!
