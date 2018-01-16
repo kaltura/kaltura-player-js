@@ -42,7 +42,9 @@ In this guide we will go through and elaborate each step with examples of both P
   * [Step 5 - Register Your Plugin](#step-5-------register-your-plugin)
   * [Step 5 - Configure Your Plugin](#step-5-------configure-your-plugin)
  - [Writing an Advanced Plugin](#writing-an-advanced-plugin)
- The player core library exposing two main utils:
+ 
+
+The player core library exposing two main utils:
 1. `BasePlugin` - The class which your plugin will inherit from.
 2. `registerPlugin` - Static player method that will register your plugin in the player registry.
 
