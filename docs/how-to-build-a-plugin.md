@@ -19,7 +19,7 @@ In this guide we will go through and elaborate each step with examples of both P
 First, lets take a look on the `BasePlugin` API.
 
 ## Base Plugin API
-> ### ```constructor(name, player, config)```
+> #### ```constructor(name, player, config)```
 **Parameters**
 
 |  Name|Type  |Description
@@ -29,23 +29,23 @@ First, lets take a look on the `BasePlugin` API.
 | `config` | `Object` | Plugin config
 #
 ### Properties
-> ### ```config```
+> #### ```config```
 Type: ```Object``` - The runtime plugin config.
-> ### ```player```
+> #### ```player```
 Type: ```playkit.core.Player``` - The player instance.
-> ### ```name```
+> #### ```name```
 Type: ```string``` - The plugin registry name.
-> ### ```logger```
+> #### ```logger```
 Type: ```playkit.core.Logger``` - The logger of the plugin.
-> ### ```eventManager```
+> #### ```eventManager```
 Type: ```playkit.core.EventManager``` - The plugin event manager.
 #
 ### Properties to Implement
-> ### ```(static) defaultConfig```
+> #### ```(static) defaultConfig```
 Type: ```Object``` - The default plugin config.
 #
 ### Methods
-> ### ```getConfig(attr)```
+> #### ```getConfig(attr)```
 **Parameters**
 
 |  Name|Type  |Description
@@ -54,7 +54,7 @@ Type: ```Object``` - The default plugin config.
 
 Returns: ```any``` - If attribute is provided, returns the value of the config attribute. If not, returns the plugin config.
 
-> ### ```updateConfig(update)```
+> #### ```updateConfig(update)```
 **Parameters**
 
 |  Name|Type  |Description
@@ -63,10 +63,10 @@ Returns: ```any``` - If attribute is provided, returns the value of the config a
 
 Returns: ```void``` - Merges the update config with the existing config.
 
-> ### ```getName()```
+> #### ```getName()```
 Returns: ```string``` - The plugin name.
 
-> ### ```dispatchEvent(name, payload)```
+> #### ```dispatchEvent(name, payload)```
 **Parameters**
 
 |  Name|Type  |Description
@@ -77,7 +77,7 @@ Returns: ```string``` - The plugin name.
 Returns: ```void``` - Dispatches an event from the player.
 #
 ### Methods to Implement
-> ### ```(static) isValid(player)```
+> #### ```(static) isValid(player)```
 
 **Parameters**
 
@@ -102,12 +102,12 @@ class MyPlugin extends BasePlugin {
 	}
 }
 ```
-> ### ```destroy()```
+> #### ```destroy()```
 Returns: ```void``` - Runs the plugin destroy logic.
 
 The player will call this method before destroying himself.
 
-> ### ```reset()```
+> #### ```reset()```
 Returns: ```void``` - Runs the plugin reset logic.
 
 The player will call this method before changing media.
@@ -115,7 +115,7 @@ The player will call this method before changing media.
 Second, lets take a look on the `registerPlugin` API.
 
 ## Register Plugin API
-> ### `registerPlugin(pluginName, pluginClass)`
+> #### `registerPlugin(pluginName, pluginClass)`
 
 **Parameters**
 
