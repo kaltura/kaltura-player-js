@@ -210,8 +210,8 @@ var MyPlugin = function (name, player, config) {
 ### *ES6*
 ```typescript
 class MyPlugin {
-	constructor(name, player, config) {
-	}
+  constructor(name, player, config) {
+  }
 }
 ```
 2 . Next, and add the code that will inherit from `BasePlugin`:
@@ -228,9 +228,9 @@ MyPlugin.prototype = new KalturaPlayer.core.BasePlugin();
 ### *ES6*
 ```typescript
 class MyPlugin extends KalturaPlayer.core.BasePlugin {
-	constructor(name, player, config) {
-		super(name, player, config);
-	}
+  constructor(name, player, config) {
+    super(name, player, config);
+    }
 }
 ```
 
@@ -261,17 +261,17 @@ MyPlugin.prototype.reset = function () {};
 ```typescript
 class MyPlugin extends KalturaPlayer.core.BasePlugin {
 
-	static defaultConfig = {};
+  static defaultConfig = {};
 
-	static isValid(player) {}
+  static isValid(player) {}
 
-	constructor(name, player, config) {
-		super(name, player, config);
-	}
-
-	destroy() {}
-
-	reset() {}
+  constructor(name, player, config) {
+    super(name, player, config);
+  }
+  
+  destroy() {}
+  
+  reset() {}
 }
 ```
 
@@ -324,40 +324,40 @@ MyPlugin.prototype._addBindings = function () {
 
 ```typescript
 class MyPlugin extends KalturaPlayer.core.BasePlugin {
-    _myCollection;
+  _myCollection;
 
-    static defaultConfig = {
-        myValue: 1
-    };
+  static defaultConfig = {
+    myValue: 1
+  };
 
-    static isValid(player): boolean {
-        return true;
-    }
+  static isValid(player): boolean {
+    return true;
+  }
 
-    constructor(name, player, config) {
-        super(name, player, config);
-        this.logger.debug('Hello from ' + this.getName() + ' plugin constructor!');
-        this._myCollection = [this.config.myValue];
-        this._addBindings();
-    }
+  constructor(name, player, config) {
+    super(name, player, config);
+    this.logger.debug('Hello from ' + this.getName() + ' plugin constructor!');
+    this._myCollection = [this.config.myValue];
+    this._addBindings();
+  }
 
-    destroy() {
-        this.logger.debug("Empty collection");
-        this._myCollection = [];
-    };
+  destroy() {
+    this.logger.debug("Empty collection");
+    this._myCollection = [];
+  };
 
-    reset() {
-        this.logger.debug("Reset collection");
-        this._myCollection = [this.config.myValue];
-    }
+  reset() {
+    this.logger.debug("Reset collection");
+    this._myCollection = [this.config.myValue];
+  }
 
-    _addBindings() {
-        this.eventManager.listen(this.player, this.player.Event.SEEKED, () => {
-            this.logger.debug(this.player.currentTime + " Added to my collection");
-            this._myCollection.push(this.player.currentTime);
-            this.dispatchEvent("collectionUpdate", {collection: this._myCollection});
-        });
-    }
+  _addBindings() {
+    this.eventManager.listen(this.player, this.player.Event.SEEKED, () => {
+      this.logger.debug(this.player.currentTime + " Added to my collection");
+      this._myCollection.push(this.player.currentTime);
+      this.dispatchEvent("collectionUpdate", {collection: this._myCollection});
+    });
+  }
 }
 ```
 
