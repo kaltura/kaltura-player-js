@@ -200,14 +200,22 @@ We'll use both Vanilla JavaScript & ES6 examples.
 </html>
 ```
 ## Step 2 - Create Your Plugin Class
+1 . In ***my-plugin.js***, define the plugin class:
 
 ### *Plain JavaScript*
-1 . In ***my-plugin.js***, define the plugin class:
 ```js
 var MyPlugin = function (name, player, config) {
 }
 ```
+### *ES6*
+```typescript
+class MyPlugin {
+	constructor(name, player, config) {
+	}
+}
+```
 2 . Next, and add the code that will inherit from `BasePlugin`:
+### *Plain JavaScript*
 ```js
 var MyPlugin = function (name, player, config) {
     KalturaPlayer.core.BasePlugin.call(this, name, player, config);
@@ -217,16 +225,7 @@ MyPlugin.createPlugin = KalturaPlayer.core.BasePlugin.createPlugin;
 
 MyPlugin.prototype = new KalturaPlayer.core.BasePlugin();
 ```
-
 ### *ES6*
-1 . In ***my-plugin.js***, define the plugin class:
-```typescript
-class MyPlugin {
-	constructor(name, player, config) {
-	}
-}
-```
-2 . Next, add code that will inherit from `BasePlugin`:
 ```typescript
 class MyPlugin extends KalturaPlayer.core.BasePlugin {
 	constructor(name, player, config) {
