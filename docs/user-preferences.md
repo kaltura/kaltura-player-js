@@ -33,7 +33,7 @@ An high-level workflow can be seen in the following flow-chart diagram:
 ![setup-flow-local-storage](./images/setup-flow-local-storage.jpg)
 
 After the player has started to play, the `StorageManager` will track any user interaction with the UI and update the storage value accordingly, as you can see in the following sequence diagram:
-<br>
+<br><br>
 ![save-value-flow-local-storage](./images/save-value-flow-local-storage.png)
 
 ## Browser Compatibility
@@ -52,6 +52,6 @@ This feature can work on all browsers that supports localStorage.
 Now you can view your saved player values in the local storage:
 ![chrome-local-storage](./images/chrome-local-storage.png)
 
-<br>To clear those values, click on the clear button:
+To clear those values, click on the clear button:
 ![clear-button-local-storage](./images/clear-button-local-storage.png)
 <br>To edit those values, click on any value in the right column and edit.
