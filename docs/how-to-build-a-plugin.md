@@ -388,11 +388,13 @@ All that's left now is to verify that the player activates the plugin during run
 1 . Include the new plugin name and plugin configuration in the player configuration. For example:
 ```js
 var config = {
-  plugins: {
-    myPlugin: {
-      myValue: 10
-      }
-  }
+    player: {
+        plugins: {
+            myPlugin: {
+                myValue: 10
+            }
+        }
+    }
 };
 ```
 
@@ -404,29 +406,28 @@ a . A placeholder div to the player:
 ```
 b . A basic player configuration:
 ```js
-  var config = {
-  logLevel: "DEBUG",
-  sources: {
-    progressive: [
-      {
-        mimetype: "video/mp4",
-        url: "http://www.html5videoplayer.net/videos/toystory.mp4"
-      }
-    ]
-  },
-  plugins: {
-    myPlugin: {
-      myValue: 10
-      }
+var config = {
+    logLevel: "DEBUG",
+    targetId: "player-div",
+    provider: {
+        partnerId: "YOUR_PARTNER_ID"
+    },
+    player: {
+        plugins: {
+            myPlugin: {
+                myValue: 10
+            }
+        }
     }
-  };
+};
 ```
 c . Setup code.
 ```js
-var playerDiv = document.getElementById("player-div");
-var player = KalturaPlayer.core.loadPlayer(config);
-playerDiv.appendChild(player.getView());
-player.play();
+var mediaInfo = {entryId: "YOUR_ENTRY_ID"};
+var player = KalturaPlayer.setup(config);
+player.loadMedia(mediaInfo).then(function() {
+  player.play();
+});
 ```
 
 3 . Connect everything together and you'll get:
@@ -441,29 +442,28 @@ player.play();
 </head>
 <body>
 <script>
-  KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
+KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
 
-  var config = {
-  logLevel: "DEBUG",
-  sources: {
-    progressive: [
-      {
-        mimetype: "video/mp4",
-        url: "http://www.html5videoplayer.net/videos/toystory.mp4"
-      }
-    ]
-  },
-  plugins: {
-    myPlugin: {
-      myValue: 10
-      }
+var config = {
+    logLevel: "DEBUG",
+    targetId: "player-div",
+    provider: {
+        partnerId: "YOUR_PARTNER_ID"
+    },
+    player: {
+        plugins: {
+            myPlugin: {
+                myValue: 10
+            }
+        }
     }
-  };
+};
 
-  var playerDiv = document.getElementById("player-div");
-  var player = KalturaPlayer.core.loadPlayer(config);
-  playerDiv.appendChild(player.getView());
+var mediaInfo = {entryId: "YOUR_ENTRY_ID"};
+var player = KalturaPlayer.setup(config);
+player.loadMedia(mediaInfo).then(function() {
   player.play();
+});
 </script>
 </body>
 </html>
