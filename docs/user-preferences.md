@@ -50,6 +50,7 @@ This feature can work on all browsers that supports localStorage.
 5. Choose your test page domain.
 
 Now you can view your saved player values in the local storage:
+<br><br>
 ![chrome-local-storage](./images/chrome-local-storage.png)
 
 To clear those values, click on the clear button:
