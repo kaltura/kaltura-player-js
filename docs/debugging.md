@@ -1,7 +1,7 @@
 # Debugging & Troubleshooting
 
 To debug the player and view explicit messages in the console, you'll need to use debug mode.
-In order to run the player in debug mode you'll need to set one of the following options:
+<br>In order to run the player in debug mode you'll need to set one of the following options:
 #### 1. Define a Global Window Debug Variable
 In your application, define at the top of your page the following window debug variable:
 ```js
@@ -24,8 +24,9 @@ As you can see in the figure above, our player log conventions build with the fo
 ```
 Try to stick those conventions in you application so debugging & troubleshooting will be easy to understand.
 ## Controlling the Log Level
-If you want to use different log level than `DEBUG`
-you need to configure the player with the desired log level. For example:
+If you want to use different log level than `DEBUG`,
+you'll need to configure the player with the desired log level. 
+<br>For example:
 ```flow js
 var config = {
     ...
@@ -34,7 +35,7 @@ var config = {
 };
 KalturaPlayer.setup(config);
 ```
-This for example, will display in the console only logs from a warning level and above.
+This for example, will display only logs from a warning level and above in the console.
 
 
 
