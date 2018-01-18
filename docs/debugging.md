@@ -33,7 +33,6 @@ var config = {
     logLevel: "WARN"
     ...
 };
-KalturaPlayer.setup(config);
 ```
 This for example, will display only logs from a warning level and above in the console.
 
