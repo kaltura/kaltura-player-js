@@ -27,7 +27,7 @@ Try to stick those conventions in you application so debugging & troubleshooting
 If you want to use different log level than `DEBUG`,
 you'll need to configure the player with the desired log level. 
 <br>For example:
-```flow js
+```js
 var config = {
     ...
     logLevel: "WARN"
