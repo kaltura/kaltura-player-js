@@ -35,6 +35,6 @@ var config = {
 };
 ```
 This for example, will display only logs from a warning level and above in the console.
-
+<br>Full list of log levels can be see [here]().
 
 
