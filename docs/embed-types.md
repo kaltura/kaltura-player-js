@@ -1,6 +1,6 @@
 # Embed Code Types
 
-When using embed codes, you can select from one of three options: Auto Embed, Dynamic Embed, and Iframe Embed. You may want to use different embed code types in different situations, according to the explanations below. 
+When using embed codes, you can select from one of three options: Auto Embed, Dynamic Embed and Iframe Embed. You may want to use different embed code types in different situations, according to the explanations below. 
 
 ## Auto Embed  
 
