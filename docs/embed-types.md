@@ -1,18 +1,24 @@
-# Embed Types
+# Embed Code Types
 
-The Embed Code type includes several options Auto Embed, Dynamic Embed, and Iframe Embed.<br> You may want to use diffrent embed code types in different situations. Here is a summary of the types. 
+When using embed codes, you can select from one of three options: Auto Embed, Dynamic Embed, and Iframe Embed. You may want to use different embed code types in different situations, according to the explanations below. 
 
-## Auto Embed
-This is the default recommended embed code for the Kaltura Player.<br>
-Auto embed is concise code and is good for quickly getting a player or widget onto the page without any runtime customizations.<br>
-Auto embed has been heavily optimized for packing lots of resources into the initial request, allowing the player to be rendered quickly. 
+## Auto Embed  
+
+Auto embed is the recommended embed code for the Kaltura Player. It usews precise code and is good for getting a player or widget onto the page quickly and easily without any runtime customizations.<br>
+
+Auto embed is optimized for packing a lots of resources into the initial request, allowing the player to be rendered quickly.
+<br>Here's how to use the auto embed code:
+
 ```html
 <script type="text/javascript" src="http://www.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config={"player":{"playback":{"autoplay":true}"></script>
 ```
 
-## Dynamic Embed
-Dynamic embed is recommended for cases where you want to dynmaically control runtime configuration and or have more control over the embed call.<br>
-Basic Embed codes look like this:
+## Dynamic Embed  
+
+Dynamic embed is recommended for cases where you want to control runtime configuration dynamically and/or have more control over the embed call.<br>
+
+Basic dynamic embed codes look like this:
+
 ```html
 <div id="{TARGET_ID}" style="width: 640px;height: 360px"></div>
 <script type="text/javascript" src="http://www.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}"></script>
@@ -37,10 +43,12 @@ Basic Embed codes look like this:
   </script>
 ```
 
-## IFrame Embed
-iframe embed is good for sites that do not allow 3rd party JavaScript to be embed on their pages.<br>
-This mode fits more stringent page security requirements.<br>
-If using this iframe only embed mode, the page won't be able to access the player API.
+## IFrame Embed  
+
+The iframe embed is good for sites that don't allow third-party JavaScript to be embedded in their pages. This makes the iFrame embed a better fit for sites that have stringent page security requirements.<br>
+
+Note that if you use the iframe only embed mode, the page won't be able to access the player API:
+
 ```html
 <iframe type="text/javascript" src="http://www.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config={"player":{"playback":{"autoplay":true}"></iframe>
 ```
