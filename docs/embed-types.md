@@ -4,7 +4,7 @@ When using embed codes, you can select from one of three options: Auto Embed, Dy
 
 ## Auto Embed  
 
-Auto embed is the recommended embed code for the Kaltura Player. It usews precise code and is good for getting a player or widget onto the page quickly and easily without any runtime customizations.<br>
+Auto embed is the recommended embed code for the Kaltura Player. It uses precise code and is good for getting a player or widget onto the page quickly and easily without any runtime customizations.<br>
 
 Auto embed is optimized for packing a lots of resources into the initial request, allowing the player to be rendered quickly.
 <br>Here's how to use the auto embed code:
