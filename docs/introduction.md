@@ -2,7 +2,7 @@ The Kaltura Player integrates different packages into one single package which r
 The Kaltura Player integrates:
 * [PlayKit JS ](https://github.com/kaltura/playkit-js) as the core library.
 * [PlayKit JS UI](https://github.com/kaltura/playkit-js-ui) as the UI framework.
-* [PlayKit JS DASH](https://github.com/kaltura/playkit-js-ui) and [PlayKit JS HLS](https://github.com/kaltura/playkit-js-hls) for HLS & MPEG-DASH media source extensions capabilities.
+* [PlayKit JS DASH](https://github.com/kaltura/playkit-js-dash) and [PlayKit JS HLS](https://github.com/kaltura/playkit-js-hls) for HLS & MPEG-DASH media source extensions capabilities.
 * [PlayKit JS IMA](https://github.com/kaltura/playkit-js-ima) for ads & monetization.
 * [PlayKit JS Providers](https://github.com/kaltura/playkit-js-providers) as the backend media providers.
 * [PlayKit JS Youbora](https://github.com/kaltura/playkit-js-youbora), [PlayKit JS KAnalytics](https://github.com/kaltura/playkit-js-kanalytics), [PlayKit JS OTT Analytics](https://github.com/kaltura/playkit-js-ott-analytics) as the different analytics plugins.
