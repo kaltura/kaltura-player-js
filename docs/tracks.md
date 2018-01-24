@@ -3,7 +3,7 @@
 The player exposes full API to handle all kind of tracks - video (bitrate), audio and text (language) tracks.
 <br>This document shows how to use this API to handle the player tracks. 
 
-- [Video, Audio and Text Tracks](#video-audio-and-text-tracks)
+- [Table of Contents]
     + [Tracks Availability:](#tracks-availability)
     + [Getting the Tracks:](#getting-the-tracks)
         * [Getting All Types of Tracks:](#getting-all-types-of-tracks)
