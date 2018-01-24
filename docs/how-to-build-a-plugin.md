@@ -1,11 +1,11 @@
 
 # How to Build a Plugin
 
-To build your own plugin, you'll need to go through a few simple steps, including:
+To build your own plugin, you'll need to go through a few simple steps:
 
-* Importing the player library.
-* Writing your plugin logic and implementing the plugin API methods and properties.
-* Registering the plugin in the player framework.
+* Import the player library.
+* Write your plugin logic and implement the plugin API methods and properties.
+* Register the plugin in the player framework.
 
 
 In this guide we'll go through these steps and elaborate with examples of both Plain JavaScript & ES6.
@@ -36,17 +36,17 @@ In this guide we'll go through these steps and elaborate with examples of both P
   * [Step 1 - Import the Player Library](#step-1---import-the-player-library)
   * [Step 2 - Create Your Plugin Class](#step-2-------create-your-plugin-class)
   * [Step 3 - Override the `BasePlugin` Methods](#step-3-------override-baseplugin-methods)
-  * [Step 4 - Fill Simple Implementation](#step-4-------fill-simple-implementation)
+  * [Step 4 - Fill in a Simple Implementation](#step-4-------fill-simple-implementation)
   * [Step 5 - Register Your Plugin](#step-5-------register-your-plugin)
   * [Step 5 - Configure Your Plugin](#step-5-------configure-your-plugin)
  - [Writing an Advanced Plugin](#writing-an-advanced-plugin)
 
 
 The player core library exposes two main utilities:
-1. `BasePlugin` - The class that your plugin will inherit from.
-2. `registerPlugin` - The static player method that will register your plugin in the player registry.
+* `BasePlugin` - The class that your plugin will inherit from.
+* `registerPlugin` - The static player method that will register your plugin in the player registry.
 
-First, lets take a look at the `BasePlugin` API.
+Lets take a look at the `BasePlugin` API.
 
 ## Base Plugin API
 > #### ```constructor(name, player, config)```
@@ -83,7 +83,7 @@ Type: ```Object``` - The default plugin config.
 |------|------|---
 | `attr` | `string` | config key (optional)
 
-Returns: ```any``` - If attribute is provided, returns the value of the config attribute. If not, returns the plugin config.
+Returns: ```any``` - If an attribute is provided, returns the value of the config attribute. If not, returns the plugin config.
 
 > #### ```updateConfig(update)```
 **Parameters**
@@ -107,7 +107,8 @@ Returns: ```string``` - The plugin name.
 
 Returns: ```void``` - Dispatches an event from the player.
 #
-### Methods to Implement
+### Methods to Implement  
+
 > #### ```(static) isValid(player)```
 
 **Parameters**
@@ -118,7 +119,8 @@ Returns: ```void``` - Dispatches an event from the player.
 
 Returns: ```boolean``` - Whether the plugin is valid or not.
 
-You can help the player instance API with your decision logic. <br>For example, if you want to enable your plugin only on a Chrome browser, you can simply implement the following::
+You can help the player instance API with your decision logic. For example, if you want to enable your plugin on a Chrome browser only, you can simply implement the following:
+
 ```js
 // Plain JavaScript
 MyPlugin.isValid = function() {
@@ -158,7 +160,8 @@ Now, lets take a look at the `registerPlugin` API.
 
 
 
-# Writing a Basic Plugin
+# Writing a Basic Plugin  
+
 In this section, we'll learn how to write a simple plugin, one that doesn't require any installation or setup steps except for a player script in hand (remotely or locally).
 
 We'll use both Vanilla JavaScript & ES6 examples.
@@ -228,9 +231,9 @@ class MyPlugin extends KalturaPlayer.core.BasePlugin {
 }
 ```
 
-## Step 3 - Override `BasePlugin` Methods
+## Step 3 - Override the `BasePlugin` Methods
 
-1 . In ***my-plugin.js***, add the necessary methods and properties to override as explained above:
+In ***my-plugin.js***, add the necessary methods and properties to override as explained above:
 
 ### *Plain JavaScript*
 ```js
@@ -269,9 +272,9 @@ class MyPlugin extends KalturaPlayer.core.BasePlugin {
 }
 ```
 
-## Step 4 - 	Fill Simple Implementation
+## Step 4 - 	Fill in Simple Implementations
 
-To see the plugin in action, lets fill some simple implementations:
+To see the plugin in action, lets fill in some simple implementations:
 
 ### *Plain JavaScript*
 
@@ -463,7 +466,7 @@ player.loadMedia(mediaInfo).then(function() {
 </html>
 ```
 
-**That's it! the player starts to play and your plugin is now in action.**
+**That's it! the player starts to play and your plugin is activated.**
 
 # Writing an Advanced Plugin
 
