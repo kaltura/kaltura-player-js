@@ -1,4 +1,4 @@
-#Video, Audio and Text Tracks
+# Video, Audio and Text Tracks
 
 The player exposes full API to handle all kind of tracks - video (bitrate), audio and text (language) tracks.
 <br>This document shows how to use this API to handle the player tracks.  
@@ -49,7 +49,7 @@ console.log('The active audio track is: ' + activeTracks.audio);
 console.log('The active text track is: ' + activeTracks.text);
 ```
 
-###Video Tracks:
+### Video Tracks:
 ##### Adaptive Bitrate and Manual Selection:
 Video tracks (bitrate) can be handling in 2 modes: *Adaptive Bitrate*, and *Manual Selection*.
 <br>When *Adaptive Bitrate* is enable, the player controls the video track selection according to the network conditions. This is the default mode.
