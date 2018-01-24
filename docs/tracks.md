@@ -3,21 +3,20 @@
 The player exposes full API to handle all kind of tracks - video (bitrate), audio and text (language) tracks.
 <br>This document shows how to use this API to handle the player tracks. 
 
-- [Table of Contents]
-    + [Tracks Availability:](#tracks-availability)
-    + [Getting the Tracks:](#getting-the-tracks)
-        * [Getting All Types of Tracks:](#getting-all-types-of-tracks)
-        * [Getting Certain Type of Tracks:](#getting-certain-type-of-tracks)
-        * [Getting the Current Active Tracks:](#getting-the-current-active-tracks)
-    + [Video Tracks:](#video-tracks)
-        * [Adaptive Bitrate and Manual Selection:](#adaptive-bitrate-and-manual-selection)
-        * [Getting the Current Mode:](#getting-the-current-mode)
-        * [Video Track Selection:](#video-track-selection)
-    + [Audio Tracks:](#audio-tracks)
-        * [Audio Track Selection:](#audio-track-selection)
-    + [Text Tracks:](#text-tracks)
-        * [Text Track Selection:](#text-track-selection)
-        * [Disable Text Track:](#disable-text-track) 
++ [Tracks Availability:](#tracks-availability)
++ [Getting the Tracks:](#getting-the-tracks)
+    * [Getting All Types of Tracks:](#getting-all-types-of-tracks)
+    * [Getting Certain Type of Tracks:](#getting-certain-type-of-tracks)
+    * [Getting the Current Active Tracks:](#getting-the-current-active-tracks)
++ [Video Tracks:](#video-tracks)
+    * [Adaptive Bitrate and Manual Selection:](#adaptive-bitrate-and-manual-selection)
+    * [Getting the Current Mode:](#getting-the-current-mode)
+    * [Video Track Selection:](#video-track-selection)
++ [Audio Tracks:](#audio-tracks)
+    * [Audio Track Selection:](#audio-track-selection)
++ [Text Tracks:](#text-tracks)
+    * [Text Track Selection:](#text-track-selection)
+  * [Disable Text Track:](#disable-text-track) 
 
 ### Tracks Availability:
 The tracks are available only when the video source has loaded.
