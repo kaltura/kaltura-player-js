@@ -22,10 +22,10 @@ var config = {
 };
 ```
 
-**@AnnaAleksandrowicz - Need to add some intro sentences about common/important examples**
+The following sections are examples of common (and important) configurations for the player setup. 
 
-#### Example: Using a Kaltura Session
-If you need to use a ks for your media requests, configure it inside your provider configuration:
+#### Example: Using a Kaltura Session (KS)
+If you need to use a KS for your media requests, configure it inside your provider configuration:
 ```js
 var config = {
 	...
@@ -41,7 +41,7 @@ var player = KalturaPlayer.setup(config);
 ``` 
 
 #### Example: Using Server Configuration
-If you want to use server configuration you'll need to provide the `uiConfId` in your provider configuration:
+If you want to use a server configuration, you'll need to provide the `uiConfId` in your provider configuration:
 ```js
 var config = {
 	...
@@ -56,7 +56,7 @@ var config = {
 var player = KalturaPlayer.setup(config);
 ``` 
 
-#### Example: Using Environment
+#### Example: Using an Environment
 If you want to refer to a specific backend URL, you can specify it in your provider configuration:
 ```js
 var config = {
@@ -83,5 +83,5 @@ var player = KalturaPlayer.setup(config);
 ```
 
 ## Next Step
-To start playing your video, visit [Playing Your Video]().
+You're now ready to start playing your video; see [Playing Your Video]() for details.
 
