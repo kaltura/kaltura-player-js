@@ -28,7 +28,7 @@ player.addEventListener(player.Event.TRACKS_CHANGED, function (event) {
   console.log('This source has ' + tracks.length + ' tracks');
 });
 ```
-<br>Using: `ready` promise:
+Using: `ready` promise:
 ```javascript
 player.ready().then(function(){
   var tracks = player.getTracks();
