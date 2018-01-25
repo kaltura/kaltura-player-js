@@ -66,7 +66,7 @@ console.log('The active text track is: ' + activeTracks.text);
 
 ### Video Tracks:
 ##### Adaptive Bitrate and Manual Selection:
-Video tracks (bitrate) can be handling in 2 modes: *Adaptive Bitrate*, and *Manual Selection*.
+Video tracks (bitrate) can be handling in 2 modes: *Adaptive Bitrate* and *Manual Selection*.
 <br>When *Adaptive Bitrate* is enable, the player controls the video track selection according to the network conditions. This is the default mode.
 <br>When Selecting a certain video track manually, the player switches from *Adaptive Bitrate* mode to *Manual Selection*.
 **Important:** In Safari browser only *Adaptive Bitrate* mode is available.
