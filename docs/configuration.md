@@ -69,9 +69,9 @@ Available sources include:
 When the player builds its runtime configuration, it will need to how to built the configuration correctly according to the strength of each configuration, which is as follows (#1 is strongest; #4 is weakest):
 
 1. **Local Storage**
-2. **Application **
-3. **Server **
-4. **Default Player Configuration***
+2. **Application**
+3. **Server**
+4. **Default Player Configuration**
 
 ![configuration-strength](./images/configuration-strength.jpg)
 
