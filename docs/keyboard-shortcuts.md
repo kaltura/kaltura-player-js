@@ -1,7 +1,7 @@
 # Keyboard Shortcuts
 
 You can use the following keyboard shortcuts to control the player:
-> Note that those shortcuts will work only if the player is the focused element in the page.
+> Note that these shortcuts will work only if the player is the focused element in the page.
 
 
 
