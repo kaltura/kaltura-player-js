@@ -38,7 +38,6 @@ The configuration uses the following structure:
 >##### Type: `boolean`
 >##### Default: `false`
 >##### Description: Indicates whether to stop using the saved user preferences.
->User preferences are actions that triggered by the user and produce a configurable value that is saved in the browser's local storage. The player uses those values to enable consistent use of the player. For example, if the last watched media was muted, the next media will be muted also, even if the user refreshed the page.
 <br>More on user preferences in the player can be found [here]().
 ## 
 >### config.player
@@ -56,8 +55,8 @@ The configuration uses the following structure:
 >##### Description: Defines the user interface (UI) configuration.
 >Full configuration documentation for the config.ui can be found [here](). 
 
-## Configuration Strength
-In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a different "strength", meaning has a greater or less impact on how the player is configured.
+## Configuration Priority
+In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, meaning has a greater or less impact on how the player is configured.
 
 Available sources include:
 
@@ -66,7 +65,7 @@ Available sources include:
 * **Local Storage (Browser)** - This is the user preferences configuration, which is saved in the local storage of the browser. 
 * **Default Player Configuration** - The default player configuration is defined internally by the player. 
 
-When the player builds its runtime configuration, it will need to how to built the configuration correctly according to the strength of each configuration, which is as follows (#1 is strongest; #4 is weakest):
+When the player builds its runtime configuration, it will need to how to built the configuration correctly according to the priority of each configuration, which is as follows (#1 is highest; #4 is lowest):
 
 1. **Local Storage**
 2. **Application**
