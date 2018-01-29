@@ -1,7 +1,7 @@
 # Video, Audio and Text Tracks
 
 The Kaltura Player uses a comprehensive API to handle all kind of tracks, including video (bitrate), audio, and text (language) tracks.
-<br>This document shows how to use the API to implement and manage player tracks. 
+<br>This document shows how to use the API to managing player tracks. 
 
 + [Tracks Availability](#tracks-availability)
 + [Getting the Tracks](#getting-the-tracks)
