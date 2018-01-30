@@ -43,6 +43,9 @@ var mediaInfo = {
 </p>
 </details>
 
+<details><summary><b>mediaInfo Documentation - OTT</b></summary>
+<p>
+
 ### `mediaInfo` Structure:
 ```js
 {
@@ -55,7 +58,9 @@ var mediaInfo = {
 	formats: Array<string> 
 }
 ```
+
 **Parameters**
+
 |  Name | Type  |Required| Description| Possible Values | Default Value
 |---|---|---|---|---|---|
 | `entryId` | `string` | V | The entry id of the media
@@ -65,6 +70,7 @@ var mediaInfo = {
 | `protocol` | `string` | | The protocol of the specific media | `"https"`, `"http"`  
 | `fileIds` | `string` | | List of comma separated media file IDs
 | `formats` | `Array<string>` | | Device types as defined in the system.
+
 
 ### Examples
 #### Using KS
@@ -122,6 +128,10 @@ var mediaInfo = {
 	...
 };
 ```
+
+</p>
+</details>
+
 
 After your media info has been created, you are ready to load your media.
 
