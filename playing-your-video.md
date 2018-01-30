@@ -1,7 +1,7 @@
 # Playing Your Video 
-To start playing your video, you'll need first to create your media info object and then to use the `loadMedia` API.
+To start playing your video, you'll need to create your media info object and then use the `loadMedia` API. Here are the required steps.
 
-### Step 1 - Create a Media Info Object
+## Step 1 - Create a Media Info Object
 First, define your media info object:
 ```js
 var mediaInfo = {
@@ -9,11 +9,13 @@ var mediaInfo = {
 };
 ```
 
-To learn how to fill your media info object correctly, click on your relevant media info documentation:
-<details><summary><b>Click to mediaInfo Documentation - OVP</b></summary>
+To learn how to fill your media info object correctly, click the relevant media information documentation below.
+>Note: For OVP players, you'll only need to fill the entryid (mandatory) and the KS (optional). For Cloud TV players, you'll need to provide these parameters and more. See details below.
+
+<details><summary><b>MediaInfo Documentation - OVP</b></summary>
 <p>
 
-#### `mediaInfo` Structure:
+### `mediaInfo` Structure
 
 ```js
 {
@@ -26,17 +28,17 @@ To learn how to fill your media info object correctly, click on your relevant me
 
 |  Name | Type  |Required| Description| Possible Values | Default Value |
 |---|---|---|---|---|---|
-| `entryId` | `string` | V | The entry id of the media|
-| `ks` | `string` | | The ks secret|
+| `entryId` | `string` | V | The entry ID of the media|
+| `ks` | `string` | | The KS (Kaltura Session) secret|
 
-#### Examples
-##### Basic Usage
+### Examples
+#### Basic Usage
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID'
 };
 ```
-##### Using KS
+#### Using the KS
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -47,10 +49,10 @@ var mediaInfo = {
 </p>
 </details>
 
-<details><summary><b>Click to mediaInfo Documentation - OTT</b></summary>
+<details><summary><b>MediaInfo Documentation - Cloud TV</b></summary>
 <p>
 
-#### `mediaInfo` Structure:
+### `mediaInfo` Structure
 ```js
 {
   entryId: string,
@@ -67,25 +69,27 @@ var mediaInfo = {
 
 |  Name | Type  |Required| Description| Possible Values | Default Value
 |---|---|---|---|---|---|
-| `entryId` | `string` | V | The entry id of the media
+| `entryId` | `string` | V | The entry ID of the media
 | `mediaType` | `string` | | The type of the specific media | `"MEDIA"`, `"EPG"`, `"RECORDING"` | `"MEDIA"`
 | `contextType` | `string` | | The playback context type | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"` | `"PLAYBACK"`
 | `ks` | `string` | | The ks secret
 | `protocol` | `string` | | The protocol of the specific media | `"https"`, `"http"`  
-| `fileIds` | `string` | | List of comma separated media file IDs
+| `fileIds` | `string` | | List of comma-separated media file IDs
 | `formats` | `Array<string>` | | Device types as defined in the system.
 
 
-#### Examples
+## Examples
 
-##### Basic Usage
+Let's look at some examples.
+
+### Basic Usage
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID'
 };
 ```
 
-##### Using KS
+### Using the KS
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -94,7 +98,7 @@ var mediaInfo = {
 };
 ```
 
-#####   Specify a Protocol
+### Specify a Protocol
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -103,7 +107,7 @@ var mediaInfo = {
 };
 ```
 
-##### Specify Media Type
+### Specify a Media Type
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -112,7 +116,7 @@ var mediaInfo = {
 };
 ```
 
-##### Specify Context Type
+### Specify a Context Type
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -121,7 +125,7 @@ var mediaInfo = {
 };
 ```
 
-##### Specify File IDs
+### Specify the File IDs
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -130,7 +134,7 @@ var mediaInfo = {
 };
 ```
 
-##### Specify Device Formats
+### Specify Device Formats
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
@@ -143,10 +147,11 @@ var mediaInfo = {
 </details>
 
 
-<br>After your media info has been created, you are ready to load your media.
+<br>After you've created your media info, you're ready to load your media.
 
-### Step 2 - Load the Media
-To load your media, call `loadMedia` API. <br>The `loadMedia` method returns a promise, since its an asynchronies operation that access to a server. <br>When the promise has been resolved, you can manipulate the player:
+## Step 2 - Load the Media
+To load your media, call the `loadMedia` API. 
+<br>The `loadMedia` method returns a promise, since it's an asynchronies operation that accesses a server. When the promise has been resolved, you can manipulate the player as follows:
 ```js
 player.loadMedia(mediaInfo).then(() =>
   player.play();
