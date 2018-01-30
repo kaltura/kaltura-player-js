@@ -141,7 +141,7 @@ var mediaInfo = {
 <br>After your media info has been created, you are ready to load your media.
 
 ### Step 2 - Load the Media
-To load your media, call `loadMedia` API. <br>The `loadMedia` method returns a promise, since its an asynchronies operation that access to a server. When the promise has been resolved, you can manipulate the player:
+To load your media, call `loadMedia` API. <br>The `loadMedia` method returns a promise, since its an asynchronies operation that access to a server. <br>When the promise has been resolved, you can manipulate the player:
 ```js
 player.loadMedia(mediaInfo).then(() =>
   player.play();
