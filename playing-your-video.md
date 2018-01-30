@@ -12,7 +12,7 @@ var mediaInfo = {
 <details><summary><b>mediaInfo Documentation - OVP</b></summary>
 <p>
 
-### `mediaInfo` Structure:
+#### `mediaInfo` Structure:
 
 ```js
 {
@@ -29,8 +29,8 @@ var mediaInfo = {
 | `entryId` | `string` | V | The entry id of the media|
 | `ks` | `string` | | The ks secret|
 
-### Examples
-#### Using KS
+#### Examples
+##### Using KS
 ```js
 var mediaInfo = {
 	...
@@ -46,7 +46,7 @@ var mediaInfo = {
 <details><summary><b>mediaInfo Documentation - OTT</b></summary>
 <p>
 
-### `mediaInfo` Structure:
+#### `mediaInfo` Structure:
 ```js
 {
 	entryId: string,
@@ -72,8 +72,9 @@ var mediaInfo = {
 | `formats` | `Array<string>` | | Device types as defined in the system.
 
 
-### Examples
-#### Using KS
+#### Examples
+
+##### Using KS
 ```js
 var mediaInfo = {
 	...
@@ -82,7 +83,8 @@ var mediaInfo = {
 	...
 };
 ```
-####   Specify a Protocol
+
+#####   Specify a Protocol
 ```js
 var mediaInfo = {
 	...
@@ -91,7 +93,8 @@ var mediaInfo = {
 	...
 };
 ```
-#### Specify Media Type
+
+##### Specify Media Type
 ```js
 var mediaInfo = {
 	...
@@ -101,7 +104,7 @@ var mediaInfo = {
 };
 ```
 
-#### Specify Context Type
+##### Specify Context Type
 ```js
 var mediaInfo = {
 	...
@@ -110,7 +113,8 @@ var mediaInfo = {
 	...
 };
 ```
-#### Specify File IDs
+
+##### Specify File IDs
 ```js
 var mediaInfo = {
 	...
@@ -119,7 +123,8 @@ var mediaInfo = {
 	...
 };
 ```
-#### Specify Device Formats
+
+##### Specify Device Formats
 ```js
 var mediaInfo = {
 	...
@@ -133,23 +138,14 @@ var mediaInfo = {
 </details>
 
 
-After your media info has been created, you are ready to load your media.
+<br>After your media info has been created, you are ready to load your media.
 
-## 2. Load the Media
+### Step 2 - Load the Media
 To load your media, call `loadMedia` API. <br>The `loadMedia` method returns a promise, since its an asynchronies operation that access to a server. When the promise has been resolved, you can manipulate the player:
 ```js
-player.loadMedia(mediaInfo).then(() => {
-	player.play();
+player.loadMedia(mediaInfo).then(() =>
+  player.play();
 });
 ```
 
-
-## Load Media API
-### `loadMedia(mediaInfo)`
-
-**Parameters**
-|  Name|Type  |Description|
-|--|--|--|
-| `mediaInfo` | `Object` | The media info
-
-Returns: `Promise` - Will be resolved after the server request has been completed and the player has been received playable sources.
+Click [here]() to see the full `loadMedia` API.
