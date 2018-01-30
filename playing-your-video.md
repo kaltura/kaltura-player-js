@@ -9,7 +9,9 @@ var mediaInfo = {
 };
 ```
 
-<details><summary><b>mediaInfo Documentation - OVP</b></summary>
+
+To learn how to fill your media info object correctly, click on your relevant media info documentation:
+<details><summary><b>Click to `mediaInfo` Documentation - OVP</b></summary>
 <p>
 
 #### `mediaInfo` Structure:
@@ -43,7 +45,7 @@ var mediaInfo = {
 </p>
 </details>
 
-<details><summary><b>mediaInfo Documentation - OTT</b></summary>
+<details><summary><b>Click to `mediaInfo` Documentation - OTT</b></summary>
 <p>
 
 #### `mediaInfo` Structure:
