@@ -9,7 +9,6 @@ var mediaInfo = {
 };
 ```
 
-
 To learn how to fill your media info object correctly, click on your relevant media info documentation:
 <details><summary><b>Click to mediaInfo Documentation - OVP</b></summary>
 <p>
@@ -18,11 +17,10 @@ To learn how to fill your media info object correctly, click on your relevant me
 
 ```js
 {
-	entryId: string,
-	ks: string
+  entryId: string,
+  ks: string
 }
 ```
-
 
 **Parameters**
 
@@ -32,13 +30,17 @@ To learn how to fill your media info object correctly, click on your relevant me
 | `ks` | `string` | | The ks secret|
 
 #### Examples
+##### Basic Usage
+```js
+var mediaInfo = {
+  entryId: 'YOUR_ENTRY_ID'
+};
+```
 ##### Using KS
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	ks: 'YOUR_KS'
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  ks: 'YOUR_KS'
 };
 ```
 
@@ -51,13 +53,13 @@ var mediaInfo = {
 #### `mediaInfo` Structure:
 ```js
 {
-	entryId: string,
-	ks: string,
-	mediaType: string, 
-	contextType: string, 
-	protocol: string, 
-	fileIds: string, 
-	formats: Array<string> 
+  entryId: string,
+  ks: string,
+  mediaType: string, 
+  contextType: string, 
+  protocol: string, 
+  fileIds: string, 
+  formats: Array<string> 
 }
 ```
 
@@ -76,63 +78,64 @@ var mediaInfo = {
 
 #### Examples
 
+##### Basic Usage
+```js
+var mediaInfo = {
+  entryId: 'YOUR_ENTRY_ID'
+};
+```
+
 ##### Using KS
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	ks: 'YOUR_KS'
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  ks: 'YOUR_KS'
+  ...
 };
 ```
 
 #####   Specify a Protocol
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	protocol: 'https'
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  protocol: 'https'
+  ...
 };
 ```
 
 ##### Specify Media Type
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	mediaType: 'EPG'
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  mediaType: 'EPG'
+  ...
 };
 ```
 
 ##### Specify Context Type
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	contextType: 'TRAILER'
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  contextType: 'TRAILER'
+  ...
 };
 ```
 
 ##### Specify File IDs
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	fileIds: 'FILE_ID1,FILE_ID2'
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  fileIds: 'FILE_ID1,FILE_ID2'
+  ...
 };
 ```
 
 ##### Specify Device Formats
 ```js
 var mediaInfo = {
-	...
-	entryId: 'YOUR_ENTRY_ID',
-	formats: ['Device_Format_1', 'Device_Format_2', 'Device_Format_3']
-	...
+  entryId: 'YOUR_ENTRY_ID',
+  formats: ['Device_Format_1', 'Device_Format_2', 'Device_Format_3']
+  ...
 };
 ```
 
