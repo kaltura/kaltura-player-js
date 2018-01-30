@@ -1,7 +1,7 @@
 # Playing Your Video 
 To start playing your video, you'll need first to create your media info object and then to use the `loadMedia` API.
 
-### Step 1 - Create Media Info Object
+### Step 1 - Create a Media Info Object
 First, define your media info object:
 ```js
 var mediaInfo = {
@@ -9,19 +9,39 @@ var mediaInfo = {
 };
 ```
 
-<details><summary>CLICK ME</summary>
+<details><summary><b>mediaInfo Documentation - OVP</b></summary>
 <p>
 
-#### yes, even hidden code blocks!
+### `mediaInfo` Structure:
 
-```python
-print("hello world!")
+```js
+{
+	entryId: string,
+	ks: string
+}
+```
+
+
+**Parameters**
+
+|  Name | Type  |Required| Description| Possible Values | Default Value |
+|---|---|---|---|---|---|
+| `entryId` | `string` | V | The entry id of the media|
+| `ks` | `string` | | The ks secret|
+
+### Examples
+#### Using KS
+```js
+var mediaInfo = {
+	...
+	entryId: 'YOUR_ENTRY_ID',
+	ks: 'YOUR_KS'
+	...
+};
 ```
 
 </p>
 </details>
-
-* If you're creating an OVP player, you'll need to define the entryId
 
 ### `mediaInfo` Structure:
 ```js
@@ -36,8 +56,8 @@ print("hello world!")
 }
 ```
 **Parameters**
-|  Name|Type  |Required| Description| Possible Values | Default Value
-|--|--|--|--|--|--|
+|  Name | Type  |Required| Description| Possible Values | Default Value
+|---|---|---|---|---|---|
 | `entryId` | `string` | V | The entry id of the media
 | `mediaType` | `string` | | The type of the specific media | `"MEDIA"`, `"EPG"`, `"RECORDING"` | `"MEDIA"`
 | `contextType` | `string` | | The playback context type | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"` | `"PLAYBACK"`
