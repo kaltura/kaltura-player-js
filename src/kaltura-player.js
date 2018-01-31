@@ -12,6 +12,7 @@ import {
 } from './common/utils/setup-helpers'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import './assets/style.css'
+import {configureJsonp} from './common/utils/jsonp-helper'
 
 export default class KalturaPlayer {
   _player: Player;
@@ -22,6 +23,7 @@ export default class KalturaPlayer {
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options.player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    configureJsonp(this._player._config);
     this._uiManager = new UIManager(this._player, options.ui);
     setUITouchConfig(options.ui.forceTouchUI, this._uiManager);
     this._provider = new Provider(options.provider, __VERSION__);
