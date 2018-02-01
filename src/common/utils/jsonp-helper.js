@@ -47,10 +47,15 @@ function configureJsonp(config: Object): void{
   config.playback = config.playback || {};
   config.playback.options = config.playback.options || {};
   config.playback.options.html5 = config.playback.options.html5 || {};
-  config.playback.options.html5.dash = config.playback.options.html5.dash || {};
   if (shouldUseJsonp(config.playback.options.html5.dash)){
+    config.playback.options.html5.dash = config.playback.options.html5.dash || {};
     config.playback.options.html5.dash.useJsonp = true;
     config.playback.options.html5.dash.callback = getDirectManfiestUri;
+  }
+  if (shouldUseJsonp(config.playback.options.html5.hls)){
+    config.playback.options.html5.hls = config.playback.options.html5.hls || {};
+    config.playback.options.html5.hls.useJsonp = true;
+    config.playback.options.html5.hls.callback = getDirectManfiestUri;
   }
 }
 
