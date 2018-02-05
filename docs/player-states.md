@@ -16,8 +16,8 @@ When a player changes its state, it fires a `PlayerStateChanged` event. The even
 The state's you register to listen to include the state class, the state type, and transitions between states. These next section provide additional details.
 
 ## State Class  
-In the `PlayerStateChanged` event, the player exposes his old state and his new state.
-To learn about what you can do with these states, find a detailed API of `State` class [here]().
+In the `PlayerStateChanged` event, the player exposes both its old state and its new state.
+To learn more about what you can do with these states, refer to the detailed `State` class API [here]().
 
 ## Available State Types  
 
@@ -33,7 +33,7 @@ When the player moves from one state to another, this is defined as a **transiti
 
 ## Player State Machine  
 
-Here's a figure that illustrates the player state machine:
+Here's a figure that illustrates the functionality of the player state machine:
 ![player-state-machine](./images/player-state-machine.jpg)
 
 
