@@ -19,7 +19,14 @@ In your page URL, add the `debugKalturaPlayer` query string parameter:
 http://my/page/url?debugKalturaPlayer
 ```
 **Options 3: Using Player Config**
-
+```js
+var config = {
+    ...
+    logLevel: "DEBUG"
+    ...
+};
+var player = KalturaPlayer.setup(config);
+```
 
 ## About Player Logs  
 
