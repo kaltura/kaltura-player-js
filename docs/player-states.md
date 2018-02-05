@@ -15,9 +15,9 @@ When a player changes its state, it fires a `PlayerStateChanged` event. The even
 
 The state's you register to listen to include the state class, the state type, and transitions between states. These next section provide additional details.
 
-## Available State Classes  
-
-The player supports a number of state classes. You'll find a detailed list of `State` class APIs [here]().
+## State Class  
+In the `PlayerStateChanged` event, the player exposes his old state and his new state.
+To learn about what you can do with these states, find a detailed API of `State` class [here]().
 
 ## Available State Types  
 
