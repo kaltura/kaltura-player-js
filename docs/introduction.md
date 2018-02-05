@@ -1,8 +1,10 @@
-The Kaltura Player integrates different packages into one single package, creating a powerful media player.
+The Kaltura Player utilizes a highly modular approach for creating a powerful media player.
+Each functionality of the player is isolated into separate packages, which are designed to deliver a specific set of abilities.
+This approach enables extensibility, simplicity and easy maintenance.
 
 The Kaltura Player integrates:
-* [PlayKit JS ](https://github.com/kaltura/playkit-js) as the core library.
-* [PlayKit JS UI](https://github.com/kaltura/playkit-js-ui) as the UI framework.
+* [PlayKit JS ](https://github.com/kaltura/playkit-js) - The core library.
+* [PlayKit JS UI](https://github.com/kaltura/playkit-js-ui) - The UI framework.
 * [PlayKit JS DASH](https://github.com/kaltura/playkit-js-dash) and [PlayKit JS HLS](https://github.com/kaltura/playkit-js-hls) for HLS & MPEG-DASH media source extensions capabilities.
 * [PlayKit JS IMA](https://github.com/kaltura/playkit-js-ima) for ads and monetization.
 * [PlayKit JS Providers](https://github.com/kaltura/playkit-js-providers) as the backend media providers.
