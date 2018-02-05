@@ -11,14 +11,14 @@ Player setup requires the following steps to create a player instance:
 ### Step 3 - Define Your Configuration
 ```js
 var config = {
-	targetId: "player-container",
-	player: { ... }, // player configuration
-	provider: { // provider configuration
-		...
-		partnerId: YOUR_PARTNER_ID
-		...
-	},
-	ui: { ... } // ui configuration
+  targetId: "player-container",
+  player: { ... }, // player configuration
+  provider: { // provider configuration
+    ...
+    partnerId: YOUR_PARTNER_ID
+    ...
+  },
+  ui: { ... } // ui configuration
 };
 ```
 
@@ -37,7 +37,6 @@ var config = {
 	}
 	...
 };
-var player = KalturaPlayer.setup(config);
 ``` 
 See this [article](https://vpaas.kaltura.com/documentation/VPaaS-API-Getting-Started/how-to-create-kaltura-session.html) to learn more about how to create a KS.
 #### Example: Using Server Configuration
@@ -53,7 +52,6 @@ var config = {
 	}
 	...
 };
-var player = KalturaPlayer.setup(config);
 ``` 
 
 #### Example: Using an Environment
@@ -71,7 +69,6 @@ var config = {
 	}
 	...
 };
-var player = KalturaPlayer.setup(config);
 ``` 
 > For full configuration details see [this]() document. 
 
