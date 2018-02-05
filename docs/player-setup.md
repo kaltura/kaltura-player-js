@@ -39,7 +39,7 @@ var config = {
 };
 var player = KalturaPlayer.setup(config);
 ``` 
-
+See this [article](https://vpaas.kaltura.com/documentation/VPaaS-API-Getting-Started/how-to-create-kaltura-session.html) to learn more about how to create a KS.
 #### Example: Using Server Configuration
 If you want to use a server configuration, you'll need to provide the `uiConfId` in your provider configuration:
 ```js
