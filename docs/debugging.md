@@ -1,19 +1,25 @@
 # Debugging & Troubleshooting
 
-In this section you'll learn about using debug mode to view explicit messages in the player to troubleshoot detected problems.
+In this section you'll learn how to use debug mode to view explicit messages in the player to troubleshoot detected problems.
 
 ## Running the Player in Debug Mode
 
 To debug the player and view explicit messages in the console, you'll need to run the player in debug mode using one of the following options:
 
-**Option 1: Define a global window debug variable**: In your application, define at the top of your page the following window debug variable:
+**Option 1: Define a global window debug variable**
+
+In your application, define at the top of your page the following window debug variable:
 ```js
 window.DEBUG_KALTURA_PLAYER = true;
 ```
-**Option 2: Add a query string parameter to the page URL**: In your page URL, add the `debugKalturaPlayer` query string parameter:
+**Option 2: Add a query string parameter to the page URL**
+
+In your page URL, add the `debugKalturaPlayer` query string parameter:
 ```js
 http://my/page/url?debugKalturaPlayer
 ```
+**Options 3: Using Player Config**
+
 
 ## About Player Logs  
 
