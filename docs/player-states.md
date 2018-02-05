@@ -5,7 +5,7 @@ The player supports lifecycle states (or statuses), which are based on HTML5 vid
 
 ## Table of Contents
   - [Registering to State Changes](#registering-to-state-changed)
-  - [Available State Classes](#state-class)
+  - [State Class](#state-class)
   - [Available State Types](#state-types)
   - [Transitioning Between States](#transitions-between-states)
 
