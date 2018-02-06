@@ -5,7 +5,7 @@ To start playing your video, you'll need to create your media info object and th
 First, define your media info object:
 ```js
 var mediaInfo = {
-	...
+  ...
 };
 ```
 
