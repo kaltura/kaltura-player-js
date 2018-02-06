@@ -4541,9 +4541,9 @@ pkginfo@0.x.x:
   version "1.5.1"
   resolved "https://github.com/kaltura/playkit-js-dash.git#fd1d33d43cc17c2fc3d622f7eb909908c5d4a2c5"
 
-"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.1.2":
-  version "3.1.2"
-  resolved "https://github.com/kaltura/playkit-js-env-manager.git#ace83a59a251bfe687d64de1d49244eccaa9ade7"
+"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.2.0":
+  version "3.2.0"
+  resolved "https://github.com/kaltura/playkit-js-env-manager.git#09390c414cb9d86969a421218c2b97f8683d867c"
   dependencies:
     chalk "^2.1.0"
     fs "0.0.1-security"
@@ -4570,9 +4570,9 @@ pkginfo@0.x.x:
   version "0.1.0"
   resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#61f4f5d15fea043b9cc07ecc65c65144f6400568"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.0.0":
-  version "2.0.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#f977605ef0d553a36495b8b1498a46b132aec20a"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.1.0":
+  version "2.1.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#2f90eae83610f01559482643fd0d079486474560"
   dependencies:
     js-logger "^1.3.0"
 
