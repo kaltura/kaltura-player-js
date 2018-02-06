@@ -9,6 +9,7 @@ import {
   setLogLevel,
   getDefaultOptions
 } from './common/utils/setup-helpers'
+import {configureExternalStreamRedirect} from "./common/utils/jsonp-helper";
 
 /**
  * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options
@@ -18,6 +19,7 @@ function setup(options: PartialKalturaPlayerOptionsObject): KalturaPlayer {
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
   setLogLevel(defaultOptions);
+  configureExternalStreamRedirect(defaultOptions.player);
   evaluatePluginsConfig(defaultOptions.player);
   setStorageConfig(defaultOptions);
   const kalturaPlayer = new KalturaPlayer(defaultOptions);

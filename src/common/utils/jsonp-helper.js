@@ -8,18 +8,16 @@ import {Env} from 'playkit-js'
  * @returns {string} returns the direct uri
  */
 function getDirectManfiestUri(data: Object, uri: string): string {
-  const getParsedUri = uri => {
+  const getHostName = uri => {
     const parser = document.createElement('a');
     parser.href = uri;
-    return {
-      'hostname': parser.hostname,
-      'uri': uri
-    }
+    return parser.hostname
   };
-
-  const uriHost = getParsedUri(uri).hostname;
-  const flavorUriHost = getParsedUri(data.flavors[0].url).hostname
-  if (data.flavors.length === 1 && uriHost !== flavorUriHost) {
+  // if the json contains one url, it means it is a redirect url. if it contains few urls, it means its the flavours
+  //so we should use the original url.
+  const uriHost = getHostName(uri);
+  const flavorUriHost = getHostName(data.flavors[0].url);
+  if (data.flavors && data.flavors.length === 1 && uriHost !== flavorUriHost) {
     return data.flavors[0].url;
   } else {
     return uri;
@@ -31,8 +29,8 @@ function getDirectManfiestUri(data: Object, uri: string): string {
  * @param {Object} config - configuration relevant to jsonp
  * @returns {boolean} should or not use jsonp requests on manifests
  */
-function shouldUseJsonp(config: Object): boolean{
-  if ((config && config.useJsonp) || Env.browser.name.includes("IE") || Env.browser.name.includes("Edge")){
+function shouldUseJsonp(config: Object): boolean {
+  if ((config && config.tryRedirectForExternalStreams) || Env.browser.name.includes("IE") || Env.browser.name.includes("Edge") || (Env.device.vendor && Env.device.vendor.includes("panasonic"))) {
     return true;
   }
   return false;
@@ -43,20 +41,11 @@ function shouldUseJsonp(config: Object): boolean{
  * @param {Object} config - configuration relevant to jsonp
  * @returns {void}
  */
-function configureJsonp(config: Object): void{
-  config.playback = config.playback || {};
+function configureExternalStreamRedirect(config: Object): void {
   config.playback.options = config.playback.options || {};
-  config.playback.options.html5 = config.playback.options.html5 || {};
-  if (shouldUseJsonp(config.playback.options.html5.dash)){
-    config.playback.options.html5.dash = config.playback.options.html5.dash || {};
-    config.playback.options.html5.dash.useJsonp = true;
-    config.playback.options.html5.dash.callback = getDirectManfiestUri;
-  }
-  if (shouldUseJsonp(config.playback.options.html5.hls)){
-    config.playback.options.html5.hls = config.playback.options.html5.hls || {};
-    config.playback.options.html5.hls.useJsonp = true;
-    config.playback.options.html5.hls.callback = getDirectManfiestUri;
-  }
+  config.playback.options.adapters = config.playback.options.adapters || {};
+  config.playback.options.adapters.tryRedirectForExternalStreams = shouldUseJsonp(config.playback.options.adapters);
+  config.playback.options.adapters.redirectForExternalStreamsCallback = getDirectManfiestUri;
 }
 
-export {configureJsonp}
+export {configureExternalStreamRedirect}
