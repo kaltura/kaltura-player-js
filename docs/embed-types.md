@@ -10,7 +10,7 @@ Auto embed is optimized for packing a lots of resources into the initial request
 <br>Here's how to use the auto embed code:
 
 ```html
-<script type="text/javascript" src="http://www.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config={"player":{"playback":{"autoplay":true}"></script>
+<script type="text/javascript" src='https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config={"player":{"playback":{"autoplay":true}'></script>
 ```
 
 ## Dynamic Embed  
@@ -21,7 +21,7 @@ Basic dynamic embed codes look like this:
 
 ```html
 <div id="{TARGET_ID}" style="width: 640px;height: 360px"></div>
-<script type="text/javascript" src="http://www.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}"></script>
+<script type="text/javascript" src="https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}"></script>
   <script type="text/javascript">
     try {
       var kalturaPlayer = KalturaPlayer.setup({
@@ -50,6 +50,6 @@ The iframe embed is good for sites that don't allow third-party JavaScript to be
 Note that if you use the iframe only embed mode, the page won't be able to access the player API:
 
 ```html
-<iframe type="text/javascript" src="http://www.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config={"player":{"playback":{"autoplay":true}"></iframe>
+<iframe type="text/javascript" src="https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config={"player":{"playback":{"autoplay":true}"></iframe>
 ```
 
