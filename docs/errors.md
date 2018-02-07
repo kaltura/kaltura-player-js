@@ -1,5 +1,5 @@
 
-# Errors
+# Controlling Errors
 
 Errors are used to notify a user when a critical issue has occurred or to log recoverable issues. An error object consists of three mandatory parameters: 
 

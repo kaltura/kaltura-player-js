@@ -1,8 +1,28 @@
-# Kaltura Player JS Platform - OTT and OVP media players based on the [PlayKit JS Player]
+# Kaltura Player JS Platform - Cloud TV and OVP Media Players Based on the [PlayKit JS Player]
 
 [![Build Status](https://travis-ci.org/kaltura/kaltura-player-js.svg?branch=master)](https://travis-ci.org/kaltura/kaltura-player-js)
- 
-Kaltura Player JS is written in [ECMAScript6], statically analysed using [Flow] and transpiled in ECMAScript5 using [Babel].
+
+The Kaltura Player utilizes a highly modular approach for creating a powerful media player.
+Each functionality of the player is isolated into separate packages, which are designed to deliver a specific set of abilities.
+This approach enables extensibility, simplicity and easy maintenance.
+
+The Kaltura Player integrates:
+* [PlayKit JS ](https://github.com/kaltura/playkit-js) - The core library.
+* [PlayKit JS UI](https://github.com/kaltura/playkit-js-ui) - The UI framework.
+* [PlayKit JS DASH](https://github.com/kaltura/playkit-js-dash) and [PlayKit JS HLS](https://github.com/kaltura/playkit-js-hls) for HLS & MPEG-DASH media source extensions capabilities.
+* [PlayKit JS IMA](https://github.com/kaltura/playkit-js-ima) for ads and monetization.
+* [PlayKit JS Providers](https://github.com/kaltura/playkit-js-providers) as the backend media providers.
+* [PlayKit JS Youbora](https://github.com/kaltura/playkit-js-youbora), [PlayKit JS KAnalytics](https://github.com/kaltura/playkit-js-kanalytics), and [PlayKit JS OTT Analytics](https://github.com/kaltura/playkit-js-ott-analytics) as the different analytics plugins.
+
+The Kaltura Player exposes two different players: the *Kaltura OVP Player* and *Kaltura Cloud TV Player*. Each player integrates its related packages, as you can see in the following table:
+
+
+|  | PlayKit JS | PlayKit JS Providers|PlayKit JS UI| PlayKit JS DASH | PlayKit JS HLS| PlayKit JS Youbora |  PlayKit JS KAnalytics|  PlayKit JS OTT Analytics|
+| --- |---|---|---|---|---|---| ---| --- |
+| OVP Player | V | OVP | V | V | V | V | V |  |
+|  Cloud TV Player | V |  OTT | V | V | V | V |  | V | 
+
+The Kaltura Player is written in [ECMAScript6], statically analysed using [Flow] and transpiled in ECMAScript5 using [Babel]. 
 
 [Flow]: https://flow.org/
 [ECMAScript6]: https://github.com/ericdouglas/ES6-Learning#articles--tutorials
@@ -31,82 +51,13 @@ Then, build the player
 yarn run build
 ```
 
-### Embed the library in your test page
+Next, let's look at how to [get started](./docs/player-setup.md) by creating a player using the Player API set.
 
-Finally, add the bundle as a script tag in your page, and initialize the player
+## Documentation
 
-**OVP Player**
-```html
-<script type="text/javascript" src="/PATH/TO/FILE/kaltura-ovp-player.js"></script>
-<div id="player-placeholder" style="height:360px; width:640px">
-<script type="text/javascript">
-// Step 1 - Create kaltura player options object
-var options = {
-  targetId: "player-placeholder", // Mandatory
-  provider: {
-    ...
-    partnerId: "YOUR_PARTNER_ID" // Mandatory
-    ...
-  },
-  player: { // Optional
-    ...
-  },
-  ui : { // Optional
-    ...
-  }
-};
-// Step 2 - Get the player instance
-var player = KalturaPlayer.setup(options);
-// Step 3 - Create media info object
-var mediaInfo = {
-  entryId: "YOUR_ENTRY_ID" // Mandatory
-};
-// Step 4 - Load the media
-player.loadMedia(mediaInfo).then(function() {
-  // Step 5 - Start to play 
-  player.play();
-});
-</script>
-```
-
-**OTT Player**
-
-```html
-<script type="text/javascript" src="/PATH/TO/FILE/kaltura-tv-player.js"></script>
-<div id="player-placeholder" style="height:360px; width:640px">
-<script type="text/javascript">
-// Step 1 - Create kaltura player options object
-var options = {
-  targetId: "player-placeholder", // Mandatory
-  provider: {
-    ...
-    partnerId: "YOUR_PARTNER_ID" // Mandatory
-    ...
-  },
-  player: { // Optional
-    ...
-  },
-  ui : { // Optional
-    ...
-  }
-};
-// Step 2 - Get the player instance
-var player = KalturaPlayer.setup(options);
-// Step 3 - Create media info object
-var mediaInfo = {
-  entryId: "YOUR_ENTRY_ID" // Mandatory
-  mediaType: "YOUR_MEDIA_TYPE", // Optional, default: "MEDIA"
-  contextType: "YOUR_MEDIA_CONTEXT_TYPE" // Optional, default: "PLAYBACK"
-};
-// Step 4 - Load the media
-player.loadMedia(mediaInfo).then(function() {
-  // Step 5 - Start to play 
-  player.play();
-});
-</script>
-```
-
-## Configuration
+* [**Configuration**](./docs/configuration.md)
+* **API**
+* [**Guides**](./docs/guides.md)
 
 ## Running the tests
 
