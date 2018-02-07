@@ -53,7 +53,7 @@ var config = {
     ...
 };
 ```
-<br>For a complete list of log levels, click [here]().
+<br>For a complete list of log levels, click ~~here~~.
 
 
 
