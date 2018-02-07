@@ -80,5 +80,5 @@ var player = KalturaPlayer.setup(config);
 ```
 
 ## Next Step
-You're now ready to start playing your video; see [Playing Your Video]() for details.
+You're now ready to start playing your video; see [Playing Your Video](./playing-your-video.md) for details.
 
