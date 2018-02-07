@@ -1,4 +1,4 @@
-# Development Guides
+# Guides
 
 - Getting Started
   * [Create a Player Using the TV Platform Player Studio](./getting-started-using-player-studio.md)
