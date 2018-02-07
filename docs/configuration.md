@@ -38,22 +38,22 @@ The configuration uses the following structure:
 >##### Type: `boolean`
 >##### Default: `false`
 >##### Description: Indicates whether to stop using the saved user preferences.
-<br>More on user preferences in the player can be found [here]().
+<br>More on user preferences in the player can be found [here](./user-preferences.md).
 ## 
 >### config.player
 >##### Type: `PKPlayerOptionsObject`
 >##### Description: Defines the player configuration.
->Full configuration documentation for the config.player can be found [here](). 
+>Full configuration documentation for the config.player can be found [here](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md). 
 ##
 >### config.provider
 >##### Type: `ProviderOptionsObject`
 >##### Description: Defines the provider configuration.
->Full configuration documentation for the config.provider can be found [here](). 
+>Full configuration documentation for the config.provider can be found [here](https://github.com/kaltura/playkit-js-providers/blob/master/docs/configuration.md). 
 ##
 >### config.ui
 >##### Type: `UIOptionsObject`
 >##### Description: Defines the user interface (UI) configuration.
->Full configuration documentation for the config.ui can be found [here](). 
+>Full configuration documentation for the config.ui can be found [here](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md). 
 
 ## Configuration Priority
 In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, meaning has a greater or less impact on how the player is configured.
