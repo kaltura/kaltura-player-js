@@ -1,6 +1,17 @@
 # Coding Guidelines
 
-Use the following coding guidelines when creating and editing players:
+Use the following coding guidelines when creating and editing players.
+
+## Table of Contents
+  * [Naming](#naming)
+  * [Strings](#strings)
+  * [Functions](#functions)
+    + [Parameters](#parameters)
+    + [Return Value](#return-value)
+    + [Arrow Functions](#arrow-functions)
+  * [Braces](#braces)
+  * [Block Indentation](#block-indentation)
+  * [Flow](#flow)
 
 ## Naming
 
