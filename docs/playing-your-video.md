@@ -159,3 +159,7 @@ player.loadMedia(mediaInfo).then(() =>
 ```
 
 Click ~~here~~ to see the full `loadMedia` API.
+
+
+## Next Step
+Continue to learn how to manage player tracks, events, states and more using the development [guides](./guides.md).
