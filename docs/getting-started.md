@@ -10,7 +10,7 @@ To create a new Kaltura Player using the TV Platform Player Studio, you'll need 
 
 ## Creating a New Kaltura Player <a name="create"></a>
 
-1 .Open the [KMC](https://kmc.kaltura.com/index.php/kmc/kmc4#studio%7Cuniversal_studio) and select the **Studio** tab.
+1. Open the [KMC](https://kmc.kaltura.com/index.php/kmc/kmc4#studio%7Cuniversal_studio) and select the **Studio** tab.
 ![kmc](./images/kmc.png)
 
 2 .Next, select **TV Platform Player Studio**.
