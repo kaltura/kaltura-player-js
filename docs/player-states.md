@@ -42,6 +42,44 @@ Here's a figure that illustrates the functionality of the player state machine:
 
 Here's an example of how a state change appears in the player code:
 
+### Getting the New State
+```js
+player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
+    const newState = event.payload.newState;
+    console.log('New state type is: ' + newState.type);
+});
+```
+
+### Getting the Previous State
+```js
+player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
+    const oldState = event.payload.oldState;
+    console.log('Previous state type is: ' + oldState.type);
+    console.log('The player was in the previous state ' + oldState.duration + ' millis');
+});
+```
+
+### Buffer Start
+```js
+player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
+    const newState = event.payload.newState;
+    if (newState.type === player.State.BUFFERING) {
+      // Buffer start - show spinner
+    }
+});
+```
+
+### Buffer End
+```js
+player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
+    const oldState = event.payload.oldState;
+    if (oldState.type === player.State.BUFFERING) {
+      // Buffer end - hide spinner
+    }
+});
+```
+
+### Buffer Underflow
 ```js
 player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
     const State = player.State;
@@ -49,16 +87,6 @@ player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
     if (payload.oldState.type === State.PLAYING
         && payload.newState.type === State.BUFFERING) {
         // Buffer underflow
-    }
-});
-```
-
-```js
-player.addEventListener(player.Event.PLAYER_STATE_CHANGED, (event) => {
-    const State = player.State;
-    const payload = event.payload;
-    if (payload.newState.type === State.BUFFERING) {
-        // Show spinner
     }
 });
 ```
