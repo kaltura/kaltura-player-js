@@ -49,7 +49,9 @@ The function return types must be specified in the JSDoc directly above the func
 
 ### Arrow Functions 
 
-It's better to use arrow functions over `f.bind(this)`, and especially over `kalt.bind(f, this)`. Avoid writing `const self = this`. Arrow functions are particularly useful for callbacks, which sometimes pass unexpected additional arguments.
+* It's better to use arrow functions over `f.bind(this)`, and especially over `kalt.bind(f, this)`. 
+* Avoid writing `var self = this`. 
+* Arrow functions are particularly useful for callbacks, which sometimes pass unexpected additional arguments.
 
 
 ## Braces  
