@@ -18,7 +18,7 @@ To create a new Kaltura Player using the TV Platform Player Studio, you'll need 
 <br>This displays a list of available players, including the players you've already created.
 
 3. To create a new player, click **Add New Player**.
-![tv platform](./images/tvPlatform-add.png) 
+![tv platform](images/tv-platform-add.png) 
 <br>After creating the new player, you can customize it using the Studio; however, for now, creating a player with the default settings is enough.<br>
 
 4. Call the new player *"My first Kaltura Player"* and click **Save Player Settings**.
