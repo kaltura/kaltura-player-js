@@ -46,7 +46,7 @@ const myError = new Error(
 
 Next, you'll need to dispatch an `Error` event:
 ```js
-player.dispatchEvent(new KalturaPlayer.FakeEvent(player.Event.Error, myError));
+player.dispatchEvent(new FakeEvent(player.Event.Error, myError));
 ```
 
 > You'll find additional information about dispatching events [here](./events.md).
