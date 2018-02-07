@@ -2,6 +2,12 @@
 
 In this section you'll learn how to use debug mode to view explicit messages in the player to troubleshoot detected problems.
 
+## Table of Contents
+  * [Running the Player in Debug Mode](#running-the-player-in-debug-mode)
+  * [About Player Logs](#about-player-logs)
+  * [Log Conventions](#log-conventions)
+  * [Controlling the Log Level](#controlling-the-log-level)
+    
 ## Running the Player in Debug Mode
 
 To debug the player and view explicit messages in the console, you'll need to run the player in debug mode using one of the following options:
