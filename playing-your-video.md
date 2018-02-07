@@ -70,9 +70,9 @@ var mediaInfo = {
 |  Name | Type  |Required| Description| Possible Values | Default Value
 |---|---|---|---|---|---|
 | `entryId` | `string` | V | The entry ID of the media
-| `mediaType` | `string` | | The type of the specific media | `"MEDIA"`, `"EPG"`, `"RECORDING"` | `"MEDIA"`
+| `mediaType` | `string` | | The type of the specific media | `"media"`, `"epg"`, `"recording"` | `"media"`
 | `contextType` | `string` | | The playback context type | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"` | `"PLAYBACK"`
-| `ks` | `string` | | The ks secret
+| `ks` | `string` | | The KS (Kaltura Session) secret
 | `protocol` | `string` | | The protocol of the specific media | `"https"`, `"http"`  
 | `fileIds` | `string` | | List of comma-separated media file IDs
 | `formats` | `Array<string>` | | Device types as defined in the system.
@@ -111,7 +111,7 @@ var mediaInfo = {
 ```js
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
-  mediaType: 'EPG'
+  mediaType: 'epg'
   ...
 };
 ```
@@ -158,4 +158,4 @@ player.loadMedia(mediaInfo).then(() =>
 });
 ```
 
-Click [here]() to see the full `loadMedia` API.
+Click ~~here~~ to see the full `loadMedia` API.
