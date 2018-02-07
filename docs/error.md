@@ -53,9 +53,9 @@ player.dispatchEvent(new FakeEvent(player.Event.Error, myError));
 
 
 
-## Using Debug Mode to see Explicit Error Messages
+## Using Debug Mode to See Explicit Error Messages
 
-Use the debug mode in the player to view explicit error messages in the console. To run the player in debug mode, set config.debugLevel to **true**.
+Use the debug mode in the player to view explicit error messages in the console. To run the player in debug mode, set `config.logLevel` to `true`.
 
 > You'll find additional information about debugging and troubleshooting the player [here](./debugging.md).
 
