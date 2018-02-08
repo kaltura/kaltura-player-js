@@ -30,7 +30,9 @@ function getDirectManfiestUri(data: Object, uri: string): string {
  * @returns {boolean} should or not use jsonp requests on manifests
  */
 function shouldUseJsonp(config: Object): boolean {
-  if ((config && config.forceRedirectForExternalStreams) || Env.browser.name.includes("IE") || Env.browser.name.includes("Edge") || (Env.device.vendor && Env.device.vendor.includes("panasonic"))) {
+  const affectedBrowsers = ['IE', 'Edge'];
+  const affectedVendors = ['panasonic'];
+  if ((config && config.forceRedirectForExternalStreams) || affectedBrowsers.includes(Env.browser.name) || (Env.device.vendor && affectedVendors.includes(Env.device.vendor))) {
     return true;
   }
   return false;
