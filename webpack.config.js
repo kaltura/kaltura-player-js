@@ -28,6 +28,9 @@ module.exports = {
       use: [
         "source-map-loader"
       ],
+      exclude: [
+        /node_modules/
+      ],
       enforce: "pre"
     }, {
       test: /\.css$/,
@@ -38,7 +41,9 @@ module.exports = {
     }]
   },
   devServer: {
-    contentBase: __dirname + "/src"
+    contentBase: __dirname + "/src",
+    host:"192.168.160.108",
+    port:"3000"
   },
   resolve: {
     alias: {
