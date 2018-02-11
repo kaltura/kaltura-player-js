@@ -25,5 +25,15 @@
   "ima": {
     "playerVersion": "{{pVersion}}",
     "playerName": "{{pName}}"
+  },
+  "kava": {
+    "playerVersion": "{{pVersion}}",
+    "playerName": "{{pName}}",
+    "partnerId": "{{partnerId}}",
+    "entryId": "{{entryId}}",
+    "entryType": "{{entryType}}",
+    "sessionId": "{{sessionId}}",
+    "ks": "{{ks}}",
+    "uiConfId": "{{uiConfId}}"
   }
 }

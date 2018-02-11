@@ -7,6 +7,14 @@ import {Utils} from 'playkit-js'
  * @returns {void}
  */
 export function setDefaultAnalyticsPlugin(playerConfig: PKPlayerOptionsObject): void {
+  const kavaPlugin = Utils.Object.getPropertyPath(playerConfig, 'plugins.kava');
+  if (!kavaPlugin) {
+    Utils.Object.mergeDeep(playerConfig, {
+      plugins: {
+        kava: {}
+      }
+    });
+  }
   const kanalyticsPlugin = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics');
   if (!kanalyticsPlugin) {
     Utils.Object.mergeDeep(playerConfig, {
@@ -15,4 +23,5 @@ export function setDefaultAnalyticsPlugin(playerConfig: PKPlayerOptionsObject): 
       }
     });
   }
+  Object.assign(playerConfig.plugins.kanalytics, {hasKanalony: true});
 }
