@@ -31,8 +31,8 @@ export default class KalturaPlayer {
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
-    this._player._loadMediaRequested = true;
     this._logger.debug('loadMedia', mediaInfo);
+    this._player._loadMediaRequested = true;
     setUIErrorOverlayConfig(mediaInfo, this._uiManager);
     return this._provider.getMediaConfig(mediaInfo)
       .then(mediaConfig => {
