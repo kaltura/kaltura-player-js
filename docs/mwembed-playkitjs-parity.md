@@ -12,7 +12,7 @@
 | Multicast   			| Yes, Silverlight  	| No        			|
 | P2P 				   	| Yes, Various Partners | No        			|
 | DRM 				   	| Yes, Kaltura uDRM		| Yes, Kaltura uDRM		|
-| Offline Playback 		| Yes					| Yes					|
+| Offline Playback 		| No					| Yes (Currently in dev)					|
 
 ## Browsers Supported
 
@@ -25,7 +25,7 @@
 | Safari iOS iPhone	| Yes, Native, v9+		| Yes, Native, v9+		|
 | Safari iOS iPad	| Yes, HTML5, v9+		| Yes, HTML5, v9+		|
 | Chrome Android 	| Yes, HTML5, v4.4+		| Yes, HTML5, v4.4+		|
-| IE 11 			| Yes, HTML5, Win10		| Yes, HTML5, Win10		|
+| IE 11 			| Yes, HTML5, Win8.1+		| Yes, HTML5, Win8.1+		|
 | IE 9,10	  		| Yes, Flash, Win7+		| No 					|
 
 ## Tracks 
@@ -64,10 +64,8 @@
 | Time Display			 			| Yes					| Yes 					|
 | 10 Seconds Rewind					| Yes					| Yes 					|
 | Volume Control					| Yes					| Yes 					|
-| 10 Seconds Rewind					| Yes					| Yes 					|
 | Replay							| Yes					| Yes 					|
-| Mobile Skin						| Yes					| Yes 					|
-| Watermark 						| Yes					| Yes					|
+| Watermark 						| Yes					| No, in roadmap					|
 | Mobile Skin						| Yes					| Yes 					|
 | i18n UI Translations 				| Yes					| No, in roadmap		|
 | Player.js / Embedly				| Yes					| No, in roadmap 		|
@@ -76,7 +74,6 @@
 | Titlebar							| Yes					| No, in roadmap 		|
 | Playlist							| Yes					| No, in roadmap 		|
 | End of Playback Screen / Related	| Yes					| No, in roadmap 		|
-| 10 Seconds Rewind					| Yes					| No, in roadmap 		|
 | Info Screen 						| Yes					| No 			 		|
 
 ## Accessability - CVAA and ADA
