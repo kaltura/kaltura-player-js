@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>Offline Demo</title>
+  <link rel="stylesheet" type="text/css" href="./style.css"/>
+  <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
+</head>
+<body>
+<section class="downloadSection">
+  <div id="downloadBtn" class="btn">Download
+    <div id="downloadBtnLoader" class="loader hide">Loading...</div>
+  </div>
+  <div id="pauseBtn" class="btn">Pause</div>
+  <div id="resumeBtn" class="btn">Resume</div>
+  <div id="loadPlayerBtn" class="btn">Load player</div>
+  <div id="progress"></div>
+</section>
+<section class="playerCont"><div id="player-placeholder"></div></section>
+<script>
+  var config = {
+    targetId: 'player-placeholder',
+    provider: {
+      partnerId: 1091,
+      env: {
+        cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
+        serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+      }
+    },
+    player: {
+      playback: {
+        "preload": "none", // "auto"/"none"
+        "autoplay": false, // false/true
+        "muted": false, // false/true
+        "playsinline": true,
+        "allowMutedAutoPlay":true, // if autoPlay blocked by browser the video started muted
+        "streamPriority": [
+          {
+            "engine": "html5",
+            "format": "dash"
+          }
+        ]
+      }
+    }
+  };
+
+  try {
+
+    // if ('serviceWorker' in navigator) {
+    //   navigator.serviceWorker.register('sw.js');
+    // }
+
+    var dManager = new KalturaPlayer.offlineManager.OfflineManager(config);
+  } catch (e) {
+    console.error(e.message)
+  }
+
+  document.getElementById("loadPlayerBtn").addEventListener("click",()=>{
+    var kalturaPlayer = KalturaPlayer.setup(config);
+    kalturaPlayer.loadMedia({entryId: '0_wu32qrt3'});
+  });
+
+  document.getElementById("downloadBtn").addEventListener("click",()=>{
+    dManager.getMediaInfo({entryId: '0_wu32qrt3'})
+      .then(res => {
+        dManager.download('0_wu32qrt3');
+      });
+  });
+
+  document.getElementById("resumeBtn").addEventListener("click",()=>{
+    dManager.resume('0_wu32qrt3');
+  });
+
+  document.getElementById("pauseBtn").addEventListener("click",()=>{
+    dManager.pause('0_wu32qrt3');
+  });
+
+  // document.getElementById("downloadBtn2").addEventListener("click",()=>{
+  //   dManager.getMediaInfo({entryId: '0_wu32qrt3'})
+  //     .then(res => {
+  //       dManager.download(res.entryData.url,res.entryData);
+  //     });
+  // });
+  //
+  // document.getElementById("resumeBtn2").addEventListener("click",()=>{
+  //   dManager.resume('0_wu32qrt3_911,mpegdash');
+  // });
+  //
+  // document.getElementById("pauseBtn2").addEventListener("click",()=>{
+  //   dManager.pause('0_wu32qrt3_911,mpegdash');
+  // });
+
+
+</script>
+</body>
+</html>

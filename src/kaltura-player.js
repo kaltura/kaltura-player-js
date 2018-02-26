@@ -4,6 +4,7 @@ import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
+import {OfflineManager} from 'playkit-js-offline-manager'
 import {
   addKalturaPoster,
   setUISeekbarConfig,
@@ -18,6 +19,7 @@ export default class KalturaPlayer {
   _provider: Provider;
   _uiManager: UIManager;
   _logger: any;
+  _offlineManager: any;
 
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options.player);
@@ -27,24 +29,36 @@ export default class KalturaPlayer {
     this._provider = new Provider(options.provider, __VERSION__);
     this._uiManager.buildDefaultUI();
     Object.assign(this._player, {loadMedia: (mediaInfo) => this.loadMedia(mediaInfo)});
+    this._offlineManager = new OfflineManager(this._player,options);
     return this._player;
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
-    this._logger.debug('loadMedia', mediaInfo);
-    setUIErrorOverlayConfig(mediaInfo, this._uiManager);
-    return this._provider.getMediaConfig(mediaInfo)
-      .then(mediaConfig => {
-        const dimensions = this._player.dimensions;
-        setUISeekbarConfig(mediaConfig, this._uiManager);
-        addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
-        addKalturaParams(mediaConfig.sources, this._player);
-        Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
-        Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
-        evaluatePluginsConfig(mediaConfig);
-        this._player.configure(mediaConfig);
-      }).catch(e => {
-        this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
-      });
+    if (!navigator.onLine){
+      let mediaConfig = JSON.parse(localStorage.getItem("video"));
+      const dimensions = this._player.dimensions;
+      setUISeekbarConfig(mediaConfig, this._uiManager);
+      addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
+      Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
+      Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
+      evaluatePluginsConfig(mediaConfig);
+      this._player.configure(mediaConfig);
+    }else{
+      this._logger.debug('loadMedia', mediaInfo);
+      setUIErrorOverlayConfig(mediaInfo, this._uiManager);
+      return this._provider.getMediaConfig(mediaInfo)
+        .then(mediaConfig => {
+          const dimensions = this._player.dimensions;
+          setUISeekbarConfig(mediaConfig, this._uiManager);
+          addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
+          addKalturaParams(mediaConfig.sources, this._player);
+          Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
+          Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
+          evaluatePluginsConfig(mediaConfig);
+          this._player.configure(mediaConfig);
+        }).catch(e => {
+          this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
+        });
+    }
   }
 }

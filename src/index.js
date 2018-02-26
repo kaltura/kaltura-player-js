@@ -36,6 +36,9 @@ import 'playkit-js-ima'
 // Import analytics plugin
 import 'playkit-js-analytics'
 
+// Import offline plugin
+import * as offlineManager from 'playkit-js-offline-manager'
+
 // Import setup method
 import {setup} from './setup'
 
@@ -44,6 +47,7 @@ export {
   ui,
   providers,
   setup,
+  offlineManager,
   __PLAYER_TYPE__ as PLAYER_TYPE,
   __VERSION__ as VERSION,
   __NAME__ as PLAYER_NAME
