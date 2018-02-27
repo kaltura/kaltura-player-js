@@ -22,7 +22,7 @@
   var config = {
     targetId: 'player-placeholder',
     provider: {
-      partnerId: 1091,
+      partnerId: 4171,
       env: {
         cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
@@ -47,9 +47,9 @@
 
   try {
 
-    // if ('serviceWorker' in navigator) {
-    //   navigator.serviceWorker.register('sw.js');
-    // }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
 
     var dManager = new KalturaPlayer.offlineManager.OfflineManager(config);
   } catch (e) {
@@ -58,23 +58,27 @@
 
   document.getElementById("loadPlayerBtn").addEventListener("click",()=>{
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_wu32qrt3'});
+    kalturaPlayer.loadMedia({entryId: '0_2jiaa9tb'});
   });
 
   document.getElementById("downloadBtn").addEventListener("click",()=>{
-    dManager.getMediaInfo({entryId: '0_wu32qrt3'})
+    dManager.getMediaInfo({entryId: '0_2jiaa9tb'})
       .then(res => {
-        dManager.download('0_wu32qrt3');
+        dManager.download('0_2jiaa9tb');
       });
   });
 
   document.getElementById("resumeBtn").addEventListener("click",()=>{
-    dManager.resume('0_wu32qrt3');
+    dManager.resume('0_2jiaa9tb');
   });
 
   document.getElementById("pauseBtn").addEventListener("click",()=>{
-    dManager.pause('0_wu32qrt3');
+    dManager.pause('0_2jiaa9tb');
   });
+
+  window.addEventListener("progress", event => {
+    console.info("entry: ", event.detail.entryId ,"progress", event.detail.progress);
+  })
 
   // document.getElementById("downloadBtn2").addEventListener("click",()=>{
   //   dManager.getMediaInfo({entryId: '0_wu32qrt3'})

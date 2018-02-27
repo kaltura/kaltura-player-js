@@ -19,7 +19,7 @@ export default class KalturaPlayer {
   _provider: Provider;
   _uiManager: UIManager;
   _logger: any;
-  _offlineManager: any;
+  _offlineManager: OfflineManager;
 
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options.player);
@@ -29,36 +29,37 @@ export default class KalturaPlayer {
     this._provider = new Provider(options.provider, __VERSION__);
     this._uiManager.buildDefaultUI();
     Object.assign(this._player, {loadMedia: (mediaInfo) => this.loadMedia(mediaInfo)});
-    this._offlineManager = new OfflineManager(this._player,options);
+    this._offlineManager = new OfflineManager(options);
     return this._player;
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
-    if (!navigator.onLine){
-      let mediaConfig = JSON.parse(localStorage.getItem("video"));
-      const dimensions = this._player.dimensions;
-      setUISeekbarConfig(mediaConfig, this._uiManager);
-      addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
-      Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
-      Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
-      evaluatePluginsConfig(mediaConfig);
-      this._player.configure(mediaConfig);
-    }else{
-      this._logger.debug('loadMedia', mediaInfo);
-      setUIErrorOverlayConfig(mediaInfo, this._uiManager);
-      return this._provider.getMediaConfig(mediaInfo)
-        .then(mediaConfig => {
-          const dimensions = this._player.dimensions;
-          setUISeekbarConfig(mediaConfig, this._uiManager);
-          addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
+    this._logger.debug('loadMedia', mediaInfo);
+    setUIErrorOverlayConfig(mediaInfo, this._uiManager);
+    return navigator.onLine
+      ? this._provider.getMediaConfig(mediaInfo)
+      : this._offlineManager.getMediaInfoFromDB(mediaInfo.entryId)
+      .then(mediaConfig => {
+        const dimensions = this._player.dimensions;
+        setUISeekbarConfig(mediaConfig, this._uiManager);
+        addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
+        if (navigator.onLine){
           addKalturaParams(mediaConfig.sources, this._player);
-          Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
-          Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
-          evaluatePluginsConfig(mediaConfig);
-          this._player.configure(mediaConfig);
-        }).catch(e => {
-          this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
-        });
-    }
+        }
+        Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
+        Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
+        evaluatePluginsConfig(mediaConfig);
+        this._player.configure(mediaConfig);
+      }).catch(e => {
+        this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
+      });
+  }
+
+  /**
+   *
+   * @returns {Object} returns the OfflineManager instance
+   */
+  get offlineManager(): Object{
+    return OfflineManager;
   }
 }
