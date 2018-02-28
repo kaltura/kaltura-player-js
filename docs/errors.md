@@ -63,6 +63,6 @@ Use the debug mode in the player to view explicit error messages in the console.
 
 Here's an example of an error message that can be observed in the console:
 
-    [Error] Player error NETWORK.HTTP_ERROR 'url':'www.some-bad-url.com'
+    [Error] Category:1 | Code:1002 | 'Http Error'
 
 
