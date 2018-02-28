@@ -33,7 +33,7 @@ function shouldUseExternalStreamRedirect(): boolean {
   const affectedBrowsers = ['IE', 'Edge'];
   const affectedVendors = ['panasonic'];
   return (affectedBrowsers.includes(Env.browser.name) ||
-    (Env.device.vendor && affectedVendors.includes(Env.device.vendor)));
+    (Env.device && affectedVendors.includes(Env.device.vendor)));
 }
 
 /**
