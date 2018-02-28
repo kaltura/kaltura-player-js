@@ -16,8 +16,9 @@ function getDirectManfiestUri(data: Object, uri: string): string {
   // if the json contains one url, it means it is a redirect url. if it contains few urls, it means its the flavours
   //so we should use the original url.
   const uriHost = getHostName(uri);
-  const flavorUriHost = getHostName(data.flavors[0].url);
-  if (data.flavors && data.flavors.length === 1 && uriHost !== flavorUriHost) {
+  const hasOneFlavor = data && data.flavors && (data.flavors.length === 1);
+  const flavorUriHost = hasOneFlavor && getHostName(data.flavors[0].url);
+  if (hasOneFlavor && (uriHost !== flavorUriHost)) {
     return data.flavors[0].url;
   } else {
     return uri;
