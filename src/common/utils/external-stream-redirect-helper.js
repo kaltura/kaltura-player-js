@@ -1,5 +1,5 @@
 // @flow
-import {Env} from 'playkit-js'
+import {Env, Utils} from 'playkit-js'
 
 /**
  * jsonp callback function, returns the direct manifest uri
@@ -42,12 +42,23 @@ function shouldUseExternalStreamRedirect(): boolean {
  * @returns {void}
  */
 function configureExternalStreamRedirect(config: Object): void {
-  config.playback.options = config.playback.options || {};
-  let adapters = config.playback.options.adapters = config.playback.options.adapters || {};
-  if (typeof adapters.forceRedirectExternalStreams !== "boolean") {
-    config.playback.options.adapters.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
+
+  let sourceOptions = Utils.Object.getPropertyPath(config, 'sources.options');
+  if (!sourceOptions) {
+    Utils.Object.mergeDeep(config, {
+      sources: {
+        options: {}
+      }
+    });
+    sourceOptions = config.sources.options;
   }
-  config.playback.options.adapters.redirectExternalStreamsCallback = getDirectManfiestUri;
+
+  if (typeof sourceOptions.forceRedirectExternalStreams !== "boolean") {
+    sourceOptions.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
+  }
+  if (typeof sourceOptions.redirectExternalStreamsCallback !== "function") {
+    sourceOptions.redirectExternalStreamsCallback = getDirectManfiestUri;
+  }
 }
 
 export {configureExternalStreamRedirect}
