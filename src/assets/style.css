@@ -60,6 +60,30 @@ body{
   background: green;
 }
 
+.selectTracks{
+  width: 150px;
+  height: 30px;
+  margin-top: 20px;
+}
+
+.selectTracksBtn{
+  width: 70px;
+  height: 30px;
+  margin-top: 20px;
+  display: block;
+}
+
+
+.bitrateSelectionInput{
+  margin-top:10px;
+  width: 200px;
+}
+
+.bitrateSelectionLabel{
+  position: relative;
+  text-align: left;
+  margin-top: 10px;
+}
 
 .loader,
 .loader:before,

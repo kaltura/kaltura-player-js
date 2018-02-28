@@ -9,23 +9,29 @@
 </head>
 <body>
 <section class="downloadSection">
-  <div id="downloadBtn" class="btn">Download
-    <div id="downloadBtnLoader" class="loader hide">Loading...</div>
+  <div class="container">
+    <div id="downloadBtn" class="btn">Download
+      <div id="downloadBtnLoader" class="loader hide">Loading...</div>
+    </div>
+    <div class="bitrateSelectionLabel">Bitrate to download:</div>
+    <input id="bitrateSelection1" class="bitrateSelectionInput"/>
   </div>
   <div id="pauseBtn" class="btn">Pause</div>
   <div id="resumeBtn" class="btn">Resume</div>
   <div id="loadPlayerBtn" class="btn">Load player</div>
   <div id="progress"></div>
+
 </section>
-<section class="playerCont"><div id="player-placeholder"></div></section>
+<section class="playerCont"><div id="drm-placeholder"></div></section>
+<section class="playerCont"><div id="drm2-placeholder"></div></section>
 <script>
-  var config = {
-    targetId: 'player-placeholder',
+  var drmConfig = {
+    targetId: 'drm-placeholder',
     provider: {
-      partnerId: 4171,
+      partnerId: 2222401,
       env: {
-        cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
-        serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+        cdnUrl: "http://cdnapisec.kaltura.com/",
+        serviceUrl: "http://cdnapisec.kaltura.com/api_v3"
       }
     },
     player: {
@@ -45,55 +51,132 @@
     }
   };
 
+  var drmConfig2 = {
+    targetId: 'drm2-placeholder',
+    provider: {
+      partnerId: 2222401,
+      env: {
+        cdnUrl: "http://cdnapisec.kaltura.com/",
+        serviceUrl: "http://cdnapisec.kaltura.com/api_v3"
+      }
+    },
+    player: {
+      playback: {
+        "preload": "none", // "auto"/"none"
+        "autoplay": false, // false/true
+        "muted": false, // false/true
+        "playsinline": true,
+        "allowMutedAutoPlay":true, // if autoPlay blocked by browser the video started muted
+        "streamPriority": [
+          {
+            "engine": "html5",
+            "format": "dash"
+          }
+        ]
+      }
+    }
+  };
+
+  var drmEntry = {
+    entryId: '1_f93tepsn',
+    config: drmConfig
+  }
+
+
+  var drmEntry2 = {
+    entryId: '1_f93tepsn',
+    config: drmConfig2
+  }
+
+
   try {
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');
     }
 
-    var dManager = new KalturaPlayer.offlineManager.OfflineManager(config);
+    var dManager = new KalturaPlayer.offlineManager.OfflineManager(drmConfig);
   } catch (e) {
     console.error(e.message)
   }
 
   document.getElementById("loadPlayerBtn").addEventListener("click",()=>{
-    var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_2jiaa9tb'});
+    var kalturaPlayer = KalturaPlayer.setup(drmEntry.config);
+    kalturaPlayer.loadMedia({entryId: drmEntry.entryId});
   });
 
   document.getElementById("downloadBtn").addEventListener("click",()=>{
-    dManager.getMediaInfo({entryId: '0_2jiaa9tb'})
+    dManager.getMediaInfo({entryId: drmEntry.entryId})
       .then(res => {
-        dManager.download('0_2jiaa9tb');
+        let options = {
+          trackSelectionCallback: trackSelectionCallback()
+        }
+        dManager.download(drmEntry.entryId, options);
       });
   });
 
   document.getElementById("resumeBtn").addEventListener("click",()=>{
-    dManager.resume('0_2jiaa9tb');
+    dManager.resume(drmEntry.entryId);
   });
 
   document.getElementById("pauseBtn").addEventListener("click",()=>{
-    dManager.pause('0_2jiaa9tb');
+    dManager.pause(drmEntry.entryId);
   });
 
   window.addEventListener("progress", event => {
     console.info("entry: ", event.detail.entryId ,"progress", event.detail.progress);
-  })
+  });
 
-  // document.getElementById("downloadBtn2").addEventListener("click",()=>{
-  //   dManager.getMediaInfo({entryId: '0_wu32qrt3'})
-  //     .then(res => {
-  //       dManager.download(res.entryData.url,res.entryData);
-  //     });
-  // });
-  //
-  // document.getElementById("resumeBtn2").addEventListener("click",()=>{
-  //   dManager.resume('0_wu32qrt3_911,mpegdash');
-  // });
-  //
-  // document.getElementById("pauseBtn2").addEventListener("click",()=>{
-  //   dManager.pause('0_wu32qrt3_911,mpegdash');
-  // });
+
+
+  var createDropDown = tracks => {
+
+
+    var myDiv = document.getElementById("tracksSelection");
+
+    //Create and append select list
+    var selectList = document.createElement("select");
+    selectList.setAttribute("id", "selectTracks");
+    selectList.setAttribute("class", "selectTracks");
+    myDiv.appendChild(selectList);
+
+    //Create and append the options
+    for (var i = 0; i < tracks.length; i++) {
+      var option = document.createElement("option");
+      option.setAttribute("value", tracks[i].id);
+      option.text = "language: " +tracks[i].language + ",bandwidth: "+tracks[i].bandwidth;
+      selectList.appendChild(option);
+    }
+    var selectBtn = document.createElement("button");
+    selectBtn.setAttribute("id", "selectTracksBtn");
+    selectBtn.setAttribute("class", "selectTracksBtn");
+    selectBtn.innerHTML = "download Tracks";
+    myDiv.appendChild(selectBtn);
+    selectBtn.addEventListener("click", function(){
+      console.info("selected Track", selectList.options[selectList.selectedIndex].text)
+    })
+  };
+
+
+  var bitrateSelectionCallback = tracks => {
+    let input = document.getElementById("bitrateSelection1");
+    let goal = input.value;
+    let closest = tracks.reduce(function(prev, curr) {
+      return (Math.abs(curr.bandwidth - goal) < Math.abs(prev.bandwidth - goal) ? curr : prev);
+    });
+    return [closest];
+  };
+
+
+  var trackSelectionCallback = () => {
+    let input = document.getElementById("bitrateSelection1");
+    if (!input.value){
+      return null; // use shaka's default
+    }
+    return bitrateSelectionCallback;
+  };
+
+
 
 
 </script>
