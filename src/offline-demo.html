@@ -128,36 +128,6 @@
   });
 
 
-
-  var createDropDown = tracks => {
-
-
-    var myDiv = document.getElementById("tracksSelection");
-
-    //Create and append select list
-    var selectList = document.createElement("select");
-    selectList.setAttribute("id", "selectTracks");
-    selectList.setAttribute("class", "selectTracks");
-    myDiv.appendChild(selectList);
-
-    //Create and append the options
-    for (var i = 0; i < tracks.length; i++) {
-      var option = document.createElement("option");
-      option.setAttribute("value", tracks[i].id);
-      option.text = "language: " +tracks[i].language + ",bandwidth: "+tracks[i].bandwidth;
-      selectList.appendChild(option);
-    }
-    var selectBtn = document.createElement("button");
-    selectBtn.setAttribute("id", "selectTracksBtn");
-    selectBtn.setAttribute("class", "selectTracksBtn");
-    selectBtn.innerHTML = "download Tracks";
-    myDiv.appendChild(selectBtn);
-    selectBtn.addEventListener("click", function(){
-      console.info("selected Track", selectList.options[selectList.selectedIndex].text)
-    })
-  };
-
-
   var bitrateSelectionCallback = tracks => {
     let input = document.getElementById("bitrateSelection1");
     let goal = input.value;
