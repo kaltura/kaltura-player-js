@@ -44,8 +44,8 @@ function shouldUseExternalStreamRedirect(): boolean {
 function configureExternalStreamRedirect(config: Object): void {
   config.playback.options = config.playback.options || {};
   let adapters = config.playback.options.adapters = config.playback.options.adapters || {};
-  if (typeof adapters.forceRedirectForExternalStreams !== "boolean") {
-    config.playback.options.adapters.forceRedirectForExternalStreams = shouldUseExternalStreamRedirect();
+  if (typeof adapters.forceRedirectExternalStreams !== "boolean") {
+    config.playback.options.adapters.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
   }
   config.playback.options.adapters.redirectExternalStreamsCallback = getDirectManfiestUri;
 }
