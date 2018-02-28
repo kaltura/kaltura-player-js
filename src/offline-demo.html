@@ -22,10 +22,10 @@
   var config = {
     targetId: 'player-placeholder',
     provider: {
-      partnerId: 4171,
+      partnerId: 2222401,
       env: {
-        cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
-        serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+        cdnUrl: "http://cdnapi.kaltura.com/",
+        serviceUrl: "http://cdnapi.kaltura.com/api_v3"
       }
     },
     player: {
@@ -58,22 +58,22 @@
 
   document.getElementById("loadPlayerBtn").addEventListener("click",()=>{
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_2jiaa9tb'});
+    kalturaPlayer.loadMedia({entryId: '1_f93tepsn'});
   });
 
   document.getElementById("downloadBtn").addEventListener("click",()=>{
-    dManager.getMediaInfo({entryId: '0_2jiaa9tb'})
+    dManager.getMediaInfo({entryId: '1_f93tepsn'})
       .then(res => {
-        dManager.download('0_2jiaa9tb');
+        dManager.download('1_f93tepsn');
       });
   });
 
   document.getElementById("resumeBtn").addEventListener("click",()=>{
-    dManager.resume('0_2jiaa9tb');
+    dManager.resume('1_f93tepsn');
   });
 
   document.getElementById("pauseBtn").addEventListener("click",()=>{
-    dManager.pause('0_2jiaa9tb');
+    dManager.pause('1_f93tepsn');
   });
 
   window.addEventListener("progress", event => {

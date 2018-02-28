@@ -36,9 +36,9 @@ export default class KalturaPlayer {
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
     setUIErrorOverlayConfig(mediaInfo, this._uiManager);
-    return navigator.onLine
+    return (navigator.onLine
       ? this._provider.getMediaConfig(mediaInfo)
-      : this._offlineManager.getMediaInfoFromDB(mediaInfo.entryId)
+      : this._offlineManager.getMediaInfoFromDB(mediaInfo.entryId))
       .then(mediaConfig => {
         const dimensions = this._player.dimensions;
         setUISeekbarConfig(mediaConfig, this._uiManager);
