@@ -26,16 +26,13 @@ function getDirectManfiestUri(data: Object, uri: string): string {
 
 /**
  * returns if we should use our jsonp http plugin
- * @param {Object} config - configuration relevant to jsonp
- * @returns {boolean} should or not use jsonp requests on manifests
+ * @returns {boolean} should use external stream requests redirect on manifests
  */
-function shouldUseJsonp(config: Object): boolean {
+function shouldUseExternalStreamRedirect(): boolean {
   const affectedBrowsers = ['IE', 'Edge'];
   const affectedVendors = ['panasonic'];
-  if ((config && config.forceRedirectForExternalStreams) || affectedBrowsers.includes(Env.browser.name) || (Env.device.vendor && affectedVendors.includes(Env.device.vendor))) {
-    return true;
-  }
-  return false;
+  return (affectedBrowsers.includes(Env.browser.name) ||
+    (Env.device.vendor && affectedVendors.includes(Env.device.vendor)));
 }
 
 /**
