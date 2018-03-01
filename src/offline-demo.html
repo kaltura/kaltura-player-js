@@ -19,6 +19,7 @@
   <div id="pauseBtn" class="btn">Pause</div>
   <div id="resumeBtn" class="btn">Resume</div>
   <div id="loadPlayerBtn" class="btn">Load player</div>
+  <div id="removeBtn" class="btn">Delete</div>
   <div id="progress"></div>
 
 </section>
@@ -95,7 +96,7 @@
       navigator.serviceWorker.register('sw.js');
     }
 
-    var dManager = new KalturaPlayer.offlineManager.OfflineManager(drmConfig);
+    var dManager = new KalturaPlayer.OfflineManager(drmConfig);
   } catch (e) {
     console.error(e.message)
   }
@@ -121,6 +122,10 @@
 
   document.getElementById("pauseBtn").addEventListener("click",()=>{
     dManager.pause(drmEntry.entryId);
+  });
+
+  document.getElementById("removeBtn").addEventListener("click",()=>{
+    dManager.remove(drmEntry.entryId);
   });
 
   window.addEventListener("progress", event => {
