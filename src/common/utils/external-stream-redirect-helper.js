@@ -14,7 +14,7 @@ function getDirectManfiestUri(data: Object, uri: string): string {
     return parser.hostname
   };
   // if the json contains one url, it means it is a redirect url. if it contains few urls, it means its the flavours
-  //so we should use the original url.
+  // so we should use the original url.
   const uriHost = getHostName(uri);
   const hasOneFlavor = data && data.flavors && (data.flavors.length === 1);
   const flavorUriHost = hasOneFlavor && getHostName(data.flavors[0].url);
@@ -42,7 +42,6 @@ function shouldUseExternalStreamRedirect(): boolean {
  * @returns {void}
  */
 function configureExternalStreamRedirect(config: Object): void {
-
   let sourceOptions = Utils.Object.getPropertyPath(config, 'sources.options');
   if (!sourceOptions) {
     Utils.Object.mergeDeep(config, {
@@ -61,4 +60,4 @@ function configureExternalStreamRedirect(config: Object): void {
   }
 }
 
-export {configureExternalStreamRedirect}
+export {configureExternalStreamRedirect};
