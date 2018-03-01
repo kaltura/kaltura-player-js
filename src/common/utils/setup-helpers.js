@@ -67,19 +67,6 @@ function createKalturaPlayerContainer(targetId: string): string {
 }
 
 /**
- * Add poster with player dimensions to thumbnail API call
- * @param {Object} metadata - metadata container
- * @param {number} width - player width in px
- * @param {number} height - player height in px
- * @returns {void}
- */
-function addKalturaPoster(metadata: Object, width: number, height: number): void {
-  if (metadata.poster) {
-    metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
-  }
-}
-
-/**
  * Sets the storage config on the player config if certain conditions are met.
  * @param {KalturaPlayerOptionsObject} options - kaltura player options
  * @returns {void}
@@ -312,7 +299,6 @@ export {
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
-  addKalturaPoster,
   validateConfig,
   setLogLevel,
   createKalturaPlayerContainer,
