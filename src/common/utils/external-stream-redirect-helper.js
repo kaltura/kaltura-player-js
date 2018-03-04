@@ -50,7 +50,6 @@ function configureExternalStreamRedirect(config: Object): void {
     });
     sourceOptions = config.sources.options;
   }
-
   if (typeof sourceOptions.forceRedirectExternalStreams !== "boolean") {
     sourceOptions.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
   }
