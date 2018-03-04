@@ -2,32 +2,31 @@
 import {Env} from 'playkit-js'
 
 /**
- * jsonp callback function, returns the direct manifest uri
- * @param {Object} data - the json object that returns from the server
- * @param {string} uri - original request uri
- * @returns {string} returns the direct uri
+ * JSONP callback function, returns the direct manifest uri.
+ * @param {Object} data - The json object that returns from the server.
+ * @param {string} uri - Original request uri.
+ * @returns {string} - The direct uri.
  */
-function getDirectManfiestUri(data: Object, uri: string): string {
+function getDirectManifestUri(data: Object, uri: string): string {
   const getHostName = uri => {
     const parser = document.createElement('a');
     parser.href = uri;
     return parser.hostname
   };
   // if the json contains one url, it means it is a redirect url. if it contains few urls, it means its the flavours
-  //so we should use the original url.
+  // so we should use the original url.
   const uriHost = getHostName(uri);
   const hasOneFlavor = data && data.flavors && (data.flavors.length === 1);
   const flavorUriHost = hasOneFlavor && getHostName(data.flavors[0].url);
   if (hasOneFlavor && (uriHost !== flavorUriHost)) {
     return data.flavors[0].url;
-  } else {
-    return uri;
   }
+  return uri;
 }
 
 /**
- * returns if we should use our jsonp http plugin
- * @returns {boolean} should use external stream requests redirect on manifests
+ * Whether we should use our JSONP http plugin.
+ * @returns {boolean} - Should use external stream requests redirect on manifests.
  */
 function shouldUseExternalStreamRedirect(): boolean {
   const affectedBrowsers = ['IE', 'Edge'];
@@ -37,8 +36,8 @@ function shouldUseExternalStreamRedirect(): boolean {
 }
 
 /**
- * add jsonp configuration to the general config
- * @param {Object} config - configuration relevant to jsonp
+ * Add JSONP configuration to the general config.
+ * @param {Object} config - Configuration relevant to JSONP.
  * @returns {void}
  */
 function configureExternalStreamRedirect(config: Object): void {
@@ -47,7 +46,7 @@ function configureExternalStreamRedirect(config: Object): void {
   if (typeof adapters.forceRedirectExternalStreams !== "boolean") {
     config.playback.options.adapters.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
   }
-  config.playback.options.adapters.redirectExternalStreamsCallback = getDirectManfiestUri;
+  config.playback.options.adapters.redirectExternalStreamsCallback = getDirectManifestUri;
 }
 
 export {configureExternalStreamRedirect}
