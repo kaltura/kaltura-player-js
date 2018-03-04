@@ -1,5 +1,5 @@
 // @flow
-import {Env} from 'playkit-js'
+import {Env, Utils} from 'playkit-js'
 
 /**
  * JSONP callback function, returns the direct manifest uri.
@@ -32,7 +32,7 @@ function shouldUseExternalStreamRedirect(): boolean {
   const affectedBrowsers = ['IE', 'Edge'];
   const affectedVendors = ['panasonic'];
   return (affectedBrowsers.includes(Env.browser.name) ||
-    (Env.device.vendor && affectedVendors.includes(Env.device.vendor)));
+    (Env.device && affectedVendors.includes(Env.device.vendor)));
 }
 
 /**
@@ -41,12 +41,22 @@ function shouldUseExternalStreamRedirect(): boolean {
  * @returns {void}
  */
 function configureExternalStreamRedirect(config: Object): void {
-  config.playback.options = config.playback.options || {};
-  let adapters = config.playback.options.adapters = config.playback.options.adapters || {};
-  if (typeof adapters.forceRedirectExternalStreams !== "boolean") {
-    config.playback.options.adapters.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
+  let sourceOptions = Utils.Object.getPropertyPath(config, 'sources.options');
+  if (!sourceOptions) {
+    Utils.Object.mergeDeep(config, {
+      sources: {
+        options: {}
+      }
+    });
+    sourceOptions = config.sources.options;
   }
-  config.playback.options.adapters.redirectExternalStreamsCallback = getDirectManifestUri;
+
+  if (typeof sourceOptions.forceRedirectExternalStreams !== "boolean") {
+    sourceOptions.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
+  }
+  if (typeof sourceOptions.redirectExternalStreamsCallback !== "function") {
+    sourceOptions.redirectExternalStreamsCallback = getDirectManifestUri;
+  }
 }
 
-export {configureExternalStreamRedirect}
+export {configureExternalStreamRedirect};
