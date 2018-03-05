@@ -4,7 +4,7 @@ import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
-import OfflineManager from 'playkit-js-offline-manager'
+import {OfflineManager} from 'playkit-js-offline-manager'
 import {
   addKalturaPoster,
   setUISeekbarConfig,
