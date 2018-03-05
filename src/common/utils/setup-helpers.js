@@ -177,18 +177,6 @@ function setUISeekbarConfig(data: Object, uiManager: UIManager): void {
 }
 
 /**
- * Sets the shell component whether to force touch ui.
- * @param {boolean} isTouch - If is touch.
- * @param {UIManager} uiManager - The ui manager.
- * @returns {void}
- */
-function setUITouchConfig(isTouch: ?boolean, uiManager: UIManager): void {
-  uiManager.setConfig({
-    forceTouchUI: !!isTouch
-  }, "shell");
-}
-
-/**
  * Sets the media info on error component to the "retry" functionality.
  * @param {ProviderMediaInfoObject} mediaInfo - The media info.
  * @param {UIManager} uiManager - The ui manager.
@@ -197,7 +185,7 @@ function setUITouchConfig(isTouch: ?boolean, uiManager: UIManager): void {
 function setUIErrorOverlayConfig(mediaInfo: ProviderMediaInfoObject, uiManager: UIManager): void {
   uiManager.setConfig({
     mediaInfo: mediaInfo
-  }, "errorOverlay");
+  }, "error");
 }
 
 /**
@@ -321,7 +309,6 @@ export {
   checkNativeHlsSupport,
   getDefaultOptions,
   setUISeekbarConfig,
-  setUITouchConfig,
   setUIErrorOverlayConfig,
   isSafari,
   isIos

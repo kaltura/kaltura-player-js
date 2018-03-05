@@ -23,7 +23,6 @@ export default class KalturaPlayer {
     this._player = loadPlayer(options.player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiManager = new UIManager(this._player, options.ui);
-    setUITouchConfig(options.ui.forceTouchUI, this._uiManager);
     this._provider = new Provider(options.provider, __VERSION__);
     this._uiManager.buildDefaultUI();
     Object.assign(this._player, {loadMedia: (mediaInfo) => this.loadMedia(mediaInfo)});
