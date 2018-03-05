@@ -7,7 +7,6 @@ import {addKalturaParams} from './common/utils/kaltura-params'
 import {
   addKalturaPoster,
   setUISeekbarConfig,
-  setUITouchConfig,
   setUIErrorOverlayConfig
 } from './common/utils/setup-helpers'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
