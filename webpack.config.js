@@ -28,6 +28,9 @@ module.exports = {
       use: [
         "source-map-loader"
       ],
+      exclude: [
+        /node_modules/
+      ],
       enforce: "pre"
     }, {
       test: /\.css$/,
