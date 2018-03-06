@@ -53,8 +53,8 @@ function configureExternalStreamRedirect(config: Object): void {
   if (typeof sourceOptions.forceRedirectExternalStreams !== "boolean") {
     sourceOptions.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
   }
-  if (typeof sourceOptions.redirectExternalStreamsCallback !== "function") {
-    sourceOptions.redirectExternalStreamsCallback = getDirectManifestUri;
+  if (typeof sourceOptions.redirectExternalStreamsHandler !== "function") {
+    sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
   }
 }
 
