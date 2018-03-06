@@ -7,6 +7,7 @@ import StorageManager from '../storage/storage-manager'
 import {setLogLevel as _setLogLevel, LogLevel} from './logger'
 import type {LogLevelObject} from './logger'
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './thumbs'
+import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
@@ -239,6 +240,7 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
   checkNativeHlsSupport(defaultOptions.player);
   checkNativeTextTracksSupport(defaultOptions.player);
   setDefaultAnalyticsPlugin(defaultOptions.player);
+  configureExternalStreamRedirect(defaultOptions.player);
   return defaultOptions;
 }
 
