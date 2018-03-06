@@ -5,8 +5,8 @@ import {UIManager} from 'playkit-js-ui'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import {setLogLevel as _setLogLevel, LogLevel} from './logger'
+import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
 import type {LogLevelObject} from './logger'
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './thumbs'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
@@ -149,41 +149,15 @@ function getUrlParameter(name: string) {
 }
 
 /**
- * Sets the preview thumbnail config for the ui seekbar component.
- * @param {Object} data - The provider data.
- * @param {UIManager} uiManager - The ui manager.
- * @returns {void}
- */
-function setUISeekbarConfig(data: Object, uiManager: UIManager): void {
-  uiManager.setConfig({
-    thumbsSprite: getThumbSlicesUrl(data),
-    thumbsWidth: DEFAULT_THUMBS_WIDTH,
-    thumbsSlices: DEFAULT_THUMBS_SLICES
-  }, "seekbar");
-}
-
-/**
- * Sets the shell component whether to force touch ui.
- * @param {boolean} isTouch - If is touch.
- * @param {UIManager} uiManager - The ui manager.
- * @returns {void}
- */
-function setUITouchConfig(isTouch: ?boolean, uiManager: UIManager): void {
-  uiManager.setConfig({
-    forceTouchUI: !!isTouch
-  }, "shell");
-}
-
-/**
  * Sets the media info on error component to the "retry" functionality.
- * @param {ProviderMediaInfoObject} mediaInfo - The media info.
  * @param {UIManager} uiManager - The ui manager.
+ * @param {ProviderMediaInfoObject} mediaInfo - The media info.
  * @returns {void}
  */
-function setUIErrorOverlayConfig(mediaInfo: ProviderMediaInfoObject, uiManager: UIManager): void {
+function setUIErrorOverlayConfig(uiManager: UIManager, mediaInfo: ProviderMediaInfoObject): void {
   uiManager.setConfig({
     mediaInfo: mediaInfo
-  }, "errorOverlay");
+  }, "error");
 }
 
 /**
@@ -238,6 +212,7 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
   checkNativeHlsSupport(defaultOptions.player);
   checkNativeTextTracksSupport(defaultOptions.player);
   setDefaultAnalyticsPlugin(defaultOptions.player);
+  configureExternalStreamRedirect(defaultOptions.player);
   return defaultOptions;
 }
 
@@ -304,8 +279,6 @@ export {
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
-  setUISeekbarConfig,
-  setUITouchConfig,
   setUIErrorOverlayConfig,
   isSafari,
   isIos

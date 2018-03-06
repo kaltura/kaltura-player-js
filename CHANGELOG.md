@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.18.10"></a>
+## [0.18.10](https://github.com/kaltura/kaltura-player-js/compare/v0.18.9...v0.18.10) (2018-03-05)
+
+
+### Bug Fixes
+
+* **uiManager:** support initial forceTouchUI config ([b9e585e](https://github.com/kaltura/kaltura-player-js/commit/b9e585e))
+
+
+
 <a name="0.18.9"></a>
 ## [0.18.9](https://github.com/kaltura/kaltura-player-js/compare/v0.18.8...v0.18.9) (2018-02-28)
 
