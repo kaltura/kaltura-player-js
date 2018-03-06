@@ -2,7 +2,7 @@
 import {Env, Utils} from 'playkit-js'
 
 /**
- * JSONP callback function, returns the direct manifest uri.
+ * JSONP handler function, returns the direct manifest uri.
  * @param {Object} data - The json object that returns from the server.
  * @param {string} uri - Original request uri.
  * @returns {string} - The direct uri.
