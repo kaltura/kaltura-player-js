@@ -4,12 +4,7 @@ import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
-import {
-  addKalturaPoster,
-  setUISeekbarConfig,
-  setUITouchConfig,
-  setUIErrorOverlayConfig
-} from './common/utils/setup-helpers'
+import {addKalturaPoster, setUISeekbarConfig, setUIErrorOverlayConfig} from './common/utils/setup-helpers'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import './assets/style.css'
 
