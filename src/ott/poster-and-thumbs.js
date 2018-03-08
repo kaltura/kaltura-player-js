@@ -26,9 +26,10 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 /**
  * Sets the preview thumbnail config for the ui seekbar component.
  * @param {UIManager} uiManager - The ui manager.
+ * @param {Object} mediaConfig - The provider media config.
  * @returns {void}
  */
-function setUISeekbarConfig(uiManager: UIManager): void {
+function setUISeekbarConfig(uiManager: UIManager, mediaConfig: Object): void {
   let seekbarConfig = Utils.Object.getPropertyPath(uiManager, 'config.components.seekbar');
   if (seekbarConfig) {
     seekbarConfig = Utils.Object.mergeDeep({
@@ -61,7 +62,7 @@ function setPlayerDimensionsOnPoster(poster: string, width: number, height: numb
 }
 
 /**
- * Replace the current dimensions with the player dimensions.
+ * Selects the best fit poster depends on the player dimensions.
  * @param {string} posters - Array of posters candidates.
  * @param {number} width - Player width.
  * @param {height} height - Player height.
