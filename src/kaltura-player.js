@@ -4,7 +4,7 @@ import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
-import {OfflineManager} from 'playkit-js-offline-manager'
+import OfflineManager from 'playkit-js-offline-manager'
 import {
   addKalturaPoster,
   setUISeekbarConfig,
@@ -39,7 +39,7 @@ export default class KalturaPlayer {
     setUIErrorOverlayConfig(mediaInfo, this._uiManager);
     return (navigator.onLine
       ? this._provider.getMediaConfig(mediaInfo)
-      : this._offlineManager.getMediaInfoFromDB(mediaInfo.entryId))
+      : this._offlineManager.getDownloadedMediaInfo(mediaInfo.entryId))
       .then(mediaConfig => {
         const dimensions = this._player.dimensions;
         setUISeekbarConfig(mediaConfig, this._uiManager);
