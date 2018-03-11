@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.18.11"></a>
+## [0.18.11](https://github.com/kaltura/kaltura-player-js/compare/v0.18.10...v0.18.11) (2018-03-08)
+
+
+### Bug Fixes
+
+* **FEC-7815:** Support playManifest redirects for external streams ([#85](https://github.com/kaltura/kaltura-player-js/issues/85)) ([cac2bb6](https://github.com/kaltura/kaltura-player-js/commit/cac2bb6))
+
+
+
 <a name="0.18.10"></a>
 ## [0.18.10](https://github.com/kaltura/kaltura-player-js/compare/v0.18.9...v0.18.10) (2018-03-05)
 
