@@ -13,9 +13,8 @@ import {Utils} from 'playkit-js'
  */
 function addKalturaPoster(metadata: Object, width: number, height: number): void {
   if (typeof metadata.poster === 'string') {
-    const regex = /(width|height)\/\d*\/(height|width)\/\d*/g;
-    const end = metadata.poster.search(regex);
-    if (end > -1) {
+    const regex = /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
+    if (regex.test(metadata.poster)) {
       metadata.poster = setPlayerDimensionsOnPoster(metadata.poster, width, height);
     }
   } else if (Array.isArray(metadata.poster)) {
@@ -26,10 +25,9 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 /**
  * Sets the preview thumbnail config for the ui seekbar component.
  * @param {UIManager} uiManager - The ui manager.
- * @param {Object} mediaConfig - The provider media config.
  * @returns {void}
  */
-function setUISeekbarConfig(uiManager: UIManager, mediaConfig: Object): void {
+function setUISeekbarConfig(uiManager: UIManager): void {
   let seekbarConfig = Utils.Object.getPropertyPath(uiManager, 'config.components.seekbar');
   if (seekbarConfig) {
     seekbarConfig = Utils.Object.mergeDeep({
