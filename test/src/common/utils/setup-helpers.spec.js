@@ -4,7 +4,6 @@ import StorageManager from '../../../../src/common/storage/storage-manager'
 import {
   createKalturaPlayerContainer,
   validateConfig,
-  addKalturaPoster,
   checkNativeHlsSupport,
   isSafari,
   isIos,
@@ -70,14 +69,6 @@ describe('createKalturaPlayerContainer', function () {
     let el = document.getElementById(containerId);
     el.should.exist;
     el.className.should.equal("kaltura-player-container");
-  });
-});
-
-describe('addKalturaPoster', function () {
-  it('should append width and height to kaltura poster', function () {
-    let metadata = {poster: 'https//my/kaltura/poster'};
-    addKalturaPoster(metadata, 640, 360);
-    metadata.poster.should.equal('https//my/kaltura/poster/height/360/width/640');
   });
 });
 
