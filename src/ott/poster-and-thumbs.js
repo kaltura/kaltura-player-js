@@ -47,13 +47,13 @@ function setUISeekbarConfig(uiManager: UIManager): void {
  * @return {string} - The new poster url including the player dimensions.
  */
 function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, playerHeight: number): string {
-  const widthMatch = poster.match(/width\/(\d+)/) && poster.match(/width\/(\d+)/)[1];
-  const heightMatch = poster.match(/height\/(\d+)/) && poster.match(/height\/(\d+)/)[1];
-  if (widthMatch) {
-    poster = poster.replace(widthMatch, playerWidth.toString());
+  const widthMatch = poster.match(/width\/(\d+)/);
+  const heightMatch = poster.match(/height\/(\d+)/);
+  if (Array.isArray(widthMatch)) {
+    poster = poster.replace(widthMatch[1], playerWidth.toString());
   }
-  if (heightMatch) {
-    poster = poster.replace(poster.match(heightMatch, playerHeight.toString());
+  if (Array.isArray(heightMatch)) {
+    poster = poster.replace(heightMatch[1], playerHeight.toString());
   }
   return poster;
 }
