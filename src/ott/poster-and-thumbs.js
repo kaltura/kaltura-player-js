@@ -41,39 +41,31 @@ function setUISeekbarConfig(uiManager: UIManager): void {
 /**
  * Replace the current dimensions with the player dimensions.
  * @param {string} poster - Player url.
- * @param {number} width - Player width.
- * @param {height} height - Player height.
+ * @param {number} playerWidth - Player width.
+ * @param {height} playerHeight - Player height.
  * @return {string} - The new poster url including the player dimensions.
  */
-function setPlayerDimensionsOnPoster(poster: string, width: number, height: number): string {
-  const parts = poster.split('/');
-  for (let i = 0; i < parts.length; i++) {
-    if (parts[i] === 'width') {
-      parts[i + 1] = width.toString();
-      i += 2;
-    } else if (parts[i] === 'height') {
-      parts[i + 1] = height.toString();
-      i += 2;
-    }
-  }
-  return parts.join('/');
+function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, playerHeight: number): string {
+  poster = poster.replace(poster.match(/width\/(\d+)/)[1], playerWidth.toString());
+  poster = poster.replace(poster.match(/height\/(\d+)/)[1], playerHeight.toString());
+  return poster;
 }
 
 /**
  * Selects the best fit poster depends on the player dimensions.
  * @param {string} posters - Array of posters candidates.
- * @param {number} width - Player width.
- * @param {height} height - Player height.
+ * @param {number} playerWidth - Player width.
+ * @param {height} playerHeight - Player height.
  * @return {string} - The poster url.
  */
-function selectPosterByPlayerDimensions(posters: Array<Object>, width: number, height: number): string {
+function selectPosterByPlayerDimensions(posters: Array<Object>, playerWidth: number, playerHeight: number): string {
   let min = Infinity;
   let url = '';
   posters.forEach(picture => {
-    const w = picture.width;
-    const h = picture.height;
-    const widthDelta = Math.abs(w - width);
-    const heightDelta = Math.abs(h - height);
+    const picWidth = picture.width;
+    const picHeight = picture.height;
+    const widthDelta = Math.abs(picWidth - playerWidth);
+    const heightDelta = Math.abs(picHeight - playerHeight);
     const delta = widthDelta + heightDelta;
     if (delta < min) {
       min = delta;

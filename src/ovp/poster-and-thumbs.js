@@ -4,13 +4,13 @@ import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from '..
 /**
  * Add poster with player dimensions to thumbnail API call
  * @param {Object} metadata - metadata container
- * @param {number} width - player width in px
- * @param {number} height - player height in px
+ * @param {number} playerWidth - player width in px
+ * @param {number} playerHeight - player height in px
  * @returns {void}
  */
-function addKalturaPoster(metadata: Object, width: number, height: number): void {
+function addKalturaPoster(metadata: Object, playerWidth: number, playerHeight: number): void {
   if (metadata.poster) {
-    metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
+    metadata.poster = `${metadata.poster}/height/${playerHeight}/width/${playerWidth}`;
   }
 }
 
