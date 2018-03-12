@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/kaltura/kaltura-player-js/compare/v0.18.11...v0.19.0) (2018-03-12)
+
+
+### Features
+
+* **FEC-7954:** poster and thumbnail preview missing on tv player ([#97](https://github.com/kaltura/kaltura-player-js/issues/97)) ([96a51b3](https://github.com/kaltura/kaltura-player-js/commit/96a51b3))
+
+
+
 <a name="0.18.11"></a>
 ## [0.18.11](https://github.com/kaltura/kaltura-player-js/compare/v0.18.10...v0.18.11) (2018-03-08)
 
