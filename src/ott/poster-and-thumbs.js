@@ -53,7 +53,7 @@ function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, player
     poster = poster.replace(widthMatch, playerWidth.toString());
   }
   if (heightMatch) {
-    poster = poster.replace(poster.match(heightMatch, playerHeight.toString());
+    poster = poster.replace(heightMatch, playerHeight.toString());
   }
   return poster;
 }
