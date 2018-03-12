@@ -1,5 +1,6 @@
 // @flow
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from '../common/utils/thumbs'
+import {UIManager} from 'playkit-js-ui'
 
 /**
  * Add poster with player dimensions to thumbnail API call

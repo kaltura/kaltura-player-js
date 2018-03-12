@@ -34,8 +34,12 @@ export default class KalturaPlayer {
     if (!config.player && !config.ui) {
       this._playerConfigure(config);
     } else {
-      this._playerConfigure(config.player);
-      this._uiManager.setConfig(config.ui);
+      if (config.player) {
+        this._playerConfigure(config.player);
+      }
+      if (config.ui) {
+        this._uiManager.setConfig(config.ui);
+      }
     }
   }
 

@@ -1,6 +1,7 @@
 // @flow
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../common/utils/thumbs'
 import {Utils} from 'playkit-js'
+import {UIManager} from 'playkit-js-ui'
 
 /**
  * Add poster with player dimensions.
@@ -46,8 +47,14 @@ function setUISeekbarConfig(uiManager: UIManager): void {
  * @return {string} - The new poster url including the player dimensions.
  */
 function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, playerHeight: number): string {
-  poster = poster.replace(poster.match(/width\/(\d+)/)[1], playerWidth.toString());
-  poster = poster.replace(poster.match(/height\/(\d+)/)[1], playerHeight.toString());
+  const widthMatch = poster.match(/width\/(\d+)/) && poster.match(/width\/(\d+)/)[1];
+  const heightMatch = poster.match(/height\/(\d+)/) && poster.match(/height\/(\d+)/)[1];
+  if (widthMatch) {
+    poster = poster.replace(widthMatch, playerWidth.toString());
+  }
+  if (heightMatch) {
+    poster = poster.replace(poster.match(heightMatch, playerHeight.toString());
+  }
   return poster;
 }
 
