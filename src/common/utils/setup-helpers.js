@@ -5,9 +5,8 @@ import {UIManager} from 'playkit-js-ui'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import {setLogLevel as _setLogLevel, LogLevel} from './logger'
-import type {LogLevelObject} from './logger'
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './thumbs'
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
+import type {LogLevelObject} from './logger'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
@@ -65,19 +64,6 @@ function createKalturaPlayerContainer(targetId: string): string {
     parentNode.appendChild(el);
   }
   return el.id;
-}
-
-/**
- * Add poster with player dimensions to thumbnail API call
- * @param {Object} metadata - metadata container
- * @param {number} width - player width in px
- * @param {number} height - player height in px
- * @returns {void}
- */
-function addKalturaPoster(metadata: Object, width: number, height: number): void {
-  if (metadata.poster) {
-    metadata.poster = `${metadata.poster}/height/${height}/width/${width}`;
-  }
 }
 
 /**
@@ -163,26 +149,12 @@ function getUrlParameter(name: string) {
 }
 
 /**
- * Sets the preview thumbnail config for the ui seekbar component.
- * @param {Object} data - The provider data.
- * @param {UIManager} uiManager - The ui manager.
- * @returns {void}
- */
-function setUISeekbarConfig(data: Object, uiManager: UIManager): void {
-  uiManager.setConfig({
-    thumbsSprite: getThumbSlicesUrl(data),
-    thumbsWidth: DEFAULT_THUMBS_WIDTH,
-    thumbsSlices: DEFAULT_THUMBS_SLICES
-  }, "seekbar");
-}
-
-/**
  * Sets the media info on error component to the "retry" functionality.
- * @param {ProviderMediaInfoObject} mediaInfo - The media info.
  * @param {UIManager} uiManager - The ui manager.
+ * @param {ProviderMediaInfoObject} mediaInfo - The media info.
  * @returns {void}
  */
-function setUIErrorOverlayConfig(mediaInfo: ProviderMediaInfoObject, uiManager: UIManager): void {
+function setUIErrorOverlayConfig(uiManager: UIManager, mediaInfo: ProviderMediaInfoObject): void {
   uiManager.setConfig({
     mediaInfo: mediaInfo
   }, "error");
@@ -302,13 +274,11 @@ export {
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
-  addKalturaPoster,
   validateConfig,
   setLogLevel,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
-  setUISeekbarConfig,
   setUIErrorOverlayConfig,
   isSafari,
   isIos
