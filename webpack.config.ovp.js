@@ -33,7 +33,8 @@ const entry = {
 const alias = {
   'playkit-js-providers': path.resolve('./node_modules/playkit-js-providers/dist/playkit-ovp-provider'),
   'playkit-js-analytics': path.resolve('./node_modules/playkit-js-kanalytics'),
-  'player-defaults': path.resolve('./src/ovp/player-defaults')
+  'player-defaults': path.resolve('./src/ovp/player-defaults'),
+  'poster-and-thumbs': path.resolve('./src/ovp/poster-and-thumbs')
 };
 
 Object.assign(webpackConfig.resolve.alias, alias);
