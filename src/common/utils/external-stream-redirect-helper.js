@@ -39,10 +39,8 @@ function configureExternalStreamRedirect(config: Object): void {
     });
     sourceOptions = config.sources.options;
   }
-  if (sourceOptions.forceRedirectExternalStreams) {
-    if (typeof sourceOptions.redirectExternalStreamsHandler !== "function") {
+  if (typeof sourceOptions.redirectExternalStreamsHandler !== "function") {
       sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
-    }
   }
 }
 
