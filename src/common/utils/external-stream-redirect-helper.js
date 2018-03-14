@@ -1,5 +1,5 @@
 // @flow
-import {Env, Utils} from 'playkit-js'
+import {Utils} from 'playkit-js'
 
 /**
  * JSONP handler function, returns the direct manifest uri.
@@ -25,19 +25,8 @@ function getDirectManifestUri(data: Object, uri: string): string {
 }
 
 /**
- * Whether we should use our JSONP http plugin.
- * @returns {boolean} - Should use external stream requests redirect on manifests.
- */
-function shouldUseExternalStreamRedirect(): boolean {
-  const affectedBrowsers = ['IE', 'Edge'];
-  const affectedVendors = ['panasonic'];
-  return (affectedBrowsers.includes(Env.browser.name) ||
-    (Env.device && affectedVendors.includes(Env.device.vendor)));
-}
-
-/**
- * Add JSONP configuration to the general config.
- * @param {Object} config - Configuration relevant to JSONP.
+ * Add external stream redirect configuration to the general config.
+ * @param {Object} config - Player config.
  * @returns {void}
  */
 function configureExternalStreamRedirect(config: Object): void {
@@ -50,11 +39,10 @@ function configureExternalStreamRedirect(config: Object): void {
     });
     sourceOptions = config.sources.options;
   }
-  if (typeof sourceOptions.forceRedirectExternalStreams !== "boolean") {
-    sourceOptions.forceRedirectExternalStreams = shouldUseExternalStreamRedirect();
-  }
-  if (typeof sourceOptions.redirectExternalStreamsHandler !== "function") {
-    sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
+  if (sourceOptions.forceRedirectExternalStreams) {
+    if (typeof sourceOptions.redirectExternalStreamsHandler !== "function") {
+      sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
+    }
   }
 }
 

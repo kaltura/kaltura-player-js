@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.19.1"></a>
+## [0.19.1](https://github.com/kaltura/kaltura-player-js/compare/v0.19.0...v0.19.1) (2018-03-14)
+
+
+### Bug Fixes
+
+* **FEC-8026:** external OTT VOD/Live media doesn't works on IE 11 ([#98](https://github.com/kaltura/kaltura-player-js/issues/98)) ([17238bf](https://github.com/kaltura/kaltura-player-js/commit/17238bf))
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/kaltura/kaltura-player-js/compare/v0.18.11...v0.19.0) (2018-03-12)
 
