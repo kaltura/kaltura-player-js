@@ -64,9 +64,7 @@ export default class KalturaPlayer {
     setUISeekbarConfig(this._uiManager, mediaConfig);
     Utils.Object.mergeDeep(mediaConfig.metadata, this._player.config.metadata);
     addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
-    if (!mediaConfig.sources.dash[0].localSource){
-      addKalturaParams(mediaConfig.sources, this._player);
-    }
+    addKalturaParams(mediaConfig.sources, this._player);
     Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
     Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
     evaluatePluginsConfig(mediaConfig);
