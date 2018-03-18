@@ -4,7 +4,6 @@ import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
-import OfflineManager from 'playkit-js-offline-manager'
 import {setUIErrorOverlayConfig} from './common/utils/setup-helpers'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import {addKalturaPoster, setUISeekbarConfig} from 'poster-and-thumbs'
@@ -16,7 +15,6 @@ export default class KalturaPlayer {
   _provider: Provider;
   _uiManager: UIManager;
   _logger: any;
-  _offlineManager: OfflineManager;
 
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options.player);
@@ -69,13 +67,5 @@ export default class KalturaPlayer {
     Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
     evaluatePluginsConfig(mediaConfig);
     this._player.configure(mediaConfig);
-  }
-
-  /**
-   *
-   * @returns {Object} returns the OfflineManager instance
-   */
-  get offlineManager(): Object{
-    return OfflineManager;
   }
 }
