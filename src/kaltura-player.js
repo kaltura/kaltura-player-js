@@ -25,7 +25,8 @@ export default class KalturaPlayer {
     this._uiManager.buildDefaultUI();
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
-      configure: config => this.configure(config)
+      configure: config => this.configure(config),
+      setMedia: mediaConfig => this.setMedia(mediaConfig)
     });
     return this._player;
   }
@@ -49,17 +50,22 @@ export default class KalturaPlayer {
     setUIErrorOverlayConfig(this._uiManager, mediaInfo);
     return this._provider.getMediaConfig(mediaInfo)
       .then(mediaConfig => {
-        const dimensions = this._player.dimensions;
-        setUISeekbarConfig(this._uiManager, mediaConfig);
-        Utils.Object.mergeDeep(mediaConfig.metadata, this._player.config.metadata);
-        addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
-        addKalturaParams(mediaConfig.sources, this._player);
-        Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
-        Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
-        evaluatePluginsConfig(mediaConfig);
-        this._player.configure(mediaConfig);
+        this.setMedia(mediaConfig);
       }).catch(e => {
         this._player.dispatchEvent(new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)));
       });
+  }
+
+  setMedia(mediaConfig: Object): void {
+    this._logger.debug('setMedia');
+    const dimensions = this._player.dimensions;
+    setUISeekbarConfig(this._uiManager, mediaConfig);
+    Utils.Object.mergeDeep(mediaConfig.metadata, this._player.config.metadata);
+    addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
+    addKalturaParams(mediaConfig.sources, this._player);
+    Utils.Object.mergeDeep(mediaConfig.plugins, this._player.config.plugins);
+    Utils.Object.mergeDeep(mediaConfig.session, this._player.config.session);
+    evaluatePluginsConfig(mediaConfig);
+    this._player.configure(mediaConfig);
   }
 }
