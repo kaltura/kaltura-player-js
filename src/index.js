@@ -36,8 +36,8 @@ import 'playkit-js-ima'
 // Import analytics plugin
 import 'playkit-js-analytics'
 
-// Import offline plugin
-import OfflineManager from 'playkit-js-offline-manager'
+// Import shaka-player
+import * as shaka from 'shaka-player'
 
 // Import setup method
 import {setup} from './setup'
@@ -47,7 +47,7 @@ export {
   ui,
   providers,
   setup,
-  OfflineManager,
+  shaka,
   __PLAYER_TYPE__ as PLAYER_TYPE,
   __VERSION__ as VERSION,
   __NAME__ as PLAYER_NAME
