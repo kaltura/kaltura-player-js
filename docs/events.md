@@ -59,4 +59,4 @@ player.ready().then(() => {
 
 ## Events List
 
-The full events list, which updates from time to time, can be found [here](https://github.com/kaltura/playkit-js/blob/master/src/event/events.js).
+The full events list, which updates from time to time, can be found [here](https://github.com/kaltura/playkit-js/blob/master/src/event/event-type.js).

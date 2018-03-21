@@ -4556,9 +4556,9 @@ pkginfo@0.x.x:
   version "1.5.7"
   resolved "https://github.com/kaltura/playkit-js-hls.git#318d300e6c8531d326f02468e2758b17e9819dd2"
 
-"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.4.0":
-  version "0.4.0"
-  resolved "https://github.com/kaltura/playkit-js-ima.git#e9fa61141eed95addc502ce0757f40a6362434d3"
+"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.4.1":
+  version "0.4.1"
+  resolved "https://github.com/kaltura/playkit-js-ima.git#8c31b15ad4cfdcaf25f48242933c8c652be03e07"
   dependencies:
     javascript-state-machine "^3.0.1"
 
@@ -4576,9 +4576,9 @@ pkginfo@0.x.x:
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.19.4":
-  version "0.19.4"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#3c2b87d20c606cc127e377a7a103d41b93e47b99"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.19.5":
+  version "0.19.5"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#337044cd318533f2c6cb0da8020463f6fe3841b9"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
