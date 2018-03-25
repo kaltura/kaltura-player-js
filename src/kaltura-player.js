@@ -57,7 +57,7 @@ export default class KalturaPlayer {
   }
 
   setMedia(mediaConfig: Object): void {
-    this._logger.debug('setMedia');
+    this._logger.debug('setMedia', mediaConfig);
     const dimensions = this._player.dimensions;
     setUISeekbarConfig(this._uiManager, mediaConfig);
     Utils.Object.mergeDeep(mediaConfig.metadata, this._player.config.metadata);
