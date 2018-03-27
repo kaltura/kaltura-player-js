@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/kaltura/kaltura-player-js/compare/v0.19.4...v0.20.0) (2018-03-27)
+
+
+### Features
+
+* **FEC-7089:** call player.reset() before change media ([#104](https://github.com/kaltura/kaltura-player-js/issues/104)) ([c6cbfb3](https://github.com/kaltura/kaltura-player-js/commit/c6cbfb3))
+
+
+
 <a name="0.19.4"></a>
 ## [0.19.4](https://github.com/kaltura/kaltura-player-js/compare/v0.19.3...v0.19.4) (2018-03-21)
 
