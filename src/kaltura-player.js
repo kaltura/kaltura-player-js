@@ -1,5 +1,5 @@
 // @flow
-import {loadPlayer, Utils, Error, FakeEvent} from 'playkit-js'
+import {Error, FakeEvent, loadPlayer, Utils} from 'playkit-js'
 import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
@@ -45,6 +45,7 @@ export default class KalturaPlayer {
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
+    this._player.reset();
     this._player.loadingMedia = true;
     setUIErrorOverlayConfig(this._uiManager, mediaInfo);
     return this._provider.getMediaConfig(mediaInfo)
