@@ -4,7 +4,7 @@ import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
-import {setUIErrorOverlayConfig} from './common/utils/setup-helpers'
+import {setUIErrorOverlayConfig, setUILoadingSpinnerState} from './common/utils/ui-actions'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import {addKalturaPoster, setUISeekbarConfig} from 'poster-and-thumbs'
 import './assets/style.css'
@@ -47,6 +47,7 @@ export default class KalturaPlayer {
     this._logger.debug('loadMedia', mediaInfo);
     this._player.reset();
     this._player.loadingMedia = true;
+    setUILoadingSpinnerState(this._uiManager, true);
     setUIErrorOverlayConfig(this._uiManager, mediaInfo);
     return this._provider.getMediaConfig(mediaInfo)
       .then(mediaConfig => {
