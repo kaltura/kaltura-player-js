@@ -24,18 +24,17 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 }
 
 /**
- * Sets the preview thumbnail config for the ui seekbar component.
+ * Gets the preview thumbnail config for the ui seekbar component.
  * @param {UIManager} uiManager - The ui manager.
  * @returns {void}
  */
-function setUISeekbarConfig(uiManager: UIManager): void {
+function getPreviewThumbnailConfig(uiManager: UIManager): ?Object {
   let seekbarConfig = Utils.Object.getPropertyPath(uiManager, 'config.components.seekbar');
   if (seekbarConfig) {
-    seekbarConfig = Utils.Object.mergeDeep({
+    return Utils.Object.mergeDeep({
       thumbsWidth: DEFAULT_THUMBS_WIDTH,
       thumbsSlices: DEFAULT_THUMBS_SLICES
     }, seekbarConfig);
-    uiManager.setConfig(seekbarConfig, "seekbar");
   }
 }
 
@@ -82,4 +81,4 @@ function selectPosterByPlayerDimensions(posters: Array<Object>, playerWidth: num
   return url;
 }
 
-export {addKalturaPoster, setUISeekbarConfig};
+export {addKalturaPoster, getPreviewThumbnailConfig};

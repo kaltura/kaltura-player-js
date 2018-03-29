@@ -1,28 +1,26 @@
 // @flow
 import {Error, FakeEvent, loadPlayer, Utils} from 'playkit-js'
-import {UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
-import {setUIErrorOverlayConfig} from './common/utils/setup-helpers'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
-import {addKalturaPoster, setUISeekbarConfig} from 'poster-and-thumbs'
+import {addKalturaPoster} from 'poster-and-thumbs'
 import './assets/style.css'
+import {UIWrapper} from './common/ui-wrapper'
 
 export default class KalturaPlayer {
   _player: Player;
   _playerConfigure: Function;
   _provider: Provider;
-  _uiManager: UIManager;
+  _uiWrapper: UIWrapper;
   _logger: any;
 
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options.player);
     this._playerConfigure = this._player.configure.bind(this._player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._uiManager = new UIManager(this._player, options.ui);
+    this._uiWrapper = new UIWrapper(this._player, options.ui);
     this._provider = new Provider(options.provider, __VERSION__);
-    this._uiManager.buildDefaultUI();
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
       configure: config => this.configure(config)
@@ -38,7 +36,7 @@ export default class KalturaPlayer {
         this._playerConfigure(config.player);
       }
       if (config.ui) {
-        this._uiManager.setConfig(config.ui);
+        this._uiWrapper.setConfig(config.ui);
       }
     }
   }
@@ -47,11 +45,11 @@ export default class KalturaPlayer {
     this._logger.debug('loadMedia', mediaInfo);
     this._player.reset();
     this._player.loadingMedia = true;
-    setUIErrorOverlayConfig(this._uiManager, mediaInfo);
+    this._uiWrapper.setErrorPresetConfig(mediaInfo);
     return this._provider.getMediaConfig(mediaInfo)
       .then(mediaConfig => {
         const dimensions = this._player.dimensions;
-        setUISeekbarConfig(this._uiManager, mediaConfig);
+        this._uiWrapper.setSeekbarConfig(mediaConfig);
         Utils.Object.mergeDeep(mediaConfig.metadata, this._player.config.metadata);
         addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
         addKalturaParams(mediaConfig.sources, this._player);

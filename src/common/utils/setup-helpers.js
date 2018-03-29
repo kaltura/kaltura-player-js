@@ -1,7 +1,6 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults'
 import {Utils, TextStyle, Env} from 'playkit-js'
-import {UIManager} from 'playkit-js-ui'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import {setLogLevel as _setLogLevel, LogLevel} from './logger'
@@ -149,18 +148,6 @@ function getUrlParameter(name: string) {
 }
 
 /**
- * Sets the media info on error component to the "retry" functionality.
- * @param {UIManager} uiManager - The ui manager.
- * @param {ProviderMediaInfoObject} mediaInfo - The media info.
- * @returns {void}
- */
-function setUIErrorOverlayConfig(uiManager: UIManager, mediaInfo: ProviderMediaInfoObject): void {
-  uiManager.setConfig({
-    mediaInfo: mediaInfo
-  }, "error");
-}
-
-/**
  * Checks if the server UIConf exist
  * @param {number} uiConfId - The server UIConf
  * @returns {boolean} - server UIConf exist
@@ -279,7 +266,6 @@ export {
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
-  setUIErrorOverlayConfig,
   isSafari,
   isIos
 };
