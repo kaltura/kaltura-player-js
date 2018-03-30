@@ -36,8 +36,8 @@ class UIWrapper {
 }
 
 /**
- * Appends the player view to the target id in the dom.
- * @param {string} targetId - The target id in the dom
+ * Appends the player view to the target element in the dom.
+ * @param {string} targetId - The target id.
  * @param {HTMLDivElement} view - The player div element.
  * @returns {void}
  */
