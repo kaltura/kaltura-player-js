@@ -65,7 +65,7 @@
 | 10 Seconds Rewind					| Yes					| Yes 					|
 | Volume Control					| Yes					| Yes 					|
 | Replay							| Yes					| Yes 					|
-| Watermark 						| Yes					| No, in roadmap					|
+| Watermark 						| Yes					| Yes					|
 | Mobile Skin						| Yes					| Yes 					|
 | i18n UI Translations 				| Yes					| No, in roadmap		|
 | Player.js / Embedly				| Yes					| No, in roadmap 		|
