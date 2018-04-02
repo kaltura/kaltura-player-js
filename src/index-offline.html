@@ -1,0 +1,69 @@
+
+<!doctype html>
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    .playkit-player label{
+      display: inherit;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="online-alert" class="alert alert-success" role="alert">
+  Online
+</div>
+<div id="offline-alert" class="alert alert-danger" role="alert">
+  Offline
+</div>
+<div id="progress0" class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+</div>
+<div></div>
+<div id="progress1" class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+</div>
+<div class="container embed-responsive embed-responsive-16by9">
+  <div id="player" class="embed-responsive-item"></div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div id="online-dd" class="dropdown">
+      <button class="btn btn-primary btn-lg dropdown-toggle" style="width:180px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Online options</button>
+      <div id="dropdown-data-online" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      </div>
+    </div>
+    <div id="offline-dd" class="dropdown">
+      <button class="btn btn-primary btn-lg dropdown-toggle" style="width:180px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Offline options</button>
+      <div id="dropdown-data-offline" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      </div>
+    </div>
+
+    <button type="button" id="download-btn" class="btn btn-outline-primary">Download</button>
+    <button type="button" id="pause-btn" class="btn btn-outline-primary">Pause</button>
+    <button type="button" id="resume-btn" class="btn btn-outline-primary">Resume</button>
+    <button type="button" id="delete-btn" class="btn btn-outline-primary">Delete</button>
+
+  </div>
+</div>
+<section class="ErrorSection">
+  <br>
+  <h3 id="errorHeading">Errors</h3>
+  <input id='errorInput' class="form-control-plaintext list-group-item list-group-item-danger" type="text" placeholder="Errors will apeare here" readonly>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- <script src="http://localhost:8082/kaltura-tv-player.js"></script> -->
+<!--<script src="//qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/embedPlaykitJs/uiconf_id/15212531/partner_id/1091"></script>-->
+ <script src="./kaltura-tv-player.js"></script>
+ <!--<script src="//qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/embedPlaykitJs/uiconf_id/15212531/partner_id/1091"></script>-->
+<script src="lib.js"></script>
+</body>
+</html>
