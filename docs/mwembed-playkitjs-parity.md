@@ -86,14 +86,12 @@
 
 ## Selective Packaging of Plugins
 
-**All new plugins are bundeled selectively based on uiConnf json configuration**
+> All new plugins are bundeled selectively based on uiConnf json configuration
 
 Below are not yet bundeled selectively:
 
-| Template  							| mwEmbed 				| kaltura-player-js 			|
-|-----------------------------------|-----------------------|-----------------------|
-| Chromeless (don't load UI)         			| Yes				    	| Yes 					|
-| Google IMA         			| Yes				    	| Yes 					|
+* Chromeless (don't load UI)
+* Google IMA
 
 ## Accessability - CVAA and ADA
 
