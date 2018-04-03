@@ -52,6 +52,13 @@
 | Adaptive Bitrate Switching		| Yes					| Yes 					|
 | Manual Flavor Selection			| Yes					| Yes 					|
 
+## 360 and Virtual Reality
+
+| Kind  							| mwEmbed 				| PlayKit-js 			|
+|-----------------------------------|-----------------------|-----------------------|
+| 360		                | Yes					| H2 2018 					|
+| Play in VR headset		| Yes					| H2 2018 					|
+
 ## User Controls and UI
 
 | Feature  							| mwEmbed 				| PlayKit-js 			|
@@ -67,7 +74,7 @@
 | Replay							| Yes					| Yes 					|
 | Watermark 						| Yes					| Yes					|
 | Mobile Skin						| Yes					| Yes 					|
-| i18n UI Translations 				| Yes					| No, in roadmap		|
+| i18n UI Translations 				| Yes					| Q3 2018		|
 | Player.js / Embedly				| Yes					| No, in roadmap 		|
 | Share and Embed screen			| Yes					| No, in roadmap 		|
 | Report Abuse (Flag for moderator)	| Yes					| No, in roadmap 		|
@@ -91,10 +98,10 @@
 | Kaltura Analytics (legacy)	 	| Yes					| Yes 					|
 | Kaltura Analytics (Kava)		 	| Yes					| Yes 					|
 | Youbora (Nice People At Work)	 	| Yes					| Yes 					|
-| Google Analytics 				 	| Yes					| No, in roadmap 		|
-| Adobe Analytics / Omniture		| Yes					| No  					|
-| comScore		 				 	| Yes					| No  					|
-| Nielsen		 				 	| Yes					| No 			 		|
+| Google Analytics 				 	| Yes					| Q2 2018 		|
+| Adobe Analytics / Omniture		| Yes					| H2 2018  					|
+| comScore		 				 	| Yes					| Q2 2018  					|
+| Nielsen		 				 	| Yes					| H2 2018 			 		|
 | Marketo		 				 	| Yes					| No 			 		|
 | Eloqua		 				 	| Yes					| No 			 		|
 
