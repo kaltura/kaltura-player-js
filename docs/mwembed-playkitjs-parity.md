@@ -146,7 +146,6 @@ Below are not yet bundeled selectively:
 | Slides and Chapters 			 	| Yes					| No 					|
 | Dual-Stream 					 	| Yes					| No 					|
 | RaptMedia Interactive Branching 	| Yes					| No 					|
-| In-Video Quizzes 				 	| Yes					| No 					|
 | Call To Action 				 	| Yes					| No 					|
 | Marketo Form	 				 	| Yes					| No 					|
 | Eloqua Form	 				 	| Yes					| No 					|
