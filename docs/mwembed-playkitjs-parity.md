@@ -1,8 +1,8 @@
-# [mwEmbed](https://github.com/kaltura/mwEmbed) vs. PlayKit-js Parity 
+# [mwEmbed](https://github.com/kaltura/mwEmbed) vs. kaltura-player-js Parity 
 
 ## Playback Engines
 
-| Engine  				| mwEmbed 				| PlayKit-js 			|
+| Engine  				| mwEmbed 				| kaltura-player-js 			|
 |-----------------------|-----------------------|-----------------------|
 | HLS   				| Yes, hls.js	 		| Yes, hls.js			|
 | MPEG-DASH   			| Yes, Shaka   			| Yes, Shaka   			|
@@ -12,11 +12,12 @@
 | Multicast   			| Yes, Silverlight  	| No        			|
 | P2P 				   	| Yes, Various Partners | No        			|
 | DRM 				   	| Yes, Kaltura uDRM		| Yes, Kaltura uDRM		|
-| Offline Playback 		| No					| Yes (Currently in dev)					|
+| Offline Playback, No DRM 		| No					| Yes					|
+| Offline Playback, With DRM 		| No					| Yes, PWA based (Only in Desktop and Android)					|
 
 ## Browsers Supported
 
-| Browser  			| mwEmbed 				| PlayKit-js 			|
+| Browser  			| mwEmbed 				| kaltura-player-js 			|
 |-------------------|-----------------------|-----------------------|
 | Chrome Desktop  	| Yes, HTML5, Latest	| Yes, HTML5, Latest	|
 | Firefox   		| Yes, HTML5, Latest	| Yes, HTML5, Latest	|
@@ -32,7 +33,7 @@
 
 ### Text Tracks (Captions / Subtitles)
 
-| Kind  							| mwEmbed 				| PlayKit-js 			|
+| Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | WebVTT 608/708 (Manifest Embedded)| Yes					| Yes 					|
 | SRT file		  					| Yes					| No 					|
@@ -40,28 +41,28 @@
 
 ### Audio Tracks 
 
-| Kind  							| mwEmbed 				| PlayKit-js 			|
+| Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Main Audio Tracks (Switch)		| Yes					| Yes 					|
 | Descriptive Audio	(Overlay)		| No					| No 					|
 
 ### Video Tracks (Multi bitrate)
 
-| Kind  							| mwEmbed 				| PlayKit-js 			|
+| Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Adaptive Bitrate Switching		| Yes					| Yes 					|
 | Manual Flavor Selection			| Yes					| Yes 					|
 
 ## 360 and Virtual Reality
 
-| Kind  							| mwEmbed 				| PlayKit-js 			|
+| Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | 360		                | Yes					| H2 2018 					|
 | Play in VR headset		| Yes					| H2 2018 					|
 
 ## User Controls and UI
 
-| Feature  							| mwEmbed 				| PlayKit-js 			|
+| Feature  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Saved User Preferences 			| Yes					| Yes 					|
 | Playback Rate (0.5x, 1x, 1.5x, 2x)| Yes					| Yes 					|
@@ -75,25 +76,36 @@
 | Watermark 						| Yes					| Yes					|
 | Mobile Skin						| Yes					| Yes 					|
 | i18n UI Translations 				| Yes					| Q3 2018		|
-| Player.js / Embedly				| Yes					| No, in roadmap 		|
-| Share and Embed screen			| Yes					| No, in roadmap 		|
-| Report Abuse (Flag for moderator)	| Yes					| No, in roadmap 		|
-| Titlebar							| Yes					| No, in roadmap 		|
-| Playlist							| Yes					| No, in roadmap 		|
-| End of Playback Screen / Related	| Yes					| No, in roadmap 		|
-| Info Screen 						| Yes					| No 			 		|
+| Share and Embed screen			| Yes					| H2 2018 		|
+| Titlebar							| Yes					| H2 2018 		|
+| Playlist							| Yes					| H2 2018 		|
+| End of Playback Screen / Related	| Yes					| H2 2018 		|
+| Info Screen 						| Yes					| N/A 			 		|
+| Player.js / Embedly				| Yes					| N/A 		|
+| Report Abuse (Flag for moderator)	| Yes					| N/A 		|
+
+## Selective Packaging of Plugins
+
+**All new plugins are bundeled selectively based on uiConnf json configuration**
+
+Below are not yet bundeled selectively:
+
+| Template  							| mwEmbed 				| kaltura-player-js 			|
+|-----------------------------------|-----------------------|-----------------------|
+| Chromeless (don't load UI)         			| Yes				    	| Yes 					|
+| Google IMA         			| Yes				    	| Yes 					|
 
 ## Accessability - CVAA and ADA
 
-| 					  				| mwEmbed 				| PlayKit-js 			|
+| 					  				| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | CVAA Captions Style Controls 		| Yes					| Yes 					|
 | Keyboard Shortcuts / Navigation 	| Yes					| Yes 					|
-| Aria Tags (Screen Readers Support)| Yes					| No, in roadmap		|
+| Aria Tags (Screen Readers Support)| Yes					| H2 2018		|
 
 ## Analytics
 
-| 3rd Party System  				| mwEmbed 				| PlayKit-js 			|
+| 3rd Party System  				| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Kaltura Analytics (legacy)	 	| Yes					| Yes 					|
 | Kaltura Analytics (Kava)		 	| Yes					| Yes 					|
@@ -107,7 +119,7 @@
 
 ## Live 
 
-| Capability		  				| mwEmbed 				| PlayKit-js 			|
+| Capability		  				| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Playback and UI				 	| Yes					| Yes 					|
 | DVR							 	| Yes					| Yes 					|
@@ -118,13 +130,13 @@
 
 ## Advertising 
 
-| Ads System			  			| mwEmbed 				| PlayKit-js 			|
+| Ads System			  			| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Google IMA 				 		| Yes					| Yes 					|
 
 ## Interactivity and Use-Case Functionality
 
-| Functionality			  			| mwEmbed 				| PlayKit-js 			|
+| Functionality			  			| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Webcasting 				 		| Yes					| No 					|
 | Webcasting:Slides			 		| Yes					| No 					|
@@ -138,7 +150,5 @@
 | Call To Action 				 	| Yes					| No 					|
 | Marketo Form	 				 	| Yes					| No 					|
 | Eloqua Form	 				 	| Yes					| No 					|
-
-
 
 
