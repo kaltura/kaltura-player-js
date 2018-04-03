@@ -1,7 +1,7 @@
 
 # Monitoring Player States  
 
-The player supports lifecycle states (or statuses), which are based on HTML5 video events (e.g., `waiting`, `playing`, etc.). Whenever a state change occurs, the player will fire a related event in response.
+The player supports life cycle states (or statuses), which are based on HTML5 video events (e.g., `waiting`, `playing`, etc.). Whenever a state change occurs, the player will fire a related event in response.
 
 ## Table of Contents
   - [Registering to State Changes](#registering-to-state-changed)
