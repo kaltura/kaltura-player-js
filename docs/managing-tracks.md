@@ -83,7 +83,7 @@ if (player.isAdaptiveBitrateEnabled()) {
   console.log('The current bitrate mode is Manual Selection');
 }
 ```
-You can also use the the `ABR_MODE_CHANGED` event to expose the current mode:
+You can also use the `ABR_MODE_CHANGED` event to expose the current mode:
 ```javascript
 player.addEventListener(player.Event.ABR_MODE_CHANGED, function (event) {
   if (event.payload.mode === "auto") {

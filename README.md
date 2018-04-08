@@ -61,7 +61,7 @@ Next, let's look at how to [get started](./docs/player-setup.md) by creating a p
 
 ## Running the tests
 
-Tests can be run localy via [Karma], which will run on Chrome, Firefox and Safari
+Tests can be run locally via [Karma], which will run on Chrome, Firefox and Safari
 
 [Karma]: https://karma-runner.github.io/1.0/index.html
 ```
@@ -98,4 +98,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the AGPL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details
