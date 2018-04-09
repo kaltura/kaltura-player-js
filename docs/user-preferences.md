@@ -23,7 +23,7 @@ The following values are saved under user preferences:
 
 When a player instantiates, a partial configuration is created internally by the `StorageManager` and supplied to the player using the saved values found in the local storage.
 
-<br>The structure of this inital configuration is as follows:
+<br>The structure of this initial configuration is as follows:
 ```js
 {
 	muted: string,
