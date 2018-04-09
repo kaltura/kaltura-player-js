@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/kaltura/kaltura-player-js/compare/v0.20.0...v0.21.0) (2018-04-09)
+
+
+### Features
+
+* **FEC-8084:** add loading spinner while preforming change media ([#106](https://github.com/kaltura/kaltura-player-js/issues/106)) ([a936117](https://github.com/kaltura/kaltura-player-js/commit/a936117))
+
+
+
 <a name="0.20.0"></a>
 # [0.20.0](https://github.com/kaltura/kaltura-player-js/compare/v0.19.4...v0.20.0) (2018-03-27)
 
