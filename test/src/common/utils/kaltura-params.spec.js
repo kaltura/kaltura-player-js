@@ -40,6 +40,14 @@ describe('addKalturaParams', function () {
     player.config.session.id.should.be.exist;
     source1.url.should.be.equal('a/b/c');
   });
+
+  it('should add nothing for no playManifest source', function () {
+    let source1 = {url: 'a/b/c/PLAYMANIFEST/source'};
+    source1.localSource = true;
+    addKalturaParams({dash: [source1]}, player);
+    player.config.session.id.should.be.exist;
+    source1.url.should.be.equal('a/b/c/PLAYMANIFEST/source');
+  });
 });
 
 describe('handleSessionId', function () {

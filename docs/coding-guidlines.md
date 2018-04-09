@@ -32,7 +32,7 @@ Use the following naming conventions:
 
 Prefer `'` over `"`
 
-For consistency's sake, single-quotes (') are preferrable to double-quotes ("). This is especially important when creating strings that include HTML:
+For consistency's sake, single-quotes (') are preferable to double-quotes ("). This is especially important when creating strings that include HTML:
 
 ```javascript
 var h1 = '<h1>This is some HTML</h1>';
