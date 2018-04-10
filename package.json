@@ -87,7 +87,7 @@
     "playkit-js-kanalytics": "https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.2",
     "playkit-js-ott-analytics": "https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.1",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.2.0",
-    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.20.0",
+    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.21.0",
     "playkit-js-youbora": "https://github.com/kaltura/playkit-js-youbora.git#v0.3.3",
     "shaka-player": "2.3.3"
   },
