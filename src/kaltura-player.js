@@ -1,6 +1,6 @@
 // @flow
-import {Error, FakeEvent, loadPlayer, Utils} from 'playkit-js'
-import {UIManager} from 'playkit-js-ui'
+import {Error, FakeEvent, loadPlayer, registerEvents, Utils} from 'playkit-js'
+import {EventType as UIEventType, UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
@@ -71,3 +71,6 @@ export default class KalturaPlayer {
     this._player.configure(playerConfig);
   }
 }
+
+// Register UI events to the player
+registerEvents(UIEventType);
