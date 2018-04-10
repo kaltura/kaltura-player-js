@@ -20,9 +20,13 @@ export default class KalturaPlayer {
     this._player = loadPlayer(options.player);
     this._playerConfigure = this._player.configure.bind(this._player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._uiManager = new UIManager(this._player, options.ui);
     this._provider = new Provider(options.provider, __VERSION__);
-    this._uiManager.buildDefaultUI();
+    this._uiManager = new UIManager(this._player, options.ui);
+    if (options.ui.customPreset) {
+      this._uiManager.buildCustomUI(options.ui.customPreset)
+    } else {
+      this._uiManager.buildDefaultUI();
+    }
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
       configure: config => this.configure(config),
