@@ -32,10 +32,7 @@ export default class KalturaPlayer {
       configure: config => this.configure(config),
       setMedia: mediaConfig => this.setMedia(mediaConfig)
     });
-    Object.defineProperty(this._player, 'Event', {
-      get: () => this.Event,
-      set: undefined
-    });
+    Object.defineProperty(this._player, 'Event', this.Event);
     return this._player;
   }
 
@@ -81,10 +78,13 @@ export default class KalturaPlayer {
 
   get Event(): Object {
     return {
-      Core: CoreEventType,
-      UI: UIEventType,
-      // For backward compatibility
-      ...CoreEventType
+      get: () => ({
+        Core: CoreEventType,
+        UI: UIEventType,
+        // For backward compatibility
+        ...CoreEventType
+      }),
+      set: undefined
     };
   }
 }
