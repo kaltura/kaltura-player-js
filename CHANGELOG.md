@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/kaltura/kaltura-player-js/compare/v0.22.0...v0.23.0) (2018-04-11)
+
+
+### Features
+
+* register UI events ([#109](https://github.com/kaltura/kaltura-player-js/issues/109)) ([5d27f43](https://github.com/kaltura/kaltura-player-js/commit/5d27f43))
+
+
+
 <a name="0.22.0"></a>
 # [0.22.0](https://github.com/kaltura/kaltura-player-js/compare/v0.21.0...v0.22.0) (2018-04-10)
 
