@@ -26,7 +26,7 @@ function addKalturaPoster(metadata: Object, width: number, height: number): void
 /**
  * Gets the preview thumbnail config for the ui seekbar component.
  * @param {UIManager} uiManager - The ui manager.
- * @returns {void}
+ * @returns {?Object} - The preview thumbnail config.
  */
 function getPreviewThumbnailConfig(uiManager: UIManager): ?Object {
   let seekbarConfig = Utils.Object.getPropertyPath(uiManager, 'config.components.seekbar');

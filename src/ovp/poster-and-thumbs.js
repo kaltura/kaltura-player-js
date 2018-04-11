@@ -19,9 +19,9 @@ function addKalturaPoster(metadata: Object, playerWidth: number, playerHeight: n
  * Gets the preview thumbnail config for the ui seekbar component.
  * @param {UIManager} uiManager - The ui manager.
  * @param {Object} mediaConfig - The provider media config.
- * @returns {void}
+ * @returns {Object} - The preview thumbnail config.
  */
-function getPreviewThumbnailConfig(uiManager: UIManager, mediaConfig: Object): void {
+function getPreviewThumbnailConfig(uiManager: UIManager, mediaConfig: Object): Object {
   return {
     thumbsSprite: getThumbSlicesUrl(mediaConfig),
     thumbsWidth: DEFAULT_THUMBS_WIDTH,
