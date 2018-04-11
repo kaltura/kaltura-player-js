@@ -36,7 +36,7 @@ export default class KalturaPlayer {
       get: () => ({
         Core: CoreEventType,
         UI: UIEventType,
-        // For backward comparability
+        // For backward compatibility
         ...CoreEventType
       }),
       set: undefined
