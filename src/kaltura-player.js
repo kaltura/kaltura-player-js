@@ -1,5 +1,5 @@
 // @flow
-import {Error, FakeEvent, loadPlayer, registerEvents, Utils} from 'playkit-js'
+import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from 'playkit-js'
 import {EventType as UIEventType, UIManager} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
 import getLogger from './common/utils/logger'
@@ -27,6 +27,15 @@ export default class KalturaPlayer {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
       configure: config => this.configure(config),
       setMedia: mediaConfig => this.setMedia(mediaConfig)
+    });
+    Object.defineProperty(this._player, 'Event', {
+      get: () => ({
+        Core: CoreEventType,
+        UI: UIEventType,
+        // For backward comparability
+        ...CoreEventType
+      }),
+      set: undefined
     });
     return this._player;
   }
@@ -71,6 +80,3 @@ export default class KalturaPlayer {
     this._player.configure(playerConfig);
   }
 }
-
-// Register UI events to the player
-registerEvents(UIEventType);
