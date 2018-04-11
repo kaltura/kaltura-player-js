@@ -94,7 +94,7 @@ function addKalturaParams(sources: Object, player: Player): void {
   handleSessionId(player);
   Object.keys(sources).forEach((key) => {
     sources[key].forEach((source) => {
-      if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1) {
+      if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
         updateSessionIdInUrl(source, player.config.session.id);
         addReferrer(source);
         addClientTag(source);

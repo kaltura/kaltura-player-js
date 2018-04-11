@@ -12,7 +12,11 @@ class UIWrapper {
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
     } else {
       this._uiManager = new UIManager(player, config);
-      this._uiManager.buildDefaultUI();
+      if (config.customPreset) {
+        this._uiManager.buildCustomUI(config.customPreset)
+      } else {
+        this._uiManager.buildDefaultUI();
+      }
     }
   }
 
@@ -32,6 +36,11 @@ class UIWrapper {
     if (seekbarConfig) {
       this._uiManager.setConfig(seekbarConfig, 'seekbar');
     }
+  }
+
+  setLoadingSpinnerState(show: boolean): void {
+    if (this._disabled) return;
+    this._uiManager.setConfig({show: show}, 'loading');
   }
 }
 

@@ -101,5 +101,5 @@ That's it - you've created a new Kaltura Player.
 
 ## Configuring the Player <a name="config"></a>
 
-After creating a the player and embedding it in your site, you may want to configure it using the wide range of configuration options. To learn more, see player [configuration](./configuration.md).
+After creating a player and embedding it in your site, you may want to configure it using the wide range of configuration options. To learn more, see player [configuration](./configuration.md).
 
