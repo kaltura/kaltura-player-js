@@ -33,12 +33,7 @@ export default class KalturaPlayer {
       setMedia: mediaConfig => this.setMedia(mediaConfig)
     });
     Object.defineProperty(this._player, 'Event', {
-      get: () => ({
-        Core: CoreEventType,
-        UI: UIEventType,
-        // For backward compatibility
-        ...CoreEventType
-      }),
+      get: () => this.Event,
       set: undefined
     });
     return this._player;
@@ -82,5 +77,14 @@ export default class KalturaPlayer {
     Utils.Object.mergeDeep(playerConfig.session, this._player.config.session);
     evaluatePluginsConfig(playerConfig);
     this._player.configure(playerConfig);
+  }
+
+  get Event(): Object {
+    return {
+      Core: CoreEventType,
+      UI: UIEventType,
+      // For backward compatibility
+      ...CoreEventType
+    };
   }
 }
