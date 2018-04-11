@@ -64,7 +64,7 @@ player.dispatchEvent(new FakeEvent('myCustomEventName', {
 
 #### Dispatch An Existing Player Event
 ```javascript
-player.dispatchEvent(new FakeEvent(player.Event.SEEKED));
+player.dispatchEvent(new FakeEvent(player.Event.Core.SEEKED));
 ```
 
 ## Player Readiness  
