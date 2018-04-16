@@ -27,29 +27,30 @@ export default class StorageManager {
    */
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
-    player.addEventListener(player.Event.FIRST_PLAY, () => {
-      player.addEventListener(player.Event.MUTE_CHANGE, () => {
-        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
-      });
-      player.addEventListener(player.Event.VOLUME_CHANGE, () => {
-        StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
-      });
-      player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, (event) => {
-        const audioTrack = event.payload.selectedAudioTrack;
-        StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
-      });
-      player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
-        const textTrack = event.payload.selectedTextTrack;
-        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
-      });
-      player.addEventListener(player.Event.TEXT_STYLE_CHANGED, () => {
-        try {
-          const textStyle = JSON.stringify(player.textStyle);
-          StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
-        } catch (e) {
-          this._logger.error(e.message);
-        }
-      });
+    player.addEventListener(player.Event.UI.USER_CLICKED_MUTE, () => {
+      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+    });
+    player.addEventListener(player.Event.UI.USER_CLICKED_UNMUTE, () => {
+      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+    });
+    player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
+      StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
+    });
+    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, (event) => {
+      const audioTrack = event.payload.audioTrack;
+      StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
+    });
+    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, (event) => {
+      const textTrack = event.payload.captionTrack;
+      StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
+    });
+    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
+      try {
+        const textStyle = JSON.stringify(event.payload.captionsStyle);
+        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
+      } catch (e) {
+        this._logger.error(e.message);
+      }
     });
   }
 
