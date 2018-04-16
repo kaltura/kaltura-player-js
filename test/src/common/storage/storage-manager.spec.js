@@ -66,41 +66,4 @@ describe('StorageManager', function () {
       }
     });
   });
-
-  it('should attaches listeners only after FIRST_PLAY event', function () {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
-    let fakePlayer = {
-      listeners: [],
-      listenersHandlers: {},
-      Event: {
-        MUTE_CHANGE: 'mutechange',
-        VOLUME_CHANGE: 'volumechange',
-        AUDIO_TRACK_CHANGED: 'audiotrackchanged',
-        TEXT_TRACK_CHANGED: 'texttrackchanged',
-        TEXT_STYLE_CHANGED: 'textstylechanged',
-        FIRST_PLAY: 'firstplay'
-      },
-      addEventListener: function (eventName, callback) {
-        this.listeners.push(eventName);
-        this.listenersHandlers[eventName] = callback;
-      }
-    };
-    StorageManager.attach(fakePlayer);
-    fakePlayer.listeners.should.have.length.of(1);
-    fakePlayer.listeners.should.deep.equal([
-      fakePlayer.Event.FIRST_PLAY
-    ]);
-    fakePlayer.listenersHandlers[fakePlayer.Event.FIRST_PLAY]();
-    fakePlayer.listeners.should.have.length.of(6);
-    fakePlayer.listeners.should.deep.equal([
-      fakePlayer.Event.FIRST_PLAY,
-      fakePlayer.Event.MUTE_CHANGE,
-      fakePlayer.Event.VOLUME_CHANGE,
-      fakePlayer.Event.AUDIO_TRACK_CHANGED,
-      fakePlayer.Event.TEXT_TRACK_CHANGED,
-      fakePlayer.Event.TEXT_STYLE_CHANGED
-    ]);
-  });
 });
