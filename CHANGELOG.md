@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.24.1"></a>
+## [0.24.1](https://github.com/kaltura/kaltura-player-js/compare/v0.24.0...v0.24.1) (2018-04-22)
+
+
+### Bug Fixes
+
+* **FEC-8131:** skippable ads fail on iOS ([#112](https://github.com/kaltura/kaltura-player-js/issues/112)) ([9b1940c](https://github.com/kaltura/kaltura-player-js/commit/9b1940c))
+
+
+
 <a name="0.24.0"></a>
 # [0.24.0](https://github.com/kaltura/kaltura-player-js/compare/v0.23.0...v0.24.0) (2018-04-16)
 
