@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/kaltura/kaltura-player-js/compare/v0.23.0...v0.24.0) (2018-04-16)
+
+
+### Bug Fixes
+
+* **FEC-7934:** change storage manager to listen to UI events ([#111](https://github.com/kaltura/kaltura-player-js/issues/111)) ([619d0e9](https://github.com/kaltura/kaltura-player-js/commit/619d0e9))
+
+
+### Features
+
+* **UI wrapper:** disabling UI  ([#107](https://github.com/kaltura/kaltura-player-js/issues/107)) ([5784a75](https://github.com/kaltura/kaltura-player-js/commit/5784a75))
+
+
+
 <a name="0.23.0"></a>
 # [0.23.0](https://github.com/kaltura/kaltura-player-js/compare/v0.22.0...v0.23.0) (2018-04-11)
 
