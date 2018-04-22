@@ -231,7 +231,7 @@ function checkNativeHlsSupport(playerConfig: PKPlayerOptionsObject): void {
  */
 function configureDelayAdsInitialization(playerConfig: PKPlayerOptionsObject): void {
   if (isIos() && playerConfig.plugins && playerConfig.plugins.ima) {
-    const playsinline = Utils.Object.getPropertyPath(playerConfig, 'plugins.playback.playsinline');
+    const playsinline = Utils.Object.getPropertyPath(playerConfig, 'playback.playsinline');
     const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(playerConfig, 'plugins.ima.delayInitUntilSourceSelected');
     if ((typeof playsinline !== 'boolean' || playsinline === true) && (typeof delayInitUntilSourceSelected !== 'boolean')) {
       Utils.Object.mergeDeep(playerConfig, {
