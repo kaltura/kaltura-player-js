@@ -1,11 +1,11 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults'
-import {Utils, TextStyle, Env} from 'playkit-js'
+import {Env, TextStyle, Utils} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
-import {setLogLevel as _setLogLevel, LogLevel} from './logger'
-import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
 import type {LogLevelObject} from './logger'
+import {LogLevel, setLogLevel as _setLogLevel} from './logger'
+import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
 
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
@@ -200,6 +200,7 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
   checkNativeTextTracksSupport(defaultOptions.player);
   setDefaultAnalyticsPlugin(defaultOptions.player);
   configureExternalStreamRedirect(defaultOptions.player);
+  configureDelayAdsInitialization(defaultOptions.player);
   return defaultOptions;
 }
 
@@ -216,6 +217,27 @@ function checkNativeHlsSupport(playerConfig: PKPlayerOptionsObject): void {
         playback: {
           preferNative: {
             hls: true
+          }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
+ * @param {PKPlayerOptionsObject} playerConfig - the player config
+ * @returns {void}
+ */
+function configureDelayAdsInitialization(playerConfig: PKPlayerOptionsObject): void {
+  if (isIos() && playerConfig.plugins && playerConfig.plugins.ima) {
+    const playsinline = Utils.Object.getPropertyPath(playerConfig, 'playback.playsinline');
+    const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(playerConfig, 'plugins.ima.delayInitUntilSourceSelected');
+    if ((typeof playsinline !== 'boolean' || playsinline === true) && (typeof delayInitUntilSourceSelected !== 'boolean')) {
+      Utils.Object.mergeDeep(playerConfig, {
+        plugins: {
+          ima: {
+            delayInitUntilSourceSelected: true
           }
         }
       });
