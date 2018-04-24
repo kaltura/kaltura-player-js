@@ -186,7 +186,8 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
     },
     player: {},
     ui: {
-      targetId: targetId
+      targetId: targetId,
+      containerId: options.targetId
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
