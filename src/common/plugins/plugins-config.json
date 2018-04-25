@@ -17,6 +17,12 @@
     "uiConfId": "{{uiConfId}}",
     "partnerId": "{{partnerId}}"
   },
+  "googleAnalytics": {
+    "entryId": "{{entryId}}",
+    "entryName": "{{entryName}}",
+    "uiConfId": "{{uiConfId}}",
+    "partnerId": "{{partnerId}}"
+  },
   "ottAnalytics": {
     "entryId": "{{entryId}}",
     "ks": "{{ks}}",
