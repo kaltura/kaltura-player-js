@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.24.2",
+  "version": "0.25.0",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -65,7 +65,7 @@
     "karma-webpack": "^2.0.2",
     "mocha": "^3.2.0",
     "mocha-cli": "^1.0.1",
-    "playkit-js-env-manager": "https://github.com/kaltura/playkit-js-env-manager.git#v3.2.0",
+    "playkit-js-env-manager": "https://github.com/kaltura/playkit-js-env-manager.git#v3.3.0",
     "pre-push": "^0.1.1",
     "sinon": "^2.0.0",
     "sinon-chai": "^2.8.0",
@@ -81,7 +81,7 @@
     "babel-polyfill": "^6.23.0",
     "hls.js": "^0.9.1",
     "js-logger": "^1.3.0",
-    "playkit-js": "https://github.com/kaltura/playkit-js.git#v0.25.1",
+    "playkit-js": "https://github.com/kaltura/playkit-js.git#v0.26.0",
     "playkit-js-dash": "https://github.com/kaltura/playkit-js-dash.git#v1.6.0",
     "playkit-js-hls": "https://github.com/kaltura/playkit-js-hls.git#v1.6.0",
     "playkit-js-ima": "https://github.com/kaltura/playkit-js-ima.git#v0.5.4",
