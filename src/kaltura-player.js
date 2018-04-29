@@ -61,6 +61,7 @@ export default class KalturaPlayer {
     this._logger.debug('setMedia', mediaConfig);
     const dimensions = this._player.dimensions;
     this._uiWrapper.setSeekbarConfig(mediaConfig);
+    Utils.Object.mergeDeep(mediaConfig, {dvr: this._player.config.dvr});
     Utils.Object.mergeDeep(mediaConfig.metadata, this._player.config.metadata);
     addKalturaPoster(mediaConfig.metadata, dimensions.width, dimensions.height);
     addKalturaParams(mediaConfig.sources, this._player);
