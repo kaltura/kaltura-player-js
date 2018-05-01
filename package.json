@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.25.0",
+  "version": "0.25.1",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -90,8 +90,7 @@
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.2.0",
     "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.22.4",
     "playkit-js-youbora": "https://github.com/kaltura/playkit-js-youbora.git#v0.3.3",
-    "shaka-player": "2.3.3",
-    "undefined": "^0.1.0"
+    "shaka-player": "2.3.3"
   },
   "repository": {
     "type": "git",
