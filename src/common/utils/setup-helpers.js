@@ -7,7 +7,7 @@ import type {LogLevelObject} from './logger'
 import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger'
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
 
-const setupMessages: Array<string> = [];
+const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
 
@@ -193,8 +193,9 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
   };
   Utils.Object.mergeDeep(defaultOptions, options);
   if (defaultOptions.provider.uiConfId) {
-    const uiConfOptions = extractServerUIConf(defaultOptions.provider.uiConfId);
-    supportLegacyOptions(uiConfOptions);
+    const uiConfOptions = supportLegacyOptions(
+      extractServerUIConf(defaultOptions.provider.uiConfId)
+    );
     defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
   }
   checkNativeHlsSupport(defaultOptions);
@@ -267,9 +268,9 @@ function checkNativeTextTracksSupport(options: KalturaPlayerOptionsObject): void
 /**
  * Transform options structure from legacy structure to new structure.
  * @param {Object} options - The options with the legacy structure.
- * @returns {void}
+ * @return {PartialKalturaPlayerOptionsObject} - Partial options with the expected structure.
  */
-function supportLegacyOptions(options: Object): void {
+function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObject {
   const removePlayerEntry = () => {
     if (options.player) {
       setupMessages.push({
@@ -304,6 +305,7 @@ function supportLegacyOptions(options: Object): void {
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
+  return options;
 }
 
 /**

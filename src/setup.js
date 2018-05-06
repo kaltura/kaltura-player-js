@@ -18,7 +18,7 @@ import {
  * @returns {KalturaPlayer} - The Kaltura Player.
  */
 function setup(options: PartialKalturaPlayerOptionsObject | LegacyPartialKalturaPlayerOptionsObject): KalturaPlayer {
-  supportLegacyOptions(options);
+  options = supportLegacyOptions(options);
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
   setLogLevel(defaultOptions);
