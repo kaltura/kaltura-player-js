@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.26.0"></a>
+# [0.26.0](https://github.com/kaltura/kaltura-player-js/compare/v0.25.1...v0.26.0) (2018-05-06)
+
+
+### Features
+
+* **FEC-8176:** restructure player config ([#117](https://github.com/kaltura/kaltura-player-js/issues/117)) ([3f89ef3](https://github.com/kaltura/kaltura-player-js/commit/3f89ef3))
+
+
+
 <a name="0.25.1"></a>
 ## [0.25.1](https://github.com/kaltura/kaltura-player-js/compare/v0.25.0...v0.25.1) (2018-05-01)
 
