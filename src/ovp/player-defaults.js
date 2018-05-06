@@ -3,13 +3,13 @@ import {Utils} from 'playkit-js'
 
 /**
  * Sets the default analytics plugin for the ovp player.
- * @param {PKPlayerOptionsObject} playerConfig - The player config.
+ * @param {KalturaPlayerOptionsObject} options - The player config.
  * @returns {void}
  */
-export function setDefaultAnalyticsPlugin(playerConfig: PKPlayerOptionsObject): void {
-  const kanalyticsPlugin = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics');
+export function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
+  const kanalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.kanalytics');
   if (!kanalyticsPlugin) {
-    Utils.Object.mergeDeep(playerConfig, {
+    Utils.Object.mergeDeep(options, {
       plugins: {
         kanalytics: {}
       }

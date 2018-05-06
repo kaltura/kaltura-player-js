@@ -1,5 +1,5 @@
 //@flow
-import {Utils} from 'playkit-js'
+import {StreamType, Utils} from 'playkit-js'
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
@@ -44,7 +44,7 @@ function updateSessionId(player: Player): void {
 }
 
 /**
- * @param {Object} source - source
+ * @param {PKMediaSourceObject} source - PKMediaSourceObject
  * @param {string} sessionId - session id
  * @return {void}
  * @private
@@ -61,11 +61,11 @@ function updateSessionIdInUrl(source: Object = {}, sessionId: string): void {
 }
 
 /**
- * @param {Object} source - source
+ * @param {PKMediaSourceObject} source - source
  * @return {void}
  * @private
  */
-function addReferrer(source: Object) {
+function addReferrer(source: PKMediaSourceObject) {
   if (source.url.indexOf(REFERRER) === -1) {
     let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
     source.url += delimiter + REFERRER + btoa(document.referrer || document.URL);
@@ -73,11 +73,11 @@ function addReferrer(source: Object) {
 }
 
 /**
- * @param {Object} source - source
+ * @param {PKMediaSourceObject} source - source
  * @return {void}
  * @private
  */
-function addClientTag(source: Object) {
+function addClientTag(source: PKMediaSourceObject) {
   if (source.url.indexOf(CLIENT_TAG) === -1) {
     let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
     source.url += delimiter + CLIENT_TAG + __VERSION__;
@@ -85,21 +85,24 @@ function addClientTag(source: Object) {
 }
 
 /**
- * @param {Object} sources - player sources
+ * @param {PKSourcesConfigObject} sources - player sources
  * @param {Player} player - player
  * @return {void}
  * @private
  */
-function addKalturaParams(sources: Object, player: Player): void {
+function addKalturaParams(sources: PKSourcesConfigObject, player: Player): void {
   handleSessionId(player);
-  Object.keys(sources).forEach((key) => {
-    sources[key].forEach((source) => {
-      if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
-        updateSessionIdInUrl(source, player.config.session.id);
-        addReferrer(source);
-        addClientTag(source);
-      }
-    });
+  Object.values(StreamType).forEach(key => {
+    // $FlowFixMe
+    if (sources[key]) {
+      sources[key].forEach((source) => {
+        if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
+          updateSessionIdInUrl(source, player.config.session.id);
+          addReferrer(source);
+          addClientTag(source);
+        }
+      });
+    }
   });
 }
 

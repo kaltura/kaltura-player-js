@@ -4,11 +4,14 @@ import {Env, TextStyle, Utils} from 'playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import type {LogLevelObject} from './logger'
-import {LogLevel, setLogLevel as _setLogLevel} from './logger'
+import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger'
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
 
+const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
+
+declare var __CONFIG_DOCS_URL__: string;
 
 /**
  * Validate the initial user config.
@@ -54,7 +57,7 @@ function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
  * @returns {string} - The player container id.
  */
 function createKalturaPlayerContainer(targetId: string): string {
-  const el = document.createElement("div");
+  const el = document.createElement('div');
   el.id = Utils.Generator.uniqueId(5);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
@@ -72,7 +75,7 @@ function createKalturaPlayerContainer(targetId: string): string {
  */
 function setStorageConfig(options: KalturaPlayerOptionsObject): void {
   if (!options.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    Utils.Object.mergeDeep(options.player, StorageManager.getStorageConfig());
+    Utils.Object.mergeDeep(options, StorageManager.getStorageConfig());
   }
 }
 
@@ -131,7 +134,7 @@ function setLogLevel(options: KalturaPlayerOptionsObject): void {
   } else if (options.logLevel && LogLevel[options.logLevel]) {
     logLevelObj = LogLevel[options.logLevel];
   }
-  options.ui.logLevel = options.player.logLevel = options.provider.logLevel = logLevelObj.name;
+  options.ui.logLevel = options.provider.logLevel = logLevelObj.name;
   _setLogLevel(logLevelObj);
 }
 
@@ -153,7 +156,7 @@ function getUrlParameter(name: string) {
  * @returns {boolean} - server UIConf exist
  */
 function serverUIConfExist(uiConfId: ?number): boolean {
-  const UIConf = Utils.Object.getPropertyPath(window, "__kalturaplayerdata.UIConf");
+  const UIConf = Utils.Object.getPropertyPath(window, '__kalturaplayerdata.UIConf');
   const hasUiConfId = (uiConfId !== null) && (uiConfId !== undefined);
   return hasUiConfId &&
     ((UIConf !== undefined && (UIConf[uiConfId] !== undefined)) || false);
@@ -179,41 +182,40 @@ function extractServerUIConf(uiConfId: number): Object {
  */
 function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaPlayerOptionsObject {
   const targetId = createKalturaPlayerContainer(options.targetId);
-  const defaultOptions: KalturaPlayerOptionsObject = {
+  let defaultOptions: KalturaPlayerOptionsObject = {
     targetId: options.targetId,
     provider: {
       partnerId: options.provider.partnerId
     },
-    player: {},
     ui: {
       targetId: targetId
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
   if (defaultOptions.provider.uiConfId) {
-    const uiConf = extractServerUIConf(defaultOptions.provider.uiConfId);
-    defaultOptions.provider = Utils.Object.mergeDeep({}, uiConf.provider, defaultOptions.provider);
-    defaultOptions.player = Utils.Object.mergeDeep({}, uiConf.player, defaultOptions.player);
-    defaultOptions.ui = Utils.Object.mergeDeep({}, uiConf.ui, defaultOptions.ui);
+    const uiConfOptions = supportLegacyOptions(
+      extractServerUIConf(defaultOptions.provider.uiConfId)
+    );
+    defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
   }
-  checkNativeHlsSupport(defaultOptions.player);
-  checkNativeTextTracksSupport(defaultOptions.player);
-  setDefaultAnalyticsPlugin(defaultOptions.player);
-  configureExternalStreamRedirect(defaultOptions.player);
-  configureDelayAdsInitialization(defaultOptions.player);
+  checkNativeHlsSupport(defaultOptions);
+  checkNativeTextTracksSupport(defaultOptions);
+  setDefaultAnalyticsPlugin(defaultOptions);
+  configureExternalStreamRedirect(defaultOptions);
+  configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
 }
 
 /**
  * Sets config option for native HLS playback
- * @param {PKPlayerOptionsObject} playerConfig - the player config
+ * @param {KalturaPlayerOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function checkNativeHlsSupport(playerConfig: PKPlayerOptionsObject): void {
+function checkNativeHlsSupport(options: KalturaPlayerOptionsObject): void {
   if (isSafari() || isIos()) {
-    const preferNativeHlsValue = Utils.Object.getPropertyPath(playerConfig, 'playback.preferNative.hls');
+    const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
-      Utils.Object.mergeDeep(playerConfig, {
+      Utils.Object.mergeDeep(options, {
         playback: {
           preferNative: {
             hls: true
@@ -226,15 +228,15 @@ function checkNativeHlsSupport(playerConfig: PKPlayerOptionsObject): void {
 
 /**
  * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
- * @param {PKPlayerOptionsObject} playerConfig - the player config
+ * @param {KalturaPlayerOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureDelayAdsInitialization(playerConfig: PKPlayerOptionsObject): void {
-  if (isIos() && playerConfig.plugins && playerConfig.plugins.ima) {
-    const playsinline = Utils.Object.getPropertyPath(playerConfig, 'playback.playsinline');
-    const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(playerConfig, 'plugins.ima.delayInitUntilSourceSelected');
+function configureDelayAdsInitialization(options: KalturaPlayerOptionsObject): void {
+  if (isIos() && options.plugins && options.plugins.ima) {
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
     if ((typeof playsinline !== 'boolean' || playsinline === true) && (typeof delayInitUntilSourceSelected !== 'boolean')) {
-      Utils.Object.mergeDeep(playerConfig, {
+      Utils.Object.mergeDeep(options, {
         plugins: {
           ima: {
             delayInitUntilSourceSelected: true
@@ -247,14 +249,14 @@ function configureDelayAdsInitialization(playerConfig: PKPlayerOptionsObject): v
 
 /**
  * Sets config option for native text track support
- * @param {PKPlayerOptionsObject} playerConfig - the player config
+ * @param {KalturaPlayerOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function checkNativeTextTracksSupport(playerConfig: PKPlayerOptionsObject): void {
+function checkNativeTextTracksSupport(options: KalturaPlayerOptionsObject): void {
   if (isSafari()) {
-    const useNativeTextTrack = Utils.Object.getPropertyPath(playerConfig, 'playback.useNativeTextTrack');
+    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
-      Utils.Object.mergeDeep(playerConfig, {
+      Utils.Object.mergeDeep(options, {
         playback: {
           useNativeTextTrack: true
         }
@@ -264,11 +266,64 @@ function checkNativeTextTracksSupport(playerConfig: PKPlayerOptionsObject): void
 }
 
 /**
+ * Transform options structure from legacy structure to new structure.
+ * @param {Object} options - The options with the legacy structure.
+ * @return {PartialKalturaPlayerOptionsObject} - Partial options with the expected structure.
+ */
+function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObject {
+  const removePlayerEntry = () => {
+    if (options.player) {
+      setupMessages.push({
+        level: 'warn',
+        msg: `Path config.player will be deprecated soon. Please update your config structure as describe here: ${__CONFIG_DOCS_URL__}`
+      });
+      const playerOptions = Utils.Object.copyDeep(options.player);
+      delete options.player;
+      Utils.Object.mergeDeep(options, playerOptions);
+    }
+  };
+  const moveProp = (propPath: string, targetPath: string) => {
+    if (Utils.Object.hasPropertyPath(options, propPath)) {
+      setupMessages.push({
+        level: 'warn',
+        msg: `Path config.player.${propPath} will be deprecated soon. Please update your config structure as describe here: ${__CONFIG_DOCS_URL__}`
+      });
+      const propValue = Utils.Object.getPropertyPath(options, propPath);
+      const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
+      Utils.Object.mergeDeep(options, propObj);
+      Utils.Object.deletePropertyPath(options, propPath);
+    }
+  };
+  const moves = [
+    ['duration', 'sources.duration'],
+    ['type', 'sources.type'],
+    ['dvr', 'sources.dvr'],
+    ['id', 'sources.id'],
+    ['name', 'metadata.name'],
+    ['metadata.poster', 'sources.poster'],
+    ['metadata', 'sources.metadata']
+  ];
+  removePlayerEntry();
+  moves.forEach(move => moveProp(move[0], move[1]));
+  return options;
+}
+
+/**
+ * Prints early setup messages.
+ * @returns {void}
+ */
+function printSetupMessages(): void {
+  setupMessages.forEach(msgObj =>
+    getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg)
+  );
+}
+
+/**
  * Returns true if user agent indicate that browser is Safari
  * @returns {boolean} - if browser is Safari
  */
 function isSafari(): boolean {
-  return Env.browser.name.includes("Safari");
+  return Env.browser.name.includes('Safari');
 }
 
 /**
@@ -276,10 +331,12 @@ function isSafari(): boolean {
  * @returns {boolean} - if browser is Chrome on iOS
  */
 function isIos(): boolean {
-  return (Env.os.name === "iOS");
+  return (Env.os.name === 'iOS');
 }
 
 export {
+  printSetupMessages,
+  supportLegacyOptions,
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,

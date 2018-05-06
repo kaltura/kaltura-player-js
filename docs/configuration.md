@@ -8,7 +8,7 @@ var config = {
 var player = KalturaPlayer.setup(config);
 ```
 
-#### Configuration Structure  
+#### Configuration Structure
 
 The configuration uses the following structure:
 
@@ -17,7 +17,10 @@ The configuration uses the following structure:
   targetId: string,
   logLevel: string,
   disableUserCache: boolean,
-  player: PKPlayerOptionsObject,
+  playback: PKPlaybackConfigObject,
+  sources: PKSourcesConfigObject,
+  plugins: PKPluginsConfigObject,
+  session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   ui: UIOptionsObject
 }
@@ -33,27 +36,36 @@ The configuration uses the following structure:
 >##### Default: `"ERROR"`
 >##### Description: Defines the player log level.
 >Possible values: `"DEBUG", "INFO", "TIME", "WARN", "ERROR", "OFF"`
-## 
+##
 >### config.disableUserCache
 >##### Type: `boolean`
 >##### Default: `false`
 >##### Description: Indicates whether to stop using the saved user preferences.
 <br>More on user preferences in the player can be found [here](./user-preferences.md).
-## 
->### config.player
->##### Type: `PKPlayerOptionsObject`
->##### Description: Defines the player configuration.
->Full configuration documentation for the config.player can be found [here](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md). 
+##
+>### config.playback
+>##### Type: `PKPlaybackConfigObject`
+>##### Description: Defines the playback configuration.
+>### config.sources
+>##### Type: `PKSourcesConfigObject`
+>##### Description: Defines the sources configuration.
+>### config.plugins
+>##### Type: `PKPluginsConfigObject`
+>##### Description: Defines the plugins configuration.
+>### config.session
+>##### Type: `PKSessionConfigObject`
+>##### Description: Defines the session configuration.
+>Full configuration documentation for the `playback`,`sources`,`plugins`,`session` can be found [here](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md).
 ##
 >### config.provider
 >##### Type: `ProviderOptionsObject`
 >##### Description: Defines the provider configuration.
->Full configuration documentation for the config.provider can be found [here](https://github.com/kaltura/playkit-js-providers/blob/master/docs/configuration.md). 
+>Full configuration documentation for the config.provider can be found [here](https://github.com/kaltura/playkit-js-providers/blob/master/docs/configuration.md).
 ##
 >### config.ui
 >##### Type: `UIOptionsObject`
 >##### Description: Defines the user interface (UI) configuration.
->Full configuration documentation for the config.ui can be found [here](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md). 
+>Full configuration documentation for the config.ui can be found [here](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md).
 
 ## Configuration Priority
 In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, meaning has a greater or less impact on how the player is configured.
@@ -62,8 +74,8 @@ Available sources include:
 
 * **Application** - This is the application that embeds the player and can configures the player inline upon instantiation.
 * **Server** - A partner configuration that is saved on the server. The partner can use this configuration when configuring the player by suppling the `uiConfId` value.
-* **Local Storage (Browser)** - This is the user preferences configuration, which is saved in the local storage of the browser. 
-* **Default Player Configuration** - The default player configuration is defined internally by the player. 
+* **Local Storage (Browser)** - This is the user preferences configuration, which is saved in the local storage of the browser.
+* **Default Player Configuration** - The default player configuration is defined internally by the player.
 
 When the player builds its runtime configuration, it will need to how to built the configuration correctly according to the priority of each configuration, which is as follows (#1 is highest; #4 is lowest):
 

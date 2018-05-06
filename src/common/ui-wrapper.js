@@ -1,6 +1,7 @@
 // @flow
 import {UIManager} from 'playkit-js-ui'
-import {getPreviewThumbnailConfig} from 'poster-and-thumbs'
+import {Utils} from 'playkit-js'
+import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
 
 class UIWrapper {
   _uiManager: UIManager;
@@ -27,20 +28,19 @@ class UIWrapper {
 
   setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
     if (this._disabled) return;
-    this._uiManager.setConfig({mediaInfo: mediaInfo}, 'error');
+    this.setConfig({mediaInfo: mediaInfo}, 'error');
   }
 
-  setSeekbarConfig(mediaConfig: Object): void {
+  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject): void {
     if (this._disabled) return;
-    const seekbarConfig = getPreviewThumbnailConfig(this._uiManager, mediaConfig);
-    if (seekbarConfig) {
-      this._uiManager.setConfig(seekbarConfig, 'seekbar');
-    }
+    const seekbarConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.seekbar');
+    const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
+    this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
   }
 
   setLoadingSpinnerState(show: boolean): void {
     if (this._disabled) return;
-    this._uiManager.setConfig({show: show}, 'loading');
+    this.setConfig({show: show}, 'loading');
   }
 }
 
@@ -54,6 +54,26 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLDivElemen
   const targetContainer = document.getElementById(targetId);
   if (targetContainer) {
     targetContainer.appendChild(view);
+  }
+}
+
+/**
+ * Gets the preview thumbnail config for the ui seekbar component.
+ * @param {ProviderMediaConfigObject} mediaConfig - The provider media config.
+ * @param {SeekbarConfig} seekbarConfig - The seek bar config.
+ * @returns {?Object} - The seekbar component config.
+ */
+function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): ?Object {
+  const mediaConfigPoster = mediaConfig.sources && mediaConfig.sources.poster;
+  if (typeof mediaConfigPoster === 'string') {
+    const regex = /.*\/p\/(\d+)\/.*\/thumbnail\/entry_id\/(\w+)\/.*\d+/;
+    if (regex.test(mediaConfigPoster)) {
+      return {
+        thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
+        thumbsWidth: DEFAULT_THUMBS_WIDTH,
+        thumbsSlices: DEFAULT_THUMBS_SLICES
+      };
+    }
   }
 }
 
