@@ -2,12 +2,13 @@ import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 import {ValidationErrorType} from '../../../../src/common/utils/validation-error'
 import StorageManager from '../../../../src/common/storage/storage-manager'
 import {
-  createKalturaPlayerContainer,
-  validateConfig,
   checkNativeHlsSupport,
-  isSafari,
+  createKalturaPlayerContainer,
   isIos,
-  setStorageConfig
+  isSafari,
+  setStorageConfig,
+  supportLegacyOptions,
+  validateConfig
 } from '../../../../src/common/utils/setup-helpers'
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -68,7 +69,7 @@ describe('createKalturaPlayerContainer', function () {
     let containerId = createKalturaPlayerContainer(targetId);
     let el = document.getElementById(containerId);
     el.should.exist;
-    el.className.should.equal("kaltura-player-container");
+    el.className.should.equal('kaltura-player-container');
   });
 });
 
@@ -169,8 +170,8 @@ describe('setStorageConfig', function () {
     sandbox.stub(StorageManager, 'hasStorage', () => true);
     sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
     setStorageConfig(config);
-    config.player.playback.textLanguage.should.equal('eng');
-    config.player.playback.audioLanguage.should.equal('fra');
+    config.playback.textLanguage.should.equal('eng');
+    config.playback.audioLanguage.should.equal('fra');
   });
 
   it('should take the storage config in case no player config', function () {
@@ -185,7 +186,81 @@ describe('setStorageConfig', function () {
     sandbox.stub(StorageManager, 'hasStorage', () => true);
     sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
     setStorageConfig(config);
-    config.player.playback.textLanguage.should.equal('eng');
-    config.player.playback.audioLanguage.should.equal('fra');
+    config.playback.textLanguage.should.equal('eng');
+    config.playback.audioLanguage.should.equal('fra');
+  });
+});
+
+describe('supportLegacyOptions', function () {
+  let sandbox;
+  const legacyOptions = {
+    targetId: 'player-placeholder',
+    player: {
+      dvr: false,
+      type: 'Live',
+      duration: 10000,
+      name: 'name',
+      playback: {
+        autoplay: false
+      },
+      metadata: {
+        poster: 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg'
+      }
+    },
+    provider: {
+      partnerId: 1091
+    },
+    ui: {
+      components: {
+        seekbar: {
+          thumbsSprite: 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg'
+        }
+      }
+    }
+  };
+
+  const options = {
+    targetId: 'player-placeholder',
+    sources: {
+      dvr: false,
+      type: 'Live',
+      duration: 10000,
+      poster: 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg',
+      metadata: {
+        name: 'name'
+      }
+    },
+    playback: {
+      autoplay: false
+    },
+    provider: {
+      partnerId: 1091
+    },
+    ui: {
+      components: {
+        seekbar: {
+          thumbsSprite: 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg'
+        }
+      }
+    }
+  };
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it('should transform options with the old structure', function () {
+    supportLegacyOptions(legacyOptions);
+    legacyOptions.should.deep.equal(options);
+  });
+
+  it('should not transform config with the new structure', function () {
+    supportLegacyOptions(options);
+    legacyOptions.should.deep.equal(options);
   });
 });

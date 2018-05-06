@@ -1,40 +1,25 @@
 // @flow
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../common/utils/thumbs'
-import {Utils} from 'playkit-js'
-import {UIManager} from 'playkit-js-ui'
-
 /**
  * Add poster with player dimensions.
  * If poster is string and width and height exists in template we need to make a thumbnail API call.
  * If poster is array of objects we need to choose the best fit dimensions according to the player dimensions.
- * @param {Object} metadata - metadata container
- * @param {number} width - player width in px
- * @param {number} height - player height in px
+ * @param {PKSourcesConfigObject} playerSources - player sources container
+ * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
+ * @param {Object} dimensions - player dimensions object
  * @returns {void}
  */
-function addKalturaPoster(metadata: Object, width: number, height: number): void {
-  if (typeof metadata.poster === 'string') {
+function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): void {
+  const playerPoster = playerSources.poster;
+  const mediaConfigPoster = mediaSources.poster;
+  const playerWidth = dimensions.width;
+  const playerHeight = dimensions.height;
+  if (typeof playerPoster === 'string' && playerPoster === mediaConfigPoster) {
     const regex = /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
-    if (regex.test(metadata.poster)) {
-      metadata.poster = setPlayerDimensionsOnPoster(metadata.poster, width, height);
+    if (regex.test(playerPoster)) {
+      playerSources.poster = setPlayerDimensionsOnPoster(playerPoster, playerWidth, playerHeight);
+    } else if (Array.isArray(playerPoster)) {
+      playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
     }
-  } else if (Array.isArray(metadata.poster)) {
-    metadata.poster = selectPosterByPlayerDimensions(metadata.poster, width, height);
-  }
-}
-
-/**
- * Gets the preview thumbnail config for the ui seekbar component.
- * @param {UIManager} uiManager - The ui manager.
- * @returns {?Object} - The preview thumbnail config.
- */
-function getPreviewThumbnailConfig(uiManager: UIManager): ?Object {
-  let seekbarConfig = Utils.Object.getPropertyPath(uiManager, 'config.components.seekbar');
-  if (seekbarConfig) {
-    return Utils.Object.mergeDeep({
-      thumbsWidth: DEFAULT_THUMBS_WIDTH,
-      thumbsSlices: DEFAULT_THUMBS_SLICES
-    }, seekbarConfig);
   }
 }
 
@@ -81,4 +66,4 @@ function selectPosterByPlayerDimensions(posters: Array<Object>, playerWidth: num
   return url;
 }
 
-export {addKalturaPoster, getPreviewThumbnailConfig};
+export {addKalturaPoster};

@@ -7,8 +7,12 @@ const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function () {
   let config, kalturaPlayer, sandbox;
-  const entryId = '1_h14v9eug';
-  const partnerId = 2196781;
+  const entryId = '0_wifqaipd';
+  const partnerId = 1091;
+  const env = {
+    cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
+    serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+  };
 
   before(function () {
     TestUtils.createElement('DIV', targetId);
@@ -19,7 +23,8 @@ describe('setup', function () {
     config = {
       targetId: targetId,
       provider: {
-        partnerId: partnerId
+        partnerId: partnerId,
+        env: env
       }
     };
   });
@@ -39,7 +44,7 @@ describe('setup', function () {
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId})
       .then(() => {
-        kalturaPlayer.config.id.should.equal(entryId);
+        kalturaPlayer.config.sources.id.should.equal(entryId);
         kalturaPlayer.config.session.partnerId.should.equal(partnerId);
         done();
       });

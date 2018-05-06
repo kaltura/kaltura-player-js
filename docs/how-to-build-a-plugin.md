@@ -107,7 +107,7 @@ Returns: ```string``` - The plugin name.
 
 Returns: ```void``` - Dispatches an event from the player.
 #
-### Methods to Implement  
+### Methods to Implement
 
 > #### ```(static) isValid(player)```
 
@@ -160,7 +160,7 @@ Now, lets take a look at the `registerPlugin` API.
 
 
 
-# Writing a Basic Plugin  
+# Writing a Basic Plugin
 
 In this section, we'll learn how to write a simple plugin, one that doesn't require any installation or setup steps except for a player script in hand (remotely or locally).
 
@@ -265,9 +265,9 @@ class MyPlugin extends KalturaPlayer.core.BasePlugin {
   constructor(name, player, config) {
     super(name, player, config);
   }
-  
+
   destroy() {}
-  
+
   reset() {}
 }
 ```
@@ -385,11 +385,9 @@ All that's left now is to verify that the player activates the plugin during run
 1 . Include the new plugin name and plugin configuration in the player configuration. For example:
 ```js
 var config = {
-    player: {
-        plugins: {
-            myPlugin: {
-                myValue: 10
-            }
+    plugins: {
+        myPlugin: {
+            myValue: 10
         }
     }
 };
@@ -409,11 +407,9 @@ var config = {
     provider: {
         partnerId: "YOUR_PARTNER_ID"
     },
-    player: {
-        plugins: {
-            myPlugin: {
-                myValue: 10
-            }
+    plugins: {
+        myPlugin: {
+            myValue: 10
         }
     }
 };
@@ -447,11 +443,9 @@ var config = {
     provider: {
         partnerId: "YOUR_PARTNER_ID"
     },
-    player: {
-        plugins: {
-            myPlugin: {
-                myValue: 10
-            }
+    plugins: {
+        myPlugin: {
+            myValue: 10
         }
     }
 };

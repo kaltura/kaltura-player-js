@@ -26,21 +26,21 @@ function getDirectManifestUri(data: Object, uri: string): string {
 
 /**
  * Add external stream redirect configuration to the general config.
- * @param {Object} config - Player config.
+ * @param {KalturaPlayerOptionsObject} options - kaltura player options.
  * @returns {void}
  */
-function configureExternalStreamRedirect(config: Object): void {
-  let sourceOptions = Utils.Object.getPropertyPath(config, 'sources.options');
+function configureExternalStreamRedirect(options: KalturaPlayerOptionsObject): void {
+  let sourceOptions = Utils.Object.getPropertyPath(options, 'sources.options');
   if (!sourceOptions) {
-    Utils.Object.mergeDeep(config, {
+    Utils.Object.mergeDeep(options, {
       sources: {
         options: {}
       }
     });
-    sourceOptions = config.sources.options;
+    sourceOptions = options.sources && options.sources.options;
   }
-  if (typeof sourceOptions.redirectExternalStreamsHandler !== "function") {
-      sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
+  if (sourceOptions && typeof sourceOptions.redirectExternalStreamsHandler !== 'function') {
+    sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
   }
 }
 
