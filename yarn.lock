@@ -4548,9 +4548,9 @@ pkginfo@0.x.x:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.4.1.tgz#b5418ef0439de5425fc4995042dced14fb2a84ff"
 
-"playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#v1.6.0":
-  version "1.6.0"
-  resolved "https://github.com/kaltura/playkit-js-dash.git#b1a9aba261a8df0415a206844d7e4fd6bf6e77bf"
+"playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#v1.6.1":
+  version "1.6.1"
+  resolved "https://github.com/kaltura/playkit-js-dash.git#f12b85c9e25e0365c079acf0d432d6591125bade"
 
 "playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.0":
   version "3.3.0"
@@ -4563,9 +4563,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.6.0":
-  version "1.6.0"
-  resolved "https://github.com/kaltura/playkit-js-hls.git#d3c5bd60621c3608a3ec76ed3978e7659b84b4c4"
+"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.6.1":
+  version "1.6.1"
+  resolved "https://github.com/kaltura/playkit-js-hls.git#7c6010690be22b596374d86759edb02e25e47954"
 
 "playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.5.4":
   version "0.5.4"
@@ -4581,15 +4581,15 @@ pkginfo@0.x.x:
   version "0.1.1"
   resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#9af59f12b7bdb64dc6f868b85722e8128f0061ef"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.2.0":
-  version "2.2.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#43b7e662b277c0921164376283f58fee30d923f7"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.3.0":
+  version "2.3.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#b91a522fbbc8328d8981cb0ac8faa2d5986fc55e"
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.22.3":
-  version "0.22.3"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#5a178789c52ca296147e97b24aa2d084012157e5"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.23.0":
+  version "0.23.0"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#8ef3db33c4043cea7bbcaaa2c67e91ab452bb813"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -4603,9 +4603,9 @@ pkginfo@0.x.x:
   version "0.3.3"
   resolved "https://github.com/kaltura/playkit-js-youbora.git#c40fdf2dfd1cae54076ba0271125a40ff39472e8"
 
-"playkit-js@https://github.com/kaltura/playkit-js.git#v0.26.0":
-  version "0.26.0"
-  resolved "https://github.com/kaltura/playkit-js.git#bb193bd2accf7d4c268e66c2fcd04466e755d89f"
+"playkit-js@https://github.com/kaltura/playkit-js.git#v0.27.0":
+  version "0.27.0"
+  resolved "https://github.com/kaltura/playkit-js.git#600aa8e2056e6503b76e496c76b0e3c55b454d26"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
