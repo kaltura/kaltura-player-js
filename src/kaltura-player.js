@@ -58,9 +58,9 @@ export default class KalturaPlayer {
     Utils.Object.mergeDeep(playerConfig.plugins, this._player.config.plugins);
     Utils.Object.mergeDeep(playerConfig.session, this._player.config.session);
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._player.dimensions);
-    this._uiWrapper.setSeekbarConfig(mediaConfig);
-    addKalturaParams(playerConfig.sources, this._player);
+    addKalturaParams(this._player, playerConfig);
     evaluatePluginsConfig(playerConfig);
+    this._uiWrapper.setSeekbarConfig(mediaConfig);
     this._player.configure(playerConfig);
   }
 
