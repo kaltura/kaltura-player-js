@@ -48,7 +48,10 @@ function evaluatePluginsConfig(playerConfig: PKPlayerOptionsObject): void {
     if (playerConfig.plugins) {
       Object.keys(playerConfig.plugins).forEach((pluginName) => {
         if (playerConfig.plugins && playerConfig.plugins[pluginName]) {
-          Utils.Object.mergeDeep(playerConfig.plugins[pluginName], evaluatedConfigObj[pluginName]);
+          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], playerConfig.plugins[pluginName]);
+          if (playerConfig.plugins) {
+            playerConfig.plugins[pluginName] = mergedConfig;
+          }
         }
       });
     }
