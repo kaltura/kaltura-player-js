@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.25.2"></a>
+## [0.25.2](https://github.com/kaltura/kaltura-player-js/compare/v0.25.1...v0.25.2) (2018-05-08)
+
+
+### Bug Fixes
+
+* **FEC-8204:** cannot set entry id via plugin config ([#119](https://github.com/kaltura/kaltura-player-js/issues/119)) ([a103792](https://github.com/kaltura/kaltura-player-js/commit/a103792))
+
+
+
 <a name="0.25.1"></a>
 ## [0.25.1](https://github.com/kaltura/kaltura-player-js/compare/v0.25.0...v0.25.1) (2018-05-01)
 
