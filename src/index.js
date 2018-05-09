@@ -29,9 +29,6 @@ import * as providers from 'playkit-js-providers'
 import 'playkit-js-hls'
 import 'playkit-js-dash'
 
-// Import common plugins
-import 'playkit-js-youbora'
-import 'playkit-js-ima'
 
 // Import analytics plugin
 import 'playkit-js-analytics'
