@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.27.0"></a>
+# [0.27.0](https://github.com/kaltura/kaltura-player-js/compare/v0.26.0...v0.27.0) (2018-05-10)
+
+
+### Bug Fixes
+
+* **FEC-8202:** Session ID isn't sent when reporting analytics ([#118](https://github.com/kaltura/kaltura-player-js/issues/118)) ([72c4b4e](https://github.com/kaltura/kaltura-player-js/commit/72c4b4e))
+* **FEC-8204:** cannot set entry id via plugin config ([#119](https://github.com/kaltura/kaltura-player-js/issues/119)) ([2b80765](https://github.com/kaltura/kaltura-player-js/commit/2b80765))
+
+
+### Features
+
+* remove youbora & ima plugins from kaltura player bundle ([#120](https://github.com/kaltura/kaltura-player-js/issues/120)) ([9cc5766](https://github.com/kaltura/kaltura-player-js/commit/9cc5766))
+
+
+
 <a name="0.26.0"></a>
 # [0.26.0](https://github.com/kaltura/kaltura-player-js/compare/v0.25.1...v0.26.0) (2018-05-06)
 
