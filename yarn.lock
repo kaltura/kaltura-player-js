@@ -5462,9 +5462,9 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-shaka-player@2.3.3:
+"shaka-player@https://github.com/kaltura/shaka-player.git#v2.3.3-k-3":
   version "2.3.3"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.3.3.tgz#ea1e62df834300eea0727b1cf93649a252a24d03"
+  resolved "https://github.com/kaltura/shaka-player.git#cec56a7e777bfbd969260aa3602cfa4c1c5d9e93"
 
 shebang-command@^1.2.0:
   version "1.2.0"
