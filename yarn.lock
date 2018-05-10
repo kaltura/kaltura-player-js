@@ -3434,10 +3434,6 @@ istanbul@^0.4.0, istanbul@^0.4.5:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-javascript-state-machine@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/javascript-state-machine/-/javascript-state-machine-3.0.1.tgz#327320336a20364e26b51d91662c14f14d41ea52"
-
 js-base64@^2.1.9:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.3.2.tgz#a79a923666372b580f8e27f51845c6f7e8fbfbaf"
@@ -4567,12 +4563,6 @@ pkginfo@0.x.x:
   version "1.6.1"
   resolved "https://github.com/kaltura/playkit-js-hls.git#7c6010690be22b596374d86759edb02e25e47954"
 
-"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.5.5":
-  version "0.5.5"
-  resolved "https://github.com/kaltura/playkit-js-ima.git#c275462456514d40c84991b9ccdbc5d06ee86dad"
-  dependencies:
-    javascript-state-machine "^3.0.1"
-
 "playkit-js-kanalytics@https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.3":
   version "0.8.3"
   resolved "https://github.com/kaltura/playkit-js-kanalytics.git#418af047b4e7463d7e79350b6a46c3111d49ba20"
@@ -4598,10 +4588,6 @@ pkginfo@0.x.x:
     preact-portal "^1.1.2"
     preact-redux "^2.0.1"
     redux "^3.6.0"
-
-"playkit-js-youbora@https://github.com/kaltura/playkit-js-youbora.git#v0.3.3":
-  version "0.3.3"
-  resolved "https://github.com/kaltura/playkit-js-youbora.git#c40fdf2dfd1cae54076ba0271125a40ff39472e8"
 
 "playkit-js@https://github.com/kaltura/playkit-js.git#v0.27.0":
   version "0.27.0"
