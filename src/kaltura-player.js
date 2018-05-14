@@ -8,11 +8,12 @@ import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import {addKalturaPoster} from 'poster'
 import './assets/style.css'
 import {UIWrapper} from './common/ui-wrapper'
+import * as providers from './common/provider-manager'
 
 export default class KalturaPlayer {
   _player: Player;
   _playerConfigure: Function;
-  _provider: Provider;
+  _provider: Provider | null = null;
   _uiWrapper: UIWrapper;
   _logger: any;
 
@@ -21,7 +22,10 @@ export default class KalturaPlayer {
     this._playerConfigure = this._player.configure.bind(this._player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this._player, options.ui);
-    this._provider = new Provider(options.provider, __VERSION__);
+    if (providers.exists(options.provider.type)) {
+      const Provider = providers.get(options.provider.type);
+      this._provider = new Provider(options.provider, __VERSION__);
+    }
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
       configure: config => this.configure(config),
@@ -40,6 +44,10 @@ export default class KalturaPlayer {
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
+    if (this._provider === null){
+      this._logger.error('loadMedia requires a provider, but no provider was found. Did you forget setting a provider type?');
+      return;
+    }
     this._player.reset();
     this._player.loadingMedia = true;
     this._uiWrapper.setErrorPresetConfig(mediaInfo);

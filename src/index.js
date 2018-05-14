@@ -23,29 +23,45 @@ import * as core from 'playkit-js'
 import * as ui from 'playkit-js-ui'
 
 // Import provider
-import * as providers from 'playkit-js-providers'
-
-// Import media source adapters
-import 'playkit-js-hls'
-import 'playkit-js-dash'
-
-
-// Import analytics plugin
-import 'playkit-js-analytics'
-
-// Import shaka-player
-import * as shaka from 'shaka-player'
+// import * as providers from 'playkit-js-providers'
 
 // Import setup method
 import {setup} from './setup'
+
+// const PLAYER_TYPE = __PLAYER_TYPE__;
+const PLAYER_NAME = __NAME__;
+const VERSION = __VERSION__;
+const NAME = __NAME__;
+const PLAYER_TYPE = 'ovp';
+import * as providers from './common/provider-manager'
+
+// Auto-register providers
+if (playkit && playkit.providers){
+  Object.entries(playkit.providers).forEach(([name, provider]) => {
+    providers.register(name, provider.Provider);
+  });
+}
+
+// if (playkit && playkit.adapters){
+//   Object.entries(playkit.adapters).forEach(([name, adapter]) => {
+//     adapters.register(name, adapter.Adapter);
+//   });
+// }
+
+// if (playkit && playkit.adapters){
+//   Object.entries(playkit.adapters).forEach(([name, adapter]) => {
+//     adapters.register(name, adapter.Adapter);
+//   });
+// }
 
 export {
   core,
   ui,
   providers,
+  // adapters,
   setup,
-  shaka,
-  __PLAYER_TYPE__ as PLAYER_TYPE,
-  __VERSION__ as VERSION,
-  __NAME__ as PLAYER_NAME
+  PLAYER_TYPE,
+  VERSION,
+  NAME,
+  PLAYER_NAME
 };

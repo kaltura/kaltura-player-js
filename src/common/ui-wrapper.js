@@ -1,18 +1,18 @@
 // @flow
-import {UIManager} from 'playkit-js-ui'
+import * as ui from 'playkit-js-ui'
 import {Utils} from 'playkit-js'
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
 
 class UIWrapper {
-  _uiManager: UIManager;
+  _uiManager: ui.UIManager;
   _disabled: boolean = false;
 
   constructor(player: Player, config: UIOptionsObject) {
-    if (config.disable) {
+    if (config.disable || typeof ui.UIManager === "undefined") {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
     } else {
-      this._uiManager = new UIManager(player, config);
+      this._uiManager = new ui.UIManager(player, config);
       if (config.customPreset) {
         this._uiManager.buildCustomUI(config.customPreset)
       } else {
