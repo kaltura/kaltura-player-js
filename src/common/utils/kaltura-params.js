@@ -76,6 +76,20 @@ function updateSessionIdInUrl(source: Object = {}, sessionId: ?string): void {
 }
 
 /**
+ * @return {string} - The referrer
+ * @private
+ */
+function getReferrer(): string {
+  let referrer;
+  try {
+    referrer = window.parent.document.URL;
+  } catch (e) { // unfriendly iframe
+    referrer = document.referrer;
+  }
+  return btoa(referrer).substr(0, 1000);
+}
+
+/**
  * @param {PKMediaSourceObject} source - source
  * @return {void}
  * @private
@@ -83,7 +97,7 @@ function updateSessionIdInUrl(source: Object = {}, sessionId: ?string): void {
 function addReferrer(source: PKMediaSourceObject): void {
   if (source.url.indexOf(REFERRER) === -1) {
     let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + REFERRER + btoa(document.referrer || document.URL);
+    source.url += delimiter + REFERRER + getReferrer();
   }
 }
 
@@ -123,4 +137,4 @@ function addKalturaParams(player: Player, playerConfig: PartialKalturaPlayerOpti
   });
 }
 
-export {addKalturaParams, handleSessionId, updateSessionIdInUrl, addReferrer, addClientTag}
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag}
