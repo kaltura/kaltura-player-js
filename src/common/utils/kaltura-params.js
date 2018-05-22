@@ -86,7 +86,7 @@ function getReferrer(): string {
   } catch (e) { // unfriendly iframe
     referrer = document.referrer;
   }
-  return btoa(referrer).substr(0, 1000);
+  return referrer;
 }
 
 /**
@@ -97,7 +97,8 @@ function getReferrer(): string {
 function addReferrer(source: PKMediaSourceObject): void {
   if (source.url.indexOf(REFERRER) === -1) {
     let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + REFERRER + getReferrer();
+    let referrer = btoa(getReferrer().substr(0, 1000));
+    source.url += delimiter + REFERRER + referrer;
   }
 }
 
