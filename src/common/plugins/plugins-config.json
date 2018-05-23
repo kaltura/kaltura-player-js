@@ -27,7 +27,8 @@
   "ottAnalytics": {
     "entryId": "{{entryId}}",
     "ks": "{{ks}}",
-    "partnerId": "{{partnerId}}"
+    "partnerId": "{{partnerId}}",
+    "serviceUrl": "{{serviceUrl}}"
   },
   "ima": {
     "playerVersion": "{{pVersion}}",

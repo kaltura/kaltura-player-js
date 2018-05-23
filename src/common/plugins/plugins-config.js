@@ -10,10 +10,13 @@ import {Utils} from 'playkit-js'
  */
 function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
   if (options.plugins) {
-    const dataModel = {
+    const dataModel: Object = {
       pVersion: __VERSION__,
       pName: __NAME__
     };
+    if (options.provider && options.provider.env) {
+      dataModel['serviceUrl'] = options.provider.env.serviceUrl;
+    }
     if (options.session && options.sources) {
       const entryDataModel = {
         entryId: options.sources.id,
