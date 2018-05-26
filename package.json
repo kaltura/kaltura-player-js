@@ -81,14 +81,16 @@
     "babel-polyfill": "^6.23.0",
     "hls.js": "^0.8.9",
     "js-logger": "^1.3.0",
-    "playkit-js": "https://github.com/kaltura/playkit-js.git#v0.27.1",
+    "playkit-js": "https://github.com/kaltura/playkit-js.git#v0.28.0",
     "playkit-js-dash": "https://github.com/kaltura/playkit-js-dash.git#v1.6.2",
     "playkit-js-hls": "https://github.com/kaltura/playkit-js-hls.git#v1.6.2",
-    "playkit-js-kanalytics": "https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.3",
-    "playkit-js-ott-analytics": "https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.1",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.3.0",
-    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.23.2",
-    "shaka-player": "https://github.com/kaltura/shaka-player.git#v2.3.3-k-3"
+    "playkit-js-ima": "https://github.com/kaltura/playkit-js-ima.git#v0.6.1",
+    "playkit-js-kanalytics": "https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.4",
+    "playkit-js-ott-analytics": "https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.2",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.3.2",
+    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.23.3",
+    "shaka-player": "https://github.com/kaltura/shaka-player.git#v2.3.3-k-3",
+    "undefined": "^0.1.0"
   },
   "repository": {
     "type": "git",
