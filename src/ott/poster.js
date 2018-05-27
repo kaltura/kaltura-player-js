@@ -17,9 +17,9 @@ function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: Pr
     const regex = /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
     if (regex.test(playerPoster)) {
       playerSources.poster = setPlayerDimensionsOnPoster(playerPoster, playerWidth, playerHeight);
-    } else if (Array.isArray(playerPoster)) {
-      playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
     }
+  } else if (Array.isArray(playerPoster)) {
+    playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
   }
 }
 
