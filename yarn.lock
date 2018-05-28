@@ -3434,10 +3434,6 @@ istanbul@^0.4.0, istanbul@^0.4.5:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-javascript-state-machine@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/javascript-state-machine/-/javascript-state-machine-3.0.1.tgz#327320336a20364e26b51d91662c14f14d41ea52"
-
 js-base64@^2.1.9:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.3.2.tgz#a79a923666372b580f8e27f51845c6f7e8fbfbaf"
@@ -4566,12 +4562,6 @@ pkginfo@0.x.x:
 "playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.6.2":
   version "1.6.2"
   resolved "https://github.com/kaltura/playkit-js-hls.git#3aa9febc59bdd58f2f9277193b87266b3fbc0552"
-
-"playkit-js-ima@https://github.com/kaltura/playkit-js-ima.git#v0.6.1":
-  version "0.6.1"
-  resolved "https://github.com/kaltura/playkit-js-ima.git#881e999a8599edd5b842d138557a041d6df9dff0"
-  dependencies:
-    javascript-state-machine "^3.0.1"
 
 "playkit-js-kanalytics@https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.4":
   version "0.8.4"
