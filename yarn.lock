@@ -4548,9 +4548,9 @@ pkginfo@0.x.x:
   version "1.6.2"
   resolved "https://github.com/kaltura/playkit-js-dash.git#b73ca71de4914c059b170190569244d1c145125e"
 
-"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.0":
-  version "3.3.0"
-  resolved "https://github.com/kaltura/playkit-js-env-manager.git#c98b0a18e1c839a4b857b7f624924d98d59f11b3"
+"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.1":
+  version "3.3.1"
+  resolved "https://github.com/kaltura/playkit-js-env-manager.git#b6148acd36778212ceb9bd7cee3bdae3389a8088"
   dependencies:
     chalk "^2.1.0"
     fs "0.0.1-security"
