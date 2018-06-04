@@ -16,10 +16,22 @@ function getDirectManifestUri(data: Object, uri: string): string {
   // if the json contains one url, it means it is a redirect url. if it contains few urls, it means its the flavours
   // so we should use the original url.
   const uriHost = getHostName(uri);
-  const hasOneFlavor = data && data.flavors && (data.flavors.length === 1);
-  const flavorUriHost = hasOneFlavor && getHostName(data.flavors[0].url);
-  if (hasOneFlavor && (uriHost !== flavorUriHost)) {
-    return data.flavors[0].url;
+  let hasOneFlavor = false;
+  let redirectedUriHost = "";
+  let redirectedUri = "";
+  if (data) {
+    if (data.flavors && Array.isArray(data.flavors)) {
+      hasOneFlavor = data.flavors.length === 1;
+      redirectedUriHost = hasOneFlavor && getHostName(data.flavors[0].url);
+      redirectedUri = data.flavors[0].url;
+    } else if (data.result) {
+      hasOneFlavor = true;
+      redirectedUriHost = getHostName(data.result.url);
+      redirectedUri = data.result.url;
+    }
+  }
+  if (hasOneFlavor && (uriHost !== redirectedUriHost)) {
+    return redirectedUri;
   }
   return uri;
 }
