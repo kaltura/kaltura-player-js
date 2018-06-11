@@ -7,17 +7,17 @@ import {Utils} from 'playkit-js'
  * @returns {void}
  */
 export function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
-  const kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
+  let kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
   if (!kavaPlugin) {
-    Utils.Object.mergeDeep(options, {
+    kavaPlugin = Utils.Object.mergeDeep(options, {
       plugins: {
         kava: {}
       }
     });
   }
-  const kanalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.kanalytics');
+  let kanalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.kanalytics');
   if (!kanalyticsPlugin) {
-    Utils.Object.mergeDeep(options, {
+    kanalyticsPlugin = Utils.Object.mergeDeep(options, {
       plugins: {
         kanalytics: {}
       }
