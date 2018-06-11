@@ -23,7 +23,7 @@ export function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): 
       }
     });
   }
-  if (!kavaPlugin.disable && !kanalyticsPlugin.disable) {
+  if (options.plugins && !kavaPlugin.disable && !kanalyticsPlugin.disable) {
     Object.assign(options.plugins.kanalytics, {hasKanalony: true});
   }
 }
