@@ -1,6 +1,7 @@
 //@flow
 import pluginsConfig from './plugins-config.json'
 import evaluate from '../utils/evaluate'
+import {getReferrer} from '../utils/kaltura-params'
 import {Utils} from 'playkit-js'
 
 /**
@@ -9,10 +10,13 @@ import {Utils} from 'playkit-js'
  */
 function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
   if (options.plugins) {
-    const dataModel = {
+    const dataModel: Object = {
       pVersion: __VERSION__,
       pName: __NAME__
     };
+    if (options.provider && options.provider.env) {
+      dataModel['serviceUrl'] = options.provider.env.serviceUrl;
+    }
     if (options.session && options.sources) {
       const entryDataModel = {
         entryId: options.sources.id,
@@ -21,7 +25,8 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
         sessionId: options.session.id,
         ks: options.session.ks,
         uiConfId: options.session.uiConfId,
-        partnerId: options.session.partnerId
+        partnerId: options.session.partnerId,
+        referrer: getReferrer()
       };
       Object.keys(entryDataModel).forEach(key => {
         if (entryDataModel[key] === undefined) {

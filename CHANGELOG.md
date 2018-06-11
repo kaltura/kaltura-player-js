@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.27.4"></a>
+## [0.27.4](https://github.com/kaltura/kaltura-player-js/compare/v0.27.3...v0.27.4) (2018-05-28)
+
+
+
+<a name="0.27.3"></a>
+## [0.27.3](https://github.com/kaltura/kaltura-player-js/compare/v0.27.2...v0.27.3) (2018-05-27)
+
+
+### Bug Fixes
+
+* **FEC-8261:** OTT Poster is now an object - we tried to load [Object Object] url ([#127](https://github.com/kaltura/kaltura-player-js/issues/127)) ([64851b2](https://github.com/kaltura/kaltura-player-js/commit/64851b2))
+
+
+
+<a name="0.27.2"></a>
+## [0.27.2](https://github.com/kaltura/kaltura-player-js/compare/v0.27.1...v0.27.2) (2018-05-26)
+
+
+### Bug Fixes
+
+* **FEC-8228:** calculate correct referrer param for inline and iframe embeds ([#123](https://github.com/kaltura/kaltura-player-js/issues/123)) ([71401cc](https://github.com/kaltura/kaltura-player-js/commit/71401cc))
+* **FEC-8235:** remove default service url from OTT provider and analytics ([#125](https://github.com/kaltura/kaltura-player-js/issues/125)) ([104bc9a](https://github.com/kaltura/kaltura-player-js/commit/104bc9a))
+* **FEC-8240:** support legacy config on configure API ([#126](https://github.com/kaltura/kaltura-player-js/issues/126)) ([9a817e5](https://github.com/kaltura/kaltura-player-js/commit/9a817e5))
+
+
+
+<a name="0.27.1"></a>
+## [0.27.1](https://github.com/kaltura/kaltura-player-js/compare/v0.27.0...v0.27.1) (2018-05-15)
+
+
+
 <a name="0.27.0"></a>
 # [0.27.0](https://github.com/kaltura/kaltura-player-js/compare/v0.26.0...v0.27.0) (2018-05-10)
 

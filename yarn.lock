@@ -4548,9 +4548,9 @@ pkginfo@0.x.x:
   version "1.6.2"
   resolved "https://github.com/kaltura/playkit-js-dash.git#b73ca71de4914c059b170190569244d1c145125e"
 
-"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.0":
-  version "3.3.0"
-  resolved "https://github.com/kaltura/playkit-js-env-manager.git#c98b0a18e1c839a4b857b7f624924d98d59f11b3"
+"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.1":
+  version "3.3.1"
+  resolved "https://github.com/kaltura/playkit-js-env-manager.git#b6148acd36778212ceb9bd7cee3bdae3389a8088"
   dependencies:
     chalk "^2.1.0"
     fs "0.0.1-security"
@@ -4563,23 +4563,23 @@ pkginfo@0.x.x:
   version "1.6.2"
   resolved "https://github.com/kaltura/playkit-js-hls.git#3aa9febc59bdd58f2f9277193b87266b3fbc0552"
 
-"playkit-js-kanalytics@https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.3":
-  version "0.8.3"
-  resolved "https://github.com/kaltura/playkit-js-kanalytics.git#418af047b4e7463d7e79350b6a46c3111d49ba20"
+"playkit-js-kanalytics@https://github.com/kaltura/playkit-js-kanalytics.git#v0.8.4":
+  version "0.8.4"
+  resolved "https://github.com/kaltura/playkit-js-kanalytics.git#0c2f95e37f829b9a46e5212913680bc623ddd0eb"
 
-"playkit-js-ott-analytics@https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.1":
-  version "0.1.1"
-  resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#9af59f12b7bdb64dc6f868b85722e8128f0061ef"
+"playkit-js-ott-analytics@https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.2":
+  version "0.1.2"
+  resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#dd25b15be79d9e49e99678aee07f862f54b4ffca"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.3.0":
-  version "2.3.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#b91a522fbbc8328d8981cb0ac8faa2d5986fc55e"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.3.2":
+  version "2.3.2"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#28eda39ac7c5da63ac2553a75e9c653e42c08cc0"
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.23.1":
-  version "0.23.1"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#787b6fee79a5d7db9650b2f7dce97dd5242dbd80"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.23.4":
+  version "0.23.4"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#edf12cdf8baf25935abe8f43b7baba71d5d97e34"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -4589,9 +4589,9 @@ pkginfo@0.x.x:
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"playkit-js@https://github.com/kaltura/playkit-js.git#v0.27.1":
-  version "0.27.1"
-  resolved "https://github.com/kaltura/playkit-js.git#16867ede73a7336c49ac5a8b8d860c7144e243a1"
+"playkit-js@https://github.com/kaltura/playkit-js.git#v0.28.0":
+  version "0.28.0"
+  resolved "https://github.com/kaltura/playkit-js.git#2393dd691bf14390aeb8604278e5cc52e24e758b"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
@@ -6064,6 +6064,10 @@ uid-number@^0.0.6:
 ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
+
+undefined@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/undefined/-/undefined-0.1.0.tgz#9b706a4b32ad30c20ca4fe65ddcbbbdac32bded0"
 
 uniq@^1.0.1:
   version "1.0.1"

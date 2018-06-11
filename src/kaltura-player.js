@@ -2,6 +2,7 @@
 import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from 'playkit-js'
 import {EventType as UIEventType} from 'playkit-js-ui'
 import {Provider} from 'playkit-js-providers'
+import {supportLegacyOptions} from './common/utils/setup-helpers'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
@@ -32,6 +33,7 @@ export default class KalturaPlayer {
   }
 
   configure(config: Object): void {
+    config = supportLegacyOptions(config);
     this._playerConfigure(config);
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);

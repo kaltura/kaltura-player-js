@@ -15,7 +15,8 @@
     "sessionId": "{{sessionId}}",
     "ks": "{{ks}}",
     "uiConfId": "{{uiConfId}}",
-    "partnerId": "{{partnerId}}"
+    "partnerId": "{{partnerId}}",
+    "referrer": "{{referrer}}"
   },
   "googleAnalytics": {
     "entryId": "{{entryId}}",
@@ -26,7 +27,8 @@
   "ottAnalytics": {
     "entryId": "{{entryId}}",
     "ks": "{{ks}}",
-    "partnerId": "{{partnerId}}"
+    "partnerId": "{{partnerId}}",
+    "serviceUrl": "{{serviceUrl}}"
   },
   "ima": {
     "playerVersion": "{{pVersion}}",
