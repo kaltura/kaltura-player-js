@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.28.0"></a>
+# [0.28.0](https://github.com/kaltura/kaltura-player-js/compare/v0.27.4...v0.28.0) (2018-06-11)
+
+
+### Features
+
+* **FEC-8281:** support jsonP redirect for OTT ([#128](https://github.com/kaltura/kaltura-player-js/issues/128)) ([34b4cf4](https://github.com/kaltura/kaltura-player-js/commit/34b4cf4))
+* kava plugin integration ([#90](https://github.com/kaltura/kaltura-player-js/issues/90)) ([de71162](https://github.com/kaltura/kaltura-player-js/commit/de71162))
+
+
+
 <a name="0.27.4"></a>
 ## [0.27.4](https://github.com/kaltura/kaltura-player-js/compare/v0.27.3...v0.27.4) (2018-05-28)
 
