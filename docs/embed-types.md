@@ -1,8 +1,8 @@
 # Embed Code Types
 
-When using embed codes, you can select from one of three options: Auto Embed, Dynamic Embed and Iframe Embed. You may want to use different embed code types in different situations, according to the explanations below. 
+When using embed codes, you can select from one of three options: Auto Embed, Dynamic Embed and Iframe Embed. You may want to use different embed code types in different situations, according to the explanations below.
 
-## Auto Embed  
+## Auto Embed
 
 Auto embed is the recommended embed code for the Kaltura Player. It uses precise code and is good for getting a player or widget onto the page quickly and easily without any runtime customizations.<br>
 
@@ -14,7 +14,7 @@ Auto embed is optimized for packing a lots of resources into the initial request
 <script type="text/javascript" src='https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config[playback]={"autoplay":true}'></script>
 ```
 
-## Dynamic Embed  
+## Dynamic Embed
 
 Dynamic embed is recommended for cases where you want to control runtime configuration dynamically and/or have more control over the embed call.<br>
 
@@ -31,11 +31,9 @@ Basic dynamic embed codes look like this:
           partnerId: {PARTNER_ID},
           uiConfId: {UICONF_ID}
         },
-        player: {
-          playback:{
-            autoplay: true
+        playback: {
+          autoplay: true
           }
-        }
       });
       kalturaPlayer.loadMedia({entryId: '{ENTRY_ID}'});
     } catch (e) {
@@ -44,7 +42,7 @@ Basic dynamic embed codes look like this:
   </script>
 ```
 
-## IFrame Embed  
+## IFrame Embed
 
 The iframe embed is good for sites that don't allow third-party JavaScript to be embedded in their pages. This makes the iFrame embed a better fit for sites that have stringent page security requirements.<br>
 

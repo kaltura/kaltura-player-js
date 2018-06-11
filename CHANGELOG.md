@@ -2,6 +2,237 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.27.4"></a>
+## [0.27.4](https://github.com/kaltura/kaltura-player-js/compare/v0.27.3...v0.27.4) (2018-05-28)
+
+
+
+<a name="0.27.3"></a>
+## [0.27.3](https://github.com/kaltura/kaltura-player-js/compare/v0.27.2...v0.27.3) (2018-05-27)
+
+
+### Bug Fixes
+
+* **FEC-8261:** OTT Poster is now an object - we tried to load [Object Object] url ([#127](https://github.com/kaltura/kaltura-player-js/issues/127)) ([64851b2](https://github.com/kaltura/kaltura-player-js/commit/64851b2))
+
+
+
+<a name="0.27.2"></a>
+## [0.27.2](https://github.com/kaltura/kaltura-player-js/compare/v0.27.1...v0.27.2) (2018-05-26)
+
+
+### Bug Fixes
+
+* **FEC-8228:** calculate correct referrer param for inline and iframe embeds ([#123](https://github.com/kaltura/kaltura-player-js/issues/123)) ([71401cc](https://github.com/kaltura/kaltura-player-js/commit/71401cc))
+* **FEC-8235:** remove default service url from OTT provider and analytics ([#125](https://github.com/kaltura/kaltura-player-js/issues/125)) ([104bc9a](https://github.com/kaltura/kaltura-player-js/commit/104bc9a))
+* **FEC-8240:** support legacy config on configure API ([#126](https://github.com/kaltura/kaltura-player-js/issues/126)) ([9a817e5](https://github.com/kaltura/kaltura-player-js/commit/9a817e5))
+
+
+
+<a name="0.27.1"></a>
+## [0.27.1](https://github.com/kaltura/kaltura-player-js/compare/v0.27.0...v0.27.1) (2018-05-15)
+
+
+
+<a name="0.27.0"></a>
+# [0.27.0](https://github.com/kaltura/kaltura-player-js/compare/v0.26.0...v0.27.0) (2018-05-10)
+
+
+### Bug Fixes
+
+* **FEC-8202:** Session ID isn't sent when reporting analytics ([#118](https://github.com/kaltura/kaltura-player-js/issues/118)) ([72c4b4e](https://github.com/kaltura/kaltura-player-js/commit/72c4b4e))
+* **FEC-8204:** cannot set entry id via plugin config ([#119](https://github.com/kaltura/kaltura-player-js/issues/119)) ([2b80765](https://github.com/kaltura/kaltura-player-js/commit/2b80765))
+
+
+### Features
+
+* remove youbora & ima plugins from kaltura player bundle ([#120](https://github.com/kaltura/kaltura-player-js/issues/120)) ([9cc5766](https://github.com/kaltura/kaltura-player-js/commit/9cc5766))
+
+
+
+<a name="0.26.0"></a>
+# [0.26.0](https://github.com/kaltura/kaltura-player-js/compare/v0.25.1...v0.26.0) (2018-05-06)
+
+
+### Features
+
+* **FEC-8176:** restructure player config ([#117](https://github.com/kaltura/kaltura-player-js/issues/117)) ([3f89ef3](https://github.com/kaltura/kaltura-player-js/commit/3f89ef3))
+
+
+
+<a name="0.25.1"></a>
+## [0.25.1](https://github.com/kaltura/kaltura-player-js/compare/v0.25.0...v0.25.1) (2018-05-01)
+
+
+
+<a name="0.25.0"></a>
+# [0.25.0](https://github.com/kaltura/kaltura-player-js/compare/v0.24.2...v0.25.0) (2018-04-25)
+
+
+### Features
+
+* **FEC-8036:** google analytics ([#114](https://github.com/kaltura/kaltura-player-js/issues/114)) ([f0100b5](https://github.com/kaltura/kaltura-player-js/commit/f0100b5))
+
+
+
+<a name="0.24.2"></a>
+## [0.24.2](https://github.com/kaltura/kaltura-player-js/compare/v0.24.1...v0.24.2) (2018-04-23)
+
+
+
+<a name="0.24.1"></a>
+## [0.24.1](https://github.com/kaltura/kaltura-player-js/compare/v0.24.0...v0.24.1) (2018-04-22)
+
+
+### Bug Fixes
+
+* **FEC-8131:** skippable ads fail on iOS ([#112](https://github.com/kaltura/kaltura-player-js/issues/112)) ([9b1940c](https://github.com/kaltura/kaltura-player-js/commit/9b1940c))
+
+
+
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/kaltura/kaltura-player-js/compare/v0.23.0...v0.24.0) (2018-04-16)
+
+
+### Bug Fixes
+
+* **FEC-7934:** change storage manager to listen to UI events ([#111](https://github.com/kaltura/kaltura-player-js/issues/111)) ([619d0e9](https://github.com/kaltura/kaltura-player-js/commit/619d0e9))
+
+
+### Features
+
+* **UI wrapper:** disabling UI  ([#107](https://github.com/kaltura/kaltura-player-js/issues/107)) ([5784a75](https://github.com/kaltura/kaltura-player-js/commit/5784a75))
+
+
+
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/kaltura/kaltura-player-js/compare/v0.22.0...v0.23.0) (2018-04-11)
+
+
+### Features
+
+* register UI events ([#109](https://github.com/kaltura/kaltura-player-js/issues/109)) ([5d27f43](https://github.com/kaltura/kaltura-player-js/commit/5d27f43))
+
+
+
+<a name="0.22.0"></a>
+# [0.22.0](https://github.com/kaltura/kaltura-player-js/compare/v0.21.0...v0.22.0) (2018-04-10)
+
+
+### Features
+
+* ui customization ([#105](https://github.com/kaltura/kaltura-player-js/issues/105)) ([6b70fc0](https://github.com/kaltura/kaltura-player-js/commit/6b70fc0))
+
+
+
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/kaltura/kaltura-player-js/compare/v0.20.0...v0.21.0) (2018-04-09)
+
+
+### Features
+
+* **FEC-8084:** add loading spinner while preforming change media ([#106](https://github.com/kaltura/kaltura-player-js/issues/106)) ([a936117](https://github.com/kaltura/kaltura-player-js/commit/a936117))
+
+
+
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/kaltura/kaltura-player-js/compare/v0.19.4...v0.20.0) (2018-03-27)
+
+
+### Features
+
+* **FEC-7089:** call player.reset() before change media ([#104](https://github.com/kaltura/kaltura-player-js/issues/104)) ([c6cbfb3](https://github.com/kaltura/kaltura-player-js/commit/c6cbfb3))
+
+
+
+<a name="0.19.4"></a>
+## [0.19.4](https://github.com/kaltura/kaltura-player-js/compare/v0.19.3...v0.19.4) (2018-03-21)
+
+
+
+<a name="0.19.3"></a>
+## [0.19.3](https://github.com/kaltura/kaltura-player-js/compare/v0.19.2...v0.19.3) (2018-03-14)
+
+
+### Bug Fixes
+
+* always set default external stream handler ([#99](https://github.com/kaltura/kaltura-player-js/issues/99)) ([3b2769e](https://github.com/kaltura/kaltura-player-js/commit/3b2769e))
+
+
+
+<a name="0.19.2"></a>
+## [0.19.2](https://github.com/kaltura/kaltura-player-js/compare/v0.19.1...v0.19.2) (2018-03-14)
+
+
+
+<a name="0.19.1"></a>
+## [0.19.1](https://github.com/kaltura/kaltura-player-js/compare/v0.19.0...v0.19.1) (2018-03-14)
+
+
+### Bug Fixes
+
+* **FEC-8026:** external OTT VOD/Live media doesn't works on IE 11 ([#98](https://github.com/kaltura/kaltura-player-js/issues/98)) ([17238bf](https://github.com/kaltura/kaltura-player-js/commit/17238bf))
+
+
+
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/kaltura/kaltura-player-js/compare/v0.18.11...v0.19.0) (2018-03-12)
+
+
+### Features
+
+* **FEC-7954:** poster and thumbnail preview missing on tv player ([#97](https://github.com/kaltura/kaltura-player-js/issues/97)) ([96a51b3](https://github.com/kaltura/kaltura-player-js/commit/96a51b3))
+
+
+
+<a name="0.18.11"></a>
+## [0.18.11](https://github.com/kaltura/kaltura-player-js/compare/v0.18.10...v0.18.11) (2018-03-08)
+
+
+### Bug Fixes
+
+* **FEC-7815:** Support playManifest redirects for external streams ([#85](https://github.com/kaltura/kaltura-player-js/issues/85)) ([cac2bb6](https://github.com/kaltura/kaltura-player-js/commit/cac2bb6))
+
+
+
+<a name="0.18.10"></a>
+## [0.18.10](https://github.com/kaltura/kaltura-player-js/compare/v0.18.9...v0.18.10) (2018-03-05)
+
+
+### Bug Fixes
+
+* **uiManager:** support initial forceTouchUI config ([b9e585e](https://github.com/kaltura/kaltura-player-js/commit/b9e585e))
+
+
+
+<a name="0.18.9"></a>
+## [0.18.9](https://github.com/kaltura/kaltura-player-js/compare/v0.18.8...v0.18.9) (2018-02-28)
+
+
+
+<a name="0.18.8"></a>
+## [0.18.8](https://github.com/kaltura/kaltura-player-js/compare/v0.18.7...v0.18.8) (2018-02-28)
+
+
+
+<a name="0.18.7"></a>
+## [0.18.7](https://github.com/kaltura/kaltura-player-js/compare/v0.18.6...v0.18.7) (2018-02-26)
+
+
+
+<a name="0.18.6"></a>
+## [0.18.6](https://github.com/kaltura/kaltura-player-js/compare/v0.18.5...v0.18.6) (2018-02-19)
+
+
+### Bug Fixes
+
+* **FEC-7907, FEC-7872:** No play button when preload=auto and ima plugin enabled ([#91](https://github.com/kaltura/kaltura-player-js/issues/91)) ([58b0dec](https://github.com/kaltura/kaltura-player-js/commit/58b0dec))
+
+
+
+<a name="0.18.5"></a>
+## [0.18.5](https://github.com/kaltura/kaltura-player-js/compare/v0.18.4...v0.18.5) (2018-02-14)
+
 <a name="0.18.4"></a>
 ## [0.18.4](https://github.com/kaltura/kaltura-player-js/compare/v0.18.2...v0.18.4) (2018-02-11)
 

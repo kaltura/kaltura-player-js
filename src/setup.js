@@ -2,23 +2,28 @@
 import KalturaPlayer from './kaltura-player'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
 import {
-  validateConfig,
-  setStorageConfig,
   applyStorageSupport,
-  setStorageTextStyle,
+  getDefaultOptions,
+  printSetupMessages,
   setLogLevel,
-  getDefaultOptions
+  setStorageConfig,
+  setStorageTextStyle,
+  supportLegacyOptions,
+  validateConfig
 } from './common/utils/setup-helpers'
 
 /**
- * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options
- * @returns {KalturaPlayer} - kaltura player
+ * Setup the Kaltura Player.
+ * @param {PartialKalturaPlayerOptionsObject|LegacyPartialKalturaPlayerOptionsObject} options - partial kaltura player options
+ * @returns {KalturaPlayer} - The Kaltura Player.
  */
-function setup(options: PartialKalturaPlayerOptionsObject): KalturaPlayer {
+function setup(options: PartialKalturaPlayerOptionsObject | LegacyPartialKalturaPlayerOptionsObject): KalturaPlayer {
+  options = supportLegacyOptions(options);
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
   setLogLevel(defaultOptions);
-  evaluatePluginsConfig(defaultOptions.player);
+  printSetupMessages();
+  evaluatePluginsConfig(defaultOptions);
   setStorageConfig(defaultOptions);
   const kalturaPlayer = new KalturaPlayer(defaultOptions);
   setStorageTextStyle(kalturaPlayer);

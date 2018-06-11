@@ -29,12 +29,12 @@ import * as providers from 'playkit-js-providers'
 import 'playkit-js-hls'
 import 'playkit-js-dash'
 
-// Import common plugins
-import 'playkit-js-youbora'
-import 'playkit-js-ima'
 
 // Import analytics plugin
 import 'playkit-js-analytics'
+
+// Import shaka-player
+import * as shaka from 'shaka-player'
 
 // Import setup method
 import {setup} from './setup'
@@ -44,6 +44,7 @@ export {
   ui,
   providers,
   setup,
+  shaka,
   __PLAYER_TYPE__ as PLAYER_TYPE,
   __VERSION__ as VERSION,
   __NAME__ as PLAYER_NAME

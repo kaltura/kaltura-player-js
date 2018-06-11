@@ -20,3 +20,5 @@ module.name_mapper='playkit-js-providers' -> 'playkit-js-providers/dist/playkit-
 module.name_mapper='playkit-js-providers' -> 'playkit-js-providers/dist/playkit-ott-provider'
 module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ovp/player-defaults'
 module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ott/player-defaults'
+module.name_mapper='poster' -> '<PROJECT_ROOT>/src/ovp/poster'
+module.name_mapper='poster' -> '<PROJECT_ROOT>/src/ott/poster'

@@ -1,27 +1,32 @@
 //@flow
 import pluginsConfig from './plugins-config.json'
 import evaluate from '../utils/evaluate'
+import {getReferrer} from '../utils/kaltura-params'
 import {Utils} from 'playkit-js'
 
 /**
- * @param {PKPlayerOptionsObject} playerConfig - The player config
+ * @param {KalturaPlayerOptionsObject} options - player options
  * @return {void}
  */
-function evaluatePluginsConfig(playerConfig: PKPlayerOptionsObject): void {
-  if (playerConfig.plugins) {
-    const dataModel = {
+function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
+  if (options.plugins) {
+    const dataModel: Object = {
       pVersion: __VERSION__,
       pName: __NAME__
     };
-    if (playerConfig.session) {
+    if (options.provider && options.provider.env) {
+      dataModel['serviceUrl'] = options.provider.env.serviceUrl;
+    }
+    if (options.session && options.sources) {
       const entryDataModel = {
-        entryId: playerConfig.id,
-        entryName: playerConfig.name,
-        entryType: playerConfig.type,
-        sessionId: playerConfig.session.id,
-        ks: playerConfig.session.ks,
-        uiConfId: playerConfig.session.uiConfId,
-        partnerId: playerConfig.session.partnerId
+        entryId: options.sources.id,
+        entryName: options.sources.metadata.name,
+        entryType: options.sources.type,
+        sessionId: options.session.id,
+        ks: options.session.ks,
+        uiConfId: options.session.uiConfId,
+        partnerId: options.session.partnerId,
+        referrer: getReferrer()
       };
       Object.keys(entryDataModel).forEach(key => {
         if (entryDataModel[key] === undefined) {
@@ -45,10 +50,13 @@ function evaluatePluginsConfig(playerConfig: PKPlayerOptionsObject): void {
         }
       });
     });
-    if (playerConfig.plugins) {
-      Object.keys(playerConfig.plugins).forEach((pluginName) => {
-        if (playerConfig.plugins && playerConfig.plugins[pluginName]) {
-          Utils.Object.mergeDeep(playerConfig.plugins[pluginName], evaluatedConfigObj[pluginName]);
+    if (options.plugins) {
+      Object.keys(options.plugins).forEach((pluginName) => {
+        if (options.plugins && options.plugins[pluginName]) {
+          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
+          if (options.plugins) {
+            options.plugins[pluginName] = mergedConfig;
+          }
         }
       });
     }

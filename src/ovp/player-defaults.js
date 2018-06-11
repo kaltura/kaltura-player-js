@@ -3,25 +3,27 @@ import {Utils} from 'playkit-js'
 
 /**
  * Sets the default analytics plugin for the ovp player.
- * @param {PKPlayerOptionsObject} playerConfig - The player config.
+ * @param {KalturaPlayerOptionsObject} options - The player config.
  * @returns {void}
  */
-export function setDefaultAnalyticsPlugin(playerConfig: PKPlayerOptionsObject): void {
-  const kavaPlugin = Utils.Object.getPropertyPath(playerConfig, 'plugins.kava');
+export function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
+  const kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
   if (!kavaPlugin) {
-    Utils.Object.mergeDeep(playerConfig, {
+    Utils.Object.mergeDeep(options, {
       plugins: {
         kava: {}
       }
     });
   }
-  const kanalyticsPlugin = Utils.Object.getPropertyPath(playerConfig, 'plugins.kanalytics');
+  const kanalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.kanalytics');
   if (!kanalyticsPlugin) {
-    Utils.Object.mergeDeep(playerConfig, {
+    Utils.Object.mergeDeep(options, {
       plugins: {
         kanalytics: {}
       }
     });
   }
-  Object.assign(playerConfig.plugins.kanalytics, {hasKanalony: true});
+  if (!kavaPlugin.disable && !kanalyticsPlugin.disable) {
+    Object.assign(options.plugins.kanalytics, {hasKanalony: true});
+  }
 }
