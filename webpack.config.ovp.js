@@ -34,7 +34,7 @@ const entry = {
 
 const alias = {
   'playkit-js-providers': path.resolve('./node_modules/playkit-js-providers/dist/playkit-ovp-provider'),
-  'playkit-js-analytics': path.resolve('./src/ovp/analytics-plugins'),
+  'playkit-js-analytics': path.resolve('./node_modules/playkit-js-kanalytics'),
   'player-defaults': path.resolve('./src/ovp/player-defaults'),
   'poster': path.resolve('./src/ovp/poster')
 };
