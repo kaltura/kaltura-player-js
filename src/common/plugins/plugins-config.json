@@ -42,6 +42,7 @@
     "entryType": "{{entryType}}",
     "sessionId": "{{sessionId}}",
     "ks": "{{ks}}",
-    "uiConfId": "{{uiConfId}}"
+    "uiConfId": "{{uiConfId}}",
+    "referrer": "{{referrer}}"
   }
 }
