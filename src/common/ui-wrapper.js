@@ -38,6 +38,14 @@ class UIWrapper {
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
   }
 
+  setFullscreenConfig(config: ProviderMediaConfigObject): void {
+    if (this._disabled) return;
+    if (Utils.Object.getPropertyPath(config, 'plugins.vr')) {
+      const fullscreenConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.fullscreen');
+      this.setConfig(Utils.Object.mergeDeep({}, {inBrowserFullscreenForIOS: true}, fullscreenConfig), 'fullscreen');
+    }
+  }
+
   setLoadingSpinnerState(show: boolean): void {
     if (this._disabled) return;
     this.setConfig({show: show}, 'loading');
