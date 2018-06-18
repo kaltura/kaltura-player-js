@@ -23,7 +23,7 @@ export default class KalturaPlayer {
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this._player, options.ui);
     this._provider = new Provider(options.provider, __VERSION__);
-    this._uiWrapper.setFullscreenConfig(options);
+    this._uiWrapper.handleVr(options);
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
       configure: config => this.configure(config),
