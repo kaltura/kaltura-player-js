@@ -83,9 +83,6 @@ export default class KalturaPlayer {
   _addBindings(): void {
     const vrPlugin = this._player.getPlugin('vr');
     if (vrPlugin) {
-      this._player.addEventListener(this._player.Event.UI.USER_POINTER_DOWN, (event) => {
-        vrPlugin.notifyPointerDown(event.payload);
-      });
       this._player.addEventListener(this._player.Event.UI.USER_CLICKED_STEREO_MODE, () => {
         vrPlugin.toggleStereoMode();
       });

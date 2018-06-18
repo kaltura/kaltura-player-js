@@ -44,5 +44,8 @@
     "ks": "{{ks}}",
     "uiConfId": "{{uiConfId}}",
     "referrer": "{{referrer}}"
+  },
+  "vr": {
+    "rootElement": "{{target}}"
   }
 }

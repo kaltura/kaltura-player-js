@@ -52,7 +52,7 @@ class UIWrapper {
   }
 
   _setStereoConfig(config: KalturaPlayerOptionsObject): void {
-    if (Env.device.type || config.plugins.vr.enableStereo) {
+    if (config.plugins.vr.toggleStereo || (Env.device.type && config.plugins.vr.toggleStereo !== false)) {
       this.setConfig(Utils.Object.mergeDeep({}, {stereoMode: !!(config.plugins.vr.startInStereo)}), 'stereo');
     }
   }
