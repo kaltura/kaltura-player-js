@@ -4,12 +4,10 @@ import {Utils} from 'playkit-js'
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
 
 class UIWrapper {
-  _targetId: string;
   _uiManager: UIManager;
   _disabled: boolean = false;
 
   constructor(player: Player, config: UIOptionsObject) {
-    this._targetId = config.targetId;
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
@@ -24,13 +22,8 @@ class UIWrapper {
   }
 
   destroy(): void {
-    if (!this._disabled) {
-      this._uiManager.destroy();
-    }
-    const targetContainer = document.getElementById(this._targetId);
-    if (targetContainer && targetContainer.parentNode) {
-      targetContainer.parentNode.removeChild(targetContainer);
-    }
+    if (this._disabled) return;
+    this._uiManager.destroy();
   }
 
   setConfig(config: Object, componentAlias?: string): void {
