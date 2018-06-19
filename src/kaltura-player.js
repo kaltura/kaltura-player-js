@@ -11,7 +11,6 @@ import './assets/style.css'
 import {UIWrapper} from './common/ui-wrapper'
 
 export default class KalturaPlayer {
-  _targetId: string;
   _player: Player;
   _playerConfigure: Function;
   _playerDestroy: Function;
@@ -20,7 +19,6 @@ export default class KalturaPlayer {
   _logger: any;
 
   constructor(options: KalturaPlayerOptionsObject) {
-    this._targetId = options.ui.targetId;
     this._player = loadPlayer(options);
     this._playerConfigure = this._player.configure.bind(this._player);
     this._playerDestroy = this._player.destroy.bind(this._player);
@@ -72,9 +70,10 @@ export default class KalturaPlayer {
   }
 
   destroy(): void {
+    const targetId = this._player.config.ui.targetId;
     this._playerDestroy();
     this._uiWrapper.destroy();
-    const targetContainer = document.getElementById(this._targetId);
+    const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
       targetContainer.parentNode.removeChild(targetContainer);
     } 
