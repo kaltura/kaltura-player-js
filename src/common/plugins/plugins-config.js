@@ -24,6 +24,7 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
         entryType: options.sources.type,
         sessionId: options.session.id,
         ks: options.session.ks,
+        isAnonymous: options.session.anonymous,
         uiConfId: options.session.uiConfId,
         partnerId: options.session.partnerId,
         referrer: getReferrer()
