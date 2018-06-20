@@ -1,13 +1,14 @@
 // @flow
 import {UIManager} from 'playkit-js-ui'
-import {Utils} from 'playkit-js'
+import {Env, Utils} from 'playkit-js'
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
 
 class UIWrapper {
   _uiManager: UIManager;
   _disabled: boolean = false;
 
-  constructor(player: Player, config: UIOptionsObject) {
+  constructor(player: Player, options: KalturaPlayerOptionsObject) {
+    const config: UIOptionsObject = options.ui;
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
@@ -18,6 +19,7 @@ class UIWrapper {
       } else {
         this._uiManager.buildDefaultUI();
       }
+      this._handleVr(options.plugins);
     }
   }
 
@@ -36,6 +38,25 @@ class UIWrapper {
     const seekbarConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
+  }
+
+  _handleVr(config: ?PKPluginsConfigObject): void {
+    if (config) {
+      this._setFullscreenConfig();
+      this._setStereoConfig(config.vr)
+    }
+  }
+
+  _setFullscreenConfig(): void {
+    const fullscreenConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.fullscreen');
+    this.setConfig(Utils.Object.mergeDeep({}, {inBrowserFullscreenForIOS: true}, fullscreenConfig), 'fullscreen');
+  }
+
+  _setStereoConfig(vrConfig: Object = {}): void {
+    if (vrConfig.toggleStereo || (Env.device.type && vrConfig.toggleStereo !== false)) {
+      // enable stereo mode by default for mobile device
+      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!(vrConfig.startInStereo)}), 'vrStereo');
+    }
   }
 
   setLoadingSpinnerState(show: boolean): void {
