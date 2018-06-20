@@ -13,7 +13,7 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
     const dataModel: Object = {
       pVersion: __VERSION__,
       pName: __NAME__,
-      target: options.targetId
+      domRootElementId: options.targetId
     };
     if (options.provider && options.provider.env) {
       dataModel['serviceUrl'] = options.provider.env.serviceUrl;

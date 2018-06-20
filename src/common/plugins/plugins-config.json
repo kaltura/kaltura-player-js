@@ -46,6 +46,6 @@
     "referrer": "{{referrer}}"
   },
   "vr": {
-    "rootElement": "{{target}}"
+    "rootElement": "{{domRootElementId}}"
   }
 }

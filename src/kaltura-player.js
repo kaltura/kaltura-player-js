@@ -21,16 +21,14 @@ export default class KalturaPlayer {
     this._player = loadPlayer(options);
     this._playerConfigure = this._player.configure.bind(this._player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._uiWrapper = new UIWrapper(this._player, options.ui);
+    this._uiWrapper = new UIWrapper(this._player, options);
     this._provider = new Provider(options.provider, __VERSION__);
-    this._uiWrapper.handleVr(options);
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
       configure: config => this.configure(config),
       setMedia: mediaConfig => this.setMedia(mediaConfig)
     });
     Object.defineProperty(this._player, 'Event', this.Event);
-    this._addBindings();
     return this._player;
   }
 
@@ -78,14 +76,5 @@ export default class KalturaPlayer {
       }),
       set: undefined
     };
-  }
-
-  _addBindings(): void {
-    const vrPlugin = this._player.getPlugin('vr');
-    if (vrPlugin) {
-      this._player.addEventListener(this._player.Event.UI.USER_CLICKED_STEREO_MODE, () => {
-        vrPlugin.toggleStereoMode();
-      });
-    }
   }
 }

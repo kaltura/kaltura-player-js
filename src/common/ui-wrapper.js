@@ -7,7 +7,8 @@ class UIWrapper {
   _uiManager: UIManager;
   _disabled: boolean = false;
 
-  constructor(player: Player, config: UIOptionsObject) {
+  constructor(player: Player, options: KalturaPlayerOptionsObject) {
+    const config: UIOptionsObject = options.ui;
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
@@ -18,6 +19,7 @@ class UIWrapper {
       } else {
         this._uiManager.buildDefaultUI();
       }
+      this._handleVr(options.plugins);
     }
   }
 
@@ -38,11 +40,10 @@ class UIWrapper {
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
   }
 
-  handleVr(config: KalturaPlayerOptionsObject): void {
-    if (this._disabled) return;
-    if (Utils.Object.getPropertyPath(config, 'plugins.vr')) {
+  _handleVr(config: PKPluginsConfigObject): void {
+    if (config) {
       this._setFullscreenConfig();
-      this._setStereoConfig(config)
+      this._setStereoConfig(config.vr)
     }
   }
 
@@ -51,9 +52,10 @@ class UIWrapper {
     this.setConfig(Utils.Object.mergeDeep({}, {inBrowserFullscreenForIOS: true}, fullscreenConfig), 'fullscreen');
   }
 
-  _setStereoConfig(config: KalturaPlayerOptionsObject): void {
-    if (config.plugins.vr.toggleStereo || (Env.device.type && config.plugins.vr.toggleStereo !== false)) {
-      this.setConfig(Utils.Object.mergeDeep({}, {stereoMode: !!(config.plugins.vr.startInStereo)}), 'stereo');
+  _setStereoConfig(vrConfig: Object = {}): void {
+    if (vrConfig.toggleStereo || (Env.device.type && vrConfig.toggleStereo !== false)) {
+      // enable stereo mode by default for mobile device
+      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!(vrConfig.startInStereo)}), 'vrStereo');
     }
   }
 
