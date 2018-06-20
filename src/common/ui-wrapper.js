@@ -40,7 +40,7 @@ class UIWrapper {
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
   }
 
-  _handleVr(config: PKPluginsConfigObject): void {
+  _handleVr(config: ?PKPluginsConfigObject): void {
     if (config) {
       this._setFullscreenConfig();
       this._setStereoConfig(config.vr)
