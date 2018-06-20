@@ -61,7 +61,7 @@ describe('UIWrapper', function () {
 
     it('should set the configured thumbs sprite with default sizes', function (done) {
       uiConfig.components.seekbar.thumbsSprite = thumbsSprite;
-      uiWrapper = new UIWrapper(player, uiConfig);
+      uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig')
         .callsFake(config => {
           config.should.deep.equal({
@@ -80,7 +80,7 @@ describe('UIWrapper', function () {
         thumbsSprite: thumbsSprite,
         thumbsWidth: 300
       };
-      uiWrapper = new UIWrapper(player, uiConfig);
+      uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig')
         .callsFake(config => {
           config.should.deep.equal({
@@ -95,7 +95,7 @@ describe('UIWrapper', function () {
 
     it('should set the backend thumbs sprite with default sizes', function (done) {
       uiConfig.components.seekbar = {};
-      uiWrapper = new UIWrapper(player, uiConfig);
+      uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig')
         .callsFake(config => {
           config.thumbsSlices.should.equal(DEFAULT_THUMBS_SLICES);
@@ -111,7 +111,7 @@ describe('UIWrapper', function () {
         thumbsSlices: 200,
         thumbsWidth: 300
       };
-      uiWrapper = new UIWrapper(player, uiConfig);
+      uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig')
         .callsFake(config => {
           config.thumbsSlices.should.equal(200);
@@ -125,7 +125,7 @@ describe('UIWrapper', function () {
     it('should not set seek bar config', function (done) {
       uiConfig.components.seekbar = {};
       mediaConfig.sources.poster = '';
-      uiWrapper = new UIWrapper(player, uiConfig);
+      uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig')
         .callsFake(config => {
           config.should.deep.equal({});
