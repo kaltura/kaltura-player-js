@@ -4571,9 +4571,9 @@ pkginfo@0.x.x:
   version "0.1.3"
   resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#f022570ce5d0cddafebaaa2a83cb5471f66d63bc"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.6.0":
-  version "2.6.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#525fa16d6b1cae421ed6f250f44b471dddb02078"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.7.0":
+  version "2.7.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#cbbb5cfe4dc5c39f8b4e48706be6c0f63c6f873e"
   dependencies:
     js-logger "^1.3.0"
 
@@ -4589,9 +4589,9 @@ pkginfo@0.x.x:
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"playkit-js@https://github.com/kaltura/playkit-js.git#v0.30.0":
-  version "0.30.0"
-  resolved "https://github.com/kaltura/playkit-js.git#741a279ae146eb4924a70ae6b51c2889a7c87ca4"
+"playkit-js@https://github.com/kaltura/playkit-js.git#v0.30.2":
+  version "0.30.2"
+  resolved "https://github.com/kaltura/playkit-js.git#d1903c2c773c96158632b4f0a71ae1f00e0e6cc2"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
@@ -6064,10 +6064,6 @@ uid-number@^0.0.6:
 ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
-
-undefined@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/undefined/-/undefined-0.1.0.tgz#9b706a4b32ad30c20ca4fe65ddcbbbdac32bded0"
 
 uniq@^1.0.1:
   version "1.0.1"

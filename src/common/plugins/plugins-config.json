@@ -27,6 +27,7 @@
   "ottAnalytics": {
     "entryId": "{{entryId}}",
     "ks": "{{ks}}",
+    "isAnonymous": "{{isAnonymous}}",
     "partnerId": "{{partnerId}}",
     "serviceUrl": "{{serviceUrl}}"
   },
