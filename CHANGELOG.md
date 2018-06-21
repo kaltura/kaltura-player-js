@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.29.0"></a>
+# [0.29.0](https://github.com/kaltura/kaltura-player-js/compare/v0.28.2...v0.29.0) (2018-06-20)
+
+
+### Features
+
+* **FEC-8046:** 360 support ([#130](https://github.com/kaltura/kaltura-player-js/issues/130)) ([cec9ea6](https://github.com/kaltura/kaltura-player-js/commit/cec9ea6))
+
+
+
 <a name="0.28.2"></a>
 ## [0.28.2](https://github.com/kaltura/kaltura-player-js/compare/v0.28.1...v0.28.2) (2018-06-20)
 
