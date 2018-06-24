@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.30.0"></a>
+# [0.30.0](https://github.com/kaltura/kaltura-player-js/compare/v0.29.0...v0.30.0) (2018-06-24)
+
+
+### Features
+
+* **FEC-8331:** expose the anonymous flag on session object ([#132](https://github.com/kaltura/kaltura-player-js/issues/132)) ([3a4dddf](https://github.com/kaltura/kaltura-player-js/commit/3a4dddf))
+
+
+
+<a name="0.29.0"></a>
+# [0.29.0](https://github.com/kaltura/kaltura-player-js/compare/v0.28.2...v0.29.0) (2018-06-20)
+
+
+### Features
+
+* **FEC-8046:** 360 support ([#130](https://github.com/kaltura/kaltura-player-js/issues/130)) ([cec9ea6](https://github.com/kaltura/kaltura-player-js/commit/cec9ea6))
+
+
+
+<a name="0.28.2"></a>
+## [0.28.2](https://github.com/kaltura/kaltura-player-js/compare/v0.28.1...v0.28.2) (2018-06-20)
+
+
+
 <a name="0.28.1"></a>
 ## [0.28.1](https://github.com/kaltura/kaltura-player-js/compare/v0.28.0...v0.28.1) (2018-06-17)
 

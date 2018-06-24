@@ -23,7 +23,7 @@ export default class KalturaPlayer {
     this._playerConfigure = this._player.configure.bind(this._player);
     this._playerDestroy = this._player.destroy.bind(this._player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._uiWrapper = new UIWrapper(this._player, options.ui);
+    this._uiWrapper = new UIWrapper(this._player, options);
     this._provider = new Provider(options.provider, __VERSION__);
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
