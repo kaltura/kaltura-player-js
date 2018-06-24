@@ -4567,9 +4567,9 @@ pkginfo@0.x.x:
   version "0.9.0"
   resolved "https://github.com/kaltura/playkit-js-kanalytics.git#da85e606ca2851856acb58c4a978aaf0703d9adc"
 
-"playkit-js-ott-analytics@https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.3":
-  version "0.1.3"
-  resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#f022570ce5d0cddafebaaa2a83cb5471f66d63bc"
+"playkit-js-ott-analytics@https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.4":
+  version "0.1.4"
+  resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#60861723e2485af6e26ad8afb3bf81fd6ad6faf7"
 
 "playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.7.0":
   version "2.7.0"
@@ -4577,9 +4577,9 @@ pkginfo@0.x.x:
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.24.0":
-  version "0.24.0"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#d258c11bbd1ff8d26be1d22f5e1bbfccc6e9b0b5"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.24.1":
+  version "0.24.1"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#1b598ad1a117628bb10b017d7ac36bac7cebfc00"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
