@@ -4567,6 +4567,10 @@ pkginfo@0.x.x:
   version "0.9.0"
   resolved "https://github.com/kaltura/playkit-js-kanalytics.git#da85e606ca2851856acb58c4a978aaf0703d9adc"
 
+"playkit-js-kava@https://github.com/kaltura/playkit-js-kava.git#v0.2.3":
+  version "0.2.3"
+  resolved "https://github.com/kaltura/playkit-js-kava.git#a22e5bf867a74bf255e8f32d4cdb43f6a2942837"
+
 "playkit-js-ott-analytics@https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.4":
   version "0.1.4"
   resolved "https://github.com/kaltura/playkit-js-ott-analytics.git#60861723e2485af6e26ad8afb3bf81fd6ad6faf7"

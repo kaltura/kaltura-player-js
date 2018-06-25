@@ -85,6 +85,7 @@
     "playkit-js-dash": "https://github.com/kaltura/playkit-js-dash.git#v1.6.2",
     "playkit-js-hls": "https://github.com/kaltura/playkit-js-hls.git#v1.7.0",
     "playkit-js-kanalytics": "https://github.com/kaltura/playkit-js-kanalytics.git#v0.9.0",
+    "playkit-js-kava": "https://github.com/kaltura/playkit-js-kava.git#v0.2.3",
     "playkit-js-ott-analytics": "https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.4",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.7.0",
     "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.24.1",
