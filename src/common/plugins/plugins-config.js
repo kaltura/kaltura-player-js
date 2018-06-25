@@ -12,7 +12,8 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
   if (options.plugins) {
     const dataModel: Object = {
       pVersion: __VERSION__,
-      pName: __NAME__
+      pName: __NAME__,
+      domRootElementId: options.targetId
     };
     if (options.provider && options.provider.env) {
       dataModel['serviceUrl'] = options.provider.env.serviceUrl;
@@ -24,6 +25,7 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
         entryType: options.sources.type,
         sessionId: options.session.id,
         ks: options.session.ks,
+        isAnonymous: options.session.isAnonymous,
         uiConfId: options.session.uiConfId,
         partnerId: options.session.partnerId,
         referrer: getReferrer()

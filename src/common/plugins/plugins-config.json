@@ -27,6 +27,7 @@
   "ottAnalytics": {
     "entryId": "{{entryId}}",
     "ks": "{{ks}}",
+    "isAnonymous": "{{isAnonymous}}",
     "partnerId": "{{partnerId}}",
     "serviceUrl": "{{serviceUrl}}"
   },
@@ -44,5 +45,8 @@
     "ks": "{{ks}}",
     "uiConfId": "{{uiConfId}}",
     "referrer": "{{referrer}}"
+  },
+  "vr": {
+    "rootElement": "{{domRootElementId}}"
   }
 }
