@@ -7,6 +7,16 @@ import {Utils} from 'playkit-js'
  * @returns {void}
  */
 export function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
+  const kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
+  if (!kavaPlugin) {
+    Utils.Object.mergeDeep(options, {
+      plugins: {
+        kava: {
+          disable: true
+        }
+      }
+    });
+  }
   const ottAnalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.ottAnalytics');
   if (!ottAnalyticsPlugin) {
     Utils.Object.mergeDeep(options, {
