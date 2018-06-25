@@ -40,7 +40,12 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
     const evaluatedConfig = evaluate(JSON.stringify(pluginsConfig), dataModel);
     let evaluatedConfigObj;
     try {
-      evaluatedConfigObj = JSON.parse(evaluatedConfig);
+      evaluatedConfigObj = JSON.parse(evaluatedConfig, function (key) {
+        try {
+          return JSON.parse(this[key]);
+        } catch (e) {
+          return (this[key]);
+        }});
     } catch (e) {
       evaluatedConfigObj = {};
     }
