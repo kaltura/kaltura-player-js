@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.30.1"></a>
+## [0.30.1](https://github.com/kaltura/kaltura-player-js/compare/v0.30.0...v0.30.1) (2018-06-25)
+
+
+### Bug Fixes
+
+* **FEC-8349:** OTT analytics - no event send for logged user ([#134](https://github.com/kaltura/kaltura-player-js/issues/134)) ([f3e1766](https://github.com/kaltura/kaltura-player-js/commit/f3e1766))
+
+
+
 <a name="0.30.0"></a>
 # [0.30.0](https://github.com/kaltura/kaltura-player-js/compare/v0.29.0...v0.30.0) (2018-06-24)
 
