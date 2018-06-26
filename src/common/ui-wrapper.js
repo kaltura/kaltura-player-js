@@ -30,7 +30,7 @@ class UIWrapper {
 
   resetErrorConfig(mediaInfo: ProviderMediaInfoObject): void {
     this._setErrorPresetConfig(mediaInfo);
-    this._resetErrorState(mediaInfo);
+    this._resetErrorState();
   }
 
   _setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
