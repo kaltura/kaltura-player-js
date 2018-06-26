@@ -28,9 +28,19 @@ class UIWrapper {
     this._uiManager.setConfig(config, componentAlias);
   }
 
-  setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
+  resetErrorConfig(mediaInfo: ProviderMediaInfoObject): void {
+    this._setErrorPresetConfig(mediaInfo);
+    this._resetErrorState(mediaInfo);
+  }
+
+  _setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
     if (this._disabled) return;
     this.setConfig({mediaInfo: mediaInfo}, 'error');
+  }
+
+  _resetErrorState(): void {
+    if (this._disabled) return;
+    this.setConfig({hasError: false}, 'engine');
   }
 
   setSeekbarConfig(mediaConfig: ProviderMediaConfigObject): void {

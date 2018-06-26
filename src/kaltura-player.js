@@ -42,9 +42,8 @@ export default class KalturaPlayer {
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
-    this._player.reset();
+    this._reset(mediaInfo);
     this._player.loadingMedia = true;
-    this._uiWrapper.setErrorPresetConfig(mediaInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider.getMediaConfig(mediaInfo)
       .then(mediaConfig => this.setMedia(mediaConfig))
@@ -76,5 +75,10 @@ export default class KalturaPlayer {
       }),
       set: undefined
     };
+  }
+
+  _reset(mediaInfo: ProviderMediaInfoObject): void {
+    this._player.reset();
+    this._uiWrapper.resetErrorConfig(mediaInfo);
   }
 }
