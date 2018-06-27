@@ -46,6 +46,9 @@
     "uiConfId": "{{uiConfId}}",
     "referrer": "{{referrer}}"
   },
+  "comscore": {
+    "playerVersion": "{{pVersion}}"
+  },
   "vr": {
     "rootElement": "{{domRootElementId}}"
   }
