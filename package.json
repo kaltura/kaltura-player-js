@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.30.3",
+  "version": "0.30.4",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -89,8 +89,7 @@
     "playkit-js-ott-analytics": "https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.5",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.7.0",
     "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.24.4",
-    "shaka-player": "https://github.com/kaltura/shaka-player.git#v2.3.3-k-3",
-    "undefined": "^0.1.0"
+    "shaka-player": "https://github.com/kaltura/shaka-player.git#v2.3.3-k-3"
   },
   "repository": {
     "type": "git",

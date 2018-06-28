@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.30.4"></a>
+## [0.30.4](https://github.com/kaltura/kaltura-player-js/compare/v0.30.3...v0.30.4) (2018-06-28)
+
+
+### Bug Fixes
+
+* **FEC-8356:** pass player version string via config ([#137](https://github.com/kaltura/kaltura-player-js/issues/137)) ([7660f6f](https://github.com/kaltura/kaltura-player-js/commit/7660f6f))
+
+
+
 <a name="0.30.3"></a>
 ## [0.30.3](https://github.com/kaltura/kaltura-player-js/compare/v0.30.1...v0.30.3) (2018-06-26)
 
