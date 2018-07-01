@@ -16,6 +16,7 @@ export default class KalturaPlayer {
   _provider: Provider;
   _uiWrapper: UIWrapper;
   _logger: any;
+  _isSetMedia: boolean = false;
 
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options);
@@ -34,6 +35,9 @@ export default class KalturaPlayer {
 
   configure(config: Object): void {
     config = supportLegacyOptions(config);
+    if (!this._isSetMedia) {
+      evaluatePluginsConfig(config);
+    }
     this._playerConfigure(config);
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);
@@ -53,16 +57,18 @@ export default class KalturaPlayer {
   }
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
+    this._isSetMedia = true;
     this._logger.debug('setMedia', mediaConfig);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._player.config.sources);
-    Utils.Object.mergeDeep(playerConfig.plugins, this._player.config.plugins);
     Utils.Object.mergeDeep(playerConfig.session, this._player.config.session);
+    Object.keys(this._player.config.plugins).forEach(name => {playerConfig.plugins[name] = {}});
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._player.dimensions);
     addKalturaParams(this._player, playerConfig);
     evaluatePluginsConfig(playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig);
     this._player.configure(playerConfig);
+    this._isSetMedia = false;
   }
 
   get Event(): Object {

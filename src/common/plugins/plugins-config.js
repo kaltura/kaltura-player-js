@@ -1,5 +1,5 @@
 //@flow
-import pluginsConfig from './plugins-config.json'
+import {pluginConfig} from './plugins-config-store.js'
 import evaluate from '../utils/evaluate'
 import {getReferrer} from '../utils/kaltura-params'
 import {Utils} from 'playkit-js'
@@ -10,6 +10,7 @@ import {Utils} from 'playkit-js'
  */
 function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
   if (options.plugins) {
+    pluginConfig.set(options.plugins);
     const dataModel: Object = {
       pVersion: __VERSION__,
       pName: __NAME__,
@@ -37,7 +38,7 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
       });
       Utils.Object.mergeDeep(dataModel, entryDataModel);
     }
-    const evaluatedConfig = evaluate(JSON.stringify(pluginsConfig), dataModel);
+    const evaluatedConfig = evaluate(JSON.stringify(pluginConfig.get()), dataModel);
     let evaluatedConfigObj;
     try {
       evaluatedConfigObj = JSON.parse(evaluatedConfig, function (key) {
@@ -60,10 +61,7 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
     if (options.plugins) {
       Object.keys(options.plugins).forEach((pluginName) => {
         if (options.plugins && options.plugins[pluginName]) {
-          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
-          if (options.plugins) {
-            options.plugins[pluginName] = mergedConfig;
-          }
+          options.plugins[pluginName] = evaluatedConfigObj[pluginName];
         }
       });
     }
