@@ -56,8 +56,8 @@ export default class KalturaPlayer {
     this._logger.debug('setMedia', mediaConfig);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._player.config.sources);
+    Utils.Object.mergeDeep(playerConfig.plugins, this._player.config.plugins);
     Utils.Object.mergeDeep(playerConfig.session, this._player.config.session);
-    Object.keys(this._player.config.plugins).forEach(name => playerConfig.plugins[name] = {});
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._player.dimensions);
     addKalturaParams(this._player, playerConfig);
     evaluatePluginsConfig(playerConfig);
