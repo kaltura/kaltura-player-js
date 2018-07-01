@@ -60,10 +60,7 @@ function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
     if (options.plugins) {
       Object.keys(options.plugins).forEach((pluginName) => {
         if (options.plugins && options.plugins[pluginName]) {
-          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
-          if (options.plugins) {
-            options.plugins[pluginName] = mergedConfig;
-          }
+          options.plugins[pluginName] = evaluatedConfigObj[pluginName];
         }
       });
     }
