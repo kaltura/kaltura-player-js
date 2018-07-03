@@ -24,7 +24,7 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
       (product, [key, value]): Object => {
         if (Utils.Object.isObject(value)) {
           product[key] = removeUnevaluatedExpression(value);
-        } else if (isValueEvaluated()) {
+        } else if (isValueEvaluated(value)) {
           product[key] = value;
         }
         return product;
@@ -40,9 +40,11 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
 const getModel = (options: KalturaPlayerOptionsObject): Object => {
   const dataModel: Object = {
     pVersion: __VERSION__,
-    pName: __NAME__,
-    domRootElementId: options.targetId
+    pName: __NAME__
   };
+  if (options.targetId) {
+    dataModel.domRootElementId = options.targetId;
+  }
   if (options.provider && options.provider.env) {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
   }
