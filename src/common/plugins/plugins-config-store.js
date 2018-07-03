@@ -1,7 +1,8 @@
 //@flow
 import {Utils} from 'playkit-js'
 
-const defaultConfig = {
+type dataStoreType = {[pluginName: string]: Object};
+const defaultConfig: dataStoreType = {
   "youbora": {
     "playerVersion": "{{pVersion}}",
     "playerName": "{{pName}}",
@@ -59,27 +60,38 @@ const defaultConfig = {
 
 let config = Utils.Object.copyDeep(defaultConfig);
 const templateRegex = new RegExp(('{{.*}}'));
-const isObject = val => typeof val === 'object' && !Array.isArray(val);
+
+/**
+ * extract the object members which include an evaluation token of type {{.*}}
+ * @param {Object} obj - the config object
+ * @returns {dataStoreType} - the new object with new tokens
+ */
 const resolveNewConfig = (obj = {}): Object =>
   Object.entries(obj)
     .reduce(
       (product, [key, value]): Object => {
-        if (isObject(value)) {
+        if (Utils.Object.isObject(value)) {
           product[key] = resolveNewConfig(value)
         } else if (typeof value === "string" && templateRegex.test(value)) {
           product[key] = value;
         } else {
-          product[key] = undefined
+          product[key] = undefined;
         }
         return product;
       },
       {}
     );
+
+/**
+ * remove undefined members from the token data store
+ * @param {Object} obj - the config object
+ * @returns {dataStoreType} - the new object with valid evaluate tokens
+ */
 const removeUndefineds = (obj = {}): Object =>
   Object.entries(obj)
     .reduce(
       (product, [key, value]): Object => {
-        if (isObject(value)) {
+        if (Utils.Object.isObject(value)) {
           product[key] = removeUndefineds(value)
         } else if (value) {
           product[key] = value;
@@ -89,19 +101,34 @@ const removeUndefineds = (obj = {}): Object =>
       {}
     );
 
+
 const pluginConfig = {
-  get: (): Object => {
+  /**
+   * return the token store object
+   * @returns {*|any} - token store object
+   */
+  get: (): dataStoreType => {
     return config;
   },
-  set: (pluginsConfig: ?Object): void => {
+  /**
+   * recalculate the token store data, if new config with token is passed then add it to the data store, and if
+   * an existing token needs to be removed then remove it
+   * @param {?dataStoreType} pluginsConfig - the new config object
+   * @returns {void}
+   */
+  set: (pluginsConfig: ?dataStoreType): void => {
     if (pluginsConfig) {
       const newConfig = resolveNewConfig(pluginsConfig);
       config = removeUndefineds(Utils.Object.mergeDeep(config, newConfig));
     }
   },
+  /**
+   * reset the config store to its initial state
+   * @returns {void}
+   */
   reset: (): void => {
     config = Utils.Object.copyDeep(defaultConfig);
   }
 };
 
-export {pluginConfig};
+export {pluginConfig, templateRegex};
