@@ -41,8 +41,10 @@ const getModel = (options: KalturaPlayerOptionsObject): Object => {
   const dataModel: Object = {
     pVersion: __VERSION__,
     pName: __NAME__,
-    domRootElementId: options.targetId
   };
+  if (options.targetId) {
+    dataModel.domRootElementId = options.targetId;
+  }
   if (options.provider && options.provider.env) {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
   }
