@@ -24,7 +24,7 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
       (product, [key, value]): Object => {
         if (Utils.Object.isObject(value)) {
           product[key] = removeUnevaluatedExpression(value);
-        } else if (isValueEvaluated()) {
+        } else if (isValueEvaluated(value)) {
           product[key] = value;
         }
         return product;
