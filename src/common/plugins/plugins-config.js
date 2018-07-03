@@ -40,7 +40,7 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
 const getModel = (options: KalturaPlayerOptionsObject): Object => {
   const dataModel: Object = {
     pVersion: __VERSION__,
-    pName: __NAME__,
+    pName: __NAME__
   };
   if (options.targetId) {
     dataModel.domRootElementId = options.targetId;
