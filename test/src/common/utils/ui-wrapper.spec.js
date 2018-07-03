@@ -55,6 +55,7 @@ describe('UIWrapper', function () {
       uiWrapper._uiManager.store.getState().config.components.seekbar = {};
       sandbox.restore();
       uiWrapper = null;
+      player.destroy();
       player = null;
     });
 
