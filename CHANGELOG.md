@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.31.0"></a>
+# [0.31.0](https://github.com/kaltura/kaltura-player-js/compare/v0.30.5...v0.31.0) (2018-07-03)
+
+
+### Features
+
+* **FEC-8364:** support adding evaluated expressions also on player setup and configure API ([#139](https://github.com/kaltura/kaltura-player-js/issues/139)) ([84542c8](https://github.com/kaltura/kaltura-player-js/commit/84542c8))
+
+
+
 <a name="0.30.5"></a>
 ## [0.30.5](https://github.com/kaltura/kaltura-player-js/compare/v0.30.4...v0.30.5) (2018-07-02)
 
