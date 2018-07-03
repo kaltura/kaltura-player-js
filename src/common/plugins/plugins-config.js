@@ -9,7 +9,7 @@ import {Utils} from 'playkit-js'
  * @param {*} value - the value to be checked
  * @returns {boolean} - value is evaluated
  */
-const valueIsEvaluated= (value: any): boolean =>
+const isValueEvaluated = (value: any): boolean =>
   (typeof value === "number" || typeof value === "string" || typeof value === "boolean") &&
   !templateRegex.test(value.toString());
 
@@ -24,7 +24,7 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
       (product, [key, value]): Object => {
         if (Utils.Object.isObject(value)) {
           product[key] = removeUnevaluatedExpression(value);
-        } else if (valueIsEvaluated()) {
+        } else if (isValueEvaluated()) {
           product[key] = value;
         }
         return product;
