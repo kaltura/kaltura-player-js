@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.31.1"></a>
+# [0.31.1](https://github.com/kaltura/kaltura-player-js/compare/v0.31.0...v0.31.1) (2018-07-03)
+
+
+### Bug Fixes
+
+* **FEC-8375:** plugins data not evaluated ([#143](https://github.com/kaltura/kaltura-player-js/issues/143)) ([0033e93](https://github.com/kaltura/kaltura-player-js/commit/0033e93))
+
+
+
 <a name="0.31.0"></a>
 # [0.31.0](https://github.com/kaltura/kaltura-player-js/compare/v0.30.5...v0.31.0) (2018-07-03)
 
