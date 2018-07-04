@@ -43,9 +43,9 @@ class UIWrapper {
     this.setConfig({hasError: false}, 'engine');
   }
 
-  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject): void {
+  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: UIOptionsObject): void {
     if (this._disabled) return;
-    const seekbarConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.seekbar');
+    const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
   }

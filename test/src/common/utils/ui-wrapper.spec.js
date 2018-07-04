@@ -21,7 +21,7 @@ describe('UIWrapper', function () {
     TestUtils.removeElement(targetId);
   });
 
-  describe('setSeekbarConfig', function () {
+  describe.only('setSeekbarConfig', function () {
     beforeEach(function () {
       sandbox = sinon.sandbox.create();
       player = loadPlayer();
@@ -71,7 +71,7 @@ describe('UIWrapper', function () {
           });
           done();
         });
-      uiWrapper.setSeekbarConfig(mediaConfig);
+      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
     it('should set the configured thumbs sprite with configured sizes', function (done) {
@@ -90,7 +90,7 @@ describe('UIWrapper', function () {
           });
           done();
         });
-      uiWrapper.setSeekbarConfig(mediaConfig);
+      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
     it('should set the backend thumbs sprite with default sizes', function (done) {
@@ -103,7 +103,7 @@ describe('UIWrapper', function () {
           config.thumbsSprite.startsWith(mediaConfig.sources.poster).should.be.true;
           done();
         });
-      uiWrapper.setSeekbarConfig(mediaConfig);
+      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
     it('should set the backend thumbs sprite with configured sizes', function (done) {
@@ -119,7 +119,7 @@ describe('UIWrapper', function () {
           config.thumbsSprite.startsWith(mediaConfig.sources.poster).should.be.true;
           done();
         });
-      uiWrapper.setSeekbarConfig(mediaConfig);
+      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
     it('should not set seek bar config', function (done) {
@@ -131,7 +131,7 @@ describe('UIWrapper', function () {
           config.should.deep.equal({});
           done();
         });
-      uiWrapper.setSeekbarConfig(mediaConfig);
+      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
   });
 });
