@@ -62,7 +62,7 @@ export default class KalturaPlayer {
     Object.keys(this._player.config.plugins).forEach(name => {playerConfig.plugins[name] = {}});
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._player.dimensions);
     addKalturaParams(this._player, playerConfig);
-    this._uiWrapper.setSeekbarConfig(mediaConfig);
+    this._uiWrapper.setSeekbarConfig(mediaConfig, this._player.config.ui);
     this._player.configure(playerConfig);
   }
 
