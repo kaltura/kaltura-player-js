@@ -21,7 +21,7 @@ describe('UIWrapper', function () {
     TestUtils.removeElement(targetId);
   });
 
-  describe.only('setSeekbarConfig', function () {
+  describe('setSeekbarConfig', function () {
     beforeEach(function () {
       sandbox = sinon.sandbox.create();
       player = loadPlayer();
