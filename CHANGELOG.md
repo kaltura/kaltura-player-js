@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.31.5"></a>
+## [0.31.5](https://github.com/kaltura/kaltura-player-js/compare/v0.31.4...v0.31.5) (2018-07-05)
+
+
+### Bug Fixes
+
+* **FEC-8382:** stereos icon displayed on iPhone, even if VR plugin disabled ([#144](https://github.com/kaltura/kaltura-player-js/issues/144)) ([116cc9f](https://github.com/kaltura/kaltura-player-js/commit/116cc9f))
+
+
+
 <a name="0.31.4"></a>
 ## [0.31.4](https://github.com/kaltura/kaltura-player-js/compare/v0.31.2...v0.31.4) (2018-07-04)
 
