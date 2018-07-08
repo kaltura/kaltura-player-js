@@ -59,7 +59,7 @@ export default class KalturaPlayer {
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._player.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._player.config.session);
-    Object.keys(this._player.config.plugins).forEach(name => {playerConfig.plugins[name] = {}});
+    Object.keys(this._player.config.plugins).forEach(name => {playerConfig.plugins[name] = {disable: this._player.config.plugins[name].disable}});
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._player.dimensions);
     addKalturaParams(this._player, playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig, this._player.config.ui);
