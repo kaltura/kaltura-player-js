@@ -138,7 +138,8 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 
 | Ads System			  			| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
-| Google IMA 				 		| Yes					| Yes 					|
+| Google IMA - VAST/VPAID/VMAP				 		| Yes, VAST and VPAID					| Yes, VAST, VPAID and VMAP 					|
+| Google IMA - DAI				 		| No					| Yes 					|
 
 ## Interactivity and Use-Case Functionality
 
