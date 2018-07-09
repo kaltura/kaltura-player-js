@@ -38,10 +38,10 @@ function getDirectManifestUri(data: Object, uri: string): string {
 
 /**
  * Add external stream redirect configuration to the general config.
- * @param {KalturaPlayerOptionsObject} options - kaltura player options.
+ * @param {KPOptionsObject} options - kaltura player options.
  * @returns {void}
  */
-function configureExternalStreamRedirect(options: KalturaPlayerOptionsObject): void {
+function configureExternalStreamRedirect(options: KPOptionsObject): void {
   let sourceOptions = Utils.Object.getPropertyPath(options, 'sources.options');
   if (!sourceOptions) {
     Utils.Object.mergeDeep(options, {

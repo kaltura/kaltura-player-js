@@ -8,11 +8,11 @@ const CLIENT_TAG = 'clientTag=html5:v';
 
 /**
  * @param {Player} player - player
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @public
  */
-function handleSessionId(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
+function handleSessionId(player: Player, playerConfig: PartialKPOptionsObject): void {
   if (player.config.session && player.config.session.id) { // on change media
     updateSessionId(player, playerConfig);
   } else { // on first playback
@@ -21,11 +21,11 @@ function handleSessionId(player: Player, playerConfig: PartialKalturaPlayerOptio
 }
 
 /**
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @private
  */
-function addSessionId(playerConfig: PartialKalturaPlayerOptionsObject): void {
+function addSessionId(playerConfig: PartialKPOptionsObject): void {
   let primaryGUID = Utils.Generator.guid();
   let secondGUID = Utils.Generator.guid();
   setSessionId(playerConfig, primaryGUID + ':' + secondGUID);
@@ -33,11 +33,11 @@ function addSessionId(playerConfig: PartialKalturaPlayerOptionsObject): void {
 
 /**
  * @param {Player} player - player
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @private
  */
-function updateSessionId(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
+function updateSessionId(player: Player, playerConfig: PartialKPOptionsObject): void {
   let secondGuidInSessionIdRegex = /:((?:[a-z0-9]|-)*)/i;
   let secondGuidInSessionId = secondGuidInSessionIdRegex.exec(player.config.session.id);
   if (secondGuidInSessionId && secondGuidInSessionId[1]) {
@@ -46,12 +46,12 @@ function updateSessionId(player: Player, playerConfig: PartialKalturaPlayerOptio
 }
 
 /**
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @param {string} sessionId - the session id
  * @return {void}
  * @private
  */
-function setSessionId(playerConfig: PartialKalturaPlayerOptionsObject, sessionId: string): void {
+function setSessionId(playerConfig: PartialKPOptionsObject, sessionId: string): void {
   playerConfig.session = playerConfig.session || {};
   playerConfig.session.id = sessionId;
 }
@@ -117,11 +117,11 @@ function addClientTag(source: PKMediaSourceObject): void {
 /**
  * Adding Kaltura specific params to player config and player sources.
  * @param {Player} player - player
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @private
  */
-function addKalturaParams(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
+function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject): void {
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
   Object.values(StreamType).forEach(key => {
