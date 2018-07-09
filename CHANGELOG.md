@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.0"></a>
+# [0.32.0](https://github.com/kaltura/kaltura-player-js/compare/v0.31.5...v0.32.0) (2018-07-09)
+
+
+### Features
+
+* support download manager anti-failure mechnism [#146](https://github.com/kaltura/kaltura-player-js/issues/146) ([222007d](https://github.com/kaltura/kaltura-player-js/commit/222007d))
+
+
+
 <a name="0.31.5"></a>
 ## [0.31.5](https://github.com/kaltura/kaltura-player-js/compare/v0.31.4...v0.31.5) (2018-07-05)
 
