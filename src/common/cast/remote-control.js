@@ -56,7 +56,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload) {
     this._remotePlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
     this._uiWrapper.destroy();
     this._remotePlayer = null;
-    this._uiWrapper = new UIWrapper(this, this.config.ui);
+    this._uiWrapper = new UIWrapper(this, this.config);
     if (snapshot && snapshot.mediaInfo) {
       const mediaInfo = snapshot.mediaInfo;
       const configurePlayer = (config: Object): void => {
