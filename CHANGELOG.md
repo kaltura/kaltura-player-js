@@ -2,6 +2,111 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.0"></a>
+# [0.32.0](https://github.com/kaltura/kaltura-player-js/compare/v0.31.5...v0.32.0) (2018-07-09)
+
+
+### Features
+
+* support download manager anti-failure mechnism [#146](https://github.com/kaltura/kaltura-player-js/issues/146) ([222007d](https://github.com/kaltura/kaltura-player-js/commit/222007d))
+
+
+
+<a name="0.31.5"></a>
+## [0.31.5](https://github.com/kaltura/kaltura-player-js/compare/v0.31.4...v0.31.5) (2018-07-05)
+
+
+### Bug Fixes
+
+* **FEC-8382:** stereos icon displayed on iPhone, even if VR plugin disabled ([#144](https://github.com/kaltura/kaltura-player-js/issues/144)) ([116cc9f](https://github.com/kaltura/kaltura-player-js/commit/116cc9f))
+
+
+
+<a name="0.31.4"></a>
+## [0.31.4](https://github.com/kaltura/kaltura-player-js/compare/v0.31.2...v0.31.4) (2018-07-04)
+
+
+
+<a name="0.31.3"></a>
+## [0.31.3](https://github.com/kaltura/kaltura-player-js/compare/v0.31.2...v0.31.3) (2018-07-04)
+
+
+
+<a name="0.31.2"></a>
+## [0.31.2](https://github.com/kaltura/kaltura-player-js/compare/v0.31.1...v0.31.2) (2018-07-04)
+
+
+### Bug Fixes
+
+* **FEC-8355:** on change media the config hold the old seekbar configuration ([#136](https://github.com/kaltura/kaltura-player-js/issues/136)) ([0f6b036](https://github.com/kaltura/kaltura-player-js/commit/0f6b036))
+
+
+
+<a name="0.31.1"></a>
+# [0.31.1](https://github.com/kaltura/kaltura-player-js/compare/v0.31.0...v0.31.1) (2018-07-03)
+
+
+### Bug Fixes
+
+* **FEC-8375:** plugins data not evaluated ([#143](https://github.com/kaltura/kaltura-player-js/issues/143)) ([0033e93](https://github.com/kaltura/kaltura-player-js/commit/0033e93))
+
+
+
+<a name="0.31.0"></a>
+# [0.31.0](https://github.com/kaltura/kaltura-player-js/compare/v0.30.5...v0.31.0) (2018-07-03)
+
+
+### Features
+
+* **FEC-8364:** support adding evaluated expressions also on player setup and configure API ([#139](https://github.com/kaltura/kaltura-player-js/issues/139)) ([84542c8](https://github.com/kaltura/kaltura-player-js/commit/84542c8))
+
+
+
+<a name="0.30.5"></a>
+## [0.30.5](https://github.com/kaltura/kaltura-player-js/compare/v0.30.4...v0.30.5) (2018-07-02)
+
+
+
+<a name="0.30.4"></a>
+## [0.30.4](https://github.com/kaltura/kaltura-player-js/compare/v0.30.3...v0.30.4) (2018-06-28)
+
+
+### Bug Fixes
+
+* **FEC-8356:** pass player version string via config ([#137](https://github.com/kaltura/kaltura-player-js/issues/137)) ([7660f6f](https://github.com/kaltura/kaltura-player-js/commit/7660f6f))
+
+
+
+<a name="0.30.3"></a>
+## [0.30.3](https://github.com/kaltura/kaltura-player-js/compare/v0.30.2...v0.30.3) (2018-06-26)
+
+
+### Bug Fixes
+
+* **FEC-7971:** change media doesn't work after a critical error ([#135](https://github.com/kaltura/kaltura-player-js/issues/135)) ([292876f](https://github.com/kaltura/kaltura-player-js/commit/292876f))
+
+
+
+<a name="0.30.2"></a>
+## [0.30.2](https://github.com/kaltura/kaltura-player-js/compare/v0.30.1...v0.30.2) (2018-06-26)
+
+
+### Bug Fixes
+
+* **FEC-7971:** change media doesn't work after a critical error ([#135](https://github.com/kaltura/kaltura-player-js/issues/135)) ([292876f](https://github.com/kaltura/kaltura-player-js/commit/292876f))
+
+
+
+<a name="0.30.1"></a>
+## [0.30.1](https://github.com/kaltura/kaltura-player-js/compare/v0.30.0...v0.30.1) (2018-06-25)
+
+
+### Bug Fixes
+
+* **FEC-8349:** OTT analytics - no event send for logged user ([#134](https://github.com/kaltura/kaltura-player-js/issues/134)) ([f3e1766](https://github.com/kaltura/kaltura-player-js/commit/f3e1766))
+
+
+
 <a name="0.30.0"></a>
 # [0.30.0](https://github.com/kaltura/kaltura-player-js/compare/v0.29.0...v0.30.0) (2018-06-24)
 
