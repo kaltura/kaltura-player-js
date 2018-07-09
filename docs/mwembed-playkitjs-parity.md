@@ -4,7 +4,7 @@
 
 | Engine  				| mwEmbed 				| kaltura-player-js 			|
 |-----------------------|-----------------------|-----------------------|
-| HLS   				| Yes, hls.js	 		| Yes, hls.js			|
+| HLS   				| Yes, hls.js, HLS-Flash	 		| Yes, hls.js, HLS-Flash			|
 | MPEG-DASH   			| Yes, Shaka   			| Yes, Shaka   			|
 | Progressive  			| Yes        			| Yes        			|
 | HDS					| Yes, Flash        	| No        			|
@@ -26,8 +26,17 @@
 | Safari iOS iPhone	| Yes, Native, v9+		| Yes, Native, v9+		|
 | Safari iOS iPad	| Yes, HTML5, v9+		| Yes, HTML5, v9+		|
 | Chrome Android 	| Yes, HTML5, v4.4+		| Yes, HTML5, v4.4+		|
-| IE 11 			| Yes, HTML5, Win8.1+		| Yes, HTML5, Win8.1+		|
-| IE 9,10	  		| Yes, Flash, Win7+		| No 					|
+| IE 11 			| Yes, HTML5, Win8.1+, Flash-win7		| Yes, HTML5-Win8.1+, Flash-win7		|
+| IE 9,10	  		| Yes, Flash, Win7+		| Yes, Flash, Win7+ (Not Tested) 					|
+
+## Casting and TV
+
+| Browser  			| mwEmbed 				| kaltura-player-js 			|
+|-------------------|-----------------------|-----------------------|
+| Chromecast  	| Yes              | Q3 2018	|
+| AirPlay  	| Yes              | Yes	|
+| Samsung (Tizen, Orsay)  	| No              | Q1 2019	|
+| LG (WebOS, Netcast)  	| No              | Q1 2019	|
 
 ## Tracks 
 
@@ -36,7 +45,7 @@
 | Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | WebVTT 608/708 (Manifest Embedded)| Yes					| Yes 					|
-| SRT file		  					| Yes					| No 					|
+| SRT file		  					| Yes					| Yes 					|
 | DFXP file		  					| Yes					| No 					|
 
 ### Audio Tracks 
@@ -57,8 +66,10 @@
 
 | Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
-| 360		                | Yes					| H2 2018 					|
-| Play in VR headset		| Yes					| H2 2018 					|
+| 360		                | Yes					| Yes 					|
+| Play in VR headset		| Yes					| Yes 					|
+
+* Suported also in Native Android/iOS SDKs
 
 ## User Controls and UI
 
@@ -76,9 +87,9 @@
 | Watermark 						| Yes					| Yes					|
 | Mobile Skin						| Yes					| Yes 					|
 | i18n UI Translations 				| Yes					| Q3 2018		|
+| Playlist							| Yes					| H2 2018 		|
 | Share and Embed screen			| Yes					| H2 2018 		|
 | Titlebar							| Yes					| H2 2018 		|
-| Playlist							| Yes					| H2 2018 		|
 | End of Playback Screen / Related	| Yes					| H2 2018 		|
 | Info Screen 						| Yes					| N/A 			 		|
 | Player.js / Embedly				| Yes					| N/A 		|
@@ -86,12 +97,9 @@
 
 ## Selective Packaging of Plugins
 
-> All new plugins are bundeled selectively based on uiConnf json configuration
+All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bundeled selectively based on uiConnf json configuration. Below are not yet bundeled selectively:
 
-Below are not yet bundeled selectively:
-
-* Chromeless (don't load UI)
-* Google IMA
+* Chromeless (don't load UI), currently requires pre-building a package or disabling UI but still loading it
 
 ## Accessability - CVAA and ADA
 
@@ -108,10 +116,10 @@ Below are not yet bundeled selectively:
 | Kaltura Analytics (legacy)	 	| Yes					| Yes 					|
 | Kaltura Analytics (Kava)		 	| Yes					| Yes 					|
 | Youbora (Nice People At Work)	 	| Yes					| Yes 					|
-| Google Analytics 				 	| Yes					| Q2 2018 		|
-| Adobe Analytics / Omniture		| Yes					| H2 2018  					|
-| comScore		 				 	| Yes					| Q2 2018  					|
-| Nielsen		 				 	| Yes					| H2 2018 			 		|
+| Google Analytics 				 	| Yes					| Yes 		|
+| comScore		 				 	| Yes					| Yes  					|
+| Adobe Analytics / Omniture		| Yes					| Q4 2018  					|
+| Nielsen		 				 	| Yes					| Q4 2018 			 		|
 | Marketo		 				 	| Yes					| No 			 		|
 | Eloqua		 				 	| Yes					| No 			 		|
 
