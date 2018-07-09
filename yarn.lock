@@ -4548,9 +4548,9 @@ pkginfo@0.x.x:
   version "1.6.2"
   resolved "https://github.com/kaltura/playkit-js-dash.git#b73ca71de4914c059b170190569244d1c145125e"
 
-"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.1":
-  version "3.3.1"
-  resolved "https://github.com/kaltura/playkit-js-env-manager.git#b6148acd36778212ceb9bd7cee3bdae3389a8088"
+"playkit-js-env-manager@https://github.com/kaltura/playkit-js-env-manager.git#v3.3.2":
+  version "3.3.2"
+  resolved "https://github.com/kaltura/playkit-js-env-manager.git#0a3821cafd76b941df3ed42f162afba1c03a230d"
   dependencies:
     chalk "^2.1.0"
     fs "0.0.1-security"
@@ -6068,10 +6068,6 @@ uid-number@^0.0.6:
 ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
-
-undefined@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/undefined/-/undefined-0.1.0.tgz#9b706a4b32ad30c20ca4fe65ddcbbbdac32bded0"
 
 uniq@^1.0.1:
   version "1.0.1"
