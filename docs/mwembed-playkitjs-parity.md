@@ -69,7 +69,7 @@
 | 360		                | Yes					| Yes 					|
 | Play in VR headset		| Yes					| Yes 					|
 
-* Suported also in Native Android/iOS SDKs
+* Supported also in Native Android/iOS SDKs
 
 ## User Controls and UI
 
@@ -97,11 +97,11 @@
 
 ## Selective Packaging of Plugins
 
-All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bundeled selectively based on uiConnf json configuration. Below are not yet bundeled selectively:
+All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bundled selectively based on uiConnf json configuration. Below are not yet bundled selectively:
 
 * Chromeless (don't load UI), currently requires pre-building a package or disabling UI but still loading it
 
-## Accessability - CVAA and ADA
+## Accessibility - CVAA and ADA
 
 | 					  				| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
