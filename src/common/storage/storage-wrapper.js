@@ -1,5 +1,5 @@
 // @flow
-import getLogger from '../utils/logger'
+import getLogger from '../utils/logger';
 
 const STORAGE_PREFIX = __NAME__ + '_';
 
@@ -17,8 +17,7 @@ export default class StorageWrapper {
         localStorage.setItem('test', 'test');
         localStorage.removeItem('test');
         return true;
-      }
-      catch (e) {
+      } catch (e) {
         return false;
       }
     } else {
@@ -32,7 +31,7 @@ export default class StorageWrapper {
    * @return {number} - The number of keys in the local storage started with wanted prefix.
    */
   static get size(): number {
-    return Object.keys(localStorage).filter((key) => key.startsWith(STORAGE_PREFIX)).length;
+    return Object.keys(localStorage).filter(key => key.startsWith(STORAGE_PREFIX)).length;
   }
 
   /**
