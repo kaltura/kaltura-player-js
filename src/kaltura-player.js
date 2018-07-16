@@ -1,17 +1,17 @@
 // @flow
-import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Player, TextStyle, Track, Utils} from 'playkit-js'
-import {EventType as UIEventType} from 'playkit-js-ui'
-import {Provider} from 'playkit-js-providers'
-import {supportLegacyOptions} from './common/utils/setup-helpers'
-import getLogger from './common/utils/logger'
-import {addKalturaParams} from './common/utils/kaltura-params'
-import {evaluatePluginsConfig} from './common/plugins/plugins-config'
-import {addKalturaPoster} from 'poster'
-import {UIWrapper} from './common/ui-wrapper'
-import {CastEventType} from './common/cast/cast-event-type'
-import {RemotePlayerManager} from './common/cast/remote-player-manager'
-import {BaseRemotePlayer} from './common/cast/base-remote-player'
-import './assets/style.css'
+import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from 'playkit-js';
+import {EventType as UIEventType} from 'playkit-js-ui';
+import {Provider} from 'playkit-js-providers';
+import {supportLegacyOptions} from './common/utils/setup-helpers';
+import getLogger from './common/utils/logger';
+import {addKalturaParams} from './common/utils/kaltura-params';
+import {evaluatePluginsConfig} from './common/plugins/plugins-config';
+import {addKalturaPoster} from 'poster';
+import './assets/style.css';
+import {UIWrapper} from './common/ui-wrapper';
+import {CastEventType} from './common/cast/cast-event-type';
+import {RemotePlayerManager} from './common/cast/remote-player-manager';
+import {BaseRemotePlayer} from './common/cast/base-remote-player';
 
 class KalturaPlayer {
   _mediaInfo: ?ProviderMediaInfoObject;
@@ -59,12 +59,16 @@ class KalturaPlayer {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-    return this._provider.getMediaConfig(mediaInfo)
+    return this._provider
+      .getMediaConfig(mediaInfo)
       .then(mediaConfig => {
         this.setMedia(mediaConfig);
-      }).catch(e => this._localPlayer.dispatchEvent(
-        new FakeEvent(this._localPlayer.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-      ));
+      })
+      .catch(e =>
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(this._localPlayer.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
+      );
   }
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
@@ -73,7 +77,7 @@ class KalturaPlayer {
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     Object.keys(this._localPlayer.config.plugins).forEach(name => {
-      playerConfig.plugins[name] = {}
+      playerConfig.plugins[name] = {};
     });
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this._localPlayer, playerConfig);

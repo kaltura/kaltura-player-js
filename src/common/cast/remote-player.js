@@ -1,5 +1,5 @@
 // @flow
-import {FakeEvent, TextStyle, Track} from 'playkit-js'
+import {FakeEvent, TextStyle, Track} from 'playkit-js';
 
 export interface IRemotePlayer {
   textStyle: ?TextStyle;

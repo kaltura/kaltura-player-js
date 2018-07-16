@@ -1,5 +1,5 @@
 // @flow
-import {Presets} from 'playkit-js-ui'
+import {Presets} from 'playkit-js-ui';
 
 class RemotePlayerUI {
   _uis: Array<UIPreset> = [

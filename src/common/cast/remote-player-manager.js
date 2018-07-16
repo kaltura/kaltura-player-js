@@ -1,7 +1,7 @@
 // @flow
-import {RemoteControl} from './remote-control'
-import {BaseRemotePlayer} from './base-remote-player'
-import getLogger from '../utils/logger'
+import {RemoteControl} from './remote-control';
+import {BaseRemotePlayer} from './base-remote-player';
+import getLogger from '../utils/logger';
 
 class RemotePlayerManager {
   static _logger: any = getLogger('RemotePlayerManager');
@@ -56,6 +56,3 @@ class RemotePlayerManager {
 }
 
 export {RemotePlayerManager};
-
-
-

@@ -1,18 +1,14 @@
 // @flow
-import KalturaPlayer from '../../kaltura-player'
-import {PlayerSnapshot} from './player-snapshot'
-import {CastEventType} from './cast-event-type'
-import {EventManager, EventType as CoreEventType, FakeEvent, TrackType, Utils} from 'playkit-js'
-import {EventType as UIEventType} from 'playkit-js-ui'
-import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload'
-import {UIWrapper} from '../ui-wrapper'
-import getLogger from '../utils/logger'
+import KalturaPlayer from '../../kaltura-player';
+import {PlayerSnapshot} from './player-snapshot';
+import {CastEventType} from './cast-event-type';
+import {EventManager, EventType as CoreEventType, FakeEvent, TrackType, Utils} from 'playkit-js';
+import {EventType as UIEventType} from 'playkit-js-ui';
+import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload';
+import {UIWrapper} from '../ui-wrapper';
+import getLogger from '../utils/logger';
 
-const events: Array<string> = [
-  ...Object.values(CastEventType),
-  ...Object.values(UIEventType),
-  ...Object.values(CoreEventType)
-];
+const events: Array<string> = [...Object.values(CastEventType), ...Object.values(UIEventType), ...Object.values(CoreEventType)];
 
 const eventManager: EventManager = new EventManager();
 const logger: any = getLogger('RemoteControl');
@@ -31,6 +27,10 @@ class RemoteControl {
   }
 }
 
+/**
+ * @param {RemoteConnectedPayload} payload - connected payload.
+ * @returns {void}
+ */
 function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   logger.debug('onRemoteDeviceConnected', payload);
   const {player, ui, session} = payload;
@@ -46,10 +46,15 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   this._remotePlayer.dispatchEvent(
     new FakeEvent(CastEventType.CAST_SESSION_STARTED, {
       session: session
-    }));
+    })
+  );
 }
 
-function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload) {
+/**
+ * @param {RemoteDisconnectedPayload} payload - disconnected payload.
+ * @returns {void}
+ */
+function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
   logger.debug('onRemoteDeviceDisconnected', payload);
   const {player, snapshot} = payload;
   if (this._remotePlayer && this._remotePlayer === player) {
@@ -91,15 +96,24 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload) {
   }
 }
 
+/**
+ * @param {RemoteAvailablePayload} payload - available payload.
+ * @returns {void}
+ */
 function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
   logger.debug('onRemoteDeviceAvailable', payload);
   const {player, available} = payload;
-  this.dispatchEvent(new FakeEvent(CastEventType.CAST_AVAILABLE, {
-    type: player.type,
-    available: available
-  }));
+  this.dispatchEvent(
+    new FakeEvent(CastEventType.CAST_AVAILABLE, {
+      type: player.type,
+      available: available
+    })
+  );
 }
 
+/**
+ * @returns {PlayerSnapshot} - player snapshot.
+ */
 function getPlayerSnapshot(): PlayerSnapshot {
   const snapshot = new PlayerSnapshot(this);
   logger.debug('getPlayerSnapshot', snapshot);

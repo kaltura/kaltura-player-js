@@ -1,9 +1,9 @@
 // @flow
 /* eslint no-unused-vars: 0 */
-import {IRemotePlayer} from './remote-player'
-import {EventManager, FakeEventTarget, TextStyle, Track, Utils} from 'playkit-js'
-import {RemoteControl} from './remote-control'
-import getLogger from '../utils/logger'
+import {IRemotePlayer} from './remote-player';
+import {EventManager, FakeEventTarget, TextStyle, Track, Utils} from 'playkit-js';
+import {RemoteControl} from './remote-control';
+import getLogger from '../utils/logger';
 
 class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   static defaultConfig: Object = {};
@@ -32,33 +32,25 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return Promise.resolve();
   }
 
-  setMedia(mediaConfig: Object): void {
-  }
+  setMedia(mediaConfig: Object): void {}
 
-  getMediaInfo(): ?Object {
-  }
+  getMediaInfo(): ?Object {}
 
-  configure(config: Object = {}): void {
-  }
+  configure(config: Object = {}): void {}
 
   ready(): Promise<*> {
     return Promise.resolve();
   }
 
-  load(): void {
-  }
+  load(): void {}
 
-  play(): void {
-  }
+  play(): void {}
 
-  pause(): void {
-  }
+  pause(): void {}
 
-  reset(): void {
-  }
+  reset(): void {}
 
-  destroy(): void {
-  }
+  destroy(): void {}
 
   isLive(): boolean {
     return false;
@@ -68,8 +60,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return false;
   }
 
-  seekToLiveEdge(): void {
-  }
+  seekToLiveEdge(): void {}
 
   getStartTimeOfDvrWindow(): number {
     return 0;
@@ -83,33 +74,25 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return {audio: undefined, video: undefined, text: undefined};
   }
 
-  selectTrack(track: ?Track): void {
-  }
+  selectTrack(track: ?Track): void {}
 
-  hideTextTrack(): void {
-  }
+  hideTextTrack(): void {}
 
-  enableAdaptiveBitrate(): void {
-  }
+  enableAdaptiveBitrate(): void {}
 
   isAdaptiveBitrateEnabled(): boolean {
     return true;
   }
 
-  setTextDisplaySettings(settings: Object): void {
-  }
+  setTextDisplaySettings(settings: Object): void {}
 
-  skipAd(): void {
-  }
+  skipAd(): void {}
 
-  playAdNow(adTagUrl: string): void {
-  }
+  playAdNow(adTagUrl: string): void {}
 
-  startCasting(): void {
-  }
+  startCasting(): void {}
 
-  stopCasting(): void {
-  }
+  stopCasting(): void {}
 
   isCasting(): boolean {
     return true;
@@ -123,15 +106,13 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return false;
   }
 
-  toggleVrStereoMode(): void {
-  }
+  toggleVrStereoMode(): void {}
 
   isInVrStereoMode(): boolean {
     return false;
   }
 
-  set textStyle(style: TextStyle): void {
-  }
+  set textStyle(style: TextStyle): void {}
 
   get textStyle(): TextStyle {
     return new TextStyle();
@@ -141,8 +122,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return [];
   }
 
-  set currentTime(to: number): void {
-  }
+  set currentTime(to: number): void {}
 
   get currentTime(): number {
     return 0;
@@ -152,8 +132,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return 0;
   }
 
-  set volume(vol: number): void {
-  }
+  set volume(vol: number): void {}
 
   get volume(): number {
     return 1;
@@ -167,8 +146,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return false;
   }
 
-  set muted(mute: boolean): void {
-  }
+  set muted(mute: boolean): void {}
 
   get muted(): boolean {
     return false;
@@ -182,8 +160,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return '';
   }
 
-  set playbackRate(rate: number): void {
-  }
+  set playbackRate(rate: number): void {}
 
   get playbackRate(): number {
     return 1;

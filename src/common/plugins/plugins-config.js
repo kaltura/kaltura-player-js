@@ -1,8 +1,8 @@
 //@flow
-import {pluginConfig, templateRegex} from './plugins-config-store.js'
-import evaluate from '../utils/evaluate'
-import {getReferrer} from '../utils/kaltura-params'
-import {Utils} from 'playkit-js'
+import {pluginConfig, templateRegex} from './plugins-config-store.js';
+import evaluate from '../utils/evaluate';
+import {getReferrer} from '../utils/kaltura-params';
+import {Utils} from 'playkit-js';
 
 /**
  * returns weather value is evaluated
@@ -10,8 +10,7 @@ import {Utils} from 'playkit-js'
  * @returns {boolean} - value is evaluated
  */
 const isValueEvaluated = (value: any): boolean =>
-  (typeof value === "number" || typeof value === "string" || typeof value === "boolean") &&
-  !templateRegex.test(value.toString());
+  (typeof value === 'number' || typeof value === 'string' || typeof value === 'boolean') && !templateRegex.test(value.toString());
 
 /**
  * remove unevaluated expressions form object
@@ -19,18 +18,14 @@ const isValueEvaluated = (value: any): boolean =>
  * @returns {Object} - the object without unevaluated strings
  */
 const removeUnevaluatedExpression = (obj = {}): Object =>
-  Object.entries(obj)
-    .reduce(
-      (product, [key, value]): Object => {
-        if (Utils.Object.isObject(value)) {
-          product[key] = removeUnevaluatedExpression(value);
-        } else if (isValueEvaluated(value)) {
-          product[key] = value;
-        }
-        return product;
-      },
-      {}
-    );
+  Object.entries(obj).reduce((product, [key, value]): Object => {
+    if (Utils.Object.isObject(value)) {
+      product[key] = removeUnevaluatedExpression(value);
+    } else if (isValueEvaluated(value)) {
+      product[key] = value;
+    }
+    return product;
+  }, {});
 
 /**
  * returns the data model for evaluating evaluation tokens
@@ -94,11 +89,11 @@ function evaluatePluginsConfig(options: KPOptionsObject): void {
     const evaluatedConfig = evaluate(JSON.stringify(pluginConfig.get()), dataModel);
     let evaluatedConfigObj;
     try {
-      evaluatedConfigObj = JSON.parse(evaluatedConfig, function (key) {
+      evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
         try {
           return JSON.parse(this[key]);
         } catch (e) {
-          return (this[key]);
+          return this[key];
         }
       });
     } catch (e) {
@@ -108,7 +103,7 @@ function evaluatePluginsConfig(options: KPOptionsObject): void {
     options.plugins = removeUnevaluatedExpression(options.plugins);
 
     if (options.plugins) {
-      Object.keys(options.plugins).forEach((pluginName) => {
+      Object.keys(options.plugins).forEach(pluginName => {
         if (options.plugins && options.plugins[pluginName]) {
           const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
           if (options.plugins) {

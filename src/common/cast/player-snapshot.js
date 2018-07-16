@@ -1,6 +1,6 @@
 // @flow
-import KalturaPlayer from '../../kaltura-player'
-import {TextStyle} from 'playkit-js'
+import KalturaPlayer from '../../kaltura-player';
+import {TextStyle} from 'playkit-js';
 
 class PlayerSnapshot {
   startTime: number;

@@ -1,8 +1,8 @@
 // @flow
-import {UIManager} from 'playkit-js-ui'
-import {Env, Utils} from 'playkit-js'
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
-import KalturaPlayer from '../kaltura-player'
+import {UIManager} from 'playkit-js-ui';
+import {Env, Utils} from 'playkit-js';
+import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
+import KalturaPlayer from '../kaltura-player';
 
 class UIWrapper {
   _uiManager: UIManager;
@@ -16,7 +16,7 @@ class UIWrapper {
     } else {
       this._uiManager = new UIManager(player, config);
       if (config.customPreset) {
-        this._uiManager.buildCustomUI(config.customPreset)
+        this._uiManager.buildCustomUI(config.customPreset);
       } else {
         this._uiManager.buildDefaultUI();
       }
@@ -59,7 +59,7 @@ class UIWrapper {
   _handleVr(config: PKPluginsConfigObject = {}): void {
     if (config.vr && !config.vr.disable) {
       this._setFullscreenConfig();
-      this._setStereoConfig(config.vr)
+      this._setStereoConfig(config.vr);
     }
   }
 
@@ -71,7 +71,7 @@ class UIWrapper {
   _setStereoConfig(vrConfig: Object): void {
     if (vrConfig.toggleStereo || (Env.device.type && vrConfig.toggleStereo !== false)) {
       // enable stereo mode by default for mobile device
-      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!(vrConfig.startInStereo)}), 'vrStereo');
+      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
   }
 }
