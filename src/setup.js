@@ -1,6 +1,6 @@
 // @flow
-import KalturaPlayer from './kaltura-player'
-import {evaluatePluginsConfig} from './common/plugins/plugins-config'
+import KalturaPlayer from './kaltura-player';
+import {evaluatePluginsConfig} from './common/plugins/plugins-config';
 import {
   applyStorageSupport,
   getDefaultOptions,
@@ -10,7 +10,7 @@ import {
   setStorageTextStyle,
   supportLegacyOptions,
   validateConfig
-} from './common/utils/setup-helpers'
+} from './common/utils/setup-helpers';
 
 /**
  * Setup the Kaltura Player.

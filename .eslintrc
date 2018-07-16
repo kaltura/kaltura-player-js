@@ -5,6 +5,7 @@
     "plugin:flowtype/recommended"
   ],
   "plugins": [
+    "prettier",
     "import",
     "flowtype",
     "mocha-no-only"
@@ -25,6 +26,7 @@
     "__CONFIG_DOCS_URL__": true
   },
   "rules": {
+    "prettier/prettier": "error",
     "mocha-no-only/mocha-no-only": "off",
     "require-jsdoc": [
       "error"

@@ -1,5 +1,5 @@
 //@flow
-import {StreamType, Utils} from 'playkit-js'
+import {StreamType, Utils} from 'playkit-js';
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
@@ -13,9 +13,11 @@ const CLIENT_TAG = 'clientTag=html5:v';
  * @public
  */
 function handleSessionId(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
-  if (player.config.session && player.config.session.id) { // on change media
+  if (player.config.session && player.config.session.id) {
+    // on change media
     updateSessionId(player, playerConfig);
-  } else { // on first playback
+  } else {
+    // on first playback
     addSessionId(playerConfig);
   }
 }
@@ -66,7 +68,8 @@ function updateSessionIdInUrl(source: Object = {}, sessionId: ?string): void {
   if (sessionId) {
     let sessionIdInUrlRegex = new RegExp(PLAY_SESSION_ID + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
     let sessionIdInUrl = sessionIdInUrlRegex.exec(source.url);
-    if (sessionIdInUrl && sessionIdInUrl[1]) { // this url has session id (has already been played)
+    if (sessionIdInUrl && sessionIdInUrl[1]) {
+      // this url has session id (has already been played)
       source.url = source.url.replace(sessionIdInUrl[1], sessionId);
     } else {
       let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
@@ -83,7 +86,8 @@ function getReferrer(): string {
   let referrer;
   try {
     referrer = window.parent.document.URL;
-  } catch (e) { // unfriendly iframe
+  } catch (e) {
+    // unfriendly iframe
     referrer = document.referrer;
   }
   return referrer;
@@ -127,7 +131,7 @@ function addKalturaParams(player: Player, playerConfig: PartialKalturaPlayerOpti
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
-      sources[key].forEach((source) => {
+      sources[key].forEach(source => {
         if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
           updateSessionIdInUrl(source, playerConfig.session && playerConfig.session.id);
           addReferrer(source);
@@ -138,4 +142,4 @@ function addKalturaParams(player: Player, playerConfig: PartialKalturaPlayerOpti
   });
 }
 
-export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag}
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag};
