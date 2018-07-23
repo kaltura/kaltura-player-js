@@ -2348,6 +2348,12 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
+eslint-config-prettier@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-2.9.0.tgz#5ecd65174d486c22dff389fe036febf502d468a3"
+  dependencies:
+    get-stdin "^5.0.1"
+
 eslint-import-resolver-node@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.1.tgz#4422574cde66a9a7b099938ee4d508a199e0e3cc"
@@ -2976,6 +2982,10 @@ get-pkg-repo@^1.0.0:
 get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
+
+get-stdin@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-5.0.1.tgz#122e161591e21ff4c52530305693f20e6393a398"
 
 get-stream@^3.0.0:
   version "3.0.0"
@@ -5199,17 +5209,23 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.7.2":
-  version "1.7.2"
-  resolved "https://github.com/kaltura/playkit-js-hls.git#c2de1807f79f6e7ccc970abc90b361cc379305c5"
+"playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#v1.8.0":
+  version "1.8.0"
+  resolved "https://github.com/kaltura/playkit-js-hls.git#44905ee6bbad904aaa8c6a3ba42659d7e67b4681"
+  dependencies:
+    eslint-config-prettier "^2.9.0"
+    eslint-plugin-prettier "^2.6.2"
+    husky "^0.14.3"
+    lint-staged "^7.2.0"
+    prettier "^1.13.7"
 
 "playkit-js-kanalytics@https://github.com/kaltura/playkit-js-kanalytics.git#v0.9.0":
   version "0.9.0"
   resolved "https://github.com/kaltura/playkit-js-kanalytics.git#da85e606ca2851856acb58c4a978aaf0703d9adc"
 
-"playkit-js-kava@https://github.com/kaltura/playkit-js-kava.git#v0.2.5":
-  version "0.2.5"
-  resolved "https://github.com/kaltura/playkit-js-kava.git#699226f5eb62c921977fb40f456f89a8d29c40d9"
+"playkit-js-kava@https://github.com/kaltura/playkit-js-kava.git#v0.2.6":
+  version "0.2.6"
+  resolved "https://github.com/kaltura/playkit-js-kava.git#eee3a4ac57161c4cdcb4f214db2a663c130cf055"
 
 "playkit-js-ott-analytics@https://github.com/kaltura/playkit-js-ott-analytics.git#v0.1.5":
   version "0.1.5"
@@ -5221,9 +5237,9 @@ pkginfo@0.x.x:
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.24.6":
-  version "0.24.6"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#b3ee12313a2cf8b2206da65856ec7d69e8f56097"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.25.0":
+  version "0.25.0"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#2402e71e33a5d4ee05049b9fbadcdeb183bbdf1e"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -5233,9 +5249,9 @@ pkginfo@0.x.x:
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"playkit-js@https://github.com/kaltura/playkit-js.git#v0.32.4":
-  version "0.32.4"
-  resolved "https://github.com/kaltura/playkit-js.git#29e692da319e05f4f7727279b655969d9002d4dc"
+"playkit-js@https://github.com/kaltura/playkit-js.git#v0.33.0":
+  version "0.33.0"
+  resolved "https://github.com/kaltura/playkit-js.git#8eaa74aca1ce72c791d3495fb7859561d2b468ee"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
