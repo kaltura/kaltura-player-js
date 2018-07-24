@@ -37,6 +37,7 @@ The following sections are examples of common (and important) configurations for
 #### Example: Using a Kaltura Session (KS)
 
 If you need to use a KS for your media requests, configure it inside your provider configuration:
+
 ```js
 var config = {
   ...
@@ -55,6 +56,7 @@ See this [article](https://developer.kaltura.com/api-docs/VPaaS-API-Getting-Star
 #### Example: Using Server Configuration
 
 If you want to use a server configuration, you'll need to provide the `uiConfId` in your provider configuration:
+
 ```js
 var config = {
   ...
@@ -89,13 +91,14 @@ var config = {
 
 > For full configuration details see [this]() document.
 
-
 ### Step 4 - Set Up the Player
+
 To get your player instance, use the `setup` factory method and pass it your player configuration:
+
 ```js
 var player = KalturaPlayer.setup(config);
 ```
 
 ## Next Step
-You're now ready to start playing your video; see [Playing Your Video](./playing-your-video.md) for details.
 
+You're now ready to start playing your video; see [Playing Your Video](./playing-your-video.md) for details.

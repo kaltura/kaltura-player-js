@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.3"></a>
+## [0.32.3](https://github.com/kaltura/kaltura-player-js/compare/v0.32.2...v0.32.3) (2018-07-23)
+
+
+
+<a name="0.32.2"></a>
+## [0.32.2](https://github.com/kaltura/kaltura-player-js/compare/v0.32.1...v0.32.2) (2018-07-12)
+
+
+
+<a name="0.32.1"></a>
+## [0.32.1](https://github.com/kaltura/kaltura-player-js/compare/v0.32.0...v0.32.1) (2018-07-09)
+
+
+### Bug Fixes
+
+* **FEC-7887, FEC-7953, SUP-14111:** upgrade hlsjs to 0.10.1 ([#147](https://github.com/kaltura/kaltura-player-js/issues/147)) ([cf1095b](https://github.com/kaltura/kaltura-player-js/commit/cf1095b))
+
+
+
 <a name="0.32.0"></a>
 # [0.32.0](https://github.com/kaltura/kaltura-player-js/compare/v0.31.5...v0.32.0) (2018-07-09)
 

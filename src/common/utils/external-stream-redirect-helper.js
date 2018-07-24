@@ -1,5 +1,5 @@
 // @flow
-import {Utils} from 'playkit-js'
+import {Utils} from 'playkit-js';
 
 /**
  * JSONP handler function, returns the direct manifest uri.
@@ -11,14 +11,14 @@ function getDirectManifestUri(data: Object, uri: string): string {
   const getHostName = uri => {
     const parser = document.createElement('a');
     parser.href = uri;
-    return parser.hostname
+    return parser.hostname;
   };
   // if the json contains one url, it means it is a redirect url. if it contains few urls, it means its the flavours
   // so we should use the original url.
   const uriHost = getHostName(uri);
   let hasOneFlavor = false;
-  let redirectedUriHost = "";
-  let redirectedUri = "";
+  let redirectedUriHost = '';
+  let redirectedUri = '';
   if (data) {
     if (data.flavors && Array.isArray(data.flavors)) {
       hasOneFlavor = data.flavors.length === 1;
@@ -30,7 +30,7 @@ function getDirectManifestUri(data: Object, uri: string): string {
       redirectedUri = data.result.url;
     }
   }
-  if (hasOneFlavor && (uriHost !== redirectedUriHost)) {
+  if (hasOneFlavor && uriHost !== redirectedUriHost) {
     return redirectedUri;
   }
   return uri;

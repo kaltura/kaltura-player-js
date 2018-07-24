@@ -1,10 +1,10 @@
 // @flow
-import StorageWrapper from './storage-wrapper'
-import getLogger from '../utils/logger'
-import {Utils} from 'playkit-js'
+import StorageWrapper from './storage-wrapper';
+import getLogger from '../utils/logger';
+import {Utils} from 'playkit-js';
 
 export default class StorageManager {
-  static StorageKeys: { [key: string]: string } = {
+  static StorageKeys: {[key: string]: string} = {
     MUTED: 'muted',
     VOLUME: 'volume',
     AUDIO_LANG: 'audioLanguage',
@@ -36,15 +36,15 @@ export default class StorageManager {
     player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
       StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, (event) => {
+    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
       const audioTrack = event.payload.audioTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, (event) => {
+    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
       const textTrack = event.payload.captionTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
+    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
         StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
@@ -72,7 +72,7 @@ export default class StorageManager {
    */
   static hasStorage(): boolean {
     const storageSize = StorageWrapper.size;
-    const hasStorage = (storageSize !== 0);
+    const hasStorage = storageSize !== 0;
     if (hasStorage) {
       this._logger.debug('Storage found with size of ', storageSize);
     } else {
@@ -96,7 +96,7 @@ export default class StorageManager {
 
   static _getExistingValues(): Object {
     const obj = {};
-    Object.keys(StorageManager.StorageKeys).forEach((key) => {
+    Object.keys(StorageManager.StorageKeys).forEach(key => {
       const value = StorageManager.StorageKeys[key];
       const item = StorageWrapper.getItem(value);
       if (item != null) {

@@ -1,19 +1,19 @@
-import StorageManager from '../../../../src/common/storage/storage-manager'
-import StorageWrapper from "../../../../src/common/storage/storage-wrapper";
+import StorageManager from '../../../../src/common/storage/storage-manager';
+import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
 
-describe('StorageManager', function () {
+describe('StorageManager', function() {
   let sandbox;
 
-  beforeEach(function () {
+  beforeEach(function() {
     sandbox = sinon.sandbox.create();
   });
 
-  afterEach(function () {
+  afterEach(function() {
     sandbox.restore();
     window.localStorage.clear();
   });
 
-  it('should return it has no storage', function () {
+  it('should return it has no storage', function() {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });
@@ -23,7 +23,7 @@ describe('StorageManager', function () {
     StorageManager.hasStorage().should.be.false;
   });
 
-  it('should return it has storage', function () {
+  it('should return it has storage', function() {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper.prototype._isLocalStorageAvailable = true;
     });
@@ -33,14 +33,17 @@ describe('StorageManager', function () {
     StorageManager.hasStorage().should.be.true;
   });
 
-  it('should return config for volume', function () {
+  it('should return config for volume', function() {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });
     sandbox.stub(StorageWrapper, 'size').get(() => {
       return 1;
     });
-    sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
+    sandbox
+      .stub(StorageWrapper, 'getItem')
+      .withArgs('volume')
+      .returns(1);
     StorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 1
@@ -48,7 +51,7 @@ describe('StorageManager', function () {
     });
   });
 
-  it('should return config for all properties', function () {
+  it('should return config for all properties', function() {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });

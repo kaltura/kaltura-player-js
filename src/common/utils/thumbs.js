@@ -1,5 +1,5 @@
 // @flow
-import evaluate from './evaluate'
+import evaluate from './evaluate';
 
 export const DEFAULT_THUMBS_WIDTH: number = 164;
 export const DEFAULT_THUMBS_SLICES: number = 100;
@@ -17,7 +17,7 @@ export function getThumbSlicesUrl(mediaConfig: ProviderMediaConfigObject, seekba
       thumbnailUrl: mediaConfig.sources.poster,
       ks: mediaConfig.session.ks,
       width: (seekbarConfig && seekbarConfig.thumbsWidth) || DEFAULT_THUMBS_WIDTH,
-      slices: (seekbarConfig && seekbarConfig.thumbsSlices) || DEFAULT_THUMBS_SLICES,
+      slices: (seekbarConfig && seekbarConfig.thumbsSlices) || DEFAULT_THUMBS_SLICES
     };
     return evaluate(TEMPLATE, model);
   } catch (e) {

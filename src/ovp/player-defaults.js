@@ -1,5 +1,5 @@
 // @flow
-import {Utils} from 'playkit-js'
+import {Utils} from 'playkit-js';
 
 /**
  * Sets the default analytics plugin for the ovp player.

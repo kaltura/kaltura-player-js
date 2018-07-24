@@ -1,7 +1,6 @@
-
 # Controlling Errors
 
-Errors are used to notify a user when a critical issue has occurred or to log recoverable issues. An error object consists of three mandatory parameters: 
+Errors are used to notify a user when a critical issue has occurred or to log recoverable issues. An error object consists of three mandatory parameters:
 
 - Error Severity
 - Error Category
@@ -9,16 +8,20 @@ Errors are used to notify a user when a critical issue has occurred or to log re
 - Error Custom Data - An optional object with additional information about the issue.
 
 > There are two severities to an error: **critical** and **recoverable**.
+>
 > - A critical error is triggered in an error event and is shown to the user as error overlay in the player itself.
 > - A recoverable error is not shown to an end user, but appears in the console.
 
 ## Error Lists
+
 You'll find the full lists of errors here:
+
 - [Error Severity List](https://github.com/kaltura/playkit-js/blob/master/src/error/severity.js)
 - [Error Category List](https://github.com/kaltura/playkit-js/blob/master/src/error/category.js)
 - [Error Code List](https://github.com/kaltura/playkit-js/blob/master/src/error/code.js)
 
 ## Listening to an Error Event
+
 You can listen to errors the player emits by listening to an '`error`' event as follows:
 
 ```javascript
@@ -31,27 +34,21 @@ player.addEventListener(player.Event.ERROR, event => {
 });
 ```
 
-## Creating an Error 
+## Creating an Error
 
 If you wish to change / emit an error event, you'll need to create an error object in the following manner:
 
 ```javascript
-const myError = new Error(
-  Error.Severity.CRITICAL, 
-  Error.Category.NETWORK,
-  Error.Code.HTTP_ERROR,
-  {url: 'www.some-bad-url.com'}
-  );
+const myError = new Error(Error.Severity.CRITICAL, Error.Category.NETWORK, Error.Code.HTTP_ERROR, {url: 'www.some-bad-url.com'});
 ```
 
 Next, you'll need to dispatch an `Error` event:
+
 ```js
 player.dispatchEvent(new FakeEvent(player.Event.Error, myError));
 ```
 
 > You'll find additional information about dispatching events [here](./events.md).
-
-
 
 ## Using Debug Mode to See Explicit Error Messages
 
@@ -64,5 +61,3 @@ Use the debug mode in the player to view explicit error messages in the console.
 Here's an example of an error message that can be observed in the console:
 
     [Error] Category:1 | Code:1002 | 'Http Error'
-
-
