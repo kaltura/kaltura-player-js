@@ -8,6 +8,7 @@ import {BaseRemotePlayer} from './base-remote-player';
 import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload';
 import {RemotePlayerUI} from './remote-player-ui';
 import {RemotePlayerType} from './remote-player-type';
+import {TextStyleConverter} from './text-style-convertor';
 
 const cast = {
   registerRemotePlayer: RemotePlayerManager.register,
@@ -20,7 +21,8 @@ const cast = {
   RemoteAvailablePayload,
   RemotePlayerUI,
   CastEventType,
-  RemotePlayerType
+  RemotePlayerType,
+  TextStyleConverter
 };
 
 export {cast};
