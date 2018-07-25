@@ -82,7 +82,7 @@ class KalturaPlayer {
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this._localPlayer, playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
-    this._localPlayer.configure(playerConfig);
+    this.configure(playerConfig);
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
