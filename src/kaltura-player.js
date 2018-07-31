@@ -147,7 +147,7 @@ class KalturaPlayer {
     this._uiWrapper.destroy();
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
-      targetContainer.parentNode.removeChild(targetContainer);
+      Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
     }
   }
 
