@@ -23,6 +23,11 @@ class UIWrapper {
     }
   }
 
+  destroy(): void {
+    if (this._disabled) return;
+    this._uiManager.destroy();
+  }
+
   setConfig(config: Object, componentAlias?: string): void {
     if (this._disabled) return;
     this._uiManager.setConfig(config, componentAlias);

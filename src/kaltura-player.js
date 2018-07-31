@@ -13,6 +13,7 @@ import {UIWrapper} from './common/ui-wrapper';
 export default class KalturaPlayer {
   _player: Player;
   _playerConfigure: Function;
+  _playerDestroy: Function;
   _provider: Provider;
   _uiWrapper: UIWrapper;
   _logger: any;
@@ -20,13 +21,15 @@ export default class KalturaPlayer {
   constructor(options: KalturaPlayerOptionsObject) {
     this._player = loadPlayer(options);
     this._playerConfigure = this._player.configure.bind(this._player);
+    this._playerDestroy = this._player.destroy.bind(this._player);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this._player, options);
     this._provider = new Provider(options.provider, __VERSION__);
     Object.assign(this._player, {
       loadMedia: mediaInfo => this.loadMedia(mediaInfo),
+      setMedia: mediaConfig => this.setMedia(mediaConfig),
       configure: config => this.configure(config),
-      setMedia: mediaConfig => this.setMedia(mediaConfig)
+      destroy: () => this.destroy()
     });
     Object.defineProperty(this._player, 'Event', this.Event);
     return this._player;
@@ -69,6 +72,16 @@ export default class KalturaPlayer {
     addKalturaParams(this._player, playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig, this._player.config.ui);
     this._player.configure(playerConfig);
+  }
+
+  destroy(): void {
+    const targetId = this._player.config.ui.targetId;
+    this._playerDestroy();
+    this._uiWrapper.destroy();
+    const targetContainer = document.getElementById(targetId);
+    if (targetContainer && targetContainer.parentNode) {
+      Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
+    }
   }
 
   get Event(): Object {
