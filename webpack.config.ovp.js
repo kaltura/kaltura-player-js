@@ -1,13 +1,13 @@
 'use strict';
 
-const webpack = require("webpack");
-const path = require("path");
-const packageData = require("./package.json");
-const CopyPlugin = require("copy-webpack-plugin");
-const webpackConfig = require("./webpack.config");
-const PROD = (process.env.NODE_ENV === 'production');
-const playerType = "ovp";
-const configDocsUrl = "https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md";
+const webpack = require('webpack');
+const path = require('path');
+const packageData = require('./package.json');
+const CopyPlugin = require('copy-webpack-plugin');
+const webpackConfig = require('./webpack.config');
+const PROD = process.env.NODE_ENV === 'production';
+const playerType = 'ovp';
+const configDocsUrl = 'https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md';
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -22,21 +22,25 @@ const plugins = [
 if (PROD) {
   plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
 } else {
-  plugins.push(new CopyPlugin([{
-    from: '../samples/style.css',
-    to: '.'
-  }]));
+  plugins.push(
+    new CopyPlugin([
+      {
+        from: '../samples/style.css',
+        to: '.'
+      }
+    ])
+  );
 }
 
 const entry = {
-  "kaltura-ovp-player": "index.js"
+  'kaltura-ovp-player': 'index.js'
 };
 
 const alias = {
   'playkit-js-providers': path.resolve('./node_modules/playkit-js-providers/dist/playkit-ovp-provider'),
   'playkit-js-analytics': path.resolve('./node_modules/playkit-js-kanalytics'),
   'player-defaults': path.resolve('./src/ovp/player-defaults'),
-  'poster': path.resolve('./src/ovp/poster')
+  poster: path.resolve('./src/ovp/poster')
 };
 
 Object.assign(webpackConfig.resolve.alias, alias);

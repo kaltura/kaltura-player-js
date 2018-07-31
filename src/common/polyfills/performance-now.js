@@ -1,6 +1,6 @@
 // @flow
-import PolyfillManager from './polyfill-manager'
-import getLogger from '../utils/logger'
+import PolyfillManager from './polyfill-manager';
+import getLogger from '../utils/logger';
 
 export default class PerformanceNowPolyfill {
   static id: string = 'performance.now';
@@ -16,7 +16,7 @@ export default class PerformanceNowPolyfill {
     if (!global.performance) {
       global.performance = {};
     }
-    global.performance.now = function () {
+    global.performance.now = function() {
       return Date.now() - startTime;
     };
   }

@@ -1,7 +1,7 @@
 // @flow
-import {UIManager} from 'playkit-js-ui'
-import {Env, Utils} from 'playkit-js'
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
+import {UIManager} from 'playkit-js-ui';
+import {Env, Utils} from 'playkit-js';
+import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
 
 class UIWrapper {
   _uiManager: UIManager;
@@ -15,7 +15,7 @@ class UIWrapper {
     } else {
       this._uiManager = new UIManager(player, config);
       if (config.customPreset) {
-        this._uiManager.buildCustomUI(config.customPreset)
+        this._uiManager.buildCustomUI(config.customPreset);
       } else {
         this._uiManager.buildDefaultUI();
       }
@@ -33,22 +33,31 @@ class UIWrapper {
     this._uiManager.setConfig(config, componentAlias);
   }
 
-  setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
+  resetErrorConfig(mediaInfo: ProviderMediaInfoObject): void {
     if (this._disabled) return;
+    this._setErrorPresetConfig(mediaInfo);
+    this._resetErrorState();
+  }
+
+  _setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
     this.setConfig({mediaInfo: mediaInfo}, 'error');
   }
 
-  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject): void {
+  _resetErrorState(): void {
+    this.setConfig({hasError: false}, 'engine');
+  }
+
+  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: UIOptionsObject): void {
     if (this._disabled) return;
-    const seekbarConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.seekbar');
+    const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
   }
 
-  _handleVr(config: ?PKPluginsConfigObject): void {
-    if (config) {
+  _handleVr(config: PKPluginsConfigObject = {}): void {
+    if (config.vr && !config.vr.disable) {
       this._setFullscreenConfig();
-      this._setStereoConfig(config.vr)
+      this._setStereoConfig(config.vr);
     }
   }
 
@@ -57,10 +66,10 @@ class UIWrapper {
     this.setConfig(Utils.Object.mergeDeep({}, {inBrowserFullscreenForIOS: true}, fullscreenConfig), 'fullscreen');
   }
 
-  _setStereoConfig(vrConfig: Object = {}): void {
+  _setStereoConfig(vrConfig: Object): void {
     if (vrConfig.toggleStereo || (Env.device.type && vrConfig.toggleStereo !== false)) {
       // enable stereo mode by default for mobile device
-      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!(vrConfig.startInStereo)}), 'vrStereo');
+      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
   }
 
