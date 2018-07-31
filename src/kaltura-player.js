@@ -12,6 +12,7 @@ import {UIWrapper} from './common/ui-wrapper';
 import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
+import {RemoteSession} from './common/cast/remote-session';
 
 class KalturaPlayer {
   _mediaInfo: ?ProviderMediaInfoObject;
@@ -66,7 +67,7 @@ class KalturaPlayer {
       })
       .catch(e =>
         this._localPlayer.dispatchEvent(
-          new FakeEvent(this._localPlayer.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+          new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
         )
       );
   }
@@ -74,14 +75,14 @@ class KalturaPlayer {
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
     this._logger.debug('setMedia', mediaConfig);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
-    Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
-    Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
-    Object.keys(this._localPlayer.config.plugins).forEach(name => {
+    Utils.Object.mergeDeep(playerConfig.sources, this.config.sources);
+    Utils.Object.mergeDeep(playerConfig.session, this.config.session);
+    Object.keys(this.config.plugins).forEach(name => {
       playerConfig.plugins[name] = {};
     });
-    addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
-    addKalturaParams(this._localPlayer, playerConfig);
-    this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
+    addKalturaPoster(playerConfig.sources, mediaConfig.sources, this.dimensions);
+    addKalturaParams(this, playerConfig);
+    this._uiWrapper.setSeekbarConfig(mediaConfig, this.config.ui);
     this.configure(playerConfig);
   }
 
@@ -232,6 +233,10 @@ class KalturaPlayer {
 
   isCastAvailable(type?: string): boolean {
     return RemotePlayerManager.isCastAvailable(type);
+  }
+
+  getCastSession(): ?RemoteSession {
+    return null;
   }
 
   stopCasting(): void {
