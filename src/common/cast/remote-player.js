@@ -1,5 +1,6 @@
 // @flow
 import {FakeEvent, TextStyle, Track} from 'playkit-js';
+import {RemoteSession} from './remote-session';
 
 export interface IRemotePlayer {
   textStyle: ?TextStyle;
@@ -81,6 +82,8 @@ export interface IRemotePlayer {
   isCasting(): boolean;
 
   isCastAvailable(): boolean;
+
+  getCastSession(): RemoteSession;
 
   isVr(): boolean;
 

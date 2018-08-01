@@ -75,14 +75,14 @@ class KalturaPlayer {
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
     this._logger.debug('setMedia', mediaConfig);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
-    Utils.Object.mergeDeep(playerConfig.sources, this.config.sources);
-    Utils.Object.mergeDeep(playerConfig.session, this.config.session);
-    Object.keys(this.config.plugins).forEach(name => {
+    Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
+    Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
+    Object.keys(this._localPlayer.config.plugins).forEach(name => {
       playerConfig.plugins[name] = {};
     });
-    addKalturaPoster(playerConfig.sources, mediaConfig.sources, this.dimensions);
+    addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, playerConfig);
-    this._uiWrapper.setSeekbarConfig(mediaConfig, this.config.ui);
+    this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
     this.configure(playerConfig);
   }
 

@@ -4,6 +4,7 @@ import {IRemotePlayer} from './remote-player';
 import {EventManager, FakeEventTarget, TextStyle, Track, Utils} from 'playkit-js';
 import {RemoteControl} from './remote-control';
 import getLogger from '../utils/logger';
+import {RemoteSession} from './remote-session';
 
 class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   static defaultConfig: Object = {};
@@ -102,6 +103,10 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return true;
   }
 
+  getCastSession(): RemoteSession {
+    return new RemoteSession();
+  }
+
   isVr(): boolean {
     return false;
   }
@@ -175,7 +180,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   }
 
   get config(): Object {
-    return {};
+    return this._config;
   }
 
   get type(): string {
