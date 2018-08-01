@@ -9,7 +9,6 @@ import {UIWrapper} from '../ui-wrapper';
 import getLogger from '../utils/logger';
 
 const events: Array<string> = [...Object.values(CastEventType), ...Object.values(UIEventType), ...Object.values(CoreEventType)];
-
 const eventManager: EventManager = new EventManager();
 const logger: any = getLogger('RemoteControl');
 
@@ -18,13 +17,27 @@ class RemoteControl {
   onRemoteDeviceDisconnected: Function;
   onRemoteDeviceConnected: Function;
   onRemoteDeviceAvailable: Function;
+  onRemoteDeviceConnecting: Function;
+  onRemoteDeviceDisconnecting: Function;
+  onRemoteDeviceConnectFailed: Function;
 
   constructor(player: KalturaPlayer) {
     this.getPlayerSnapshot = getPlayerSnapshot.bind(player);
     this.onRemoteDeviceAvailable = onRemoteDeviceAvailable.bind(player);
     this.onRemoteDeviceConnected = onRemoteDeviceConnected.bind(player);
     this.onRemoteDeviceDisconnected = onRemoteDeviceDisconnected.bind(player);
+    this.onRemoteDeviceConnecting = onRemoteDeviceConnecting.bind(player);
+    this.onRemoteDeviceDisconnecting = onRemoteDeviceDisconnecting.bind(player);
+    this.onRemoteDeviceConnectFailed = onRemoteDeviceConnectFailed.bind(player);
   }
+}
+
+/**
+ * @returns {void}
+ */
+function onRemoteDeviceConnecting(): void {
+  logger.debug('onRemoteDeviceConnecting');
+  this._localPlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_STARTING));
 }
 
 /**
@@ -48,6 +61,14 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
       session: session
     })
   );
+}
+
+/**
+ * @returns {void}
+ */
+function onRemoteDeviceDisconnecting(): void {
+  logger.debug('onRemoteDeviceDisconnecting');
+  this._remotePlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDING));
 }
 
 /**
@@ -109,6 +130,14 @@ function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
       available: available
     })
   );
+}
+
+/**
+ * @returns {void}
+ */
+function onRemoteDeviceConnectFailed(): void {
+  logger.debug('onRemoteDeviceConnectFailed');
+  this._localPlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_START_FAILED));
 }
 
 /**

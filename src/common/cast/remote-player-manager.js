@@ -9,7 +9,7 @@ class RemotePlayerManager {
   static _remotePlayers: Map<string, BaseRemotePlayer> = new Map();
 
   static register(type: string, remotePlayer: Function): void {
-    if (typeof remotePlayer === 'function' && remotePlayer.prototype instanceof BaseRemotePlayer) {
+    if (typeof remotePlayer === 'function') {
       if (!RemotePlayerManager._registry.has(type)) {
         RemotePlayerManager._logger.debug(`Register remote player of type ${type}`);
         RemotePlayerManager._registry.set(type, remotePlayer);
