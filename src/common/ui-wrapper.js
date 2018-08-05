@@ -100,9 +100,9 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLDivElemen
  */
 function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): SeekbarConfig {
   const previewThumbnailConfig: SeekbarConfig = {
+    thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
     thumbsWidth: DEFAULT_THUMBS_WIDTH,
-    thumbsSlices: DEFAULT_THUMBS_SLICES,
-    thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig)
+    thumbsSlices: DEFAULT_THUMBS_SLICES
   };
   return previewThumbnailConfig;
 }
