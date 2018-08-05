@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.5"></a>
+## [0.32.5](https://github.com/kaltura/kaltura-player-js/compare/v0.32.4...v0.32.5) (2018-08-05)
+
+
+### Bug Fixes
+
+* **FEC-7501:** cleanup on destroy doesn't completely remove player ([#131](https://github.com/kaltura/kaltura-player-js/issues/131)) ([8be89ca](https://github.com/kaltura/kaltura-player-js/commit/8be89ca))
+
+
+
 <a name="0.32.4"></a>
 ## [0.32.4](https://github.com/kaltura/kaltura-player-js/compare/v0.32.3...v0.32.4) (2018-07-26)
 
