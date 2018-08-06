@@ -117,16 +117,5 @@ describe('UIWrapper', function() {
       });
       uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
-
-    it('should not set seek bar config', function(done) {
-      uiConfig.components.seekbar = {};
-      mediaConfig.sources.poster = '';
-      uiWrapper = new UIWrapper(player, {ui: uiConfig});
-      sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
-        config.should.deep.equal({});
-        done();
-      });
-      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
-    });
   });
 });
