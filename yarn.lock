@@ -5237,9 +5237,9 @@ pkginfo@0.x.x:
   dependencies:
     js-logger "^1.3.0"
 
-"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.25.3":
-  version "0.25.3"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#a7409a0ba270b499c57b9e16f1891bf85e2079da"
+"playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#v0.25.4":
+  version "0.25.4"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#7e23ef6271dafebe5816ccc52e18cde44607de22"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
