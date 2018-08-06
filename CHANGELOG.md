@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.6"></a>
+## [0.32.6](https://github.com/kaltura/kaltura-player-js/compare/v0.32.5...v0.32.6) (2018-08-06)
+
+
+### Bug Fixes
+
+* **FEC-8449:** configured preview thumbnail is not displayed during playback ([#149](https://github.com/kaltura/kaltura-player-js/issues/149)) ([f3544d0](https://github.com/kaltura/kaltura-player-js/commit/f3544d0))
+
+
+
 <a name="0.32.5"></a>
 ## [0.32.5](https://github.com/kaltura/kaltura-player-js/compare/v0.32.4...v0.32.5) (2018-08-05)
 
