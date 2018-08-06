@@ -96,20 +96,15 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLDivElemen
  * Gets the preview thumbnail config for the ui seekbar component.
  * @param {ProviderMediaConfigObject} mediaConfig - The provider media config.
  * @param {SeekbarConfig} seekbarConfig - The seek bar config.
- * @returns {?Object} - The seekbar component config.
+ * @returns {SeekbarConfig} - The seekbar component config.
  */
-function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): ?Object {
-  const mediaConfigPoster = mediaConfig.sources && mediaConfig.sources.poster;
-  if (typeof mediaConfigPoster === 'string') {
-    const regex = /.*\/p\/(\d+)\/.*\/thumbnail\/entry_id\/(\w+)\/.*\d+/;
-    if (regex.test(mediaConfigPoster)) {
-      return {
-        thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
-        thumbsWidth: DEFAULT_THUMBS_WIDTH,
-        thumbsSlices: DEFAULT_THUMBS_SLICES
-      };
-    }
-  }
+function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): SeekbarConfig {
+  const previewThumbnailConfig: SeekbarConfig = {
+    thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
+    thumbsWidth: DEFAULT_THUMBS_WIDTH,
+    thumbsSlices: DEFAULT_THUMBS_SLICES
+  };
+  return previewThumbnailConfig;
 }
 
 export {UIWrapper};
