@@ -9,15 +9,17 @@ class PlayerSnapshot {
   textLanguage: ?string;
   mediaInfo: ?ProviderMediaInfoObject;
   textStyle: TextStyle;
+  adsConfig: ?Object;
 
   constructor(player: KalturaPlayer) {
     const activeTracks = player.getActiveTracks();
-    this.startTime = player.currentTime;
+    this.startTime = player.isLive() && !player.isDvr() ? 0 : player.currentTime;
     this.autoplay = player.currentTime === 0 ? true : !player.paused;
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
     this.audioLanguage = activeTracks.audio && activeTracks.audio.language;
     this.textLanguage = activeTracks.text && activeTracks.text.language;
+    this.adsConfig = player.config.plugins && player.config.plugins.ima;
   }
 }
 
