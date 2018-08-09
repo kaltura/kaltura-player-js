@@ -65,49 +65,43 @@ The configuration uses the following structure:
 
 > ### config.playback
 >
-> ##### Type: `PKPlaybackConfigObject`
+> ##### Type: [PKPlaybackConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configplayback)
 >
 > ##### Description: Defines the playback configuration.
 >
 > ### config.sources
 >
-> ##### Type: `PKSourcesConfigObject`
+> ##### Type: [PKSourcesConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configsources)
 >
 > ##### Description: Defines the sources configuration.
 >
 > ### config.plugins
 >
-> ##### Type: `PKPluginsConfigObject`
+> ##### Type: [PKPluginsConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configplugins)
 >
 > ##### Description: Defines the plugins configuration.
 >
 > ### config.session
 >
-> ##### Type: `PKSessionConfigObject`
+> ##### Type: [PKSessionConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configsession)
 >
 > ##### Description: Defines the session configuration.
->
-> Full configuration documentation for the `playback`,`sources`,`plugins`,`session` can be found [here](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md).
 
 ##
 
 > ### config.provider
 >
-> ##### Type: `ProviderOptionsObject`
+> ##### Type: [ProviderOptionsObject](https://github.com/kaltura/playkit-js-providers/blob/master/docs/configuration.md)
 >
 > ##### Description: Defines the provider configuration.
->
-> Full configuration documentation for the config.provider can be found [here](https://github.com/kaltura/playkit-js-providers/blob/master/docs/configuration.md).
 
 ##
 
 > ### config.ui
 >
-> ##### Type: `UIOptionsObject`
+> ##### Type: [UIOptionsObject](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md)
 >
 > ##### Description: Defines the user interface (UI) configuration.
->
-> Full configuration documentation for the config.ui can be found [here](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md).
 
 ## Configuration Priority
 
