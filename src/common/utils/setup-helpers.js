@@ -1,6 +1,6 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils} from 'playkit-js';
+import {Env, TextStyle, Utils, getCapabilities} from 'playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
@@ -101,6 +101,22 @@ function setStorageTextStyle(player: Player): void {
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
     }
+  }
+}
+
+/**
+ * Call to getCapabilities on the first UI_CLICKED event
+ * @param {Player} player - The Kaltura player.
+ * @returns {void}
+ */
+function attachToFirstClick(player: Player): void {
+  if (isIos()) {
+    const onUIClicked = () => {
+      player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+      // Trigger to load the auto play testing video tag
+      getCapabilities();
+    };
+    player.addEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
   }
 }
 
@@ -335,6 +351,7 @@ export {
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
+  attachToFirstClick,
   validateConfig,
   setLogLevel,
   createKalturaPlayerContainer,
