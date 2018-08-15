@@ -1,6 +1,6 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils, getCapabilities} from 'playkit-js';
+import {Env, TextStyle, Utils, setCapabilities, EngineType} from 'playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
@@ -113,10 +113,13 @@ function attachToFirstClick(player: Player): void {
   if (isIos()) {
     const onUIClicked = () => {
       player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
-      // Trigger to load the auto play testing video tag
-      getCapabilities();
+      setCapabilities(EngineType.HTML5, {autoplay: true});
     };
-    player.addEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+    const onSourceSelected = () => {
+      player.removeEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);
+      player.addEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+    };
+    player.addEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);
   }
 }
 
