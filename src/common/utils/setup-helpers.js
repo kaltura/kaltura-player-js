@@ -105,7 +105,7 @@ function setStorageTextStyle(player: Player): void {
 }
 
 /**
- * Call to getCapabilities on the first UI_CLICKED event
+ * Call to setCapabilities on the first UI_CLICKED event
  * @param {Player} player - The Kaltura player.
  * @returns {void}
  */
