@@ -9,7 +9,8 @@ import {
   setStorageConfig,
   setStorageTextStyle,
   supportLegacyOptions,
-  validateConfig
+  validateConfig,
+  attachToFirstClick
 } from './common/utils/setup-helpers';
 
 /**
@@ -28,6 +29,7 @@ function setup(options: PartialKalturaPlayerOptionsObject | LegacyPartialKaltura
   const kalturaPlayer = new KalturaPlayer(defaultOptions);
   setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);
+  attachToFirstClick(kalturaPlayer);
   return kalturaPlayer;
 }
 
