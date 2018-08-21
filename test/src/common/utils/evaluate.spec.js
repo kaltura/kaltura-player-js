@@ -22,13 +22,6 @@ describe('evaluate', function() {
     evaluatedDataObj.a.a2.should.be.equal('2');
   });
 
-  it('should evaluate and replace template tokens which have model values', function() {
-    const evaluatedTemplate = evaluate(template, model);
-    const evaluatedDataObj = JSON.parse(evaluatedTemplate);
-    evaluatedDataObj.a.a1.should.be.equal('1');
-    evaluatedDataObj.a.a2.should.be.equal('2');
-  });
-
   it("should evaluate and not replace template tokens which don't have model values", function() {
     const evaluatedTemplate = evaluate(template, model);
     const evaluatedDataObj = JSON.parse(evaluatedTemplate);
