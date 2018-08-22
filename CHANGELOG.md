@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.9"></a>
+## [0.32.9](https://github.com/kaltura/kaltura-player-js/compare/v0.32.8...v0.32.9) (2018-08-22)
+
+
+### Bug Fixes
+
+* **FEC-8474:** playback starts muted on change media - iOS ([#151](https://github.com/kaltura/kaltura-player-js/issues/151)) ([c5f332f](https://github.com/kaltura/kaltura-player-js/commit/c5f332f))
+* **FEC-8487:** unescaped tokens causes token evalution to fail ([#152](https://github.com/kaltura/kaltura-player-js/issues/152)) ([3b86659](https://github.com/kaltura/kaltura-player-js/commit/3b86659))
+
+
+
 <a name="0.32.8"></a>
 ## [0.32.8](https://github.com/kaltura/kaltura-player-js/compare/v0.32.7...v0.32.8) (2018-08-09)
 
