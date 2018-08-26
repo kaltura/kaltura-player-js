@@ -83,6 +83,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     this._uiWrapper.destroy();
     this._remotePlayer = null;
     this._uiWrapper = new UIWrapper(this, this.config);
+    this._uiWrapper.setConfig({isCastAvailable: this.isCastAvailable()}, 'engine');
     if (snapshot && snapshot.mediaInfo) {
       const mediaInfo = snapshot.mediaInfo;
       const configurePlayer = (config: Object): void => {
