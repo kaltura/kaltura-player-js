@@ -10,8 +10,12 @@ function evaluate(template: string, model: Object = {}): string {
     let reg,
       res = template;
     for (let key in model) {
+      let value = model[key] !== undefined && model[key] !== null ? model[key] : '';
+      if (typeof value === 'string' && value.indexOf('"') > -1) {
+        value = value.replace(/"/g, '\\"');
+      }
       reg = new RegExp('{{' + key + '}}', 'g');
-      res = res.replace(reg, model[key] !== undefined && model[key] !== null ? model[key] : '');
+      res = res.replace(reg, value);
     }
     return res;
   } catch (e) {

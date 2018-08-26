@@ -10,7 +10,8 @@ import {
   setStorageConfig,
   setStorageTextStyle,
   supportLegacyOptions,
-  validateConfig
+  validateConfig,
+  attachToFirstClick
 } from './common/utils/setup-helpers';
 
 /**
@@ -30,6 +31,7 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   setStorageTextStyle(player);
   applyStorageSupport(player);
   applyCastSupport(defaultOptions, player);
+  attachToFirstClick(player);
   return player;
 }
 
