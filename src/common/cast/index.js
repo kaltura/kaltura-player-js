@@ -9,6 +9,7 @@ import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayloa
 import {RemotePlayerUI} from './remote-player-ui';
 import {RemotePlayerType} from './remote-player-type';
 import {TextStyleConverter} from './text-style-convertor';
+import {CustomAdEventMessage, CustomEventMessage, CustomMessageType} from './custom-message';
 
 const cast = {
   registerRemotePlayer: RemotePlayerManager.register,
@@ -22,7 +23,10 @@ const cast = {
   RemotePlayerUI,
   CastEventType,
   RemotePlayerType,
-  TextStyleConverter
+  TextStyleConverter,
+  CustomEventMessage,
+  CustomAdEventMessage,
+  CustomMessageType
 };
 
 export {cast};
