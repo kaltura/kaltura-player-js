@@ -9,7 +9,7 @@ class PlayerSnapshot {
   textLanguage: ?string;
   mediaInfo: ?ProviderMediaInfoObject;
   textStyle: TextStyle;
-  adsConfig: ?Object;
+  advertising: ?Object;
 
   constructor(player: KalturaPlayer) {
     const activeTracks = player.getActiveTracks();
@@ -19,7 +19,7 @@ class PlayerSnapshot {
     this.mediaInfo = player.getMediaInfo();
     this.audioLanguage = activeTracks.audio && activeTracks.audio.language;
     this.textLanguage = activeTracks.text && activeTracks.text.language;
-    this.adsConfig = player.config.plugins && player.config.plugins.ima;
+    this.advertising = player.config.plugins && player.config.plugins.ima;
   }
 }
 
