@@ -1,7 +1,11 @@
 // @flow
 const CustomMessageType: {[type: string]: string} = {
-  EVENT: 'event',
-  AD_EVENT: 'ad_event'
+  ACTION: 'action',
+  EVENT: 'event'
+};
+
+const CustomActionType: {[action: string]: string} = {
+  SKIP_AD: 'skipAd'
 };
 
 class CustomMessage {
@@ -16,17 +20,22 @@ class CustomEventMessage extends CustomMessage {
   event: string;
   payload: any;
 
-  constructor(event: string, payload: any, eventType?: string) {
-    super(eventType || CustomMessageType.EVENT);
+  constructor(event: string, payload: any) {
+    super(CustomMessageType.EVENT);
     this.event = event;
     this.payload = payload;
   }
 }
 
-class CustomAdEventMessage extends CustomEventMessage {
-  constructor(event: string, payload: any) {
-    super(event, payload, CustomMessageType.AD_EVENT);
+class CustomActionMessage extends CustomMessage {
+  action: string;
+  args: any;
+
+  constructor(action: string, args: any) {
+    super(CustomMessageType.ACTION);
+    this.action = action;
+    this.args = args;
   }
 }
 
-export {CustomMessageType, CustomEventMessage, CustomAdEventMessage};
+export {CustomMessageType, CustomActionType, CustomMessage, CustomEventMessage, CustomActionMessage};
