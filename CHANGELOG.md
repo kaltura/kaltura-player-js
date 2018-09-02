@@ -2,6 +2,62 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.32.9"></a>
+## [0.32.9](https://github.com/kaltura/kaltura-player-js/compare/v0.32.8...v0.32.9) (2018-08-22)
+
+
+### Bug Fixes
+
+* **FEC-8474:** playback starts muted on change media - iOS ([#151](https://github.com/kaltura/kaltura-player-js/issues/151)) ([c5f332f](https://github.com/kaltura/kaltura-player-js/commit/c5f332f))
+* **FEC-8487:** unescaped tokens causes token evalution to fail ([#152](https://github.com/kaltura/kaltura-player-js/issues/152)) ([3b86659](https://github.com/kaltura/kaltura-player-js/commit/3b86659))
+
+
+
+<a name="0.32.8"></a>
+## [0.32.8](https://github.com/kaltura/kaltura-player-js/compare/v0.32.7...v0.32.8) (2018-08-09)
+
+
+
+<a name="0.32.7"></a>
+## [0.32.7](https://github.com/kaltura/kaltura-player-js/compare/v0.32.6...v0.32.7) (2018-08-06)
+
+
+
+<a name="0.32.6"></a>
+## [0.32.6](https://github.com/kaltura/kaltura-player-js/compare/v0.32.5...v0.32.6) (2018-08-06)
+
+
+### Bug Fixes
+
+* **FEC-8449:** configured preview thumbnail is not displayed during playback ([#149](https://github.com/kaltura/kaltura-player-js/issues/149)) ([f3544d0](https://github.com/kaltura/kaltura-player-js/commit/f3544d0))
+
+
+
+<a name="0.32.5"></a>
+## [0.32.5](https://github.com/kaltura/kaltura-player-js/compare/v0.32.4...v0.32.5) (2018-08-05)
+
+
+### Bug Fixes
+
+* **FEC-7501:** cleanup on destroy doesn't completely remove player ([#131](https://github.com/kaltura/kaltura-player-js/issues/131)) ([8be89ca](https://github.com/kaltura/kaltura-player-js/commit/8be89ca))
+
+
+
+<a name="0.32.4"></a>
+## [0.32.4](https://github.com/kaltura/kaltura-player-js/compare/v0.32.3...v0.32.4) (2018-07-26)
+
+
+
+<a name="0.32.3"></a>
+## [0.32.3](https://github.com/kaltura/kaltura-player-js/compare/v0.32.2...v0.32.3) (2018-07-23)
+
+
+
+<a name="0.32.2"></a>
+## [0.32.2](https://github.com/kaltura/kaltura-player-js/compare/v0.32.1...v0.32.2) (2018-07-12)
+
+
+
 <a name="0.32.1"></a>
 ## [0.32.1](https://github.com/kaltura/kaltura-player-js/compare/v0.32.0...v0.32.1) (2018-07-09)
 

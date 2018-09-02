@@ -1,7 +1,7 @@
 // @flow
-import {UIManager} from 'playkit-js-ui'
-import {Env, Utils} from 'playkit-js'
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
+import {UIManager} from 'playkit-js-ui';
+import {Env, Utils} from 'playkit-js';
+import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
 
 class UIWrapper {
   _uiManager: UIManager;
@@ -15,12 +15,17 @@ class UIWrapper {
     } else {
       this._uiManager = new UIManager(player, config);
       if (config.customPreset) {
-        this._uiManager.buildCustomUI(config.customPreset)
+        this._uiManager.buildCustomUI(config.customPreset);
       } else {
         this._uiManager.buildDefaultUI();
       }
       this._handleVr(options.plugins);
     }
+  }
+
+  destroy(): void {
+    if (this._disabled) return;
+    this._uiManager.destroy();
   }
 
   setConfig(config: Object, componentAlias?: string): void {
@@ -52,7 +57,7 @@ class UIWrapper {
   _handleVr(config: PKPluginsConfigObject = {}): void {
     if (config.vr && !config.vr.disable) {
       this._setFullscreenConfig();
-      this._setStereoConfig(config.vr)
+      this._setStereoConfig(config.vr);
     }
   }
 
@@ -64,7 +69,7 @@ class UIWrapper {
   _setStereoConfig(vrConfig: Object): void {
     if (vrConfig.toggleStereo || (Env.device.type && vrConfig.toggleStereo !== false)) {
       // enable stereo mode by default for mobile device
-      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!(vrConfig.startInStereo)}), 'vrStereo');
+      this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
   }
 
@@ -91,20 +96,15 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLDivElemen
  * Gets the preview thumbnail config for the ui seekbar component.
  * @param {ProviderMediaConfigObject} mediaConfig - The provider media config.
  * @param {SeekbarConfig} seekbarConfig - The seek bar config.
- * @returns {?Object} - The seekbar component config.
+ * @returns {SeekbarConfig} - The seekbar component config.
  */
-function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): ?Object {
-  const mediaConfigPoster = mediaConfig.sources && mediaConfig.sources.poster;
-  if (typeof mediaConfigPoster === 'string') {
-    const regex = /.*\/p\/(\d+)\/.*\/thumbnail\/entry_id\/(\w+)\/.*\d+/;
-    if (regex.test(mediaConfigPoster)) {
-      return {
-        thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
-        thumbsWidth: DEFAULT_THUMBS_WIDTH,
-        thumbsSlices: DEFAULT_THUMBS_SLICES
-      };
-    }
-  }
+function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): SeekbarConfig {
+  const previewThumbnailConfig: SeekbarConfig = {
+    thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
+    thumbsWidth: DEFAULT_THUMBS_WIDTH,
+    thumbsSlices: DEFAULT_THUMBS_SLICES
+  };
+  return previewThumbnailConfig;
 }
 
 export {UIWrapper};

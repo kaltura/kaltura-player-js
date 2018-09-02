@@ -53,4 +53,3 @@ Note that if you use the iframe only embed mode, the page won't be able to acces
    style="width: 640px;height: 360px" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0">
 </iframe>
 ```
-

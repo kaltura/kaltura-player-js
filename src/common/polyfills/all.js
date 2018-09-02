@@ -1,2 +1,1 @@
-import './performance-now'
-
+import './performance-now';

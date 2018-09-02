@@ -1,11 +1,11 @@
 // @flow
-import {setDefaultAnalyticsPlugin} from 'player-defaults'
-import {Env, TextStyle, Utils} from 'playkit-js'
-import {ValidationErrorType} from './validation-error'
-import StorageManager from '../storage/storage-manager'
-import type {LogLevelObject} from './logger'
-import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger'
-import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
+import {setDefaultAnalyticsPlugin} from 'player-defaults';
+import {Env, TextStyle, Utils, setCapabilities, EngineType} from 'playkit-js';
+import {ValidationErrorType} from './validation-error';
+import StorageManager from '../storage/storage-manager';
+import type {LogLevelObject} from './logger';
+import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger';
+import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -105,6 +105,25 @@ function setStorageTextStyle(player: Player): void {
 }
 
 /**
+ * Call to setCapabilities on the first UI_CLICKED event
+ * @param {Player} player - The Kaltura player.
+ * @returns {void}
+ */
+function attachToFirstClick(player: Player): void {
+  if (isIos()) {
+    const onUIClicked = () => {
+      player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+      setCapabilities(EngineType.HTML5, {autoplay: true});
+    };
+    const onSourceSelected = () => {
+      player.removeEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);
+      player.addEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+    };
+    player.addEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);
+  }
+}
+
+/**
  * check the player debug mode according to config or URL query string params
  * @returns {boolean} - if to set debug mode or not
  */
@@ -157,9 +176,8 @@ function getUrlParameter(name: string) {
  */
 function serverUIConfExist(uiConfId: ?number): boolean {
   const UIConf = Utils.Object.getPropertyPath(window, '__kalturaplayerdata.UIConf');
-  const hasUiConfId = (uiConfId !== null) && (uiConfId !== undefined);
-  return hasUiConfId &&
-    ((UIConf !== undefined && (UIConf[uiConfId] !== undefined)) || false);
+  const hasUiConfId = uiConfId !== null && uiConfId !== undefined;
+  return hasUiConfId && ((UIConf !== undefined && UIConf[uiConfId] !== undefined) || false);
 }
 
 /**
@@ -193,9 +211,7 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
   };
   Utils.Object.mergeDeep(defaultOptions, options);
   if (defaultOptions.provider.uiConfId) {
-    const uiConfOptions = supportLegacyOptions(
-      extractServerUIConf(defaultOptions.provider.uiConfId)
-    );
+    const uiConfOptions = supportLegacyOptions(extractServerUIConf(defaultOptions.provider.uiConfId));
     defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
   }
   checkNativeHlsSupport(defaultOptions);
@@ -235,7 +251,7 @@ function configureDelayAdsInitialization(options: KalturaPlayerOptionsObject): v
   if (isIos() && options.plugins && options.plugins.ima) {
     const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
     const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
-    if ((typeof playsinline !== 'boolean' || playsinline === true) && (typeof delayInitUntilSourceSelected !== 'boolean')) {
+    if ((typeof playsinline !== 'boolean' || playsinline === true) && typeof delayInitUntilSourceSelected !== 'boolean') {
       Utils.Object.mergeDeep(options, {
         plugins: {
           ima: {
@@ -313,9 +329,7 @@ function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObjec
  * @returns {void}
  */
 function printSetupMessages(): void {
-  setupMessages.forEach(msgObj =>
-    getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg)
-  );
+  setupMessages.forEach(msgObj => getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg));
 }
 
 /**
@@ -331,7 +345,7 @@ function isSafari(): boolean {
  * @returns {boolean} - if browser is Chrome on iOS
  */
 function isIos(): boolean {
-  return (Env.os.name === 'iOS');
+  return Env.os.name === 'iOS';
 }
 
 export {
@@ -340,6 +354,7 @@ export {
   setStorageConfig,
   applyStorageSupport,
   setStorageTextStyle,
+  attachToFirstClick,
   validateConfig,
   setLogLevel,
   createKalturaPlayerContainer,

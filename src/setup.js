@@ -1,6 +1,6 @@
 // @flow
-import KalturaPlayer from './kaltura-player'
-import {evaluatePluginsConfig} from './common/plugins/plugins-config'
+import KalturaPlayer from './kaltura-player';
+import {evaluatePluginsConfig} from './common/plugins/plugins-config';
 import {
   applyStorageSupport,
   getDefaultOptions,
@@ -9,8 +9,9 @@ import {
   setStorageConfig,
   setStorageTextStyle,
   supportLegacyOptions,
-  validateConfig
-} from './common/utils/setup-helpers'
+  validateConfig,
+  attachToFirstClick
+} from './common/utils/setup-helpers';
 
 /**
  * Setup the Kaltura Player.
@@ -28,6 +29,7 @@ function setup(options: PartialKalturaPlayerOptionsObject | LegacyPartialKaltura
   const kalturaPlayer = new KalturaPlayer(defaultOptions);
   setStorageTextStyle(kalturaPlayer);
   applyStorageSupport(kalturaPlayer);
+  attachToFirstClick(kalturaPlayer);
   return kalturaPlayer;
 }
 
