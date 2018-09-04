@@ -331,6 +331,10 @@ class KalturaPlayer {
     return this._localPlayer.poster;
   }
 
+  get ended(): boolean {
+    return this._localPlayer.ended;
+  }
+
   set playbackRate(rate: number): void {
     this._localPlayer.playbackRate = rate;
   }

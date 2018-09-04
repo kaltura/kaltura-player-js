@@ -11,6 +11,7 @@ export interface IRemotePlayer {
   +buffered: Array<any>;
   +duration: number;
   +paused: boolean;
+  +ended: boolean;
   +seeking: boolean;
   +src: string;
   +poster: string;

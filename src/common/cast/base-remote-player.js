@@ -147,6 +147,10 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return false;
   }
 
+  get ended(): boolean {
+    return false;
+  }
+
   get seeking(): boolean {
     return false;
   }
