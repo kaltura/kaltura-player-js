@@ -1,5 +1,5 @@
 // @flow
-import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from 'playkit-js';
+import {Error, EventManager, EventType as CoreEventType, FakeEvent, FakeEventTarget, loadPlayer, Utils} from 'playkit-js';
 import {EventType as UIEventType} from 'playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions} from './common/utils/setup-helpers';
@@ -14,7 +14,8 @@ import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
 
-class KalturaPlayer {
+class KalturaPlayer extends FakeEventTarget {
+  _eventManager: EventManager;
   _mediaInfo: ?ProviderMediaInfoObject;
   _remotePlayer: ?BaseRemotePlayer;
   _localPlayer: Player;
@@ -23,19 +24,22 @@ class KalturaPlayer {
   _logger: any;
   _proxy: any;
   _proxyHandler: Object = {
-    get: (kp: KalturaPlayer, prop: string) => {
-      if (this._remotePlayer && prop !== '_remotePlayer') {
-        if (prop in this._remotePlayer) {
-          return this._remotePlayer[prop];
-        }
+    excluded: ['_remotePlayer', '_listeners'],
+    get: function(kp: KalturaPlayer, prop: string) {
+      if (prop in FakeEventTarget.prototype || this.excluded.includes(prop)) {
+        // $FlowFixMe
+        return kp[prop];
+      }
+      if (kp._remotePlayer && prop in kp._remotePlayer) {
+        return kp._remotePlayer[prop];
       }
       // $FlowFixMe
       return kp[prop];
     },
-    set: (kp: KalturaPlayer, prop: string, value: any) => {
-      if (this._remotePlayer && prop !== '_remotePlayer') {
-        if (prop in this._remotePlayer) {
-          this._remotePlayer[prop] = value;
+    set: function(kp: KalturaPlayer, prop: string, value: any) {
+      if (kp._remotePlayer && !this.excluded.includes(prop)) {
+        if (prop in kp._remotePlayer) {
+          kp._remotePlayer[prop] = value;
         }
       } else {
         // $FlowFixMe
@@ -46,11 +50,14 @@ class KalturaPlayer {
   };
 
   constructor(options: KPOptionsObject) {
+    super();
+    this._eventManager = new EventManager();
     this._proxy = new Proxy(this, this._proxyHandler);
     this._localPlayer = loadPlayer(options);
     this._uiWrapper = new UIWrapper(this._proxy, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     return this._proxy;
   }
 
@@ -66,9 +73,7 @@ class KalturaPlayer {
         this.setMedia(mediaConfig);
       })
       .catch(e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
+        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
       );
   }
 
@@ -98,18 +103,6 @@ class KalturaPlayer {
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);
     }
-  }
-
-  addEventListener(type: string, listener: Function): void {
-    this._localPlayer.addEventListener(type, listener);
-  }
-
-  removeEventListener(type: string, listener: Function): void {
-    this._localPlayer.removeEventListener(type, listener);
-  }
-
-  dispatchEvent(event: FakeEvent) {
-    this._localPlayer.dispatchEvent(event);
   }
 
   ready(): Promise<*> {

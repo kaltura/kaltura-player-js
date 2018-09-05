@@ -3,12 +3,10 @@ import KalturaPlayer from '../../kaltura-player';
 import {PlayerSnapshot} from './player-snapshot';
 import {CastEventType} from './cast-event-type';
 import {EventManager, EventType as CoreEventType, FakeEvent, TrackType, Utils} from 'playkit-js';
-import {EventType as UIEventType} from 'playkit-js-ui';
 import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload';
 import {UIWrapper} from '../ui-wrapper';
 import getLogger from '../utils/logger';
 
-const events: Array<string> = [...Object.values(CastEventType), ...Object.values(UIEventType), ...Object.values(CoreEventType)];
 const eventManager: EventManager = new EventManager();
 const logger: any = getLogger('RemoteControl');
 
@@ -37,7 +35,7 @@ class RemoteControl {
  */
 function onRemoteDeviceConnecting(): void {
   logger.debug('onRemoteDeviceConnecting');
-  this._localPlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_STARTING));
+  this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_STARTING));
 }
 
 /**
@@ -47,7 +45,7 @@ function onRemoteDeviceConnecting(): void {
 function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   logger.debug('onRemoteDeviceConnected', payload);
   const {player, ui, session} = payload;
-  events.forEach(event => eventManager.listen(player, event, e => this._localPlayer.dispatchEvent(e)));
+  Object.values(CoreEventType).forEach(coreEvent => eventManager.listen(player, coreEvent, e => this.dispatchEvent(e)));
   let config = this.config;
   if (ui) {
     Utils.Object.mergeDeep(config, {ui: {customPreset: ui.uis}});
@@ -56,7 +54,7 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   this._uiWrapper.destroy();
   this._remotePlayer = player;
   this._uiWrapper = new UIWrapper(this, config);
-  this._remotePlayer.dispatchEvent(
+  this.dispatchEvent(
     new FakeEvent(CastEventType.CAST_SESSION_STARTED, {
       session: session
     })
@@ -68,7 +66,7 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
  */
 function onRemoteDeviceDisconnecting(): void {
   logger.debug('onRemoteDeviceDisconnecting');
-  this._remotePlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDING));
+  this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDING));
 }
 
 /**
@@ -79,7 +77,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
   logger.debug('onRemoteDeviceDisconnected', payload);
   const {player, snapshot} = payload;
   if (this._remotePlayer && this._remotePlayer === player) {
-    this._remotePlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
+    this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
     this._uiWrapper.destroy();
     this._remotePlayer = null;
     this._uiWrapper = new UIWrapper(this, this.config);
@@ -138,7 +136,7 @@ function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
  */
 function onRemoteDeviceConnectFailed(): void {
   logger.debug('onRemoteDeviceConnectFailed');
-  this._localPlayer.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_START_FAILED));
+  this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_START_FAILED));
 }
 
 /**
