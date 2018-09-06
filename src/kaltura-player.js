@@ -1,6 +1,6 @@
 // @flow
-import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from 'playkit-js';
-import {EventType as UIEventType} from 'playkit-js-ui';
+import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from '@playkit-js/playkit-js';
+import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';

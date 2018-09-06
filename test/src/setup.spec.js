@@ -1,6 +1,6 @@
 import '../../src/index';
 import {setup} from '../../src/setup';
-import * as TestUtils from 'playkit-js/test/src/utils/test-utils';
+import * as TestUtils from './utils/test-utils';
 import StorageWrapper from '../../src/common/storage/storage-wrapper';
 
 const targetId = 'player-placeholder_setup.spec';

@@ -3,13 +3,13 @@ import PolyfillManager from './common/polyfills/polyfill-manager';
 import './common/polyfills/all';
 import getLogger, {getLogLevel, LogLevel, setLogLevel} from './common/utils/logger';
 // Import core
-import * as core from 'playkit-js';
+import * as core from '@playkit-js/playkit-js';
 // Import ui
-import * as ui from 'playkit-js-ui';
+import * as ui from '@playkit-js/playkit-js-ui';
 // Import provider
 import * as providers from 'playkit-js-providers';
 // Import media source adapters
-import 'playkit-js-hls';
+import '@playkit-js/playkit-js-hls';
 import 'playkit-js-dash';
 // Import analytics plugin
 import 'playkit-js-analytics';
