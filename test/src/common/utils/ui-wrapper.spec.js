@@ -1,7 +1,7 @@
 import {UIWrapper} from '../../../../src/common/ui-wrapper';
-import loadPlayer from 'playkit-js';
+import loadPlayer from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../../../../src/common/utils/thumbs';
-import * as TestUtils from 'playkit-js/test/src/utils/test-utils';
+import * as TestUtils from '../../utils/test-utils';
 
 const targetId = 'player-placeholder_ui-wrapper.spec';
 

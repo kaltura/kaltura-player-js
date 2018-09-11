@@ -1,6 +1,6 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils, setCapabilities, EngineType} from 'playkit-js';
+import {Env, TextStyle, Utils, setCapabilities, EngineType} from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';

@@ -1,4 +1,4 @@
-import * as TestUtils from 'playkit-js/test/src/utils/test-utils';
+import * as TestUtils from '../../utils/test-utils';
 import {ValidationErrorType} from '../../../../src/common/utils/validation-error';
 import StorageManager from '../../../../src/common/storage/storage-manager';
 import {
