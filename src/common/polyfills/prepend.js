@@ -13,6 +13,7 @@ export default class PrependPolyfill {
         return;
       }
       PrependPolyfill._logger.debug('Installing polyfill on item', item);
+      // $FlowFixMe
       Object.defineProperty(item, 'prepend', {
         configurable: true,
         enumerable: true,
