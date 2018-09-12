@@ -1,5 +1,5 @@
 //@flow
-import {StreamType, Utils} from 'playkit-js';
+import {StreamType, Utils} from '@playkit-js/playkit-js';
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';

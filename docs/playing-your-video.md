@@ -169,7 +169,7 @@ To load your media, call the `loadMedia` API.
 <br>The `loadMedia` method returns a promise, since it's an asynchronous operation that accesses a server. When the promise has been resolved, you can manipulate the player as follows:
 
 ```js
-player.loadMedia(mediaInfo).then(() =>
+player.loadMedia(mediaInfo).then(() => {
   player.play();
 });
 ```
