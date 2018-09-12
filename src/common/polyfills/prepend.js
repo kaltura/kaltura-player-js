@@ -12,6 +12,7 @@ export default class PrependPolyfill {
         PrependPolyfill._logger.debug('No need to install polyfill on item', item);
         return;
       }
+      PrependPolyfill._logger.debug('Installing polyfill on item', item);
       Object.defineProperty(item, 'prepend', {
         configurable: true,
         enumerable: true,
