@@ -7,15 +7,10 @@ export default class PrependPolyfill {
   static _logger: any = getLogger('PrependPolyfill');
 
   static install(): void {
-    const parent = document.createElement('div');
-    if (parent.prepend) {
-      PrependPolyfill._logger.debug('No need to install polyfill');
-      return;
-    }
-    PrependPolyfill._logger.debug('Installing polyfill');
     (function(arr) {
       arr.forEach(function(item) {
         if (item.hasOwnProperty('prepend')) {
+          PrependPolyfill._logger.debug('No need to install polyfill on item', item);         
           return;
         }
         Object.defineProperty(item, 'prepend', {
