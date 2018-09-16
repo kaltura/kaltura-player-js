@@ -364,6 +364,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.loadingMedia = loading;
   }
 
+  get ads(): ?AdsController {
+    return this._localPlayer.ads;
+  }
+
   get Event(): KPEventTypes {
     return {
       Cast: CastEventType,

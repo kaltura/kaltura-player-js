@@ -87,10 +87,6 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
 
   setTextDisplaySettings(settings: Object): void {}
 
-  skipAd(): void {}
-
-  playAdNow(adTagUrl: string): void {}
-
   startCasting(): void {}
 
   stopCasting(): void {}
@@ -115,6 +111,10 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
 
   isInVrStereoMode(): boolean {
     return false;
+  }
+
+  get ads(): ?Object {
+    return null;
   }
 
   set textStyle(style: TextStyle): void {}

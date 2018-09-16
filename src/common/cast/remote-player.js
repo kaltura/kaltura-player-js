@@ -19,6 +19,7 @@ export interface IRemotePlayer {
   +engineType: string;
   +streamType: string;
   +type: string;
+  +ads: ?Object;
 
   static +Type: string;
 
@@ -71,10 +72,6 @@ export interface IRemotePlayer {
   isAdaptiveBitrateEnabled(): boolean;
 
   setTextDisplaySettings(settings: Object): void;
-
-  skipAd(): void;
-
-  playAdNow(adTagUrl: string): void;
 
   startCasting(): void;
 
