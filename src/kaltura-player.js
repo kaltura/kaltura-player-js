@@ -413,6 +413,10 @@ class KalturaPlayer extends FakeEventTarget {
   get EngineType(): PKEngineTypes {
     return this._localPlayer.EngineType;
   }
+
+  get Error(): typeof Error {
+    return this._localPlayer.Error;
+  }
 }
 
 export default KalturaPlayer;
