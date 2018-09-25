@@ -16,49 +16,21 @@ import {RemoteSession} from './common/cast/remote-session';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
-  _mediaInfo: ?ProviderMediaInfoObject;
-  _remotePlayer: ?BaseRemotePlayer;
+  _mediaInfo: ?ProviderMediaInfoObject = null;
+  _remotePlayer: ?BaseRemotePlayer = null;
   _localPlayer: Player;
   _provider: Provider;
   _uiWrapper: UIWrapper;
   _logger: any;
-  _proxy: any;
-  _proxyHandler: Object = {
-    excluded: ['_remotePlayer', '_listeners'],
-    get: function(kp: KalturaPlayer, prop: string) {
-      if (prop in FakeEventTarget.prototype || this.excluded.includes(prop)) {
-        // $FlowFixMe
-        return kp[prop];
-      }
-      if (kp._remotePlayer && prop in kp._remotePlayer) {
-        return kp._remotePlayer[prop];
-      }
-      // $FlowFixMe
-      return kp[prop];
-    },
-    set: function(kp: KalturaPlayer, prop: string, value: any) {
-      if (kp._remotePlayer && !this.excluded.includes(prop)) {
-        if (prop in kp._remotePlayer) {
-          kp._remotePlayer[prop] = value;
-        }
-      } else {
-        // $FlowFixMe
-        kp[prop] = value;
-      }
-      return true;
-    }
-  };
 
   constructor(options: KPOptionsObject) {
     super();
     this._eventManager = new EventManager();
-    this._proxy = new Proxy(this, this._proxyHandler);
     this._localPlayer = loadPlayer(options);
-    this._uiWrapper = new UIWrapper(this._proxy, options);
+    this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
-    return this._proxy;
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
@@ -136,6 +108,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   destroy(): void {
     const targetId = this.config.ui.targetId;
+    this._eventManager.destroy();
     this._localPlayer.destroy();
     this._uiWrapper.destroy();
     const targetContainer = document.getElementById(targetId);
@@ -419,4 +392,4 @@ class KalturaPlayer extends FakeEventTarget {
   }
 }
 
-export default KalturaPlayer;
+export {KalturaPlayer};

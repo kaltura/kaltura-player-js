@@ -1,5 +1,5 @@
 // @flow
-import KalturaPlayer from '../../kaltura-player';
+import {KalturaPlayer} from '../../kaltura-player';
 import {PlayerSnapshot} from './player-snapshot';
 import {CastEventType} from './cast-event-type';
 import {EventManager, EventType as CoreEventType, FakeEvent, TrackType, Utils} from 'playkit-js';

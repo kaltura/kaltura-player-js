@@ -2,7 +2,7 @@
 import {UIManager} from '@playkit-js/playkit-js-ui';
 import {Env, Utils} from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
-import KalturaPlayer from '../kaltura-player';
+import {KalturaPlayer} from '../kaltura-player';
 
 class UIWrapper {
   _uiManager: UIManager;

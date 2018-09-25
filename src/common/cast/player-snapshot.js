@@ -1,5 +1,5 @@
 // @flow
-import KalturaPlayer from '../../kaltura-player';
+import {KalturaPlayer} from '../../kaltura-player';
 import {TextStyle} from 'playkit-js';
 
 class PlayerSnapshot {

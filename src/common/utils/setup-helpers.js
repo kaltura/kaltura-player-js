@@ -8,7 +8,7 @@ import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger';
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
-import KalturaPlayer from '../../kaltura-player';
+import {KalturaPlayer} from '../../kaltura-player';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
