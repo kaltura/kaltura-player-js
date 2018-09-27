@@ -161,14 +161,6 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setTextDisplaySettings(settings);
   }
 
-  skipAd(): void {
-    this._localPlayer.skipAd();
-  }
-
-  playAdNow(adTagUrl: string): void {
-    this._localPlayer.playAdNow(adTagUrl);
-  }
-
   isFullscreen(): boolean {
     return this._localPlayer.isFullscreen();
   }
