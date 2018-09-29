@@ -13,6 +13,7 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
+import {PlaylistManager} from './common/playlist/playlist-manager';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
@@ -29,6 +30,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer = loadPlayer(options);
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
+    this._playlistManager = new PlaylistManager(this, options);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
   }
@@ -43,6 +45,7 @@ class KalturaPlayer extends FakeEventTarget {
       .getMediaConfig(mediaInfo)
       .then(mediaConfig => {
         this.setMedia(mediaConfig);
+        return Promise.resolve(mediaConfig);
       })
       .catch(e =>
         this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
@@ -63,6 +66,42 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
+  fetchMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
+    this._logger.debug('fetchMedia', mediaInfo);
+    return this._provider.getMediaConfig(mediaInfo);
+  }
+
+  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistOptionsObject) {
+    this._logger.debug('loadPlaylist', playlistInfo);
+    this.reset();
+    this._uiWrapper.setLoadingSpinnerState(true);
+    return this._provider
+      .getPlaylistConfig(playlistInfo)
+      .then(playlistConfig => {
+        Utils.Object.mergeDeep(playlistConfig.playlist, playlistOptions);
+        this.setPlaylist(playlistConfig);
+      })
+      .catch(e =>
+        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
+      );
+  }
+
+  setPlaylist(playlistConfig): void {
+    this._logger.debug('setPlaylist', playlistConfig);
+    // const playerConfig = Utils.Object.copyDeep(playlistConfig);
+    // Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
+    // Object.keys(this._localPlayer.config.plugins).forEach(name => {
+    //   playerConfig.plugins[name] = {};
+    // });
+    // addKalturaParams(this, playerConfig);
+    // this.configure(playerConfig);
+    this._playlistManager.configure(playlistConfig.playlist);
+  }
+
+  get playlist(): ?IPlaylistController {
+    return this._playlistManager.getController();
+  }
+
   getMediaInfo(): ?ProviderMediaInfoObject {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
@@ -75,6 +114,10 @@ class KalturaPlayer extends FakeEventTarget {
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);
     }
+  }
+
+  prepareEntry(config: Object = {}): void {
+    this._localPlayer.prepareEntry(config);
   }
 
   ready(): Promise<*> {
@@ -104,6 +147,7 @@ class KalturaPlayer extends FakeEventTarget {
   reset(): void {
     this._localPlayer.reset();
     this._uiWrapper.reset();
+    this._playlistManager.reset();
   }
 
   destroy(): void {
