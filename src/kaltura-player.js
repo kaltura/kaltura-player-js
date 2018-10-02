@@ -45,7 +45,9 @@ class KalturaPlayer extends FakeEventTarget {
         this.setMedia(mediaConfig);
       })
       .catch(e =>
-        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
       );
   }
 
