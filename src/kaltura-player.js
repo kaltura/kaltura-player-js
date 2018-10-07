@@ -85,6 +85,20 @@ class KalturaPlayer extends FakeEventTarget {
       );
   }
 
+  loadPlaylistByEntries(playlistInfo: ProviderPlaylistEntriesObject, playlistOptions: KPPlaylistConfigObject) {
+    this._logger.debug('loadPlaylistByEntries', playlistInfo);
+    this._uiWrapper.setLoadingSpinnerState(true);
+    return this._provider
+      .getPlaylistConfigByEntries(playlistInfo)
+      .then(playlistConfig => {
+        Utils.Object.mergeDeep(playlistConfig, playlistOptions);
+        this.setPlaylist(playlistConfig);
+      })
+      .catch(e =>
+        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
+      );
+  }
+
   setPlaylist(playlistConfig): void {
     this._logger.debug('setPlaylist', playlistConfig);
     this._playlistManager.reset();
