@@ -8,7 +8,7 @@ declare type KPOptionsObject = {
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
-  playlist: KPPlaylistOptionsObject,
+  playlist: KPPlaylistConfigObject,
   ui: UIOptionsObject,
   cast?: { [key: string]: any }
 };

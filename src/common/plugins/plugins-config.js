@@ -69,6 +69,11 @@ const getModel = (options: KPOptionsObject): Object => {
       entryType: options.sources.type
     });
   }
+  if (options.playlist) {
+    Utils.Object.mergeDeep(entryDataModel, {
+      playlistId: options.playlist.id
+    });
+  }
   Object.keys(entryDataModel).forEach(key => {
     if (entryDataModel[key] === undefined) {
       delete entryDataModel[key];

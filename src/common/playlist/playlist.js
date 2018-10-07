@@ -4,7 +4,7 @@ class Playlist {
   _metadata: KPPlaylistMetadata;
   _items: Array<KPPlaylistItem>;
   _options: KPPlaylistOptions;
-  _countdown: KPPlaylistCountdown;
+  _countdown: KPPlaylistCountdownOptions;
 
   constructor(options: KPPlaylistConfigObject) {
     this._id = options.id;

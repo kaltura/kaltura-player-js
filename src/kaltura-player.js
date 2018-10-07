@@ -38,7 +38,6 @@ class KalturaPlayer extends FakeEventTarget {
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
-    this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
@@ -54,6 +53,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
     this._logger.debug('setMedia', mediaConfig);
+    this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
@@ -66,19 +66,18 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
-  fetchMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
-    this._logger.debug('fetchMedia', mediaInfo);
+  fetchMediaFromApi(mediaInfo: ProviderMediaInfoObject): Promise<*> {
+    this._logger.debug('fetchMediaFromApi', mediaInfo);
     return this._provider.getMediaConfig(mediaInfo);
   }
 
-  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistOptionsObject) {
+  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistConfigObject) {
     this._logger.debug('loadPlaylist', playlistInfo);
-    this.reset();
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
       .getPlaylistConfig(playlistInfo)
       .then(playlistConfig => {
-        Utils.Object.mergeDeep(playlistConfig.playlist, playlistOptions);
+        Utils.Object.mergeDeep(playlistConfig, playlistOptions);
         this.setPlaylist(playlistConfig);
       })
       .catch(e =>
@@ -88,18 +87,15 @@ class KalturaPlayer extends FakeEventTarget {
 
   setPlaylist(playlistConfig): void {
     this._logger.debug('setPlaylist', playlistConfig);
-    // const playerConfig = Utils.Object.copyDeep(playlistConfig);
-    // Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
-    // Object.keys(this._localPlayer.config.plugins).forEach(name => {
-    //   playerConfig.plugins[name] = {};
-    // });
-    // addKalturaParams(this, playerConfig);
-    // this.configure(playerConfig);
-    this._playlistManager.configure(playlistConfig.playlist);
+    this._playlistManager.reset();
+    const config = {playlist: playlistConfig, plugins: this._localPlayer.config.plugins};
+    evaluatePluginsConfig(config);
+    this._localPlayer.configure({plugins: config.plugins});
+    this._playlistManager.configure(config.playlist);
   }
 
-  get playlist(): ?IPlaylistController {
-    return this._playlistManager.getController();
+  get playlist(): PlaylistManager {
+    return this._playlistManager;
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
@@ -147,7 +143,6 @@ class KalturaPlayer extends FakeEventTarget {
   reset(): void {
     this._localPlayer.reset();
     this._uiWrapper.reset();
-    this._playlistManager.reset();
   }
 
   destroy(): void {

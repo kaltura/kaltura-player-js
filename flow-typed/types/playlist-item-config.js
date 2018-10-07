@@ -1,4 +1,4 @@
 // @flow
 declare type KPPlaylistItemConfigObject = {
-  countdown?: Object;
+  countdown?: KPPlaylistCountdownOptions;
 };
