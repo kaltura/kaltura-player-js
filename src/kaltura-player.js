@@ -28,10 +28,10 @@ class KalturaPlayer extends FakeEventTarget {
     super();
     this._eventManager = new EventManager();
     this._localPlayer = loadPlayer(options);
+    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
-    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
   }
 
@@ -66,7 +66,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
-  fetchMediaFromApi(mediaInfo: ProviderMediaInfoObject): Promise<*> {
+  fetchMediaFromAPI(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('fetchMediaFromApi', mediaInfo);
     return this._provider.getMediaConfig(mediaInfo);
   }
@@ -76,10 +76,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
       .getPlaylistConfig(playlistInfo)
-      .then(playlistConfig => {
-        Utils.Object.mergeDeep(playlistConfig, playlistOptions);
-        this.setPlaylist(playlistConfig);
-      })
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
       .catch(e =>
         this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
       );
@@ -90,16 +87,21 @@ class KalturaPlayer extends FakeEventTarget {
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
       .getPlaylistConfigByEntries(playlistInfo)
-      .then(playlistConfig => {
-        Utils.Object.mergeDeep(playlistConfig, playlistOptions);
-        this.setPlaylist(playlistConfig);
-      })
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
       .catch(e =>
         this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
       );
   }
 
-  setPlaylist(playlistConfig): void {
+  _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
+    playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
+      return {sources: item.sources, config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config};
+    });
+    Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
+    this.setPlaylist(playlistConfigFromAPI);
+  }
+
+  setPlaylist(playlistConfig: KPPlaylistConfigObject): void {
     this._logger.debug('setPlaylist', playlistConfig);
     this._playlistManager.reset();
     const config = {playlist: playlistConfig, plugins: this._localPlayer.config.plugins};

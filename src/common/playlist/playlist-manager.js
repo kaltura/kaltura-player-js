@@ -54,7 +54,7 @@ class PlaylistManager {
     if (this._itemHasSources(activeItem)) {
       this._player.setMedia({plugins: {}, sources: activeItem.sources});
       return Promise.resolve();
-    } else {
+    } else if (activeItem.sources && activeItem.sources.id) {
       return this._player.loadMedia({entryId: activeItem.sources.id}).then(mediaConfig => {
         Utils.Object.mergeDeep(activeItem.sources, mediaConfig.sources);
       });
