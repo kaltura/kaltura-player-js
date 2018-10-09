@@ -30,6 +30,7 @@ class RemotePlayerManager {
   }
 
   static startCasting(type?: string): Promise<*> {
+    RemotePlayerManager._logger.debug(`Start casting`);
     const remotePlayer = RemotePlayerManager._getRemotePlayer(type);
     if (remotePlayer) {
       return remotePlayer.startCasting();
@@ -40,6 +41,7 @@ class RemotePlayerManager {
   static isCastAvailable(type?: string): boolean {
     const remotePlayer = RemotePlayerManager._getRemotePlayer(type);
     if (remotePlayer) {
+      RemotePlayerManager._logger.debug(`isCastAvailable: ${remotePlayer.isCastAvailable()}`);
       return remotePlayer.isCastAvailable();
     }
     return false;

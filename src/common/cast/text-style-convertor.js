@@ -1,7 +1,10 @@
 // @flow
 import {TextStyle} from 'playkit-js';
+import getLogger from '../utils/logger';
 
 class TextStyleConverter {
+  static _logger: any = getLogger('TextStyleConverter');
+
   static toCastTextStyle(playerTextStyle: TextStyle): void {
     if (window.chrome && window.chrome.cast) {
       const textTrackStyle = new window.chrome.cast.media.TextTrackStyle();
@@ -9,6 +12,7 @@ class TextStyleConverter {
       textTrackStyle.backgroundColor = TextStyleConverter.rgbToHex(playerTextStyle.backgroundColor);
       textTrackStyle.foregroundColor = TextStyleConverter.rgbToHex(playerTextStyle.fontColor);
       textTrackStyle.fontScale = Number.parseFloat(playerTextStyle.fontSize) / 100;
+      TextStyleConverter._logger.debug('toCastTextStyle', playerTextStyle, textTrackStyle);
       return textTrackStyle;
     }
     return {};
@@ -20,6 +24,7 @@ class TextStyleConverter {
     textStyle.fontSize = castTextStyle.fontScale * 100 + '%';
     textStyle.fontColor = TextStyleConverter.hexToRGB(castTextStyle.foregroundColor);
     textStyle.backgroundColor = TextStyleConverter.hexToRGB(castTextStyle.backgroundColor);
+    TextStyleConverter._logger.debug('toPlayerTextStyle', castTextStyle, textStyle);
     return textStyle;
   }
 

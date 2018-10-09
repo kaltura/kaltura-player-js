@@ -147,6 +147,7 @@ function getPlayerSnapshot(): PlayerSnapshot {
  * @returns {UIWrapper} - The UI wrapper.
  */
 function getUIWrapper(): UIWrapper {
+  logger.debug('getUIWrapper');
   return this._uiWrapper;
 }
 
