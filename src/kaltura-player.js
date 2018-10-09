@@ -14,6 +14,7 @@ import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
 import {PlaylistManager} from './common/playlist/playlist-manager';
+import {PlaylistEventType} from './common/playlist/playlist-event-type';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
@@ -38,6 +39,7 @@ class KalturaPlayer extends FakeEventTarget {
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
+    this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
@@ -53,7 +55,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
     this._logger.debug('setMedia', mediaConfig);
-    this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
@@ -64,11 +65,6 @@ class KalturaPlayer extends FakeEventTarget {
     addKalturaParams(this, playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
     this.configure(playerConfig);
-  }
-
-  fetchMediaFromAPI(mediaInfo: ProviderMediaInfoObject): Promise<*> {
-    this._logger.debug('fetchMediaFromApi', mediaInfo);
-    return this._provider.getMediaConfig(mediaInfo);
   }
 
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistConfigObject) {
@@ -82,11 +78,11 @@ class KalturaPlayer extends FakeEventTarget {
       );
   }
 
-  loadPlaylistByEntries(playlistInfo: ProviderPlaylistEntriesObject, playlistOptions: KPPlaylistConfigObject) {
-    this._logger.debug('loadPlaylistByEntries', playlistInfo);
+  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistOptions: KPPlaylistConfigObject) {
+    this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
-      .getPlaylistConfigByEntries(playlistInfo)
+      .getEntryListConfig(entryList)
       .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
       .catch(e =>
         this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
@@ -400,6 +396,7 @@ class KalturaPlayer extends FakeEventTarget {
     return {
       Cast: CastEventType,
       Core: CoreEventType,
+      Playlist: PlaylistEventType,
       UI: UIEventType,
       // For backward compatibility
       ...CoreEventType

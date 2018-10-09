@@ -31,49 +31,49 @@
         adTagUrl: 'http://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator='
       }
     },
-    playlist: {
-      // id: '1234',
-      // metadata: {
-      //   name: 'my playlist',
-      //   description: 'my playlist'
-      // },
-      // items: [
-      //   {sources: {
-      //     hls: [
-      //       {
-      //         id: "id1",
-      //         mimetype: "application/x-mpegURL",
-      //         url: "https://sportstv-live.akamaized.net/hlsl/1/Cars_TV/Cars_TV.m3u8"
-      //       }
-      //     ]
-      //   }, config: {countdown: {}}},
-      //   {sources: {
-      //     hls: [
-      //       {
-      //         id: "id2",
-      //         mimetype: "application/x-mpegURL",
-      //         url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j/a.m3u8"
-      //       }
-      //     ]
-      //   }, config: {countdown: {}}},
-      //   {sources: {
-      //     hls: [
-      //       {
-      //         id: "id3",
-      //         mimetype: "application/x-mpegURL",
-      //         url: "https://demo.deltatre.it/cc-test/QualityLevels(1400000)/Manifest(video,format=m3u8-aapl).m3u8"
-      //       }
-      //     ]
-      //   }, config: {countdown: {}}}],
-      options: {
-        autoContinue: true
-      },
-      countdown: {
-        // timeToShow: 120,
-        duration: 10,
-        showing: true
-      }
-    }
+    // playlist: {
+    //   id: '1234',
+    //   metadata: {
+    //     name: 'my playlist',
+    //     description: 'my playlist'
+    //   },
+    //   items: [
+    //     {sources: {
+    //       hls: [
+    //         {
+    //           id: "id1",
+    //           mimetype: "application/x-mpegURL",
+    //           url: "https://sportstv-live.akamaized.net/hlsl/1/Cars_TV/Cars_TV.m3u8"
+    //         }
+    //       ]
+    //     }, config: {countdown: {}}},
+    //     {sources: {
+    //       hls: [
+    //         {
+    //           id: "id2",
+    //           mimetype: "application/x-mpegURL",
+    //           url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j/a.m3u8"
+    //         }
+    //       ]
+    //     }, config: {countdown: {}}},
+    //     {sources: {
+    //       hls: [
+    //         {
+    //           id: "id3",
+    //           mimetype: "application/x-mpegURL",
+    //           url: "https://demo.deltatre.it/cc-test/QualityLevels(1400000)/Manifest(video,format=m3u8-aapl).m3u8"
+    //         }
+    //       ]
+    //     }, config: {countdown: {}}}],
+    //   options: {
+    //     autoContinue: true
+    //   },
+    //   countdown: {
+    //     // timeToShow: 120,
+    //     duration: 10,
+    //     showing: true
+    //   }
+    // }
   };
 
   try {
@@ -84,10 +84,12 @@
     // kalturaPlayer.addEventListener('kaltura-player-playlistitemchanged', (data) => {
     //   console.error(data);
     // });
-    // kalturaPlayer.loadPlaylist({playlistId: '0_jr7vpj0w'});
-    // kalturaPlayer.loadMedia({entryId: '0_k3s28s8f'});
-
-    kalturaPlayer.loadPlaylistByEntries({entries: ['0_k3s28s8f', '0_wifqaipd']}, {id: '1234'});
+    // kalturaPlayer.addEventListener('kaltura-player-playlistended', (data) => {
+    //   console.error(data);
+    // });
+    // kalturaPlayer.loadMedia({entryId: '0_od42vb2y'});
+    kalturaPlayer.loadPlaylist({playlistId: '0_jr7vpj0w'}, {});
+    // kalturaPlayer.loadPlaylistByEntryList({entries: ['0_k3s28s8f', '0_wifqaipd']}, {id: '1234', metadata: {name: 'myPlaylist'}});
 
     // kalturaPlayer.setPlaylist({items: [
     //   {sources: {

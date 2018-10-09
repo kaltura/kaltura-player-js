@@ -3,7 +3,6 @@ import KalturaPlayer from '../../kaltura-player';
 import {FakeEvent, Utils} from 'playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
-import {UIWrapper} from '../ui-wrapper';
 
 class PlaylistManager {
   static _logger: any = getLogger('PlaylistManager');
@@ -21,26 +20,26 @@ class PlaylistManager {
   };
   _activeItemIndex: number;
 
-  constructor(player: KalturaPlayer, uiWrapper: UIWrapper, options: KPOptionsObject) {
+  constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
-    this._uiWrapper = uiWrapper;
     this.addBindings();
     this._activeItemIndex = 0;
     this.configure(options.playlist);
   }
 
   addBindings() {
-    this._player.addEventListener(this._player.Event.PLAYBACK_ENDED, () => this.playNext(this._config.options.autoContinue));
+    this._player.addEventListener(
+      this._player.Event.PLAYBACK_ENDED,
+      () =>
+        this.next ? this._config.options.autoContinue && this.playNext() : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
+    );
   }
 
   configure(options: KPPlaylistConfigObject) {
     Utils.Object.mergeDeep(this._config, options);
     if (this._config.items && this._config.items.find(item => !!item.sources)) {
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._config}));
-      this._setActiveItem().then(() => {
-        // auto play flow should be handled via the autoContinue config
-        this._player.configure({playback: {autoplay: false}});
-      });
+      this._setActiveItem(this._config.items[0]);
     }
   }
 
@@ -52,18 +51,11 @@ class PlaylistManager {
     );
   }
 
-  _setActiveItem(): Promise<*> {
-    const activeItem = this._config.items[this._activeItemIndex];
-    const prevItem = this._config.items[this._activeItemIndex - 1];
-    const nextItem = this._config.items[this._activeItemIndex + 1];
+  _setActiveItem(activeItem: KPPlaylistItem): Promise<*> {
     PlaylistManager._logger.debug(`Playing item number ${this._activeItemIndex}`, activeItem);
     this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index: this._activeItemIndex, activeItem}));
-    this._uiWrapper.setPlaylistConfig({
-      prev: prevItem && prevItem.sources,
-      next: nextItem && nextItem.sources,
-      countdown: nextItem && (nextItem.countdown || this._config.countdown)
-    });
     if (this._itemHasSources(activeItem)) {
+      this._player.reset();
       this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
       return Promise.resolve();
     } else if (activeItem.sources && activeItem.sources.id) {
@@ -82,25 +74,23 @@ class PlaylistManager {
     );
   }
 
-  playNext(play: boolean = true): void {
+  playNext(): void {
     PlaylistManager._logger.debug('playNext');
-    const nextIndex = this._activeItemIndex + 1;
-    if (this._isValidIndex(nextIndex)) {
+    const next = this.next;
+    if (next) {
       this._activeItemIndex++;
-      this._setActiveItem().then(() => {
-        if (play) {
-          this._player.play();
-        }
+      this._setActiveItem(next).then(() => {
+        this._player.play();
       });
     }
   }
 
   playPrev(): void {
     PlaylistManager._logger.debug('playPrev');
-    const prevIndex = this._activeItemIndex - 1;
-    if (this._isValidIndex(prevIndex)) {
+    const prev = this.prev;
+    if (prev) {
       this._activeItemIndex--;
-      this._setActiveItem().then(() => {
+      this._setActiveItem(prev).then(() => {
         this._player.play();
       });
     }
@@ -108,20 +98,29 @@ class PlaylistManager {
 
   playItem(index: number): void {
     PlaylistManager._logger.debug(`playItem(${index})`);
-    if (this._isValidIndex(index)) {
+    const item = this._config.items[index];
+    if (item) {
       this._activeItemIndex = index;
-      this._setActiveItem().then(() => {
+      this._setActiveItem(item).then(() => {
         this._player.play();
       });
     }
   }
 
-  _isValidIndex(index: number): boolean {
-    return !!this._config.items[index];
-  }
-
   get items(): Array<KPPlaylistItem> {
     return this._config.items;
+  }
+
+  get next(): ?KPPlaylistItem {
+    return this._config.items[this._activeItemIndex + 1] || null;
+  }
+
+  get prev(): ?KPPlaylistItem {
+    return this._config.items[this._activeItemIndex - 1] || null;
+  }
+
+  get countdown(): KPPlaylistCountdownOptions {
+    return this._config.countdown;
   }
 
   reset() {}

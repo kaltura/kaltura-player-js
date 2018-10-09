@@ -74,10 +74,6 @@ class UIWrapper {
       this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
   }
-
-  setPlaylistConfig(playlistConfig: Object): void {
-    this.setConfig(playlistConfig, 'playlist');
-  }
 }
 
 /**
