@@ -3,6 +3,7 @@ import KalturaPlayer from '../../kaltura-player';
 import {FakeEvent, Utils} from 'playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
+import {UIWrapper} from '../ui-wrapper';
 
 class PlaylistManager {
   static _logger: any = getLogger('PlaylistManager');
@@ -14,21 +15,22 @@ class PlaylistManager {
       showing: true
     },
     options: {
-      autoContinue: false
+      autoContinue: true
     },
     items: []
   };
   _activeItemIndex: number;
 
-  constructor(player: KalturaPlayer, options: KPOptionsObject) {
+  constructor(player: KalturaPlayer, uiWrapper: UIWrapper, options: KPOptionsObject) {
     this._player = player;
+    this._uiWrapper = uiWrapper;
     this.addBindings();
     this._activeItemIndex = 0;
     this.configure(options.playlist);
   }
 
   addBindings() {
-    this._player.addEventListener(this._player.Event.PLAYBACK_ENDED, () => this.playNext());
+    this._player.addEventListener(this._player.Event.PLAYBACK_ENDED, () => this.playNext(this._config.options.autoContinue));
   }
 
   configure(options: KPPlaylistConfigObject) {
@@ -49,8 +51,15 @@ class PlaylistManager {
 
   _setActiveItem(): Promise<*> {
     const activeItem = this._config.items[this._activeItemIndex];
+    const prevItem = this._config.items[this._activeItemIndex - 1];
+    const nextItem = this._config.items[this._activeItemIndex + 1];
     PlaylistManager._logger.debug(`Playing item number ${this._activeItemIndex}`, activeItem);
     this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index: this._activeItemIndex, activeItem}));
+    this._uiWrapper.setPlaylistConfig({
+      prev: prevItem && prevItem.sources,
+      next: nextItem && nextItem.sources,
+      countdown: nextItem && (nextItem.countdown || this._config.countdown)
+    });
     if (this._itemHasSources(activeItem)) {
       this._player.setMedia({plugins: {}, sources: activeItem.sources});
       return Promise.resolve();
@@ -70,13 +79,15 @@ class PlaylistManager {
     );
   }
 
-  playNext(): void {
+  playNext(play: boolean = true): void {
     PlaylistManager._logger.debug('playNext');
     const nextIndex = this._activeItemIndex + 1;
     if (this._isValidIndex(nextIndex)) {
       this._activeItemIndex++;
       this._setActiveItem().then(() => {
-        this._player.play();
+        if (play) {
+          this._player.play();
+        }
       });
     }
   }
