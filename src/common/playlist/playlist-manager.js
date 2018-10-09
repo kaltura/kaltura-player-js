@@ -35,9 +35,12 @@ class PlaylistManager {
 
   configure(options: KPPlaylistConfigObject) {
     Utils.Object.mergeDeep(this._config, options);
-    if (this._config.items && this._config.items.length) {
+    if (this._config.items && this._config.items.find(item => !!item.sources)) {
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._config}));
-      this._setActiveItem();
+      this._setActiveItem().then(() => {
+        // auto play flow should be handled via the autoContinue config
+        this._player.configure({playback: {autoplay: false}});
+      });
     }
   }
 
