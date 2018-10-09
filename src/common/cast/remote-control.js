@@ -12,6 +12,7 @@ const logger: any = getLogger('RemoteControl');
 
 class RemoteControl {
   getPlayerSnapshot: Function;
+  getUIWrapper: Function;
   onRemoteDeviceDisconnected: Function;
   onRemoteDeviceConnected: Function;
   onRemoteDeviceAvailable: Function;
@@ -21,6 +22,7 @@ class RemoteControl {
 
   constructor(player: KalturaPlayer) {
     this.getPlayerSnapshot = getPlayerSnapshot.bind(player);
+    this.getUIWrapper = getUIWrapper.bind(player);
     this.onRemoteDeviceAvailable = onRemoteDeviceAvailable.bind(player);
     this.onRemoteDeviceConnected = onRemoteDeviceConnected.bind(player);
     this.onRemoteDeviceDisconnected = onRemoteDeviceDisconnected.bind(player);
@@ -138,6 +140,14 @@ function getPlayerSnapshot(): PlayerSnapshot {
   const snapshot = new PlayerSnapshot(this);
   logger.debug('getPlayerSnapshot', snapshot);
   return snapshot;
+}
+
+/**
+ * Gets the UI wrapper.
+ * @returns {UIWrapper} - The UI wrapper.
+ */
+function getUIWrapper(): UIWrapper {
+  return this._uiWrapper;
 }
 
 function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {

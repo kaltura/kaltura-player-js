@@ -2,7 +2,7 @@
 import {KalturaPlayer} from './kaltura-player';
 import {FakeEventTarget} from '@playkit-js/playkit-js';
 
-const proxyIgnoredProps: Array<string> = ['_remotePlayer', '_listeners'];
+const proxyIgnoredProps: Array<string> = ['_remotePlayer', '_listeners', '_uiWrapper'];
 const proxyHandler: Object = {
   get(kp: KalturaPlayer, prop: string) {
     if (prop in FakeEventTarget.prototype || proxyIgnoredProps.includes(prop)) {
