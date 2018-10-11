@@ -49,7 +49,9 @@ class KalturaPlayer extends FakeEventTarget {
         return Promise.resolve(mediaConfig);
       })
       .catch(e =>
-        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
       );
   }
 
@@ -210,14 +212,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   setTextDisplaySettings(settings: Object): void {
     this._localPlayer.setTextDisplaySettings(settings);
-  }
-
-  skipAd(): void {
-    this._localPlayer.skipAd();
-  }
-
-  playAdNow(adTagUrl: string): void {
-    this._localPlayer.playAdNow(adTagUrl);
   }
 
   isFullscreen(): boolean {
