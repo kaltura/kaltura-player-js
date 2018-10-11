@@ -110,7 +110,10 @@ class PlaylistManager {
     return this._config.countdown;
   }
 
-  reset() {}
+  reset() {
+    this._activeItemIndex = 0;
+    this._config = Utils.Object.copyDeep(DefaultPlaylistConfig);
+  }
 }
 
 export {PlaylistManager};
