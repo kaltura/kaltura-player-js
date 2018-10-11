@@ -1,27 +1,20 @@
 // @flow
-import KalturaPlayer from '../../kaltura-player';
+import {KalturaPlayer} from '../../kaltura-player';
 import {FakeEvent, Utils} from 'playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
+import DefaultPlaylistConfig from './playlist-config';
 import getLogger from '../utils/logger';
 
 class PlaylistManager {
   static _logger: any = getLogger('PlaylistManager');
 
-  _config = {
-    metadata: {},
-    countdown: {
-      duration: 10,
-      showing: true
-    },
-    options: {
-      autoContinue: true
-    },
-    items: []
-  };
+  _player: KalturaPlayer;
+  _config: KPPlaylistConfigObject;
   _activeItemIndex: number;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
+    this._config = Utils.Object.copyDeep(DefaultPlaylistConfig);
     this.addBindings();
     this._activeItemIndex = 0;
     this.configure(options.playlist);
@@ -29,13 +22,13 @@ class PlaylistManager {
 
   addBindings() {
     this._player.addEventListener(
-      this._player.Event.PLAYBACK_ENDED,
+      this._player.Event.Core.PLAYBACK_ENDED,
       () =>
         this.next ? this._config.options.autoContinue && this.playNext() : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
     );
   }
 
-  configure(options: KPPlaylistConfigObject) {
+  configure(options: ?KPPlaylistConfigObject) {
     Utils.Object.mergeDeep(this._config, options);
     if (this._config.items && this._config.items.find(item => !!item.sources)) {
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._config}));
@@ -43,19 +36,12 @@ class PlaylistManager {
     }
   }
 
-  _getTimeToShow() {
-    const activeItem = this._config.items[this._activeItemIndex];
-    return (
-      (activeItem.countdown && activeItem.countdown.timeToShow) ||
-      this._player.duration - ((activeItem.countdown && activeItem.countdown.duration) || this._config.countdown.duration)
-    );
-  }
-
   _setActiveItem(activeItem: KPPlaylistItem): Promise<*> {
     PlaylistManager._logger.debug(`Playing item number ${this._activeItemIndex}`, activeItem);
     this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index: this._activeItemIndex, activeItem}));
     if (this._itemHasSources(activeItem)) {
       this._player.reset();
+      // $FlowFixMe
       this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
       return Promise.resolve();
     } else if (activeItem.sources && activeItem.sources.id) {
@@ -63,10 +49,11 @@ class PlaylistManager {
         Utils.Object.mergeDeep(activeItem.sources, mediaConfig.sources);
       });
     }
+    return Promise.reject();
   }
 
   _itemHasSources(item: KPPlaylistItem): boolean {
-    return (
+    return !!(
       item.sources &&
       ((item.sources.hls && item.sources.hls.length) ||
         (item.sources.dash && item.sources.dash.length) ||

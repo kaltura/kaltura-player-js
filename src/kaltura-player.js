@@ -32,7 +32,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
-    this._playlistManager = new PlaylistManager(this, this._uiWrapper, options);
+    this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
   }
 
@@ -91,6 +91,7 @@ class KalturaPlayer extends FakeEventTarget {
       );
   }
 
+  // $FlowFixMe
   _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
     playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
       return {sources: item.sources, config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config};
@@ -103,6 +104,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._logger.debug('setPlaylist', playlistConfig);
     this._playlistManager.reset();
     const config = {playlist: playlistConfig, plugins: this._localPlayer.config.plugins};
+    // $FlowFixMe
     evaluatePluginsConfig(config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.configure(config.playlist);
