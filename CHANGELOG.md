@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.33.0"></a>
+# [0.33.0](https://github.com/kaltura/kaltura-player-js/compare/v0.32.11...v0.33.0) (2018-10-14)
+
+
+### Bug Fixes
+
+* add new playkit path alias [#157](https://github.com/kaltura/kaltura-player-js/issues/157) ([5bfd1d1](https://github.com/kaltura/kaltura-player-js/commit/5bfd1d1))
+* **docs:** add assetReferenceType to mediaInfo ([#156](https://github.com/kaltura/kaltura-player-js/issues/156)) ([fb9cff4](https://github.com/kaltura/kaltura-player-js/commit/fb9cff4))
+
+
+### Features
+
+* **FEC-8038:** cast framework ([#158](https://github.com/kaltura/kaltura-player-js/issues/158)) ([e836e69](https://github.com/kaltura/kaltura-player-js/commit/e836e69))
+
+
+
 <a name="0.32.11"></a>
 ## [0.32.11](https://github.com/kaltura/kaltura-player-js/compare/v0.32.10...v0.32.11) (2018-09-16)
 
