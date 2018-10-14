@@ -2,44 +2,54 @@
 import {KalturaPlayer} from '../../kaltura-player';
 import {FakeEvent, Utils} from 'playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
-import DefaultPlaylistConfig from './playlist-config';
 import getLogger from '../utils/logger';
+import {Playlist} from './playlist';
+import {PlaylistItem} from './playlist-item';
 
 class PlaylistManager {
   static _logger: any = getLogger('PlaylistManager');
 
   _player: KalturaPlayer;
-  _config: KPPlaylistConfigObject;
-  _activeItemIndex: number;
+  _playlist: Playlist;
+  _options: KPPlaylistOptions;
+  _countdown: KPPlaylistCountdownOptions;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
-    this._config = Utils.Object.copyDeep(DefaultPlaylistConfig);
+    this._playlist = new Playlist(options.playlist);
+    this._options = {autoContinue: true};
+    this._countdown = {duration: 10, showing: true};
     this.addBindings();
-    this._activeItemIndex = 0;
-    this.configure(options.playlist);
   }
 
   addBindings() {
     this._player.addEventListener(
       this._player.Event.Core.PLAYBACK_ENDED,
       () =>
-        this.next ? this._config.options.autoContinue && this.playNext() : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
+        this._playlist.next
+          ? this._options.autoContinue && this.playNext()
+          : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
     );
   }
 
-  configure(options: ?KPPlaylistConfigObject) {
-    Utils.Object.mergeDeep(this._config, options);
-    if (this._config.items && this._config.items.find(item => !!item.sources)) {
-      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._config}));
-      this._setActiveItem(this._config.items[0]);
+  configure(config: KPPlaylistConfigObject) {
+    this._playlist.configure(config);
+    Utils.Object.mergeDeep(this._options, config.options);
+    Utils.Object.mergeDeep(this._countdown, config.countdown);
+    if (this._playlist.items.find(item => !!item.sources)) {
+      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._playlist}));
+      const next = this._playlist.next;
+      if (next.item) {
+        this._setItem(next.item, next.index);
+      }
     }
   }
 
-  _setActiveItem(activeItem: KPPlaylistItem): Promise<*> {
-    PlaylistManager._logger.debug(`Playing item number ${this._activeItemIndex}`, activeItem);
-    this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index: this._activeItemIndex, activeItem}));
-    if (this._itemHasSources(activeItem)) {
+  _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
+    PlaylistManager._logger.debug(`Playing item number ${index}`, activeItem);
+    this._playlist.activeItemIndex = index;
+    this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
+    if (activeItem.isPlayable()) {
       this._player.reset();
       // $FlowFixMe
       this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
@@ -52,21 +62,11 @@ class PlaylistManager {
     return Promise.reject();
   }
 
-  _itemHasSources(item: KPPlaylistItem): boolean {
-    return !!(
-      item.sources &&
-      ((item.sources.hls && item.sources.hls.length) ||
-        (item.sources.dash && item.sources.dash.length) ||
-        (item.sources.progressive && item.sources.progressive.length))
-    );
-  }
-
   playNext(): void {
     PlaylistManager._logger.debug('playNext');
-    const next = this.next;
-    if (next) {
-      this._activeItemIndex++;
-      this._setActiveItem(next).then(() => {
+    const next = this._playlist.next;
+    if (next.item) {
+      this._setItem(next.item, next.index).then(() => {
         this._player.play();
       });
     }
@@ -74,10 +74,9 @@ class PlaylistManager {
 
   playPrev(): void {
     PlaylistManager._logger.debug('playPrev');
-    const prev = this.prev;
-    if (prev) {
-      this._activeItemIndex--;
-      this._setActiveItem(prev).then(() => {
+    const prev = this._playlist.prev;
+    if (prev.item) {
+      this._setItem(prev.item, prev.index).then(() => {
         this._player.play();
       });
     }
@@ -85,34 +84,28 @@ class PlaylistManager {
 
   playItem(index: number): void {
     PlaylistManager._logger.debug(`playItem(${index})`);
-    const item = this._config.items[index];
+    const item = this._playlist.items[index];
     if (item) {
-      this._activeItemIndex = index;
-      this._setActiveItem(item).then(() => {
+      this._setItem(item, index).then(() => {
         this._player.play();
       });
     }
   }
 
-  get items(): Array<KPPlaylistItem> {
-    return this._config.items;
+  get items(): Array<PlaylistItem> {
+    return this._playlist.items;
   }
 
-  get next(): ?KPPlaylistItem {
-    return this._config.items[this._activeItemIndex + 1] || null;
+  get next(): ?PlaylistItem {
+    return this._playlist.next.item;
   }
 
-  get prev(): ?KPPlaylistItem {
-    return this._config.items[this._activeItemIndex - 1] || null;
-  }
-
-  get countdown(): KPPlaylistCountdownOptions {
-    return this._config.countdown;
+  get prev(): ?PlaylistItem {
+    return this._playlist.prev.item;
   }
 
   reset() {
-    this._activeItemIndex = 0;
-    this._config = Utils.Object.copyDeep(DefaultPlaylistConfig);
+    this._playlist = new Playlist();
   }
 }
 
