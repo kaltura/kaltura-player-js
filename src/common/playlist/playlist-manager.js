@@ -16,9 +16,10 @@ class PlaylistManager {
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
-    this._playlist = new Playlist(options.playlist);
+    this._playlist = new Playlist();
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
+    this.configure(options.playlist);
     this.addBindings();
   }
 
@@ -32,15 +33,17 @@ class PlaylistManager {
     );
   }
 
-  configure(config: KPPlaylistConfigObject) {
-    this._playlist.configure(config);
-    Utils.Object.mergeDeep(this._options, config.options);
-    Utils.Object.mergeDeep(this._countdown, config.countdown);
-    if (this._playlist.items.find(item => !!item.sources)) {
-      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._playlist}));
-      const next = this._playlist.next;
-      if (next.item) {
-        this._setItem(next.item, next.index);
+  configure(config: ?KPPlaylistConfigObject) {
+    if (config) {
+      this._playlist.configure(config);
+      Utils.Object.mergeDeep(this._options, config.options);
+      Utils.Object.mergeDeep(this._countdown, config.countdown);
+      if (this._playlist.items.find(item => !!item.sources)) {
+        this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._playlist}));
+        const next = this._playlist.next;
+        if (next.item) {
+          this._setItem(next.item, next.index);
+        }
       }
     }
   }

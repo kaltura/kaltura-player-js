@@ -20,12 +20,13 @@
         cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
       }
-    }
+    },
+    playback: {autoplay: true}
   };
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd', '0_nwkp7jtx'], options: {}});
+    kalturaPlayer.loadPlaylist({playlistId: '0_jr7vpj0w'}, {options: {autoContinue: false}});
   } catch (e) {
     console.error(e.message)
   }

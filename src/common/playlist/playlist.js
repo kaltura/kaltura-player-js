@@ -8,24 +8,21 @@ class Playlist {
   _metadata: KPPlaylistMetadata;
   _activeItemIndex: number;
 
-  constructor(config: ?KPPlaylistConfigObject) {
+  constructor() {
     this._id = '';
     this._items = [];
     this._metadata = {name: '', description: ''};
     this._activeItemIndex = -1;
-    this.configure(config);
   }
 
-  configure(config: ?KPPlaylistConfigObject) {
-    if (config) {
-      this._id = config.id;
-      Utils.Object.mergeDeep(this._metadata, config.metadata);
-      if (config.items) {
-        this._items = [];
-        config.items.forEach(item => {
-          this._items.push(new PlaylistItem(item.sources, item.config));
-        });
-      }
+  configure(config: KPPlaylistConfigObject) {
+    this._id = config.id;
+    Utils.Object.mergeDeep(this._metadata, config.metadata);
+    if (config.items) {
+      this._items = [];
+      config.items.forEach(item => {
+        this._items.push(new PlaylistItem(item.sources, item.config));
+      });
     }
   }
 
