@@ -23,16 +23,6 @@ class PlaylistManager {
     this.addBindings();
   }
 
-  addBindings() {
-    this._player.addEventListener(
-      this._player.Event.Core.PLAYBACK_ENDED,
-      () =>
-        this._playlist.next
-          ? this._options.autoContinue && this.playNext()
-          : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
-    );
-  }
-
   configure(config: ?KPPlaylistConfigObject) {
     if (config) {
       this._playlist.configure(config);
@@ -46,6 +36,16 @@ class PlaylistManager {
         }
       }
     }
+  }
+
+  addBindings() {
+    this._player.addEventListener(
+      this._player.Event.Core.PLAYBACK_ENDED,
+      () =>
+        this._playlist.next
+          ? this._options.autoContinue && this.playNext()
+          : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
+    );
   }
 
   _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
