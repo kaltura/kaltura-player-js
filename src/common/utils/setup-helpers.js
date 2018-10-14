@@ -6,6 +6,9 @@ import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
 import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger';
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
+import {RemotePlayerManager} from '../cast/remote-player-manager';
+import {RemoteControl} from '../cast/remote-control';
+import {KalturaPlayer} from '../../kaltura-player';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -15,10 +18,10 @@ declare var __CONFIG_DOCS_URL__: string;
 
 /**
  * Validate the initial user config.
- * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options.
+ * @param {PartialKPOptionsObject} options - partial kaltura player options.
  * @returns {void}
  */
-function validateConfig(options: PartialKalturaPlayerOptionsObject): void {
+function validateConfig(options: PartialKPOptionsObject): void {
   if (!options) {
     throw new Error(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
   }
@@ -70,10 +73,10 @@ function createKalturaPlayerContainer(targetId: string): string {
 
 /**
  * Sets the storage config on the player config if certain conditions are met.
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setStorageConfig(options: KalturaPlayerOptionsObject): void {
+function setStorageConfig(options: KPOptionsObject): void {
   if (!options.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
     Utils.Object.mergeDeep(options, StorageManager.getStorageConfig());
   }
@@ -81,21 +84,33 @@ function setStorageConfig(options: KalturaPlayerOptionsObject): void {
 
 /**
  * Applies cache support if it's supported by the environment.
- * @param {Player} player - The Kaltura player.
+ * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
-function applyStorageSupport(player: Player): void {
+function applyStorageSupport(player: KalturaPlayer): void {
   if (StorageManager.isLocalStorageAvailable()) {
     StorageManager.attach(player);
   }
 }
 
 /**
- * Sets the player text style from storage.
- * @param {Player} player - The Kaltura player.
+ * Loads the registered remote players.
+ * @param {KPOptionsObject} defaultOptions - The kaltura player options.
+ * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
-function setStorageTextStyle(player: Player): void {
+function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer): void {
+  if (defaultOptions.cast) {
+    RemotePlayerManager.load(defaultOptions.cast, new RemoteControl(player));
+  }
+}
+
+/**
+ * Sets the player text style from storage.
+ * @param {KalturaPlayer} player - The Kaltura player.
+ * @returns {void}
+ */
+function setStorageTextStyle(player: KalturaPlayer): void {
   if (StorageManager.isLocalStorageAvailable()) {
     const textStyleObj = StorageManager.getPlayerTextStyle();
     if (textStyleObj) {
@@ -142,10 +157,10 @@ function isDebugMode(): boolean {
 
 /**
  * set the logger
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setLogLevel(options: KalturaPlayerOptionsObject): void {
+function setLogLevel(options: KPOptionsObject): void {
   let logLevelObj: LogLevelObject = LogLevel.ERROR;
   if (isDebugMode()) {
     logLevelObj = LogLevel.DEBUG;
@@ -195,12 +210,12 @@ function extractServerUIConf(uiConfId: number): Object {
 
 /**
  * Gets the default options after merging the user options with the uiConf options and the default internal options.
- * @param {PartialKalturaPlayerOptionsObject} options - partial user kaltura player options.
- * @returns {KalturaPlayerOptionsObject} - default kaltura player options.
+ * @param {PartialKPOptionsObject} options - partial user kaltura player options.
+ * @returns {KPOptionsObject} - default kaltura player options.
  */
-function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaPlayerOptionsObject {
+function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   const targetId = createKalturaPlayerContainer(options.targetId);
-  let defaultOptions: KalturaPlayerOptionsObject = {
+  let defaultOptions: KPOptionsObject = {
     targetId: options.targetId,
     provider: {
       partnerId: options.provider.partnerId
@@ -224,10 +239,10 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
 
 /**
  * Sets config option for native HLS playback
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function checkNativeHlsSupport(options: KalturaPlayerOptionsObject): void {
+function checkNativeHlsSupport(options: KPOptionsObject): void {
   if (isSafari() || isIos()) {
     const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
@@ -244,10 +259,10 @@ function checkNativeHlsSupport(options: KalturaPlayerOptionsObject): void {
 
 /**
  * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureDelayAdsInitialization(options: KalturaPlayerOptionsObject): void {
+function configureDelayAdsInitialization(options: KPOptionsObject): void {
   if (isIos() && options.plugins && options.plugins.ima) {
     const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
     const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
@@ -265,10 +280,10 @@ function configureDelayAdsInitialization(options: KalturaPlayerOptionsObject): v
 
 /**
  * Sets config option for native text track support
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function checkNativeTextTracksSupport(options: KalturaPlayerOptionsObject): void {
+function checkNativeTextTracksSupport(options: KPOptionsObject): void {
   if (isSafari()) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
@@ -284,9 +299,9 @@ function checkNativeTextTracksSupport(options: KalturaPlayerOptionsObject): void
 /**
  * Transform options structure from legacy structure to new structure.
  * @param {Object} options - The options with the legacy structure.
- * @return {PartialKalturaPlayerOptionsObject} - Partial options with the expected structure.
+ * @return {PartialKPOptionsObject} - Partial options with the expected structure.
  */
-function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObject {
+function supportLegacyOptions(options: Object): PartialKPOptionsObject {
   const removePlayerEntry = () => {
     if (options.player) {
       setupMessages.push({
@@ -353,6 +368,7 @@ export {
   supportLegacyOptions,
   setStorageConfig,
   applyStorageSupport,
+  applyCastSupport,
   setStorageTextStyle,
   attachToFirstClick,
   validateConfig,

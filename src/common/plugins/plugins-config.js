@@ -29,10 +29,10 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
 
 /**
  * returns the data model for evaluating evaluation tokens
- * @param {KalturaPlayerOptionsObject} options - the kaltura player options object
+ * @param {KPOptionsObject} options - the kaltura player options object
  * @returns {Object} - data model
  */
-const getModel = (options: KalturaPlayerOptionsObject): Object => {
+const getModel = (options: KPOptionsObject): Object => {
   const dataModel: Object = {
     pVersion: __VERSION__,
     pName: __NAME__
@@ -79,10 +79,10 @@ const getModel = (options: KalturaPlayerOptionsObject): Object => {
 };
 
 /**
- * @param {KalturaPlayerOptionsObject} options - player options
+ * @param {KPOptionsObject} options - player options
  * @return {void}
  */
-function evaluatePluginsConfig(options: KalturaPlayerOptionsObject): void {
+function evaluatePluginsConfig(options: KPOptionsObject): void {
   if (options.plugins) {
     pluginConfig.set(options.plugins);
     const dataModel = getModel(options);

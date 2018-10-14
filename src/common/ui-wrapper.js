@@ -2,12 +2,13 @@
 import {UIManager} from '@playkit-js/playkit-js-ui';
 import {Env, Utils} from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
+import {KalturaPlayer} from '../kaltura-player';
 
 class UIWrapper {
   _uiManager: UIManager;
   _disabled: boolean = false;
 
-  constructor(player: Player, options: KalturaPlayerOptionsObject) {
+  constructor(player: KalturaPlayer, options: KPOptionsObject) {
     const config: UIOptionsObject = options.ui;
     if (config.disable) {
       this._disabled = true;
@@ -21,26 +22,25 @@ class UIWrapper {
       }
       this._handleVr(options.plugins);
     }
+    return new Proxy(this, {
+      get: (uiw: UIWrapper, prop: string) => {
+        if (this._disabled) return () => undefined;
+        // $FlowFixMe
+        return uiw[prop];
+      }
+    });
   }
 
   destroy(): void {
-    if (this._disabled) return;
     this._uiManager.destroy();
   }
 
-  setConfig(config: Object, componentAlias?: string): void {
-    if (this._disabled) return;
-    this._uiManager.setConfig(config, componentAlias);
-  }
-
-  resetErrorConfig(mediaInfo: ProviderMediaInfoObject): void {
-    if (this._disabled) return;
-    this._setErrorPresetConfig(mediaInfo);
+  reset(): void {
     this._resetErrorState();
   }
 
-  _setErrorPresetConfig(mediaInfo: ProviderMediaInfoObject): void {
-    this.setConfig({mediaInfo: mediaInfo}, 'error');
+  setConfig(config: Object, componentAlias?: string): void {
+    this._uiManager.setConfig(config, componentAlias);
   }
 
   _resetErrorState(): void {
@@ -48,10 +48,13 @@ class UIWrapper {
   }
 
   setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: UIOptionsObject): void {
-    if (this._disabled) return;
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
+  }
+
+  setLoadingSpinnerState(show: boolean): void {
+    this.setConfig({show: show}, 'loading');
   }
 
   _handleVr(config: PKPluginsConfigObject = {}): void {
@@ -72,20 +75,15 @@ class UIWrapper {
       this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
   }
-
-  setLoadingSpinnerState(show: boolean): void {
-    if (this._disabled) return;
-    this.setConfig({show: show}, 'loading');
-  }
 }
 
 /**
  * Appends the player view to the target element in the dom.
  * @param {string} targetId - The target id.
- * @param {HTMLDivElement} view - The player div element.
+ * @param {HTMLElement} view - The player div element.
  * @returns {void}
  */
-function appendPlayerViewToTargetContainer(targetId: string, view: HTMLDivElement): void {
+function appendPlayerViewToTargetContainer(targetId: string, view: HTMLElement): void {
   const targetContainer = document.getElementById(targetId);
   if (targetContainer) {
     targetContainer.appendChild(view);

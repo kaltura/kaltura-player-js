@@ -1,24 +1,26 @@
 // @flow
-import KalturaPlayer from './kaltura-player';
+import {KalturaPlayer} from './kaltura-player';
+import {getPlayerProxy} from './proxy';
 import {evaluatePluginsConfig} from './common/plugins/plugins-config';
 import {
+  applyCastSupport,
   applyStorageSupport,
+  attachToFirstClick,
   getDefaultOptions,
   printSetupMessages,
   setLogLevel,
   setStorageConfig,
   setStorageTextStyle,
   supportLegacyOptions,
-  validateConfig,
-  attachToFirstClick
+  validateConfig
 } from './common/utils/setup-helpers';
 
 /**
  * Setup the Kaltura Player.
- * @param {PartialKalturaPlayerOptionsObject|LegacyPartialKalturaPlayerOptionsObject} options - partial kaltura player options
+ * @param {PartialKPOptionsObject|LegacyPartialKPOptionsObject} options - partial kaltura player options
  * @returns {KalturaPlayer} - The Kaltura Player.
  */
-function setup(options: PartialKalturaPlayerOptionsObject | LegacyPartialKalturaPlayerOptionsObject): KalturaPlayer {
+function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): KalturaPlayer {
   options = supportLegacyOptions(options);
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
@@ -26,11 +28,12 @@ function setup(options: PartialKalturaPlayerOptionsObject | LegacyPartialKaltura
   printSetupMessages();
   evaluatePluginsConfig(defaultOptions);
   setStorageConfig(defaultOptions);
-  const kalturaPlayer = new KalturaPlayer(defaultOptions);
-  setStorageTextStyle(kalturaPlayer);
-  applyStorageSupport(kalturaPlayer);
-  attachToFirstClick(kalturaPlayer);
-  return kalturaPlayer;
+  const player = getPlayerProxy(defaultOptions);
+  setStorageTextStyle(player);
+  applyStorageSupport(player);
+  applyCastSupport(defaultOptions, player);
+  attachToFirstClick(player);
+  return player;
 }
 
 export {setup};

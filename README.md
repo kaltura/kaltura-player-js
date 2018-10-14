@@ -19,11 +19,11 @@ The Kaltura Player integrates:
 The Kaltura Player exposes two different players: the _Kaltura OVP Player_ and _Kaltura Cloud TV Player_. Each player integrates its related packages, as you can see in the following table:
 
 |                 | PlayKit JS | PlayKit JS Providers | PlayKit JS UI | PlayKit JS DASH | PlayKit JS HLS | PlayKit JS Youbora | PlayKit JS KAnalytics | PlayKit JS OTT Analytics | PlayKit JS KAVA |
-| --------------- | ---------- | -------------------- | ------------- | --------------- | -------------- | ------------------ | --------------------- | ------------------------ | ------------------------ |
-| OVP Player      | V          | OVP                  | V             | V               | V              | V                  | V | | V                    |                          |
-| Cloud TV Player | V          | OTT                  | V             | V               | V              | V                  |                       | V | V (*)                     |
+| --------------- | ---------- | -------------------- | ------------- | --------------- | -------------- | ------------------ | --------------------- | ------------------------ | --------------- |
+| OVP Player      | V          | OVP                  | V             | V               | V              | V                  | V                     |                          | V               |  |
+| Cloud TV Player | V          | OTT                  | V             | V               | V              | V                  |                       | V                        | V (\*)          |
 
->\* Needs to be configured.
+> \* Needs to be configured.
 
 The Kaltura Player is written in [ECMAScript6], statically analysed using [Flow] and transpiled in ECMAScript5 using [Babel].
 
