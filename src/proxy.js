@@ -28,7 +28,7 @@ const proxyHandler: Object = {
   }
 };
 
-const getPlayerProxy: KalturaPlayer = (options: KPOptionsObject) => {
+const getPlayerProxy = (options: KPOptionsObject) => {
   const player = new KalturaPlayer(options);
   return new Proxy(player, proxyHandler);
 };

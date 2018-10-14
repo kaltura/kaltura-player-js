@@ -25,6 +25,7 @@ class UIWrapper {
     return new Proxy(this, {
       get: (uiw: UIWrapper, prop: string) => {
         if (this._disabled) return () => undefined;
+        // $FlowFixMe
         return uiw[prop];
       }
     });

@@ -100,7 +100,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   }
 
   getCastSession(): RemoteSession {
-    return new RemoteSession();
+    return new RemoteSession('', '');
   }
 
   isVr(): boolean {

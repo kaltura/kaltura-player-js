@@ -2,7 +2,7 @@
 import {TextStyle} from 'playkit-js';
 
 class TextStyleConverter {
-  static toCastTextStyle(playerTextStyle: TextStyle): void {
+  static toCastTextStyle(playerTextStyle: TextStyle): Object {
     if (window.chrome && window.chrome.cast) {
       const textTrackStyle = new window.chrome.cast.media.TextTrackStyle();
       textTrackStyle.fontFamily = playerTextStyle.fontFamily;
@@ -14,7 +14,7 @@ class TextStyleConverter {
     return {};
   }
 
-  static toPlayerTextStyle(castTextStyle: Object): void {
+  static toPlayerTextStyle(castTextStyle: Object): TextStyle {
     const textStyle = new TextStyle();
     textStyle.fontFamily = castTextStyle.fontFamily;
     textStyle.fontSize = castTextStyle.fontScale * 100 + '%';
@@ -48,7 +48,10 @@ class TextStyleConverter {
     hex = hex.slice(1);
     const channels = hex.match(/.{1,2}/g);
     for (let i = 0; i < 3; i++) {
-      rgb.push(parseInt(channels[i], 16));
+      const channel = channels && channels[i];
+      if (channel) {
+        rgb.push(parseInt(channel, 16));
+      }
     }
     return rgb;
   }

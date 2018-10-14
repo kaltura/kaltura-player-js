@@ -1,7 +1,8 @@
 import {UIWrapper} from '../../../../src/common/ui-wrapper';
-import loadPlayer from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../../../../src/common/utils/thumbs';
 import * as TestUtils from '../../utils/test-utils';
+import {getPlayerProxy} from '../../../../src/proxy';
+import {getDefaultOptions} from '../../../../src/common/utils/setup-helpers';
 
 const targetId = 'player-placeholder_ui-wrapper.spec';
 
@@ -24,7 +25,7 @@ describe('UIWrapper', function() {
   describe('setSeekbarConfig', function() {
     beforeEach(function() {
       sandbox = sinon.sandbox.create();
-      player = loadPlayer();
+      player = getPlayerProxy(getDefaultOptions({targetId: 'player', provider: {partnerId: 123}}));
       mediaConfig = {
         session: {
           ks: 'ks'
