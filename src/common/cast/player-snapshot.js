@@ -30,14 +30,17 @@ class PlayerSnapshot {
  */
 function getStartTime(player: KalturaPlayer): number {
   if (player.isLive()) {
-    if (!player.isDvr()) {
-      return 0;
+    if (player.isDvr()) {
+      const isOnLiveEdge = player.duration - player.currentTime < player.config.cast.dvrThreshold;
+      if (isOnLiveEdge || !player.currentTime) {
+        return -1;
+      }
+      return player.currentTime;
     } else {
-      return player.duration - player.currentTime < player.config.cast.dvrThreshold ? 0 : player.currentTime;
+      return -1;
     }
-  } else {
-    return player.currentTime;
   }
+  return player.currentTime;
 }
 
 export {PlayerSnapshot};
