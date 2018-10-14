@@ -91,18 +91,20 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     // After remote player is disconnected, clean all listeners and bounce the remote player events forward
     this._eventManager.removeAll();
     reconstructPlayerComponents.call(this, snapshot);
-    if (snapshot && snapshot.mediaInfo) {
+    if (snapshot) {
       this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
-      const mediaInfo = snapshot.mediaInfo;
       const originPlaybackConfig = this.config.playback;
       configurePlayback.call(this, snapshot);
-      this.loadMedia(mediaInfo).then(() => {
-        this._eventManager.listenOnce(this, this.Event.Core.PLAYBACK_STARTED, () => {
-          setInitialAttributes.call(this, snapshot);
-          setInitialTracks.call(this, snapshot);
-          configurePlayback.call(this, originPlaybackConfig);
+      const mediaInfo = snapshot.mediaInfo;
+      if (mediaInfo) {
+        this.loadMedia(mediaInfo).then(() => {
+          this._eventManager.listenOnce(this, this.Event.Core.PLAYBACK_STARTED, () => {
+            setInitialAttributes.call(this, snapshot);
+            setInitialTracks.call(this, snapshot);
+            configurePlayback.call(this, originPlaybackConfig);
+          });
         });
-      });
+      }
     }
   }
 }
@@ -184,8 +186,8 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   this._uiWrapper.setConfig({isCastAvailable: this.isCastAvailable()}, 'engine');
 }
 
-function configurePlayback(config: PKPlaybackConfigObject): void {
-  const {autoplay, startTime} = config;
+function configurePlayback(snapshot: PlayerSnapshot): void {
+  const {autoplay, startTime} = snapshot;
   this.configure({
     playback: {
       startTime,
@@ -195,8 +197,6 @@ function configurePlayback(config: PKPlaybackConfigObject): void {
 }
 
 function setInitialAttributes(snapshot: PlayerSnapshot): void {
-  this.volume = snapshot.volume;
-  this.muted = snapshot.muted;
   this.textStyle = snapshot.textStyle;
 }
 

@@ -1,5 +1,4 @@
 // @flow
-import {Error, EventManager, EventType as CoreEventType, FakeEvent, FakeEventTarget, loadPlayer, Utils} from '@playkit-js/playkit-js';
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions} from './common/utils/setup-helpers';
@@ -13,6 +12,18 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
+import {
+  Error,
+  EventManager,
+  EventType as CoreEventType,
+  FakeEvent,
+  FakeEventTarget,
+  loadPlayer,
+  TextStyle,
+  Track,
+  Utils,
+  AdsController
+} from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
@@ -46,7 +57,7 @@ class KalturaPlayer extends FakeEventTarget {
       })
       .catch(e =>
         this._localPlayer.dispatchEvent(
-          new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
         )
       );
   }
