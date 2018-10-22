@@ -12,13 +12,12 @@ class PlayerSnapshot {
   advertising: ?Object;
 
   constructor(player: KalturaPlayer) {
-    const activeTracks = player.getActiveTracks();
     this.startTime = getStartTime(player);
     this.autoplay = player.currentTime === 0 ? true : !player.paused;
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
-    this.audioLanguage = activeTracks.audio && activeTracks.audio.language;
-    this.textLanguage = activeTracks.text && activeTracks.text.language;
+    this.audioLanguage = getAudioLanguage(player);
+    this.textLanguage = getTextLanguage(player);
     this.advertising = player.config.plugins && player.config.plugins.ima;
   }
 }
@@ -41,6 +40,36 @@ function getStartTime(player: KalturaPlayer): number {
     }
   }
   return player.currentTime;
+}
+
+/**
+ * Gets the audio language.
+ * If the player has started to play it will return the current played audio.
+ * Otherwise, it will return the configured audio.
+ * @param {KalturaPlayer} player - The player.
+ * @returns {?string} - The audio language or undefined.
+ */
+function getAudioLanguage(player: KalturaPlayer): ?string {
+  if (player.currentTime > 0) {
+    const activeTracks = player.getActiveTracks();
+    return activeTracks.audio && activeTracks.audio.language;
+  }
+  return player.config.playback.audioLanguage;
+}
+
+/**
+ * Gets the text language.
+ * If the player has started to play it will return the current played text.
+ * Otherwise, it will return the configured text.
+ * @param {KalturaPlayer} player - The player.
+ * @returns {?string} - The text language or undefined.
+ */
+function getTextLanguage(player: KalturaPlayer): ?string {
+  if (player.currentTime > 0) {
+    const activeTracks = player.getActiveTracks();
+    return activeTracks.text && activeTracks.text.language;
+  }
+  return player.config.playback.textLanguage;
 }
 
 export {PlayerSnapshot};
