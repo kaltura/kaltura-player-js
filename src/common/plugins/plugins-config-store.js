@@ -14,6 +14,7 @@ const defaultConfig: dataStoreType = {
   },
   kanalytics: {
     playerVersion: '{{pVersion}}',
+    playlistId: '{{playlistId}}',
     entryId: '{{entryId}}',
     entryType: '{{entryType}}',
     sessionId: '{{sessionId}}',
@@ -43,6 +44,7 @@ const defaultConfig: dataStoreType = {
     playerVersion: '{{pVersion}}',
     playerName: '{{pName}}',
     partnerId: '{{partnerId}}',
+    playlistId: '{{playlistId}}',
     entryId: '{{entryId}}',
     entryType: '{{entryType}}',
     sessionId: '{{sessionId}}',

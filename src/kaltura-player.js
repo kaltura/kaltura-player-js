@@ -8,6 +8,8 @@ import {evaluatePluginsConfig} from './common/plugins/plugins-config';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
+import {PlaylistManager} from './common/playlist/playlist-manager';
+import {PlaylistEventType} from './common/playlist/playlist-event-type';
 import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
@@ -38,9 +40,10 @@ class KalturaPlayer extends FakeEventTarget {
     super();
     this._eventManager = new EventManager();
     this._localPlayer = loadPlayer(options);
+    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
-    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
   }
 
@@ -54,6 +57,7 @@ class KalturaPlayer extends FakeEventTarget {
       .getMediaConfig(mediaInfo)
       .then(mediaConfig => {
         this.setMedia(mediaConfig);
+        return Promise.resolve(mediaConfig);
       })
       .catch(e =>
         this._localPlayer.dispatchEvent(
@@ -74,6 +78,56 @@ class KalturaPlayer extends FakeEventTarget {
     addKalturaParams(this, playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
     this.configure(playerConfig);
+  }
+
+  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistConfigObject): Promise<*> {
+    this._logger.debug('loadPlaylist', playlistInfo);
+    this._uiWrapper.setLoadingSpinnerState(true);
+    this._playlistManager.reset();
+    return this._provider
+      .getPlaylistConfig(playlistInfo)
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
+      .catch(e =>
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
+      );
+  }
+
+  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistOptions: KPPlaylistConfigObject): Promise<*> {
+    this._logger.debug('loadPlaylistByEntryList', entryList);
+    this._uiWrapper.setLoadingSpinnerState(true);
+    this._playlistManager.reset();
+    return this._provider
+      .getEntryListConfig(entryList)
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
+      .catch(e =>
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
+      );
+  }
+
+  // $FlowFixMe
+  _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
+    playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
+      return {sources: item.sources, config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config};
+    });
+    Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
+    this.setPlaylist(playlistConfigFromAPI);
+  }
+
+  setPlaylist(playlistConfig: KPPlaylistConfigObject): void {
+    this._logger.debug('setPlaylist', playlistConfig);
+    const config = {playlist: playlistConfig, plugins: this._localPlayer.config.plugins};
+    // $FlowFixMe
+    evaluatePluginsConfig(config);
+    this._localPlayer.configure({plugins: config.plugins});
+    this._playlistManager.configure(config.playlist);
+  }
+
+  get playlist(): PlaylistManager {
+    return this._playlistManager;
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
@@ -350,6 +404,7 @@ class KalturaPlayer extends FakeEventTarget {
     return {
       Cast: CastEventType,
       Core: CoreEventType,
+      Playlist: PlaylistEventType,
       UI: UIEventType,
       // For backward compatibility
       ...CoreEventType

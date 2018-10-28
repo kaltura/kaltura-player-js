@@ -77,16 +77,16 @@ var mediaInfo = {
 
 **Parameters**
 
-| Name          | Type            | Required | Description                            | Possible Values                                        | Default Value |
-| ------------- | --------------- | -------- | -------------------------------------- | ------------------------------------------------------ | ------------- |
-| `entryId`     | `string`        | V        | The entry ID of the media              |
-| `mediaType`   | `string`        |          | The type of the specific media         | `"media"`, `"epg"`, `"recording"`                      | `"media"`     |
-| `assetReferenceType`   | `string`        |          | The asset type of the specific media         | `"media"`, `"epg_internal"`, `"epg_external"`                      | `"media"`     |
-| `contextType` | `string`        |          | The playback context type              | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"` | `"PLAYBACK"`  |
-| `ks`          | `string`        |          | The KS (Kaltura Session) secret        |
-| `protocol`    | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                    |
-| `fileIds`     | `string`        |          | List of comma-separated media file IDs |
-| `formats`     | `Array<string>` |          | Device types as defined in the system. |
+| Name                 | Type            | Required | Description                            | Possible Values                                        | Default Value |
+| -------------------- | --------------- | -------- | -------------------------------------- | ------------------------------------------------------ | ------------- |
+| `entryId`            | `string`        | V        | The entry ID of the media              |
+| `mediaType`          | `string`        |          | The type of the specific media         | `"media"`, `"epg"`, `"recording"`                      | `"media"`     |
+| `assetReferenceType` | `string`        |          | The asset type of the specific media   | `"media"`, `"epg_internal"`, `"epg_external"`          | `"media"`     |
+| `contextType`        | `string`        |          | The playback context type              | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"` | `"PLAYBACK"`  |
+| `ks`                 | `string`        |          | The KS (Kaltura Session) secret        |
+| `protocol`           | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                    |
+| `fileIds`            | `string`        |          | List of comma-separated media file IDs |
+| `formats`            | `Array<string>` |          | Device types as defined in the system. |
 
 ## Examples
 
