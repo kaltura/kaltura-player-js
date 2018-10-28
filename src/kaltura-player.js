@@ -88,7 +88,9 @@ class KalturaPlayer extends FakeEventTarget {
       .getPlaylistConfig(playlistInfo)
       .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
       .catch(e =>
-        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
       );
   }
 
@@ -100,7 +102,9 @@ class KalturaPlayer extends FakeEventTarget {
       .getEntryListConfig(entryList)
       .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
       .catch(e =>
-        this.dispatchEvent(new FakeEvent(this.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e)))
+        this._localPlayer.dispatchEvent(
+          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+        )
       );
   }
 
