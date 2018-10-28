@@ -1,14 +1,14 @@
 // @flow
 class PlaylistItem {
-  _sources: ?PKSourcesConfigObject;
+  _sources: ?ProviderMediaConfigSourcesObject;
   _config: ?KPPlaylistItemConfigObject;
 
-  constructor(sources: ?PKSourcesConfigObject, config: ?KPPlaylistItemConfigObject) {
+  constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
     this._config = config;
   }
 
-  get sources(): ?PKSourcesConfigObject {
+  get sources(): ?ProviderMediaConfigSourcesObject {
     return this._sources;
   }
 

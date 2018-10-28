@@ -80,7 +80,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
-  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistConfigObject) {
+  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistConfigObject): Promise<*> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     this._playlistManager.reset();
@@ -94,7 +94,7 @@ class KalturaPlayer extends FakeEventTarget {
       );
   }
 
-  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistOptions: KPPlaylistConfigObject) {
+  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistOptions: KPPlaylistConfigObject): Promise<*> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     this._playlistManager.reset();
