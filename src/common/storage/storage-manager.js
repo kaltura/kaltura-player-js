@@ -14,15 +14,20 @@ export default class StorageManager {
 
   static _logger: any = getLogger('StorageManager');
 
+  /**
+   * @static
+   * @private
+   * @returns {boolean} - Whether local storage is implemented in the current browser.
+   */
   static isLocalStorageAvailable(): boolean {
     return StorageWrapper.isLocalStorageAvailable();
   }
 
   /**
    * Attaches the player listeners to the local storage wrapper.
+   * @private
    * @param {Player} player - The player reference.
    * @static
-   * @public
    * @returns {void}
    */
   static attach(player: Player): void {
@@ -56,8 +61,8 @@ export default class StorageManager {
 
   /**
    * Gets the player text style from storage.
+   * @private
    * @static
-   * @public
    * @returns {?Object} - The stored text style object
    */
   static getPlayerTextStyle(): ?Object {
@@ -66,7 +71,7 @@ export default class StorageManager {
 
   /**
    * Checks if we have previous storage.
-   * @public
+   * @private
    * @static
    * @return {boolean} - Whether we have previous storage.
    */
@@ -83,7 +88,7 @@ export default class StorageManager {
 
   /**
    * Gets the storage in the structure of the player configuration.
-   * @public
+   * @private
    * @static
    * @return {Object} - Partial storageable player configuration.
    */
