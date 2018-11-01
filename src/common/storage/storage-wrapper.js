@@ -8,7 +8,7 @@ export default class StorageWrapper {
 
   /**
    * @static
-   * @public
+   * @private
    * @returns {boolean} - Whether a local storage object is available on the current environment.
    */
   static isLocalStorageAvailable(): boolean {
@@ -27,7 +27,7 @@ export default class StorageWrapper {
 
   /**
    * @static
-   * @public
+   * @private
    * @return {number} - The number of keys in the local storage started with wanted prefix.
    */
   static get size(): number {
@@ -39,7 +39,7 @@ export default class StorageWrapper {
    * @param {string} key - The key of the item.
    * @param {any} item - The value of the item.
    * @static
-   * @public
+   * @private
    * @returns {void}
    */
   static setItem(key: string, item: any): void {
@@ -60,7 +60,7 @@ export default class StorageWrapper {
    * Gets an item from the local storage.
    * @param {string} key - The item key.
    * @static
-   * @public
+   * @private
    * @returns {any} - The item value.
    */
   static getItem(key: string): any {

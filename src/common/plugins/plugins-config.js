@@ -5,7 +5,8 @@ import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from 'playkit-js';
 
 /**
- * returns weather value is evaluated
+ * returns whether value is evaluated
+ * @private
  * @param {*} value - the value to be checked
  * @returns {boolean} - value is evaluated
  */
@@ -14,6 +15,7 @@ const isValueEvaluated = (value: any): boolean =>
 
 /**
  * remove unevaluated expressions form object
+ * @private
  * @param {Object} obj - the object examine
  * @returns {Object} - the object without unevaluated strings
  */
@@ -29,6 +31,7 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
 
 /**
  * returns the data model for evaluating evaluation tokens
+ * @private
  * @param {KPOptionsObject} options - the kaltura player options object
  * @returns {Object} - data model
  */
@@ -85,6 +88,7 @@ const getModel = (options: KPOptionsObject): Object => {
 
 /**
  * @param {KPOptionsObject} options - player options
+ * @private
  * @return {void}
  */
 function evaluatePluginsConfig(options: KPOptionsObject): void {

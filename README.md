@@ -63,7 +63,7 @@ Next, let's look at how to [get started](./docs/player-setup.md) by creating a p
 ## Documentation
 
 - [**Configuration**](./docs/configuration.md)
-- **API**
+- [**API**](./docs/api.md)
 - [**Guides**](./docs/guides.md)
 
 ## Running the tests
