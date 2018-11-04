@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.34.0"></a>
+# [0.34.0](https://github.com/kaltura/kaltura-player-js/compare/v0.33.1...v0.34.0) (2018-10-28)
+
+
+### Features
+
+* **FEC-8452:** playlist ([#155](https://github.com/kaltura/kaltura-player-js/issues/155)) ([95cfbba](https://github.com/kaltura/kaltura-player-js/commit/95cfbba))
+
+
+
 <a name="0.33.1"></a>
 ## [0.33.1](https://github.com/kaltura/kaltura-player-js/compare/v0.33.0...v0.33.1) (2018-10-18)
 

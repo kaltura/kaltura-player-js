@@ -18,6 +18,7 @@ declare var __CONFIG_DOCS_URL__: string;
 
 /**
  * Validate the initial user config.
+ * @private
  * @param {PartialKPOptionsObject} options - partial kaltura player options.
  * @returns {void}
  */
@@ -31,6 +32,7 @@ function validateConfig(options: PartialKPOptionsObject): void {
 
 /**
  * Validate the user input for target id.
+ * @private
  * @param {string} targetId - The DOM element id which the player will be append to.
  * @returns {void}
  */
@@ -45,6 +47,7 @@ function validateTargetId(targetId: string): void {
 
 /**
  * Validate the initial user input for the provider options.
+ * @private
  * @param {ProviderOptionsObject} providerOptions - provider options.
  * @returns {void}
  */
@@ -56,6 +59,7 @@ function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
 
 /**
  * Creates the player container dom element.
+ * @private
  * @param {string} targetId - The div id which the player will append to.
  * @returns {string} - The player container id.
  */
@@ -73,6 +77,7 @@ function createKalturaPlayerContainer(targetId: string): string {
 
 /**
  * Sets the storage config on the player config if certain conditions are met.
+ * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
@@ -84,6 +89,7 @@ function setStorageConfig(options: KPOptionsObject): void {
 
 /**
  * Applies cache support if it's supported by the environment.
+ * @private
  * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
@@ -95,6 +101,7 @@ function applyStorageSupport(player: KalturaPlayer): void {
 
 /**
  * Loads the registered remote players.
+ * @private
  * @param {KPOptionsObject} defaultOptions - The kaltura player options.
  * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
@@ -107,6 +114,7 @@ function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer
 
 /**
  * Sets the player text style from storage.
+ * @private
  * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
@@ -121,6 +129,7 @@ function setStorageTextStyle(player: KalturaPlayer): void {
 
 /**
  * Call to setCapabilities on the first UI_CLICKED event
+ * @private
  * @param {Player} player - The Kaltura player.
  * @returns {void}
  */
@@ -140,6 +149,7 @@ function attachToFirstClick(player: Player): void {
 
 /**
  * check the player debug mode according to config or URL query string params
+ * @private
  * @returns {boolean} - if to set debug mode or not
  */
 function isDebugMode(): boolean {
@@ -157,6 +167,7 @@ function isDebugMode(): boolean {
 
 /**
  * set the logger
+ * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
@@ -174,6 +185,7 @@ function setLogLevel(options: KPOptionsObject): void {
 
 /**
  * gets the url query string parameter
+ * @private
  * @param {string} name - name of query string param
  * @returns {string} - value of the query string param
  */
@@ -186,6 +198,7 @@ function getUrlParameter(name: string) {
 
 /**
  * Checks if the server UIConf exist
+ * @private
  * @param {number} uiConfId - The server UIConf
  * @returns {boolean} - server UIConf exist
  */
@@ -197,6 +210,7 @@ function serverUIConfExist(uiConfId: ?number): boolean {
 
 /**
  * Extracts the server UIConf
+ * @private
  * @param {number} uiConfId - The server UIConf
  * @returns {Object} - The server UIConf
  */
@@ -210,6 +224,7 @@ function extractServerUIConf(uiConfId: number): Object {
 
 /**
  * Gets the default options after merging the user options with the uiConf options and the default internal options.
+ * @private
  * @param {PartialKPOptionsObject} options - partial user kaltura player options.
  * @returns {KPOptionsObject} - default kaltura player options.
  */
@@ -239,6 +254,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
 
 /**
  * Sets config option for native HLS playback
+ * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
@@ -259,6 +275,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
 
 /**
  * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
+ * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
@@ -280,6 +297,7 @@ function configureDelayAdsInitialization(options: KPOptionsObject): void {
 
 /**
  * Sets config option for native text track support
+ * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
@@ -298,6 +316,7 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
 
 /**
  * Transform options structure from legacy structure to new structure.
+ * @private
  * @param {Object} options - The options with the legacy structure.
  * @return {PartialKPOptionsObject} - Partial options with the expected structure.
  */
@@ -341,6 +360,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
 
 /**
  * Prints early setup messages.
+ * @private
  * @returns {void}
  */
 function printSetupMessages(): void {
@@ -349,6 +369,7 @@ function printSetupMessages(): void {
 
 /**
  * Returns true if user agent indicate that browser is Safari
+ * @private
  * @returns {boolean} - if browser is Safari
  */
 function isSafari(): boolean {
@@ -357,6 +378,7 @@ function isSafari(): boolean {
 
 /**
  * Returns true if user agent indicate that browser is Chrome on iOS
+ * @private
  * @returns {boolean} - if browser is Chrome on iOS
  */
 function isIos(): boolean {

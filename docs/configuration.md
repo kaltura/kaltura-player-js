@@ -23,7 +23,8 @@ The configuration uses the following structure:
   plugins: PKPluginsConfigObject,
   session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
-  ui: UIOptionsObject
+  ui: UIOptionsObject,
+  cast: CastConfigObject
 }
 ```
 
@@ -102,6 +103,14 @@ The configuration uses the following structure:
 > ##### Type: [UIOptionsObject](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md)
 >
 > ##### Description: Defines the user interface (UI) configuration.
+
+##
+
+> ### config.cast
+>
+> ##### Type: [CastConfigObject](https://github.com/kaltura/playkit-js-cast-sender/blob/master/docs/configuration-api.md#castconfigobject)
+>
+> ##### Description: Defines the cast configuration.
 
 ## Configuration Priority
 

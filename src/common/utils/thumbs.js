@@ -7,6 +7,7 @@ const TEMPLATE: string = '{{thumbnailUrl}}/width/{{width}}/vid_slices/{{slices}}
 
 /**
  * Builds thumbnail slices url for the ui.
+ * @private
  * @param {ProviderMediaConfigObject} mediaConfig - The prover media config.
  * @param {SeekbarConfig?} seekbarConfig - The seek bar config.
  * @returns {string} - The thumbnail slices url.
