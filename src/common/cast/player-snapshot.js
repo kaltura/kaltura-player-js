@@ -1,6 +1,6 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {TextStyle} from 'playkit-js';
+import {TextStyle, TrackType} from 'playkit-js';
 
 /**
  * @class PlayerSnapshot
@@ -56,8 +56,8 @@ class PlayerSnapshot {
     this.autoplay = player.currentTime === 0 ? true : !player.paused;
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
-    this.audioLanguage = getAudioLanguage(player);
-    this.textLanguage = getTextLanguage(player);
+    this.audioLanguage = getLanguage(TrackType.AUDIO, player);
+    this.textLanguage = getLanguage(TrackType.TEXT, player);
     this.advertising = player.config.plugins && player.config.plugins.ima;
   }
 }
@@ -84,38 +84,21 @@ function getStartTime(player: KalturaPlayer): number {
 }
 
 /**
- * Gets the audio language.
- * If the player has started to play it will return the current played audio.
- * Otherwise, it will return the configured audio.
+ * Gets the audio/text language.
+ * If the player has started to play it will return the current played audio/text.
+ * Otherwise, it will return the configured audio/text.
+ * @private
+ * @param {string} type - The language type.
  * @param {KalturaPlayer} player - The player.
  * @returns {?string} - The audio language or undefined.
  */
-function getAudioLanguage(player: KalturaPlayer): ?string {
+function getLanguage(type: string, player: KalturaPlayer): ?string {
   const activeTracks = player.getActiveTracks();
-  if (activeTracks.audio) {
-    return activeTracks.audio.language;
+  if (activeTracks[type]) {
+    return activeTracks[type].language;
   }
   try {
-    return player.config.playback.audioLanguage;
-  } catch (e) {
-    return null;
-  }
-}
-
-/**
- * Gets the text language.
- * If the player has started to play it will return the current played text.
- * Otherwise, it will return the configured text.
- * @param {KalturaPlayer} player - The player.
- * @returns {?string} - The text language or undefined.
- */
-function getTextLanguage(player: KalturaPlayer): ?string {
-  const activeTracks = player.getActiveTracks();
-  if (activeTracks.text) {
-    return activeTracks.text.language;
-  }
-  try {
-    return player.config.playback.textLanguage;
+    return player.config.playback[`${type}Language`];
   } catch (e) {
     return null;
   }
