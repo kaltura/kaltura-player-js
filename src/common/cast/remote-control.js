@@ -10,14 +10,70 @@ import getLogger from '../utils/logger';
 
 const logger: any = getLogger('RemoteControl');
 
+/**
+ * @class RemoteControl
+ * @param {KalturaPlayer} player - The Kaltura player.
+ */
 class RemoteControl {
+  /**
+   * Gets the player snapshot.
+   * @returns {PlayerSnapshot} - player snapshot.
+   * @memberof RemoteControl
+   * @instance
+   */
   getPlayerSnapshot: Function;
+  /**
+   * Gets the UI wrapper.
+   * @returns {UIWrapper} - The UI wrapper.
+   * @memberof RemoteControl
+   * @instance
+   */
   getUIWrapper: Function;
+  /**
+   * On remote device disconnected handler.
+   * @param {RemoteDisconnectedPayload} payload - disconnected payload.
+   * @returns {void}
+   * @memberof RemoteControl
+   * @instance
+   */
   onRemoteDeviceDisconnected: Function;
+  /**
+   * On remote device connected handler.
+   * @param {RemoteConnectedPayload} payload - connected payload.
+   * @returns {void}
+   * @memberof RemoteControl
+   * @instance
+   */
   onRemoteDeviceConnected: Function;
+  /**
+   * On remote device available handler.
+   * @param {RemoteAvailablePayload} payload - available payload.
+   * @returns {void}
+   * @memberof RemoteControl
+   * @instance
+   */
   onRemoteDeviceAvailable: Function;
+  /**
+   * On remote device connecting handler.
+   * @returns {void}
+   * @memberof RemoteControl
+   * @instance
+   * @fires CastEventType:CAST_SESSION_STARTING
+   */
   onRemoteDeviceConnecting: Function;
+  /**
+   * On remote device disconnecting handler.
+   * @returns {void}
+   * @memberof RemoteControl
+   * @instance
+   */
   onRemoteDeviceDisconnecting: Function;
+  /**
+   * On remote device connect failed handler.
+   * @returns {void}
+   * @memberof RemoteControl
+   * @instance
+   */
   onRemoteDeviceConnectFailed: Function;
 
   constructor(player: KalturaPlayer) {
@@ -32,20 +88,11 @@ class RemoteControl {
   }
 }
 
-/**
- * On remote device connecting handler.
- * @returns {void}
- */
 function onRemoteDeviceConnecting(): void {
   logger.debug('onRemoteDeviceConnecting');
   this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_STARTING));
 }
 
-/**
- * On remote device connected handler.
- * @param {RemoteConnectedPayload} payload - connected payload.
- * @returns {void}
- */
 function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   logger.debug('onRemoteDeviceConnected', payload);
   const {player, ui, session} = payload;
@@ -70,20 +117,11 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   );
 }
 
-/**
- * On remote device disconnecting handler.
- * @returns {void}
- */
 function onRemoteDeviceDisconnecting(): void {
   logger.debug('onRemoteDeviceDisconnecting');
   this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDING));
 }
 
-/**
- * On remote device disconnected handler.
- * @param {RemoteDisconnectedPayload} payload - disconnected payload.
- * @returns {void}
- */
 function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
   logger.debug('onRemoteDeviceDisconnected', payload);
   const {player, snapshot} = payload;
@@ -109,11 +147,6 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
   }
 }
 
-/**
- * On remote device available handler.
- * @param {RemoteAvailablePayload} payload - available payload.
- * @returns {void}
- */
 function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
   logger.debug('onRemoteDeviceAvailable', payload);
   const {player, available} = payload;
@@ -125,29 +158,17 @@ function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
   );
 }
 
-/**
- * On remote device connect failed handler.
- * @returns {void}
- */
 function onRemoteDeviceConnectFailed(): void {
   logger.debug('onRemoteDeviceConnectFailed');
   this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_START_FAILED));
 }
 
-/**
- * Gets the player snapshot.
- * @returns {PlayerSnapshot} - player snapshot.
- */
 function getPlayerSnapshot(): PlayerSnapshot {
   const snapshot = new PlayerSnapshot(this);
   logger.debug('getPlayerSnapshot', snapshot);
   return snapshot;
 }
 
-/**
- * Gets the UI wrapper.
- * @returns {UIWrapper} - The UI wrapper.
- */
 function getUIWrapper(): UIWrapper {
   logger.debug('getUIWrapper');
   return this._uiWrapper;
