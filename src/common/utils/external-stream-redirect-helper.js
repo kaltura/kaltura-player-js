@@ -3,6 +3,7 @@ import {Utils} from '@playkit-js/playkit-js';
 
 /**
  * JSONP handler function, returns the direct manifest uri.
+ * @private
  * @param {Object} data - The json object that returns from the server.
  * @param {string} uri - Original request uri.
  * @returns {string} - The direct uri.
@@ -38,6 +39,7 @@ function getDirectManifestUri(data: Object, uri: string): string {
 
 /**
  * Add external stream redirect configuration to the general config.
+ * @private
  * @param {KPOptionsObject} options - kaltura player options.
  * @returns {void}
  */

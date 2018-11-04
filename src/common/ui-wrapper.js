@@ -79,6 +79,7 @@ class UIWrapper {
 
 /**
  * Appends the player view to the target element in the dom.
+ * @private
  * @param {string} targetId - The target id.
  * @param {HTMLElement} view - The player div element.
  * @returns {void}
@@ -92,6 +93,7 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLElement):
 
 /**
  * Gets the preview thumbnail config for the ui seekbar component.
+ * @private
  * @param {ProviderMediaConfigObject} mediaConfig - The provider media config.
  * @param {SeekbarConfig} seekbarConfig - The seek bar config.
  * @returns {SeekbarConfig} - The seekbar component config.

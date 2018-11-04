@@ -99,6 +99,7 @@
     "@playkit-js/playkit-js-ott-analytics": "^0.2.0",
     "@playkit-js/playkit-js-ui": "0.29.0",
     "babel-polyfill": "^6.23.0",
+    "documentation": "^8.1.2",
     "hls.js": "^0.10.1",
     "js-logger": "^1.3.0",
     "playkit-js-dash": "https://github.com/kaltura/playkit-js-dash.git#v1.6.4",

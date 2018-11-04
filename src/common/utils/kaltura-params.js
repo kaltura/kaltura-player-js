@@ -10,7 +10,7 @@ const CLIENT_TAG = 'clientTag=html5:v';
  * @param {Player} player - player
  * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
- * @public
+ * @private
  */
 function handleSessionId(player: Player, playerConfig: PartialKPOptionsObject): void {
   if (player.config.session && player.config.session.id) {
