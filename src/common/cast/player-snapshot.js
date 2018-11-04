@@ -1,6 +1,6 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {TextStyle} from 'playkit-js';
+import {TextStyle, TrackType} from 'playkit-js';
 
 /**
  * @class PlayerSnapshot
@@ -52,13 +52,12 @@ class PlayerSnapshot {
   advertising: ?Object;
 
   constructor(player: KalturaPlayer) {
-    const activeTracks = player.getActiveTracks();
     this.startTime = getStartTime(player);
     this.autoplay = player.currentTime === 0 ? true : !player.paused;
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
-    this.audioLanguage = activeTracks.audio && activeTracks.audio.language;
-    this.textLanguage = activeTracks.text && activeTracks.text.language;
+    this.audioLanguage = getLanguage(TrackType.AUDIO, player);
+    this.textLanguage = getLanguage(TrackType.TEXT, player);
     this.advertising = player.config.plugins && player.config.plugins.ima;
   }
 }
@@ -82,6 +81,27 @@ function getStartTime(player: KalturaPlayer): number {
     }
   }
   return player.currentTime;
+}
+
+/**
+ * Gets the audio/text language.
+ * If the player has started to play it will return the current played audio/text.
+ * Otherwise, it will return the configured audio/text.
+ * @private
+ * @param {string} type - The language type.
+ * @param {KalturaPlayer} player - The player.
+ * @returns {?string} - The audio language or undefined.
+ */
+function getLanguage(type: string, player: KalturaPlayer): ?string {
+  const activeTracks = player.getActiveTracks();
+  if (activeTracks[type]) {
+    return activeTracks[type].language;
+  }
+  try {
+    return player.config.playback[`${type}Language`];
+  } catch (e) {
+    return null;
+  }
 }
 
 export {PlayerSnapshot};
