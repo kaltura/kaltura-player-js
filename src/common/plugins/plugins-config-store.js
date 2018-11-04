@@ -65,6 +65,7 @@ const templateRegex = new RegExp('{{.*}}');
 
 /**
  * extract the object members which include an evaluation token of type {{.*}}
+ * @private
  * @param {Object} obj - the config object
  * @returns {dataStoreType} - the new object with new tokens
  */
@@ -82,6 +83,7 @@ const resolveNewConfig = (obj = {}): Object =>
 
 /**
  * remove undefined members from the token data store
+ * @private
  * @param {Object} obj - the config object
  * @returns {dataStoreType} - the new object with valid evaluate tokens
  */
@@ -98,6 +100,7 @@ const removeUndefineds = (obj = {}): Object =>
 const pluginConfig = {
   /**
    * return the token store object
+   * @private
    * @returns {*|any} - token store object
    */
   get: (): dataStoreType => {
@@ -106,6 +109,7 @@ const pluginConfig = {
   /**
    * recalculate the token store data, if new config with token is passed then add it to the data store, and if
    * an existing token needs to be removed then remove it
+   * @private
    * @param {?dataStoreType} pluginsConfig - the new config object
    * @returns {void}
    */
@@ -117,6 +121,7 @@ const pluginConfig = {
   },
   /**
    * reset the config store to its initial state
+   * @private
    * @returns {void}
    */
   reset: (): void => {
