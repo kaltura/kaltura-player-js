@@ -92,8 +92,8 @@ function getStartTime(player: KalturaPlayer): number {
  */
 function getAudioLanguage(player: KalturaPlayer): ?string {
   const activeTracks = player.getActiveTracks();
-  if (activeTracks) {
-    return activeTracks.audio && activeTracks.audio.language;
+  if (activeTracks.audio) {
+    return activeTracks.audio.language;
   }
   try {
     return player.config.playback.audioLanguage;
@@ -111,8 +111,8 @@ function getAudioLanguage(player: KalturaPlayer): ?string {
  */
 function getTextLanguage(player: KalturaPlayer): ?string {
   const activeTracks = player.getActiveTracks();
-  if (activeTracks) {
-    return activeTracks.text && activeTracks.text.language;
+  if (activeTracks.text) {
+    return activeTracks.text.language;
   }
   try {
     return player.config.playback.textLanguage;
