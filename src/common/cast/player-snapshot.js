@@ -91,11 +91,15 @@ function getStartTime(player: KalturaPlayer): number {
  * @returns {?string} - The audio language or undefined.
  */
 function getAudioLanguage(player: KalturaPlayer): ?string {
-  if (player.currentTime > 0) {
-    const activeTracks = player.getActiveTracks();
+  const activeTracks = player.getActiveTracks();
+  if (activeTracks) {
     return activeTracks.audio && activeTracks.audio.language;
   }
-  return player.config.playback.audioLanguage;
+  try {
+    return player.config.playback.audioLanguage;
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
@@ -106,11 +110,15 @@ function getAudioLanguage(player: KalturaPlayer): ?string {
  * @returns {?string} - The text language or undefined.
  */
 function getTextLanguage(player: KalturaPlayer): ?string {
-  if (player.currentTime > 0) {
-    const activeTracks = player.getActiveTracks();
+  const activeTracks = player.getActiveTracks();
+  if (activeTracks) {
     return activeTracks.text && activeTracks.text.language;
   }
-  return player.config.playback.textLanguage;
+  try {
+    return player.config.playback.textLanguage;
+  } catch (e) {
+    return null;
+  }
 }
 
 export {PlayerSnapshot};
