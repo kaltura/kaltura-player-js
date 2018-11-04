@@ -15,6 +15,8 @@ import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
 import {
+  AdsController,
+  BasePlugin,
   Error,
   EventManager,
   EventType as CoreEventType,
@@ -23,8 +25,7 @@ import {
   loadPlayer,
   TextStyle,
   Track,
-  Utils,
-  AdsController
+  Utils
 } from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
@@ -111,7 +112,10 @@ class KalturaPlayer extends FakeEventTarget {
   // $FlowFixMe
   _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
     playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
-      return {sources: item.sources, config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config};
+      return {
+        sources: item.sources,
+        config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config
+      };
     });
     Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
     this.setPlaylist(playlistConfigFromAPI);
@@ -398,6 +402,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   get ads(): ?AdsController {
     return this._localPlayer.ads;
+  }
+
+  get plugins(): {[name: string]: BasePlugin} {
+    return this._localPlayer.plugins;
   }
 
   get Event(): KPEventTypes {
