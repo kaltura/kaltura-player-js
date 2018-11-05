@@ -38,6 +38,10 @@ class Playlist {
     return this._metadata;
   }
 
+  get current(): {item: ?PlaylistItem, index: number} {
+    return {item: this.items[this._activeItemIndex] || null, index: this._activeItemIndex};
+  }
+
   get next(): {item: ?PlaylistItem, index: number} {
     return {item: this.items[this._activeItemIndex + 1] || null, index: this._activeItemIndex + 1};
   }

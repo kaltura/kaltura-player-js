@@ -11,6 +11,7 @@ class PlaylistManager {
 
   _player: KalturaPlayer;
   _playlist: Playlist;
+  _playerOptions: KPOptionsObject;
   _options: KPPlaylistOptions;
   _countdown: KPPlaylistCountdownOptions;
 
@@ -19,7 +20,8 @@ class PlaylistManager {
     this._playlist = new Playlist();
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
-    this.configure(options.playlist);
+    this._playerOptions = options;
+    this.configure(this._playerOptions.playlist);
     this.addBindings();
   }
 
@@ -39,13 +41,15 @@ class PlaylistManager {
   }
 
   addBindings() {
-    this._player.addEventListener(
-      this._player.Event.Core.PLAYBACK_ENDED,
-      () =>
-        this._playlist.next
-          ? this._options.autoContinue && this.playNext()
-          : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED))
-    );
+    this._player.addEventListener(this._player.Event.Core.PLAYBACK_ENDED, () => this._onEnded());
+  }
+
+  _onEnded(): void {
+    if (this._playerOptions.ui.disable || !this.countdown.showing) {
+      this._playlist.next
+        ? this._options.autoContinue && this.playNext()
+        : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
+    }
   }
 
   _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
@@ -105,6 +109,27 @@ class PlaylistManager {
 
   get prev(): ?PlaylistItem {
     return this._playlist.prev.item;
+  }
+
+  get id(): string {
+    return this._playlist.id;
+  }
+
+  get metadata(): KPPlaylistMetadata {
+    return this._playlist.metadata;
+  }
+
+  get countdown(): KPPlaylistCountdownOptions {
+    if (this._playlist.current.item && this._playlist.current.item.config) {
+      const mergedConfig = {};
+      Utils.Object.mergeDeep(mergedConfig, this._countdown, this._playlist.current.item.config.countdown);
+      return mergedConfig;
+    }
+    return this._countdown;
+  }
+
+  get options(): KPPlaylistOptions {
+    return this._options;
   }
 
   reset() {
