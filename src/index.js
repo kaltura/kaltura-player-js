@@ -10,7 +10,7 @@ import * as ui from '@playkit-js/playkit-js-ui';
 import * as providers from 'playkit-js-providers';
 // Import media source adapters
 import '@playkit-js/playkit-js-hls';
-import 'playkit-js-dash';
+import '@playkit-js/playkit-js-dash';
 // Import analytics plugin
 import '@playkit-js/playkit-js-kanalytics';
 import '@playkit-js/playkit-js-kava';
