@@ -109,18 +109,6 @@ class KalturaPlayer extends FakeEventTarget {
       );
   }
 
-  // $FlowFixMe
-  _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
-    playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
-      return {
-        sources: item.sources,
-        config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config
-      };
-    });
-    Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
-    this.setPlaylist(playlistConfigFromAPI);
-  }
-
   setPlaylist(playlistConfig: KPPlaylistConfigObject): void {
     this._logger.debug('setPlaylist', playlistConfig);
     const config = {playlist: playlistConfig, plugins: this._localPlayer.config.plugins};
@@ -128,10 +116,6 @@ class KalturaPlayer extends FakeEventTarget {
     evaluatePluginsConfig(config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.configure(config.playlist);
-  }
-
-  get playlist(): PlaylistManager {
-    return this._playlistManager;
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
@@ -408,6 +392,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.plugins;
   }
 
+  get playlist(): PlaylistManager {
+    return this._playlistManager;
+  }
+
   get Event(): KPEventTypes {
     return {
       Cast: CastEventType,
@@ -457,6 +445,15 @@ class KalturaPlayer extends FakeEventTarget {
 
   get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  // $FlowFixMe
+  _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
+    playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
+      return {sources: item.sources, config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config};
+    });
+    Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
+    this.setPlaylist(playlistConfigFromAPI);
   }
 }
 
