@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.0"></a>
+# [0.35.0](https://github.com/kaltura/kaltura-player-js/compare/v0.34.0...v0.35.0) (2018-11-05)
+
+
+### Bug Fixes
+
+* **FEC-8594:** when casting via Play on TV button the Captions/Audio is not displayed  ([#159](https://github.com/kaltura/kaltura-player-js/issues/159)) ([6ae6253](https://github.com/kaltura/kaltura-player-js/commit/6ae6253))
+* **FEC-8637:** not possible to pass a function in a plugin configuration ([#163](https://github.com/kaltura/kaltura-player-js/issues/163)) ([cb2c5af](https://github.com/kaltura/kaltura-player-js/commit/cb2c5af))
+
+
+### Features
+
+* **FEC-8623:** playlist countdown ([#164](https://github.com/kaltura/kaltura-player-js/issues/164)) ([bc7eb33](https://github.com/kaltura/kaltura-player-js/commit/bc7eb33))
+
+
+
 <a name="0.34.0"></a>
 # [0.34.0](https://github.com/kaltura/kaltura-player-js/compare/v0.33.1...v0.34.0) (2018-10-28)
 
