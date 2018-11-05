@@ -121,7 +121,7 @@ class PlaylistManager {
 
   get countdown(): KPPlaylistCountdownOptions {
     if (this._playlist.current.item && this._playlist.current.item.config) {
-      const mergedConfig = {};
+      const mergedConfig: KPPlaylistCountdownOptions = {duration: 10, showing: true};
       Utils.Object.mergeDeep(mergedConfig, this._countdown, this._playlist.current.item.config.countdown);
       return mergedConfig;
     }
