@@ -41,10 +41,10 @@ class PlaylistManager {
   }
 
   addBindings() {
-    this._player.addEventListener(this._player.Event.Core.PLAYBACK_ENDED, () => this._onEnded());
+    this._player.addEventListener(this._player.Event.Core.PLAYBACK_ENDED, () => this._onPlaybackEnded());
   }
 
-  _onEnded(): void {
+  _onPlaybackEnded(): void {
     if (this._playerOptions.ui.disable || !this.countdown.showing) {
       this._playlist.next
         ? this._options.autoContinue && this.playNext()
