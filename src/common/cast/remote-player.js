@@ -1,5 +1,5 @@
 // @flow
-import {FakeEvent, TextStyle, Track} from 'playkit-js';
+import {FakeEvent, TextStyle, Track} from '@playkit-js/playkit-js';
 import {RemoteSession} from './remote-session';
 
 /**

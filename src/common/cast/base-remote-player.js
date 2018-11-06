@@ -1,7 +1,7 @@
 // @flow
 /* eslint no-unused-vars: 0 */
 import {IRemotePlayer} from './remote-player';
-import {EventManager, FakeEventTarget, TextStyle, Track, Utils} from 'playkit-js';
+import {EventManager, FakeEventTarget, TextStyle, Track, Utils} from '@playkit-js/playkit-js';
 import {RemoteControl} from './remote-control';
 import getLogger from '../utils/logger';
 import {RemoteSession} from './remote-session';
