@@ -236,6 +236,22 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.exitFullscreen();
   }
 
+  enterPictureInPicture(): void {
+    this._localPlayer.enterPictureInPicture();
+  }
+
+  exitPictureInPicture(): void {
+    this._localPlayer.exitPictureInPicture();
+  }
+
+  isInPictureInPicture(): boolean {
+    return this._localPlayer.isInPictureInPicture();
+  }
+
+  isPictureInPictureSupported(): boolean {
+    return this._localPlayer.isPictureInPictureSupported();
+  }
+
   getLogLevel(name?: string): Object {
     return this._localPlayer.getLogLevel(name);
   }
