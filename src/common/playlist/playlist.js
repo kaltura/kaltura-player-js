@@ -1,5 +1,5 @@
 // @flow
-import {Utils} from 'playkit-js';
+import {Utils} from '@playkit-js/playkit-js';
 import {PlaylistItem} from './playlist-item';
 
 class Playlist {

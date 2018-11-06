@@ -1,6 +1,6 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {FakeEvent, Utils} from 'playkit-js';
+import {FakeEvent, Utils} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
