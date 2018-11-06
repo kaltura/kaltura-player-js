@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.1"></a>
+## [0.35.1](https://github.com/kaltura/kaltura-player-js/compare/v0.35.0...v0.35.1) (2018-11-06)
+
+
+### Bug Fixes
+
+* expose picture in picture api ([#165](https://github.com/kaltura/kaltura-player-js/issues/165)) ([6df4ac9](https://github.com/kaltura/kaltura-player-js/commit/6df4ac9))
+
+
+
 <a name="0.35.0"></a>
 # [0.35.0](https://github.com/kaltura/kaltura-player-js/compare/v0.34.0...v0.35.0) (2018-11-05)
 
