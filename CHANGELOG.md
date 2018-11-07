@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.4"></a>
+## [0.35.4](https://github.com/kaltura/kaltura-player-js/compare/v0.35.2...v0.35.4) (2018-11-07)
+
+
+### Bug Fixes
+
+* return analytics plugins import ([#167](https://github.com/kaltura/kaltura-player-js/issues/167)) ([55cd12d](https://github.com/kaltura/kaltura-player-js/commit/55cd12d))
+
+
+
 <a name="0.35.3"></a>
 ## [0.35.3](https://github.com/kaltura/kaltura-player-js/compare/v0.35.2...v0.35.3) (2018-11-07)
 
