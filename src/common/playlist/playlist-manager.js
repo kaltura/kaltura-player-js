@@ -10,6 +10,7 @@ class PlaylistManager {
   static _logger: any = getLogger('PlaylistManager');
 
   _player: KalturaPlayer;
+  _eventManager: EventManager;
   _playlist: Playlist;
   _playerOptions: KPOptionsObject;
   _options: KPPlaylistOptions;
