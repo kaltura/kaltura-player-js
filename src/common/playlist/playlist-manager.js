@@ -32,7 +32,7 @@ class PlaylistManager {
       this._playlist.configure(config);
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
-      if (this._playlist.items.find(item => !!item.sources)) {
+      if (config.items && config.items.find(item => !!item.sources)) {
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._playlist}));
         const next = this._playlist.next;
         if (next.item) {
