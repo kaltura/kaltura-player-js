@@ -1,6 +1,6 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {FakeEvent, Utils} from '@playkit-js/playkit-js';
+import {FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
@@ -10,6 +10,7 @@ class PlaylistManager {
   static _logger: any = getLogger('PlaylistManager');
 
   _player: KalturaPlayer;
+  _eventManager: EventManager;
   _playlist: Playlist;
   _playerOptions: KPOptionsObject;
   _options: KPPlaylistOptions;
@@ -17,6 +18,7 @@ class PlaylistManager {
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
+    this._eventManager = new EventManager();
     this._playlist = new Playlist();
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
@@ -30,18 +32,22 @@ class PlaylistManager {
       this._playlist.configure(config);
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
-      if (this._playlist.items.find(item => !!item.sources)) {
+      if (config.items && config.items.find(item => !!item.sources)) {
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this._playlist}));
         const next = this._playlist.next;
         if (next.item) {
-          this._setItem(next.item, next.index);
+          this._setItem(next.item, next.index).then(() => {
+            this._eventManager.listenOnce(this._player, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+              this._player.configure({playback: {autoplay: this._options.autoContinue}});
+            });
+          });
         }
       }
     }
   }
 
   addBindings() {
-    this._player.addEventListener(this._player.Event.Core.PLAYBACK_ENDED, () => this._onPlaybackEnded());
+    this._eventManager.listen(this._player, this._player.Event.Core.PLAYBACK_ENDED, () => this._onPlaybackEnded());
   }
 
   _onPlaybackEnded(): void {
@@ -73,9 +79,7 @@ class PlaylistManager {
     PlaylistManager._logger.debug('playNext');
     const next = this._playlist.next;
     if (next.item) {
-      this._setItem(next.item, next.index).then(() => {
-        this._player.play();
-      });
+      this._setItem(next.item, next.index);
     }
   }
 
@@ -83,9 +87,7 @@ class PlaylistManager {
     PlaylistManager._logger.debug('playPrev');
     const prev = this._playlist.prev;
     if (prev.item) {
-      this._setItem(prev.item, prev.index).then(() => {
-        this._player.play();
-      });
+      this._setItem(prev.item, prev.index);
     }
   }
 
@@ -93,9 +95,7 @@ class PlaylistManager {
     PlaylistManager._logger.debug(`playItem(${index})`);
     const item = this._playlist.items[index];
     if (item) {
-      this._setItem(item, index).then(() => {
-        this._player.play();
-      });
+      this._setItem(item, index);
     }
   }
 

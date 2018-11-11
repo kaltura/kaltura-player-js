@@ -81,13 +81,13 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
-  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistOptions: KPPlaylistConfigObject): Promise<*> {
+  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     this._playlistManager.reset();
     return this._provider
       .getPlaylistConfig(playlistInfo)
-      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig))
       .catch(e =>
         this._localPlayer.dispatchEvent(
           new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
@@ -95,13 +95,13 @@ class KalturaPlayer extends FakeEventTarget {
       );
   }
 
-  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistOptions: KPPlaylistConfigObject): Promise<*> {
+  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     this._playlistManager.reset();
     return this._provider
       .getEntryListConfig(entryList)
-      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistOptions))
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig))
       .catch(e =>
         this._localPlayer.dispatchEvent(
           new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
