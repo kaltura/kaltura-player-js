@@ -37,7 +37,7 @@ class PlaylistManager {
         if (next.item) {
           this._setItem(next.item, next.index).then(() => {
             this._eventManager.listenOnce(this._player, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-              this._player.configure({playback: {autoplay: this._options.autoContinue}});
+              this._player.configure({playback: {autoplay: true}});
             });
           });
         }
