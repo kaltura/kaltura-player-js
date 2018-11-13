@@ -50,12 +50,26 @@ class PlayerSnapshot {
    * @memberof PlayerSnapshot
    */
   advertising: ?Object;
+  /**
+   * @type {number}
+   * @instance
+   * @memberof PlayerSnapshot
+   */
+  volume: number;
+  /**
+   * @type {boolean}
+   * @instance
+   * @memberof PlayerSnapshot
+   */
+  muted: boolean;
 
   constructor(player: KalturaPlayer) {
     this.startTime = getStartTime(player);
     this.autoplay = player.currentTime === 0 ? true : !player.paused;
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
+    this.volume = player.volume;
+    this.muted = player.muted;
     this.audioLanguage = getLanguage(TrackType.AUDIO, player);
     this.textLanguage = getLanguage(TrackType.TEXT, player);
     this.advertising = player.config.plugins && player.config.plugins.ima;

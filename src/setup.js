@@ -18,6 +18,7 @@ import {
 /**
  * Setup the Kaltura Player.
  * @param {PartialKPOptionsObject|LegacyPartialKPOptionsObject} options - partial kaltura player options
+ * @private
  * @returns {KalturaPlayer} - The Kaltura Player.
  */
 function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): KalturaPlayer {
