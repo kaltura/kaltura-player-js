@@ -4,6 +4,7 @@ import {Utils} from '@playkit-js/playkit-js';
 /**
  * Sets the default analytics plugin for the ott player.
  * @param {KPOptionsObject} options - The player config.
+ * @private
  * @returns {void}
  */
 export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
