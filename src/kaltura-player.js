@@ -28,6 +28,28 @@ import {
   Utils
 } from '@playkit-js/playkit-js';
 
+type playersType = {[id: string]: Object};
+const Players: playersType = {};
+/**
+ * get all instantiated players
+ * @returns {playersType} players - map of player ids and their respective instantiated player
+ */
+function getPlayers(): playersType {
+  return Players;
+}
+
+/**
+ * get a player instance by id
+ * @param {string} id - the player ID
+ * @returns {Object | null} player - the player if found by the supplied ID or null if key doesn't exist
+ */
+function getPlayer(id: string): ?Object {
+  if (Players[id]) {
+    return Players[id];
+  }
+  return null;
+}
+
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
   _mediaInfo: ?ProviderMediaInfoObject = null;
@@ -41,6 +63,7 @@ class KalturaPlayer extends FakeEventTarget {
     super();
     this._eventManager = new EventManager();
     this._localPlayer = loadPlayer(options);
+    Players[options.targetId] = this;
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
@@ -164,6 +187,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   destroy(): void {
     const targetId = this.config.ui.targetId;
+    const playerId = this.config.targetId;
     this._eventManager.destroy();
     this._localPlayer.destroy();
     this._uiWrapper.destroy();
@@ -171,6 +195,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (targetContainer && targetContainer.parentNode) {
       Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
     }
+    delete Players[playerId];
   }
 
   isLive(): boolean {
@@ -474,4 +499,4 @@ class KalturaPlayer extends FakeEventTarget {
   }
 }
 
-export {KalturaPlayer};
+export {KalturaPlayer, getPlayer, getPlayers};
