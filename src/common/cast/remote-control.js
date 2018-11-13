@@ -136,11 +136,9 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       const mediaInfo = snapshot.mediaInfo;
       if (mediaInfo) {
         this.loadMedia(mediaInfo).then(() => {
-          this._eventManager.listenOnce(this, this.Event.Core.PLAYBACK_START, () => {
+          this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             setInitialAttributes.call(this, snapshot);
             configurePlayback.call(this, originPlaybackConfig);
-          });
-          this._eventManager.listenOnce(this, this.Event.Core.TRACKS_CHANGED, () => {
             setInitialTracks.call(this, snapshot);
           });
         });
