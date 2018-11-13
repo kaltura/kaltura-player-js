@@ -2,220 +2,297 @@
 
 ### Table of Contents
 
-- [BaseRemotePlayer][1]
+- [KPPlaylistConfigObject][1]
   - [Parameters][2]
-  - [loadMedia][3]
-    - [Parameters][4]
-  - [setMedia][5]
-    - [Parameters][6]
-  - [getMediaInfo][7]
-  - [configure][8]
-    - [Parameters][9]
-  - [ready][10]
-  - [load][11]
-  - [play][12]
-  - [pause][13]
-  - [reset][14]
-  - [destroy][15]
-  - [isLive][16]
-    - [Examples][17]
-  - [isDvr][18]
-    - [Examples][19]
-  - [seekToLiveEdge][20]
-  - [getStartTimeOfDvrWindow][21]
-    - [Examples][22]
-  - [getTracks][23]
-    - [Parameters][24]
-    - [Examples][25]
-  - [getActiveTracks][26]
+- [KPPlaylistCountdownOptions][3]
+  - [Parameters][4]
+- [KPPlaylistItemConfigObject][5]
+  - [Properties][6]
+- [KPPlaylistMetadata][7]
+  - [Properties][8]
+- [KPPlaylistOptions][9]
+  - [Properties][10]
+- [BaseRemotePlayer][11]
+  - [Parameters][12]
+  - [loadMedia][13]
+    - [Parameters][14]
+  - [setMedia][15]
+    - [Parameters][16]
+  - [getMediaInfo][17]
+  - [configure][18]
+    - [Parameters][19]
+  - [ready][20]
+  - [load][21]
+  - [play][22]
+  - [pause][23]
+  - [reset][24]
+  - [destroy][25]
+  - [isLive][26]
     - [Examples][27]
-  - [selectTrack][28]
-    - [Parameters][29]
-  - [hideTextTrack][30]
-  - [enableAdaptiveBitrate][31]
-  - [isAdaptiveBitrateEnabled][32]
-    - [Examples][33]
-  - [setTextDisplaySettings][34]
-    - [Parameters][35]
-  - [startCasting][36]
-  - [stopCasting][37]
-  - [isCasting][38]
-    - [Examples][39]
-  - [isCastAvailable][40]
-    - [Examples][41]
-  - [getCastSession][42]
+  - [isDvr][28]
+    - [Examples][29]
+  - [seekToLiveEdge][30]
+  - [getStartTimeOfDvrWindow][31]
+    - [Examples][32]
+  - [getTracks][33]
+    - [Parameters][34]
+    - [Examples][35]
+  - [getActiveTracks][36]
+    - [Examples][37]
+  - [selectTrack][38]
+    - [Parameters][39]
+  - [hideTextTrack][40]
+  - [enableAdaptiveBitrate][41]
+  - [isAdaptiveBitrateEnabled][42]
     - [Examples][43]
-  - [isVr][44]
-    - [Examples][45]
-  - [toggleVrStereoMode][46]
-  - [isInVrStereoMode][47]
-    - [Examples][48]
-  - [ads][49]
-    - [Examples][50]
-  - [textStyle][51]
-    - [Parameters][52]
-  - [textStyle][53]
-    - [Examples][54]
-  - [buffered][55]
-    - [Examples][56]
-  - [currentTime][57]
-    - [Parameters][58]
-  - [currentTime][59]
+  - [setTextDisplaySettings][44]
+    - [Parameters][45]
+  - [startCasting][46]
+  - [stopCasting][47]
+  - [isCasting][48]
+    - [Examples][49]
+  - [isCastAvailable][50]
+    - [Examples][51]
+  - [getCastSession][52]
+    - [Examples][53]
+  - [isVr][54]
+    - [Examples][55]
+  - [toggleVrStereoMode][56]
+  - [isInVrStereoMode][57]
+    - [Examples][58]
+  - [ads][59]
     - [Examples][60]
-  - [duration][61]
-    - [Examples][62]
-  - [volume][63]
-    - [Parameters][64]
-  - [volume][65]
+  - [textStyle][61]
+    - [Parameters][62]
+  - [textStyle][63]
+    - [Examples][64]
+  - [buffered][65]
     - [Examples][66]
-  - [paused][67]
-    - [Examples][68]
-  - [ended][69]
+  - [currentTime][67]
+    - [Parameters][68]
+  - [currentTime][69]
     - [Examples][70]
-  - [seeking][71]
+  - [duration][71]
     - [Examples][72]
-  - [muted][73]
+  - [volume][73]
     - [Parameters][74]
-  - [muted][75]
+  - [volume][75]
     - [Examples][76]
-  - [src][77]
+  - [paused][77]
     - [Examples][78]
-  - [poster][79]
+  - [ended][79]
     - [Examples][80]
-  - [playbackRate][81]
-    - [Parameters][82]
-  - [playbackRate][83]
-    - [Examples][84]
-  - [engineType][85]
+  - [seeking][81]
+    - [Examples][82]
+  - [muted][83]
+    - [Parameters][84]
+  - [muted][85]
     - [Examples][86]
-  - [streamType][87]
+  - [src][87]
     - [Examples][88]
-  - [config][89]
-  - [type][90]
-    - [Examples][91]
-  - [defaultConfig][92]
-    - [Examples][93]
-  - [Type][94]
-    - [Examples][95]
-  - [isSupported][96]
-    - [Examples][97]
-- [CastEventType][98]
-  - [Examples][99]
-- [PlayerSnapshot][100]
-  - [Parameters][101]
-  - [startTime][102]
-  - [autoplay][103]
-  - [audioLanguage][104]
-  - [textLanguage][105]
-  - [mediaInfo][106]
-  - [textStyle][107]
-  - [advertising][108]
-  - [volume][109]
-  - [muted][110]
-- [RemoteControl][111]
-  - [Parameters][112]
-  - [getPlayerSnapshot][113]
-  - [getUIWrapper][114]
-  - [onRemoteDeviceDisconnected][115]
-    - [Parameters][116]
-  - [onRemoteDeviceConnected][117]
-    - [Parameters][118]
-  - [onRemoteDeviceAvailable][119]
-    - [Parameters][120]
-  - [onRemoteDeviceConnecting][121]
-  - [onRemoteDeviceDisconnecting][122]
-  - [onRemoteDeviceConnectFailed][123]
-- [RemotePayload][124]
-  - [Parameters][125]
-  - [player][126]
-- [RemoteConnectedPayload][127]
-  - [Parameters][128]
-  - [ui][129]
-  - [session][130]
-- [RemoteDisconnectedPayload][131]
-  - [Parameters][132]
-  - [snapshot][133]
-- [RemoteAvailablePayload][134]
+  - [poster][89]
+    - [Examples][90]
+  - [playbackRate][91]
+    - [Parameters][92]
+  - [playbackRate][93]
+    - [Examples][94]
+  - [engineType][95]
+    - [Examples][96]
+  - [streamType][97]
+    - [Examples][98]
+  - [config][99]
+  - [type][100]
+    - [Examples][101]
+  - [defaultConfig][102]
+    - [Examples][103]
+  - [Type][104]
+    - [Examples][105]
+  - [isSupported][106]
+    - [Examples][107]
+- [CastEventType][108]
+  - [Examples][109]
+- [PlayerSnapshot][110]
+  - [Parameters][111]
+  - [startTime][112]
+  - [autoplay][113]
+  - [audioLanguage][114]
+  - [textLanguage][115]
+  - [mediaInfo][116]
+  - [textStyle][117]
+  - [advertising][118]
+  - [volume][119]
+  - [muted][120]
+- [RemoteControl][121]
+  - [Parameters][122]
+  - [getPlayerSnapshot][123]
+  - [getUIWrapper][124]
+  - [onRemoteDeviceDisconnected][125]
+    - [Parameters][126]
+  - [onRemoteDeviceConnected][127]
+    - [Parameters][128]
+  - [onRemoteDeviceAvailable][129]
+    - [Parameters][130]
+  - [onRemoteDeviceConnecting][131]
+  - [onRemoteDeviceDisconnecting][132]
+  - [onRemoteDeviceConnectFailed][133]
+- [RemotePayload][134]
   - [Parameters][135]
-  - [available][136]
-- [RemotePlayerUI][137]
-  - [playbackUI][138]
-    - [Parameters][139]
-  - [idleUI][140]
-    - [Parameters][141]
-  - [adsUI][142]
-    - [Parameters][143]
-  - [liveUI][144]
-    - [Parameters][145]
-  - [errorUI][146]
-    - [Parameters][147]
-  - [uis][148]
-- [IRemotePlayer][149]
-  - [textStyle][150]
-  - [muted][151]
-  - [playbackRate][152]
-  - [volume][153]
-  - [currentTime][154]
-  - [buffered][155]
-  - [duration][156]
-  - [paused][157]
-  - [ended][158]
-  - [seeking][159]
-  - [src][160]
-  - [poster][161]
-  - [config][162]
-  - [engineType][163]
-  - [streamType][164]
-  - [type][165]
-  - [ads][166]
-  - [addEventListener][167]
-    - [Parameters][168]
-  - [removeEventListener][169]
-    - [Parameters][170]
-  - [dispatchEvent][171]
-    - [Parameters][172]
-  - [loadMedia][173]
-    - [Parameters][174]
-  - [setMedia][175]
-    - [Parameters][176]
-  - [getMediaInfo][177]
-  - [configure][178]
-    - [Parameters][179]
-  - [ready][180]
-  - [load][181]
-  - [play][182]
-  - [pause][183]
-  - [reset][184]
-  - [destroy][185]
-  - [isLive][186]
-  - [isDvr][187]
-  - [seekToLiveEdge][188]
-  - [getStartTimeOfDvrWindow][189]
-  - [getTracks][190]
-    - [Parameters][191]
-  - [getActiveTracks][192]
-  - [selectTrack][193]
-    - [Parameters][194]
-  - [hideTextTrack][195]
-  - [enableAdaptiveBitrate][196]
-  - [isAdaptiveBitrateEnabled][197]
-  - [setTextDisplaySettings][198]
-    - [Parameters][199]
-  - [startCasting][200]
-  - [stopCasting][201]
-  - [isCasting][202]
-  - [isCastAvailable][203]
-  - [getCastSession][204]
-  - [isVr][205]
-  - [toggleVrStereoMode][206]
-  - [isInVrStereoMode][207]
-  - [Type][208]
-  - [isSupported][209]
-- [RemoteSession][210]
-  - [Parameters][211]
-  - [deviceFriendlyName][212]
-  - [id][213]
-  - [resuming][214]
+  - [player][136]
+- [RemoteConnectedPayload][137]
+  - [Parameters][138]
+  - [ui][139]
+  - [session][140]
+- [RemoteDisconnectedPayload][141]
+  - [Parameters][142]
+  - [snapshot][143]
+- [RemoteAvailablePayload][144]
+  - [Parameters][145]
+  - [available][146]
+- [RemotePlayerUI][147]
+  - [playbackUI][148]
+    - [Parameters][149]
+  - [idleUI][150]
+    - [Parameters][151]
+  - [adsUI][152]
+    - [Parameters][153]
+  - [liveUI][154]
+    - [Parameters][155]
+  - [errorUI][156]
+    - [Parameters][157]
+  - [uis][158]
+- [IRemotePlayer][159]
+  - [textStyle][160]
+  - [muted][161]
+  - [playbackRate][162]
+  - [volume][163]
+  - [currentTime][164]
+  - [buffered][165]
+  - [duration][166]
+  - [paused][167]
+  - [ended][168]
+  - [seeking][169]
+  - [src][170]
+  - [poster][171]
+  - [config][172]
+  - [engineType][173]
+  - [streamType][174]
+  - [type][175]
+  - [ads][176]
+  - [addEventListener][177]
+    - [Parameters][178]
+  - [removeEventListener][179]
+    - [Parameters][180]
+  - [dispatchEvent][181]
+    - [Parameters][182]
+  - [loadMedia][183]
+    - [Parameters][184]
+  - [setMedia][185]
+    - [Parameters][186]
+  - [getMediaInfo][187]
+  - [configure][188]
+    - [Parameters][189]
+  - [ready][190]
+  - [load][191]
+  - [play][192]
+  - [pause][193]
+  - [reset][194]
+  - [destroy][195]
+  - [isLive][196]
+  - [isDvr][197]
+  - [seekToLiveEdge][198]
+  - [getStartTimeOfDvrWindow][199]
+  - [getTracks][200]
+    - [Parameters][201]
+  - [getActiveTracks][202]
+  - [selectTrack][203]
+    - [Parameters][204]
+  - [hideTextTrack][205]
+  - [enableAdaptiveBitrate][206]
+  - [isAdaptiveBitrateEnabled][207]
+  - [setTextDisplaySettings][208]
+    - [Parameters][209]
+  - [startCasting][210]
+  - [stopCasting][211]
+  - [isCasting][212]
+  - [isCastAvailable][213]
+  - [getCastSession][214]
+  - [isVr][215]
+  - [toggleVrStereoMode][216]
+  - [isInVrStereoMode][217]
+  - [Type][218]
+  - [isSupported][219]
+- [RemoteSession][220]
+  - [Parameters][221]
+  - [deviceFriendlyName][222]
+  - [id][223]
+  - [resuming][224]
+- [PlaylistEventType][225]
+  - [Examples][226]
+- [PlaylistItem][227]
+  - [Parameters][228]
+  - [sources][229]
+  - [config][230]
+  - [isPlayable][231]
+- [PlaylistManager][232]
+  - [Parameters][233]
+  - [playNext][234]
+  - [playPrev][235]
+  - [playItem][236]
+    - [Parameters][237]
+  - [items][238]
+  - [next][239]
+  - [prev][240]
+  - [id][241]
+  - [metadata][242]
+  - [countdown][243]
+  - [options][244]
+
+## KPPlaylistConfigObject
+
+Type: [Object][245]
+
+### Parameters
+
+- `id` **[string][246]** The playlist id
+- `metadata` **[KPPlaylistMetadata][247]** The playlist metadata
+- `options` **[KPPlaylistOptions][248]** The playlist options
+- `countdown` **[KPPlaylistCountdownOptions][249]** The playlist countdown config
+- `items` **[Array][250]&lt;[PlaylistItem][251]>** The playlist items
+
+## KPPlaylistCountdownOptions
+
+Type: [Object][245]
+
+### Parameters
+
+- `timeToShow` **[number][252]?** When the countdown will appear (by default is towards the end)
+- `duration` **[number][252]** How match time the countdown will appear (optional, default `10`)
+- `showing` **[boolean][253]** Whether to show the countdown (optional, default `true`)
+
+## KPPlaylistItemConfigObject
+
+Type: [Object][245]
+
+### Properties
+
+- `countdown` **[KPPlaylistCountdownOptions][249]?** Countdown options
+
+## KPPlaylistMetadata
+
+Type: [Object][245]
+
+### Properties
+
+- `name` **[string][246]** The playlist name
+- `name` **[string][246]** The playlist description
+
+## KPPlaylistOptions
+
+Type: [Object][245]
+
+### Properties
+
+- `autoContinue` **[boolean][253]** Whether to continue to the next item automatically
 
 ## BaseRemotePlayer
 
@@ -227,9 +304,9 @@ Remote players should extend this class and implement the needed API.
 
 ### Parameters
 
-- `name` **[string][215]** Remote player name.
-- `config` **[Object][216]** Cast configuration.
-- `remoteControl` **[RemoteControl][217]** Remote control.
+- `name` **[string][246]** Remote player name.
+- `config` **[Object][245]** Cast configuration.
+- `remoteControl` **[RemoteControl][254]** Remote control.
 
 ### loadMedia
 
@@ -237,9 +314,9 @@ Loads a media to the receiver application.
 
 #### Parameters
 
-- `mediaInfo` **[Object][216]** The entry media info.
+- `mediaInfo` **[Object][245]** The entry media info.
 
-Returns **[Promise][218]&lt;void>** Promise to indicate load succeed or failed.
+Returns **[Promise][255]&lt;void>** Promise to indicate load succeed or failed.
 
 ### setMedia
 
@@ -247,7 +324,7 @@ Sets a media to the remote player..
 
 #### Parameters
 
-- `mediaConfig` **[Object][216]** Media configuration to set.
+- `mediaConfig` **[Object][245]** Media configuration to set.
 
 Returns **void**
 
@@ -255,7 +332,7 @@ Returns **void**
 
 Gets the media Info.
 
-Returns **[Object][216]?** The media info.
+Returns **[Object][245]?** The media info.
 
 ### configure
 
@@ -263,7 +340,7 @@ Configure the remote player
 
 #### Parameters
 
-- `config` **[Object][216]** Configuration to set. (optional, default `{}`)
+- `config` **[Object][245]** Configuration to set. (optional, default `{}`)
 
 Returns **void**
 
@@ -271,7 +348,7 @@ Returns **void**
 
 The remote player readiness.
 
-Returns **[Promise][218]&lt;any>** Promise which resolved when the remote player is ready.
+Returns **[Promise][255]&lt;any>** Promise which resolved when the remote player is ready.
 
 ### load
 
@@ -311,7 +388,7 @@ Returns **void**
 BaseRemotePlayer.prototype.isLive(); // false
 ```
 
-Returns **[boolean][219]** Whether the current playback is a live playback.
+Returns **[boolean][253]** Whether the current playback is a live playback.
 
 ### isDvr
 
@@ -321,7 +398,7 @@ Returns **[boolean][219]** Whether the current playback is a live playback.
 BaseRemotePlayer.prototype.isDvr(); // false
 ```
 
-Returns **[boolean][219]** Whether the current live playback has DVR window. In case of non-live playback will return false.
+Returns **[boolean][253]** Whether the current live playback has DVR window. In case of non-live playback will return false.
 
 ### seekToLiveEdge
 
@@ -337,13 +414,13 @@ Returns **void**
 BaseRemotePlayer.prototype.getStartTimeOfDvrWindow(); // 0
 ```
 
-Returns **[number][220]** The start time of the DVR window.
+Returns **[number][252]** The start time of the DVR window.
 
 ### getTracks
 
 #### Parameters
 
-- `type` **[string][215]?** Track type.
+- `type` **[string][246]?** Track type.
 
 #### Examples
 
@@ -351,7 +428,7 @@ Returns **[number][220]** The start time of the DVR window.
 BaseRemotePlayer.prototype.getTracks(); // []
 ```
 
-Returns **[Array][221]&lt;Track>** The remote player tracks.
+Returns **[Array][250]&lt;Track>** The remote player tracks.
 
 ### getActiveTracks
 
@@ -361,7 +438,7 @@ Returns **[Array][221]&lt;Track>** The remote player tracks.
 BaseRemotePlayer.prototype.getTracks(); // {audio: undefined, video: undefined, text: undefined}
 ```
 
-Returns **[Object][216]** The remote player active tracks.
+Returns **[Object][245]** The remote player active tracks.
 
 ### selectTrack
 
@@ -393,7 +470,7 @@ Returns **void**
 BaseRemotePlayer.prototype.isAdaptiveBitrateEnabled(); // true
 ```
 
-Returns **[boolean][219]** Whether adaptive bitrate is enabled.
+Returns **[boolean][253]** Whether adaptive bitrate is enabled.
 
 ### setTextDisplaySettings
 
@@ -401,7 +478,7 @@ Sets the text display settings.
 
 #### Parameters
 
-- `settings` **[Object][216]** Text settings.
+- `settings` **[Object][245]** Text settings.
 
 Returns **void**
 
@@ -409,7 +486,7 @@ Returns **void**
 
 Start casting.
 
-Returns **[Promise][218]&lt;any>** A promise to indicate session is starting, or failed
+Returns **[Promise][255]&lt;any>** A promise to indicate session is starting, or failed
 
 ### stopCasting
 
@@ -425,7 +502,7 @@ Returns **void**
 BaseRemotePlayer.prototype.isCasting(); // true
 ```
 
-Returns **[boolean][219]** Whether casting is currently active.
+Returns **[boolean][253]** Whether casting is currently active.
 
 ### isCastAvailable
 
@@ -435,7 +512,7 @@ Returns **[boolean][219]** Whether casting is currently active.
 BaseRemotePlayer.prototype.isCastAvailable(); // true
 ```
 
-Returns **[boolean][219]** Whether casting is available.
+Returns **[boolean][253]** Whether casting is available.
 
 ### getCastSession
 
@@ -447,7 +524,7 @@ Gets the current remote session.
 BaseRemotePlayer.prototype.getCastSession(); // new RemoteSession('', '')
 ```
 
-Returns **[RemoteSession][222]** The remote session.
+Returns **[RemoteSession][256]** The remote session.
 
 ### isVr
 
@@ -457,7 +534,7 @@ Returns **[RemoteSession][222]** The remote session.
 BaseRemotePlayer.prototype.isVr(); // false
 ```
 
-Returns **[boolean][219]** Whether the current media is of VR type (360 content).
+Returns **[boolean][253]** Whether the current media is of VR type (360 content).
 
 ### toggleVrStereoMode
 
@@ -473,13 +550,13 @@ Returns **void**
 BaseRemotePlayer.prototype.isInVrStereoMode(); // false
 ```
 
-Returns **[boolean][219]** Whether the current content displayed in VR mode.
+Returns **[boolean][253]** Whether the current content displayed in VR mode.
 
 ### ads
 
 The remote player ads controller.
 
-Type: [Object][216]?
+Type: [Object][245]?
 
 #### Examples
 
@@ -487,7 +564,7 @@ Type: [Object][216]?
 BaseRemotePlayer.prototype.ads; // null
 ```
 
-Returns **[Object][216]?**
+Returns **[Object][245]?**
 
 ### textStyle
 
@@ -521,7 +598,7 @@ Gets the first buffered range of the remote player.
 BaseRemotePlayer.prototype.buffered; // []
 ```
 
-Returns **[Array][221]&lt;any>** First buffered range in seconds.
+Returns **[Array][250]&lt;any>** First buffered range in seconds.
 
 ### currentTime
 
@@ -529,7 +606,7 @@ Setter.
 
 #### Parameters
 
-- `to` **[number][220]** The number to set in seconds.
+- `to` **[number][252]** The number to set in seconds.
 
 Returns **void**
 
@@ -543,7 +620,7 @@ Getter.
 BaseRemotePlayer.prototype.currentTime; // 0
 ```
 
-Returns **[number][220]** The current time in seconds.
+Returns **[number][252]** The current time in seconds.
 
 ### duration
 
@@ -553,7 +630,7 @@ Returns **[number][220]** The current time in seconds.
 BaseRemotePlayer.prototype.duration; // 0
 ```
 
-Returns **[number][220]** The duration in seconds.
+Returns **[number][252]** The duration in seconds.
 
 ### volume
 
@@ -561,7 +638,7 @@ Setter.
 
 #### Parameters
 
-- `vol` **[number][220]** The volume to set in the range of 0-1.
+- `vol` **[number][252]** The volume to set in the range of 0-1.
 
 Returns **void**
 
@@ -575,7 +652,7 @@ Getter.
 BaseRemotePlayer.prototype.volume; // 1
 ```
 
-Returns **[number][220]** The current volume in the range of 0-1.
+Returns **[number][252]** The current volume in the range of 0-1.
 
 ### paused
 
@@ -585,7 +662,7 @@ Returns **[number][220]** The current volume in the range of 0-1.
 BaseRemotePlayer.prototype.paused; // false
 ```
 
-Returns **[boolean][219]** Whether the cast player is in paused state.
+Returns **[boolean][253]** Whether the cast player is in paused state.
 
 ### ended
 
@@ -595,7 +672,7 @@ Returns **[boolean][219]** Whether the cast player is in paused state.
 BaseRemotePlayer.prototype.ended; // false
 ```
 
-Returns **[boolean][219]** Whether the cast player is in ended state.
+Returns **[boolean][253]** Whether the cast player is in ended state.
 
 ### seeking
 
@@ -605,7 +682,7 @@ Returns **[boolean][219]** Whether the cast player is in ended state.
 BaseRemotePlayer.prototype.seeking; // false
 ```
 
-Returns **[boolean][219]** Whether the cast player is in seeking state.
+Returns **[boolean][253]** Whether the cast player is in seeking state.
 
 ### muted
 
@@ -613,7 +690,7 @@ Setter.
 
 #### Parameters
 
-- `mute` **[boolean][219]** The mute value to set.
+- `mute` **[boolean][253]** The mute value to set.
 
 Returns **void**
 
@@ -627,7 +704,7 @@ Getter.
 BaseRemotePlayer.prototype.muted; // false
 ```
 
-Returns **[boolean][219]** The muted state.
+Returns **[boolean][253]** The muted state.
 
 ### src
 
@@ -637,7 +714,7 @@ Returns **[boolean][219]** The muted state.
 BaseRemotePlayer.prototype.src; // ''
 ```
 
-Returns **[string][215]** The current playing source url.
+Returns **[string][246]** The current playing source url.
 
 ### poster
 
@@ -647,7 +724,7 @@ Returns **[string][215]** The current playing source url.
 BaseRemotePlayer.prototype.poster; // ''
 ```
 
-Returns **[string][215]** The current poster url.
+Returns **[string][246]** The current poster url.
 
 ### playbackRate
 
@@ -655,7 +732,7 @@ Setter.
 
 #### Parameters
 
-- `rate` **[number][220]** The playback rate to set.
+- `rate` **[number][252]** The playback rate to set.
 
 Returns **void**
 
@@ -667,7 +744,7 @@ Returns **void**
 BaseRemotePlayer.prototype.playbackRate; // 1
 ```
 
-Returns **[string][215]** The current playback rate.
+Returns **[string][246]** The current playback rate.
 
 ### engineType
 
@@ -677,7 +754,7 @@ Returns **[string][215]** The current playback rate.
 BaseRemotePlayer.prototype.engineType; // ''
 ```
 
-Returns **[string][215]** The active engine type.
+Returns **[string][246]** The active engine type.
 
 ### streamType
 
@@ -687,11 +764,11 @@ Returns **[string][215]** The active engine type.
 BaseRemotePlayer.prototype.streamType; // ''
 ```
 
-Returns **[string][215]** The active stream type.
+Returns **[string][246]** The active stream type.
 
 ### config
 
-Returns **[Object][216]** The runtime cast config.
+Returns **[Object][245]** The runtime cast config.
 
 ### type
 
@@ -701,13 +778,13 @@ Returns **[Object][216]** The runtime cast config.
 BaseRemotePlayer.prototype.type; // BaseRemotePlayer.Type
 ```
 
-Returns **[string][215]** The remote player type.
+Returns **[string][246]** The remote player type.
 
 ### defaultConfig
 
 Default configuration of the remote player.
 
-Type: [Object][216]
+Type: [Object][245]
 
 #### Examples
 
@@ -719,7 +796,7 @@ BaseRemotePlayer.defaultConfig; // {}
 
 Remote player type.
 
-Type: [string][215]
+Type: [string][246]
 
 #### Examples
 
@@ -735,11 +812,11 @@ BaseRemotePlayer.Type; // 'BaseRemotePlayer'
 BaseRemotePlayer.isSupported(); // true
 ```
 
-Returns **[boolean][219]** Whether the remote player is supported in the current environment.
+Returns **[boolean][253]** Whether the remote player is supported in the current environment.
 
 ## CastEventType
 
-Type: [Object][216]
+Type: [Object][245]
 
 ### Examples
 
@@ -767,19 +844,19 @@ player.addEventListener(KalturaPlayer.cast.CastEventType.CAST_SESSION_STARTED, e
 
 ### startTime
 
-Type: [number][220]
+Type: [number][252]
 
 ### autoplay
 
-Type: [boolean][219]
+Type: [boolean][253]
 
 ### audioLanguage
 
-Type: [string][215]
+Type: [string][246]
 
 ### textLanguage
 
-Type: [string][215]
+Type: [string][246]
 
 ### mediaInfo
 
@@ -791,15 +868,15 @@ Type: TextStyle
 
 ### advertising
 
-Type: [Object][216]
+Type: [Object][245]
 
 ### volume
 
-Type: [number][220]
+Type: [number][252]
 
 ### muted
 
-Type: [boolean][219]
+Type: [boolean][253]
 
 ## RemoteControl
 
@@ -811,15 +888,15 @@ Type: [boolean][219]
 
 Gets the player snapshot.
 
-Type: [Function][223]
+Type: [Function][257]
 
-Returns **[PlayerSnapshot][224]** player snapshot.
+Returns **[PlayerSnapshot][258]** player snapshot.
 
 ### getUIWrapper
 
 Gets the UI wrapper.
 
-Type: [Function][223]
+Type: [Function][257]
 
 Returns **UIWrapper** The UI wrapper.
 
@@ -827,11 +904,11 @@ Returns **UIWrapper** The UI wrapper.
 
 On remote device disconnected handler.
 
-Type: [Function][223]
+Type: [Function][257]
 
 #### Parameters
 
-- `payload` **[RemoteDisconnectedPayload][225]** disconnected payload.
+- `payload` **[RemoteDisconnectedPayload][259]** disconnected payload.
 
 Returns **void**
 
@@ -839,11 +916,11 @@ Returns **void**
 
 On remote device connected handler.
 
-Type: [Function][223]
+Type: [Function][257]
 
 #### Parameters
 
-- `payload` **[RemoteConnectedPayload][226]** connected payload.
+- `payload` **[RemoteConnectedPayload][260]** connected payload.
 
 Returns **void**
 
@@ -851,11 +928,11 @@ Returns **void**
 
 On remote device available handler.
 
-Type: [Function][223]
+Type: [Function][257]
 
 #### Parameters
 
-- `payload` **[RemoteAvailablePayload][227]** available payload.
+- `payload` **[RemoteAvailablePayload][261]** available payload.
 
 Returns **void**
 
@@ -863,7 +940,7 @@ Returns **void**
 
 On remote device connecting handler.
 
-Type: [Function][223]
+Type: [Function][257]
 
 Returns **void**
 
@@ -871,7 +948,7 @@ Returns **void**
 
 On remote device disconnecting handler.
 
-Type: [Function][223]
+Type: [Function][257]
 
 Returns **void**
 
@@ -879,7 +956,7 @@ Returns **void**
 
 On remote device connect failed handler.
 
-Type: [Function][223]
+Type: [Function][257]
 
 Returns **void**
 
@@ -887,15 +964,15 @@ Returns **void**
 
 ### Parameters
 
-- `player` **[BaseRemotePlayer][228]** The active remote player.
+- `player` **[BaseRemotePlayer][262]** The active remote player.
 
 ### player
 
 The active remote player.
 
-Type: [BaseRemotePlayer][228]
+Type: [BaseRemotePlayer][262]
 
-Returns **[BaseRemotePlayer][228]**
+Returns **[BaseRemotePlayer][262]**
 
 ## RemoteConnectedPayload
 
@@ -903,25 +980,25 @@ Returns **[BaseRemotePlayer][228]**
 
 ### Parameters
 
-- `player` **[BaseRemotePlayer][228]** The active remote player.
-- `session` **[RemoteSession][222]** The remote session.
-- `ui` **[RemotePlayerUI][229]?** Optional remote player UI preset.
+- `player` **[BaseRemotePlayer][262]** The active remote player.
+- `session` **[RemoteSession][256]** The remote session.
+- `ui` **[RemotePlayerUI][263]?** Optional remote player UI preset.
 
 ### ui
 
 Remote player UI preset.
 
-Type: [RemotePlayerUI][229]?
+Type: [RemotePlayerUI][263]?
 
-Returns **[RemotePlayerUI][229]?**
+Returns **[RemotePlayerUI][263]?**
 
 ### session
 
 Remote session.
 
-Type: [RemoteSession][222]
+Type: [RemoteSession][256]
 
-Returns **[RemoteSession][222]?**
+Returns **[RemoteSession][256]?**
 
 ## RemoteDisconnectedPayload
 
@@ -929,16 +1006,16 @@ Returns **[RemoteSession][222]?**
 
 ### Parameters
 
-- `player` **[BaseRemotePlayer][228]** The active remote player.
-- `snapshot` **[PlayerSnapshot][224]** The remote player snapshot.
+- `player` **[BaseRemotePlayer][262]** The active remote player.
+- `snapshot` **[PlayerSnapshot][258]** The remote player snapshot.
 
 ### snapshot
 
 Remote player snapshot.
 
-Type: [PlayerSnapshot][224]
+Type: [PlayerSnapshot][258]
 
-Returns **[PlayerSnapshot][224]**
+Returns **[PlayerSnapshot][258]**
 
 ## RemoteAvailablePayload
 
@@ -946,16 +1023,16 @@ Returns **[PlayerSnapshot][224]**
 
 ### Parameters
 
-- `player` **[BaseRemotePlayer][228]** The active remote player.
-- `available` **[boolean][219]** Remote player availability.
+- `player` **[BaseRemotePlayer][262]** The active remote player.
+- `available` **[boolean][253]** Remote player availability.
 
 ### available
 
 Remote player availability.
 
-Type: [boolean][219]
+Type: [boolean][253]
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ## RemotePlayerUI
 
@@ -965,7 +1042,7 @@ Playback UI of the remote player.
 
 #### Parameters
 
-- `props` **[Object][216]** UI creation parameters.
+- `props` **[Object][245]** UI creation parameters.
 
 Returns **React$Element&lt;any>** Component.
 
@@ -975,7 +1052,7 @@ Idle UI of the remote player.
 
 #### Parameters
 
-- `props` **[Object][216]** UI creation parameters.
+- `props` **[Object][245]** UI creation parameters.
 
 Returns **React$Element&lt;any>** Component.
 
@@ -985,7 +1062,7 @@ Idle UI of the remote player.
 
 #### Parameters
 
-- `props` **[Object][216]** UI creation parameters.
+- `props` **[Object][245]** UI creation parameters.
 
 Returns **React$Element&lt;any>** Component.
 
@@ -995,7 +1072,7 @@ Live UI of the remote player.
 
 #### Parameters
 
-- `props` **[Object][216]** UI creation parameters.
+- `props` **[Object][245]** UI creation parameters.
 
 Returns **React$Element&lt;any>** Component.
 
@@ -1005,7 +1082,7 @@ Error UI of the remote player.
 
 #### Parameters
 
-- `props` **[Object][216]** UI creation parameters.
+- `props` **[Object][245]** UI creation parameters.
 
 Returns **React$Element&lt;any>** Component.
 
@@ -1013,9 +1090,9 @@ Returns **React$Element&lt;any>** Component.
 
 UI presets.
 
-Type: [Array][221]&lt;UIPreset>
+Type: [Array][250]&lt;UIPreset>
 
-Returns **[Array][221]&lt;UIPreset>**
+Returns **[Array][250]&lt;UIPreset>**
 
 ## IRemotePlayer
 
@@ -1025,81 +1102,81 @@ Type: TextStyle
 
 ### muted
 
-Type: [boolean][219]
+Type: [boolean][253]
 
 ### playbackRate
 
-Type: [number][220]
+Type: [number][252]
 
 ### volume
 
-Type: [number][220]
+Type: [number][252]
 
 ### currentTime
 
-Type: [number][220]
+Type: [number][252]
 
 ### buffered
 
-Type: [number][220]
+Type: [number][252]
 
 ### duration
 
-Type: [number][220]
+Type: [number][252]
 
 ### paused
 
-Type: [boolean][219]
+Type: [boolean][253]
 
 ### ended
 
-Type: [boolean][219]
+Type: [boolean][253]
 
 ### seeking
 
-Type: [boolean][219]
+Type: [boolean][253]
 
 ### src
 
-Type: [string][215]
+Type: [string][246]
 
 ### poster
 
-Type: [string][215]
+Type: [string][246]
 
 ### config
 
-Type: [Object][216]
+Type: [Object][245]
 
 ### engineType
 
-Type: [string][215]
+Type: [string][246]
 
 ### streamType
 
-Type: [string][215]
+Type: [string][246]
 
 ### type
 
-Type: [string][215]
+Type: [string][246]
 
 ### ads
 
-Type: [Object][216]
+Type: [Object][245]
 
 ### addEventListener
 
 #### Parameters
 
-- `type` **[string][215]**
-- `listener` **[Function][223]**
+- `type` **[string][246]**
+- `listener` **[Function][257]**
 
 ### removeEventListener
 
 #### Parameters
 
-- `type` **[string][215]**
-- `listener` **[Function][223]**
+- `type` **[string][246]**
+- `listener` **[Function][257]**
 
 ### dispatchEvent
 
@@ -1111,27 +1188,27 @@ Type: [Object][216]
 
 #### Parameters
 
-- `mediaInfo` **[Object][216]**
+- `mediaInfo` **[Object][245]**
 
 ### setMedia
 
 #### Parameters
 
-- `mediaConfig` **[Object][216]**
+- `mediaConfig` **[Object][245]**
 
 ### getMediaInfo
 
-Returns **[Object][216]**
+Returns **[Object][245]**
 
 ### configure
 
 #### Parameters
 
-- `config` **[Object][216]**
+- `config` **[Object][245]**
 
 ### ready
 
-Returns **[Promise][218]&lt;any>**
+Returns **[Promise][255]&lt;any>**
 
 ### load
 
@@ -1145,29 +1222,29 @@ Returns **[Promise][218]&lt;any>**
 
 ### isLive
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### isDvr
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### seekToLiveEdge
 
 ### getStartTimeOfDvrWindow
 
-Returns **[number][220]**
+Returns **[number][252]**
 
 ### getTracks
 
 #### Parameters
 
-- `type` **[string][215]?**
+- `type` **[string][246]?**
 
-Returns **[Array][221]&lt;Track>**
+Returns **[Array][250]&lt;Track>**
 
 ### getActiveTracks
 
-Returns **[Object][216]**
+Returns **[Object][245]**
 
 ### selectTrack
 
@@ -1181,13 +1258,13 @@ Returns **[Object][216]**
 
 ### isAdaptiveBitrateEnabled
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### setTextDisplaySettings
 
 #### Parameters
 
-- `settings` **[Object][216]**
+- `settings` **[Object][245]**
 
 ### startCasting
 
@@ -1195,292 +1272,459 @@ Returns **[boolean][219]**
 
 ### isCasting
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### isCastAvailable
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### getCastSession
 
-Returns **[RemoteSession][222]**
+Returns **[RemoteSession][256]**
 
 ### isVr
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### toggleVrStereoMode
 
 ### isInVrStereoMode
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ### Type
 
-Type: [string][215]
+Type: [string][246]
 
 ### isSupported
 
-Returns **[boolean][219]**
+Returns **[boolean][253]**
 
 ## RemoteSession
 
 ### Parameters
 
-- `id` **[string][215]** Session ID.
-- `friendlyName` **[string][215]** Receiver friendly name.
-- `resuming` **[boolean][219]?** Whether the session is resuming.
+- `id` **[string][246]** Session ID.
+- `friendlyName` **[string][246]** Receiver friendly name.
+- `resuming` **[boolean][253]?** Whether the session is resuming.
 
 ### deviceFriendlyName
 
 Receiver friendly name.
 
-Type: [string][215]
+Type: [string][246]
 
-Returns **[string][215]**
+Returns **[string][246]**
 
 ### id
 
 Session ID.
 
-Type: [string][215]
+Type: [string][246]
 
-Returns **[string][215]**
+Returns **[string][246]**
 
 ### resuming
 
 Whether the session is resuming.
 
-Type: [boolean][219]?
+Type: [boolean][253]?
 
-Returns **[boolean][219]?**
+Returns **[boolean][253]?**
 
-[1]: #baseremoteplayer
+## PlaylistEventType
+
+Type: [Object][245]
+
+### Examples
+
+```javascript
+// Events lifecycle
+1. PLAYLIST_LOADED
+2. PLAYLIST_ITEM_CHANGED (multiple)
+3. PLAYLIST_ENDED
+```
+
+```javascript
+// How to use
+player.addEventListener(KalturaPlayer.Playlist.PlaylistEventType.PLAYLIST_LOADED, e => {
+  console.log(e.payload.playlist.metadata.name);
+};
+```
+
+## PlaylistItem
+
+### Parameters
+
+- `sources` **ProviderMediaConfigSourcesObject?** The item sources
+- `config` **[KPPlaylistItemConfigObject][264]?** The item config
+
+### sources
+
+Playlist item sources
+
+Type: ProviderMediaConfigSourcesObject?
+
+Returns **ProviderMediaConfigSourcesObject?**
+
+### config
+
+Playlist item config
+
+Type: [KPPlaylistItemConfigObject][264]?
+
+Returns **[KPPlaylistItemConfigObject][264]?**
+
+### isPlayable
+
+Returns **[boolean][253]** = Whether the playlist item has sources to play
+
+## PlaylistManager
+
+### Parameters
+
+- `player` **KalturaPlayer** The player instance
+- `options` **KPOptionsObject** The player config object
+
+### playNext
+
+Play the next item
+
+Returns **void**
+
+### playPrev
+
+Play the previous item
+
+Returns **void**
+
+### playItem
+
+Play a specific item
+
+#### Parameters
+
+- `index` **[number][252]** The index of the item to play
+
+Returns **void**
+
+### items
+
+Playlist items
+
+Type: [Array][250]&lt;[PlaylistItem][251]>
+
+Returns **[Array][250]&lt;[PlaylistItem][251]>**
+
+### next
+
+Next item
+
+Type: [PlaylistItem][251]?
+
+Returns **[PlaylistItem][251]?**
+
+### prev
+
+Previous item
+
+Type: [PlaylistItem][251]?
+
+Returns **[PlaylistItem][251]?**
+
+### id
+
+Playlist id
+
+Type: [string][246]
+
+Returns **[string][246]**
+
+### metadata
+
+Playlist metadata
+
+Type: [KPPlaylistMetadata][247]
+
+Returns **[KPPlaylistMetadata][247]**
+
+### countdown
+
+Playlist countdown
+
+Type: [KPPlaylistCountdownOptions][249]
+
+Returns **[KPPlaylistCountdownOptions][249]**
+
+### options
+
+Playlist options
+
+Type: [KPPlaylistOptions][248]
+
+Returns **[KPPlaylistOptions][248]**
+
+[1]: #kpplaylistconfigobject
 [2]: #parameters
-[3]: #loadmedia
+[3]: #kpplaylistcountdownoptions
 [4]: #parameters-1
-[5]: #setmedia
-[6]: #parameters-2
-[7]: #getmediainfo
-[8]: #configure
-[9]: #parameters-3
-[10]: #ready
-[11]: #load
-[12]: #play
-[13]: #pause
-[14]: #reset
-[15]: #destroy
-[16]: #islive
-[17]: #examples
-[18]: #isdvr
-[19]: #examples-1
-[20]: #seektoliveedge
-[21]: #getstarttimeofdvrwindow
-[22]: #examples-2
-[23]: #gettracks
-[24]: #parameters-4
-[25]: #examples-3
-[26]: #getactivetracks
-[27]: #examples-4
-[28]: #selecttrack
-[29]: #parameters-5
-[30]: #hidetexttrack
-[31]: #enableadaptivebitrate
-[32]: #isadaptivebitrateenabled
-[33]: #examples-5
-[34]: #settextdisplaysettings
-[35]: #parameters-6
-[36]: #startcasting
-[37]: #stopcasting
-[38]: #iscasting
-[39]: #examples-6
-[40]: #iscastavailable
-[41]: #examples-7
-[42]: #getcastsession
-[43]: #examples-8
-[44]: #isvr
-[45]: #examples-9
-[46]: #togglevrstereomode
-[47]: #isinvrstereomode
-[48]: #examples-10
-[49]: #ads
-[50]: #examples-11
-[51]: #textstyle
-[52]: #parameters-7
-[53]: #textstyle-1
-[54]: #examples-12
-[55]: #buffered
-[56]: #examples-13
-[57]: #currenttime
-[58]: #parameters-8
-[59]: #currenttime-1
-[60]: #examples-14
-[61]: #duration
-[62]: #examples-15
-[63]: #volume
-[64]: #parameters-9
-[65]: #volume-1
-[66]: #examples-16
-[67]: #paused
-[68]: #examples-17
-[69]: #ended
-[70]: #examples-18
-[71]: #seeking
-[72]: #examples-19
-[73]: #muted
-[74]: #parameters-10
-[75]: #muted-1
-[76]: #examples-20
-[77]: #src
-[78]: #examples-21
-[79]: #poster
-[80]: #examples-22
-[81]: #playbackrate
-[82]: #parameters-11
-[83]: #playbackrate-1
-[84]: #examples-23
-[85]: #enginetype
-[86]: #examples-24
-[87]: #streamtype
-[88]: #examples-25
-[89]: #config
-[90]: #type
-[91]: #examples-26
-[92]: #defaultconfig
-[93]: #examples-27
-[94]: #type-1
-[95]: #examples-28
-[96]: #issupported
-[97]: #examples-29
-[98]: #casteventtype
-[99]: #examples-30
-[100]: #playersnapshot
-[101]: #parameters-12
-[102]: #starttime
-[103]: #autoplay
-[104]: #audiolanguage
-[105]: #textlanguage
-[106]: #mediainfo
-[107]: #textstyle-2
-[108]: #advertising
-[109]: #volume-2
-[110]: #muted-2
-[111]: #remotecontrol
-[112]: #parameters-13
-[113]: #getplayersnapshot
-[114]: #getuiwrapper
-[115]: #onremotedevicedisconnected
-[116]: #parameters-14
-[117]: #onremotedeviceconnected
-[118]: #parameters-15
-[119]: #onremotedeviceavailable
-[120]: #parameters-16
-[121]: #onremotedeviceconnecting
-[122]: #onremotedevicedisconnecting
-[123]: #onremotedeviceconnectfailed
-[124]: #remotepayload
-[125]: #parameters-17
-[126]: #player
-[127]: #remoteconnectedpayload
-[128]: #parameters-18
-[129]: #ui
-[130]: #session
-[131]: #remotedisconnectedpayload
-[132]: #parameters-19
-[133]: #snapshot
-[134]: #remoteavailablepayload
-[135]: #parameters-20
-[136]: #available
-[137]: #remoteplayerui
-[138]: #playbackui
-[139]: #parameters-21
-[140]: #idleui
-[141]: #parameters-22
-[142]: #adsui
-[143]: #parameters-23
-[144]: #liveui
-[145]: #parameters-24
-[146]: #errorui
-[147]: #parameters-25
-[148]: #uis
-[149]: #iremoteplayer
-[150]: #textstyle-3
-[151]: #muted-3
-[152]: #playbackrate-2
-[153]: #volume-3
-[154]: #currenttime-2
-[155]: #buffered-1
-[156]: #duration-1
-[157]: #paused-1
-[158]: #ended-1
-[159]: #seeking-1
-[160]: #src-1
-[161]: #poster-1
-[162]: #config-1
-[163]: #enginetype-1
-[164]: #streamtype-1
-[165]: #type-2
-[166]: #ads-1
-[167]: #addeventlistener
-[168]: #parameters-26
-[169]: #removeeventlistener
-[170]: #parameters-27
-[171]: #dispatchevent
-[172]: #parameters-28
-[173]: #loadmedia-1
-[174]: #parameters-29
-[175]: #setmedia-1
-[176]: #parameters-30
-[177]: #getmediainfo-1
-[178]: #configure-1
-[179]: #parameters-31
-[180]: #ready-1
-[181]: #load-1
-[182]: #play-1
-[183]: #pause-1
-[184]: #reset-1
-[185]: #destroy-1
-[186]: #islive-1
-[187]: #isdvr-1
-[188]: #seektoliveedge-1
-[189]: #getstarttimeofdvrwindow-1
-[190]: #gettracks-1
-[191]: #parameters-32
-[192]: #getactivetracks-1
-[193]: #selecttrack-1
-[194]: #parameters-33
-[195]: #hidetexttrack-1
-[196]: #enableadaptivebitrate-1
-[197]: #isadaptivebitrateenabled-1
-[198]: #settextdisplaysettings-1
-[199]: #parameters-34
-[200]: #startcasting-1
-[201]: #stopcasting-1
-[202]: #iscasting-1
-[203]: #iscastavailable-1
-[204]: #getcastsession-1
-[205]: #isvr-1
-[206]: #togglevrstereomode-1
-[207]: #isinvrstereomode-1
-[208]: #type-3
-[209]: #issupported-1
-[210]: #remotesession
-[211]: #parameters-35
-[212]: #devicefriendlyname
-[213]: #id
-[214]: #resuming
-[215]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-[216]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-[217]: #remotecontrol
-[218]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
-[219]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-[220]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-[221]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-[222]: #remotesession
-[223]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
-[224]: #playersnapshot
-[225]: #remotedisconnectedpayload
-[226]: #remoteconnectedpayload
-[227]: #remoteavailablepayload
-[228]: #baseremoteplayer
-[229]: #remoteplayerui
+[5]: #kpplaylistitemconfigobject
+[6]: #properties
+[7]: #kpplaylistmetadata
+[8]: #properties-1
+[9]: #kpplaylistoptions
+[10]: #properties-2
+[11]: #baseremoteplayer
+[12]: #parameters-2
+[13]: #loadmedia
+[14]: #parameters-3
+[15]: #setmedia
+[16]: #parameters-4
+[17]: #getmediainfo
+[18]: #configure
+[19]: #parameters-5
+[20]: #ready
+[21]: #load
+[22]: #play
+[23]: #pause
+[24]: #reset
+[25]: #destroy
+[26]: #islive
+[27]: #examples
+[28]: #isdvr
+[29]: #examples-1
+[30]: #seektoliveedge
+[31]: #getstarttimeofdvrwindow
+[32]: #examples-2
+[33]: #gettracks
+[34]: #parameters-6
+[35]: #examples-3
+[36]: #getactivetracks
+[37]: #examples-4
+[38]: #selecttrack
+[39]: #parameters-7
+[40]: #hidetexttrack
+[41]: #enableadaptivebitrate
+[42]: #isadaptivebitrateenabled
+[43]: #examples-5
+[44]: #settextdisplaysettings
+[45]: #parameters-8
+[46]: #startcasting
+[47]: #stopcasting
+[48]: #iscasting
+[49]: #examples-6
+[50]: #iscastavailable
+[51]: #examples-7
+[52]: #getcastsession
+[53]: #examples-8
+[54]: #isvr
+[55]: #examples-9
+[56]: #togglevrstereomode
+[57]: #isinvrstereomode
+[58]: #examples-10
+[59]: #ads
+[60]: #examples-11
+[61]: #textstyle
+[62]: #parameters-9
+[63]: #textstyle-1
+[64]: #examples-12
+[65]: #buffered
+[66]: #examples-13
+[67]: #currenttime
+[68]: #parameters-10
+[69]: #currenttime-1
+[70]: #examples-14
+[71]: #duration
+[72]: #examples-15
+[73]: #volume
+[74]: #parameters-11
+[75]: #volume-1
+[76]: #examples-16
+[77]: #paused
+[78]: #examples-17
+[79]: #ended
+[80]: #examples-18
+[81]: #seeking
+[82]: #examples-19
+[83]: #muted
+[84]: #parameters-12
+[85]: #muted-1
+[86]: #examples-20
+[87]: #src
+[88]: #examples-21
+[89]: #poster
+[90]: #examples-22
+[91]: #playbackrate
+[92]: #parameters-13
+[93]: #playbackrate-1
+[94]: #examples-23
+[95]: #enginetype
+[96]: #examples-24
+[97]: #streamtype
+[98]: #examples-25
+[99]: #config
+[100]: #type
+[101]: #examples-26
+[102]: #defaultconfig
+[103]: #examples-27
+[104]: #type-1
+[105]: #examples-28
+[106]: #issupported
+[107]: #examples-29
+[108]: #casteventtype
+[109]: #examples-30
+[110]: #playersnapshot
+[111]: #parameters-14
+[112]: #starttime
+[113]: #autoplay
+[114]: #audiolanguage
+[115]: #textlanguage
+[116]: #mediainfo
+[117]: #textstyle-2
+[118]: #advertising
+[119]: #volume-2
+[120]: #muted-2
+[121]: #remotecontrol
+[122]: #parameters-15
+[123]: #getplayersnapshot
+[124]: #getuiwrapper
+[125]: #onremotedevicedisconnected
+[126]: #parameters-16
+[127]: #onremotedeviceconnected
+[128]: #parameters-17
+[129]: #onremotedeviceavailable
+[130]: #parameters-18
+[131]: #onremotedeviceconnecting
+[132]: #onremotedevicedisconnecting
+[133]: #onremotedeviceconnectfailed
+[134]: #remotepayload
+[135]: #parameters-19
+[136]: #player
+[137]: #remoteconnectedpayload
+[138]: #parameters-20
+[139]: #ui
+[140]: #session
+[141]: #remotedisconnectedpayload
+[142]: #parameters-21
+[143]: #snapshot
+[144]: #remoteavailablepayload
+[145]: #parameters-22
+[146]: #available
+[147]: #remoteplayerui
+[148]: #playbackui
+[149]: #parameters-23
+[150]: #idleui
+[151]: #parameters-24
+[152]: #adsui
+[153]: #parameters-25
+[154]: #liveui
+[155]: #parameters-26
+[156]: #errorui
+[157]: #parameters-27
+[158]: #uis
+[159]: #iremoteplayer
+[160]: #textstyle-3
+[161]: #muted-3
+[162]: #playbackrate-2
+[163]: #volume-3
+[164]: #currenttime-2
+[165]: #buffered-1
+[166]: #duration-1
+[167]: #paused-1
+[168]: #ended-1
+[169]: #seeking-1
+[170]: #src-1
+[171]: #poster-1
+[172]: #config-1
+[173]: #enginetype-1
+[174]: #streamtype-1
+[175]: #type-2
+[176]: #ads-1
+[177]: #addeventlistener
+[178]: #parameters-28
+[179]: #removeeventlistener
+[180]: #parameters-29
+[181]: #dispatchevent
+[182]: #parameters-30
+[183]: #loadmedia-1
+[184]: #parameters-31
+[185]: #setmedia-1
+[186]: #parameters-32
+[187]: #getmediainfo-1
+[188]: #configure-1
+[189]: #parameters-33
+[190]: #ready-1
+[191]: #load-1
+[192]: #play-1
+[193]: #pause-1
+[194]: #reset-1
+[195]: #destroy-1
+[196]: #islive-1
+[197]: #isdvr-1
+[198]: #seektoliveedge-1
+[199]: #getstarttimeofdvrwindow-1
+[200]: #gettracks-1
+[201]: #parameters-34
+[202]: #getactivetracks-1
+[203]: #selecttrack-1
+[204]: #parameters-35
+[205]: #hidetexttrack-1
+[206]: #enableadaptivebitrate-1
+[207]: #isadaptivebitrateenabled-1
+[208]: #settextdisplaysettings-1
+[209]: #parameters-36
+[210]: #startcasting-1
+[211]: #stopcasting-1
+[212]: #iscasting-1
+[213]: #iscastavailable-1
+[214]: #getcastsession-1
+[215]: #isvr-1
+[216]: #togglevrstereomode-1
+[217]: #isinvrstereomode-1
+[218]: #type-3
+[219]: #issupported-1
+[220]: #remotesession
+[221]: #parameters-37
+[222]: #devicefriendlyname
+[223]: #id
+[224]: #resuming
+[225]: #playlisteventtype
+[226]: #examples-31
+[227]: #playlistitem
+[228]: #parameters-38
+[229]: #sources
+[230]: #config-2
+[231]: #isplayable
+[232]: #playlistmanager
+[233]: #parameters-39
+[234]: #playnext
+[235]: #playprev
+[236]: #playitem
+[237]: #parameters-40
+[238]: #items
+[239]: #next
+[240]: #prev
+[241]: #id-1
+[242]: #metadata
+[243]: #countdown
+[244]: #options
+[245]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[246]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[247]: #kpplaylistmetadata
+[248]: #kpplaylistoptions
+[249]: #kpplaylistcountdownoptions
+[250]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[251]: #playlistitem
+[252]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[253]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[254]: #remotecontrol
+[255]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[256]: #remotesession
+[257]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[258]: #playersnapshot
+[259]: #remotedisconnectedpayload
+[260]: #remoteconnectedpayload
+[261]: #remoteavailablepayload
+[262]: #baseremoteplayer
+[263]: #remoteplayerui
+[264]: #kpplaylistitemconfigobject
