@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.6"></a>
+## [0.35.6](https://github.com/kaltura/kaltura-player-js/compare/v0.35.1...v0.35.6) (2018-11-11)
+
+
+### Bug Fixes
+
+* return analytics plugins import ([#167](https://github.com/kaltura/kaltura-player-js/issues/167)) ([55cd12d](https://github.com/kaltura/kaltura-player-js/commit/55cd12d))
+* **FEC-8588:** large play button displayed for a sec before the next item is playing ([#168](https://github.com/kaltura/kaltura-player-js/issues/168)) ([46a4c40](https://github.com/kaltura/kaltura-player-js/commit/46a4c40))
+
+
+
 <a name="0.35.5"></a>
 ## [0.35.5](https://github.com/kaltura/kaltura-player-js/compare/v0.35.4...v0.35.5) (2018-11-08)
 

@@ -4,6 +4,7 @@
  * @param {PKSourcesConfigObject} playerSources - player sources container
  * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
  * @param {Object} dimensions - player dimensions object
+ * @private
  * @returns {void}
  */
 function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): void {
