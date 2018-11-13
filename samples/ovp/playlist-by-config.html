@@ -8,8 +8,6 @@
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
 </head>
 <body>
-<button onclick="kalturaPlayer.playlist.playNext()">Play Next</button>
-<button onclick="kalturaPlayer.playlist.playPrev()">Play Prev</button>
 <div id="player-placeholder"></div>
 <script>
   var config = {
@@ -21,6 +19,9 @@
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
       }
     },
+    playback: {
+      autoplay: true
+    },
     playlist: {
       id: '1234',
       metadata: {
@@ -28,23 +29,27 @@
         description: 'my playlist desc'
       },
       items: [{
-          sources: {
-            hls: [
-              {
-                id: "id1",
-                mimetype: "application/x-mpegURL",
-                url: "https://sportstv-live.akamaized.net/hlsl/1/Cars_TV/Cars_TV.m3u8"
-              }
-            ]
-          }
-        },
+        sources: {
+          poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002/height/360/width/640',
+          hls: [
+            {
+              id: "id1",
+              mimetype: "application/x-mpegURL",
+              url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_fu4ifhie/protocol/http/format/applehttp/flavorIds/0_wbawecj0,0_cj2odpyt,0_uj45vim0,0_xlpm7btj,0_6p25la0i,0_cmq5aigy/a.m3u8"
+            }
+          ]
+        }
+      },
         {
           sources: {
+            metadata: {
+              name: 'my second entry'
+            },
             hls: [
               {
                 id: "id2",
                 mimetype: "application/x-mpegURL",
-                url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j/a.m3u8"
+                url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_15xrxwvo/protocol/http/format/applehttp/flavorIds/0_io24exzg,0_5r0geh30,0_b647tbfs,0_fzqa9ew4/a.m3u8"
               }
             ]
           }
@@ -55,7 +60,7 @@
               {
                 id: "id3",
                 mimetype: "application/x-mpegURL",
-                url: "https://demo.deltatre.it/cc-test/QualityLevels(1400000)/Manifest(video,format=m3u8-aapl).m3u8"
+                url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_p8aigvgu/protocol/http/format/applehttp/flavorIds/0_80115tmg/a.m3u8"
               }
             ]
           }
