@@ -23,7 +23,6 @@ class PlaylistManager {
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
     this._playerOptions = options;
-    this.configure(this._playerOptions.playlist);
     this.addBindings();
   }
 
