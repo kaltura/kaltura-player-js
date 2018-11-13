@@ -2,7 +2,7 @@
 /**
  * @typedef {Object} KPPlaylistMetadata
  * @property {string} name - The playlist name
- * @property {string} name - The playlist description
+ * @property {string} description - The playlist description
  */
 type _KPPlaylistMetadata = {
   name: string,

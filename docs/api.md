@@ -284,7 +284,7 @@ Type: [Object][245]
 ### Properties
 
 - `name` **[string][246]** The playlist name
-- `name` **[string][246]** The playlist description
+- `description` **[string][246]** The playlist description
 
 ## KPPlaylistOptions
 
@@ -1347,7 +1347,7 @@ Type: [Object][245]
 
 ```javascript
 // How to use
-player.addEventListener(KalturaPlayer.Playlist.PlaylistEventType.PLAYLIST_LOADED, e => {
+player.addEventListener(KalturaPlayer.playlist.PlaylistEventType.PLAYLIST_LOADED, e => {
   console.log(e.payload.playlist.metadata.name);
 };
 ```

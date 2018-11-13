@@ -11,7 +11,7 @@ const namespace = 'kaltura-player';
  * 3. PLAYLIST_ENDED
  * @example
  * // How to use
- * player.addEventListener(KalturaPlayer.Playlist.PlaylistEventType.PLAYLIST_LOADED, e => {
+ * player.addEventListener(KalturaPlayer.playlist.PlaylistEventType.PLAYLIST_LOADED, e => {
  *   console.log(e.payload.playlist.metadata.name);
  * };
  */
