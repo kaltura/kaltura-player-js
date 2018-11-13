@@ -136,10 +136,10 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       const mediaInfo = snapshot.mediaInfo;
       if (mediaInfo) {
         this.loadMedia(mediaInfo).then(() => {
-          this._eventManager.listenOnce(this, this.Event.Core.PLAYBACK_STARTED, () => {
+          this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             setInitialAttributes.call(this, snapshot);
-            setInitialTracks.call(this, snapshot);
             configurePlayback.call(this, originPlaybackConfig);
+            setInitialTracks.call(this, snapshot);
           });
         });
       }
@@ -219,6 +219,8 @@ function configurePlayback(snapshot: PlayerSnapshot): void {
 
 function setInitialAttributes(snapshot: PlayerSnapshot): void {
   this.textStyle = snapshot.textStyle;
+  this.volume = snapshot.volume;
+  this.muted = snapshot.muted;
 }
 
 function setInitialTracks(snapshot: PlayerSnapshot): void {

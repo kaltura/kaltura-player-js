@@ -21,7 +21,9 @@
     "playkit-dev-ott:start": "playkit-dev start ott",
     "playkit-dev:stop": "playkit-dev stop",
     "playkit-rel": "playkit-rel start",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "docs:generate": "documentation build flow-typed/** src/** -f md -o docs/api.md",
+    "docs:serve": "documentation serve flow-typed/** src/** --watch"
   },
   "lint-staged": {
     "*.{js,jsx}": [
