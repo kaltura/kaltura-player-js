@@ -18,6 +18,7 @@ import '@playkit-js/playkit-js-kava';
 import * as shaka from 'shaka-player';
 // Import setup method
 import {setup} from './setup';
+export {getPlayers, getPlayer} from './proxy';
 // Import cast framework
 import {cast} from './common/cast';
 // Import playlist
