@@ -21,6 +21,8 @@ import {setup} from './setup';
 import {getPlayers, getPlayer} from './kaltura-player';
 // Import cast framework
 import {cast} from './common/cast';
+// Import playlist
+import {playlist} from './common/playlist';
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
@@ -46,5 +48,6 @@ export {
   __VERSION__ as VERSION,
   __NAME__ as PLAYER_NAME,
   getPlayers,
-  getPlayer
+  getPlayer,
+  playlist
 };

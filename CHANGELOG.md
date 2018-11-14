@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.8"></a>
+## [0.35.8](https://github.com/kaltura/kaltura-player-js/compare/v0.35.7...v0.35.8) (2018-11-14)
+
+
+
+<a name="0.35.7"></a>
+## [0.35.7](https://github.com/kaltura/kaltura-player-js/compare/v0.35.6...v0.35.7) (2018-11-14)
+
+
+### Bug Fixes
+
+* **FEC-8581:** playlist by config, no playlist buttons in first video ([#171](https://github.com/kaltura/kaltura-player-js/issues/171)) ([5e1ab92](https://github.com/kaltura/kaltura-player-js/commit/5e1ab92))
+* **FEC-8588:** large play button displayed for a sec before the next item is playing ([#172](https://github.com/kaltura/kaltura-player-js/issues/172)) ([cc2f8f2](https://github.com/kaltura/kaltura-player-js/commit/cc2f8f2))
+* **FEC-8685:** when disconnecting from cast player state is wrong - local and cast mode is not in sync ([#170](https://github.com/kaltura/kaltura-player-js/issues/170)) ([263f915](https://github.com/kaltura/kaltura-player-js/commit/263f915))
+
+
+
 <a name="0.35.6"></a>
 ## [0.35.6](https://github.com/kaltura/kaltura-player-js/compare/v0.35.1...v0.35.6) (2018-11-11)
 

@@ -1,4 +1,9 @@
 // @flow
+/**
+ * @class PlaylistItem
+ * @param {ProviderMediaConfigSourcesObject} [sources] - The item sources
+ * @param {KPPlaylistItemConfigObject} [config] - The item config
+ */
 class PlaylistItem {
   _sources: ?ProviderMediaConfigSourcesObject;
   _config: ?KPPlaylistItemConfigObject;
@@ -8,14 +13,31 @@ class PlaylistItem {
     this._config = config;
   }
 
+  /**
+   * Playlist item sources
+   * @type {?ProviderMediaConfigSourcesObject}
+   * @instance
+   * @memberof PlaylistItem
+   */
   get sources(): ?ProviderMediaConfigSourcesObject {
     return this._sources;
   }
 
+  /**
+   * Playlist item config
+   * @type {?KPPlaylistItemConfigObject}
+   * @instance
+   * @memberof PlaylistItem
+   */
   get config(): ?KPPlaylistItemConfigObject {
     return this._config;
   }
 
+  /**
+   * @returns {boolean} = Whether the playlist item has sources to play
+   * @instance
+   * @memberof PlaylistItem
+   */
   isPlayable(): boolean {
     return !!(
       this._sources &&
