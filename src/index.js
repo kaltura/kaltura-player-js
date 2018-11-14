@@ -18,7 +18,7 @@ import '@playkit-js/playkit-js-kava';
 import * as shaka from 'shaka-player';
 // Import setup method
 import {setup} from './setup';
-import {getPlayers, getPlayer} from './kaltura-player';
+export {getPlayers, getPlayer} from './proxy';
 // Import cast framework
 import {cast} from './common/cast';
 // Import playlist
@@ -37,17 +37,4 @@ setLogLevel(currentLogLevel);
 
 PolyfillManager.installAll();
 
-export {
-  core,
-  ui,
-  providers,
-  setup,
-  shaka,
-  cast,
-  __PLAYER_TYPE__ as PLAYER_TYPE,
-  __VERSION__ as VERSION,
-  __NAME__ as PLAYER_NAME,
-  getPlayers,
-  getPlayer,
-  playlist
-};
+export {core, ui, providers, setup, shaka, cast, playlist, __PLAYER_TYPE__ as PLAYER_TYPE, __VERSION__ as VERSION, __NAME__ as PLAYER_NAME};

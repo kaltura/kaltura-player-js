@@ -2,9 +2,35 @@
 import {KalturaPlayer} from './kaltura-player';
 import {FakeEventTarget} from '@playkit-js/playkit-js';
 
+const Players: KalturaPlayers = {};
+/**
+ * get all instantiated players
+ * @returns {KalturaPlayers} - map of player ids and their respective instantiated player
+ */
+function getPlayers(): KalturaPlayers {
+  return Players;
+}
+
+/**
+ * get a player instance by id
+ * @param {string} id - the player ID
+ * @returns {KalturaPlayer | null} - the player if found by the supplied ID or null if key doesn't exist
+ */
+function getPlayer(id: string): ?KalturaPlayer {
+  if (Players[id]) {
+    return Players[id];
+  }
+  return null;
+}
+
 const proxyIgnoredProps: Array<string> = ['_remotePlayer', '_listeners', '_uiWrapper'];
 const proxyHandler: Object = {
   get(kp: KalturaPlayer, prop: string) {
+    if (prop === 'destroy') {
+      const playerId = kp.config.targetId;
+      delete Players[playerId];
+    }
+
     if (prop in FakeEventTarget.prototype || proxyIgnoredProps.includes(prop)) {
       // $FlowFixMe
       return kp[prop];
@@ -30,7 +56,9 @@ const proxyHandler: Object = {
 
 const getPlayerProxy = (options: KPOptionsObject) => {
   const player = new KalturaPlayer(options);
-  return new Proxy(player, proxyHandler);
+  const proxy = new Proxy(player, proxyHandler);
+  Players[options.targetId] = proxy;
+  return proxy;
 };
 
-export {getPlayerProxy};
+export {getPlayerProxy, getPlayer, getPlayers};
