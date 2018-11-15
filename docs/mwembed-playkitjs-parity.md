@@ -33,7 +33,7 @@
 
 | Browser  			| mwEmbed 				| kaltura-player-js 			|
 |-------------------|-----------------------|-----------------------|
-| Chromecast  	| Yes              | Ywa	|
+| Chromecast  	| Yes              | Yes	|
 | AirPlay  	| Yes              | Yes	|
 | Samsung (Tizen, Orsay)  	| No              | Q1 2019	|
 | LG (WebOS, Netcast)  	| No              | Q1 2019	|
