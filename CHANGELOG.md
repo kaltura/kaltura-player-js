@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.36.0"></a>
+# [0.36.0](https://github.com/kaltura/kaltura-player-js/compare/v0.35.8...v0.36.0) (2018-11-15)
+
+
+### Bug Fixes
+
+* **FEC-8621:** playerdestory event is not sent on player destory ([a1b0597](https://github.com/kaltura/kaltura-player-js/commit/a1b0597))
+
+
+### Features
+
+* **FEC-8153:** save reference to player instances and expose API to get them ([#174](https://github.com/kaltura/kaltura-player-js/issues/174)) ([764849b](https://github.com/kaltura/kaltura-player-js/commit/764849b))
+
+
+
 <a name="0.35.8"></a>
 ## [0.35.8](https://github.com/kaltura/kaltura-player-js/compare/v0.35.7...v0.35.8) (2018-11-14)
 
