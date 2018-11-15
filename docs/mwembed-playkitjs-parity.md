@@ -33,7 +33,7 @@
 
 | Browser  			| mwEmbed 				| kaltura-player-js 			|
 |-------------------|-----------------------|-----------------------|
-| Chromecast  	| Yes              | Q3 2018	|
+| Chromecast  	| Yes              | Ywa	|
 | AirPlay  	| Yes              | Yes	|
 | Samsung (Tizen, Orsay)  	| No              | Q1 2019	|
 | LG (WebOS, Netcast)  	| No              | Q1 2019	|
@@ -86,13 +86,13 @@
 | Replay							| Yes					| Yes 					|
 | Watermark 						| Yes					| Yes					|
 | Mobile Skin						| Yes					| Yes 					|
-| i18n UI Translations 				| Yes					| Q3 2018		|
-| Playlist							| Yes					| H2 2018 		|
-| Share and Embed screen			| Yes					| H2 2018 		|
-| Titlebar							| Yes					| H2 2018 		|
-| End of Playback Screen / Related	| Yes					| H2 2018 		|
+| i18n UI Translations 				| Yes					| Yes		|
+| Playlist							| Yes					|Yes (No UI)		|
+| Share and Embed screen			| Yes					| H1 2019 		|
+| Titlebar							| Yes					| H2 2019 		|
+| End of Playback Screen / Related	| Yes					| H1 2019 		|
 | Info Screen 						| Yes					| N/A 			 		|
-| Player.js / Embedly				| Yes					| N/A 		|
+| Player.js / Embedly				| Yes					|H1 2019 		|
 | Report Abuse (Flag for moderator)	| Yes					| N/A 		|
 
 ## Selective Packaging of Plugins
@@ -107,7 +107,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 |-----------------------------------|-----------------------|-----------------------|
 | CVAA Captions Style Controls 		| Yes					| Yes 					|
 | Keyboard Shortcuts / Navigation 	| Yes					| Yes 					|
-| Aria Tags (Screen Readers Support)| Yes					| H2 2018		|
+| Aria Tags (Screen Readers Support)| Yes					| H1 2019		|
 
 ## Analytics
 
@@ -118,8 +118,8 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 | Youbora (Nice People At Work)	 	| Yes					| Yes 					|
 | Google Analytics 				 	| Yes					| Yes 		|
 | comScore		 				 	| Yes					| Yes  					|
-| Adobe Analytics / Omniture		| Yes					| Q4 2018  					|
-| Nielsen		 				 	| Yes					| Q4 2018 			 		|
+| Adobe Analytics / Omniture		| Yes					| Q2 2019  					|
+| Nielsen		 				 	| Yes					| Q2 2019 			 		|
 | Marketo		 				 	| Yes					| No 			 		|
 | Eloqua		 				 	| Yes					| No 			 		|
 
@@ -129,7 +129,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 |-----------------------------------|-----------------------|-----------------------|
 | Playback and UI				 	| Yes					| Yes 					|
 | DVR							 	| Yes					| Yes 					|
-| Waiting Screen (isLive?) 			| Yes					| No, in roadmap 		|
+| Waiting Screen (isLive?) 			| Yes					| No 		|
 
 > See Interactivity and Use-Case Functionality for Webcasting.
 
