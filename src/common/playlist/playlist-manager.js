@@ -45,14 +45,7 @@ class PlaylistManager {
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this}));
-        const next = this._playlist.next;
-        if (next.item) {
-          this._setItem(next.item, next.index).then(() => {
-            this._eventManager.listenOnce(this._player, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-              this._player.configure({playback: {autoplay: true}});
-            });
-          });
-        }
+        this.playNext();
       }
     }
   }
@@ -200,16 +193,21 @@ class PlaylistManager {
 
   _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
     this._logger.debug(`Playing item number ${index}`, activeItem);
+    if (this._playlist.current.item) {
+      // from the second item onwards
+      this._player.configure({playback: {autoplay: true}});
+    }
     this._playlist.activeItemIndex = index;
-    this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
     if (activeItem.isPlayable()) {
       this._player.reset();
       // $FlowFixMe
       this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
+      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
     } else if (activeItem.sources && activeItem.sources.id) {
       return this._player.loadMedia({entryId: activeItem.sources.id}).then(mediaConfig => {
         Utils.Object.mergeDeep(activeItem.sources, mediaConfig.sources);
+        this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       });
     }
     return Promise.reject();
