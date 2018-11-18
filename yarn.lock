@@ -14,12 +14,12 @@
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kanalytics/-/playkit-js-kanalytics-0.10.0.tgz#709b3f7589cb6ad0e511a3c1b3da26b51d35a903"
 
-"@playkit-js/playkit-js-kava@^0.5.0":
+"@playkit-js/playkit-js-kava@^0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.5.1.tgz#9239bd683d6c0ab2245f88dc00dab03f7b1e5022"
   integrity sha512-wvpccZiQ7VTJp9HmoiWmLI3Bcl2lEf2NK6R2wPL98Xqva9SaR0G0+s8DMv5W6ukSIv01dhW4LI7ysyFm/haD3Q==
 
-"@playkit-js/playkit-js-ott-analytics@^0.3.0":
+"@playkit-js/playkit-js-ott-analytics@^0.3.1":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.3.1.tgz#571e3584c949153cbddaf635d40c4030c8d5ff51"
   integrity sha512-yfo2TLBmKkfEciEEJEQaGB+5YXUuXltyxx57pG1fJzk76sxl1TRNZDeeVpeeguALVL192TVkpDmzUBQ762OQjA==
@@ -36,7 +36,7 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.41.0":
+"@playkit-js/playkit-js@^0.41.1":
   version "0.41.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.41.1.tgz#813fdbd7fd1af8433f16207cc797c0d4a3130110"
   integrity sha512-053kMMS0gtz/LJV2ZvSaiZnmjyhgtp/eI5tU5eLCMRBIIJYVSTqmv03Xl11hvRKKDEFxzN7uQ22k9L9QdI61Ew==
@@ -6332,9 +6332,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.9.0":
-  version "2.9.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#ce198fbd5c097be0d46253def1359b331e138205"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.10.0":
+  version "2.10.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#10291cad262e12a07c3077341d73f4a2350ac115"
   dependencies:
     js-logger "^1.3.0"
 
@@ -8295,7 +8295,6 @@ typedarray@^0.0.6, typedarray@~0.0.5:
 ua-parser-js@^0.7.13:
   version "0.7.19"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.19.tgz#94151be4c0a7fb1d001af7022fdaca4642659e4b"
-  integrity sha512-T3PVJ6uz8i0HzPxOF9SWzWAlfN/DavlpQqepn22xgve/5QecC+XMCAtmUNnY7C9StehaV6exjUCI801lOI7QlQ==
 
 uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
