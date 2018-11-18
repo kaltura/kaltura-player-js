@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.36.1"></a>
+## [0.36.1](https://github.com/kaltura/kaltura-player-js/compare/v0.36.0...v0.36.1) (2018-11-18)
+
+
+### Bug Fixes
+
+* **FEC-8689:** PLAYLIST_ITEM_CHANGED event fired before item has been changed ([#175](https://github.com/kaltura/kaltura-player-js/issues/175)) ([3892d98](https://github.com/kaltura/kaltura-player-js/commit/3892d98))
+
+
+
 <a name="0.36.0"></a>
 # [0.36.0](https://github.com/kaltura/kaltura-player-js/compare/v0.35.8...v0.36.0) (2018-11-15)
 
