@@ -27,7 +27,6 @@ class PlaylistManager {
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
     this._playerOptions = options;
-    this._addBindings();
   }
 
   /**
@@ -45,6 +44,7 @@ class PlaylistManager {
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this}));
+        this._addBindings();
         this.playNext();
       }
     }
@@ -58,6 +58,7 @@ class PlaylistManager {
    * @private
    */
   reset() {
+    this._eventManager.removeAll();
     this._playlist = new Playlist();
   }
 
