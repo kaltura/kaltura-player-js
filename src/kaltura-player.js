@@ -85,7 +85,6 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
-    this._playlistManager.reset();
     return this._provider
       .getPlaylistConfig(playlistInfo)
       .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig))
@@ -99,7 +98,6 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
-    this._playlistManager.reset();
     return this._provider
       .getEntryListConfig(entryList)
       .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig))
@@ -116,6 +114,7 @@ class KalturaPlayer extends FakeEventTarget {
     // $FlowFixMe
     evaluatePluginsConfig(config);
     this._localPlayer.configure({plugins: config.plugins});
+    this._playlistManager.reset();
     this._playlistManager.configure(config.playlist);
   }
 
