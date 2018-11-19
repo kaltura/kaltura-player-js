@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.36.2"></a>
+## [0.36.2](https://github.com/kaltura/kaltura-player-js/compare/v0.36.1...v0.36.2) (2018-11-19)
+
+
+### Bug Fixes
+
+* **FEC-8698:** when ui is disabled, playNext() called even when playlist isn't configured ([#177](https://github.com/kaltura/kaltura-player-js/issues/177)) ([7a70147](https://github.com/kaltura/kaltura-player-js/commit/7a70147))
+* export does not transpile correctly [#176](https://github.com/kaltura/kaltura-player-js/issues/176) ([c7532d4](https://github.com/kaltura/kaltura-player-js/commit/c7532d4))
+
+
+
 <a name="0.36.1"></a>
 ## [0.36.1](https://github.com/kaltura/kaltura-player-js/compare/v0.36.0...v0.36.1) (2018-11-18)
 
