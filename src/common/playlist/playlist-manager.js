@@ -23,6 +23,7 @@ class PlaylistManager {
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
     this._eventManager = new EventManager();
+    this._playlist = new Playlist();
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
     this._playerOptions = options;
