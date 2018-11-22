@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.36.4"></a>
+## [0.36.4](https://github.com/kaltura/kaltura-player-js/compare/v0.36.3...v0.36.4) (2018-11-22)
+
+
+### Bug Fixes
+
+* **FEC-8713:** playlist by config not playing ([#179](https://github.com/kaltura/kaltura-player-js/issues/179)) ([da3ee4e](https://github.com/kaltura/kaltura-player-js/commit/da3ee4e))
+
+
+
 <a name="0.36.3"></a>
 ## [0.36.3](https://github.com/kaltura/kaltura-player-js/compare/v0.36.2...v0.36.3) (2018-11-20)
 

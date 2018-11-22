@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.36.3",
+  "version": "0.36.4",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -95,7 +95,7 @@
     "webpack-dev-server": "latest"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "^0.41.2",
+    "@playkit-js/playkit-js": "^0.42.0",
     "@playkit-js/playkit-js-dash": "^1.8.2",
     "@playkit-js/playkit-js-hls": "^1.10.2",
     "@playkit-js/playkit-js-kanalytics": "^0.10.0",
