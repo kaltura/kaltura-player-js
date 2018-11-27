@@ -5,7 +5,6 @@ import {evaluatePluginsConfig} from './common/plugins/plugins-config';
 import {
   applyCastSupport,
   applyStorageSupport,
-  attachToFirstClick,
   getDefaultOptions,
   printSetupMessages,
   setLogLevel,
@@ -33,7 +32,6 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   setStorageTextStyle(player);
   applyStorageSupport(player);
   applyCastSupport(defaultOptions, player);
-  attachToFirstClick(player);
   return player;
 }
 
