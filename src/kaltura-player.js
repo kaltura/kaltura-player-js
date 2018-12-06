@@ -27,6 +27,7 @@ import {
   Track,
   Utils
 } from '@playkit-js/playkit-js';
+import {ResizeWatcher} from './common/resize-watcher';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
@@ -36,6 +37,7 @@ class KalturaPlayer extends FakeEventTarget {
   _provider: Provider;
   _uiWrapper: UIWrapper;
   _logger: any;
+  _resizeWatcher: ResizeWatcher;
 
   constructor(options: KPOptionsObject) {
     super();
@@ -46,6 +48,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
+    this._resizeWatcher = new ResizeWatcher(options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
   }
 
@@ -165,6 +168,7 @@ class KalturaPlayer extends FakeEventTarget {
     const targetId = this.config.ui.targetId;
     this._localPlayer.destroy();
     this._uiWrapper.destroy();
+    this._resizeWatcher.destroy();
     this._eventManager.destroy();
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
