@@ -559,15 +559,6 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   }
 
   /**
-   * @returns {Object} - The runtime cast config.
-   * @instance
-   * @memberof BaseRemotePlayer
-   */
-  get config(): Object {
-    return this._config;
-  }
-
-  /**
    * @returns {string} - The remote player type.
    * @instance
    * @memberof BaseRemotePlayer
