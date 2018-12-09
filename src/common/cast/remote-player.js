@@ -88,13 +88,6 @@ export interface IRemotePlayer {
   +poster: string;
   /**
    * @readonly
-   * @type {Object}
-   * @instance
-   * @memberof IRemotePlayer
-   */
-  +config: Object;
-  /**
-   * @readonly
    * @type {string}
    * @instance
    * @memberof IRemotePlayer
