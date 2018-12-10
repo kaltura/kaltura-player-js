@@ -21,9 +21,13 @@ class Playlist {
     if (config.items) {
       this._items = [];
       config.items.forEach(item => {
-        this._items.push(new PlaylistItem(item.sources, item.config));
+        this._items.push(new PlaylistItem(item.sources, item.config, item.mediaInfo));
       });
     }
+  }
+
+  updateItemSources(index: number, sourcesObject: ProviderMediaConfigSourcesObject) {
+    this._items[index].updateSources(sourcesObject);
   }
 
   get id(): string {
@@ -39,15 +43,15 @@ class Playlist {
   }
 
   get current(): {item: ?PlaylistItem, index: number} {
-    return {item: this.items[this._activeItemIndex] || null, index: this._activeItemIndex};
+    return {item: this._items[this._activeItemIndex] || null, index: this._activeItemIndex};
   }
 
   get next(): {item: ?PlaylistItem, index: number} {
-    return {item: this.items[this._activeItemIndex + 1] || null, index: this._activeItemIndex + 1};
+    return {item: this._items[this._activeItemIndex + 1] || null, index: this._activeItemIndex + 1};
   }
 
   get prev(): {item: ?PlaylistItem, index: number} {
-    return {item: this.items[this._activeItemIndex - 1] || null, index: this._activeItemIndex - 1};
+    return {item: this._items[this._activeItemIndex - 1] || null, index: this._activeItemIndex - 1};
   }
 
   set activeItemIndex(index: number): void {

@@ -205,9 +205,9 @@ class PlaylistManager {
       this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
-    } else if (activeItem.sources && activeItem.sources.id) {
-      return this._player.loadMedia({entryId: activeItem.sources.id}).then(mediaConfig => {
-        Utils.Object.mergeDeep(activeItem.sources, mediaConfig.sources);
+    } else if (activeItem.mediaInfo) {
+      return this._player.loadMedia(activeItem.mediaInfo).then(mediaConfig => {
+        this._playlist.updateItemSources(index, mediaConfig.sources);
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       });
     }

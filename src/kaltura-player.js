@@ -96,11 +96,20 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
+    const supportLegacyEntryList = entryList => {
+      if (entryList.entries) {
+        return entryList.entries.map(entry => {
+          return typeof entry === 'string' ? {entryId: entry} : entry;
+        });
+      }
+      return [];
+    };
+    entryList.entries = supportLegacyEntryList(entryList);
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
       .getEntryListConfig(entryList)
-      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig))
+      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig, entryList))
       .catch(e =>
         this._localPlayer.dispatchEvent(
           new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
@@ -463,10 +472,21 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  // $FlowFixMe
-  _mergePlaylistConfigAndSet(playlistConfigFromAPI: KPPlaylistConfigObject, playlistOptions: KPPlaylistConfigObject = {}): void {
+  _mergePlaylistConfigAndSet(
+    playlistConfigFromAPI: KPPlaylistConfigObject,
+    // $FlowFixMe
+    playlistOptions: KPPlaylistConfigObject = {},
+    entryList: ?ProviderEntryListObject
+  ): void {
     playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
-      return {sources: item.sources, config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config};
+      const playerConfig = Utils.Object.copyDeep(item);
+      Utils.Object.mergeDeep(playerConfig.sources, playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].sources);
+      addKalturaPoster(playerConfig.sources, item.sources, this._localPlayer.dimensions);
+      return {
+        sources: playerConfig.sources,
+        config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config,
+        mediaInfo: (entryList && entryList.entries && entryList.entries[index]) || {entryId: playerConfig.sources.id}
+      };
     });
     Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
     this.setPlaylist(playlistConfigFromAPI);
