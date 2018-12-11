@@ -61,11 +61,12 @@ class KalturaPlayer extends FakeEventTarget {
         this.setMedia(mediaConfig);
         return Promise.resolve(mediaConfig);
       })
-      .catch(e =>
+      .catch(e => {
         this._localPlayer.dispatchEvent(
           new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-      );
+        );
+        return Promise.reject(e);
+      });
   }
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
@@ -82,49 +83,48 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
-  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
+  loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
       .getPlaylistConfig(playlistInfo)
-      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig))
-      .catch(e =>
+      .then(playlistData => {
+        this.setPlaylist(playlistData, playlistConfig);
+        return Promise.resolve(playlistData);
+      })
+      .catch(e => {
         this._localPlayer.dispatchEvent(
           new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-      );
+        );
+        return Promise.reject(e);
+      });
   }
 
-  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistCustomConfig: KPPlaylistConfigObject): Promise<*> {
-    const supportLegacyEntryList = entryList => {
-      if (entryList.entries) {
-        return entryList.entries.map(entry => {
-          return typeof entry === 'string' ? {entryId: entry} : entry;
-        });
-      }
-      return [];
-    };
-    entryList.entries = supportLegacyEntryList(entryList);
+  loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider
       .getEntryListConfig(entryList)
-      .then(playlistConfig => this._mergePlaylistConfigAndSet(playlistConfig, playlistCustomConfig, entryList))
-      .catch(e =>
+      .then(playlistData => {
+        this.setPlaylist(playlistData, playlistConfig, entryList);
+        return Promise.resolve(playlistData);
+      })
+      .catch(e => {
         this._localPlayer.dispatchEvent(
           new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-      );
+        );
+        return Promise.reject(e);
+      });
   }
 
-  setPlaylist(playlistConfig: KPPlaylistConfigObject): void {
-    this._logger.debug('setPlaylist', playlistConfig);
-    const config = {playlist: playlistConfig, plugins: this._localPlayer.config.plugins};
+  setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
+    this._logger.debug('setPlaylist', playlistData);
+    const config = {playlist: playlistData, plugins: this._localPlayer.config.plugins};
     // $FlowFixMe
     evaluatePluginsConfig(config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.reset();
-    this._playlistManager.configure(config.playlist);
+    this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
@@ -470,26 +470,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   get Error(): typeof Error {
     return this._localPlayer.Error;
-  }
-
-  _mergePlaylistConfigAndSet(
-    playlistConfigFromAPI: KPPlaylistConfigObject,
-    // $FlowFixMe
-    playlistOptions: KPPlaylistConfigObject = {},
-    entryList: ?ProviderEntryListObject
-  ): void {
-    playlistOptions.items = playlistConfigFromAPI.items.map((item, index) => {
-      const playerConfig = Utils.Object.copyDeep(item);
-      Utils.Object.mergeDeep(playerConfig.sources, playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].sources);
-      addKalturaPoster(playerConfig.sources, item.sources, this._localPlayer.dimensions);
-      return {
-        sources: playerConfig.sources,
-        config: playlistOptions.items && playlistOptions.items[index] && playlistOptions.items[index].config,
-        mediaInfo: (entryList && entryList.entries && entryList.entries[index]) || {entryId: playerConfig.sources.id}
-      };
-    });
-    Utils.Object.mergeDeep(playlistConfigFromAPI, playlistOptions);
-    this.setPlaylist(playlistConfigFromAPI);
   }
 }
 

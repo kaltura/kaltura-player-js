@@ -4,24 +4,27 @@ import {PlaylistItem} from './playlist-item';
 
 class Playlist {
   _id: string;
+  _metadata: ProviderPlaylistMetadataObject;
+  _poster: ?string;
   _items: Array<PlaylistItem>;
-  _metadata: KPPlaylistMetadata;
   _activeItemIndex: number;
 
   constructor() {
     this._id = '';
-    this._items = [];
     this._metadata = {name: '', description: ''};
+    this._poster = '';
+    this._items = [];
     this._activeItemIndex = -1;
   }
 
-  configure(config: KPPlaylistConfigObject) {
+  configure(config: KPPlaylistObject) {
     this._id = config.id;
+    this._poster = config.poster;
     Utils.Object.mergeDeep(this._metadata, config.metadata);
     if (config.items) {
       this._items = [];
       config.items.forEach(item => {
-        this._items.push(new PlaylistItem(item.sources, item.config, item.mediaInfo));
+        this._items.push(new PlaylistItem(item.sources, item.config));
       });
     }
   }
@@ -38,8 +41,12 @@ class Playlist {
     return this._items;
   }
 
-  get metadata(): KPPlaylistMetadata {
+  get metadata(): ProviderPlaylistMetadataObject {
     return this._metadata;
+  }
+
+  get poster(): ?string {
+    return this._poster;
   }
 
   get current(): {item: ?PlaylistItem, index: number} {

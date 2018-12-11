@@ -7,12 +7,10 @@
 class PlaylistItem {
   _sources: ?ProviderMediaConfigSourcesObject;
   _config: ?KPPlaylistItemConfigObject;
-  _mediaInfo: ?ProviderMediaInfoObject;
 
-  constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject, _mediaInfo: ?ProviderMediaInfoObject) {
+  constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
     this._config = config;
-    this._mediaInfo = _mediaInfo;
   }
 
   /**
@@ -48,16 +46,6 @@ class PlaylistItem {
    */
   get config(): ?KPPlaylistItemConfigObject {
     return this._config;
-  }
-
-  /**
-   * Playlist item mediaInfo
-   * @type {?ProviderMediaInfoObject}
-   * @instance
-   * @memberof PlaylistItem
-   */
-  get mediaInfo(): ?ProviderMediaInfoObject {
-    return this._mediaInfo;
   }
 
   /**
