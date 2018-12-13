@@ -26,10 +26,8 @@ class PlaylistManager {
     this._player = player;
     this._eventManager = new EventManager();
     this._playlist = new Playlist();
-    this._options = {autoContinue: true};
-    this._countdown = {duration: 10, showing: true};
+    this._setDefaultValues();
     this._playerOptions = options;
-    this._mediaInfoList = [];
   }
 
   /**
@@ -81,6 +79,7 @@ class PlaylistManager {
   reset() {
     this._eventManager.removeAll();
     this._playlist = new Playlist();
+    this._setDefaultValues();
   }
 
   /**
@@ -209,6 +208,12 @@ class PlaylistManager {
    */
   get options(): KPPlaylistOptions {
     return this._options;
+  }
+
+  _setDefaultValues() {
+    this._options = {autoContinue: true};
+    this._countdown = {duration: 10, showing: true};
+    this._mediaInfoList = [];
   }
 
   _getMergedPlaylistData(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject): KPPlaylistObject {

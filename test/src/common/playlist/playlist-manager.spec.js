@@ -205,4 +205,21 @@ describe('PlaylistManager', function() {
       playlistManager._mediaInfoList[0].entryId.should.equal('123');
     });
   });
+
+  describe('reset', function() {
+    it('should reset to the default values', function() {
+      playlistManager.configure({id: '1234', options: {autoContinue: false}, countdown: {duration: 20, showing: false, timeToShow: 50}});
+      playlistManager._playlist.id.should.equal('1234');
+      playlistManager._options.autoContinue.should.be.false;
+      playlistManager._countdown.duration.should.equal(20);
+      playlistManager._countdown.showing.should.be.false;
+      playlistManager._countdown.timeToShow.should.equal(50);
+      playlistManager.reset();
+      playlistManager._playlist.id.should.equal('');
+      playlistManager._options.autoContinue.should.be.true;
+      playlistManager._countdown.duration.should.equal(10);
+      playlistManager._countdown.showing.should.be.true;
+      playlistManager._mediaInfoList.length.should.equal(0);
+    });
+  });
 });
