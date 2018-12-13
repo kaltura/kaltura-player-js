@@ -61,7 +61,7 @@ class PlaylistManager {
   /**
    * Load a playlist
    * @param {KPPlaylistObject} playlistData - The playlist data
-   * @param {KPPlaylistConfigObject} playlistConfig - The playlist config
+   * @param {KPPlaylistConfigObject} [playlistConfig] - The playlist config
    * @param {ProviderEntryListObject} [entryList] - Entry list
    * @returns {void}
    * @instance

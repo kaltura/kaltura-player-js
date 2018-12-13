@@ -1423,7 +1423,7 @@ Load a playlist
 #### Parameters
 
 -   `playlistData` **KPPlaylistObject** The playlist data
--   `playlistConfig` **[KPPlaylistConfigObject][274]** The playlist config
+-   `playlistConfig` **[KPPlaylistConfigObject][274]?** The playlist config
 -   `entryList` **ProviderEntryListObject?** Entry list
 
 Returns **void** 
