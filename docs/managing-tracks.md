@@ -212,3 +212,9 @@ player.addEventListener(player.Event.TEXT_TRACK_CHANGED, function(event) {
 });
 player.hideTextTrack();
 ```
+
+> ### Text Track default label
+>
+> A Text Track has language and label properties. The label is set by the label property in the manifest.
+> However, in case the manifest does not have a label property - the language property will be set as the tracks label.
+> You can set a custom label to a Text Track - read about it [here](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configcustomlabels)
