@@ -116,6 +116,13 @@ export interface IRemotePlayer {
   +ads: ?Object;
   /**
    * @readonly
+   * @type {KPOptionsObject}
+   * @instance
+   * @memberof IRemotePlayer
+   */
+  +config: Object;
+  /**
+   * @readonly
    * @static
    * @type {string}
    * @memberof IRemotePlayer

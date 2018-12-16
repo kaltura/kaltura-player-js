@@ -132,7 +132,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     if (snapshot) {
       this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
       const originPlaybackConfig = this.config.playback;
-      configurePlayback.call(this, snapshot);
+      configurePlayback.call(this, snapshot.config.playback);
       const mediaInfo = snapshot.mediaInfo;
       if (mediaInfo) {
         this.loadMedia(mediaInfo).then(() => {
@@ -188,7 +188,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
           delayInitUntilSourceSelected: true,
           adsRenderingSettings: {
             // We don't want to play ads that already played in the receiver
-            playAdsAfterTime: snapshot.startTime
+            playAdsAfterTime: snapshot.config.playback.startTime
           }
         }
       }
@@ -207,8 +207,8 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   this._uiWrapper.setConfig({isCastAvailable: this.isCastAvailable()}, 'engine');
 }
 
-function configurePlayback(snapshot: PlayerSnapshot): void {
-  const {autoplay, startTime} = snapshot;
+function configurePlayback(playbackConfig: Object): void {
+  const {autoplay, startTime} = playbackConfig;
   this.configure({
     playback: {
       startTime,
@@ -219,17 +219,17 @@ function configurePlayback(snapshot: PlayerSnapshot): void {
 
 function setInitialAttributes(snapshot: PlayerSnapshot): void {
   this.textStyle = snapshot.textStyle;
-  this.volume = snapshot.volume;
-  this.muted = snapshot.muted;
+  this.volume = snapshot.config.playback.volume;
+  this.muted = snapshot.config.playback.muted;
 }
 
-function setInitialTracks(snapshot: PlayerSnapshot): void {
-  if (snapshot.audioLanguage) {
-    const audioTrack = this.getTracks(TrackType.AUDIO).find(t => t.language === snapshot.audioLanguage);
+function setInitialTracks(playbackConfig: Object): void {
+  if (playbackConfig.audioLanguage) {
+    const audioTrack = this.getTracks(TrackType.AUDIO).find(t => t.language === playbackConfig.audioLanguage);
     this.selectTrack(audioTrack);
   }
-  if (snapshot.textLanguage) {
-    const textTrack = this.getTracks(TrackType.TEXT).find(t => t.language === snapshot.textLanguage);
+  if (playbackConfig.textLanguage) {
+    const textTrack = this.getTracks(TrackType.TEXT).find(t => t.language === playbackConfig.textLanguage);
     this.selectTrack(textTrack);
   }
 }
