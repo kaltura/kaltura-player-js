@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.37.0"></a>
+# [0.37.0](https://github.com/kaltura/kaltura-player-js/compare/v0.36.7...v0.37.0) (2018-12-16)
+
+
+### Bug Fixes
+
+* **FEC-8595:** disconnect from cast failed ([#188](https://github.com/kaltura/kaltura-player-js/issues/188)) ([8825fae](https://github.com/kaltura/kaltura-player-js/commit/8825fae))
+* **FEC-8719:** volume is not in sync when switching between sender-receiver ([#189](https://github.com/kaltura/kaltura-player-js/issues/189)) ([222d214](https://github.com/kaltura/kaltura-player-js/commit/222d214))
+
+
+### Features
+
+* **FEC-8507:** update hlsjs version to 0.12.0 ([#187](https://github.com/kaltura/kaltura-player-js/issues/187)) ([7e7b669](https://github.com/kaltura/kaltura-player-js/commit/7e7b669))
+* **FEC-8705:** playlist - OTT support ([#186](https://github.com/kaltura/kaltura-player-js/issues/186)) ([6db068b](https://github.com/kaltura/kaltura-player-js/commit/6db068b))
+
+
+
 <a name="0.36.7"></a>
 ## [0.36.7](https://github.com/kaltura/kaltura-player-js/compare/v0.36.5...v0.36.7) (2018-12-12)
 
