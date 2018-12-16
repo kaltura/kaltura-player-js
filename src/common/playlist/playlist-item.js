@@ -14,6 +14,21 @@ class PlaylistItem {
   }
 
   /**
+   * Update the playlist item sources
+   * @param {ProviderMediaConfigSourcesObject} sourcesObject - The sources
+   * @returns {void}
+   * @instance
+   * @memberof PlaylistItem
+   */
+  updateSources(sourcesObject: ProviderMediaConfigSourcesObject): void {
+    if (this._sources) {
+      this._sources.hls = sourcesObject.hls;
+      this._sources.dash = sourcesObject.dash;
+      this._sources.progressive = sourcesObject.progressive;
+    }
+  }
+
+  /**
    * Playlist item sources
    * @type {?ProviderMediaConfigSourcesObject}
    * @instance
