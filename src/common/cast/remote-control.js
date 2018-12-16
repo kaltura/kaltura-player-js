@@ -207,7 +207,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   this._uiWrapper.setConfig({isCastAvailable: this.isCastAvailable()}, 'engine');
 }
 
-function configurePlayback(playbackConfig: PKPlaybackConfigObject): void {
+function configurePlayback(playbackConfig: Object): void {
   const {autoplay, startTime} = playbackConfig;
   this.configure({
     playback: {
@@ -223,7 +223,7 @@ function setInitialAttributes(snapshot: PlayerSnapshot): void {
   this.muted = snapshot.config.playback.muted;
 }
 
-function setInitialTracks(playbackConfig: PKPlaybackConfigObject): void {
+function setInitialTracks(playbackConfig: Object): void {
   if (playbackConfig.audioLanguage) {
     const audioTrack = this.getTracks(TrackType.AUDIO).find(t => t.language === playbackConfig.audioLanguage);
     this.selectTrack(audioTrack);

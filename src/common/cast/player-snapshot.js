@@ -22,11 +22,11 @@ class PlayerSnapshot {
    */
   advertising: ?Object;
   /**
-   * @type {KPOptionsObject}
+   * @type {Object}
    * @instance
    * @memberof PlayerSnapshot
    */
-  config: KPOptionsObject;
+  config: Object;
 
   constructor(player: KalturaPlayer) {
     this.textStyle = player.textStyle;

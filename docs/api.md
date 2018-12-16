@@ -856,7 +856,7 @@ Type: [Object][243]
 
 ### config
 
-Type: KPOptionsObject
+Type: [Object][243]
 
 ## RemoteControl
 
