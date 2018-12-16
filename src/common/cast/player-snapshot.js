@@ -36,8 +36,6 @@ class PlayerSnapshot {
       playback: {
         startTime: getStartTime(player),
         autoplay: player.currentTime === 0 ? true : !player.paused,
-        volume: player.volume,
-        muted: player.muted,
         audioLanguage: getLanguage(TrackType.AUDIO, player),
         textLanguage: getLanguage(TrackType.TEXT, player)
       }
