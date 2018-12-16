@@ -33,13 +33,19 @@ export default class StorageManager {
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
     player.addEventListener(player.Event.UI.USER_CLICKED_MUTE, () => {
-      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      if (!player.isCasting()) {
+        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      }
     });
     player.addEventListener(player.Event.UI.USER_CLICKED_UNMUTE, () => {
-      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      if (!player.isCasting()) {
+        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      }
     });
     player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
-      StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
+      if (!player.isCasting()) {
+        StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
+      }
     });
     player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
       const audioTrack = event.payload.audioTrack;
