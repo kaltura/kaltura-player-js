@@ -193,5 +193,27 @@ describe('kaltura player api', function() {
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
       });
     });
+
+    describe('mix config and api', function() {
+      beforeEach(function() {
+        config.playlist = {
+          countdown: {
+            duration: 20,
+            showing: true
+          },
+          options: {
+            autoContinue: false
+          }
+        };
+        kalturaPlayer = setup(config);
+      });
+
+      it('should load the playlist with the preset config', function() {
+        kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
+        kalturaPlayer.playlist.id.should.equal('a12345');
+        kalturaPlayer.playlist.options.autoContinue.should.be.false;
+        kalturaPlayer.playlist.countdown.showing.should.be.false;
+      });
+    });
   });
 });

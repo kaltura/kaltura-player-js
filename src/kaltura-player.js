@@ -89,6 +89,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._provider
       .getPlaylistConfig(playlistInfo)
       .then(playlistData => {
+        this._playlistManager.reset();
         this.setPlaylist(playlistData, playlistConfig);
         return Promise.resolve(playlistData);
       })
@@ -106,6 +107,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._provider
       .getEntryListConfig(entryList)
       .then(playlistData => {
+        this._playlistManager.reset();
         this.setPlaylist(playlistData, playlistConfig, entryList);
         return Promise.resolve(playlistData);
       })
@@ -123,7 +125,6 @@ class KalturaPlayer extends FakeEventTarget {
     // $FlowFixMe
     evaluatePluginsConfig(config);
     this._localPlayer.configure({plugins: config.plugins});
-    this._playlistManager.reset();
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
