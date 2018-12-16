@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.36.7"></a>
+## [0.36.7](https://github.com/kaltura/kaltura-player-js/compare/v0.36.5...v0.36.7) (2018-12-12)
+
+
+### Bug Fixes
+
+* **FEC-8714:** 'onclick' handler for iOS is not needed ([#181](https://github.com/kaltura/kaltura-player-js/issues/181)) ([10b3c42](https://github.com/kaltura/kaltura-player-js/commit/10b3c42))
+* **FEC-8726:** kalturaPlayer.config api is broken while casting ([#185](https://github.com/kaltura/kaltura-player-js/issues/185)) ([d3cd747](https://github.com/kaltura/kaltura-player-js/commit/d3cd747))
+
+
+
 <a name="0.36.6"></a>
 ## [0.36.6](https://github.com/kaltura/kaltura-player-js/compare/v0.36.5...v0.36.6) (2018-12-04)
 
