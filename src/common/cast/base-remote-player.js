@@ -50,15 +50,17 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   }
 
   _remoteControl: RemoteControl;
-  _config: Object;
+  _playerConfig: Object;
+  _castConfig: Object;
   _logger: any;
   _eventManager: EventManager;
 
-  constructor(name: string, config: Object, remoteControl: RemoteControl) {
+  constructor(name: string, castConfig: Object, remoteControl: RemoteControl) {
     super();
+    this._playerConfig = {};
     this._logger = getLogger(name);
     this._remoteControl = remoteControl;
-    this._config = Utils.Object.mergeDeep({}, this.constructor.defaultConfig, config);
+    this._castConfig = Utils.Object.mergeDeep({}, this.constructor.defaultConfig, castConfig);
     this._eventManager = new EventManager();
     this._logger.debug(`Initialized`);
   }
@@ -567,6 +569,15 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
    */
   get type(): string {
     return BaseRemotePlayer.Type;
+  }
+
+  /**
+   * @returns {KPOptionsObject} - The runtime remote player config.
+   * @instance
+   * @memberof BaseRemotePlayer
+   */
+  get config(): Object {
+    return this._playerConfig;
   }
 }
 

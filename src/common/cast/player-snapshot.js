@@ -1,6 +1,6 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {TextStyle, TrackType} from '@playkit-js/playkit-js';
+import {TextStyle, TrackType, Utils} from '@playkit-js/playkit-js';
 
 /**
  * @class PlayerSnapshot
@@ -8,35 +8,6 @@ import {TextStyle, TrackType} from '@playkit-js/playkit-js';
  *
  */
 class PlayerSnapshot {
-  /**
-   * @type {number}
-   * @instance
-   * @memberof PlayerSnapshot
-   */
-  startTime: number;
-  /**
-   * @type {boolean}
-   * @instance
-   * @memberof PlayerSnapshot
-   */
-  autoplay: boolean;
-  /**
-   * @type {string}
-   * @instance
-   * @memberof PlayerSnapshot
-   */
-  audioLanguage: ?string;
-  /**
-   * @type {string}
-   * @instance
-   * @memberof PlayerSnapshot
-   */
-  textLanguage: ?string;
-  /**
-   * @type {ProviderMediaInfoObject}
-   * @instance
-   * @memberof PlayerSnapshot
-   */
   mediaInfo: ?ProviderMediaInfoObject;
   /**
    * @type {TextStyle}
@@ -51,28 +22,26 @@ class PlayerSnapshot {
    */
   advertising: ?Object;
   /**
-   * @type {number}
+   * @type {KPOptionsObject}
    * @instance
    * @memberof PlayerSnapshot
    */
-  volume: number;
-  /**
-   * @type {boolean}
-   * @instance
-   * @memberof PlayerSnapshot
-   */
-  muted: boolean;
+  config: KPOptionsObject;
 
   constructor(player: KalturaPlayer) {
-    this.startTime = getStartTime(player);
-    this.autoplay = player.currentTime === 0 ? true : !player.paused;
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
-    this.volume = player.volume;
-    this.muted = player.muted;
-    this.audioLanguage = getLanguage(TrackType.AUDIO, player);
-    this.textLanguage = getLanguage(TrackType.TEXT, player);
     this.advertising = player.config.plugins && player.config.plugins.ima;
+    this.config = Utils.Object.mergeDeep({}, player.config, {
+      playback: {
+        startTime: getStartTime(player),
+        autoplay: player.currentTime === 0 ? true : !player.paused,
+        // volume: player.volume,
+        // muted: player.muted,
+        audioLanguage: getLanguage(TrackType.AUDIO, player),
+        textLanguage: getLanguage(TrackType.TEXT, player)
+      }
+    });
   }
 }
 
