@@ -6329,9 +6329,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.12.0":
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master":
   version "2.12.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#f88608c202b3feec1aad3bfa85ed4035a5e6a526"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#a15c53cb19328427e467e787a20aaa7ceb61afad"
   dependencies:
     js-logger "^1.3.0"
 

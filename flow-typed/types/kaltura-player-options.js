@@ -1,4 +1,6 @@
 // @flow
+import {KPPlaylistObject} from './playlist';
+
 declare type KPOptionsObject = {
   targetId: string,
   logLevel?: string,
@@ -8,7 +10,7 @@ declare type KPOptionsObject = {
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
-  playlist?: KPPlaylistConfigObject,
+  playlist?: KPPlaylistObject,
   ui: UIOptionsObject,
   cast?: { [key: string]: any }
 };

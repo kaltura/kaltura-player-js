@@ -5,6 +5,7 @@ import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
+import {addKalturaPoster} from 'poster';
 
 /**
  * @class PlaylistManager
@@ -16,9 +17,10 @@ class PlaylistManager {
   _player: KalturaPlayer;
   _eventManager: EventManager;
   _playlist: Playlist;
-  _playerOptions: KPOptionsObject;
   _options: KPPlaylistOptions;
   _countdown: KPPlaylistCountdownOptions;
+  _playerOptions: KPOptionsObject;
+  _mediaInfoList: Array<ProviderMediaInfoObject>;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
@@ -26,23 +28,29 @@ class PlaylistManager {
     this._playlist = new Playlist();
     this._options = {autoContinue: true};
     this._countdown = {duration: 10, showing: true};
+    this._mediaInfoList = [];
     this._playerOptions = options;
   }
 
   /**
    * Config the playlist
-   * @param {KPPlaylistConfigObject} [config] - The playlist config
+   * @param {KPPlaylistObject} [config] - The playlist config
+   * @param {ProviderEntryListObject} [entryList] - Entry list
    * @returns {void}
    * @instance
    * @memberof PlaylistManager
-   * @private
    */
-  configure(config: ?KPPlaylistConfigObject) {
+  configure(config: ?KPPlaylistObject, entryList: ?ProviderEntryListObject) {
     if (config) {
       this._playlist.configure(config);
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
+        this._mediaInfoList = config.items.map((item, index) => {
+          return entryList && entryList.entries && typeof entryList.entries[index] === 'object'
+            ? entryList.entries[index]
+            : {entryId: item.sources.id};
+        });
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this}));
         this._addBindings();
         this.playNext();
@@ -51,15 +59,29 @@ class PlaylistManager {
   }
 
   /**
+   * Load a playlist
+   * @param {KPPlaylistObject} playlistData - The playlist data
+   * @param {KPPlaylistConfigObject} [playlistConfig] - The playlist config
+   * @param {ProviderEntryListObject} [entryList] - Entry list
+   * @returns {void}
+   * @instance
+   * @memberof PlaylistManager
+   */
+  load(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
+    const mergedPlaylistData: KPPlaylistObject = this._getMergedPlaylistData(playlistData, playlistConfig);
+    this.configure(mergedPlaylistData, entryList);
+  }
+
+  /**
    * Reset the playlist
    * @returns {void}
    * @instance
    * @memberof PlaylistManager
-   * @private
    */
   reset() {
     this._eventManager.removeAll();
     this._playlist = new Playlist();
+    this._mediaInfoList = [];
   }
 
   /**
@@ -147,12 +169,22 @@ class PlaylistManager {
 
   /**
    * Playlist metadata
-   * @type {KPPlaylistMetadata}
+   * @type {ProviderPlaylistMetadataObject}
    * @instance
    * @memberof PlaylistManager
    */
-  get metadata(): KPPlaylistMetadata {
+  get metadata(): ProviderPlaylistMetadataObject {
     return this._playlist.metadata;
+  }
+
+  /**
+   * Playlist poster
+   * @type {?string}
+   * @instance
+   * @memberof PlaylistManager
+   */
+  get poster(): ?string {
+    return this._playlist.poster;
   }
 
   /**
@@ -180,15 +212,40 @@ class PlaylistManager {
     return this._options;
   }
 
+  _getMergedPlaylistData(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject): KPPlaylistObject {
+    const mergedPlaylistData: KPPlaylistObject = {
+      id: playlistData.id,
+      metadata: playlistData.metadata,
+      poster: (playlistData.poster: string),
+      options: playlistConfig ? playlistConfig.options : this._options,
+      countdown: playlistConfig ? playlistConfig.countdown : this.countdown,
+      items: playlistData.items.map((item, index) => {
+        const itemData = Utils.Object.copyDeep(item);
+        Utils.Object.mergeDeep(
+          itemData.sources,
+          playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
+        );
+        addKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+        return {
+          sources: itemData.sources,
+          config: playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].config
+        };
+      })
+    };
+    return mergedPlaylistData;
+  }
+
   _addBindings() {
     this._eventManager.listen(this._player, this._player.Event.Core.PLAYBACK_ENDED, () => this._onPlaybackEnded());
   }
 
   _onPlaybackEnded(): void {
-    if (this._playerOptions.ui.disable || !this.countdown.showing) {
-      this._playlist.next
-        ? this._options.autoContinue && this.playNext()
-        : this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
+    if (this._playlist.next.item) {
+      if (this._options.autoContinue && (this._playerOptions.ui.disable || !this.countdown.showing)) {
+        this.playNext();
+      }
+    } else {
+      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
     }
   }
 
@@ -205,11 +262,13 @@ class PlaylistManager {
       this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
-    } else if (activeItem.sources && activeItem.sources.id) {
-      return this._player.loadMedia({entryId: activeItem.sources.id}).then(mediaConfig => {
-        Utils.Object.mergeDeep(activeItem.sources, mediaConfig.sources);
-        this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
-      });
+    } else {
+      if (this._mediaInfoList[index]) {
+        return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
+          this._playlist.updateItemSources(index, mediaConfig.sources);
+          this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
+        });
+      }
     }
     return Promise.reject();
   }
