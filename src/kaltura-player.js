@@ -89,7 +89,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._provider
       .getPlaylistConfig(playlistInfo)
       .then(playlistData => {
-        this._playlistManager.reset();
         this.setPlaylist(playlistData, playlistConfig);
         return Promise.resolve(playlistData);
       })
@@ -107,7 +106,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._provider
       .getEntryListConfig(entryList)
       .then(playlistData => {
-        this._playlistManager.reset();
         this.setPlaylist(playlistData, playlistConfig, entryList);
         return Promise.resolve(playlistData);
       })
@@ -169,6 +167,7 @@ class KalturaPlayer extends FakeEventTarget {
   reset(): void {
     this._localPlayer.reset();
     this._uiWrapper.reset();
+    this._playlistManager.reset();
   }
 
   destroy(): void {
