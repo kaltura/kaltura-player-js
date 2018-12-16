@@ -213,6 +213,7 @@ describe('kaltura player api', function() {
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer.playlist.countdown.showing.should.be.false;
+        kalturaPlayer.playlist.countdown.duration.should.equal(20);
       });
     });
   });
