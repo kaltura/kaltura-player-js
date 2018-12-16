@@ -20,7 +20,7 @@ class Playlist {
   configure(config: KPPlaylistObject) {
     this._id = config.id;
     this._poster = config.poster;
-    Utils.Object.mergeDeep(this._metadata, config.metadata);
+    this._metadata = config.metadata;
     if (config.items) {
       this._items = [];
       config.items.forEach(item => {

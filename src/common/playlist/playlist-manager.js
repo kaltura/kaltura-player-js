@@ -68,7 +68,6 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   load(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
-    this.reset();
     const mergedPlaylistData: KPPlaylistObject = this._getMergedPlaylistData(playlistData, playlistConfig);
     this.configure(mergedPlaylistData, entryList);
   }
