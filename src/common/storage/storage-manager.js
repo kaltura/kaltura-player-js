@@ -44,6 +44,11 @@ export default class StorageManager {
     });
     player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
       if (!player.isCasting()) {
+        if (player.volume > 0) {
+          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, false);
+        } else {
+          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, true);
+        }
         StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
       }
     });
