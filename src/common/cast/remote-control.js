@@ -197,7 +197,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
       imaConfig = {
         adTagUrl: ''
       };
-      this._eventManager.listen(this, this.Event.FIRST_PLAYING, () => this.configure({plugins: {ima: {adTagUrl: adTagUrl}}}));
+      this._eventManager.listen(this, CoreEventType.FIRST_PLAYING, () => this.configure({plugins: {ima: {adTagUrl: adTagUrl}}}));
     }
     Utils.Object.mergeDeep(playerConfig, {plugins: {ima: imaConfig}});
     // Destroy the local player and load new one
