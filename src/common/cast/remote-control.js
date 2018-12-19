@@ -180,19 +180,26 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   const playerConfig = this._localPlayer.config;
   // If the local player config contains ima, needs to destroy the player and create it from scratch
   if (playerConfig.plugins && playerConfig.plugins.ima) {
+    let imaConfig = {};
     // Configure ima such that continuous playback with ads will be start properly
-    Utils.Object.mergeDeep(playerConfig, {
-      plugins: {
-        ima: {
-          // Needs to wait for engine to create the new ads container
-          delayInitUntilSourceSelected: true,
-          adsRenderingSettings: {
-            // We don't want to play ads that already played in the receiver
-            playAdsAfterTime: snapshot.config.playback.startTime
-          }
+    if (!playerConfig.cast.advertising.vast) {
+      imaConfig = {
+        // Needs to wait for engine to create the new ads container
+        delayInitUntilSourceSelected: true,
+        adsRenderingSettings: {
+          // We don't want to play ads that already played in the receiver
+          playAdsAfterTime: snapshot.config.playback.startTime
         }
-      }
-    });
+      };
+      // If it's a VAST ad we are empty the ad tag so ads won't play and configure it later
+    } else if (snapshot.config.playback.startTime > 0) {
+      const adTagUrl = playerConfig.plugins.ima.adTagUrl;
+      imaConfig = {
+        adTagUrl: ''
+      };
+      this._eventManager.listen(this, CoreEventType.FIRST_PLAYING, () => this.configure({plugins: {ima: {adTagUrl: adTagUrl}}}));
+    }
+    Utils.Object.mergeDeep(playerConfig, {plugins: {ima: imaConfig}});
     // Destroy the local player and load new one
     this._localPlayer.destroy();
     this._remotePlayer = null;
