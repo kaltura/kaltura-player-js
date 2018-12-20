@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.37.1"></a>
+## [0.37.1](https://github.com/kaltura/kaltura-player-js/compare/v0.37.0...v0.37.1) (2018-12-20)
+
+
+### Bug Fixes
+
+* **FEC-8706:** After pre-roll ad playing in cast and disconnect the video starting from beginning (including pre-roll ad) ([#191](https://github.com/kaltura/kaltura-player-js/issues/191)) ([792fed4](https://github.com/kaltura/kaltura-player-js/commit/792fed4))
+* **FEC-8773:** local storage mute state is not updated when user drag volume bar ([#190](https://github.com/kaltura/kaltura-player-js/issues/190)) ([28d098f](https://github.com/kaltura/kaltura-player-js/commit/28d098f))
+
+
+
 <a name="0.37.0"></a>
 # [0.37.0](https://github.com/kaltura/kaltura-player-js/compare/v0.36.7...v0.37.0) (2018-12-16)
 
