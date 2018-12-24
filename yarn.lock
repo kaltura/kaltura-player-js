@@ -3996,9 +3996,9 @@ highlight.js@^9.12.0:
   version "9.13.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.13.1.tgz#054586d53a6863311168488a0f58d6c505ce641e"
 
-hls.js@^0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.12.1.tgz#ddacdf3ad00bfe4f2e39672caa79d08f2a2a39b5"
+hls.js@^0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.12.2.tgz#64a969a78cc25991ed5de19357b1dc3f178ac23b"
   dependencies:
     eventemitter3 "3.1.0"
     url-toolkit "^2.1.6"
