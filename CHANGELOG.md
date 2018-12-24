@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.37.2"></a>
+## [0.37.2](https://github.com/kaltura/kaltura-player-js/compare/v0.37.1...v0.37.2) (2018-12-24)
+
+
+### Bug Fixes
+
+* **FEC-8780:** captions not shown after seek ([#192](https://github.com/kaltura/kaltura-player-js/issues/192)) ([73b0107](https://github.com/kaltura/kaltura-player-js/commit/73b0107))
+
+
+
 <a name="0.37.1"></a>
 ## [0.37.1](https://github.com/kaltura/kaltura-player-js/compare/v0.37.0...v0.37.1) (2018-12-20)
 
