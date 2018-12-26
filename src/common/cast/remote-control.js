@@ -181,7 +181,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   // If the local player config contains ima, needs to destroy the player and create it from scratch
   if (playerConfig.plugins && playerConfig.plugins.ima) {
     let imaConfig = {};
-    // Configure ima such that continuous playback with ads will be start properly
+    // If it's a VAST ad we are empty the ad tag so ads won't play and configure it later
     if (playerConfig.cast.advertising && playerConfig.cast.advertising.vast) {
       if (snapshot.config.playback.startTime > 0) {
         const adTagUrl = playerConfig.plugins.ima.adTagUrl;
@@ -199,7 +199,6 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
           playAdsAfterTime: snapshot.config.playback.startTime
         }
       };
-      // If it's a VAST ad we are empty the ad tag so ads won't play and configure it later
     }
     Utils.Object.mergeDeep(playerConfig, {plugins: {ima: imaConfig}});
     // Destroy the local player and load new one
