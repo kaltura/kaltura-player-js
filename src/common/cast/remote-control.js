@@ -182,7 +182,15 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   if (playerConfig.plugins && playerConfig.plugins.ima) {
     let imaConfig = {};
     // Configure ima such that continuous playback with ads will be start properly
-    if (!playerConfig.cast.advertising.vast) {
+    if (playerConfig.cast.advertising && playerConfig.cast.advertising.vast) {
+      if (snapshot.config.playback.startTime > 0) {
+        const adTagUrl = playerConfig.plugins.ima.adTagUrl;
+        imaConfig = {
+          adTagUrl: ''
+        };
+        this._eventManager.listen(this, CoreEventType.FIRST_PLAYING, () => this.configure({plugins: {ima: {adTagUrl: adTagUrl}}}));
+      }
+    } else {
       imaConfig = {
         // Needs to wait for engine to create the new ads container
         delayInitUntilSourceSelected: true,
@@ -192,12 +200,6 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
         }
       };
       // If it's a VAST ad we are empty the ad tag so ads won't play and configure it later
-    } else if (snapshot.config.playback.startTime > 0) {
-      const adTagUrl = playerConfig.plugins.ima.adTagUrl;
-      imaConfig = {
-        adTagUrl: ''
-      };
-      this._eventManager.listen(this, CoreEventType.FIRST_PLAYING, () => this.configure({plugins: {ima: {adTagUrl: adTagUrl}}}));
     }
     Utils.Object.mergeDeep(playerConfig, {plugins: {ima: imaConfig}});
     // Destroy the local player and load new one
