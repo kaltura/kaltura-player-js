@@ -7,6 +7,7 @@ import {EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils} fro
 import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload';
 import {UIWrapper} from '../ui-wrapper';
 import getLogger from '../utils/logger';
+import StorageManager from '../storage/storage-manager';
 
 const logger: any = getLogger('RemoteControl');
 
@@ -216,10 +217,14 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
 
 function configurePlayback(playbackConfig: Object): void {
   const {autoplay, startTime} = playbackConfig;
+  const storageConfig = StorageManager.getStorageConfig();
+  const {muted, volume} = storageConfig;
   this.configure({
     playback: {
       startTime,
-      autoplay
+      autoplay,
+      muted,
+      volume
     }
   });
 }
