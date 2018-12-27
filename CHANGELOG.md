@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.37.3"></a>
+## [0.37.3](https://github.com/kaltura/kaltura-player-js/compare/v0.37.2...v0.37.3) (2018-12-27)
+
+
+### Bug Fixes
+
+* **FEC-8788:** fix shaka playready endianness for Tivo ([#193](https://github.com/kaltura/kaltura-player-js/issues/193)) ([f44716f](https://github.com/kaltura/kaltura-player-js/commit/f44716f))
+* **FEC-8791:** When changing volume in local mode it's not showing the correct rate/state when returning to local mode after casting ([#194](https://github.com/kaltura/kaltura-player-js/issues/194)) ([c0d89d5](https://github.com/kaltura/kaltura-player-js/commit/c0d89d5))
+
+
+
 <a name="0.37.2"></a>
 ## [0.37.2](https://github.com/kaltura/kaltura-player-js/compare/v0.37.1...v0.37.2) (2018-12-24)
 
