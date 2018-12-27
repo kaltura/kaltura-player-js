@@ -104,6 +104,12 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   if (ui) {
     Utils.Object.mergeDeep(config, {ui: {customPreset: ui.uis}});
   }
+  this.configure({
+    playback: {
+      muted: this.muted,
+      volume: this.volume
+    }
+  });
   // Reset the local player, create new ui wrapper and set the remote player
   this._localPlayer.reset();
   this._uiWrapper.destroy();
