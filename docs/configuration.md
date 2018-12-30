@@ -20,6 +20,7 @@ The configuration uses the following structure:
   disableUserCache: boolean,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
+  playlist: KPPlaylisyObject,
   plugins: PKPluginsConfigObject,
   session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
@@ -75,6 +76,12 @@ The configuration uses the following structure:
 > ##### Type: [PKSourcesConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configsources)
 >
 > ##### Description: Defines the sources configuration.
+>
+> ### config.playlist
+>
+> ##### Type: [KPPlaylisyObject](./playlist.md#playlist-configuration)
+>
+> ##### Description: Defines the playlist configuration.
 >
 > ### config.plugins
 >

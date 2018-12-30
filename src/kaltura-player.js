@@ -80,6 +80,14 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure(playerConfig);
   }
 
+  /**
+   * Loads a playlist by id.
+   * @param {ProviderPlaylistInfoObject} playlistInfo - The playlist info.
+   * @param {KPPlaylistConfigObject} [playlistConfig] - The playlist config.
+   * @returns {Promise<ProviderPlaylistObject>} - The playlist data from the provider.
+   * @instance
+   * @memberof KalturaPlayer
+   */
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
@@ -94,6 +102,14 @@ class KalturaPlayer extends FakeEventTarget {
     return providerResult;
   }
 
+  /**
+   * Loads a playlist by entry list.
+   * @param {ProviderEntryListObject} entryList - The playlist info.
+   * @param {KPPlaylistConfigObject} [playlistConfig] - The playlist config.
+   * @returns {Promise<ProviderPlaylistObject>} - The playlist data from the provider.
+   * @instance
+   * @memberof KalturaPlayer
+   */
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
@@ -121,6 +137,13 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
+  /**
+   * Config the player.
+   * @param {Object} [config={}] - The player config.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   */
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
     // $FlowFixMe
@@ -128,6 +151,9 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.configure(config);
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);
+    }
+    if (config.playlist) {
+      this._playlistManager.configure(config.playlist);
     }
   }
 
@@ -407,6 +433,14 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.plugins;
   }
 
+  /**
+   * The playlist controller.
+   * @type {PlaylistManager}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.playlist.playNext
+   */
   get playlist(): PlaylistManager {
     return this._playlistManager;
   }
