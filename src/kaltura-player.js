@@ -87,6 +87,8 @@ class KalturaPlayer extends FakeEventTarget {
    * @returns {Promise<ProviderPlaylistObject>} - The playlist data from the provider.
    * @instance
    * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.loadPlaylist({playlistId: '123456'}, {options: {autoContinue: false}});
    */
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylist', playlistInfo);
@@ -109,6 +111,8 @@ class KalturaPlayer extends FakeEventTarget {
    * @returns {Promise<ProviderPlaylistObject>} - The playlist data from the provider.
    * @instance
    * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {options: {autoContinue: false}});
    */
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
@@ -143,6 +147,8 @@ class KalturaPlayer extends FakeEventTarget {
    * @returns {void}
    * @instance
    * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.configure({playback: {autoplay: true}});
    */
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
@@ -151,9 +157,6 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.configure(config);
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);
-    }
-    if (config.playlist) {
-      this._playlistManager.configure(config.playlist);
     }
   }
 
@@ -439,7 +442,7 @@ class KalturaPlayer extends FakeEventTarget {
    * @instance
    * @memberof KalturaPlayer
    * @example
-   * KalturaPlayer.playlist.playNext
+   * KalturaPlayer.playlist.playNext();
    */
   get playlist(): PlaylistManager {
     return this._playlistManager;

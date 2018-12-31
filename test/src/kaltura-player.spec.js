@@ -177,7 +177,7 @@ describe('kaltura player api', function() {
       });
     });
 
-    describe('load playlist by setup config', function() {
+    describe('load playlist by config', function() {
       beforeEach(function() {
         config.playlist = PlaylistMockData.playlistByConfig;
         kalturaPlayer = setup(config);
@@ -194,28 +194,7 @@ describe('kaltura player api', function() {
       });
     });
 
-    describe('load playlist by configure', function() {
-      beforeEach(function() {
-        kalturaPlayer = setup(config);
-      });
-
-      it('should set the configured playlist', function(done) {
-        kalturaPlayer.addEventListener('kaltura-player-playlistloaded', event => {
-          event.payload.playlist.id.should.equal('b1234');
-          kalturaPlayer.playlist.id.should.equal('b1234');
-          kalturaPlayer.playlist.metadata.name.should.equal('my playlist name');
-          kalturaPlayer.playlist.metadata.description.should.equal('my playlist desc');
-          kalturaPlayer.playlist.poster.should.equal('http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162');
-          kalturaPlayer.playlist.items.length.should.equal(3);
-          kalturaPlayer.playlist.countdown.duration.should.equal(20);
-          kalturaPlayer.playlist.options.autoContinue.should.be.false;
-          done();
-        });
-        kalturaPlayer.configure({playlist: PlaylistMockData.playlistByConfig});
-      });
-    });
-
-    describe('mix setup config and api', function() {
+    describe('mix config and api', function() {
       beforeEach(function() {
         config.playlist = {
           countdown: {
@@ -230,31 +209,6 @@ describe('kaltura player api', function() {
       });
 
       it('should load the playlist with the preset config', function() {
-        kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
-        kalturaPlayer.playlist.id.should.equal('a12345');
-        kalturaPlayer.playlist.options.autoContinue.should.be.false;
-        kalturaPlayer.playlist.countdown.showing.should.be.false;
-        kalturaPlayer.playlist.countdown.duration.should.equal(20);
-      });
-    });
-
-    describe('mix configure and api', function() {
-      beforeEach(function() {
-        kalturaPlayer = setup(config);
-      });
-
-      it('should load the playlist with the preset config', function() {
-        kalturaPlayer.configure({
-          playlist: {
-            countdown: {
-              duration: 20,
-              showing: true
-            },
-            options: {
-              autoContinue: false
-            }
-          }
-        });
         kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
