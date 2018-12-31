@@ -21,59 +21,61 @@
     },
     playback: {
       autoplay: true
-    },
-    playlist: {
-      id: '1234',
-      metadata: {
-        name: 'my playlist name',
-        description: 'my playlist desc'
-      },
-      items: [{
-        sources: {
-          poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002/height/360/width/640',
-          hls: [
-            {
-              id: "id1",
-              mimetype: "application/x-mpegURL",
-              url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_fu4ifhie/protocol/http/format/applehttp/flavorIds/0_wbawecj0,0_cj2odpyt,0_uj45vim0,0_xlpm7btj,0_6p25la0i,0_cmq5aigy/a.m3u8"
-            }
-          ]
-        }
-      },
-        {
-          sources: {
-            metadata: {
-              name: 'my second entry'
-            },
-            hls: [
-              {
-                id: "id2",
-                mimetype: "application/x-mpegURL",
-                url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_15xrxwvo/protocol/http/format/applehttp/flavorIds/0_io24exzg,0_5r0geh30,0_b647tbfs,0_fzqa9ew4/a.m3u8"
-              }
-            ]
-          }
-        },
-        {
-          sources: {
-            hls: [
-              {
-                id: "id3",
-                mimetype: "application/x-mpegURL",
-                url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_p8aigvgu/protocol/http/format/applehttp/flavorIds/0_80115tmg/a.m3u8"
-              }
-            ]
-          }
-        }],
-      countdown: {
-        duration: 10,
-        showing: true
-      }
     }
   };
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
+    kalturaPlayer.configure({
+      playlist: {
+        id: '1234',
+        metadata: {
+          name: 'my playlist name',
+          description: 'my playlist desc'
+        },
+        items: [{
+          sources: {
+            poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002/height/360/width/640',
+            hls: [
+              {
+                id: "id1",
+                mimetype: "application/x-mpegURL",
+                url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_fu4ifhie/protocol/http/format/applehttp/flavorIds/0_wbawecj0,0_cj2odpyt,0_uj45vim0,0_xlpm7btj,0_6p25la0i,0_cmq5aigy/a.m3u8"
+              }
+            ]
+          }
+        },
+          {
+            sources: {
+              metadata: {
+                name: 'my second entry'
+              },
+              hls: [
+                {
+                  id: "id2",
+                  mimetype: "application/x-mpegURL",
+                  url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_15xrxwvo/protocol/http/format/applehttp/flavorIds/0_io24exzg,0_5r0geh30,0_b647tbfs,0_fzqa9ew4/a.m3u8"
+                }
+              ]
+            }
+          },
+          {
+            sources: {
+              hls: [
+                {
+                  id: "id3",
+                  mimetype: "application/x-mpegURL",
+                  url: "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_p8aigvgu/protocol/http/format/applehttp/flavorIds/0_80115tmg/a.m3u8"
+                }
+              ]
+            }
+          }],
+        countdown: {
+          duration: 10,
+          showing: true
+        }
+      }
+    });
   } catch (e) {
     console.error(e.message)
   }
