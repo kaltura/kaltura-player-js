@@ -5,7 +5,7 @@ Kaltura Player exposes several API's to load a playlist, configure and manipulat
 ## Table of Contents
 
 - [Load A Playlist](#load-a-playlist)
-  - [By Playlist Id](#by-playlist-id)
+  - [By Playlist Id](#by-playlist-id-(ovp-only))
   - [By Entry List](#by-entry-list)
   - [By Configuration](#by-configuration)
 - [Config the Playlist](#config-the-playlist)
@@ -35,7 +35,7 @@ kalturaPlayer.loadPlaylist({playlistId: '123456'});
 #### By Entry List
 
 To load a playlist by entry list use [`loadPlaylistByEntryList`](./api.md#loadplaylistbyentrylist) method.
-<br>This method creates a playlist according the given entries.
+<br>This method creates a playlist according to the given entries.
 
 ```javascript
 kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]});
@@ -43,7 +43,7 @@ kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '
 
 #### By Configuration
 
-You can load a playlist by config explicitly the playlist data and items, using [`configure`](./api.md#configure) method.
+You can load a playlist by config explicitly the playlist data and items using [`configure`](./api.md#configure-3) method.
 ```javascript
 kalturaPlayer.configure({
   playlist: {
@@ -83,15 +83,16 @@ For full playlist options see [`KPPlaylistObject`](./api.md#kpplaylistobject).
 
 ### Auto Continue
 
-By default once the current item is ended, the playlist continues to the next item automatically.
-<br>To change this behavior, config the playlist [`options`](./api.md#kpplaylistoptions) via the API:
+By default, once the current item is ended, the playlist continues to the next item automatically.
+<br>To change this behavior, config the [`options`](./api.md#kpplaylistoptions) under [`KPPlaylistConfigObject`](./api.md#kpplaylistconfigobject):
+Via the API:
 ```javascript
 kalturaPlayer.loadPlaylist({playlistId: '123456'}, {options: {autoContinue: false}});
 ```
 ```javascript
 kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {options: {autoContinue: false}});
 ```
-Or by configuration: 
+By configuration: 
 ```javascript
 kalturaPlayer.configure({
   playlist: {
@@ -100,7 +101,7 @@ kalturaPlayer.configure({
 });
 ```
 > Note: `autoContinue` property is relevant only for the second item onwards.
-<br>For play the first entry automatically use [`autoplay`](https://github.com/kaltura/playkit-js/blob/master/docs/autoplay.md) configuration.        
+<br>To play the first entry automatically use [`autoplay`](https://github.com/kaltura/playkit-js/blob/master/docs/autoplay.md) configuration.        
 
 ### Countdown
 
@@ -108,16 +109,17 @@ When the current item is about to end, and the playlist set to auto continue,
 A countdown will display to the user, through he can skip to the next immediately, or to cancel the switching.
 ![playlist-countdown](./images/playlist-countdown.png)
 
-By default the countdown is display for 10 seconds until the end. 
-<br>To change this behavior, config the playlist [`countdown`](./api.md#kpplaylistcountdownoptions).
-<br> For example, to show the countdown for 20 seconds until the end, config via the API:
+By default, the countdown is display for 10 seconds until the end. 
+<br>To change this behavior, config the [`countdown`](./api.md#kpplaylistcountdownoptions) under [`KPPlaylistConfigObject`](./api.md#kpplaylistconfigobject):
+<br> For example, to show the countdown for 20 seconds until the end, config:
+Via the API:
 ```javascript
 kalturaPlayer.loadPlaylist({playlistId: '123456'}, {countdown: {duration: 20}});
 ```
 ```javascript
 kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {countdown: {duration: 20}});
 ```
-Or by configuration: 
+By configuration: 
 ```javascript
 kalturaPlayer.configure({
   playlist: {
@@ -131,11 +133,11 @@ To show the countdown in a specific moment (usually to enable the user to skip t
 ```javascript
 kalturaPlayer.loadPlaylist({playlistId: '123456'}, {countdown: {timeToShow: 600}});
 ```
-In this case the countdown will display at the 600's second for 10 seconds, then will skip th the next item.
+In this case the countdown will display at the 600's second for 10 seconds, then will skip to the next item.
 
 ## Switch Item
 
-Via [`playlist`](./api.md#playlist) api the user can get the playlist data and switch between the items.
+Via [`playlist`](./api.md#playlist) api you can get the playlist data and switch between the items.
 ```javascript
 // switch to the next item
 kalturaPlayer.playlist.playNext();
@@ -144,15 +146,15 @@ kalturaPlayer.playlist.playNext();
 kalturaPlayer.playlist.playPrev();
  
 // switch to a specific item by index
-const lastItem = kalturaPlayer.playlist.items.length - 1;
-kalturaPlayer.playlist.playItem(lastItem); 
+const lastItemIndex = kalturaPlayer.playlist.items.length - 1;
+kalturaPlayer.playlist.playItem(lastItemIndex); 
 ```
 For full `playlist` api see [PlaylistManager](./api.md#playlistmanager).
 
 ## Change Playlist
 
-To clean the playlist data need to call to [`playlist.reset`](./api.md#reset) method.
-Here an example how to replace the playlist using the playlist [`events`](./api.md#playlisteventtype) and `reset` method. 
+To clean the playlist data need to call to [`playlist.reset`](./api.md#reset-2) method.
+<br>Here is an example how to change the playlist using the [`playlist events`](./api.md#playlisteventtype) and [`playlist.reset`](./api.md#reset-2) method. 
 ```javascript
 kalturaPlayer.loadPlaylist({playlistId: '01234'});
 kalturaPlayer.addEventListener(KalturaPlayer.playlist.PlaylistEventType.PLAYLIST_ENDED, () => {

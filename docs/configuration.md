@@ -79,7 +79,7 @@ The configuration uses the following structure:
 >
 > ### config.playlist
 >
-> ##### Type: [KPPlaylisyObject](./playlist.md#playlist-configuration)
+> ##### Type: [KPPlaylisyObject](./api.md#kpplaylistobject)
 >
 > ##### Description: Defines the playlist configuration.
 >
