@@ -11,8 +11,9 @@
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
+  <script src="./watchdog.js" type="text/javascript"></script>
 </head>
-<body>
+<body onload="startVideo()">
 <div class="container-fluid">
   <div class="nav row">
     <div class="col-2">
@@ -69,7 +70,10 @@
           <span id="watcher-text" class="text lg center">WHO'S WATCHING?</span>
         </div>
         <div class="row">
-          <img id="watcher" src="./ron-yekutiel.jpg" class="watcher" width="175" height="160">
+          <div class="watcher">
+            <video onclick="takePhoto()" id="watcher-video" autoplay></video>
+            <img id="watcher-img">
+          </div>
         </div>
       </div>
       <div class="row" style="margin: 20px;">
@@ -101,30 +105,6 @@
     $('#watcher-box').addClass('animated bounceIn');
   }
 
-  function takePhoto() {
-    $('#age-text').text('DETECTING YOUR AGE...');
-    $('#age-box').show();
-    $('#age-box').addClass('animated fadeInUp');
-    setTimeout(() => {
-      $('#age-loader').hide();
-      $('#age-text').text('AGE DETECTED:');
-      setTimeout(countAge.bind(null, 16), 0);
-    }, 1500);
-  }
-
-  function countAge(age) {
-    $('#age-value').show();
-    $('#age-value').text(age);
-    $('#age-value').addClass('animated jello');
-    if (age > 18) {
-      $('#free-viewing-message').show();
-      $('#free-viewing-message').addClass('animated fadeInRight');
-    } else {
-      $('#res-viewing-message').show();
-      $('#res-viewing-message').addClass('animated fadeInRight');
-    }
-  }
-
   var config = {
     targetId: 'player-placeholder',
     provider: {
@@ -148,6 +128,9 @@
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
     kalturaPlayer.loadMedia({entryId: '1_4w5qe98k'});
+    kalturaPlayer.addEventListener('watchdog', () => {
+      takePhoto1();
+    });
   } catch (e) {
     console.error(e.message);
   }

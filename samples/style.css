@@ -75,8 +75,11 @@ body {
 }
 
 .watcher {
-  border-radius: 100px;
+  border-radius: 50px;
   margin: 10px auto;
+  background-size: cover;
+  height: 175px;
+  position: relative;
 }
 
 .nav {
@@ -117,4 +120,18 @@ body {
   cursor: pointer;
   outline: none;
 !important;
+}
+
+#watcher-video {
+  border-radius: inherit;
+  height: 100%;
+}
+
+#watcher-img {
+  border: 4px solid #e52d37;
+  display: none;
+  border-radius: inherit;
+  height: 100%;
+  position: absolute;
+  top: 0;
 }
