@@ -15,7 +15,7 @@ function startVideo() {
     });
 }
 
-function takePhoto1() {
+function takePhoto() {
   if (stream) {
     $('#age-text').text('DETECTING YOUR AGE...');
     $('#age-box').show();
@@ -37,7 +37,8 @@ function takePhoto1() {
             const data = JSON.parse(this.responseText);
             $('#age-loader').hide();
             $('#age-text').text('AGE DETECTED:');
-            const age = data[0].faceAttributes.age;
+            const age = (data && data[0] && data[0].faceAttributes) ? data[0].faceAttributes.age : 'N/A';
+            kalturaPlayer.age = age;
             $('#age-value').show();
             $('#age-value').text(age);
             $('#age-value').addClass('animated jello');

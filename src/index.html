@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <title>Title</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="./style.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
@@ -87,7 +88,7 @@
           <span id="age-value" class="text xlg center grey" style="line-height: initial;"></span>
         </div>
       </div>
-      <div id="msg-box" >
+      <div id="msg-box">
         <div id="free-viewing-message" class="alert alert-success center" role="alert" style="max-width: 200px;">
           <i class="fas fa-check-circle"></i> &nbsp;FREE VIEWING
         </div>
@@ -101,6 +102,7 @@
 
 <script>
   function startARMode() {
+    kalturaPlayer.adMode = true;
     $('#watcher-box').show();
     $('#watcher-box').addClass('animated bounceIn');
   }
@@ -112,6 +114,9 @@
     },
     plugins: {
       kava: {disable: true}
+    },
+    playback: {
+      // startTime: 7
     },
     watchdog: [
       {
@@ -129,7 +134,7 @@
     var kalturaPlayer = KalturaPlayer.setup(config);
     kalturaPlayer.loadMedia({entryId: '1_4w5qe98k'});
     kalturaPlayer.addEventListener('watchdog', () => {
-      takePhoto1();
+      kalturaPlayer.adMode && takePhoto();
     });
   } catch (e) {
     console.error(e.message);
