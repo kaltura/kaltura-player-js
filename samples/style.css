@@ -89,3 +89,32 @@ body {
 .center {
   margin: 10px auto;
 }
+
+#age-box {
+  display: none;
+}
+
+#watcher-box {
+  display: none;
+}
+
+#age-value {
+  display: none;
+}
+
+#res-viewing-message {
+  display: none;
+}
+
+#free-viewing-message {
+  display: none;
+}
+
+.watchdog-button {
+  color: white;
+  background-color: #bf2b27;
+  border-radius: 20px;
+  cursor: pointer;
+  outline: none;
+!important;
+}

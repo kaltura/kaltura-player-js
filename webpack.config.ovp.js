@@ -42,10 +42,6 @@ if (PROD) {
       },  {
         from: '../samples/ron-yekutiel.jpg',
         to: '.'
-      },
-      {
-        from: '../lib/animate.css',
-        to: '.'
       }
     ])
   );

@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <title>Title</title>
-  <link rel="stylesheet" href="./animate.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="./style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
 </head>
 <body>
@@ -37,7 +39,8 @@
   <div class="row" style="margin-top: 40px;"></div>
 
   <div class="row">
-    <div class="col-2"></div>
+    <div class="col-2">
+    </div>
     <div class="col-6">
       <div class="row">
         <img id="series-logo" src="./la_casa_de_papel_logo.png">
@@ -49,8 +52,11 @@
       </div>
       <div class="row" style="margin-top: 3px; max-width: 350px;">
         <div class="text grey">
-          <span>Tokio defies Alison about Río. The police speculate that a secret operative is among them.</span>
+          <span>Tokyo defies Alison about Río. The police speculate that a secret operative is among them.</span>
         </div>
+      </div>
+      <div class="row" style="margin-top: 20px;">
+        <button class="watchdog-button" onclick="startARMode()" style="outline: none;">AGE DETECTION MODE</button>
       </div>
       <div class="row" style="margin-top: 50px;">
         <div id="player-placeholder"></div>
@@ -70,10 +76,19 @@
       </div>
       <div id="age-box">
         <div class="row">
-          <span id="age-text" class="text lg center">DETECTED AGE</span>
+          <span id="age-text" class="text lg center"></span>
         </div>
         <div class="row">
-          <span id="age-value" class="text xlg center grey" style="line-height: initial;">52</span>
+          <div id="age-loader" class="loader center"></div>
+          <span id="age-value" class="text xlg center grey" style="line-height: initial;"></span>
+        </div>
+      </div>
+      <div id="msg-box" >
+        <div id="free-viewing-message" class="alert alert-success center" role="alert" style="max-width: 200px;">
+          <i class="fas fa-check-circle"></i> &nbsp;FREE VIEWING
+        </div>
+        <div id="res-viewing-message" class="alert alert-danger center" role="alert" style="max-width: 280px;">
+          <i class="fas fa-exclamation-triangle"></i> &nbsp;RESTRICTED VIEWING
         </div>
       </div>
     </div>
@@ -81,6 +96,35 @@
 </div>
 
 <script>
+  function startARMode() {
+    $('#watcher-box').show();
+    $('#watcher-box').addClass('animated bounceIn');
+  }
+
+  function takePhoto() {
+    $('#age-text').text('DETECTING YOUR AGE...');
+    $('#age-box').show();
+    $('#age-box').addClass('animated fadeInUp');
+    setTimeout(() => {
+      $('#age-loader').hide();
+      $('#age-text').text('AGE DETECTED:');
+      setTimeout(countAge.bind(null, 16), 0);
+    }, 1500);
+  }
+
+  function countAge(age) {
+    $('#age-value').show();
+    $('#age-value').text(age);
+    $('#age-value').addClass('animated jello');
+    if (age > 18) {
+      $('#free-viewing-message').show();
+      $('#free-viewing-message').addClass('animated fadeInRight');
+    } else {
+      $('#res-viewing-message').show();
+      $('#res-viewing-message').addClass('animated fadeInRight');
+    }
+  }
+
   var config = {
     targetId: 'player-placeholder',
     provider: {
