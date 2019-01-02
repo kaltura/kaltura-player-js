@@ -42,7 +42,7 @@ function takePhoto() {
             $('#age-value').show();
             $('#age-value').text(age);
             $('#age-value').addClass('animated jello');
-            if (age > 18) {
+            if (age >= 18) {
               $('#free-viewing-message').show();
               $('#free-viewing-message').addClass('animated fadeInRight');
             } else {
