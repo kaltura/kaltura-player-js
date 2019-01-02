@@ -5,82 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <title>Title</title>
   <link rel="stylesheet" href="./animate.css">
-
   <link rel="stylesheet" type="text/css" href="./style.css"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
 </head>
 <body>
-
 <div class="container-fluid">
-  <div class="row" style="background-color: black; color: white; font-size: 14px; height: 50px;">
+  <div class="nav row">
     <div class="col-2">
       <img id="logo" src="./watchdog_logo.png">
     </div>
     <div class="col-8">
       <div class="row">
-        <div class="col-2" style="margin-top: 13px;">
+        <div class="col-2 tab">
           WHAT'S ON
         </div>
-        <div class="col-2" style="margin-top: 13px;">
+        <div class="col-2 tab">
           WATCHLIST
         </div>
-        <div class="col-2" style="margin-top: 13px;">
+        <div class="col-2 tab">
           NEWS & FEATURES
         </div>
-        <div class="col-2" style="margin-top: 13px;">
+        <div class="col-2 tab">
           COMING SOON
         </div>
       </div>
     </div>
   </div>
 
+  <div class="row" style="margin-top: 40px;"></div>
+
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-2">
-      <img id="series-logo" src="./la_casa_de_papel_logo.png">
-      <div class="row" style="margin-top: 15px;">
-      </div>
-      <div class="row" style="color: white; margin-left: 0px; font-weight: 100; font-size: 15px; margin-bottom: 10px;">
-        <span>SEASON 1, EPISODE 8</span>
-      </div>
-      <div class="row" style="color: grey; margin-left: 0px; font-weight: 100; font-size: 15px;">
-        <span>Tokio defies Alison about Río. The police speculate that a secret operative is among them.</span>
-      </div>
-    </div>
-    <div class="col-5"></div>
-    <div class="col-3" style="margin-top: 37px;">
-      <div class="row" style="color: white; font-weight: 100; font-size: 15px; margin-bottom: 10px; margin-left: 2px;">
-        <span>WHO'S WATCHING?</span>
-      </div>
-      <div class="row" style="margin-top: 25px;">
-        <img src="./ron-yekutiel.jpg" width="175" height="160" style="border-radius: 100px;">
-      </div>
-    </div>
-  </div>
-
-  <div class="row" style="margin-top: 45px;">
-    <div class="col-2"></div>
-    <div class="col-10">
+    <div class="col-6">
       <div class="row">
-        <div class="col-5">
-          <div id="player-placeholder"></div>
+        <img id="series-logo" src="./la_casa_de_papel_logo.png">
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <div class="text">
+          <span>SEASON 1, EPISODE 8</span>
         </div>
-        <div class="col-3"></div>
-        <div class="col-3">
-
-          <div class="row" style="color: white; font-weight: 100; font-size: 15px; margin-bottom: 10px; margin-left: 50px;">
-            <!--<span>DETECTED AGE:</span>-->
-            <span>DETECTING YOUR AGE...</span>
-          </div>
-
-          <div class="loader"></div>
-
-          <div class="row" style="color: grey; font-weight: bold; font-size: 150px; margin-bottom: 10px; margin-left: 30px; line-height: initial;">
-            <span>52</span>
-          </div>
+      </div>
+      <div class="row" style="margin-top: 3px; max-width: 350px;">
+        <div class="text grey">
+          <span>Tokio defies Alison about Río. The police speculate that a secret operative is among them.</span>
         </div>
+      </div>
+      <div class="row" style="margin-top: 50px;">
+        <div id="player-placeholder"></div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="row"></div>
+      <div class="row">
+        <span class="text lg center">WHO'S WATCHING?</span>
+      </div>
+      <div class="row">
+        <img src="./ron-yekutiel.jpg" class="watcher" width="175" height="160">
+      </div>
+      <div class="row" style="margin: 20px;">
+      </div>
+      <div class="row">
+        <span class="text lg center">DETECTED AGE</span>
+      </div>
+      <div class="row">
+        <span class="text xlg center grey" style="line-height: initial;">52</span>
       </div>
     </div>
   </div>
@@ -103,15 +93,15 @@
       {
         start: 22.7,
         end: 31.1
-      },
-    ],
+      }
+    ]
   };
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
     kalturaPlayer.loadMedia({entryId: '1_4w5qe98k'});
   } catch (e) {
-    console.error(e.message)
+    console.error(e.message);
   }
 </script>
 </body>
