@@ -27,6 +27,25 @@ if (PROD) {
       {
         from: '../samples/style.css',
         to: '.'
+      },
+      {
+        from: '../samples/watchdog-icon.png',
+        to: '.'
+      },
+      {
+        from: '../samples/watchdog_logo.png',
+        to: '.'
+      },
+      {
+        from: '../samples/la_casa_de_papel_logo.png',
+        to: '.'
+      },  {
+        from: '../samples/ron-yekutiel.jpg',
+        to: '.'
+      },
+      {
+        from: '../lib/animate.css',
+        to: '.'
       }
     ])
   );

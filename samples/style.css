@@ -1,17 +1,49 @@
 body {
-  background-color: #212121;
   padding: 0;
   margin: 0;
   text-align: center;
+  font-family: 'Lato' !important;
+  background-color: #2c2c2c !important;
+}
+
+#title {
+}
+
+#logo {
+  height: 150px;
+  margin-left: 45px;
+  margin-top: 10px;
+}
+
+#series-logo {
+  margin-top: 37px;
+  height: 62px;
 }
 
 #player-placeholder {
-  position: absolute;
-  margin: auto;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  width: 640px;
-  height: 360px;
+  width: 800px;
+  height: 450px;
+}
+
+.loader {
+  border: 16px solid grey;
+  border-top: 16px solid #bf2b27;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 1s linear infinite;
+  margin-left: 70px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
