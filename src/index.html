@@ -15,17 +15,24 @@
     provider: {
       partnerId: 2196781
     },
+    playback: {
+      autoplay: true,
+    },
     watchdog: [
       {
-        start: 44,
-        end: 51
-      }
+        start: 11.9,
+        end: 19.6
+      },
+      {
+        start: 22.7,
+        end: 31.1
+      },
     ],
   };
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '1_hk07hlkd'});
+    kalturaPlayer.loadMedia({entryId: '1_4w5qe98k'});
   } catch (e) {
     console.error(e.message)
   }
