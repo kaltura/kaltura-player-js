@@ -158,6 +158,9 @@ class KalturaPlayer extends FakeEventTarget {
     if (config.ui) {
       this._uiWrapper.setConfig(config.ui);
     }
+    if (config.playlist) {
+      this._playlistManager.configure(config.playlist);
+    }
   }
 
   ready(): Promise<*> {
