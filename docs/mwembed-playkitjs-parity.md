@@ -152,7 +152,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 | In-Video Quizzes 				 	| Yes					| No 					|
 | Slides and Chapters 			 	| Yes					| No 					|
 | Dual-Stream 					 	| Yes					| No 					|
-| RaptMedia Interactive Branching 	| Yes					| No 					|
+| RaptMedia Interactive Branching 	| Yes					| Yes 					|
 | Call To Action 				 	| Yes					| No 					|
 | Marketo Form	 				 	| Yes					| No 					|
 | Eloqua Form	 				 	| Yes					| No 					|
