@@ -138,14 +138,19 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     if (snapshot) {
       this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
       const originPlaybackConfig = this.config.playback;
-      configurePlayback.call(this, snapshot.config.playback);
+      const shouldPause = !snapshot.config.playback.autoplay;
       const mediaInfo = snapshot.mediaInfo;
+      snapshot.config.playback.autoplay = true;
+      configurePlayback.call(this, snapshot.config.playback);
       if (mediaInfo) {
         this.loadMedia(mediaInfo).then(() => {
           this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             this.textStyle = snapshot.textStyle;
             configurePlayback.call(this, originPlaybackConfig);
             setInitialTracks.call(this, snapshot);
+            if (shouldPause) {
+              this.pause();
+            }
           });
         });
       }
