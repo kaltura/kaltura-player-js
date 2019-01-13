@@ -199,11 +199,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
     } else {
       imaConfig = {
         // Needs to wait for engine to create the new ads container
-        delayInitUntilSourceSelected: true,
-        adsRenderingSettings: {
-          // We don't want to play ads that already played in the receiver
-          playAdsAfterTime: snapshot.config.playback.startTime
-        }
+        delayInitUntilSourceSelected: true
       };
     }
     Utils.Object.mergeDeep(playerConfig, {plugins: {ima: imaConfig}});
