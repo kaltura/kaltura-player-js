@@ -13,7 +13,7 @@ declare type KPPlaylistOptions = _KPPlaylistOptions;
 /**
  * @typedef {Object} KPPlaylistCountdownOptions
  * @property {number} [timeToShow] - Shows when the countdown is scheduled to appear (by default, this is towards the end).
- * @property {number} [duration=10] - Shows how the match time countdown will appear.
+ * @property {number} [duration=10] - Shows for how long the countdown will appear.
  * @property {boolean} [showing=true] - Determines whether to show the countdown.
  */
 type _KPPlaylistCountdownOptions = {

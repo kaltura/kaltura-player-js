@@ -276,7 +276,7 @@ Type: [Object][262]
 
 ### Properties
 
--   `autoContinue` **[boolean][264]** Whether to continue to the next item automatically
+-   `autoContinue` **[boolean][264]** Determine whether to continue to the next item automatically.
 
 ## KPPlaylistCountdownOptions
 
@@ -284,9 +284,9 @@ Type: [Object][262]
 
 ### Properties
 
--   `timeToShow` **[number][265]?** When the countdown will appear (by default is towards the end)
--   `duration` **[number][265]?** How match time the countdown will appear
--   `showing` **[boolean][264]?** Whether to show the countdown
+-   `timeToShow` **[number][265]?** Shows when the countdown is scheduled to appear (by default, this is towards the end).
+-   `duration` **[number][265]?** Shows for how long the countdown will appear.
+-   `showing` **[boolean][264]?** Determines whether to show the countdown.
 
 ## KPPlaylistConfigObject
 
@@ -294,9 +294,9 @@ Type: [Object][262]
 
 ### Properties
 
--   `options` **[KPPlaylistOptions][266]** The playlist options
--   `countdown` **[KPPlaylistCountdownOptions][267]** The playlist countdown config
--   `items` **[Array][268]&lt;[PlaylistItem][269]>** The playlist items
+-   `options` **[KPPlaylistOptions][266]** The playlist options.
+-   `countdown` **[KPPlaylistCountdownOptions][267]** The playlist countdown configuration.
+-   `items` **[Array][268]&lt;[PlaylistItem][269]>** The playlist items.
 
 ## KPPlaylistObject
 
@@ -304,11 +304,11 @@ Type: [Object][262]
 
 ### Properties
 
--   `id` **[string][263]** The playlist id
--   `metadata` **ProviderPlaylistMetadataObject** The playlist metadata
--   `options` **[KPPlaylistOptions][266]** The playlist options
--   `countdown` **[KPPlaylistCountdownOptions][267]** The playlist countdown config
--   `items` **[Array][268]&lt;[PlaylistItem][269]>** The playlist items
+-   `id` **[string][263]** The playlist ID.
+-   `metadata` **ProviderPlaylistMetadataObject** The playlist metadata.
+-   `options` **[KPPlaylistOptions][266]** The playlist options.
+-   `countdown` **[KPPlaylistCountdownOptions][267]** The playlist countdown configuration.
+-   `items` **[Array][268]&lt;[PlaylistItem][269]>** The playlist items.
 
 ## KPPlaylistItemConfigObject
 
