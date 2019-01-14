@@ -121,11 +121,11 @@ The configuration uses the following structure:
 
 ## Configuration Priority
 
-In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determines whether the sources has a greater or lesser impact on how the player is configured.
+In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determines whether the source has a greater or lesser impact on how the player is configured.
 
 Available sources include:
 
-- **Application** - This is the application that embeds the player and can be used to configures the player inline upon instantiation.
+- **Application** - This is the application that embeds the player and can be used to configures the player in-line upon instantiation.
 - **Server** - This is a partner configuration that is saved on the server. The partner can use this configuration when configuring the player by suppling the `uiConfId` value.
 - **Local Storage (Browser)** - This is the user preferences configuration, which is saved in the local storage of the browser.
 - **Default Player Configuration** - The default player configuration is defined internally by the player.
