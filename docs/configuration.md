@@ -20,6 +20,7 @@ The configuration uses the following structure:
   disableUserCache: boolean,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
+  playlist: KPPlaylisyObject,
   plugins: PKPluginsConfigObject,
   session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
@@ -60,7 +61,7 @@ The configuration uses the following structure:
 >
 > ##### Description: Indicates whether to stop using the saved user preferences.
 >
-> <br>More on user preferences in the player can be found [here](./user-preferences.md).
+> <br>You can learn more about user preferences in the player [here](./user-preferences.md).
 
 ##
 
@@ -75,6 +76,12 @@ The configuration uses the following structure:
 > ##### Type: [PKSourcesConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configsources)
 >
 > ##### Description: Defines the sources configuration.
+>
+> ### config.playlist
+>
+> ##### Type: [KPPlaylisyObject](./api.md#kpplaylistobject)
+>
+> ##### Description: Defines the playlist configuration.
 >
 > ### config.plugins
 >
@@ -114,16 +121,16 @@ The configuration uses the following structure:
 
 ## Configuration Priority
 
-In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, meaning has a greater or less impact on how the player is configured.
+In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determines whether the source has a greater or lesser impact on how the player is configured.
 
 Available sources include:
 
-- **Application** - This is the application that embeds the player and can configures the player inline upon instantiation.
-- **Server** - A partner configuration that is saved on the server. The partner can use this configuration when configuring the player by suppling the `uiConfId` value.
+- **Application** - This is the application that embeds the player and can be used to configures the player in-line upon instantiation.
+- **Server** - This is a partner configuration that is saved on the server. The partner can use this configuration when configuring the player by suppling the `uiConfId` value.
 - **Local Storage (Browser)** - This is the user preferences configuration, which is saved in the local storage of the browser.
 - **Default Player Configuration** - The default player configuration is defined internally by the player.
 
-When the player builds its runtime configuration, it will need to how to built the configuration correctly according to the priority of each configuration, which is as follows (#1 is highest; #4 is lowest):
+When the player builds its runtime configuration, it will need to know how to built the configuration correctly according to the priority of each configuration, which is as follows (#1 is highest; #4 is lowest):
 
 1.  **Local Storage**
 2.  **Application**
@@ -134,7 +141,7 @@ When the player builds its runtime configuration, it will need to how to built t
 
 #### Example
 
-Let's assume the following configurations from each source to see how they affect the configuration:
+In this example, we'll use the following configuration from each source to see how that source affects the configuration:
 
 Local Storage
 
