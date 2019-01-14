@@ -121,7 +121,7 @@ The configuration uses the following structure:
 
 ## Configuration Priority
 
-In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determins whether the sources has a greater or lesser impact on how the player is configured.
+In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determines whether the sources has a greater or lesser impact on how the player is configured.
 
 Available sources include:
 
