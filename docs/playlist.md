@@ -14,7 +14,7 @@ The Kaltura Player exposes several APIs that are used for loading, configuring, 
 
 ### Load A Playlist
 
-Before loading a playlist, you'll to set up a Kaltura Player instance as follows. 
+Before loading a playlist, you'll need to set up a Kaltura Player instance as follows. 
 
 ```javascript
 const config = PLAYER_CONFIG;
@@ -105,7 +105,7 @@ kalturaPlayer.configure({
 
 ### Countdown
 
-When the current item is about to end, and the playlist is set to continue automatically, the user will see a countdown displayed. The user can then skip to the next item immediately or cancel the switching.
+When the current item is about to end and the playlist is set to continue automatically, the user will see a countdown displayed. The user can then skip to the next item immediately or cancel the switching.
 ![playlist-countdown](images/playlist-countdown1.png)
 
 By default, the countdown is displayed for 10 seconds until the end. 
