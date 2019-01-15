@@ -60,6 +60,8 @@ function getStartTime(player: KalturaPlayer): number {
     } else {
       return -1;
     }
+  } else if (!player.isCasting() && !player.currentTime && player.config.playback.startTime > -1) {
+    return player.config.playback.startTime;
   }
   return player.currentTime;
 }
