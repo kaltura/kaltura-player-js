@@ -1,7 +1,7 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig} from './common/plugins/plugins-config';
@@ -76,6 +76,7 @@ class KalturaPlayer extends FakeEventTarget {
     });
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, playerConfig);
+    maybeSetStreamPriority(this, playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
     this.configure(playerConfig);
   }
