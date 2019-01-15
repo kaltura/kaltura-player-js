@@ -392,8 +392,7 @@ function isIos(): boolean {
  * @return {void}
  */
 function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsObject): void {
-  const source = playerConfig.sources && playerConfig.sources.progressive;
-  if (source && source[0] && source[0].mimetype === 'video/youtube') {
+  if (playerConfig.sources && hasYoutubeSource(playerConfig.sources)) {
     const playbackConfig = player.config.playback;
     let hasYoutube = false;
     playbackConfig.streamPriority.forEach(sp => {
@@ -412,6 +411,16 @@ function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsOb
   }
 }
 
+/**
+ * returns true if sources contain youtube video source
+ * @param {PKSourcesConfigObject} sources - thr sources object
+ * @returns {boolean} - true if sources contain youtube source
+ */
+function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
+  const source = sources && sources.progressive;
+  return !!(source && source[0] && source[0].mimetype === 'video/youtube');
+}
+
 export {
   printSetupMessages,
   supportLegacyOptions,
@@ -427,5 +436,6 @@ export {
   getDefaultOptions,
   isSafari,
   isIos,
-  maybeSetStreamPriority
+  maybeSetStreamPriority,
+  hasYoutubeSource
 };
