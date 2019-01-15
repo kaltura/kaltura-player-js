@@ -142,31 +142,4 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   });
 }
 
-/**
- * set stream priority according to playerConfig
- * @param {Player} player - player
- * @param {PartialKPOptionsObject} playerConfig - player config
- * @return {void}
- */
-function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsObject): void {
-  const source = playerConfig.sources && playerConfig.sources.progressive;
-  if (source && source[0] && source[0].mimetype === 'video/youtube') {
-    const playbackConfig = player.config.playback;
-    let hasYoutube = false;
-    playbackConfig.streamPriority.forEach(sp => {
-      if (sp.engine === 'youtube') {
-        hasYoutube = true;
-      }
-    });
-    if (!hasYoutube) {
-      playbackConfig.streamPriority.push({
-        engine: 'youtube',
-        format: 'progressive'
-      });
-    }
-
-    playerConfig.playback = playbackConfig;
-  }
-}
-
-export {addKalturaParams, maybeSetStreamPriority, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag};
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag};

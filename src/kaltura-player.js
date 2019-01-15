@@ -1,9 +1,9 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
-import {addKalturaParams, maybeSetStreamPriority} from './common/utils/kaltura-params';
+import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig} from './common/plugins/plugins-config';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
