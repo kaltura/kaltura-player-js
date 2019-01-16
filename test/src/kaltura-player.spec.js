@@ -39,10 +39,9 @@ describe('kaltura player api', function() {
 
       beforeEach(function() {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function(playlistInfo) {
-          return playlistInfo.playlistId
-            ? Promise.resolve(MediaMockData.MediaConfig)
-            : Promise.reject({success: false, data: 'Missing mandatory parameter'});
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function(info) {
+          const id = info.playlistId || info.entryId;
+          return id ? Promise.resolve(MediaMockData.MediaConfig[id]) : Promise.reject({success: false, data: 'Missing mandatory parameter'});
         });
       });
 
@@ -64,6 +63,72 @@ describe('kaltura player api', function() {
           error.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
+        });
+      });
+
+      describe('maybeSetStreamPriority', function() {
+        describe('media source mime type is video/youtube', function() {
+          it('should add youtube to stream priority if not already set', function(done) {
+            kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
+              let hasYoutube = false;
+              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+                if (sp.engine === 'youtube') {
+                  hasYoutube = true;
+                }
+              });
+              try {
+                hasYoutube.should.be.true;
+                done();
+              } catch (e) {
+                done("youtube engine wasn't added to stream priority list");
+              }
+            });
+          });
+          it('should not add youtube to stream priority if already set', function(done) {
+            kalturaPlayer.configure({
+              playback: {
+                streamPriority: [
+                  {
+                    engine: 'youtube',
+                    format: 'progressive'
+                  }
+                ]
+              }
+            });
+            kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
+              let hasYoutube = false;
+              kalturaPlayer.config.playback.streamPriority.length.should.equal(1);
+              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+                if (sp.engine === 'youtube') {
+                  hasYoutube = true;
+                }
+              });
+              try {
+                hasYoutube.should.be.true;
+                done();
+              } catch (e) {
+                done("youtube engine wasn't added to stream priority list");
+              }
+            });
+          });
+        });
+        describe('media source mime type is not video/youtube', function() {
+          it('should not add youtube to stream priority', function(done) {
+            kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+              let hasYoutube = false;
+              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+                if (sp.engine === 'youtube') {
+                  hasYoutube = true;
+                }
+              });
+              try {
+                hasYoutube.should.be.false;
+                done();
+              } catch (e) {
+                done('youtube engine was added to stream priority list');
+              }
+            });
+          });
         });
       });
     });
