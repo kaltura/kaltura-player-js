@@ -259,7 +259,7 @@ class PlaylistManager {
     if (activeItem.isPlayable()) {
       this._player.reset();
       // $FlowFixMe
-      this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
+      this._player.setMedia({session: this._player.config.session, plugins: {}, sources: activeItem.sources});
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
     } else {
