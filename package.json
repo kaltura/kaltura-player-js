@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
+    "dev:ovp:massive": "webpack-dev-server --config webpack.config.massive.js",
     "build:ovp": "NODE_ENV=production webpack --config webpack.config.ovp.js",
     "dev:ovp": "webpack-dev-server --config webpack.config.ovp.js",
     "watch:ovp": "webpack --progress --colors --watch --config webpack.config.ovp.js",
@@ -21,7 +22,6 @@
     "playkit-dev-ott:start": "playkit-dev start ott",
     "playkit-dev:stop": "playkit-dev stop",
     "playkit-rel": "playkit-rel start",
-    "precommit": "lint-staged",
     "docs:generate": "documentation build flow-typed/** src/** -f md -o docs/api.md",
     "docs:serve": "documentation serve flow-typed/** src/** --watch"
   },
