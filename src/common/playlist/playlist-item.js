@@ -23,9 +23,7 @@ class PlaylistItem {
    */
   updateSources(sourcesObject: ProviderMediaConfigSourcesObject): void {
     formats.forEach(format => {
-      if (this._sources) {
-        this._sources[format] = sourcesObject[format];
-      }
+      this._sources && (this._sources[format] = sourcesObject[format]);
     });
   }
 
