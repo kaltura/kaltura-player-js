@@ -19,7 +19,7 @@ export function getThumbSlicesUrl(mediaConfig: ProviderMediaConfigObject, seekba
     if (regex.test(mediaConfigPoster)) {
       try {
         const model: Object = {
-          thumbnailUrl: mediaConfigPoster,
+          thumbnailUrl: mediaConfigPoster.replace(/(?:\/height\/\d+\/width\/\d+)/, ''),
           ks: mediaConfig.session.ks,
           width: (seekbarConfig && seekbarConfig.thumbsWidth) || DEFAULT_THUMBS_WIDTH,
           slices: (seekbarConfig && seekbarConfig.thumbsSlices) || DEFAULT_THUMBS_SLICES
