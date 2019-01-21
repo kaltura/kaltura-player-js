@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.38.1"></a>
+## [0.38.1](https://github.com/kaltura/kaltura-player-js/compare/v0.38.0...v0.38.1) (2019-01-21)
+
+
+
+<a name="0.38.0"></a>
+# [0.38.0](https://github.com/kaltura/kaltura-player-js/compare/v0.37.3...v0.38.0) (2019-01-20)
+
+
+### Bug Fixes
+
+* remove applicative style ([#203](https://github.com/kaltura/kaltura-player-js/issues/203)) ([31e78fc](https://github.com/kaltura/kaltura-player-js/commit/31e78fc))
+* set playlist by configure method doesn't work ([#197](https://github.com/kaltura/kaltura-player-js/issues/197)) ([7f4c515](https://github.com/kaltura/kaltura-player-js/commit/7f4c515))
+* **FEC-8818:** cast doesn't respect 'startTime' config ([#202](https://github.com/kaltura/kaltura-player-js/issues/202)) ([f1f6392](https://github.com/kaltura/kaltura-player-js/commit/f1f6392))
+* **FEC-8842:** playlist - item sources config ignored ([#211](https://github.com/kaltura/kaltura-player-js/issues/211)) ([fc73982](https://github.com/kaltura/kaltura-player-js/commit/fc73982))
+
+
+### Features
+
+* **FEC-8661:** support youtube engine playback ([#205](https://github.com/kaltura/kaltura-player-js/issues/205)) ([63f1a3b](https://github.com/kaltura/kaltura-player-js/commit/63f1a3b))
+* **FEC-8751:** add support for ima playAdsAfterTime setting ([#201](https://github.com/kaltura/kaltura-player-js/issues/201)) ([f4c243d](https://github.com/kaltura/kaltura-player-js/commit/f4c243d))
+
+
+
 <a name="0.37.3"></a>
 ## [0.37.3](https://github.com/kaltura/kaltura-player-js/compare/v0.37.2...v0.37.3) (2018-12-27)
 
