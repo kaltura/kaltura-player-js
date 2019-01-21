@@ -23,9 +23,6 @@ import {getPlayers, getPlayer} from './proxy';
 import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
-import testPrint from 'moduleReplacements/testModule';
-
-testPrint();
 
 declare var __VERSION__: string;
 declare var __NAME__: string;

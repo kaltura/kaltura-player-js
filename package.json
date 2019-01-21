@@ -5,8 +5,9 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
-    "dev:ovp:massive": "webpack-dev-server --config webpack.config.massive.js",
+    "dev:ovp:massive": "webpack-dev-server --config webpack.config.massive.ovp.js",
     "build:ovp": "NODE_ENV=production webpack --config webpack.config.ovp.js",
+    "build:ovp:massive": "NODE_ENV=production webpack --config webpack.config.massive.ovp.js",
     "dev:ovp": "webpack-dev-server --config webpack.config.ovp.js",
     "watch:ovp": "webpack --progress --colors --watch --config webpack.config.ovp.js",
     "build:ott": "NODE_ENV=production webpack --config webpack.config.ott.js",

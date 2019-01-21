@@ -9,27 +9,12 @@ const PROD = process.env.NODE_ENV === 'production';
 const playerType = 'ovp';
 const configDocsUrl = 'https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md';
 
-// const getModuleReplacements = function(mappings) {
-//   if (mappings === undefined) mappings = {};
-//   const paths = {
-//     'moduleReplacements/testModule.js': 'moduleReplacements/testModule1.js'
-//   };
-//   const map = Object.assign({}, paths, mappings);
-
-//   return Object.keys(map).reduce((result, source) => {
-//     if (source.indexOf('*') >= 0 || map[source].length !== 1) return result;
-//     const replace = path.resolve('./src/', map[source]);
-//     const sourcePattern =
-//       source
-//         .split(/\//g)
-//         .map(escapeRegExp)
-//         .join('[\\/\\\\]') + '$'; // match with unix and windows path separator
-//     return result.concat(new webpack.NormalModuleReplacementPlugin(new RegExp(sourcePattern), replace));
-//   }, []);
-// };
+const getModulesIgnored = function(pathsToIgnore = []) {
+  return pathsToIgnore.map(path => new webpack.IgnorePlugin(path));
+};
 
 const plugins = [
-  //   getModuleReplacements(),
+  ...getModulesIgnored([/cast/, /shaka-player/, /playkit-js-ui/, /playkit-js-dash/]),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.DefinePlugin({
     __VERSION__: JSON.stringify(packageData.version),
