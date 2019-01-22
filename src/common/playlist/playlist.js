@@ -52,8 +52,9 @@ class Playlist {
     return {item: this._items[this._activeItemIndex] || null, index: this._activeItemIndex};
   }
 
-  get next(): {item: ?PlaylistItem, index: number} {
-    return {item: this._items[this._activeItemIndex + 1] || null, index: this._activeItemIndex + 1};
+  getNext(loop: boolean): {item: ?PlaylistItem, index: number} {
+    const nextIndex = loop ? (this._activeItemIndex + 1) % this._items.length : this._activeItemIndex + 1;
+    return {item: this._items[nextIndex] || null, index: nextIndex};
   }
 
   get prev(): {item: ?PlaylistItem, index: number} {

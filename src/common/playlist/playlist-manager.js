@@ -26,7 +26,7 @@ class PlaylistManager {
     this._player = player;
     this._eventManager = new EventManager();
     this._playlist = new Playlist();
-    this._options = {autoContinue: true};
+    this._options = {autoContinue: true, loop: false};
     this._countdown = {duration: 10, showing: true};
     this._mediaInfoList = [];
     this._playerOptions = options;
@@ -92,7 +92,7 @@ class PlaylistManager {
    */
   playNext(): void {
     this._logger.debug('playNext');
-    const next = this._playlist.next;
+    const next = this._playlist.getNext(true);
     if (next.item) {
       this._setItem(next.item, next.index);
     }
@@ -144,7 +144,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   get next(): ?PlaylistItem {
-    return this._playlist.next.item;
+    return this._playlist.getNext(this._options.loop).item;
   }
 
   /**
@@ -240,12 +240,14 @@ class PlaylistManager {
   }
 
   _onPlaybackEnded(): void {
-    if (this._playlist.next.item) {
-      if (this._options.autoContinue && (this._playerOptions.ui.disable || !this.countdown.showing)) {
+    const nextItem = this._playlist.getNext(false).item;
+    if (!nextItem) {
+      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
+    }
+    if (this._playerOptions.ui.disable || !this.countdown.showing) {
+      if ((nextItem && this._options.autoContinue) || this._options.loop) {
         this.playNext();
       }
-    } else {
-      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
     }
   }
 

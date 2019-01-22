@@ -3,10 +3,12 @@ import {PlaylistItem} from '../../src/common/playlist/playlist-item';
 
 /**
  * @typedef {Object} KPPlaylistOptions
- * @property {boolean} autoContinue - Determine whether to continue to the next item automatically.
+ * @property {boolean} [autoContinue=true] - Determine whether to continue to the next item automatically.
+ * @property {boolean} [loop=false] - Determine whether to play the playlist in a loop. When is true the playlist will played automatically even autoContinue is false.
  */
 type _KPPlaylistOptions = {
-  autoContinue: boolean
+  autoContinue: boolean,
+  loop: boolean
 };
 declare type KPPlaylistOptions = _KPPlaylistOptions;
 
