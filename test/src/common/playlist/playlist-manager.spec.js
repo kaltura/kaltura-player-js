@@ -1,10 +1,12 @@
 import {KalturaPlayer} from '../../../../src/kaltura-player';
 import {PlaylistManager} from '../../../../src/common/playlist/playlist-manager';
+import * as MediaMockData from '../../mock-data/media';
 import * as PlaylistMockData from '../../mock-data/playlist';
 import {FakeEvent} from '@playkit-js/playkit-js';
+import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
 
 describe('PlaylistManager', function() {
-  let kalturaPlayer, playlistManager;
+  let kalturaPlayer, playlistManager, sandbox;
   const config = {
     ui: {},
     provider: {},
@@ -14,6 +16,7 @@ describe('PlaylistManager', function() {
   };
 
   before(function() {
+    sandbox = sinon.sandbox.create();
     kalturaPlayer = new KalturaPlayer(config);
   });
 
@@ -26,6 +29,7 @@ describe('PlaylistManager', function() {
     playlistManager = null;
     kalturaPlayer._eventManager.removeAll();
     kalturaPlayer.reset();
+    sandbox.restore();
   });
 
   describe('configure', function() {
@@ -356,6 +360,35 @@ describe('PlaylistManager', function() {
       });
       playlistManager.playNext();
       playlistManager.next.sources.id.should.equal('id1');
+    });
+  });
+
+  describe('playNext', function() {
+    before(function() {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function({entryId}) {
+        return Promise.resolve(MediaMockData.MediaConfig[entryId]);
+      });
+    });
+
+    beforeEach(function() {
+      playlistManager.load(PlaylistMockData.playlistByEntryList);
+    });
+
+    it('should call playNext automatically once the playlist loaded', function(done) {
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        done();
+      });
+    });
+
+    it('should call playNext programmatically', function(done) {
+      let eventCounter = 0;
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        eventCounter++;
+        playlistManager.playNext();
+        if (eventCounter === 2) {
+          done();
+        }
+      });
     });
   });
 });
