@@ -45,7 +45,7 @@
 >
 > | Name | Type | Description  |
 > | ---- | ---- | ------------ |
-> | `ad` | `Ad` | The ad data. |
+> | `ad` | [`Ad`](#Ad) | The ad data. |
 
 #
 
@@ -299,7 +299,7 @@ Returns **[string][32]** Ad break position on the playback timeline.
 
 Returns **[string][32]** The number of ads inside the ad break.
 
-## Ad
+## <a name="Ad"></a>AD_VOLUME_CHANGED
 
 ### Parameters
 
