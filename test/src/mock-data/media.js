@@ -91,6 +91,44 @@ const MediaConfig = {
     },
     plugins: {}
   },
+  '0_nwkp7jtx': {
+    session: {
+      isAnonymous: true,
+      partnerId: 1091,
+      ks: 'YTBmMmM2M2Y5ZWE1ZTU2ZjZmNjM0ZGUxMmY2MWU1YWRkNzYzOTVlMXwxMDkxOzEwOTE7MTU0ODA2NTI0MzswOzE1NDc5Nzg4NDMuNTcxOTswO3ZpZXc6Kix3aWRnZXQ6MTs7'
+    },
+    sources: {
+      hls: [
+        {
+          id: '0_nwkp7jtx_1033,applehttp',
+          url:
+            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/applehttp/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.m3u8',
+          mimetype: 'application/x-mpegURL'
+        }
+      ],
+      dash: [
+        {
+          id: '0_nwkp7jtx_301,mpegdash',
+          url:
+            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
+          mimetype: 'application/dash+xml'
+        }
+      ],
+      progressive: [],
+      id: '0_nwkp7jtx',
+      duration: 86089,
+      type: 'Live',
+      poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
+      dvr: true,
+      vr: null,
+      metadata: {
+        name: 'Kaltura Live with DVR new - 08.17',
+        description: '',
+        tags: ''
+      }
+    },
+    plugins: {}
+  },
   Youtube: {
     session: {
       isAnonymous: true,
