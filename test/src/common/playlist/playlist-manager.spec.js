@@ -29,7 +29,6 @@ describe('PlaylistManager', function() {
     playlistManager = null;
     kalturaPlayer._eventManager.removeAll();
     kalturaPlayer.reset();
-    sandbox.restore();
   });
 
   describe('configure', function() {
@@ -374,6 +373,10 @@ describe('PlaylistManager', function() {
       playlistManager.load(PlaylistMockData.playlistByEntryList);
     });
 
+    after(function() {
+      sandbox.restore();
+    });
+
     it('should call playNext automatically once the playlist loaded', function(done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         done();
@@ -383,11 +386,11 @@ describe('PlaylistManager', function() {
     it('should call playNext programmatically', function(done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-        eventCounter++;
-        playlistManager.playNext();
         if (eventCounter === 2) {
           done();
         }
+        eventCounter++;
+        playlistManager.playNext();
       });
     });
   });
