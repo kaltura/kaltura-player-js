@@ -208,7 +208,7 @@ To query the player regarding ads state in the current playback, you can use the
 The ads controller is in charge to track and communicate with the active ads plugin and collect and save the current ads state and data.
 ![ad-controller](images/ads-controller.jpg)
 
-> Pay attention:
+> AdsController full reference can be found [here](#AdsController).
 
 #### Examples:
 
@@ -368,7 +368,7 @@ Returns **[string][32]** Ad bitrate.
 
 Returns **[string][32]** Whether the ad is skippable or not.
 
-## AdsController
+## <a name="AdsController"></a>AdsController
 
 ### Parameters
 
