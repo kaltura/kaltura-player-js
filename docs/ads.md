@@ -27,6 +27,12 @@
 
 #
 
+> ### <a name="AD_CAN_SKIP"></a>AD_CAN_SKIP
+>
+> Fires when ad skippable state has changed and the ad can be skipped.
+
+#
+
 > ### <a name="AD_MANIFEST_LOADED"></a>AD_MANIFEST_LOADED
 >
 > Fires when the ad manifest has been loaded and the ad layout is available.
@@ -56,7 +62,7 @@
 >
 > | Name | Type | Description  |
 > | ---- | ---- | ------------ |
-> | `ad` | `Ad` | The ad data. |
+> | `ad` | [`Ad`](#Ad) | The ad data. |
 
 #
 
@@ -117,7 +123,7 @@
 >
 > | Name      | Type      | Description        |
 > | --------- | --------- | ------------------ |
-> | `adBreaK` | `AdBreak` | The ad break data. |
+> | `adBreaK` | [`AdBreak`](#AdBreak) | The ad break data. |
 
 #
 
@@ -281,7 +287,7 @@ if (player.ads.isAdBreak()) {
   - [playAdNow][30]
     - [Parameters][31]
 
-## AdBreak
+## <a name="AdBreak"></a>AdBreak
 
 ### Parameters
 
@@ -299,7 +305,7 @@ Returns **[string][32]** Ad break position on the playback timeline.
 
 Returns **[string][32]** The number of ads inside the ad break.
 
-## <a name="Ad"></a>AD_VOLUME_CHANGED
+## <a name="Ad"></a>Ad
 
 ### Parameters
 
