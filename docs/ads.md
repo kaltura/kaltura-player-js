@@ -246,3 +246,199 @@ if (player.ads.isAdBreak()) {
   // do something
 }
 ```
+
+## Ads API Reference
+
+- [AdBreak][1]
+  - [Parameters][2]
+  - [type][3]
+  - [position][4]
+  - [numAds][5]
+- [Ad][6]
+  - [Parameters][7]
+  - [id][8]
+  - [contentType][9]
+  - [url][10]
+  - [title][11]
+  - [position][12]
+  - [duration][13]
+  - [clickThroughUrl][14]
+  - [posterUrl][15]
+  - [skipOffset][16]
+  - [linear][17]
+  - [width][18]
+  - [height][19]
+  - [bitrate][20]
+  - [skippable][21]
+- [AdsController][22]
+  - [Parameters][23]
+  - [allAdsCompleted][24]
+  - [isAdBreak][25]
+  - [getAdBreaksLayout][26]
+  - [getAdBreak][27]
+  - [getAd][28]
+  - [skipAd][29]
+  - [playAdNow][30]
+    - [Parameters][31]
+
+## AdBreak
+
+### Parameters
+
+- `options` **PKAdBreakOptions** Ad break data options.
+
+### type
+
+Returns **[string][32]** Ad break type - pre/mid/post.
+
+### position
+
+Returns **[string][32]** Ad break position on the playback timeline.
+
+### numAds
+
+Returns **[string][32]** The number of ads inside the ad break.
+
+## Ad
+
+### Parameters
+
+- `id` **[string][32]** Ad ID.
+- `options` **PKAdOptions** Ad data options.
+
+### id
+
+Returns **[string][32]** Ad ID.
+
+### contentType
+
+Returns **[string][32]** Ad ID.
+
+### url
+
+Returns **[string][32]** Ad URL.
+
+### title
+
+Returns **[string][32]** Ad title.
+
+### position
+
+Returns **[string][32]** Ad position inside the ad break.
+
+### duration
+
+Returns **[string][32]** Ad duration.
+
+### clickThroughUrl
+
+Returns **[string][32]** Ad click through URL.
+
+### posterUrl
+
+Returns **[string][32]** Ad poster URL.
+
+### skipOffset
+
+Returns **[string][32]** Ad skip offset.
+
+### linear
+
+Returns **[string][32]** Whether the ad is linear.
+
+### width
+
+Returns **[string][32]** Ad width.
+
+### height
+
+Returns **[string][32]** Ad height.
+
+### bitrate
+
+Returns **[string][32]** Ad bitrate.
+
+### skippable
+
+Returns **[string][32]** Whether the ad is skippable or not.
+
+## AdsController
+
+### Parameters
+
+- `player` **Player** The player.
+- `adsPluginController` **IAdsController** The controller of the current ads plugin instance.
+
+### allAdsCompleted
+
+Returns **[boolean][33]** Whether all ads completed.
+
+### isAdBreak
+
+Returns **[boolean][33]** Whether we're in an ad break.
+
+### getAdBreaksLayout
+
+Returns **[Array][34]&lt;[number][35]>** The ad breaks layout (cue points).
+
+### getAdBreak
+
+Returns **[AdBreak][36]?** Gets the current ad break data.
+
+### getAd
+
+Returns **[Ad][37]?** Gets the current ad data.
+
+### skipAd
+
+Skip on an ad.
+
+Returns **void**
+
+### playAdNow
+
+Play an ad on demand.
+
+#### Parameters
+
+- `adTagUrl` **[string][32]** The ad tag url to play.
+
+Returns **void**
+
+[1]: #adbreak
+[2]: #parameters
+[3]: #type
+[4]: #position
+[5]: #numads
+[6]: #ad
+[7]: #parameters-1
+[8]: #id
+[9]: #contenttype
+[10]: #url
+[11]: #title
+[12]: #position-1
+[13]: #duration
+[14]: #clickthroughurl
+[15]: #posterurl
+[16]: #skipoffset
+[17]: #linear
+[18]: #width
+[19]: #height
+[20]: #bitrate
+[21]: #skippable
+[22]: #adscontroller
+[23]: #parameters-2
+[24]: #alladscompleted
+[25]: #isadbreak
+[26]: #getadbreakslayout
+[27]: #getadbreak
+[28]: #getad
+[29]: #skipad
+[30]: #playadnow
+[31]: #parameters-3
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[36]: #adbreak
+[37]: #ad
