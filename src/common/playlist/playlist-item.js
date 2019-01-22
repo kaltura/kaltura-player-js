@@ -1,4 +1,5 @@
 // @flow
+const formats = ['hls', 'dash', 'progressive'];
 /**
  * @class PlaylistItem
  * @param {ProviderMediaConfigSourcesObject} [sources] - The item sources
@@ -21,11 +22,9 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   updateSources(sourcesObject: ProviderMediaConfigSourcesObject): void {
-    if (this._sources) {
-      this._sources.hls = sourcesObject.hls;
-      this._sources.dash = sourcesObject.dash;
-      this._sources.progressive = sourcesObject.progressive;
-    }
+    formats.forEach(format => {
+      this._sources && (this._sources[format] = sourcesObject[format]);
+    });
   }
 
   /**
@@ -35,6 +34,11 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   get sources(): ?ProviderMediaConfigSourcesObject {
+    formats.forEach(format => {
+      if (this._sources && this._sources[format] && this._sources[format].length === 0) {
+        delete this._sources[format];
+      }
+    });
     return this._sources;
   }
 
@@ -54,12 +58,9 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   isPlayable(): boolean {
-    return !!(
-      this._sources &&
-      ((this._sources.hls && this._sources.hls.length) ||
-        (this._sources.dash && this._sources.dash.length) ||
-        (this._sources.progressive && this._sources.progressive.length))
-    );
+    return !!formats.find(format => {
+      return this._sources && this._sources[format] && this._sources[format].length;
+    });
   }
 }
 
