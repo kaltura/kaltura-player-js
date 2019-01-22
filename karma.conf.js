@@ -18,7 +18,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     browsers: ['Chrome', 'Firefox'],
     concurrency: 1,
-    singleRun: true,
+    singleRun: false,
     colors: true,
     frameworks: ['mocha'],
     files: ['test/setup/karma.js'],
