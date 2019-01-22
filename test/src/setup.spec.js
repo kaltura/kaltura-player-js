@@ -75,7 +75,8 @@ describe('setup', function() {
       fontOpacity: 0,
       backgroundColor: [1, 2, 3],
       backgroundOpacity: 1,
-      fontEdge: []
+      fontEdge: [],
+      fontScale: 1
     };
     sandbox
       .stub(StorageWrapper, 'getItem')
