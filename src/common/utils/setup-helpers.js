@@ -385,6 +385,42 @@ function isIos(): boolean {
   return Env.os.name === 'iOS';
 }
 
+/**
+ * set stream priority according to playerConfig
+ * @param {Player} player - player
+ * @param {PartialKPOptionsObject} playerConfig - player config
+ * @return {void}
+ */
+function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsObject): void {
+  if (playerConfig.sources && hasYoutubeSource(playerConfig.sources)) {
+    const playbackConfig = player.config.playback;
+    let hasYoutube = false;
+    playbackConfig.streamPriority.forEach(sp => {
+      if (sp.engine === 'youtube') {
+        hasYoutube = true;
+      }
+    });
+    if (!hasYoutube) {
+      playbackConfig.streamPriority.push({
+        engine: 'youtube',
+        format: 'progressive'
+      });
+    }
+
+    playerConfig.playback = playbackConfig;
+  }
+}
+
+/**
+ * returns true if sources contain youtube video source
+ * @param {PKSourcesConfigObject} sources - thr sources object
+ * @returns {boolean} - true if sources contain youtube source
+ */
+function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
+  const source = sources && sources.progressive;
+  return !!(source && source[0] && source[0].mimetype === 'video/youtube');
+}
+
 export {
   printSetupMessages,
   supportLegacyOptions,
@@ -399,5 +435,7 @@ export {
   checkNativeHlsSupport,
   getDefaultOptions,
   isSafari,
-  isIos
+  isIos,
+  maybeSetStreamPriority,
+  hasYoutubeSource
 };

@@ -26,7 +26,7 @@ class PlaylistManager {
     this._player = player;
     this._eventManager = new EventManager();
     this._playlist = new Playlist();
-    this._options = {autoContinue: true};
+    this._options = {autoContinue: true, loop: false};
     this._countdown = {duration: 10, showing: true};
     this._mediaInfoList = [];
     this._playerOptions = options;
@@ -92,7 +92,7 @@ class PlaylistManager {
    */
   playNext(): void {
     this._logger.debug('playNext');
-    const next = this._playlist.next;
+    const next = this._playlist.getNext(true);
     if (next.item) {
       this._setItem(next.item, next.index);
     }
@@ -144,7 +144,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   get next(): ?PlaylistItem {
-    return this._playlist.next.item;
+    return this._playlist.getNext(this._options.loop).item;
   }
 
   /**
@@ -225,7 +225,9 @@ class PlaylistManager {
           itemData.sources,
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
         );
-        addKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+        if (Array.isArray(itemData.sources.poster)) {
+          addKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+        }
         return {
           sources: itemData.sources,
           config: playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].config
@@ -240,12 +242,14 @@ class PlaylistManager {
   }
 
   _onPlaybackEnded(): void {
-    if (this._playlist.next.item) {
-      if (this._options.autoContinue && (this._playerOptions.ui.disable || !this.countdown.showing)) {
+    const nextItem = this._playlist.getNext(false).item;
+    if (!nextItem) {
+      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
+    }
+    if (this._playerOptions.ui.disable || !this.countdown.showing) {
+      if ((nextItem && this._options.autoContinue) || this._options.loop) {
         this.playNext();
       }
-    } else {
-      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
     }
   }
 
@@ -259,11 +263,15 @@ class PlaylistManager {
     if (activeItem.isPlayable()) {
       this._player.reset();
       // $FlowFixMe
-      this._player.setMedia({session: {}, plugins: {}, sources: activeItem.sources});
+      this._player.setMedia({session: this._player.config.session, plugins: {}, sources: activeItem.sources});
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
     } else {
       if (this._mediaInfoList[index]) {
+        this._player.reset();
+        this._player.configure({
+          sources: activeItem.sources
+        });
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
           this._playlist.updateItemSources(index, mediaConfig.sources);
           this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));

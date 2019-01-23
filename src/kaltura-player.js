@@ -1,7 +1,7 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig} from './common/plugins/plugins-config';
@@ -76,10 +76,23 @@ class KalturaPlayer extends FakeEventTarget {
     });
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, playerConfig);
-    this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
+    maybeSetStreamPriority(this, playerConfig);
+    if (!hasYoutubeSource(playerConfig.sources)) {
+      this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
+    }
     this.configure(playerConfig);
   }
 
+  /**
+   * Loads a playlist by id.
+   * @param {ProviderPlaylistInfoObject} playlistInfo - The playlist info.
+   * @param {KPPlaylistConfigObject} [playlistConfig] - The playlist config.
+   * @returns {Promise<ProviderPlaylistObject>} - The playlist data from the provider.
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.loadPlaylist({playlistId: '123456'}, {options: {autoContinue: false}});
+   */
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
@@ -94,6 +107,16 @@ class KalturaPlayer extends FakeEventTarget {
     return providerResult;
   }
 
+  /**
+   * Loads a playlist by entry list.
+   * @param {ProviderEntryListObject} entryList - The playlist info.
+   * @param {KPPlaylistConfigObject} [playlistConfig] - The playlist config.
+   * @returns {Promise<ProviderPlaylistObject>} - The playlist data from the provider.
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {options: {autoContinue: false}});
+   */
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
@@ -121,6 +144,15 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
+  /**
+   * Config the player.
+   * @param {Object} [config={}] - The player config.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.configure({playback: {autoplay: true}});
+   */
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
     // $FlowFixMe
@@ -410,6 +442,14 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.plugins;
   }
 
+  /**
+   * The playlist controller.
+   * @type {PlaylistManager}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.playlist.playNext();
+   */
   get playlist(): PlaylistManager {
     return this._playlistManager;
   }
