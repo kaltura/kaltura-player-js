@@ -9,7 +9,7 @@ The Kaltura Player exposes several APIs that are used for loading, configuring, 
   - [By Entry List](#by-entry-list)
   - [By Configuration](#by-configuration)
 - [Configure the Playlist](#configure-the-playlist)
-- [Switch Item](#switching-items)
+- [Switching Items](#switching-items)
 - [Change Playlist](#change-playlist)
 
 ### Load A Playlist
