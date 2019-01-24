@@ -1,5 +1,10 @@
 # Ads
 
+Kaltura player supports adding 3rd party monetization solutions via its plugin system.
+In order to allow easy integration and supporting playback and analytics with any 3rd party solution the player defines an ads framework with API and standard event scheme.
+Any plugin adding support for ads is expected to follow the controller, timeline and events scheme.
+The document will go through the ads controller, which allows controlling ad related operations , ad timeline, which explains how a typical order of events looks like, and the ad events and their associated payload. 
+
 ## Ads Events
 
 | Events List                                 |
