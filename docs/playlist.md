@@ -113,7 +113,7 @@ kalturaPlayer.configure({
 > Note: The `autoContinue` property is relevant only for the second item onwards.
 > <br>To play the first entry automatically, use the [`autoplay`](https://github.com/kaltura/playkit-js/blob/master/docs/autoplay.md) configuration.
 
-For full options see [`KPPlaylistOptions`](./api.md#kpplaylistoptions).
+For full playlist options see [`KPPlaylistOptions`](./api.md#kpplaylistoptions).
 
 ### Countdown
 
