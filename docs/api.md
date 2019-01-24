@@ -276,7 +276,8 @@ Type: [Object][262]
 
 ### Properties
 
--   `autoContinue` **[boolean][264]** Determine whether to continue to the next item automatically.
+-   `autoContinue` **[boolean][264]?** Determine whether to continue to the next item automatically.
+-   `loop` **[boolean][264]?** Determine whether to play the playlist in a loop. When is true the playlist will played automatically even autoContinue is false.
 
 ## KPPlaylistCountdownOptions
 
