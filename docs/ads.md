@@ -3,7 +3,75 @@
 Kaltura player supports adding 3rd party monetization solutions via its plugin system.
 In order to allow easy integration and supporting playback and analytics with any 3rd party solution the player defines an ads framework with API and standard event scheme.
 Any plugin adding support for ads is expected to follow the controller, timeline and events scheme.
-The document will go through the ads controller, which allows controlling ad related operations , ad timeline, which explains how a typical order of events looks like, and the ad events and their associated payload. 
+The document will go through the ads controller, which allows controlling ad related operations , ad timeline, which explains how a typical order of events looks like, and the ad events and their associated payload.
+
+## Ads Controller
+
+To query the player regarding ads state in the current playback, you can use the ads controller by referencing `player.ads`.
+The ads controller is in charge to track and communicate with the active ads plugin and collect and save the current ads state and data.
+![ad-controller](images/ads-controller.jpg)
+
+> AdsController full reference can be found [here](#AdsController).
+
+#### Examples:
+
+##### Know when a scheduled ad break will play
+
+```js
+const layout = player.ads.getAdBreaksLayout();
+console.log(layout); // [0, 15, -1]
+```
+
+##### Check if all ads are completed
+
+```js
+if (player.ads.allAdsCompleted) {
+  // do something
+}
+```
+
+##### Check if we're in the middle of an ad break
+
+```js
+if (player.ads.isAdBreak()) {
+  // do something
+}
+```
+
+##### Get the current ad break data
+
+```js
+if (player.ads.isAdBreak()) {
+  const adBreak = player.ads.getAdBreak();
+  // do something
+}
+```
+
+##### Get the current ad data
+
+```js
+if (player.ads.isAdBreak()) {
+  const ad = player.ads.getAd();
+  // do something
+}
+```
+
+## Ads Events Timeline
+
+During an ad playback there are events that get triggered to indicate the current ad state or state changes.
+Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions, like user clicking the ad, and may or may not be triggered.  
+In the following diagram you can observe the events timeline from the point that ad break start to the point that ad break ends.
+
+![ad-events-timeline](images/ad-events-timeline.jpg)
+
+If you want to be aware when playback is started/ended whether its including ads or not, you can use the following events:
+
+- `PLAYBACK_START` - Triggered on the first play request for playback. If preroll ad will play, this event will be triggered before the preroll. If no preroll is about to play, this event will be triggered before any other content event including `FIRST_PLAY`.
+
+- `PLAYBACK_ENDED` - Triggered when playback is ended. If postroll ad will play, this event will be triggered after postroll. If no postroll is about to play, this event will be triggered after any other content event including `ENDED`.
+
+You can observe the following timeline diagram that simulate those events exact location:
+![playback-start-end-timeline](images/playback-start-end-timeline.jpg)
 
 ## Ads Events
 
@@ -54,8 +122,8 @@ The document will go through the ads controller, which allows controlling ad rel
 > Fires when an ad has been loaded and ad data is available.
 > <br><br>_payload parameters:_
 >
-> | Name | Type | Description  |
-> | ---- | ---- | ------------ |
+> | Name | Type        | Description  |
+> | ---- | ----------- | ------------ |
 > | `ad` | [`Ad`](#Ad) | The ad data. |
 
 #
@@ -65,8 +133,8 @@ The document will go through the ads controller, which allows controlling ad rel
 > Fires when an ad has been start and ad data is available.
 > <br><br>_payload parameters:_
 >
-> | Name | Type | Description  |
-> | ---- | ---- | ------------ |
+> | Name | Type        | Description  |
+> | ---- | ----------- | ------------ |
 > | `ad` | [`Ad`](#Ad) | The ad data. |
 
 #
@@ -126,8 +194,8 @@ The document will go through the ads controller, which allows controlling ad rel
 > Fires before an ad break is about to start.
 > <br><br>_payload parameters:_
 >
-> | Name      | Type      | Description        |
-> | --------- | --------- | ------------------ |
+> | Name      | Type                  | Description        |
+> | --------- | --------------------- | ------------------ |
 > | `adBreaK` | [`AdBreak`](#AdBreak) | The ad break data. |
 
 #
@@ -191,74 +259,6 @@ The document will go through the ads controller, which allows controlling ad rel
 >   duration: number
 > }
 > ```
-
-## Ads Events Timeline
-
-During an ad playback there are events that get triggered to indicate the current ad state or state changes. 
-Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions, like user clicking the ad, and may or may not be triggered.  
-In the following diagram you can observe the events timeline from the point that ad break start to the point that ad break ends.
-
-![ad-events-timeline](images/ad-events-timeline.jpg)
-
-If you want to be aware when playback is started/ended whether its including ads or not, you can use the following events:
-
-- `PLAYBACK_START` - Triggered on the first play request for playback. If preroll ad will play, this event will be triggered before the preroll. If no preroll is about to play, this event will be triggered before any other content event including `FIRST_PLAY`.
-
-- `PLAYBACK_ENDED` - Triggered when playback is ended. If postroll ad will play, this event will be triggered after postroll. If no postroll is about to play, this event will be triggered after any other content event including `ENDED`.
-
-You can observe the following timeline diagram that simulate those events exact location:
-![playback-start-end-timeline](images/playback-start-end-timeline.jpg)
-
-## Ads Controller
-
-To query the player regarding ads state in the current playback, you can use the ads controller by referencing `player.ads`.
-The ads controller is in charge to track and communicate with the active ads plugin and collect and save the current ads state and data.
-![ad-controller](images/ads-controller.jpg)
-
-> AdsController full reference can be found [here](#AdsController).
-
-#### Examples:
-
-##### Know when a scheduled ad break will play
-
-```js
-const layout = player.ads.getAdBreaksLayout();
-console.log(layout); // [0, 15, -1]
-```
-
-##### Check if all ads are completed
-
-```js
-if (player.ads.allAdsCompleted) {
-  // do something
-}
-```
-
-##### Check if we're in the middle of an ad break
-
-```js
-if (player.ads.isAdBreak()) {
-  // do something
-}
-```
-
-##### Get the current ad break data
-
-```js
-if (player.ads.isAdBreak()) {
-  const adBreak = player.ads.getAdBreak();
-  // do something
-}
-```
-
-##### Get the current ad data
-
-```js
-if (player.ads.isAdBreak()) {
-  const ad = player.ads.getAd();
-  // do something
-}
-```
 
 ## Ads API Reference
 
