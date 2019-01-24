@@ -189,7 +189,9 @@
 
 ## Ads Events Timeline
 
-While ads are playing, the above events will be triggered in a certain order. In addition, some of them may not be triggered at all, and some of them will be triggered in each time. In the following diagram you can observe the events timeline from the point that ad break start to the point that ad break ends.
+During an ad playback there are events that get triggered to indicate the current ad state or state changes. 
+Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions, like user clicking the ad, and may or may not be triggered.  
+In the following diagram you can observe the events timeline from the point that ad break start to the point that ad break ends.
 
 ![ad-events-timeline](images/ad-events-timeline.jpg)
 
