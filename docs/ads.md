@@ -1,17 +1,17 @@
 # Ads
 
-Kaltura player supports adding 3rd party monetization solutions via its plugin system.
-In order to allow easy integration and supporting playback and analytics with any 3rd party solution the player defines an ads framework with API and standard event scheme.
-Any plugin adding support for ads is expected to follow the controller, timeline and events scheme.
-The document will go through the ads controller, which allows controlling ad related operations , ad timeline, which explains how a typical order of events looks like, and the ad events and their associated payload.
+The Kaltura TV Platform Player supports the addition of 3rd party monetization solutions via its plugin system. To allow easy integration and to support playback and analytics using any 3rd party solution, the player defines an advertizing framework using APIs and a standard event scheme.
+
+Any plugin that adds support for ads is expected to follow the controller, timeline, and events scheme.
+This document details the ads controller, which allows controlling ad-related operations, the ad timeline (which explains how a typical order of events looks like), and the ad events and their associated payload.
 
 ## Ads Controller
 
-To query the player regarding ads state in the current playback, you can use the ads controller by referencing `player.ads`.
-The ads controller is in charge to track and communicate with the active ads plugin and collect and save the current ads state and data.
+To query the player regarding the ad's state in the current playback, you can use the ads controller by referencing `player.ads`.
+The ads controller is responsible for tracking and communicating with the active ads plugin, as well as for collecting and saving the current ads state and data.
 ![ad-controller](images/ads-controller.jpg)
 
-> AdsController full reference can be found [here](#AdsController).
+> A complete reference to the AdsController can be found [here](#AdsController).
 
 #### Examples:
 
@@ -30,7 +30,7 @@ if (player.ads.allAdsCompleted) {
 }
 ```
 
-##### Check if we're in the middle of an ad break
+##### Check if this is the middle of an ad break
 
 ```js
 if (player.ads.isAdBreak()) {
@@ -56,24 +56,25 @@ if (player.ads.isAdBreak()) {
 }
 ```
 
-## Ads Events Timeline
+## Ad Events Timeline
 
-During an ad playback there are events that get triggered to indicate the current ad state or state changes.
-Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions, like user clicking the ad, and may or may not be triggered.  
-In the following diagram you can observe the events timeline from the point that ad break start to the point that ad break ends.
+During ad playback, there are events that get triggered to indicate the current ad state or state changes.
+Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions -- such as the user clicking the ad -- and may or may not be triggered.  
+
+In the following diagram you can observe the events timeline from the point that an ad break starts to the point that the ad break ends.
 
 ![ad-events-timeline](images/ad-events-timeline.jpg)
 
-If you want to be aware when playback is started/ended whether its including ads or not, you can use the following events:
+If you want to know when playback has started/ended -- whether the playback includes ads or not -- use the following events:
 
-- `PLAYBACK_START` - Triggered on the first play request for playback. If preroll ad will play, this event will be triggered before the preroll. If no preroll is about to play, this event will be triggered before any other content event including `FIRST_PLAY`.
+- `PLAYBACK_START` - Triggered on the first play request for playback. If a pre-roll ad is about to play, this event will be triggered before the pre-roll. If no pre-roll ad is about to play, this event will be triggered before any other content event including `FIRST_PLAY`.
 
-- `PLAYBACK_ENDED` - Triggered when playback is ended. If postroll ad will play, this event will be triggered after postroll. If no postroll is about to play, this event will be triggered after any other content event including `ENDED`.
+- `PLAYBACK_ENDED` - Triggered when playback is ended. If a post-roll ad is about to play, this event will be triggered after post-roll. If no post-roll ad is about to play, this event will be triggered after any other content event including `ENDED`.
 
-You can observe the following timeline diagram that simulate those events exact location:
+You can observe the following timeline diagram that simulates these events' exact location:
 ![playback-start-end-timeline](images/playback-start-end-timeline.jpg)
 
-## Ads Events
+## Ad Events
 
 | Events List                                 |
 | ------------------------------------------- |
@@ -102,7 +103,7 @@ You can observe the following timeline diagram that simulate those events exact 
 
 > ### <a name="AD_CAN_SKIP"></a>AD_CAN_SKIP
 >
-> Fires when ad skippable state has changed and the ad can be skipped.
+> Fires when an ad's skippable state has changed and the ad can be skipped.
 
 #
 
@@ -113,7 +114,7 @@ You can observe the following timeline diagram that simulate those events exact 
 >
 > | Name               | Type            | Description                                                      |
 > | ------------------ | --------------- | ---------------------------------------------------------------- |
-> | `adBreaksPosition` | `Array<number>` | Array which represents the ad breaks time on the media timeline. |
+> | `adBreaksPosition` | `Array<number>` | An array that represents the ad break's time on the media timeline. |
 
 #
 
@@ -124,24 +125,24 @@ You can observe the following timeline diagram that simulate those events exact 
 >
 > | Name | Type        | Description  |
 > | ---- | ----------- | ------------ |
-> | `ad` | [`Ad`](#Ad) | The ad data. |
+> | `ad` | [`Ad`](#Ad) | The ad data |
 
 #
 
 > ### <a name="AD_STARTED"></a>AD_STARTED
 >
-> Fires when an ad has been start and ad data is available.
+> Fires when an ad has been started and ad data is available.
 > <br><br>_payload parameters:_
 >
 > | Name | Type        | Description  |
 > | ---- | ----------- | ------------ |
-> | `ad` | [`Ad`](#Ad) | The ad data. |
+> | `ad` | [`Ad`](#Ad) | The ad data |
 
 #
 
 > ### <a name="AD_RESUMED"></a>AD_RESUMED
 >
-> Fires when the ad resumed after pause.
+> Fires when the ad resumed after a pause.
 
 #
 
@@ -171,15 +172,15 @@ You can observe the following timeline diagram that simulate those events exact 
 
 > ### <a name="AD_ERROR"></a>AD_ERROR
 >
-> Fires when an error occurred while ad was loading or playing.\
+> Fires when an error occurred while the ad was loading or playing.\
 > <br><br>_payload parameters:_
 >
 > | Name       | Type     | Description                                                                 |
 > | ---------- | -------- | --------------------------------------------------------------------------- |
-> | `severity` | `string` | The error severity.                                                         |
-> | `category` | `string` | The error category.                                                         |
-> | `code`     | `number` | The error code.                                                             |
-> | `data`     | `Object` | The error data. The original ad error can be accessed by `data.innerError`. |
+> | `severity` | `string` | The error severity                                                    |
+> | `category` | `string` | The error category                                                        |
+> | `code`     | `number` | The error code                                                             |
+> | `data`     | `Object` | The error data: the original ad error can be accessed by `data.innerError`. |
 
 #
 
@@ -196,7 +197,7 @@ You can observe the following timeline diagram that simulate those events exact 
 >
 > | Name      | Type                  | Description        |
 > | --------- | --------------------- | ------------------ |
-> | `adBreaK` | [`AdBreak`](#AdBreak) | The ad break data. |
+> | `adBreaK` | [`AdBreak`](#AdBreak) | The ad break data |
 
 #
 
@@ -208,19 +209,19 @@ You can observe the following timeline diagram that simulate those events exact 
 
 > ### <a name="AD_FIRST_QUARTILE"></a>AD_FIRST_QUARTILE
 >
-> Fires when the ad playhead crosses first quartile.
+> Fires when the ad playhead crosses first the quartile.
 
 #
 
 > ### <a name="AD_MIDPOINT"></a>AD_MIDPOINT
 >
-> Fires when the ad playhead crosses midpoint.
+> Fires when the ad playhead crosses the midpoint.
 
 #
 
 > ### <a name="AD_THIRD_QUARTILE"></a>AD_THIRD_QUARTILE
 >
-> Fires when the ad playhead crosses third quartile.
+> Fires when the ad playhead crosses the third quartile.
 
 #
 
@@ -249,7 +250,7 @@ You can observe the following timeline diagram that simulate those events exact 
 >
 > | Name         | Type               | Description           |
 > | ------------ | ------------------ | --------------------- |
-> | `adProgress` | `AdProgressObject` | The ad progress data. |
+> | `adProgress` | `AdProgressObject` | The ad progress data |
 >
 > ###### Type `AdProgressObject`
 >
@@ -298,113 +299,113 @@ You can observe the following timeline diagram that simulate those events exact 
 
 ### Parameters
 
-- `options` **PKAdBreakOptions** Ad break data options.
+- `options` **PKAdBreakOptions** - The ad break data options.
 
 ### type
 
-Returns **[string][32]** Ad break type - pre/mid/post.
+Returns **[string][32]** - The ad break type - pre/mid/post.
 
 ### position
 
-Returns **[string][32]** Ad break position on the playback timeline.
+Returns **[string][32]** - The ad break position on the playback timeline.
 
 ### numAds
 
-Returns **[string][32]** The number of ads inside the ad break.
+Returns **[string][32]** - The number of ads inside the ad break.
 
 ## <a name="Ad"></a>Ad
 
 ### Parameters
 
 - `id` **[string][32]** Ad ID.
-- `options` **PKAdOptions** Ad data options.
+- `options` **PKAdOptions** - The ad data options.
 
 ### id
 
-Returns **[string][32]** Ad ID.
+Returns **[string][32]** - The ad ID.
 
 ### contentType
 
-Returns **[string][32]** Ad ID.
+Returns **[string][32]** - The ad content type.
 
 ### url
 
-Returns **[string][32]** Ad URL.
+Returns **[string][32]** - The ad URL.
 
 ### title
 
-Returns **[string][32]** Ad title.
+Returns **[string][32]** - The ad title.
 
 ### position
 
-Returns **[string][32]** Ad position inside the ad break.
+Returns **[string][32]** - The ad position inside the ad break.
 
 ### duration
 
-Returns **[string][32]** Ad duration.
+Returns **[string][32]** - The ad duration.
 
 ### clickThroughUrl
 
-Returns **[string][32]** Ad click through URL.
+Returns **[string][32]** - The ad click-through URL.
 
 ### posterUrl
 
-Returns **[string][32]** Ad poster URL.
+Returns **[string][32]** - The ad poster URL.
 
 ### skipOffset
 
-Returns **[string][32]** Ad skip offset.
+Returns **[string][32]** - The ad skip offset.
 
 ### linear
 
-Returns **[string][32]** Whether the ad is linear.
+Returns **[string][32]** - Whether the ad is linear.
 
 ### width
 
-Returns **[string][32]** Ad width.
+Returns **[string][32]** - The ad width.
 
 ### height
 
-Returns **[string][32]** Ad height.
+Returns **[string][32]** - The ad height.
 
 ### bitrate
 
-Returns **[string][32]** Ad bitrate.
+Returns **[string][32]** - The ad bitrate.
 
 ### skippable
 
-Returns **[string][32]** Whether the ad is skippable or not.
+Returns **[string][32]** - Whether the ad is skippable or not.
 
 ## <a name="AdsController"></a>AdsController
 
 ### Parameters
 
 - `player` **Player** The player.
-- `adsPluginController` **IAdsController** The controller of the current ads plugin instance.
+- `adsPluginController` **IAdsController** - The controller of the current ads plugin instance.
 
 ### allAdsCompleted
 
-Returns **[boolean][33]** Whether all ads completed.
+Returns **[boolean][33]** - Whether all ads are completed.
 
 ### isAdBreak
 
-Returns **[boolean][33]** Whether we're in an ad break.
+Returns **[boolean][33]** - Whether we're in an ad break.
 
 ### getAdBreaksLayout
 
-Returns **[Array][34]&lt;[number][35]>** The ad breaks layout (cue points).
+Returns **[Array][34]&lt;[number][35]>** - The ad break's layout (cue points).
 
 ### getAdBreak
 
-Returns **[AdBreak][36]?** Gets the current ad break data.
+Returns **[AdBreak][36]?** - Gets the current ad break data.
 
 ### getAd
 
-Returns **[Ad][37]?** Gets the current ad data.
+Returns **[Ad][37]?** - Gets the current ad data.
 
 ### skipAd
 
-Skip on an ad.
+Skips an ad.
 
 Returns **void**
 
@@ -414,7 +415,7 @@ Play an ad on demand.
 
 #### Parameters
 
-- `adTagUrl` **[string][32]** The ad tag url to play.
+- `adTagUrl` **[string][32]** - The ad tag url to play.
 
 Returns **void**
 
