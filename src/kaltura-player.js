@@ -40,13 +40,16 @@ class KalturaPlayer extends FakeEventTarget {
   constructor(options: KPOptionsObject) {
     super();
     this._eventManager = new EventManager();
-    this._localPlayer = loadPlayer(options);
+    const {sources} = options;
+    const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
+    this._localPlayer = loadPlayer(noSourcesOptions);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
+    this._localPlayer.configure({sources});
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {

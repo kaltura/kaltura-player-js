@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.39.0"></a>
+# [0.39.0](https://github.com/kaltura/kaltura-player-js/compare/v0.38.1...v0.39.0) (2019-01-24)
+
+
+### Bug Fixes
+
+* **FEC-8298:** SOURCE_SELECTED event triggered before the UI ready when the source provided manually ([#129](https://github.com/kaltura/kaltura-player-js/issues/129)) ([44e8fb5](https://github.com/kaltura/kaltura-player-js/commit/44e8fb5))
+* **FEC-8688:** When pausing video in cast and then disconnect the player display first play poster and not video stream with paused point ([#200](https://github.com/kaltura/kaltura-player-js/issues/200)) ([6c8376a](https://github.com/kaltura/kaltura-player-js/commit/6c8376a))
+* **FEC-8834:** remove scrubber preview if entry is youtube ([#206](https://github.com/kaltura/kaltura-player-js/issues/206)) ([a56b4fc](https://github.com/kaltura/kaltura-player-js/commit/a56b4fc))
+* **FEC-8833:** playlist - no thumbnail preview when the item already played ([#209](https://github.com/kaltura/kaltura-player-js/issues/209)) ([ccd5124](https://github.com/kaltura/kaltura-player-js/commit/ccd5124))
+* **FEC-8840:** playlist - the poster url is wrong when the item is already played
+
+
+### Features
+
+* **FEC-8703:** playlist loop ([#208](https://github.com/kaltura/kaltura-player-js/issues/208)) ([f691b05](https://github.com/kaltura/kaltura-player-js/commit/f691b05))
+
+
+
 <a name="0.38.1"></a>
 ## [0.38.1](https://github.com/kaltura/kaltura-player-js/compare/v0.38.0...v0.38.1) (2019-01-21)
 
