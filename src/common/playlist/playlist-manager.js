@@ -255,7 +255,7 @@ class PlaylistManager {
 
   _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
     this._logger.debug(`Playing item number ${index}`, activeItem);
-    const playback = {loop: false};
+    const playback: Object = {loop: false};
     if (this._playlist.current.item) {
       // from the second item onwards
       playback['autoplay'] = true;
