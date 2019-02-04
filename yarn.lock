@@ -17,16 +17,14 @@
 "@playkit-js/playkit-js-kava@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.6.1.tgz#02148afd5c1cd9de8fb8aebcef3059609c005852"
-  integrity sha512-gmS29+7WTftK87abZhtH1jYWlw05CrsDX8lqWQ7lkv1fMgTWnkituqvle274cBC1kKDcBeM2cNqw5QWBmEzkuQ==
 
 "@playkit-js/playkit-js-ott-analytics@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.0.tgz#09d903adf6c9389d86f84e32eeb8bf68351908a2"
 
-"@playkit-js/playkit-js-ui@0.35.1":
-  version "0.35.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.35.1.tgz#4ee2a220a2c9433f69885533cbec94b0c3b36545"
-  integrity sha512-DQidR1o8t1n9GAgnvHg7Hvo0R1d0jcL/wsY7gDnKy6jaeMBJy8+oiVGfT513F3Pp4IsOtC8++TSswVyN04cpfQ==
+"@playkit-js/playkit-js-ui@0.35.2":
+  version "0.35.2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.35.2.tgz#2c4349295fcbffb30a1e1dd5651609b3e28cbfc2"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -36,10 +34,9 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.45.2":
-  version "0.45.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.45.2.tgz#4b6f1f10985ba08530951df9507fa00cfdbc877a"
-  integrity sha512-IE0ifONerM1iFknpN8uy/vwJ6HIJH6st2L/xKZzZNfavQWikTj7hZUm2gdMdeEwVLyJNRYEYuWNNIqTI5vG9PQ==
+"@playkit-js/playkit-js@^0.45.3":
+  version "0.45.3"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.45.3.tgz#4406c4ee26687bf845346449a19508c2faf5e860"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
@@ -6336,9 +6333,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.16.1":
-  version "2.16.1"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#817111b93c48f53de14d8d66bd0a0480bf7cb9ac"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.17.0":
+  version "2.17.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#665ff6bfa3cea20bfb910cd49eb2344ae7751288"
   dependencies:
     js-logger "^1.3.0"
 
