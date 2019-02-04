@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.39.2"></a>
+## [0.39.2](https://github.com/kaltura/kaltura-player-js/compare/v0.39.0...v0.39.2) (2019-02-04)
+
+
+### Bug Fixes
+
+* **FEC-8871:** playlist - strange behavior when playback.loop is true ([#217](https://github.com/kaltura/kaltura-player-js/issues/217)) ([c619386](https://github.com/kaltura/kaltura-player-js/commit/c619386))
+
+
+
 <a name="0.39.1"></a>
 ## [0.39.1](https://github.com/kaltura/kaltura-player-js/compare/v0.39.0...v0.39.1) (2019-01-31)
 
