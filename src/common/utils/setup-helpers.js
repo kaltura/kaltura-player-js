@@ -40,8 +40,12 @@ function validateTargetId(targetId: string): void {
   if (!targetId) {
     throw new Error(ValidationErrorType.TARGET_ID_REQUIRED);
   }
-  if (!document.getElementById(targetId)) {
+  const targetIdElement = document.getElementById(targetId);
+  if (!targetIdElement) {
     throw new Error(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
+  }
+  if (targetIdElement.getElementsByClassName(CONTAINER_CLASS_NAME).length > 0) {
+    throw new Error(ValidationErrorType.TARGET_ID_ALREADY_USED + targetId);
   }
 }
 
