@@ -45,6 +45,10 @@ describe('kaltura player api', function() {
         });
       });
 
+      afterEach(function() {
+        kalturaPlayer.destroy();
+      });
+
       it('should get media by id from the provider and set it', function(done) {
         kalturaPlayer.loadMedia({playlistId: entryId}).then(mediaConfig => {
           mediaConfig.sources.id.should.equal(entryId);
@@ -147,6 +151,10 @@ describe('kaltura player api', function() {
         });
       });
 
+      afterEach(function() {
+        kalturaPlayer.destroy();
+      });
+
       it('should get playlist by id from the provider and set it - without config', function(done) {
         kalturaPlayer.loadPlaylist({playlistId: playlistId}).then(playlistData => {
           playlistData.id.should.equal(playlistId);
@@ -188,6 +196,10 @@ describe('kaltura player api', function() {
         });
       });
 
+      afterEach(() => {
+        kalturaPlayer.destroy();
+      });
+
       it('should get playlist by entry list from the provider and set it - without config', function(done) {
         kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}).then(playlistData => {
           playlistData.id.should.equal('a1234');
@@ -223,6 +235,9 @@ describe('kaltura player api', function() {
       beforeEach(function() {
         kalturaPlayer = setup(config);
       });
+      afterEach(function() {
+        kalturaPlayer.destroy();
+      });
 
       it('should set the playlist and evaluate the plugins - without config and entry list', function() {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList);
@@ -247,6 +262,9 @@ describe('kaltura player api', function() {
         config.playlist = PlaylistMockData.playlistByConfig;
         kalturaPlayer = setup(config);
       });
+      afterEach(function() {
+        kalturaPlayer.destroy();
+      });
 
       it('should set the configured playlist', function() {
         kalturaPlayer.playlist.id.should.equal('b1234');
@@ -262,6 +280,9 @@ describe('kaltura player api', function() {
     describe('load playlist by configure', function() {
       beforeEach(function() {
         kalturaPlayer = setup(config);
+      });
+      afterEach(function() {
+        kalturaPlayer.destroy();
       });
 
       it('should set the configured playlist', function(done) {
@@ -293,6 +314,9 @@ describe('kaltura player api', function() {
         };
         kalturaPlayer = setup(config);
       });
+      afterEach(function() {
+        kalturaPlayer.destroy();
+      });
 
       it('should load the playlist with the preset config', function() {
         kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
@@ -306,6 +330,9 @@ describe('kaltura player api', function() {
     describe('mix configure and api', function() {
       beforeEach(function() {
         kalturaPlayer = setup(config);
+      });
+      afterEach(function() {
+        kalturaPlayer.destroy();
       });
 
       it('should load the playlist with the preset config', function() {
