@@ -53,7 +53,7 @@ describe('addKalturaPoster', function() {
 
     afterEach(function() {
       sandbox.restore();
-      kalturaPlayer = null;
+      kalturaPlayer.destroy();
       provider = null;
       TestUtils.removeVideoElementsFromTestPage();
     });

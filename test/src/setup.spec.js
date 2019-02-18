@@ -31,6 +31,7 @@ describe('setup', function() {
 
   afterEach(function() {
     sandbox.restore();
+    kalturaPlayer.destroy();
     kalturaPlayer = null;
     TestUtils.removeVideoElementsFromTestPage();
   });
