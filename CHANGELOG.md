@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.40.0"></a>
+# [0.40.0](https://github.com/kaltura/kaltura-player-js/compare/v0.39.4...v0.40.0) (2019-02-20)
+
+
+### Features
+
+* **FEC-8769:** do not allow to create two players with the same target id ([#218](https://github.com/kaltura/kaltura-player-js/issues/218)) ([bac574f](https://github.com/kaltura/kaltura-player-js/commit/bac574f))
+
+
+
 <a name="0.39.4"></a>
 ## [0.39.4](https://github.com/kaltura/kaltura-player-js/compare/v0.39.3...v0.39.4) (2019-02-05)
 
