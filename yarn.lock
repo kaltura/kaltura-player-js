@@ -9,6 +9,7 @@
 "@playkit-js/playkit-js-hls@^1.12.1":
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.12.1.tgz#8be9a02b1ec42da77d8df12ab0ee17602bf8e78f"
+  integrity sha512-7w3lOdpCaV/eX2PEeqXrCqe6V4PNStc+1Ma9zgBsKGSAmS+R/tjmQSMUn91Xy1A+11JMRBRw45p6QbAN85NYNg==
 
 "@playkit-js/playkit-js-kanalytics@^0.10.0":
   version "0.10.0"
@@ -17,15 +18,16 @@
 "@playkit-js/playkit-js-kava@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.6.1.tgz#02148afd5c1cd9de8fb8aebcef3059609c005852"
+  integrity sha512-gmS29+7WTftK87abZhtH1jYWlw05CrsDX8lqWQ7lkv1fMgTWnkituqvle274cBC1kKDcBeM2cNqw5QWBmEzkuQ==
 
 "@playkit-js/playkit-js-ott-analytics@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.0.tgz#09d903adf6c9389d86f84e32eeb8bf68351908a2"
 
-"@playkit-js/playkit-js-ui@^0.35.4":
-  version "0.35.4"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.35.4.tgz#548255ecf317a6649afd4d97d6ce11f935cfe665"
-  integrity sha512-ICd5vWP2ytKOauApWQ8Ay7U925mni4x+p5lV14N39XqpQfyA6QlO3gskWMRdVFUBLickDA4ciAG6sbbQOuKNMA==
+"@playkit-js/playkit-js-ui@^0.36.0":
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.36.0.tgz#d2eced2bbe1221a06a3734c8f9790f4faa01c7fe"
+  integrity sha512-CUrPDxV1MViq00e7afookvj2auF8r9gg9nybRXxBkgl1FApiINof5OLOSS91oytj0GpYLpWxJlPf3Fib3ImI9w==
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
