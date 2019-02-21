@@ -11,7 +11,7 @@ import {Utils} from '@playkit-js/playkit-js';
  * @returns {boolean} - value is evaluated
  */
 const isValueEvaluated = (value: any): boolean =>
-  (typeof value === 'number' || typeof value === 'function' || typeof value === 'string' || typeof value === 'boolean') &&
+  (typeof value === 'number' || typeof value === 'function' || typeof value === 'string' || typeof value === 'boolean' || Array.isArray(value)) &&
   !templateRegex.test(value.toString());
 
 /**
