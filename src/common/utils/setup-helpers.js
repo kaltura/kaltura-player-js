@@ -306,7 +306,7 @@ function configureDelayAdsInitialization(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if (isIos()) {
+  if (isSafari() || isIos()) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
