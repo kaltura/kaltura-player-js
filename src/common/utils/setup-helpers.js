@@ -386,7 +386,7 @@ function isSafari(): boolean {
  * @returns {boolean} - if browser is Chrome on iOS
  */
 function isIos(): boolean {
-  return Utils.Object.hasPropertyPath(Env, 'os.name') && Env.os.name === 'iOS';
+  return Env.os.name === 'iOS';
 }
 
 /**

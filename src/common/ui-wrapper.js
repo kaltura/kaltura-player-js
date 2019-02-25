@@ -70,7 +70,7 @@ class UIWrapper {
   }
 
   _setStereoConfig(vrConfig: Object): void {
-    if (vrConfig.toggleStereo || (Utils.Object.hasPropertyPath(Env, 'device.type') && Env.device.type && vrConfig.toggleStereo !== false)) {
+    if (vrConfig.toggleStereo || (Env.device.type && vrConfig.toggleStereo !== false)) {
       // enable stereo mode by default for mobile device
       this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
