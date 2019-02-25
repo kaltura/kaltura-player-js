@@ -377,7 +377,7 @@ function printSetupMessages(): void {
  * @returns {boolean} - if browser is Safari
  */
 function isSafari(): boolean {
-  return Utils.Object.hasPropertyPath(Env, 'Env.browser.name') && Env.browser.name.includes('Safari');
+  return Utils.Object.hasPropertyPath(Env, 'browser.name') && Env.browser.name.includes('Safari');
 }
 
 /**
@@ -386,7 +386,7 @@ function isSafari(): boolean {
  * @returns {boolean} - if browser is Chrome on iOS
  */
 function isIos(): boolean {
-  return Env.os.name === 'iOS';
+  return Utils.Object.hasPropertyPath(Env, 'os.name') && Env.os.name === 'iOS';
 }
 
 /**
