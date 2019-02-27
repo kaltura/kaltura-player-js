@@ -377,7 +377,7 @@ function printSetupMessages(): void {
  * @returns {boolean} - if browser is Safari
  */
 function isSafari(): boolean {
-  return Env.browser.name.includes('Safari');
+  return Utils.Object.hasPropertyPath(Env, 'Env.browser.name') && Env.browser.name.includes('Safari');
 }
 
 /**
