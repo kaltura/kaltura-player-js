@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.40.1"></a>
+## [0.40.1](https://github.com/kaltura/kaltura-player-js/compare/v0.40.0...v0.40.1) (2019-02-27)
+
+
+### Bug Fixes
+
+* **FEC-8901:** duplication of ClosedCaptions on iOS on none Safari browser ([#221](https://github.com/kaltura/kaltura-player-js/issues/221)) ([7dbc175](https://github.com/kaltura/kaltura-player-js/commit/7dbc175))
+* **FEC-8927:** player crash on Echo show browser ([#223](https://github.com/kaltura/kaltura-player-js/issues/223)) ([f16fea0](https://github.com/kaltura/kaltura-player-js/commit/f16fea0))
+
+
+
 <a name="0.40.0"></a>
 # [0.40.0](https://github.com/kaltura/kaltura-player-js/compare/v0.39.4...v0.40.0) (2019-02-20)
 
