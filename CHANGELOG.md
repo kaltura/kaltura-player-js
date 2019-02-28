@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.41.0"></a>
+# [0.41.0](https://github.com/kaltura/kaltura-player-js/compare/v0.40.2...v0.41.0) (2019-02-28)
+
+
+### Features
+
+* **FEC-8631:** bumper plugin ([4704a69](https://github.com/kaltura/kaltura-player-js/commit/4704a69))
+
+
+
 <a name="0.40.2"></a>
 ## [0.40.2](https://github.com/kaltura/kaltura-player-js/compare/v0.40.1...v0.40.2) (2019-02-27)
 
