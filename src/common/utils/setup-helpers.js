@@ -253,6 +253,8 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   setDefaultAnalyticsPlugin(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   configureDelayAdsInitialization(defaultOptions);
+  maybeSetDefaultUiComponents(defaultOptions);
+  maybeReorderPlugins(defaultOptions);
   return defaultOptions;
 }
 
@@ -423,6 +425,43 @@ function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsOb
 function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
   const source = sources && sources.progressive;
   return !!(source && source[0] && source[0].mimetype === 'video/youtube');
+}
+
+/**
+ * Maybe set the UI component based on the runtime platform and the plugins.
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeSetDefaultUiComponents(options: KPOptionsObject): void {
+  if (isIos() && options.plugins && options.plugins.bumper) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'ui.components.fullscreen');
+    if (!fullscreenConfig) {
+      Utils.Object.mergeDeep(options, {
+        ui: {
+          components: {
+            fullscreen: {
+              inBrowserFullscreenForIOS: true
+            }
+          }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Maybe re-order the plugins (Making sure that bumper is after ima to play the bumper after the preroll).
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeReorderPlugins(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.bumper && Object.keys(options.plugins).indexOf('bumper') < Object.keys(options.plugins).indexOf('ima')) {
+    const bumperPlugin = options.plugins.bumper;
+    delete options.plugins.bumper;
+    options.plugins.bumper = bumperPlugin;
+  }
 }
 
 export {
