@@ -457,10 +457,13 @@ function maybeSetDefaultUiComponents(options: KPOptionsObject): void {
  * @returns {void}
  */
 function maybeReorderPlugins(options: KPOptionsObject): void {
-  if (options.plugins && options.plugins.bumper && Object.keys(options.plugins).indexOf('bumper') < Object.keys(options.plugins).indexOf('ima')) {
-    const bumperPlugin = options.plugins.bumper;
-    delete options.plugins.bumper;
-    options.plugins.bumper = bumperPlugin;
+  if (options.plugins) {
+    const pluginsKeys = Object.keys(options.plugins);
+    if (options.plugins.bumper && pluginsKeys.indexOf('bumper') < pluginsKeys.indexOf('ima')) {
+      const bumperPlugin = options.plugins.bumper;
+      delete options.plugins.bumper;
+      options.plugins.bumper = bumperPlugin;
+    }
   }
 }
 
