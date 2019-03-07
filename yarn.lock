@@ -22,9 +22,9 @@
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.0.tgz#09d903adf6c9389d86f84e32eeb8bf68351908a2"
 
-"@playkit-js/playkit-js-ui@^0.37.2":
-  version "0.37.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.37.2.tgz#931f96b99e589621c426f5b28f877c5fd92c9948"
+"@playkit-js/playkit-js-ui@^0.37.3":
+  version "0.37.3"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.37.3.tgz#da75557942e8788295db82fcbe6a0bfe23b4928e"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
