@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.40.8"></a>
+## [0.40.8](https://github.com/kaltura/kaltura-player-js/compare/v0.40.7...v0.40.8) (2019-03-11)
+
+
+
 <a name="0.40.7"></a>
 ## [0.40.7](https://github.com/kaltura/kaltura-player-js/compare/v0.40.6...v0.40.7) (2019-03-11)
 
