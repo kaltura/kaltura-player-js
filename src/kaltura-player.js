@@ -136,7 +136,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
     this._logger.debug('setPlaylist', playlistData);
-    const config = {playlist: playlistData, plugins: this._localPlayer.config.plugins};
+    const config = {playlist: playlistData, plugins: {}};
+    Object.keys(this._localPlayer.config.plugins).forEach(name => {
+      config.plugins[name] = {};
+    });
     // $FlowFixMe
     evaluatePluginsConfig(config);
     this._localPlayer.configure({plugins: config.plugins});
