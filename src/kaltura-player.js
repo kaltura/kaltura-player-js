@@ -260,6 +260,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.isFullscreen();
   }
 
+  registerFullScreenEvents(EventHandler: Function): void {
+    return this._localPlayer.registerFullScreenEvents(EventHandler);
+  }
+
   notifyEnterFullscreen(): void {
     this._localPlayer.notifyEnterFullscreen();
   }
@@ -268,8 +272,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.notifyExitFullscreen();
   }
 
-  enterFullscreen(): void {
-    this._localPlayer.enterFullscreen();
+  enterFullscreen(fullScreenElement: HTMLElement): void {
+    this._localPlayer.enterFullscreen(fullScreenElement);
   }
 
   exitFullscreen(): void {
