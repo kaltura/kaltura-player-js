@@ -342,10 +342,12 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
         level: 'warn',
         msg: `Path config.player.${propPath} will be deprecated soon. Please update your config structure as describe here: ${__CONFIG_DOCS_URL__}`
       });
-      const propValue = Utils.Object.getPropertyPath(options, propPath);
-      const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
-      Utils.Object.mergeDeep(options, propObj);
-      Utils.Object.deletePropertyPath(options, propPath);
+      if (!Utils.Object.hasPropertyPath(options, targetPath)) {
+        const propValue = Utils.Object.getPropertyPath(options, propPath);
+        const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
+        Utils.Object.mergeDeep(options, propObj);
+        Utils.Object.deletePropertyPath(options, propPath);
+      }
     }
   };
   const moves = [
@@ -355,7 +357,8 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['id', 'sources.id'],
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
-    ['metadata', 'sources.metadata']
+    ['metadata', 'sources.metadata'],
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreenForIOS']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
