@@ -22,9 +22,9 @@
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.0.tgz#09d903adf6c9389d86f84e32eeb8bf68351908a2"
 
-"@playkit-js/playkit-js-ui@^0.37.4":
-  version "0.37.4"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.37.4.tgz#a70421ebe66f814211bec326da0472a1aa983020"
+"@playkit-js/playkit-js-ui@^0.37.5":
+  version "0.37.5"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.37.5.tgz#c0aa3cb8b997d6af7fe8c3fb03935d256d46b3b7"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.3.0"
@@ -6333,9 +6333,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.18.0":
-  version "2.18.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#c81403c685e0881add5dd3d30b8400bb49cbc971"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.18.1":
+  version "2.18.1"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#07d7fa8266656329eb8981d14829702713c6ee1d"
   dependencies:
     js-logger "^1.3.0"
 
