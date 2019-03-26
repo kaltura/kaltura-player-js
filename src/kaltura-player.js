@@ -520,20 +520,26 @@ class KalturaPlayer extends FakeEventTarget {
    * @private
    */
   _maybeSetEmbedConfig(entryId: string): void {
-    const serviceUrl = this._localPlayer.config.provider.env.serviceUrl.replace('api_v3', '');
-    const share = this._localPlayer.config.ui.components.share;
-    let shareUrl = share.shareUrl;
-    if (!shareUrl) {
-      shareUrl = `${serviceUrl}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/${entryId}/embed/dynamic`;
+    const serviceUrl = this.config.provider.env.serviceUrl;
+    if (serviceUrl) {
+      const embedBaseUrl = serviceUrl.replace('api_v3', '');
+      const ui = this.config.ui;
+      if (ui && ui.components && ui.components.share) {
+        const share = this.config.ui.components.share;
+        let shareUrl = share.shareUrl;
+        if (!shareUrl) {
+          shareUrl = `${embedBaseUrl}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/${entryId}/embed/dynamic`;
+        }
+        let embedUrl = share.embedUrl;
+        if (!embedUrl) {
+          embedUrl = `${embedBaseUrl}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id=${entryId}`;
+        }
+        const shareConfig = {ui: {components: {share: {shareUrl, embedUrl}}}};
+        const config = Utils.Object.mergeDeep({}, this.config, shareConfig);
+        evaluateUIConfig(config.ui, this.config);
+        this._uiWrapper.setConfig(config.ui);
+      }
     }
-    let embedUrl = share.embedUrl;
-    if (!embedUrl) {
-      embedUrl = `${serviceUrl}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id=${entryId}`;
-    }
-    const shareConfig = {ui: {components: {share: {shareUrl, embedUrl}}}};
-    const config = Utils.Object.mergeDeep({}, this.config, shareConfig);
-    evaluateUIConfig(config.ui, this.config);
-    this._uiWrapper.setConfig(config.ui);
   }
 }
 
