@@ -4,7 +4,7 @@ import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
-import {evaluatePluginsConfig} from './common/plugins/plugins-config';
+import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -58,6 +58,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
+    this._maybeSetEmbedConfig(mediaInfo.entryId);
     const providerResult = this._provider.getMediaConfig(mediaInfo);
     providerResult.then(
       mediaConfig => this.setMedia(mediaConfig),
@@ -138,7 +139,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._logger.debug('setPlaylist', playlistData);
     const config = {playlist: playlistData, plugins: this._localPlayer.config.plugins};
     // $FlowFixMe
-    evaluatePluginsConfig(config);
+    evaluatePluginsConfig(config.plugins, this.config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
@@ -159,9 +160,10 @@ class KalturaPlayer extends FakeEventTarget {
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
     // $FlowFixMe
-    evaluatePluginsConfig(config);
+    evaluatePluginsConfig(config.plugins, this.config);
     this._localPlayer.configure(config);
     if (config.ui) {
+      evaluateUIConfig(config.ui, this.config);
       this._uiWrapper.setConfig(config.ui);
     }
     if (config.playlist) {
@@ -506,6 +508,29 @@ class KalturaPlayer extends FakeEventTarget {
 
   get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  /**
+   * set the share config
+   * @param {string} entryId - the entry id
+   * @returns {void}
+   * @private
+   */
+  _maybeSetEmbedConfig(entryId: string): void {
+    const serviceUrl = this._localPlayer.config.provider.env.serviceUrl.replace('api_v3', '');
+    const share = this._localPlayer.config.ui.components.share;
+    let shareUrl = share.shareUrl;
+    if (!shareUrl) {
+      shareUrl = `${serviceUrl}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/${entryId}/embed/dynamic`;
+    }
+    let embedUrl = share.embedUrl;
+    if (!embedUrl) {
+      embedUrl = `${serviceUrl}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id=${entryId}`;
+    }
+    const shareConfig = {ui: {components: {share: {shareUrl, embedUrl}}}};
+    const config = Utils.Object.mergeDeep({}, this.config, shareConfig);
+    evaluateUIConfig(config.ui, this.config);
+    this._uiWrapper.setConfig(config.ui);
   }
 }
 

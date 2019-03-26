@@ -88,41 +88,63 @@ const getModel = (options: KPOptionsObject): Object => {
 };
 
 /**
- * @param {KPOptionsObject} options - player options
+ * @param {Object} options - plugins options
+ * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluatePluginsConfig(options: KPOptionsObject): void {
-  if (options.plugins) {
-    pluginConfig.set(options.plugins);
-    const dataModel = getModel(options);
-    const evaluatedConfig = evaluate(JSON.stringify(pluginConfig.get()), dataModel);
-    let evaluatedConfigObj;
-    try {
-      evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
-        try {
-          return JSON.parse(this[key]);
-        } catch (e) {
-          return this[key];
-        }
-      });
-    } catch (e) {
-      evaluatedConfigObj = {};
-    }
-    evaluatedConfigObj = removeUnevaluatedExpression(evaluatedConfigObj);
-    options.plugins = removeUnevaluatedExpression(options.plugins);
-
-    if (options.plugins) {
-      Object.keys(options.plugins).forEach(pluginName => {
-        if (options.plugins && options.plugins[pluginName]) {
-          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
-          if (options.plugins) {
-            options.plugins[pluginName] = mergedConfig;
-          }
-        }
-      });
-    }
+function evaluatePluginsConfig(options: Object, config: KPOptionsObject): void {
+  if (options) {
+    pluginConfig.set(options);
+    const dataModel = getModel(config);
+    const mergedConfig = Utils.Object.mergeDeep({}, pluginConfig.get(), options);
+    const evaluatedConfig = evaluate(JSON.stringify(mergedConfig), dataModel);
+    _evaluateConfig(options, evaluatedConfig);
   }
 }
 
-export {evaluatePluginsConfig};
+/**
+ * @param {Object} options - UI options
+ * @param {KPOptionsObject} config - player config
+ * @private
+ * @return {void}
+ */
+function evaluateUIConfig(options: Object, config: KPOptionsObject): void {
+  if (options) {
+    const dataModel = getModel(config);
+    const evaluatedConfig = evaluate(JSON.stringify(options), dataModel);
+    _evaluateConfig(options, evaluatedConfig);
+  }
+}
+
+/**
+ * @param {Object} data - target config object
+ * @param {string} evaluatedConfig - the evaluated string
+ * @private
+ * @returns {void}
+ */
+function _evaluateConfig(data: Object, evaluatedConfig: string): void {
+  let evaluatedConfigObj;
+  try {
+    evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
+      try {
+        return JSON.parse(this[key]);
+      } catch (e) {
+        return this[key];
+      }
+    });
+  } catch (e) {
+    evaluatedConfigObj = {};
+  }
+  evaluatedConfigObj = removeUnevaluatedExpression(evaluatedConfigObj);
+
+  if (data) {
+    Object.keys(data).forEach(pluginName => {
+      if (data && data[pluginName]) {
+        data[pluginName] = evaluatedConfigObj[pluginName];
+      }
+    });
+  }
+}
+
+export {evaluatePluginsConfig, evaluateUIConfig};
