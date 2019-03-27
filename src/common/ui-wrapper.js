@@ -59,14 +59,8 @@ class UIWrapper {
 
   _handleVr(config: PKPluginsConfigObject = {}): void {
     if (config.vr && !config.vr.disable) {
-      this._setFullscreenConfig();
       this._setStereoConfig(config.vr);
     }
-  }
-
-  _setFullscreenConfig(): void {
-    const fullscreenConfig = Utils.Object.getPropertyPath(this._uiManager, 'config.components.fullscreen');
-    this.setConfig(Utils.Object.mergeDeep({}, {inBrowserFullscreenForIOS: true}, fullscreenConfig), 'fullscreen');
   }
 
   _setStereoConfig(vrConfig: Object): void {

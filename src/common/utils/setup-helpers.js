@@ -251,6 +251,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
+  configureVrRelevantOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
@@ -319,6 +320,24 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
 }
 
 /**
+ * Sets config option fullscreen element for Vr Mode support
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureVrRelevantOptions(options: KPOptionsObject): void {
+  if (options.plugins.vr && !options.plugins.vr.disable && !options.ui.disable) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
+    if (typeof fullscreenConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          inBrowserFullscreen: true
+        }
+      });
+    }
+  }
+}
+/**
  * Transform options structure from legacy structure to new structure.
  * @private
  * @param {Object} options - The options with the legacy structure.
@@ -358,7 +377,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
-    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreenForIOS']
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
