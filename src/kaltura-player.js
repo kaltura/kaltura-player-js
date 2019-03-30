@@ -58,15 +58,18 @@ class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-    this._maybeSetEmbedConfig(mediaInfo.entryId);
     const providerResult = this._provider.getMediaConfig(mediaInfo);
-    providerResult.then(
-      mediaConfig => this.setMedia(mediaConfig),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
+    providerResult
+      .then(
+        mediaConfig => this.setMedia(mediaConfig),
+        e =>
+          this._localPlayer.dispatchEvent(
+            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+          )
+      )
+      .then(() => {
+        this._maybeSetEmbedConfig();
+      });
     return providerResult;
   }
 
@@ -142,7 +145,7 @@ class KalturaPlayer extends FakeEventTarget {
       config.plugins[name] = {};
     });
     // $FlowFixMe
-    evaluatePluginsConfig(config.plugins, this.config);
+    evaluatePluginsConfig(config.plugins, config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
@@ -165,9 +168,10 @@ class KalturaPlayer extends FakeEventTarget {
     // $FlowFixMe
     evaluatePluginsConfig(config.plugins, this.config);
     this._localPlayer.configure(config);
-    if (config.ui) {
-      evaluateUIConfig(config.ui, this.config);
-      this._uiWrapper.setConfig(config.ui);
+    const uiConfig = config.ui;
+    if (uiConfig) {
+      evaluateUIConfig(uiConfig, this.config);
+      this._uiWrapper.setConfig(uiConfig);
     }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
@@ -515,30 +519,28 @@ class KalturaPlayer extends FakeEventTarget {
 
   /**
    * set the share config
-   * @param {string} entryId - the entry id
    * @returns {void}
    * @private
    */
-  _maybeSetEmbedConfig(entryId: string): void {
-    const serviceUrl = this.config.provider.env.serviceUrl;
-    if (serviceUrl) {
-      const embedBaseUrl = serviceUrl.replace('api_v3', '');
-      const ui = this.config.ui;
-      if (ui && ui.components && ui.components.share) {
-        const share = this.config.ui.components.share;
-        let shareUrl = share.shareUrl;
-        if (!shareUrl) {
-          shareUrl = `${embedBaseUrl}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/${entryId}/embed/dynamic`;
+  _maybeSetEmbedConfig(): void {
+    const ui = this.config.ui;
+    if (ui && ui.components && ui.components.share) {
+      const share = this.config.ui.components.share;
+      let shareUrl = share.shareUrl;
+      let embedUrl = share.embedUrl;
+      const shareConfig = {
+        ui: {
+          components: {
+            share: {
+              ...(shareUrl && shareUrl),
+              ...(embedUrl && embedUrl)
+            }
+          }
         }
-        let embedUrl = share.embedUrl;
-        if (!embedUrl) {
-          embedUrl = `${embedBaseUrl}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id=${entryId}`;
-        }
-        const shareConfig = {ui: {components: {share: {shareUrl, embedUrl}}}};
-        const config = Utils.Object.mergeDeep({}, this.config, shareConfig);
-        evaluateUIConfig(config.ui, this.config);
-        this._uiWrapper.setConfig(config.ui);
-      }
+      };
+      const config = Utils.Object.mergeDeep({}, this.config, shareConfig);
+      evaluateUIConfig(config.ui, this.config);
+      this._uiWrapper.setConfig(config.ui);
     }
   }
 }

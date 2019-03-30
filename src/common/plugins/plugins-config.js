@@ -46,6 +46,10 @@ const getModel = (options: KPOptionsObject): Object => {
   }
   if (options.provider && options.provider.env) {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
+
+    if (dataModel['serviceUrl']) {
+      dataModel['embedBaseUrl'] = dataModel['serviceUrl'].replace('api_v3', '');
+    }
   }
   const entryDataModel = {
     referrer: getReferrer()
@@ -88,45 +92,54 @@ const getModel = (options: KPOptionsObject): Object => {
 };
 
 /**
- * @param {Object} options - plugins options
+ * @param {PKPluginsConfigObject} options - plugins options
  * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluatePluginsConfig(options: Object, config: KPOptionsObject): void {
+function evaluatePluginsConfig(options: PKPluginsConfigObject, config: KPOptionsObject): void {
   if (options) {
     pluginConfig.set(options);
     const dataModel = getModel(config);
     const mergedConfig = Utils.Object.mergeDeep({}, pluginConfig.get(), options);
-    const evaluatedConfig = evaluate(JSON.stringify(mergedConfig), dataModel);
-    _evaluateConfig(options, evaluatedConfig);
+    const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
+    _mergeConfig(options, evaluatedConfig);
   }
 }
 
 /**
- * @param {Object} options - UI options
+ * @param {UIOptionsObject} options - UI options
  * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluateUIConfig(options: Object, config: KPOptionsObject): void {
+function evaluateUIConfig(options: UIOptionsObject, config: KPOptionsObject): void {
   if (options) {
+    const defaultUiConfig = {
+      components: {
+        share: {
+          shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
+          embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
+        }
+      }
+    };
     const dataModel = getModel(config);
-    const evaluatedConfig = evaluate(JSON.stringify(options), dataModel);
-    _evaluateConfig(options, evaluatedConfig);
+    const mergedConfig = Utils.Object.mergeDeep({}, defaultUiConfig, options);
+    const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
+    _mergeConfig(options, evaluatedConfig);
   }
 }
 
 /**
- * @param {Object} data - target config object
- * @param {string} evaluatedConfig - the evaluated string
+ *
+ * @param {string} config - the config string
+ * @returns {Object} - the config object
  * @private
- * @returns {void}
  */
-function _evaluateConfig(data: Object, evaluatedConfig: string): void {
-  let evaluatedConfigObj;
+function _formatConfigString(config: string): Object {
+  let configObj;
   try {
-    evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
+    configObj = JSON.parse(config, function(key) {
       try {
         return JSON.parse(this[key]);
       } catch (e) {
@@ -134,14 +147,24 @@ function _evaluateConfig(data: Object, evaluatedConfig: string): void {
       }
     });
   } catch (e) {
-    evaluatedConfigObj = {};
+    configObj = {};
   }
-  evaluatedConfigObj = removeUnevaluatedExpression(evaluatedConfigObj);
+  return configObj;
+}
+/**
+ * @param {Object} data - target config object
+ * @param {Object} evaluatedConfig - the evaluated object
+ * @private
+ * @returns {void}
+ */
+function _mergeConfig(data: Object, evaluatedConfig: Object): void {
+  const evaluatedCleanConfig = removeUnevaluatedExpression(evaluatedConfig);
+  const cleanData = removeUnevaluatedExpression(data);
 
-  if (data) {
+  if (cleanData && evaluatedCleanConfig) {
     Object.keys(data).forEach(pluginName => {
       if (data && data[pluginName]) {
-        data[pluginName] = evaluatedConfigObj[pluginName];
+        data[pluginName] = Utils.Object.mergeDeep({}, evaluatedCleanConfig[pluginName], cleanData[pluginName]);
       }
     });
   }
