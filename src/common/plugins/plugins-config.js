@@ -1,7 +1,7 @@
 //@flow
 import {pluginConfig, templateRegex} from './plugins-config-store.js';
-import evaluate from '../utils/evaluate';
-import {getReferrer} from '../utils/kaltura-params';
+import {replace} from '../utils/evaluate';
+// import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
 
 /**
@@ -36,56 +36,56 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
  * @param {KPOptionsObject} options - the kaltura player options object
  * @returns {Object} - data model
  */
-const getModel = (options: KPOptionsObject): Object => {
-  const dataModel: Object = {
-    pVersion: __VERSION__,
-    pName: __NAME__
-  };
-  if (options.targetId) {
-    dataModel.domRootElementId = options.targetId;
-  }
-  if (options.provider && options.provider.env) {
-    dataModel['serviceUrl'] = options.provider.env.serviceUrl;
-  }
-  const entryDataModel = {
-    referrer: getReferrer()
-  };
-  if (options.provider) {
-    Utils.Object.mergeDeep(entryDataModel, {
-      ks: options.provider.ks,
-      uiConfId: options.provider.uiConfId,
-      partnerId: options.provider.partnerId
-    });
-  }
-  if (options.session) {
-    Utils.Object.mergeDeep(entryDataModel, {
-      sessionId: options.session.id,
-      ks: options.session.ks,
-      isAnonymous: options.session.isAnonymous,
-      uiConfId: options.session.uiConfId,
-      partnerId: options.session.partnerId
-    });
-  }
-  if (options.sources) {
-    Utils.Object.mergeDeep(entryDataModel, {
-      entryId: options.sources.id,
-      entryName: options.sources.metadata && options.sources.metadata.name,
-      entryType: options.sources.type
-    });
-  }
-  if (options.playlist) {
-    Utils.Object.mergeDeep(entryDataModel, {
-      playlistId: options.playlist.id
-    });
-  }
-  Object.keys(entryDataModel).forEach(key => {
-    if (entryDataModel[key] === undefined) {
-      delete entryDataModel[key];
-    }
-  });
-  Utils.Object.mergeDeep(dataModel, entryDataModel);
-  return dataModel;
-};
+// const getModel = (options: KPOptionsObject): Object => {
+//   const dataModel: Object = {
+//     pVersion: __VERSION__,
+//     pName: __NAME__
+//   };
+//   if (options.targetId) {
+//     dataModel.domRootElementId = options.targetId;
+//   }
+//   if (options.provider && options.provider.env) {
+//     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
+//   }
+//   const entryDataModel = {
+//     referrer: getReferrer()
+//   };
+//   if (options.provider) {
+//     Utils.Object.mergeDeep(entryDataModel, {
+//       ks: options.provider.ks,
+//       uiConfId: options.provider.uiConfId,
+//       partnerId: options.provider.partnerId
+//     });
+//   }
+//   if (options.session) {
+//     Utils.Object.mergeDeep(entryDataModel, {
+//       sessionId: options.session.id,
+//       ks: options.session.ks,
+//       isAnonymous: options.session.isAnonymous,
+//       uiConfId: options.session.uiConfId,
+//       partnerId: options.session.partnerId
+//     });
+//   }
+//   if (options.sources) {
+//     Utils.Object.mergeDeep(entryDataModel, {
+//       entryId: options.sources.id,
+//       entryName: options.sources.metadata && options.sources.metadata.name,
+//       entryType: options.sources.type
+//     });
+//   }
+//   if (options.playlist) {
+//     Utils.Object.mergeDeep(entryDataModel, {
+//       playlistId: options.playlist.id
+//     });
+//   }
+//   Object.keys(entryDataModel).forEach(key => {
+//     if (entryDataModel[key] === undefined) {
+//       delete entryDataModel[key];
+//     }
+//   });
+//   Utils.Object.mergeDeep(dataModel, entryDataModel);
+//   return dataModel;
+// };
 
 /**
  * @param {KPOptionsObject} options - player options
@@ -95,27 +95,27 @@ const getModel = (options: KPOptionsObject): Object => {
 function evaluatePluginsConfig(options: KPOptionsObject): void {
   if (options.plugins) {
     pluginConfig.set(options.plugins);
-    const dataModel = getModel(options);
-    const evaluatedConfig = evaluate(JSON.stringify(pluginConfig.get()), dataModel);
-    let evaluatedConfigObj;
-    try {
-      evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
-        try {
-          return JSON.parse(this[key]);
-        } catch (e) {
-          return this[key];
-        }
-      });
-    } catch (e) {
-      evaluatedConfigObj = {};
-    }
-    evaluatedConfigObj = removeUnevaluatedExpression(evaluatedConfigObj);
+    // const dataModel = getModel(options);
+    const evaluatedConfig = replace(pluginConfig.get(), {tokens: options});
+    // let evaluatedConfigObj;
+    // try {
+    //   evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
+    //     try {
+    //       return JSON.parse(this[key]);
+    //     } catch (e) {
+    //       return this[key];
+    //     }
+    //   });
+    // } catch (e) {
+    //   evaluatedConfigObj = {};
+    // }
+    // evaluatedConfigObj = removeUnevaluatedExpression(evaluatedConfigObj);
     options.plugins = removeUnevaluatedExpression(options.plugins);
 
     if (options.plugins) {
       Object.keys(options.plugins).forEach(pluginName => {
-        if (options.plugins && options.plugins[pluginName]) {
-          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
+        if (options.plugins && options.plugins[pluginName] && evaluatedConfig[pluginName]) {
+          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfig[pluginName], options.plugins[pluginName]);
           if (options.plugins) {
             options.plugins[pluginName] = mergedConfig;
           }

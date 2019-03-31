@@ -6,35 +6,35 @@ const defaultConfig: dataStoreType = {
   youbora: {
     playerVersion: '{{pVersion}}',
     playerName: '{{pName}}',
-    entryId: '{{entryId}}',
-    entryName: '{{entryName}}',
-    entryType: '{{entryType}}',
-    sessionId: '{{sessionId}}',
-    uiConfId: '{{uiConfId}}'
+    entryId: '{{sources.id}}',
+    entryName: '{{sources.metadata.name}}',
+    entryType: '{{sources.type}}',
+    sessionId: '{{session.id}}',
+    uiConfId: '{{provider.uiConfId}}'
   },
   kanalytics: {
     playerVersion: '{{pVersion}}',
     playlistId: '{{playlistId}}',
-    entryId: '{{entryId}}',
-    entryType: '{{entryType}}',
-    sessionId: '{{sessionId}}',
-    ks: '{{ks}}',
-    uiConfId: '{{uiConfId}}',
-    partnerId: '{{partnerId}}',
+    entryId: '{{sources.id}}',
+    entryType: '{{sources.type}}',
+    sessionId: '{{session.id}}',
+    ks: '{{provider.ks}}',
+    uiConfId: '{{provider.uiConfId}}',
+    partnerId: '{{provider.partnerId}}',
     referrer: '{{referrer}}'
   },
   googleAnalytics: {
-    entryId: '{{entryId}}',
+    entryId: '{{sources.id}}',
     entryName: '{{entryName}}',
-    uiConfId: '{{uiConfId}}',
-    partnerId: '{{partnerId}}'
+    uiConfId: '{{provider.uiConfId}}',
+    partnerId: '{{provider.partnerId}}'
   },
   ottAnalytics: {
-    entryId: '{{entryId}}',
-    ks: '{{ks}}',
-    isAnonymous: '{{isAnonymous}}',
-    partnerId: '{{partnerId}}',
-    serviceUrl: '{{serviceUrl}}'
+    entryId: '{{sources.id}}',
+    ks: '{{provider.ks}}',
+    isAnonymous: '{{session.isAnonymous}}',
+    partnerId: '{{provider.partnerId}}',
+    serviceUrl: '{{provider.env.serviceUrl}}'
   },
   ima: {
     playerVersion: '{{pVersion}}',
@@ -43,20 +43,20 @@ const defaultConfig: dataStoreType = {
   kava: {
     playerVersion: '{{pVersion}}',
     playerName: '{{pName}}',
-    partnerId: '{{partnerId}}',
+    partnerId: '{{provider.partnerId}}',
     playlistId: '{{playlistId}}',
-    entryId: '{{entryId}}',
-    entryType: '{{entryType}}',
-    sessionId: '{{sessionId}}',
-    ks: '{{ks}}',
-    uiConfId: '{{uiConfId}}',
+    entryId: '{{sources.id}}',
+    entryType: '{{sources.type}}',
+    sessionId: '{{session.id}}',
+    ks: '{{provider.ks}}',
+    uiConfId: '{{provider.uiConfId}}',
     referrer: '{{referrer}}'
   },
   comscore: {
     playerVersion: '{{pVersion}}'
   },
   vr: {
-    rootElement: '{{domRootElementId}}'
+    rootElement: '{{targetId}}'
   }
 };
 
