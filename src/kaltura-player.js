@@ -256,8 +256,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setTextDisplaySettings(settings);
   }
 
-  isFullscreen(isNativeOnly: boolean = false): boolean {
-    return this._localPlayer.isFullscreen(isNativeOnly);
+  isFullscreen(): boolean {
+    return this._localPlayer.isFullscreen();
   }
 
   notifyEnterFullscreen(): void {
