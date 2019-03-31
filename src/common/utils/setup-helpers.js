@@ -251,7 +251,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
-  configureVrRelevantOptions(defaultOptions);
+  configureVrDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
@@ -325,7 +325,7 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureVrRelevantOptions(options: KPOptionsObject): void {
+function configureVrDefaultOptions(options: KPOptionsObject): void {
   if (options.plugins.vr && !options.plugins.vr.disable && !options.ui.disable) {
     const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
     if (typeof fullscreenConfig !== 'boolean') {
