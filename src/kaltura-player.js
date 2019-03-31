@@ -532,8 +532,8 @@ class KalturaPlayer extends FakeEventTarget {
         ui: {
           components: {
             share: {
-              ...(shareUrl && shareUrl),
-              ...(embedUrl && embedUrl)
+              ...(shareUrl && {shareUrl}),
+              ...(embedUrl && {embedUrl})
             }
           }
         }
