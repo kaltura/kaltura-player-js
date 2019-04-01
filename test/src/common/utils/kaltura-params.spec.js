@@ -1,4 +1,11 @@
-import {addClientTag, addKalturaParams, addReferrer, handleSessionId, updateSessionIdInUrl} from '../../../../src/common/utils/kaltura-params';
+import {
+  addClientTag,
+  addKalturaParams,
+  addReferrer,
+  getReferrer,
+  handleSessionId,
+  updateSessionIdInUrl
+} from '../../../../src/common/utils/kaltura-params';
 
 class Player {
   set sessionId(s) {
@@ -18,7 +25,7 @@ describe('addKalturaParams', function() {
       'a/b/c/playmanifest/source?playSessionId=' +
         player.config.session.id +
         '&referrer=' +
-        btoa(document.referrer) +
+        btoa(getReferrer().substr(0, 1000)) +
         '&clientTag=html5:v' +
         __VERSION__
     );
@@ -26,7 +33,7 @@ describe('addKalturaParams', function() {
       'd/e/f/playmanifest/source?a&playSessionId=' +
         player.config.session.id +
         '&referrer=' +
-        btoa(document.referrer) +
+        btoa(getReferrer().substr(0, 1000)) +
         '&clientTag=html5:v' +
         __VERSION__
     );
@@ -41,7 +48,7 @@ describe('addKalturaParams', function() {
       'a/b/c/PLAYMANIFEST/source?playSessionId=' +
         player.config.session.id +
         '&referrer=' +
-        btoa(document.referrer) +
+        btoa(getReferrer().substr(0, 1000)) +
         '&clientTag=html5:v' +
         __VERSION__
     );
@@ -49,7 +56,7 @@ describe('addKalturaParams', function() {
       'd/e/f/PLAYMANIFEST/source?a&playSessionId=' +
         player.config.session.id +
         '&referrer=' +
-        btoa(document.referrer) +
+        btoa(getReferrer().substr(0, 1000)) +
         '&clientTag=html5:v' +
         __VERSION__
     );
@@ -123,14 +130,14 @@ describe('addReferrer', function() {
     let source = {url: 'a/b/c/playmanifest/source'};
     player.config = {session: {}};
     addReferrer(source, player);
-    source.url.should.be.equal('a/b/c/playmanifest/source?referrer=' + btoa(document.referrer));
+    source.url.should.be.equal('a/b/c/playmanifest/source?referrer=' + btoa(getReferrer().substr(0, 1000)));
   });
 
   it('should add referrer as second param', function() {
     let source = {url: 'a/b/c/playmanifest/source?a'};
     player.config = {session: {}};
     addReferrer(source, player);
-    source.url.should.be.equal('a/b/c/playmanifest/source?a&referrer=' + btoa(document.referrer));
+    source.url.should.be.equal('a/b/c/playmanifest/source?a&referrer=' + btoa(getReferrer().substr(0, 1000)));
   });
 });
 
