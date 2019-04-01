@@ -97,7 +97,7 @@ const getModel = (options: KPOptionsObject): Object => {
  * @private
  * @return {void}
  */
-function evaluatePluginsConfig(options: PKPluginsConfigObject, config: KPOptionsObject): void {
+function evaluatePluginsConfig(options: ?PKPluginsConfigObject, config: KPOptionsObject): void {
   if (options) {
     pluginConfig.set(options);
     const dataModel = getModel(config);

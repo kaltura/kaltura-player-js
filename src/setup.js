@@ -27,9 +27,7 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   const defaultOptions = getDefaultOptions(options);
   setLogLevel(defaultOptions);
   printSetupMessages();
-  if (defaultOptions.plugins) {
-    evaluatePluginsConfig(defaultOptions.plugins, defaultOptions);
-  }
+  evaluatePluginsConfig(defaultOptions.plugins, defaultOptions);
   setStorageConfig(defaultOptions);
   const player = getPlayerProxy(defaultOptions);
   setStorageTextStyle(player);

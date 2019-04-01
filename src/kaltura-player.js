@@ -525,22 +525,8 @@ class KalturaPlayer extends FakeEventTarget {
   _maybeSetEmbedConfig(): void {
     const ui = this.config.ui;
     if (ui && ui.components && ui.components.share) {
-      const share = this.config.ui.components.share;
-      let shareUrl = share.shareUrl;
-      let embedUrl = share.embedUrl;
-      const shareConfig = {
-        ui: {
-          components: {
-            share: {
-              ...(shareUrl && {shareUrl}),
-              ...(embedUrl && {embedUrl})
-            }
-          }
-        }
-      };
-      const config = Utils.Object.mergeDeep({}, this.config, shareConfig);
-      evaluateUIConfig(config.ui, this.config);
-      this._uiWrapper.setConfig(config.ui);
+      evaluateUIConfig(ui, this.config);
+      this._uiWrapper.setConfig(ui);
     }
   }
 }
