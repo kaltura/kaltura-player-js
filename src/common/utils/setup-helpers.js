@@ -326,7 +326,7 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureVrDefaultOptions(options: KPOptionsObject): void {
-  if (options.plugins.vr && !options.plugins.vr.disable && !options.ui.disable) {
+  if (options.plugins && options.plugins.vr && !options.plugins.vr.disable) {
     const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
     if (typeof fullscreenConfig !== 'boolean') {
       Utils.Object.mergeDeep(options, {
