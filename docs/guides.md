@@ -9,6 +9,7 @@
 - [Player Events](./events.md)
 - [Monitoring Player States](./player-states.md)
 - [Managing Tracks on the Player](managing-tracks.md)
+- [Ads](./ads.md)
 - [User Preferences](./user-preferences.md)
 - [Controlling Errors](errors.md)
 - [Debugging & Troubleshooting](./debugging.md)
