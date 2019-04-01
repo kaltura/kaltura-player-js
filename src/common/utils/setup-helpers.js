@@ -366,6 +366,8 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
         const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
         Utils.Object.mergeDeep(options, propObj);
         Utils.Object.deletePropertyPath(options, propPath);
+      } else {
+        Utils.Object.deletePropertyPath(options, propPath);
       }
     }
   };
