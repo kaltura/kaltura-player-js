@@ -251,6 +251,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
+  configureVrDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
@@ -319,6 +320,24 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
 }
 
 /**
+ * Sets config option fullscreen element for Vr Mode support
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureVrDefaultOptions(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.vr && !options.plugins.vr.disable) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
+    if (typeof fullscreenConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          inBrowserFullscreen: true
+        }
+      });
+    }
+  }
+}
+/**
  * Transform options structure from legacy structure to new structure.
  * @private
  * @param {Object} options - The options with the legacy structure.
@@ -342,10 +361,14 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
         level: 'warn',
         msg: `Path config.player.${propPath} will be deprecated soon. Please update your config structure as describe here: ${__CONFIG_DOCS_URL__}`
       });
-      const propValue = Utils.Object.getPropertyPath(options, propPath);
-      const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
-      Utils.Object.mergeDeep(options, propObj);
-      Utils.Object.deletePropertyPath(options, propPath);
+      if (!Utils.Object.hasPropertyPath(options, targetPath)) {
+        const propValue = Utils.Object.getPropertyPath(options, propPath);
+        const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
+        Utils.Object.mergeDeep(options, propObj);
+        Utils.Object.deletePropertyPath(options, propPath);
+      } else {
+        Utils.Object.deletePropertyPath(options, propPath);
+      }
     }
   };
   const moves = [
@@ -355,7 +378,8 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['id', 'sources.id'],
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
-    ['metadata', 'sources.metadata']
+    ['metadata', 'sources.metadata'],
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));

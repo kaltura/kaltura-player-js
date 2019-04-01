@@ -218,6 +218,35 @@ describe('supportLegacyOptions', function() {
     }
   };
 
+  const duplicateOptions = {
+    targetId: 'player-placeholder',
+    sources: {
+      dvr: false
+    },
+    player: {
+      dvr: true,
+      type: 'Live',
+      duration: 10000,
+      name: 'name',
+      playback: {
+        autoplay: false
+      },
+      metadata: {
+        poster: 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg'
+      }
+    },
+    provider: {
+      partnerId: 1091
+    },
+    ui: {
+      components: {
+        seekbar: {
+          thumbsSprite: 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg'
+        }
+      }
+    }
+  };
+
   const options = {
     targetId: 'player-placeholder',
     sources: {
@@ -260,5 +289,10 @@ describe('supportLegacyOptions', function() {
   it('should not transform config with the new structure', function() {
     supportLegacyOptions(options);
     legacyOptions.should.deep.equal(options);
+  });
+
+  it('check method support duplicate configuration take the new configuration', function() {
+    supportLegacyOptions(duplicateOptions);
+    duplicateOptions.should.deep.equal(options);
   });
 });

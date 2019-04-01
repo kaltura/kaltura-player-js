@@ -274,8 +274,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.notifyExitFullscreen();
   }
 
-  enterFullscreen(): void {
-    this._localPlayer.enterFullscreen();
+  enterFullscreen(fullScreenElement: ?HTMLElement): void {
+    this._localPlayer.enterFullscreen(fullScreenElement);
   }
 
   exitFullscreen(): void {
