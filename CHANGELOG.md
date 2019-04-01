@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.40.11"></a>
+## [0.40.11](https://github.com/kaltura/kaltura-player-js/compare/v0.40.10...v0.40.11) (2019-04-01)
+
+
+### Bug Fixes
+
+* **FEC-8826:** fullscreen implementation moved to core ([#227](https://github.com/kaltura/kaltura-player-js/issues/227)) ([faa5fd7](https://github.com/kaltura/kaltura-player-js/commit/faa5fd7))
+* **FEC-8981:** playlist doesn't send ott analytics ([#226](https://github.com/kaltura/kaltura-player-js/issues/226)) ([afb0cf2](https://github.com/kaltura/kaltura-player-js/commit/afb0cf2))
+
+
+
 <a name="0.40.10"></a>
 ## [0.40.10](https://github.com/kaltura/kaltura-player-js/compare/v0.40.9...v0.40.10) (2019-03-17)
 
