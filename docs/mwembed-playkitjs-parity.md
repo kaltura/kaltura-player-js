@@ -118,8 +118,8 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 | Youbora (Nice People At Work)	 	| Yes					| Yes 					|
 | Google Analytics 				 	| Yes					| Yes 		|
 | comScore		 				 	| Yes					| Yes  					|
-| Adobe Analytics / Omniture		| Yes					| Q2 2019  					|
-| Nielsen		 				 	| Yes					| Q2 2019 			 		|
+| Adobe Analytics / Omniture		| Yes					| No  					|
+| Nielsen		 				 	| No					| No 			 		|
 | Marketo		 				 	| Yes					| No 			 		|
 | Eloqua		 				 	| Yes					| No 			 		|
 
