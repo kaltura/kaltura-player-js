@@ -165,8 +165,8 @@ class KalturaPlayer extends FakeEventTarget {
    */
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
-    // $FlowFixMe
-    evaluatePluginsConfig(config.plugins, this.config);
+    const configDoctionary = Utils.Object.mergeDeep({}, this.config, config);
+    evaluatePluginsConfig(config.plugins, configDoctionary);
     this._localPlayer.configure(config);
     const uiConfig = config.ui;
     if (uiConfig) {
