@@ -35,8 +35,8 @@
 |-------------------|-----------------------|-----------------------|
 | Chromecast  	| Yes              | Yes	|
 | AirPlay  	| Yes              | Yes	|
-| Samsung (Tizen, Orsay)  	| No              | Q1 2019	|
-| LG (WebOS, Netcast)  	| No              | Q1 2019	|
+| Samsung (Tizen, Orsay)  	| No              | Q2 2019	|
+| LG (WebOS, Netcast)  	| No              | Q2 2019	|
 
 ## Tracks 
 
