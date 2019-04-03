@@ -332,6 +332,9 @@ function configureVrDefaultOptions(options: KPOptionsObject): void {
       Utils.Object.mergeDeep(options, {
         playback: {
           inBrowserFullscreen: true
+        },
+        ui: {
+          forceScrollInVideoPlayer: true
         }
       });
     }
