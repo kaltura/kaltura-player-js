@@ -253,7 +253,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   setDefaultAnalyticsPlugin(defaultOptions);
   configureVrDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
-  configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
 }
 
@@ -271,28 +270,6 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
         playback: {
           preferNative: {
             hls: true
-          }
-        }
-      });
-    }
-  }
-}
-
-/**
- * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
- * @private
- * @param {KPOptionsObject} options - kaltura player options
- * @returns {void}
- */
-function configureDelayAdsInitialization(options: KPOptionsObject): void {
-  if (isIos() && options.plugins && options.plugins.ima) {
-    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-    const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
-    if ((typeof playsinline !== 'boolean' || playsinline === true) && typeof delayInitUntilSourceSelected !== 'boolean') {
-      Utils.Object.mergeDeep(options, {
-        plugins: {
-          ima: {
-            delayInitUntilSourceSelected: true
           }
         }
       });
