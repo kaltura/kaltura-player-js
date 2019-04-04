@@ -88,6 +88,13 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
     }
     this.configure(playerConfig);
+    if (this._localPlayer.config.plugins.vr && !this._localPlayer.config.plugins.vr.disable) {
+      if (this.isVr()) {
+        this._uiWrapper.setPreventScrollInPlayerConfig(true);
+      } else {
+        this._uiWrapper.setPreventScrollInPlayerConfig(false);
+      }
+    }
   }
 
   /**

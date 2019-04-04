@@ -47,6 +47,10 @@ class UIWrapper {
     this.setConfig({hasError: false}, 'engine');
   }
 
+  setPreventScrollInPlayerConfig(preventScrollInPlayerConfig: string): void {
+    this.setConfig({preventScrollInPlayer: preventScrollInPlayerConfig});
+  }
+
   setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: UIOptionsObject): void {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
