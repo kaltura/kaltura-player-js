@@ -53,7 +53,7 @@
 | Kind  							| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
 | Main Audio Tracks (Switch)		| Yes					| Yes 					|
-| Descriptive Audio	(Overlay)		| No					| No 					|
+| Overlay Audio	(e.g. Descriptions)		| No					| No 					|
 
 ### Video Tracks (Multi bitrate)
 
@@ -115,6 +115,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 |-----------------------------------|-----------------------|-----------------------|
 | Kaltura Analytics (legacy)	 	| Yes					| Yes 					|
 | Kaltura Analytics (Kava)		 	| Yes					| Yes 					|
+| Akamai Media Analytics	 	| Yes					| Yes 					|
 | Youbora (Nice People At Work)	 	| Yes					| Yes 					|
 | Google Analytics 				 	| Yes					| Yes 		|
 | comScore		 				 	| Yes					| Yes  					|
@@ -154,6 +155,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 | Dual-Stream 					 	| Yes					| No 					|
 | RaptMedia Interactive Branching 	| Yes					| Yes 					|
 | Call To Action 				 	| Yes					| No 					|
+| Hotspots 				 	| Yes					| Q2 2019 					|
 | Marketo Form	 				 	| Yes					| No 					|
 | Eloqua Form	 				 	| Yes					| No 					|
 
