@@ -47,7 +47,7 @@ class UIWrapper {
     this.setConfig({hasError: false}, 'engine');
   }
 
-  setPreventScrollInPlayerConfig(preventScrollInPlayerConfig: string): void {
+  setPreventScrollInPlayerConfig(preventScrollInPlayerConfig: boolean): void {
     this.setConfig({preventScrollInPlayer: preventScrollInPlayerConfig});
   }
 

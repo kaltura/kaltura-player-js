@@ -88,13 +88,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
     }
     this.configure(playerConfig);
-    if (this._localPlayer.config.plugins.vr && !this._localPlayer.config.plugins.vr.disable) {
-      if (this.isVr()) {
-        this._uiWrapper.setPreventScrollInPlayerConfig(true);
-      } else {
-        this._uiWrapper.setPreventScrollInPlayerConfig(false);
-      }
-    }
+    this.supportScrollingInVr(this._localPlayer.config);
   }
 
   /**
@@ -155,6 +149,17 @@ class KalturaPlayer extends FakeEventTarget {
     evaluatePluginsConfig(config.plugins, config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.load(playlistData, playlistConfig, entryList);
+  }
+
+  /**
+   * set scrolling option for vr mode
+   * @param {object} config - configuration of player
+   * @returns {void}
+   */
+  supportScrollingInVr(config: Object = {}): void {
+    if (typeof config.ui.preventScrollInPlayer !== 'boolean' && config.plugins && config.plugins.vr && !config.plugins.vr.disable) {
+      this._uiWrapper.setPreventScrollInPlayerConfig(this.isVr());
+    }
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
