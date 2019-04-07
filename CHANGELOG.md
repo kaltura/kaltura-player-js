@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.40.13"></a>
+## [0.40.13](https://github.com/kaltura/kaltura-player-js/compare/v0.40.12...v0.40.13) (2019-04-07)
+
+
+### Bug Fixes
+
+* **FEC-8826:** default element is video container instead main container ([#235](https://github.com/kaltura/kaltura-player-js/issues/235)) ([3b3caa3](https://github.com/kaltura/kaltura-player-js/commit/3b3caa3))
+* **FEC-9002:** analytics aren't being sent ([#230](https://github.com/kaltura/kaltura-player-js/issues/230)) ([b2e8a86](https://github.com/kaltura/kaltura-player-js/commit/b2e8a86))
+* **FEC-9013:** [iOS] - Player doesnt play ads native ([#234](https://github.com/kaltura/kaltura-player-js/issues/234)) ([60edaf6](https://github.com/kaltura/kaltura-player-js/commit/60edaf6))
+
+
+
 <a name="0.40.12"></a>
 ## [0.40.12](https://github.com/kaltura/kaltura-player-js/compare/v0.40.11...v0.40.12) (2019-04-01)
 
