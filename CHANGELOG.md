@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.40.14"></a>
+## [0.40.14](https://github.com/kaltura/kaltura-player-js/compare/v0.40.13...v0.40.14) (2019-04-10)
+
+
+### Bug Fixes
+
+* **FEC-9026:** [Player_V3][Flash] - When clicking fullscreen icon in flash, the player area stays in the same size ([8d64b78](https://github.com/kaltura/kaltura-player-js/commit/8d64b78))
+
+
+
 <a name="0.40.13"></a>
 ## [0.40.13](https://github.com/kaltura/kaltura-player-js/compare/v0.40.12...v0.40.13) (2019-04-07)
 
