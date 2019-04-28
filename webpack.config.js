@@ -37,9 +37,7 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: __dirname + '/src',
-    host: '0.0.0.0',
-    port: '3000'
+    contentBase: __dirname + '/src'
   },
   resolve: {
     alias: {
