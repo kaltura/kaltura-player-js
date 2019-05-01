@@ -56,7 +56,7 @@ function validateTargetId(targetId: string): void {
  * @returns {void}
  */
 function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
-  if (!providerOptions.partnerId) {
+  if (!providerOptions.partnerId && providerOptions.partnerId !== 0) {
     throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
   }
 }
