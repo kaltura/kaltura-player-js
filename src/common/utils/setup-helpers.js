@@ -252,6 +252,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
   configureVrDefaultOptions(defaultOptions);
+  configureLGTVDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   return defaultOptions;
 }
@@ -314,6 +315,31 @@ function configureVrDefaultOptions(options: KPOptionsObject): void {
     }
   }
 }
+
+/**
+ * Sets config option for LG TV
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureLGTVDefaultOptions(options: KPOptionsObject): void {
+  if (isLGTV() && options.plugins && options.plugins.ima) {
+    const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
+    const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
+    const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
+
+    if (typeof imaForceReload !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
+    }
+    if (typeof preferNativeHls !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
+    }
+    if (typeof delayUntilSourceSelected !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+    }
+  }
+}
+
 /**
  * Transform options structure from legacy structure to new structure.
  * @private
@@ -388,6 +414,15 @@ function isSafari(): boolean {
  */
 function isIos(): boolean {
   return Env.os.name === 'iOS';
+}
+
+/**
+ * Returns true if user agent indicate that browser is Chrome on iOS
+ * @private
+ * @returns {boolean} - if browser is Chrome on iOS
+ */
+function isLGTV(): boolean {
+  return /^(?=.*\bweb0s\b)(?=.*\bsmarttv\b).*$/i.test(Env.ua);
 }
 
 /**
