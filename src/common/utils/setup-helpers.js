@@ -417,9 +417,9 @@ function isIos(): boolean {
 }
 
 /**
- * Returns true if user agent indicate that browser is Chrome on iOS
+ * Returns true if user agent indicate that browser is LG TV
  * @private
- * @returns {boolean} - if browser is Chrome on iOS
+ * @returns {boolean} - if browser is in LG TV
  */
 function isLGTV(): boolean {
   return /^(?=.*\bweb0s\b)(?=.*\bsmarttv\b).*$/i.test(Env.ua);
