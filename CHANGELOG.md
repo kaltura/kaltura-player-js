@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.41.2"></a>
+## [0.41.2](https://github.com/kaltura/kaltura-player-js/compare/v0.41.1...v0.41.2) (2019-05-16)
+
+
+### Bug Fixes
+
+* **FEC-9067:** playback error with ima on LG TV WebOS ([#239](https://github.com/kaltura/kaltura-player-js/issues/239)) ([99fee11](https://github.com/kaltura/kaltura-player-js/commit/99fee11))
+
+
+
 <a name="0.41.1"></a>
 ## [0.41.1](https://github.com/kaltura/kaltura-player-js/compare/v0.41.0...v0.41.1) (2019-05-01)
 
