@@ -530,6 +530,10 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.setConfig(ui);
     }
   }
+
+  addExternalPresetComponent(component: ExternalPresetComponent) {
+    this._uiWrapper.addExternalPresetComponent(component);
+  }
 }
 
 export {KalturaPlayer};
