@@ -518,14 +518,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  get droppedVideoFrames(): ?number {
-    return this._localPlayer.droppedVideoFrames;
-  }
-
-  get totalVideoFrames(): ?number {
-    return this._localPlayer.totalVideoFrames;
-  }
-
   /**
    * set the share config
    * @returns {void}
