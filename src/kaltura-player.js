@@ -4,7 +4,7 @@ import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
-import {evaluatePluginsConfig} from './common/plugins/plugins-config';
+import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -59,13 +59,17 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     const providerResult = this._provider.getMediaConfig(mediaInfo);
-    providerResult.then(
-      mediaConfig => this.setMedia(mediaConfig),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
+    providerResult
+      .then(
+        mediaConfig => this.setMedia(mediaConfig),
+        e =>
+          this._localPlayer.dispatchEvent(
+            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+          )
+      )
+      .then(() => {
+        this._maybeSetEmbedConfig();
+      });
     return providerResult;
   }
 
@@ -136,9 +140,12 @@ class KalturaPlayer extends FakeEventTarget {
 
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
     this._logger.debug('setPlaylist', playlistData);
-    const config = {playlist: playlistData, plugins: this._localPlayer.config.plugins};
+    const config = {playlist: playlistData, plugins: {}};
+    Object.keys(this._localPlayer.config.plugins).forEach(name => {
+      config.plugins[name] = {};
+    });
     // $FlowFixMe
-    evaluatePluginsConfig(config);
+    evaluatePluginsConfig(config.plugins, config);
     this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
@@ -158,11 +165,13 @@ class KalturaPlayer extends FakeEventTarget {
    */
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
-    // $FlowFixMe
-    evaluatePluginsConfig(config);
+    const configDoctionary = Utils.Object.mergeDeep({}, this.config, config);
+    evaluatePluginsConfig(config.plugins, configDoctionary);
     this._localPlayer.configure(config);
-    if (config.ui) {
-      this._uiWrapper.setConfig(config.ui);
+    const uiConfig = config.ui;
+    if (uiConfig) {
+      evaluateUIConfig(uiConfig, this.config);
+      this._uiWrapper.setConfig(uiConfig);
     }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
@@ -265,8 +274,9 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.notifyExitFullscreen();
   }
 
-  enterFullscreen(): void {
-    this._localPlayer.enterFullscreen();
+  enterFullscreen(fullScreenElementId: ?string): void {
+    const elementId = fullScreenElementId ? fullScreenElementId : this.config.ui.targetId;
+    this._localPlayer.enterFullscreen(elementId);
   }
 
   exitFullscreen(): void {
@@ -506,6 +516,19 @@ class KalturaPlayer extends FakeEventTarget {
 
   get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  /**
+   * set the share config
+   * @returns {void}
+   * @private
+   */
+  _maybeSetEmbedConfig(): void {
+    const ui = this.config.ui;
+    if (ui && ui.components && ui.components.share) {
+      evaluateUIConfig(ui, this.config);
+      this._uiWrapper.setConfig(ui);
+    }
   }
 }
 
