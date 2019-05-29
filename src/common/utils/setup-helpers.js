@@ -464,6 +464,18 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
 }
 
 /**
+ * Maybe add the plugins info for the provider
+ * @param {PKPluginsConfigObject} plugins - kaltura player plugins
+ * @param {ProviderMediaInfoObject} mediaInfo - the provider media info
+ * @returns {void}
+ */
+function maybeAddPluginsInfo(plugins: PKPluginsConfigObject = {}, mediaInfo: ProviderMediaInfoObject): void {
+  if (plugins && plugins.bumper && !plugins.bumper.disable && plugins.bumper.id && !plugins.bumper.url) {
+    mediaInfo.bumperId = plugins.bumper.id;
+  }
+}
+
+/**
  * Maybe set the UI component based on the runtime platform and the plugins.
  * @private
  * @param {KPOptionsObject} options - kaltura player options
@@ -519,5 +531,6 @@ export {
   isSafari,
   isIos,
   maybeSetStreamPriority,
-  hasYoutubeSource
+  hasYoutubeSource,
+  maybeAddPluginsInfo
 };
