@@ -1,6 +1,6 @@
 import {evaluatePluginsConfig} from '../../../../src/common/plugins/plugins-config';
 
-describe.only('evaluatePluginsConfig', function() {
+describe('evaluatePluginsConfig', function() {
   const playerConfig = {
     targetId: 'myTargetId',
     provider: {
