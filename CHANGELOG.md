@@ -2,6 +2,135 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.41.2"></a>
+## [0.41.2](https://github.com/kaltura/kaltura-player-js/compare/v0.41.1...v0.41.2) (2019-05-16)
+
+
+### Bug Fixes
+
+* **FEC-9067:** playback error with ima on LG TV WebOS ([#239](https://github.com/kaltura/kaltura-player-js/issues/239)) ([99fee11](https://github.com/kaltura/kaltura-player-js/commit/99fee11))
+
+
+
+<a name="0.41.1"></a>
+## [0.41.1](https://github.com/kaltura/kaltura-player-js/compare/v0.41.0...v0.41.1) (2019-05-01)
+
+
+### Bug Fixes
+
+* **FEC-9052:** allow player to load from partner 0([#237](https://github.com/kaltura/kaltura-player-js/issues/237)) ([eca464a](https://github.com/kaltura/kaltura-player-js/commit/eca464a))
+
+
+
+<a name="0.41.0"></a>
+## [0.41.0](https://github.com/kaltura/kaltura-player-js/compare/v0.40.15...v0.41.0) (2019-04-15)
+
+
+
+<a name="0.40.15"></a>
+## [0.40.15](https://github.com/kaltura/kaltura-player-js/compare/v0.40.14...v0.40.15) (2019-04-14)
+
+
+
+<a name="0.40.14"></a>
+## [0.40.14](https://github.com/kaltura/kaltura-player-js/compare/v0.40.13...v0.40.14) (2019-04-10)
+
+
+### Bug Fixes
+
+* **FEC-9026:** [Player_V3][Flash] - When clicking fullscreen icon in flash, the player area stays in the same size ([8d64b78](https://github.com/kaltura/kaltura-player-js/commit/8d64b78))
+
+
+
+<a name="0.40.13"></a>
+## [0.40.13](https://github.com/kaltura/kaltura-player-js/compare/v0.40.12...v0.40.13) (2019-04-07)
+
+
+### Bug Fixes
+
+* **FEC-8826:** default element is video container instead main container ([#235](https://github.com/kaltura/kaltura-player-js/issues/235)) ([3b3caa3](https://github.com/kaltura/kaltura-player-js/commit/3b3caa3))
+* **FEC-9002:** analytics aren't being sent ([#230](https://github.com/kaltura/kaltura-player-js/issues/230)) ([b2e8a86](https://github.com/kaltura/kaltura-player-js/commit/b2e8a86))
+* **FEC-9013:** [iOS] - Player doesnt play ads native ([#234](https://github.com/kaltura/kaltura-player-js/issues/234)) ([60edaf6](https://github.com/kaltura/kaltura-player-js/commit/60edaf6))
+
+
+
+<a name="0.40.12"></a>
+## [0.40.12](https://github.com/kaltura/kaltura-player-js/compare/v0.40.11...v0.40.12) (2019-04-01)
+
+
+
+<a name="0.40.11"></a>
+## [0.40.11](https://github.com/kaltura/kaltura-player-js/compare/v0.40.10...v0.40.11) (2019-04-01)
+
+
+### Bug Fixes
+
+* **FEC-8826:** fullscreen implementation moved to core ([#227](https://github.com/kaltura/kaltura-player-js/issues/227)) ([faa5fd7](https://github.com/kaltura/kaltura-player-js/commit/faa5fd7))
+* **FEC-8981:** playlist doesn't send ott analytics ([#226](https://github.com/kaltura/kaltura-player-js/issues/226)) ([afb0cf2](https://github.com/kaltura/kaltura-player-js/commit/afb0cf2))
+
+
+
+<a name="0.40.10"></a>
+## [0.40.10](https://github.com/kaltura/kaltura-player-js/compare/v0.40.9...v0.40.10) (2019-03-17)
+
+
+
+<a name="0.40.9"></a>
+## [0.40.9](https://github.com/kaltura/kaltura-player-js/compare/v0.40.8...v0.40.9) (2019-03-14)
+
+
+
+<a name="0.40.8"></a>
+## [0.40.8](https://github.com/kaltura/kaltura-player-js/compare/v0.40.7...v0.40.8) (2019-03-11)
+
+
+
+<a name="0.40.7"></a>
+## [0.40.7](https://github.com/kaltura/kaltura-player-js/compare/v0.40.6...v0.40.7) (2019-03-11)
+
+
+### Bug Fixes
+
+* **FEC-8973:** safari desktop plays using hlsjs instead of natively ([#225](https://github.com/kaltura/kaltura-player-js/issues/225)) ([696c959](https://github.com/kaltura/kaltura-player-js/commit/696c959))
+
+
+
+<a name="0.40.6"></a>
+## [0.40.6](https://github.com/kaltura/kaltura-player-js/compare/v0.40.5...v0.40.6) (2019-03-10)
+
+
+
+<a name="0.40.5"></a>
+## [0.40.5](https://github.com/kaltura/kaltura-player-js/compare/v0.40.4...v0.40.5) (2019-03-07)
+
+
+
+<a name="0.40.4"></a>
+## [0.40.4](https://github.com/kaltura/kaltura-player-js/compare/v0.40.3...v0.40.4) (2019-03-07)
+
+
+
+<a name="0.40.3"></a>
+## [0.40.3](https://github.com/kaltura/kaltura-player-js/compare/v0.40.2...v0.40.3) (2019-03-06)
+
+
+
+<a name="0.40.2"></a>
+## [0.40.2](https://github.com/kaltura/kaltura-player-js/compare/v0.40.1...v0.40.2) (2019-02-27)
+
+
+
+<a name="0.40.1"></a>
+## [0.40.1](https://github.com/kaltura/kaltura-player-js/compare/v0.40.0...v0.40.1) (2019-02-27)
+
+
+### Bug Fixes
+
+* **FEC-8901:** duplication of ClosedCaptions on iOS on none Safari browser ([#221](https://github.com/kaltura/kaltura-player-js/issues/221)) ([7dbc175](https://github.com/kaltura/kaltura-player-js/commit/7dbc175))
+* **FEC-8927:** player crash on Echo show browser ([#223](https://github.com/kaltura/kaltura-player-js/issues/223)) ([f16fea0](https://github.com/kaltura/kaltura-player-js/commit/f16fea0))
+
+
+
 <a name="0.40.0"></a>
 # [0.40.0](https://github.com/kaltura/kaltura-player-js/compare/v0.39.4...v0.40.0) (2019-02-20)
 

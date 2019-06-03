@@ -56,7 +56,7 @@ function validateTargetId(targetId: string): void {
  * @returns {void}
  */
 function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
-  if (!providerOptions.partnerId) {
+  if (!providerOptions.partnerId && providerOptions.partnerId !== 0) {
     throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
   }
 }
@@ -251,8 +251,9 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
+  configureVrDefaultOptions(defaultOptions);
+  configureLGTVDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
-  configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
 }
 
@@ -278,35 +279,13 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
 }
 
 /**
- * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
- * @private
- * @param {KPOptionsObject} options - kaltura player options
- * @returns {void}
- */
-function configureDelayAdsInitialization(options: KPOptionsObject): void {
-  if (isIos() && options.plugins && options.plugins.ima) {
-    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-    const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
-    if ((typeof playsinline !== 'boolean' || playsinline === true) && typeof delayInitUntilSourceSelected !== 'boolean') {
-      Utils.Object.mergeDeep(options, {
-        plugins: {
-          ima: {
-            delayInitUntilSourceSelected: true
-          }
-        }
-      });
-    }
-  }
-}
-
-/**
  * Sets config option for native text track support
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if (isSafari()) {
+  if (isSafari() || isIos()) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -314,6 +293,49 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
           useNativeTextTrack: true
         }
       });
+    }
+  }
+}
+
+/**
+ * Sets config option fullscreen element for Vr Mode support
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureVrDefaultOptions(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.vr && !options.plugins.vr.disable) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
+    if (typeof fullscreenConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          inBrowserFullscreen: true
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Sets config option for LG TV
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureLGTVDefaultOptions(options: KPOptionsObject): void {
+  if (isLGTV() && options.plugins && options.plugins.ima) {
+    const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
+    const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
+    const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
+
+    if (typeof imaForceReload !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
+    }
+    if (typeof preferNativeHls !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
+    }
+    if (typeof delayUntilSourceSelected !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
     }
   }
 }
@@ -342,10 +364,14 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
         level: 'warn',
         msg: `Path config.player.${propPath} will be deprecated soon. Please update your config structure as describe here: ${__CONFIG_DOCS_URL__}`
       });
-      const propValue = Utils.Object.getPropertyPath(options, propPath);
-      const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
-      Utils.Object.mergeDeep(options, propObj);
-      Utils.Object.deletePropertyPath(options, propPath);
+      if (!Utils.Object.hasPropertyPath(options, targetPath)) {
+        const propValue = Utils.Object.getPropertyPath(options, propPath);
+        const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
+        Utils.Object.mergeDeep(options, propObj);
+        Utils.Object.deletePropertyPath(options, propPath);
+      } else {
+        Utils.Object.deletePropertyPath(options, propPath);
+      }
     }
   };
   const moves = [
@@ -355,7 +381,8 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['id', 'sources.id'],
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
-    ['metadata', 'sources.metadata']
+    ['metadata', 'sources.metadata'],
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
@@ -377,7 +404,7 @@ function printSetupMessages(): void {
  * @returns {boolean} - if browser is Safari
  */
 function isSafari(): boolean {
-  return Env.browser.name.includes('Safari');
+  return Utils.Object.hasPropertyPath(Env, 'browser.name') && Env.browser.name.includes('Safari');
 }
 
 /**
@@ -387,6 +414,15 @@ function isSafari(): boolean {
  */
 function isIos(): boolean {
   return Env.os.name === 'iOS';
+}
+
+/**
+ * Returns true if user agent indicate that browser is LG TV
+ * @private
+ * @returns {boolean} - if browser is in LG TV
+ */
+function isLGTV(): boolean {
+  return /^(?=.*\bweb0s\b)(?=.*\bsmarttv\b).*$/i.test(Env.ua);
 }
 
 /**

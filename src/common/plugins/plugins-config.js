@@ -46,6 +46,10 @@ const getModel = (options: KPOptionsObject): Object => {
   }
   if (options.provider && options.provider.env) {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
+
+    if (dataModel['serviceUrl']) {
+      dataModel['embedBaseUrl'] = dataModel['serviceUrl'].replace('api_v3', '');
+    }
   }
   const entryDataModel = {
     referrer: getReferrer()
@@ -88,41 +92,82 @@ const getModel = (options: KPOptionsObject): Object => {
 };
 
 /**
- * @param {KPOptionsObject} options - player options
+ * @param {PKPluginsConfigObject} options - plugins options
+ * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluatePluginsConfig(options: KPOptionsObject): void {
-  if (options.plugins) {
-    pluginConfig.set(options.plugins);
-    const dataModel = getModel(options);
-    const evaluatedConfig = evaluate(JSON.stringify(pluginConfig.get()), dataModel);
-    let evaluatedConfigObj;
-    try {
-      evaluatedConfigObj = JSON.parse(evaluatedConfig, function(key) {
-        try {
-          return JSON.parse(this[key]);
-        } catch (e) {
-          return this[key];
-        }
-      });
-    } catch (e) {
-      evaluatedConfigObj = {};
-    }
-    evaluatedConfigObj = removeUnevaluatedExpression(evaluatedConfigObj);
-    options.plugins = removeUnevaluatedExpression(options.plugins);
-
-    if (options.plugins) {
-      Object.keys(options.plugins).forEach(pluginName => {
-        if (options.plugins && options.plugins[pluginName]) {
-          const mergedConfig = Utils.Object.mergeDeep({}, evaluatedConfigObj[pluginName], options.plugins[pluginName]);
-          if (options.plugins) {
-            options.plugins[pluginName] = mergedConfig;
-          }
-        }
-      });
-    }
+function evaluatePluginsConfig(options: ?PKPluginsConfigObject, config: KPOptionsObject): void {
+  if (options) {
+    pluginConfig.set(options);
+    const dataModel = getModel(config);
+    const mergedConfig = Utils.Object.mergeDeep({}, pluginConfig.get(), options);
+    const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
+    _mergeConfig(options, evaluatedConfig);
   }
 }
 
-export {evaluatePluginsConfig};
+/**
+ * @param {UIOptionsObject} options - UI options
+ * @param {KPOptionsObject} config - player config
+ * @private
+ * @return {void}
+ */
+function evaluateUIConfig(options: UIOptionsObject, config: KPOptionsObject): void {
+  if (options) {
+    const defaultUiConfig = {
+      components: {
+        share: {
+          shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
+          embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
+        }
+      }
+    };
+    const dataModel = getModel(config);
+    const mergedConfig = Utils.Object.mergeDeep({}, defaultUiConfig, options);
+    const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
+    _mergeConfig(options, evaluatedConfig);
+  }
+}
+
+/**
+ *
+ * @param {string} config - the config string
+ * @returns {Object} - the config object
+ * @private
+ */
+function _formatConfigString(config: string): Object {
+  let configObj;
+  try {
+    configObj = JSON.parse(config, function(key) {
+      try {
+        return JSON.parse(this[key]);
+      } catch (e) {
+        return this[key];
+      }
+    });
+  } catch (e) {
+    configObj = {};
+  }
+  return configObj;
+}
+/**
+ * @param {Object} data - target config object
+ * @param {Object} evaluatedConfig - the evaluated object
+ * @private
+ * @returns {void}
+ */
+function _mergeConfig(data: Object, evaluatedConfig: Object): void {
+  const evaluatedCleanConfig = removeUnevaluatedExpression(evaluatedConfig);
+  const cleanData = removeUnevaluatedExpression(data);
+
+  if (cleanData && evaluatedCleanConfig) {
+    Object.keys(data).forEach(pluginName => {
+      if (data && data[pluginName]) {
+        data[pluginName] = Utils.Object.mergeDeep({}, evaluatedCleanConfig[pluginName], cleanData[pluginName]);
+      }
+    });
+  }
+}
+
+export {evaluatePluginsConfig, evaluateUIConfig};
