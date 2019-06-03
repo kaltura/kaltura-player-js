@@ -11,7 +11,7 @@ import {Utils} from '@playkit-js/playkit-js';
  * @returns {boolean} - value is evaluated
  */
 const isValueEvaluated = (value: any): boolean =>
-  (typeof value === 'number' || typeof value === 'function' || typeof value === 'string' || typeof value === 'boolean' || Array.isArray(value)) &&
+  (typeof value === 'number' || typeof value === 'function' || typeof value === 'string' || typeof value === 'boolean') &&
   !templateRegex.test(value.toString());
 
 /**
@@ -24,6 +24,8 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (typeof value !== 'function' && Utils.Object.isObject(value)) {
       product[key] = removeUnevaluatedExpression(value);
+    } else if (Array.isArray(value)) {
+      product[key] = value.filter(index => isValueEvaluated(index));
     } else if (isValueEvaluated(value)) {
       product[key] = value;
     }
