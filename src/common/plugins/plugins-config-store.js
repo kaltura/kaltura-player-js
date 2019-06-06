@@ -12,17 +12,6 @@ const defaultConfig: dataStoreType = {
     sessionId: '{{sessionId}}',
     uiConfId: '{{uiConfId}}'
   },
-  kanalytics: {
-    playerVersion: '{{pVersion}}',
-    playlistId: '{{playlistId}}',
-    entryId: '{{entryId}}',
-    entryType: '{{entryType}}',
-    sessionId: '{{sessionId}}',
-    ks: '{{ks}}',
-    uiConfId: '{{uiConfId}}',
-    partnerId: '{{partnerId}}',
-    referrer: '{{referrer}}'
-  },
   googleAnalytics: {
     entryId: '{{entryId}}',
     entryName: '{{entryName}}',

@@ -16,15 +16,4 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
       }
     });
   }
-  let kanalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.kanalytics');
-  if (!kanalyticsPlugin) {
-    kanalyticsPlugin = Utils.Object.mergeDeep(options, {
-      plugins: {
-        kanalytics: {}
-      }
-    });
-  }
-  if (options.plugins && !kavaPlugin.disable && !kanalyticsPlugin.disable) {
-    Object.assign(options.plugins.kanalytics, {hasKanalony: true});
-  }
 }
