@@ -253,6 +253,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   setDefaultAnalyticsPlugin(defaultOptions);
   configureVrDefaultOptions(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
+  configureDAIDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   return defaultOptions;
 }
@@ -285,7 +286,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if (isSafari() || isIos()) {
+  if ((isMacOS() && isSafari()) || isIos()) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -336,6 +337,31 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
     }
     if (typeof delayUntilSourceSelected !== 'boolean') {
       options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+    }
+  }
+}
+
+/**
+ * Sets default config option for dai plugin
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureDAIDefaultOptions(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
+    const autoStartLoadConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.autoStartLoad');
+    if (typeof autoStartLoadConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          options: {
+            html5: {
+              hls: {
+                autoStartLoad: false
+              }
+            }
+          }
+        }
+      });
     }
   }
 }
@@ -408,6 +434,15 @@ function isSafari(): boolean {
 }
 
 /**
+ * Returns true if user agent indicate that os is mac
+ * @private
+ * @returns {boolean} - if browser is Safari
+ */
+function isMacOS(): boolean {
+  return Env.os.name.toLowerCase() === 'Mac OS';
+}
+
+/**
  * Returns true if user agent indicate that browser is Chrome on iOS
  * @private
  * @returns {boolean} - if browser is Chrome on iOS
@@ -422,7 +457,7 @@ function isIos(): boolean {
  * @returns {boolean} - if browser is in LG TV
  */
 function isLGTV(): boolean {
-  return /^(?=.*\bweb0s\b)(?=.*\bsmarttv\b).*$/i.test(Env.ua);
+  return Env.os.name.toLowerCase() === 'web0s';
 }
 
 /**
