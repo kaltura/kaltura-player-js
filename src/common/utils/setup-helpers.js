@@ -256,7 +256,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureDAIDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   maybeSetDefaultUiComponents(defaultOptions);
-  maybeReorderPlugins(defaultOptions);
   return defaultOptions;
 }
 
@@ -499,18 +498,6 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
 }
 
 /**
- * Maybe add the plugins info for the provider
- * @param {PKPluginsConfigObject} plugins - kaltura player plugins
- * @param {ProviderMediaInfoObject} mediaInfo - the provider media info
- * @returns {void}
- */
-function maybeAddPluginsInfo(plugins: PKPluginsConfigObject = {}, mediaInfo: ProviderMediaInfoObject): void {
-  if (plugins && plugins.bumper && !plugins.bumper.disable && plugins.bumper.id && !plugins.bumper.url) {
-    mediaInfo.bumperId = plugins.bumper.id;
-  }
-}
-
-/**
  * Maybe set the UI component based on the runtime platform and the plugins.
  * @private
  * @param {KPOptionsObject} options - kaltura player options
@@ -533,23 +520,6 @@ function maybeSetDefaultUiComponents(options: KPOptionsObject): void {
   }
 }
 
-/**
- * Maybe re-order the plugins (Making sure that bumper is after ima to play the bumper after the preroll).
- * @private
- * @param {KPOptionsObject} options - kaltura player options
- * @returns {void}
- */
-function maybeReorderPlugins(options: KPOptionsObject): void {
-  if (options.plugins) {
-    const pluginsKeys = Object.keys(options.plugins);
-    if (options.plugins.bumper && pluginsKeys.indexOf('bumper') < pluginsKeys.indexOf('ima')) {
-      const bumperPlugin = options.plugins.bumper;
-      delete options.plugins.bumper;
-      options.plugins.bumper = bumperPlugin;
-    }
-  }
-}
-
 export {
   printSetupMessages,
   supportLegacyOptions,
@@ -566,6 +536,5 @@ export {
   isSafari,
   isIos,
   maybeSetStreamPriority,
-  hasYoutubeSource,
-  maybeAddPluginsInfo
+  hasYoutubeSource
 };
