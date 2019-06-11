@@ -13,7 +13,6 @@ import '@playkit-js/playkit-js-hls';
 import '@playkit-js/playkit-js-dash';
 // Import analytics plugin
 import 'playkit-js-analytics';
-import '@playkit-js/playkit-js-kava';
 // Import shaka-player
 import * as shaka from 'shaka-player';
 // Import setup method
