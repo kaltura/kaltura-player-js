@@ -98,7 +98,6 @@
     "@playkit-js/playkit-js": "^0.46.2",
     "@playkit-js/playkit-js-dash": "^1.10.1",
     "@playkit-js/playkit-js-hls": "^1.13.1",
-    "@playkit-js/playkit-js-kanalytics": "^0.10.1",
     "@playkit-js/playkit-js-kava": "^0.7.2",
     "@playkit-js/playkit-js-ott-analytics": "^0.5.0",
     "@playkit-js/playkit-js-ui": "^0.40.1",
