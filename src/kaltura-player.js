@@ -518,9 +518,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  get stats(): PKStatsObject {
-    return this._localPlayer.stats;
-  }
   /**
    * set the share config
    * @returns {void}
