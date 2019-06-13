@@ -255,6 +255,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureLGTVDefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
+  maybeSetDefaultUiComponents(defaultOptions);
   return defaultOptions;
 }
 
@@ -494,6 +495,29 @@ function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsOb
 function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
   const source = sources && sources.progressive;
   return !!(source && source[0] && source[0].mimetype === 'video/youtube');
+}
+
+/**
+ * Maybe set the UI component based on the runtime platform and the plugins.
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeSetDefaultUiComponents(options: KPOptionsObject): void {
+  if (isIos() && options.plugins && options.plugins.bumper) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'ui.components.fullscreen');
+    if (!fullscreenConfig) {
+      Utils.Object.mergeDeep(options, {
+        ui: {
+          components: {
+            fullscreen: {
+              inBrowserFullscreenForIOS: true
+            }
+          }
+        }
+      });
+    }
+  }
 }
 
 export {
