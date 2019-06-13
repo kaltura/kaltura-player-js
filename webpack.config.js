@@ -3,6 +3,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const packageData = require("./package.json");
+// const PROD = (process.env.NODE_ENV === 'production');
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -55,7 +56,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'playkit-js': path.resolve('./node_modules/playkit-js')
+      'playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
+      '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js')
     },
     modules: [
       path.resolve(__dirname, "src"),
@@ -63,22 +65,16 @@ module.exports = {
     ]
   },
   externals: {
-    "playkit-js": {
-      commonjs: "playkit-js",
-      commonjs2: "playkit-js",
-      amd: "playkit-js",
+    "@playkit-js/playkit-js": {
+      commonjs: "@playkit-js/playkit-js",
+      commonjs2: "@playkit-js/playkit-js",
+      amd: "@playkit-js/playkit-js",
       root: ["playkit", "core"]
     },
-    "playkit-js-providers": {
-      commonjs: "playkit-js-providers",
-      commonjs2: "playkit-js-providers",
-      amd: "playkit-js-providers",
-      root: ["playkit", "providers", "ovp"]
-    },
-    "playkit-js-ui": {
-      commonjs: "playkit-js-ui",
-      commonjs2: "playkit-js-ui",
-      amd: "playkit-js-ui",
+    "@playkit-js/playkit-js-ui": {
+      commonjs: "@playkit-js/playkit-js-ui",
+      commonjs2: "@playkit-js/playkit-js-ui",
+      amd: "@playkit-js/playkit-js-ui",
       root: ["playkit", "ui"]
     }
   }

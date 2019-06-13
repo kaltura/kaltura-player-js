@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.27.0",
+  "version": "0.41.2",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -20,7 +20,20 @@
     "playkit-dev-ovp:start": "playkit-dev start ovp",
     "playkit-dev-ott:start": "playkit-dev start ott",
     "playkit-dev:stop": "playkit-dev stop",
-    "playkit-rel": "playkit-rel start"
+    "playkit-rel": "playkit-rel start",
+    "precommit": "lint-staged",
+    "docs:generate": "documentation build flow-typed/** src/** -f md -o docs/api.md",
+    "docs:serve": "documentation serve flow-typed/** src/** --watch"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "envManager": {
     "devMode": {},
@@ -41,18 +54,19 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.23.0",
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.11",
+    "documentation": "^8.1.2",
     "eslint": "^4.19.1",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-mocha-no-only": "^0.0.6",
     "flow-bin": "0.71.0",
+    "husky": "^0.14.3",
     "istanbul": "^0.4.5",
     "karma": "^2.0.2",
     "karma-chai": "^0.1.0",
@@ -65,9 +79,10 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^3.0.0",
+    "lint-staged": "^7.2.0",
     "mocha": "^5.1.1",
     "mocha-cli": "^1.0.1",
-    "playkit-js-env-manager": "https://github.com/kaltura/playkit-js-env-manager.git#v3.3.0",
+    "prettier": "^1.13.7",
     "pre-push": "^0.1.1",
     "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0",

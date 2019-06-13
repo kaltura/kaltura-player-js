@@ -6,7 +6,7 @@ import getLogger, {getLogLevel, setLogLevel, LogLevel} from './common/utils/logg
 declare var __VERSION__: string;
 declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
-declare var __PLAYER_TYPE__: string;
+// declare var __PLAYER_TYPE__: string;
 
 const currentLogLevel = getLogLevel();
 setLogLevel(LogLevel.INFO);
@@ -32,15 +32,15 @@ import {setup} from './setup'
 const PLAYER_NAME = __NAME__;
 const VERSION = __VERSION__;
 const NAME = __NAME__;
-const PLAYER_TYPE = 'ovp';
+// const PLAYER_TYPE = 'ovp';
 import * as providers from './common/provider-manager'
 
 // Auto-register providers
-if (playkit && playkit.providers){
-  Object.entries(playkit.providers).forEach(([name, provider]) => {
-    providers.register(name, provider.Provider);
-  });
-}
+// if (playkit && playkit.providers){
+//   Object.entries(playkit.providers).forEach(([name, provider]) => {
+//     providers.register(name, provider.Provider);
+//   });
+// }
 
 // if (playkit && playkit.adapters){
 //   Object.entries(playkit.adapters).forEach(([name, adapter]) => {
@@ -60,7 +60,7 @@ export {
   providers,
   // adapters,
   setup,
-  PLAYER_TYPE,
+  // PLAYER_TYPE,
   VERSION,
   NAME,
   PLAYER_NAME

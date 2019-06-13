@@ -1,6 +1,5 @@
 // @flow
-import {setDefaultAnalyticsPlugin} from 'player-defaults'
-import {Env, TextStyle, Utils} from 'playkit-js'
+import {Env, TextStyle, Utils} from '@playkit-js/playkit-js'
 import {ValidationErrorType} from './validation-error'
 import StorageManager from '../storage/storage-manager'
 import type {LogLevelObject} from './logger'
@@ -144,6 +143,7 @@ function setLogLevel(options: KalturaPlayerOptionsObject): void {
  * @returns {string} - value of the query string param
  */
 function getUrlParameter(name: string) {
+  // eslint-disable-next-line no-useless-escape
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   const results = regex.exec(location.search);
@@ -241,6 +241,24 @@ function configureDelayAdsInitialization(options: KalturaPlayerOptionsObject): v
           ima: {
             delayInitUntilSourceSelected: true
           }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * set default analytics plugin config
+ * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
+  if (options.provider && options.provider.type === "ott") {
+    const ottAnalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.ottAnalytics');
+    if (!ottAnalyticsPlugin) {
+      Utils.Object.mergeDeep(options, {
+        plugins: {
+          ottAnalytics: {}
         }
       });
     }

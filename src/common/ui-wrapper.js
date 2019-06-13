@@ -1,6 +1,6 @@
 // @flow
-import * as ui from 'playkit-js-ui'
-import {Utils} from 'playkit-js'
+import * as ui from '@playkit-js/playkit-js-ui'
+import {Utils} from '@playkit-js/playkit-js'
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs'
 
 class UIWrapper {

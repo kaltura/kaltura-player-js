@@ -1,11 +1,11 @@
 // @flow
-import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from 'playkit-js'
-import {EventType as UIEventType} from 'playkit-js-ui'
-import {Provider} from 'playkit-js-providers'
+import {Error, EventType as CoreEventType, FakeEvent, loadPlayer, Utils} from '@playkit-js/playkit-js'
+import {EventType as UIEventType} from '@playkit-js/playkit-js-ui'
 import getLogger from './common/utils/logger'
 import {addKalturaParams} from './common/utils/kaltura-params'
 import {evaluatePluginsConfig} from './common/plugins/plugins-config'
-import {addKalturaPoster} from 'poster'
+import {addKalturaPoster as addOVPKalturaPoster} from './ovp/poster'
+import {addKalturaPoster as addOTTKalturaPoster} from './ott/poster'
 import './assets/style.css'
 import {UIWrapper} from './common/ui-wrapper'
 import * as providers from './common/provider-manager'
@@ -53,6 +53,17 @@ export default class KalturaPlayer {
     this._uiWrapper.setErrorPresetConfig(mediaInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     return this._provider.getMediaConfig(mediaInfo)
+      .then((mediaConfig) => {
+        switch(this._provider.type){
+          case "ott":
+            addOTTKalturaPoster(mediaConfig.sources, mediaConfig.sources, this._player.dimensions);
+            break;
+          case "ovp":
+            addOVPKalturaPoster(mediaConfig.sources, mediaConfig.sources, this._player.dimensions);
+            break;
+        }
+        return mediaConfig;
+      })
       .then(mediaConfig => this.setMedia(mediaConfig))
       .catch(e => this._player.dispatchEvent(
         new FakeEvent(this._player.Event.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
@@ -65,7 +76,6 @@ export default class KalturaPlayer {
     Utils.Object.mergeDeep(playerConfig.sources, this._player.config.sources);
     Utils.Object.mergeDeep(playerConfig.plugins, this._player.config.plugins);
     Utils.Object.mergeDeep(playerConfig.session, this._player.config.session);
-    addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._player.dimensions);
     addKalturaParams(this._player, playerConfig);
     evaluatePluginsConfig(playerConfig);
     this._uiWrapper.setSeekbarConfig(mediaConfig);

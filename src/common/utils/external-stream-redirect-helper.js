@@ -1,5 +1,5 @@
 // @flow
-import {Utils} from 'playkit-js'
+import {Utils} from '@playkit-js/playkit-js'
 
 /**
  * JSONP handler function, returns the direct manifest uri.
