@@ -10,7 +10,8 @@ describe('evaluatePluginsConfig', function() {
   const pluginsConfig = {
     kava: {
       myHandler: function() {},
-      myUnevaluatedConfig: '{{abc}}'
+      myUnevaluatedConfig: '{{abc}}',
+      myArray: [1, 'value', 0, true, '{{value}}', false]
     }
   };
 
@@ -29,5 +30,10 @@ describe('evaluatePluginsConfig', function() {
   it('should remove unevaluated plugins config', function() {
     evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.should.not.have.property('myUnevaluatedConfig');
+  });
+
+  it('should remove unevaluated plugins config from array', function() {
+    evaluatePluginsConfig(pluginsConfig, playerConfig);
+    pluginsConfig.kava.myArray.should.deep.equal([1, 'value', 0, true, false]);
   });
 });
