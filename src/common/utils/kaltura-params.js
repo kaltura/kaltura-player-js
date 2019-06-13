@@ -1,5 +1,5 @@
 //@flow
-import {StreamType, Utils} from 'playkit-js'
+import {StreamType, Utils} from '@playkit-js/playkit-js';
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
@@ -8,24 +8,26 @@ const CLIENT_TAG = 'clientTag=html5:v';
 
 /**
  * @param {Player} player - player
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
- * @public
+ * @private
  */
-function handleSessionId(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
-  if (player.config.session && player.config.session.id) { // on change media
+function handleSessionId(player: Player, playerConfig: PartialKPOptionsObject): void {
+  if (player.config.session && player.config.session.id) {
+    // on change media
     updateSessionId(player, playerConfig);
-  } else { // on first playback
+  } else {
+    // on first playback
     addSessionId(playerConfig);
   }
 }
 
 /**
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @private
  */
-function addSessionId(playerConfig: PartialKalturaPlayerOptionsObject): void {
+function addSessionId(playerConfig: PartialKPOptionsObject): void {
   let primaryGUID = Utils.Generator.guid();
   let secondGUID = Utils.Generator.guid();
   setSessionId(playerConfig, primaryGUID + ':' + secondGUID);
@@ -33,11 +35,11 @@ function addSessionId(playerConfig: PartialKalturaPlayerOptionsObject): void {
 
 /**
  * @param {Player} player - player
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @private
  */
-function updateSessionId(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
+function updateSessionId(player: Player, playerConfig: PartialKPOptionsObject): void {
   let secondGuidInSessionIdRegex = /:((?:[a-z0-9]|-)*)/i;
   let secondGuidInSessionId = secondGuidInSessionIdRegex.exec(player.config.session.id);
   if (secondGuidInSessionId && secondGuidInSessionId[1]) {
@@ -46,12 +48,12 @@ function updateSessionId(player: Player, playerConfig: PartialKalturaPlayerOptio
 }
 
 /**
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @param {string} sessionId - the session id
  * @return {void}
  * @private
  */
-function setSessionId(playerConfig: PartialKalturaPlayerOptionsObject, sessionId: string): void {
+function setSessionId(playerConfig: PartialKPOptionsObject, sessionId: string): void {
   playerConfig.session = playerConfig.session || {};
   playerConfig.session.id = sessionId;
 }
@@ -66,13 +68,29 @@ function updateSessionIdInUrl(source: Object = {}, sessionId: ?string): void {
   if (sessionId) {
     let sessionIdInUrlRegex = new RegExp(PLAY_SESSION_ID + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
     let sessionIdInUrl = sessionIdInUrlRegex.exec(source.url);
-    if (sessionIdInUrl && sessionIdInUrl[1]) { // this url has session id (has already been played)
+    if (sessionIdInUrl && sessionIdInUrl[1]) {
+      // this url has session id (has already been played)
       source.url = source.url.replace(sessionIdInUrl[1], sessionId);
     } else {
       let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
       source.url += delimiter + PLAY_SESSION_ID + sessionId;
     }
   }
+}
+
+/**
+ * @return {string} - The referrer
+ * @private
+ */
+function getReferrer(): string {
+  let referrer;
+  try {
+    referrer = window.parent.document.URL;
+  } catch (e) {
+    // unfriendly iframe
+    referrer = document.referrer;
+  }
+  return referrer;
 }
 
 /**
@@ -83,7 +101,8 @@ function updateSessionIdInUrl(source: Object = {}, sessionId: ?string): void {
 function addReferrer(source: PKMediaSourceObject): void {
   if (source.url.indexOf(REFERRER) === -1) {
     let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + REFERRER + btoa(document.referrer || document.URL);
+    let referrer = btoa(getReferrer().substr(0, 1000));
+    source.url += delimiter + REFERRER + referrer;
   }
 }
 
@@ -102,17 +121,17 @@ function addClientTag(source: PKMediaSourceObject): void {
 /**
  * Adding Kaltura specific params to player config and player sources.
  * @param {Player} player - player
- * @param {PartialKalturaPlayerOptionsObject} playerConfig - player config
+ * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
  * @private
  */
-function addKalturaParams(player: Player, playerConfig: PartialKalturaPlayerOptionsObject): void {
+function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject): void {
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
-      sources[key].forEach((source) => {
+      sources[key].forEach(source => {
         if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
           updateSessionIdInUrl(source, playerConfig.session && playerConfig.session.id);
           addReferrer(source);
@@ -123,4 +142,4 @@ function addKalturaParams(player: Player, playerConfig: PartialKalturaPlayerOpti
   });
 }
 
-export {addKalturaParams, handleSessionId, updateSessionIdInUrl, addReferrer, addClientTag}
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag};

@@ -1,10 +1,10 @@
 // @flow
-import StorageWrapper from './storage-wrapper'
-import getLogger from '../utils/logger'
-import {Utils} from 'playkit-js'
+import StorageWrapper from './storage-wrapper';
+import getLogger from '../utils/logger';
+import {Utils} from '@playkit-js/playkit-js';
 
 export default class StorageManager {
-  static StorageKeys: { [key: string]: string } = {
+  static StorageKeys: {[key: string]: string} = {
     MUTED: 'muted',
     VOLUME: 'volume',
     AUDIO_LANG: 'audioLanguage',
@@ -14,37 +14,53 @@ export default class StorageManager {
 
   static _logger: any = getLogger('StorageManager');
 
+  /**
+   * @static
+   * @private
+   * @returns {boolean} - Whether local storage is implemented in the current browser.
+   */
   static isLocalStorageAvailable(): boolean {
     return StorageWrapper.isLocalStorageAvailable();
   }
 
   /**
    * Attaches the player listeners to the local storage wrapper.
+   * @private
    * @param {Player} player - The player reference.
    * @static
-   * @public
    * @returns {void}
    */
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
     player.addEventListener(player.Event.UI.USER_CLICKED_MUTE, () => {
-      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      if (!player.isCasting()) {
+        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      }
     });
     player.addEventListener(player.Event.UI.USER_CLICKED_UNMUTE, () => {
-      StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      if (!player.isCasting()) {
+        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      }
     });
     player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
-      StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
+      if (!player.isCasting()) {
+        if (player.volume > 0) {
+          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, false);
+        } else {
+          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, true);
+        }
+        StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
+      }
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, (event) => {
+    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
       const audioTrack = event.payload.audioTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, (event) => {
+    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
       const textTrack = event.payload.captionTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
+    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
         StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
@@ -56,8 +72,8 @@ export default class StorageManager {
 
   /**
    * Gets the player text style from storage.
+   * @private
    * @static
-   * @public
    * @returns {?Object} - The stored text style object
    */
   static getPlayerTextStyle(): ?Object {
@@ -66,13 +82,13 @@ export default class StorageManager {
 
   /**
    * Checks if we have previous storage.
-   * @public
+   * @private
    * @static
    * @return {boolean} - Whether we have previous storage.
    */
   static hasStorage(): boolean {
     const storageSize = StorageWrapper.size;
-    const hasStorage = (storageSize !== 0);
+    const hasStorage = storageSize !== 0;
     if (hasStorage) {
       this._logger.debug('Storage found with size of ', storageSize);
     } else {
@@ -83,7 +99,7 @@ export default class StorageManager {
 
   /**
    * Gets the storage in the structure of the player configuration.
-   * @public
+   * @private
    * @static
    * @return {Object} - Partial storageable player configuration.
    */
@@ -96,7 +112,7 @@ export default class StorageManager {
 
   static _getExistingValues(): Object {
     const obj = {};
-    Object.keys(StorageManager.StorageKeys).forEach((key) => {
+    Object.keys(StorageManager.StorageKeys).forEach(key => {
       const value = StorageManager.StorageKeys[key];
       const item = StorageWrapper.getItem(value);
       if (item != null) {

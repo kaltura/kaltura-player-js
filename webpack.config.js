@@ -14,68 +14,50 @@ const plugins = [
 ];
 
 module.exports = {
-  context: __dirname + "/src",
+  context: __dirname + '/src',
+  entry: {
+    'kaltura-player': 'index.js'
+  },
   output: {
-    path: __dirname + "/dist",
+    path: __dirname + '/dist',
     filename: '[name].js',
     library: 'KalturaPlayer',
     libraryTarget: 'umd',
     umdNamedDefine: true,
-    devtoolModuleFilenameTemplate: "./kaltura-player/[resource-path]",
+    devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
   },
   devtool: 'source-map',
   module: {
     rules: [
       {
-      test: /\.js$/,
-      use: [{
-        loader: "babel-loader"
-      }],
-      exclude: [
-        /node_modules/
-      ]
-    }, {
-      test: /\.js$/,
-      use: [
-        "source-map-loader"
-      ],
-      enforce: "pre"
-    }, {
-      test: /\.css$/,
-      use: [
-        'style-loader',
-        'css-loader'
-      ]
-    }]
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ],
+        exclude: [/node_modules/]
+      },
+      {
+        test: /\.js$/,
+        use: ['source-map-loader'],
+        enforce: 'pre'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   },
   plugins: plugins,
   devServer: {
-    contentBase: __dirname + "/src",
-    host: "0.0.0.0",
-    port:8080
+    contentBase: __dirname + '/src'
   },
   resolve: {
     alias: {
       'playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
       '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js')
     },
-    modules: [
-      path.resolve(__dirname, "src"),
-      "node_modules"
-    ]
-  },
-  externals: {
-    "@playkit-js/playkit-js": {
-      commonjs: "@playkit-js/playkit-js",
-      commonjs2: "@playkit-js/playkit-js",
-      amd: "@playkit-js/playkit-js",
-      root: ["playkit", "core"]
-    },
-    "@playkit-js/playkit-js-ui": {
-      commonjs: "@playkit-js/playkit-js-ui",
-      commonjs2: "@playkit-js/playkit-js-ui",
-      amd: "@playkit-js/playkit-js-ui",
-      root: ["playkit", "ui"]
-    }
+    modules: [path.resolve(__dirname, 'src'), 'node_modules']
   }
 };

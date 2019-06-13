@@ -1,10 +1,13 @@
 // @flow
-import {Env, TextStyle, Utils} from '@playkit-js/playkit-js'
-import {ValidationErrorType} from './validation-error'
-import StorageManager from '../storage/storage-manager'
-import type {LogLevelObject} from './logger'
-import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger'
-import {configureExternalStreamRedirect} from './external-stream-redirect-helper'
+import {Env, TextStyle, Utils, setCapabilities, EngineType} from '@playkit-js/playkit-js';
+import {ValidationErrorType} from './validation-error';
+import StorageManager from '../storage/storage-manager';
+import type {LogLevelObject} from './logger';
+import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger';
+import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
+import {RemotePlayerManager} from '../cast/remote-player-manager';
+import {RemoteControl} from '../cast/remote-control';
+import {KalturaPlayer} from '../../kaltura-player';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -14,10 +17,11 @@ declare var __CONFIG_DOCS_URL__: string;
 
 /**
  * Validate the initial user config.
- * @param {PartialKalturaPlayerOptionsObject} options - partial kaltura player options.
+ * @private
+ * @param {PartialKPOptionsObject} options - partial kaltura player options.
  * @returns {void}
  */
-function validateConfig(options: PartialKalturaPlayerOptionsObject): void {
+function validateConfig(options: PartialKPOptionsObject): void {
   if (!options) {
     throw new Error(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
   }
@@ -27,6 +31,7 @@ function validateConfig(options: PartialKalturaPlayerOptionsObject): void {
 
 /**
  * Validate the user input for target id.
+ * @private
  * @param {string} targetId - The DOM element id which the player will be append to.
  * @returns {void}
  */
@@ -34,24 +39,30 @@ function validateTargetId(targetId: string): void {
   if (!targetId) {
     throw new Error(ValidationErrorType.TARGET_ID_REQUIRED);
   }
-  if (!document.getElementById(targetId)) {
+  const targetIdElement = document.getElementById(targetId);
+  if (!targetIdElement) {
     throw new Error(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
+  }
+  if (targetIdElement.getElementsByClassName(CONTAINER_CLASS_NAME).length > 0) {
+    throw new Error(ValidationErrorType.TARGET_ID_ALREADY_USED + targetId);
   }
 }
 
 /**
  * Validate the initial user input for the provider options.
+ * @private
  * @param {ProviderOptionsObject} providerOptions - provider options.
  * @returns {void}
  */
 function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
-  if (!providerOptions.partnerId) {
+  if (!providerOptions.partnerId && providerOptions.partnerId !== 0) {
     throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
   }
 }
 
 /**
  * Creates the player container dom element.
+ * @private
  * @param {string} targetId - The div id which the player will append to.
  * @returns {string} - The player container id.
  */
@@ -69,10 +80,11 @@ function createKalturaPlayerContainer(targetId: string): string {
 
 /**
  * Sets the storage config on the player config if certain conditions are met.
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setStorageConfig(options: KalturaPlayerOptionsObject): void {
+function setStorageConfig(options: KPOptionsObject): void {
   if (!options.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
     Utils.Object.mergeDeep(options, StorageManager.getStorageConfig());
   }
@@ -80,21 +92,36 @@ function setStorageConfig(options: KalturaPlayerOptionsObject): void {
 
 /**
  * Applies cache support if it's supported by the environment.
- * @param {Player} player - The Kaltura player.
+ * @private
+ * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
-function applyStorageSupport(player: Player): void {
+function applyStorageSupport(player: KalturaPlayer): void {
   if (StorageManager.isLocalStorageAvailable()) {
     StorageManager.attach(player);
   }
 }
 
 /**
- * Sets the player text style from storage.
- * @param {Player} player - The Kaltura player.
+ * Loads the registered remote players.
+ * @private
+ * @param {KPOptionsObject} defaultOptions - The kaltura player options.
+ * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
-function setStorageTextStyle(player: Player): void {
+function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer): void {
+  if (defaultOptions.cast) {
+    RemotePlayerManager.load(defaultOptions.cast, new RemoteControl(player));
+  }
+}
+
+/**
+ * Sets the player text style from storage.
+ * @private
+ * @param {KalturaPlayer} player - The Kaltura player.
+ * @returns {void}
+ */
+function setStorageTextStyle(player: KalturaPlayer): void {
   if (StorageManager.isLocalStorageAvailable()) {
     const textStyleObj = StorageManager.getPlayerTextStyle();
     if (textStyleObj) {
@@ -104,7 +131,28 @@ function setStorageTextStyle(player: Player): void {
 }
 
 /**
+ * Call to setCapabilities on the first UI_CLICKED event
+ * @private
+ * @param {Player} player - The Kaltura player.
+ * @returns {void}
+ */
+function attachToFirstClick(player: Player): void {
+  if (isIos()) {
+    const onUIClicked = () => {
+      player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+      setCapabilities(EngineType.HTML5, {autoplay: true});
+    };
+    const onSourceSelected = () => {
+      player.removeEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);
+      player.addEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
+    };
+    player.addEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);
+  }
+}
+
+/**
  * check the player debug mode according to config or URL query string params
+ * @private
  * @returns {boolean} - if to set debug mode or not
  */
 function isDebugMode(): boolean {
@@ -122,10 +170,11 @@ function isDebugMode(): boolean {
 
 /**
  * set the logger
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setLogLevel(options: KalturaPlayerOptionsObject): void {
+function setLogLevel(options: KPOptionsObject): void {
   let logLevelObj: LogLevelObject = LogLevel.ERROR;
   if (isDebugMode()) {
     logLevelObj = LogLevel.DEBUG;
@@ -139,6 +188,7 @@ function setLogLevel(options: KalturaPlayerOptionsObject): void {
 
 /**
  * gets the url query string parameter
+ * @private
  * @param {string} name - name of query string param
  * @returns {string} - value of the query string param
  */
@@ -152,18 +202,19 @@ function getUrlParameter(name: string) {
 
 /**
  * Checks if the server UIConf exist
+ * @private
  * @param {number} uiConfId - The server UIConf
  * @returns {boolean} - server UIConf exist
  */
 function serverUIConfExist(uiConfId: ?number): boolean {
   const UIConf = Utils.Object.getPropertyPath(window, '__kalturaplayerdata.UIConf');
-  const hasUiConfId = (uiConfId !== null) && (uiConfId !== undefined);
-  return hasUiConfId &&
-    ((UIConf !== undefined && (UIConf[uiConfId] !== undefined)) || false);
+  const hasUiConfId = uiConfId !== null && uiConfId !== undefined;
+  return hasUiConfId && ((UIConf !== undefined && UIConf[uiConfId] !== undefined) || false);
 }
 
 /**
  * Extracts the server UIConf
+ * @private
  * @param {number} uiConfId - The server UIConf
  * @returns {Object} - The server UIConf
  */
@@ -177,12 +228,13 @@ function extractServerUIConf(uiConfId: number): Object {
 
 /**
  * Gets the default options after merging the user options with the uiConf options and the default internal options.
- * @param {PartialKalturaPlayerOptionsObject} options - partial user kaltura player options.
- * @returns {KalturaPlayerOptionsObject} - default kaltura player options.
+ * @private
+ * @param {PartialKPOptionsObject} options - partial user kaltura player options.
+ * @returns {KPOptionsObject} - default kaltura player options.
  */
-function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaPlayerOptionsObject {
+function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   const targetId = createKalturaPlayerContainer(options.targetId);
-  let defaultOptions: KalturaPlayerOptionsObject = {
+  let defaultOptions: KPOptionsObject = {
     targetId: options.targetId,
     provider: {
       partnerId: options.provider.partnerId
@@ -193,25 +245,26 @@ function getDefaultOptions(options: PartialKalturaPlayerOptionsObject): KalturaP
   };
   Utils.Object.mergeDeep(defaultOptions, options);
   if (defaultOptions.provider.uiConfId) {
-    const uiConfOptions = supportLegacyOptions(
-      extractServerUIConf(defaultOptions.provider.uiConfId)
-    );
+    const uiConfOptions = supportLegacyOptions(extractServerUIConf(defaultOptions.provider.uiConfId));
     defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
   }
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
+  configureVrDefaultOptions(defaultOptions);
+  configureLGTVDefaultOptions(defaultOptions);
+  configureDAIDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
-  configureDelayAdsInitialization(defaultOptions);
   return defaultOptions;
 }
 
 /**
  * Sets config option for native HLS playback
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function checkNativeHlsSupport(options: KalturaPlayerOptionsObject): void {
+function checkNativeHlsSupport(options: KPOptionsObject): void {
   if (isSafari() || isIos()) {
     const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
@@ -227,33 +280,12 @@ function checkNativeHlsSupport(options: KalturaPlayerOptionsObject): void {
 }
 
 /**
- * Configures the delayInitUntilSourceSelected property for the ads plugin based on the runtime platform and the playsinline config value.
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
- * @returns {void}
- */
-function configureDelayAdsInitialization(options: KalturaPlayerOptionsObject): void {
-  if (isIos() && options.plugins && options.plugins.ima) {
-    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-    const delayInitUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
-    if ((typeof playsinline !== 'boolean' || playsinline === true) && (typeof delayInitUntilSourceSelected !== 'boolean')) {
-      Utils.Object.mergeDeep(options, {
-        plugins: {
-          ima: {
-            delayInitUntilSourceSelected: true
-          }
-        }
-      });
-    }
-  }
-}
-
-/**
  * set default analytics plugin config
  * @param {KalturaPlayerOptionsObject} options - kaltura player options
  * @returns {void}
  */
 function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
-  if (options.provider && options.provider.type === "ott") {
+  if (options.provider && options.provider.type === 'ott') {
     const ottAnalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.ottAnalytics');
     if (!ottAnalyticsPlugin) {
       Utils.Object.mergeDeep(options, {
@@ -267,11 +299,12 @@ function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
 
 /**
  * Sets config option for native text track support
- * @param {KalturaPlayerOptionsObject} options - kaltura player options
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function checkNativeTextTracksSupport(options: KalturaPlayerOptionsObject): void {
-  if (isSafari()) {
+function checkNativeTextTracksSupport(options: KPOptionsObject): void {
+  if ((isMacOS() && isSafari()) || isIos()) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -284,11 +317,80 @@ function checkNativeTextTracksSupport(options: KalturaPlayerOptionsObject): void
 }
 
 /**
- * Transform options structure from legacy structure to new structure.
- * @param {Object} options - The options with the legacy structure.
- * @return {PartialKalturaPlayerOptionsObject} - Partial options with the expected structure.
+ * Sets config option fullscreen element for Vr Mode support
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
  */
-function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObject {
+function configureVrDefaultOptions(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.vr && !options.plugins.vr.disable) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
+    if (typeof fullscreenConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          inBrowserFullscreen: true
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Sets config option for LG TV
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureLGTVDefaultOptions(options: KPOptionsObject): void {
+  if (isLGTV() && options.plugins && options.plugins.ima) {
+    const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
+    const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
+    const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
+
+    if (typeof imaForceReload !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
+    }
+    if (typeof preferNativeHls !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
+    }
+    if (typeof delayUntilSourceSelected !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+    }
+  }
+}
+
+/**
+ * Sets default config option for dai plugin
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureDAIDefaultOptions(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
+    const autoStartLoadConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.autoStartLoad');
+    if (typeof autoStartLoadConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          options: {
+            html5: {
+              hls: {
+                autoStartLoad: false
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Transform options structure from legacy structure to new structure.
+ * @private
+ * @param {Object} options - The options with the legacy structure.
+ * @return {PartialKPOptionsObject} - Partial options with the expected structure.
+ */
+function supportLegacyOptions(options: Object): PartialKPOptionsObject {
   const removePlayerEntry = () => {
     if (options.player) {
       setupMessages.push({
@@ -306,10 +408,14 @@ function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObjec
         level: 'warn',
         msg: `Path config.player.${propPath} will be deprecated soon. Please update your config structure as describe here: ${__CONFIG_DOCS_URL__}`
       });
-      const propValue = Utils.Object.getPropertyPath(options, propPath);
-      const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
-      Utils.Object.mergeDeep(options, propObj);
-      Utils.Object.deletePropertyPath(options, propPath);
+      if (!Utils.Object.hasPropertyPath(options, targetPath)) {
+        const propValue = Utils.Object.getPropertyPath(options, propPath);
+        const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
+        Utils.Object.mergeDeep(options, propObj);
+        Utils.Object.deletePropertyPath(options, propPath);
+      } else {
+        Utils.Object.deletePropertyPath(options, propPath);
+      }
     }
   };
   const moves = [
@@ -319,7 +425,8 @@ function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObjec
     ['id', 'sources.id'],
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
-    ['metadata', 'sources.metadata']
+    ['metadata', 'sources.metadata'],
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
@@ -328,28 +435,83 @@ function supportLegacyOptions(options: Object): PartialKalturaPlayerOptionsObjec
 
 /**
  * Prints early setup messages.
+ * @private
  * @returns {void}
  */
 function printSetupMessages(): void {
-  setupMessages.forEach(msgObj =>
-    getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg)
-  );
+  setupMessages.forEach(msgObj => getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg));
 }
 
 /**
  * Returns true if user agent indicate that browser is Safari
+ * @private
  * @returns {boolean} - if browser is Safari
  */
 function isSafari(): boolean {
-  return Env.browser.name.includes('Safari');
+  return Utils.Object.hasPropertyPath(Env, 'browser.name') && Env.browser.name.includes('Safari');
+}
+
+/**
+ * Returns true if user agent indicate that os is mac
+ * @private
+ * @returns {boolean} - if browser is Safari
+ */
+function isMacOS(): boolean {
+  return Env.os.name.toLowerCase() === 'Mac OS';
 }
 
 /**
  * Returns true if user agent indicate that browser is Chrome on iOS
+ * @private
  * @returns {boolean} - if browser is Chrome on iOS
  */
 function isIos(): boolean {
-  return (Env.os.name === 'iOS');
+  return Env.os.name === 'iOS';
+}
+
+/**
+ * Returns true if user agent indicate that browser is LG TV
+ * @private
+ * @returns {boolean} - if browser is in LG TV
+ */
+function isLGTV(): boolean {
+  return Env.os.name.toLowerCase() === 'web0s';
+}
+
+/**
+ * set stream priority according to playerConfig
+ * @param {Player} player - player
+ * @param {PartialKPOptionsObject} playerConfig - player config
+ * @return {void}
+ */
+function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsObject): void {
+  if (playerConfig.sources && hasYoutubeSource(playerConfig.sources)) {
+    const playbackConfig = player.config.playback;
+    let hasYoutube = false;
+    playbackConfig.streamPriority.forEach(sp => {
+      if (sp.engine === 'youtube') {
+        hasYoutube = true;
+      }
+    });
+    if (!hasYoutube) {
+      playbackConfig.streamPriority.push({
+        engine: 'youtube',
+        format: 'progressive'
+      });
+    }
+
+    playerConfig.playback = playbackConfig;
+  }
+}
+
+/**
+ * returns true if sources contain youtube video source
+ * @param {PKSourcesConfigObject} sources - thr sources object
+ * @returns {boolean} - true if sources contain youtube source
+ */
+function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
+  const source = sources && sources.progressive;
+  return !!(source && source[0] && source[0].mimetype === 'video/youtube');
 }
 
 export {
@@ -357,12 +519,16 @@ export {
   supportLegacyOptions,
   setStorageConfig,
   applyStorageSupport,
+  applyCastSupport,
   setStorageTextStyle,
+  attachToFirstClick,
   validateConfig,
   setLogLevel,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
   isSafari,
-  isIos
+  isIos,
+  maybeSetStreamPriority,
+  hasYoutubeSource
 };

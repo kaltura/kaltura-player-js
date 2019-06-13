@@ -6,6 +6,7 @@
  * @param {PKSourcesConfigObject} playerSources - player sources container
  * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
  * @param {Object} dimensions - player dimensions object
+ * @private
  * @returns {void}
  */
 function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): void {
@@ -17,9 +18,9 @@ function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: Pr
     const regex = /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
     if (regex.test(playerPoster)) {
       playerSources.poster = setPlayerDimensionsOnPoster(playerPoster, playerWidth, playerHeight);
-    } else if (Array.isArray(playerPoster)) {
-      playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
     }
+  } else if (Array.isArray(playerPoster)) {
+    playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
   }
 }
 
@@ -28,6 +29,7 @@ function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: Pr
  * @param {string} poster - Player url.
  * @param {number} playerWidth - Player width.
  * @param {height} playerHeight - Player height.
+ * @private
  * @return {string} - The new poster url including the player dimensions.
  */
 function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, playerHeight: number): string {
@@ -47,6 +49,7 @@ function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, player
  * @param {string} posters - Array of posters candidates.
  * @param {number} playerWidth - Player width.
  * @param {height} playerHeight - Player height.
+ * @private
  * @return {string} - The poster url.
  */
 function selectPosterByPlayerDimensions(posters: Array<Object>, playerWidth: number, playerHeight: number): string {

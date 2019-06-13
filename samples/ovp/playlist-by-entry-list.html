@@ -11,16 +11,11 @@
 <div id="player-placeholder"></div>
 <script>
   var config = {
-    targetId: "player-placeholder",
+    targetId: 'player-placeholder',
     provider: {
       partnerId: 1091,
       env: {
         cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
-        serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
-      }
-    },
-    plugins: {
-      kanalytics: {
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
       }
     }
@@ -28,7 +23,7 @@
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
+    kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd', '0_nwkp7jtx']});
   } catch (e) {
     console.error(e.message)
   }

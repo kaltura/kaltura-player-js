@@ -5,7 +5,9 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
-    "build:ovp": "NODE_ENV=production webpack --config webpack.config.ovp.js --mode production",
+    "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
+    "dev": "webpack-dev-server --config webpack.config.js --mode production",
+    "build:ovp": "NODE_ENV=production webpack --config webpack.config.ovp.js",
     "dev:ovp": "webpack-dev-server --config webpack.config.ovp.js",
     "watch:ovp": "webpack --progress --colors --watch --config webpack.config.ovp.js",
     "build:ott": "NODE_ENV=production webpack --config webpack.config.ott.js",
@@ -65,6 +67,7 @@
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-mocha-no-only": "^0.0.6",
+    "eslint-plugin-prettier": "^2.6.2",
     "flow-bin": "0.71.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.5",
@@ -83,7 +86,6 @@
     "mocha": "^5.1.1",
     "mocha-cli": "^1.0.1",
     "prettier": "^1.13.7",
-    "pre-push": "^0.1.1",
     "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0",
     "source-map-loader": "^0.2.3",
@@ -95,12 +97,12 @@
     "webpack-dev-server": "3.1.3"
   },
   "dependencies": {
+    "@playkit-js/playkit-js": "^0.46.2",
+    "@playkit-js/playkit-js-ui": "^0.40.1",
     "babel-polyfill": "^6.23.0",
     "hls.js": "^0.8.9",
     "js-logger": "^1.3.0",
-    "playkit-js": "https://github.com/kaltura/playkit-js.git#v0.27.1",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.3.0",
-    "playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#v0.23.1"
+    "proxy-polyfill": "^0.3.0"
   },
   "repository": {
     "type": "git",
@@ -111,7 +113,7 @@
     "player",
     "html5 player"
   ],
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/kaltura/kaltura-player-js/issues"
   },

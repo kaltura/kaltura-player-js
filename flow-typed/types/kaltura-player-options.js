@@ -1,5 +1,7 @@
 // @flow
-declare type KalturaPlayerOptionsObject = {
+import {KPPlaylistObject} from './playlist';
+
+declare type KPOptionsObject = {
   targetId: string,
   logLevel?: string,
   disableUserCache?: boolean,
@@ -8,10 +10,12 @@ declare type KalturaPlayerOptionsObject = {
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
-  ui: UIOptionsObject
+  playlist?: KPPlaylistObject,
+  ui: UIOptionsObject,
+  cast?: { [key: string]: any }
 };
 
-declare type PartialKalturaPlayerOptionsObject = {
+declare type PartialKPOptionsObject = {
   targetId: string,
   logLevel?: string,
   disableUserCache?: boolean,
@@ -20,10 +24,11 @@ declare type PartialKalturaPlayerOptionsObject = {
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
-  ui?: UIOptionsObject
+  ui?: UIOptionsObject,
+  cast?: { [key: string]: any }
 };
 
-declare type LegacyPartialKalturaPlayerOptionsObject = {
+declare type LegacyPartialKPOptionsObject = {
   targetId: string,
   logLevel?: string,
   disableUserCache?: boolean,
