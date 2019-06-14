@@ -14,8 +14,6 @@ const NAME = __NAME__;
 import * as core from '@playkit-js/playkit-js';
 // Import ui
 import * as ui from '@playkit-js/playkit-js-ui';
-// Import analytics plugin
-import 'playkit-js-analytics';
 // Import setup method
 import {setup} from './setup';
 import {getPlayers, getPlayer} from './proxy';

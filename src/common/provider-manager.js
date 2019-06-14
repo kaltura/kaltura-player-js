@@ -9,7 +9,7 @@ const providers = new Map();
  */
 function register(name: string, provider: any): void {
   if (providers.has(name)) {
-//do nothing
+    //do nothing
   } else {
     providers.set(name, provider);
   }
@@ -20,15 +20,16 @@ function register(name: string, provider: any): void {
  * @param {string} name - the provider name
  * @returns {*} the provider
  */
-function get(name: string): any{
-  if (providers.has(name)){
+function get(name: string): any {
+  if (providers.has(name)) {
     return providers.get(name);
   } else {
     return null;
   }
 }
 
-function list(){
+// eslint-disable-next-line require-jsdoc
+function list() {
   return providers.keys();
 }
 
@@ -37,8 +38,8 @@ function list(){
  * @param {string} name - the provider name
  * @returns {boolean} - if the provider exists or not
  */
-function exists(name: string): boolean{
+function exists(name: string): boolean {
   return providers.has(name);
 }
 
-export {register, get, exists, list}
+export {register, get, exists, list};

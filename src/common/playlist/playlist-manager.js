@@ -5,7 +5,8 @@ import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
-import {addKalturaPoster} from 'poster';
+import {addKalturaPoster as addOVPKalturaPoster} from '../../ovp/poster';
+import {addKalturaPoster as addOTTKalturaPoster} from '../../ott/poster';
 
 /**
  * @class PlaylistManager
@@ -226,7 +227,14 @@ class PlaylistManager {
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
         );
         if (Array.isArray(itemData.sources.poster)) {
-          addKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+          switch (this._playerOptions.provider.type) {
+            case 'ott':
+              addOTTKalturaPoster(itemData.sources, itemData.sources, this._player.dimensions);
+              break;
+            case 'ovp':
+              addOVPKalturaPoster(itemData.sources, itemData.sources, this._player.dimensions);
+              break;
+          }
         }
         return {
           sources: itemData.sources,

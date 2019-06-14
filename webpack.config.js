@@ -59,5 +59,9 @@ module.exports = {
       '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js')
     },
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
-  }
+  },
+  externals: [
+    '@playkit-js/playkit-js',
+    '@playkit-js/playkit-js-ui'
+  ]
 };
