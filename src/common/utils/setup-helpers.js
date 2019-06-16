@@ -254,6 +254,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureVrDefaultOptions(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
+  configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   maybeSetDefaultUiComponents(defaultOptions);
   return defaultOptions;
@@ -364,6 +365,25 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
         }
       });
     }
+  }
+}
+
+/**
+ * Sets default config option for bumper plugin when ima-dai enabled
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureBumperDefaultOptions(options: KPOptionsObject): void {
+  if (options.plugins && options.plugins.bumper && !options.plugins.bumper.disable && options.plugins.imadai && !options.plugins.imadai.disable) {
+    Utils.Object.mergeDeep(options, {
+      plugins: {
+        bumper: {
+          position: [0],
+          disableMediaPreload: true
+        }
+      }
+    });
   }
 }
 
