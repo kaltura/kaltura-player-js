@@ -375,7 +375,9 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureBumperDefaultOptions(options: KPOptionsObject): void {
-  if (options.plugins && options.plugins.bumper && !options.plugins.bumper.disable && options.plugins.imadai && !options.plugins.imadai.disable) {
+  const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
+  const daiPlugin = Utils.Object.getPropertyPath(options, 'plugins.imadai');
+  if (bumperPlugin && !bumperPlugin.disable && daiPlugin && !daiPlugin.disable) {
     Utils.Object.mergeDeep(options, {
       plugins: {
         bumper: {
