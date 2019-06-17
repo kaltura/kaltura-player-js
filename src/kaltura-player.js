@@ -154,6 +154,8 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
+  // TODO sakal can a user disable plugins with this method? seems not and also seems that this method will not add new ones as _engine will already by initialized?
+  // TODO sakal also user cannot change its' presets with this method (as uiWrapper initialize presets as part of the constructor
   /**
    * Config the player.
    * @param {Object} [config={}] - The player config.
@@ -518,6 +520,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
+  _maybe;
   /**
    * set the share config
    * @returns {void}
@@ -525,14 +528,11 @@ class KalturaPlayer extends FakeEventTarget {
    */
   _maybeSetEmbedConfig(): void {
     const ui = this.config.ui;
+    // TODO sakal what the the relevant use-cases? why does it handle share explicitly
     if (ui && ui.components && ui.components.share) {
       evaluateUIConfig(ui, this.config);
       this._uiWrapper.setConfig(ui);
     }
-  }
-
-  addExternalPresetComponent(component: ExternalPresetComponent) {
-    this._uiWrapper.addExternalPresetComponent(component);
   }
 }
 

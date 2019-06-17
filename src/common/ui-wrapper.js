@@ -31,10 +31,6 @@ class UIWrapper {
     });
   }
 
-  addExternalPresetComponent(component: ExternalPresetComponent) {
-    this._uiManager.addExternalPresetComponent(component);
-  }
-
   destroy(): void {
     this._uiManager.destroy();
   }
