@@ -326,19 +326,21 @@ function configureVrDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
-  if (isLGTV() && options.plugins && options.plugins.ima) {
-    const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
-    const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
+  if (isLGTV()) {
     const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
-
-    if (typeof imaForceReload !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
-    }
     if (typeof preferNativeHls !== 'boolean') {
       options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
     }
-    if (typeof delayUntilSourceSelected !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+    if (options.plugins && options.plugins.ima) {
+      const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
+      const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
+
+      if (typeof imaForceReload !== 'boolean') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
+      }
+      if (typeof delayUntilSourceSelected !== 'boolean') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+      }
     }
   }
 }
