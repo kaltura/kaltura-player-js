@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.42.0"></a>
+# [0.42.0](https://github.com/kaltura/kaltura-player-js/compare/v0.41.2...v0.42.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* **FEC-8940:** cannot configure plugin by array ([#222](https://github.com/kaltura/kaltura-player-js/issues/222)) ([0237207](https://github.com/kaltura/kaltura-player-js/commit/0237207))
+* **FEC-9087:** IMA DAI - the pre-roll Ad duration also calculated for start position - the playback started from 10th sec instead of 20th ([#240](https://github.com/kaltura/kaltura-player-js/issues/240)) ([6c4c73a](https://github.com/kaltura/kaltura-player-js/commit/6c4c73a))
+* **FEC-9103:** Remove old kaltura stats ([#244](https://github.com/kaltura/kaltura-player-js/issues/244)) ([f7fa3ac](https://github.com/kaltura/kaltura-player-js/commit/f7fa3ac))
+* bumper and ima-dai integration ([#245](https://github.com/kaltura/kaltura-player-js/issues/245)) ([27d7b4b](https://github.com/kaltura/kaltura-player-js/commit/27d7b4b))
+* **FEC-9114:** live doesn't work properly with hls.js ([#246](https://github.com/kaltura/kaltura-player-js/issues/246)) ([f264a24](https://github.com/kaltura/kaltura-player-js/commit/f264a24))
+* **FEC-9118:** External caption doesn't display ([#243](https://github.com/kaltura/kaltura-player-js/issues/243)) ([59368a3](https://github.com/kaltura/kaltura-player-js/commit/59368a3))
+* **FEC-9177:** Smart TV showed as mobile device ([#242](https://github.com/kaltura/kaltura-player-js/issues/242)) ([6f17d2a](https://github.com/kaltura/kaltura-player-js/commit/6f17d2a))
+
+
+### Features
+
+* **FEC-8631:** bumper plugin ([#224](https://github.com/kaltura/kaltura-player-js/issues/224)) ([627dc15](https://github.com/kaltura/kaltura-player-js/commit/627dc15))
+* **FEC-8975:** QoS Data enhancement ([#241](https://github.com/kaltura/kaltura-player-js/issues/241)) ([8f3b492](https://github.com/kaltura/kaltura-player-js/commit/8f3b492))
+
+
+
 <a name="0.41.2"></a>
 ## [0.41.2](https://github.com/kaltura/kaltura-player-js/compare/v0.41.1...v0.41.2) (2019-05-16)
 
