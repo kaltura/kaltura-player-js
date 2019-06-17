@@ -14,14 +14,14 @@ The Kaltura Player integrates:
 - [PlayKit JS DASH](https://github.com/kaltura/playkit-js-dash) and [PlayKit JS HLS](https://github.com/kaltura/playkit-js-hls) for HLS & MPEG-DASH media source extensions capabilities.
 - [PlayKit JS IMA](https://github.com/kaltura/playkit-js-ima) for ads and monetization.
 - [PlayKit JS Providers](https://github.com/kaltura/playkit-js-providers) as the backend media providers.
-- [PlayKit JS Youbora](https://github.com/kaltura/playkit-js-youbora), [PlayKit JS KAnalytics](https://github.com/kaltura/playkit-js-kanalytics), [PlayKit JS KAVA](https://github.com/kaltura/playkit-js-kava), and [PlayKit JS OTT Analytics](https://github.com/kaltura/playkit-js-ott-analytics) as the different analytics plugins.
+- [PlayKit JS Youbora](https://github.com/kaltura/playkit-js-youbora), [PlayKit JS KAVA](https://github.com/kaltura/playkit-js-kava), and [PlayKit JS OTT Analytics](https://github.com/kaltura/playkit-js-ott-analytics) as the different analytics plugins.
 
 The Kaltura Player exposes two different players: the _Kaltura OVP Player_ and _Kaltura Cloud TV Player_. Each player integrates its related packages, as you can see in the following table:
 
-|                 | PlayKit JS | PlayKit JS Providers | PlayKit JS UI | PlayKit JS DASH | PlayKit JS HLS | PlayKit JS Youbora | PlayKit JS KAnalytics | PlayKit JS OTT Analytics | PlayKit JS KAVA |
-| --------------- | ---------- | -------------------- | ------------- | --------------- | -------------- | ------------------ | --------------------- | ------------------------ | --------------- |
-| OVP Player      | V          | OVP                  | V             | V               | V              | V                  | V                     |                          | V               |  |
-| Cloud TV Player | V          | OTT                  | V             | V               | V              | V                  |                       | V                        | V (\*)          |
+|                 | PlayKit JS | PlayKit JS Providers | PlayKit JS UI | PlayKit JS DASH | PlayKit JS HLS | PlayKit JS Youbora | PlayKit JS OTT Analytics | PlayKit JS KAVA |
+| --------------- | ---------- | -------------------- | ------------- | --------------- | -------------- | ------------------ | ------------------------ | --------------- |
+| OVP Player      | V          | OVP                  | V             | V               | V              | V                  |                          | V               |  |
+| Cloud TV Player | V          | OTT                  | V             | V               | V              | V                  | V                        | V (\*)          |
 
 > \* Needs to be configured.
 
