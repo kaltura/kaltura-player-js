@@ -196,7 +196,6 @@ function setLogOptions(options: KPOptionsObject): void {
 
   // $FlowFixMe
   options.ui.log.level = options.provider.log.level = logLevelObj.name;
-
   _setLogLevel(logLevelObj);
 }
 
