@@ -182,9 +182,8 @@ function setLogOptions(options: KPOptionsObject): void {
 
   if (options.log && typeof options.log.handler === 'function') {
     setLogHandler(options.log.handler);
-    if (options.log && options.ui.log && options.provider.log) {
-      options.ui.log.handler = options.provider.log.handler = options.log.handler;
-    }
+    // $FlowFixMe
+    options.ui.log.handler = options.provider.log.handler = options.log.handler;
   }
 
   let logLevelObj: LogLevelObject = LogLevel.ERROR;
@@ -195,9 +194,8 @@ function setLogOptions(options: KPOptionsObject): void {
     logLevelObj = LogLevel[options.log.level];
   }
 
-  if (options.ui.log && options.provider.log) {
-    options.ui.log.level = options.provider.log.level = logLevelObj.name;
-  }
+  // $FlowFixMe
+  options.ui.log.level = options.provider.log.level = logLevelObj.name;
 
   _setLogLevel(logLevelObj);
 }

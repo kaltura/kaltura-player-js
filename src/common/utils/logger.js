@@ -18,7 +18,7 @@ JsLogger.useDefaults({defaultLevel: JsLogger.ERROR});
 /**
  * sets the logger handler
  * @private
- * @param {function} handler - the log level
+ * @param {LogHandlerType} handler - the log level
  * @returns {void}
  */
 function setLogHandler(handler: LogHandlerType): void {
