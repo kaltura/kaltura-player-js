@@ -176,9 +176,15 @@ function isDebugMode(): boolean {
  * @returns {void}
  */
 function setLogOptions(options: KPOptionsObject): void {
-  if (!Utils.Object.getPropertyPath(options, 'ui.log')) Utils.Object.createPropertyPath(options, 'ui.log', {});
-  if (!Utils.Object.getPropertyPath(options, 'provider.log')) Utils.Object.createPropertyPath(options, 'provider.log', {});
-  if (!Utils.Object.getPropertyPath(options, 'log')) Utils.Object.createPropertyPath(options, 'log', {});
+  if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
+    Utils.Object.createPropertyPath(options, 'ui.log', {});
+  }
+  if (!Utils.Object.getPropertyPath(options, 'provider.log')) {
+    Utils.Object.createPropertyPath(options, 'provider.log', {});
+  }
+  if (!Utils.Object.getPropertyPath(options, 'log')) {
+    Utils.Object.createPropertyPath(options, 'log', {});
+  }
 
   if (options.log && typeof options.log.handler === 'function') {
     setLogHandler(options.log.handler);

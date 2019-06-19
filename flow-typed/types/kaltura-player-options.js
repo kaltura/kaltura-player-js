@@ -3,7 +3,7 @@ import {KPPlaylistObject} from './playlist';
 
 declare type KPOptionsObject = {
   targetId: string,
-  log?: PKLogConfigObject,
+  log?: KPLogConfigObject,
   disableUserCache?: boolean,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
@@ -17,7 +17,7 @@ declare type KPOptionsObject = {
 
 declare type PartialKPOptionsObject = {
   targetId: string,
-  log?: PKLogConfigObject,
+  log?: KPLogConfigObject,
   disableUserCache?: boolean,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
