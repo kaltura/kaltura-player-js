@@ -251,12 +251,11 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
-  configureVrDefaultOptions(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
-  maybeSetDefaultUiComponents(defaultOptions);
+  maybeSetFullScreenConfig(defaultOptions);
   return defaultOptions;
 }
 
@@ -294,25 +293,6 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
       Utils.Object.mergeDeep(options, {
         playback: {
           useNativeTextTrack: true
-        }
-      });
-    }
-  }
-}
-
-/**
- * Sets config option fullscreen element for Vr Mode support
- * @private
- * @param {KPOptionsObject} options - kaltura player options
- * @returns {void}
- */
-function configureVrDefaultOptions(options: KPOptionsObject): void {
-  if (options.plugins && options.plugins.vr && !options.plugins.vr.disable) {
-    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
-    if (typeof fullscreenConfig !== 'boolean') {
-      Utils.Object.mergeDeep(options, {
-        playback: {
-          inBrowserFullscreen: true
         }
       });
     }
@@ -522,22 +502,20 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
 }
 
 /**
- * Maybe set the UI component based on the runtime platform and the plugins.
+ * Maybe set inBrowserFullscreen config based on the plugins.
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function maybeSetDefaultUiComponents(options: KPOptionsObject): void {
-  if (isIos() && options.plugins && options.plugins.bumper) {
-    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'ui.components.fullscreen');
-    if (!fullscreenConfig) {
+function maybeSetFullScreenConfig(options: KPOptionsObject): void {
+  const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
+  const vrPlugin = Utils.Object.getPropertyPath(options, 'plugins.vr');
+  if ((bumperPlugin && !bumperPlugin.disable) || (vrPlugin && !vrPlugin.disable)) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
+    if (typeof fullscreenConfig !== 'boolean') {
       Utils.Object.mergeDeep(options, {
-        ui: {
-          components: {
-            fullscreen: {
-              inBrowserFullscreenForIOS: true
-            }
-          }
+        playback: {
+          inBrowserFullscreen: true
         }
       });
     }
