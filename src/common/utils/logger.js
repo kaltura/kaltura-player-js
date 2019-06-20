@@ -16,6 +16,15 @@ const LogLevel: LogLevelType = {
 JsLogger.useDefaults({defaultLevel: JsLogger.ERROR});
 
 /**
+ * sets the logger handler
+ * @private
+ * @param {LogHandlerType} handler - the log level
+ * @returns {void}
+ */
+function setLogHandler(handler: LogHandlerType): void {
+  JsLogger.setHandler((messages, context) => handler(messages, context));
+}
+/**
  * get a logger
  * @private
  * @param {?string} name - the logger name
@@ -50,4 +59,4 @@ function setLogLevel(level: LogLevelObject, name?: string): void {
 }
 
 export default getLogger;
-export {LogLevel, getLogLevel, setLogLevel};
+export {LogLevel, getLogLevel, setLogLevel, setLogHandler};

@@ -4,7 +4,7 @@ import {Env, TextStyle, Utils, setCapabilities, EngineType} from '@playkit-js/pl
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
-import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger';
+import getLogger, {LogLevel, setLogHandler, setLogLevel as _setLogLevel} from './logger';
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
@@ -175,15 +175,33 @@ function isDebugMode(): boolean {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setLogLevel(options: KPOptionsObject): void {
-  let logLevelObj: LogLevelObject = LogLevel.ERROR;
-  if (isDebugMode()) {
-    logLevelObj = LogLevel.DEBUG;
-    options.logLevel = LogLevel.DEBUG.name;
-  } else if (options.logLevel && LogLevel[options.logLevel]) {
-    logLevelObj = LogLevel[options.logLevel];
+function setLogOptions(options: KPOptionsObject): void {
+  if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
+    Utils.Object.createPropertyPath(options, 'ui.log', {});
   }
-  options.ui.logLevel = options.provider.logLevel = logLevelObj.name;
+  if (!Utils.Object.getPropertyPath(options, 'provider.log')) {
+    Utils.Object.createPropertyPath(options, 'provider.log', {});
+  }
+  if (!Utils.Object.getPropertyPath(options, 'log')) {
+    Utils.Object.createPropertyPath(options, 'log', {});
+  }
+
+  if (options.log && typeof options.log.handler === 'function') {
+    setLogHandler(options.log.handler);
+    // $FlowFixMe
+    options.ui.log.handler = options.provider.log.handler = options.log.handler;
+  }
+
+  let logLevelObj: LogLevelObject = LogLevel.ERROR;
+  if (options.log && isDebugMode()) {
+    logLevelObj = LogLevel.DEBUG;
+    options.log.level = LogLevel.DEBUG.name;
+  } else if (options.log && options.log.level && LogLevel[options.log.level]) {
+    logLevelObj = LogLevel[options.log.level];
+  }
+
+  // $FlowFixMe
+  options.ui.log.level = options.provider.log.level = logLevelObj.name;
   _setLogLevel(logLevelObj);
 }
 
@@ -372,6 +390,21 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
 }
 
 /**
+ * print kaltura version to log by configuration
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function printKalturaPlayerVersionToLog(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): void {
+  const playerVersion = Utils.Object.getPropertyPath(options, 'log.playerVersion');
+  if (playerVersion !== false) {
+    _setLogLevel(LogLevel.INFO);
+    getLogger().log(`%c ${__NAME__} ${__VERSION__}`, 'color: #ff98f9;  font-size: large');
+    getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, 'color: #ff98f9;');
+  }
+}
+
+/**
  * Transform options structure from legacy structure to new structure.
  * @private
  * @param {Object} options - The options with the legacy structure.
@@ -413,6 +446,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
+    ['logLevel', 'log.level'],
     ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
   ];
   removePlayerEntry();
@@ -525,13 +559,14 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
 export {
   printSetupMessages,
   supportLegacyOptions,
+  printKalturaPlayerVersionToLog,
   setStorageConfig,
   applyStorageSupport,
   applyCastSupport,
   setStorageTextStyle,
   attachToFirstClick,
   validateConfig,
-  setLogLevel,
+  setLogOptions,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
