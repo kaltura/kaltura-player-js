@@ -502,7 +502,7 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
 }
 
 /**
- * Maybe set the UI component based on the runtime platform and the plugins.
+ * Maybe set inBrowserFullscreen config based on the plugins.
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
