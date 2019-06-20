@@ -255,7 +255,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
-  maybeSetDefaultUiComponents(defaultOptions);
+  maybeSetFullScreenConfig(defaultOptions);
   return defaultOptions;
 }
 
@@ -507,7 +507,7 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function maybeSetDefaultUiComponents(options: KPOptionsObject): void {
+function maybeSetFullScreenConfig(options: KPOptionsObject): void {
   const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
   const vrPlugin = Utils.Object.getPropertyPath(options, 'plugins.vr');
   if ((bumperPlugin && !bumperPlugin.disable) || (vrPlugin && !vrPlugin.disable)) {
