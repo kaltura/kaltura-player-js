@@ -41,17 +41,20 @@ describe('error handling', function() {
     }
   });
 
-  it('should throw error because no partner id provided', function(done) {
+  it('should emit a beacon when no partner id provided', function(done) {
     const div = document.createElement('DIV');
     div.id = 'test-id';
     document.body.appendChild(div);
-    try {
-      validateConfig({targetId: div.id, provider: {}});
-    } catch (e) {
-      document.body.removeChild(div);
-      e.message.should.equal(ValidationErrorType.PARTNER_ID_REQUIRED);
-      done();
-    }
+    sinon.spy(navigator, 'sendBeacon');
+    (navigator.sendBeacon.getCall(0) === null).should.be.true;
+    validateConfig({targetId: div.id, provider: {}});
+    document.body.removeChild(div);
+    navigator.sendBeacon
+      .getCall(0)
+      .args[0].should.include(
+        'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
+      );
+    done();
   });
 });
 
