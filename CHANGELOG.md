@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.43.0"></a>
+# [0.43.0](https://github.com/kaltura/kaltura-player-js/compare/v0.42.0...v0.43.0) (2019-06-23)
+
+
+### Bug Fixes
+
+* inBrowserFullscreen path ([#248](https://github.com/kaltura/kaltura-player-js/issues/248)) ([75054ea](https://github.com/kaltura/kaltura-player-js/commit/75054ea))
+
+
+### Features
+
+* **FEC-9023:** more logger options ([#247](https://github.com/kaltura/kaltura-player-js/issues/247)) ([b2a57a7](https://github.com/kaltura/kaltura-player-js/commit/b2a57a7))
+* **FEC-9024:** send beacon for non partner usage ([#249](https://github.com/kaltura/kaltura-player-js/issues/249)) ([d058e75](https://github.com/kaltura/kaltura-player-js/commit/d058e75))
+
+
+
 <a name="0.42.0"></a>
 # [0.42.0](https://github.com/kaltura/kaltura-player-js/compare/v0.41.2...v0.42.0) (2019-06-17)
 
