@@ -386,15 +386,17 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureBumperDefaultOptions(options: KPOptionsObject): void {
-  const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
-  const daiPlugin = Utils.Object.getPropertyPath(options, 'plugins.imadai');
-  if (bumperPlugin) {
-    const bumperConfig = options.plugins.bumper;
+  const bumperConfig = Utils.Object.getPropertyPath(options, 'plugins.bumper');
+  const daiConfig = Utils.Object.getPropertyPath(options, 'plugins.imadai');
+  if (bumperConfig) {
     const newBumperConfig: Object = {};
-    if (typeof bumperConfig.playOnMainVideoTag !== 'boolean' && (isLGTV() || (isIos() && options.playback.playsinline === false))) {
+    if (
+      typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
+      (isLGTV() || (isIos() && options.playback && options.playback.playsinline === false))
+    ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
-    if (daiPlugin && !daiPlugin.disable) {
+    if (daiConfig && !daiConfig.disable) {
       if (!Array.isArray(bumperConfig.position)) {
         newBumperConfig['position'] = [0];
       }
