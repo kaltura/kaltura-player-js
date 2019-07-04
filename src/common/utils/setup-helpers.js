@@ -386,15 +386,27 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureBumperDefaultOptions(options: KPOptionsObject): void {
-  const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
-  const daiPlugin = Utils.Object.getPropertyPath(options, 'plugins.imadai');
-  if (bumperPlugin && !bumperPlugin.disable && daiPlugin && !daiPlugin.disable) {
+  const bumperConfig = Utils.Object.getPropertyPath(options, 'plugins.bumper');
+  const daiConfig = Utils.Object.getPropertyPath(options, 'plugins.imadai');
+  if (bumperConfig) {
+    const newBumperConfig: Object = {};
+    if (
+      typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
+      (isLGTV() || (isIos() && options.playback && options.playback.playsinline === false))
+    ) {
+      newBumperConfig['playOnMainVideoTag'] = true;
+    }
+    if (daiConfig && !daiConfig.disable) {
+      if (!Array.isArray(bumperConfig.position)) {
+        newBumperConfig['position'] = [0];
+      }
+      if (typeof bumperConfig.disableMediaPreload !== 'boolean') {
+        newBumperConfig['disableMediaPreload'] = true;
+      }
+    }
     Utils.Object.mergeDeep(options, {
       plugins: {
-        bumper: {
-          position: [0],
-          disableMediaPreload: true
-        }
+        bumper: newBumperConfig
       }
     });
   }
@@ -553,9 +565,8 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
  * @returns {void}
  */
 function maybeSetFullScreenConfig(options: KPOptionsObject): void {
-  const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
   const vrPlugin = Utils.Object.getPropertyPath(options, 'plugins.vr');
-  if ((bumperPlugin && !bumperPlugin.disable) || (vrPlugin && !vrPlugin.disable)) {
+  if (vrPlugin && !vrPlugin.disable) {
     const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
     if (typeof fullscreenConfig !== 'boolean') {
       Utils.Object.mergeDeep(options, {

@@ -8,8 +8,10 @@ import {
   isSafari,
   setStorageConfig,
   supportLegacyOptions,
-  validateConfig
+  validateConfig,
+  getDefaultOptions
 } from '../../../../src/common/utils/setup-helpers';
+import {Env} from '@playkit-js/playkit-js';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 
@@ -297,5 +299,63 @@ describe('supportLegacyOptions', function() {
   it('check method support duplicate configuration take the new configuration', function() {
     supportLegacyOptions(duplicateOptions);
     duplicateOptions.should.deep.equal(options);
+  });
+});
+
+describe('plugins config', function() {
+  let sandbox, osName;
+
+  beforeEach(function() {
+    osName = Env.os.name;
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function() {
+    Env.os.name = osName;
+    sandbox.restore();
+  });
+
+  it('should config bumper plugin according to the env and configuration', function() {
+    Env.os.name = 'iOS';
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        playsinline: false
+      },
+      plugins: {
+        bumper: {},
+        imadai: {}
+      }
+    };
+    const defaultOptions = getDefaultOptions(options);
+    defaultOptions.plugins.bumper.position.should.deep.equal([0]);
+    defaultOptions.plugins.bumper.disableMediaPreload.should.be.true;
+    defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.true;
+  });
+
+  it('should not change the bumper plugin', function() {
+    Env.os.name = 'iOS';
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        playsinline: false
+      },
+      plugins: {
+        bumper: {
+          playOnMainVideoTag: false,
+          position: [0, -1],
+          disableMediaPreload: false
+        },
+        imadai: {}
+      }
+    };
+    const defaultOptions = getDefaultOptions(options);
+    defaultOptions.plugins.bumper.position.should.deep.equal([0, -1]);
+    defaultOptions.plugins.bumper.disableMediaPreload.should.be.false;
+    defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.false;
   });
 });
