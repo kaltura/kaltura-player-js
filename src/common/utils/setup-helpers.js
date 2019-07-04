@@ -390,7 +390,7 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
   const daiPlugin = Utils.Object.getPropertyPath(options, 'plugins.imadai');
   if (bumperPlugin) {
     const bumperConfig: Object = {};
-    if (isIos() && options.playback.playsinline === false) {
+    if (isLGTV() || (isIos() && options.playback.playsinline === false)) {
       bumperConfig['playOnMainVideoTag'] = true;
     }
     if (daiPlugin && !daiPlugin.disable) {
