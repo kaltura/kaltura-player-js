@@ -389,17 +389,22 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
   const bumperPlugin = Utils.Object.getPropertyPath(options, 'plugins.bumper');
   const daiPlugin = Utils.Object.getPropertyPath(options, 'plugins.imadai');
   if (bumperPlugin) {
-    const bumperConfig: Object = {};
-    if (isLGTV() || (isIos() && options.playback.playsinline === false)) {
-      bumperConfig['playOnMainVideoTag'] = true;
+    const bumperConfig = options.plugins.bumper;
+    const newBumperConfig: Object = {};
+    if (typeof bumperConfig.playOnMainVideoTag !== 'boolean' && (isLGTV() || (isIos() && options.playback.playsinline === false))) {
+      newBumperConfig['playOnMainVideoTag'] = true;
     }
     if (daiPlugin && !daiPlugin.disable) {
-      bumperConfig['position'] = [0];
-      bumperConfig['disableMediaPreload'] = true;
+      if (!Array.isArray(bumperConfig.position)) {
+        newBumperConfig['position'] = [0];
+      }
+      if (typeof bumperConfig.disableMediaPreload !== 'boolean') {
+        newBumperConfig['disableMediaPreload'] = true;
+      }
     }
     Utils.Object.mergeDeep(options, {
       plugins: {
-        bumper: bumperConfig
+        bumper: newBumperConfig
       }
     });
   }
