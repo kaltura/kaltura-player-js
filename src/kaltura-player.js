@@ -79,7 +79,7 @@ class KalturaPlayer extends FakeEventTarget {
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     Object.keys(this._localPlayer.config.plugins).forEach(name => {
-      playerConfig.plugins[name] = {};
+      playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, playerConfig);
