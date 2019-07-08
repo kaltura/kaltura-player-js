@@ -518,7 +518,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  _maybe;
   /**
    * set the share config
    * @returns {void}
