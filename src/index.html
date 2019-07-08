@@ -12,8 +12,8 @@
 <div id="player-placeholder"></div>
 <script>
   var config = {
-    logLevel: "DEBUG",
-    debugActions: true,
+    // logLevel: "DEBUG",
+    // debugActions: true,
     targetId: 'player-placeholder',
     plugins: {
       'hotspots-local': {
@@ -25,7 +25,7 @@
       env: {
         serviceUrl: "https://cdnapisec.kaltura.com/api_v3"
       },
-      ks: 'djJ8MjA1MjM3MXyuENcq89l2UW3DRwfyQfbcokHSBvnVGLzsBb3nfC1MUCIPUbR4rsDFFdp7ELWjOfobMG1JhizMkNuCZuB4N8z6L4PiYHmc3rXTk1-z7Xe1UZ0MC609MzKxEllBGG8IifgSp-ZARVfzYgHD0sIrRDXQ'
+      ks: 'djJ8MjA1MjM3MXx9KuugZ_8GLkKFs-_MnN0YdgebvpSoDojDIEVNlSJKUkvyDYFeAMNpxtapQgAMpwBboQ-yRE9gWjP8ZcLbcooshcKWXDzUQTQe7tQpNAFbNu8K-UBOhY-WXTEEYfu3mGRk2OfFp7DHMVGB-C5dyton'
     }
   };
 
@@ -34,7 +34,7 @@
     var kalturaPlayer = KalturaPlayer.setup(config);
     kalturaPlayer.loadMedia({entryId: '1_s14625cb'});
   } catch (e) {
-    console.error(e.message)
+    console.error(e)
   }
 </script>
 </body>
