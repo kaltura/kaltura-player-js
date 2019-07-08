@@ -8,8 +8,10 @@ import {
   isSafari,
   setStorageConfig,
   supportLegacyOptions,
-  validateConfig
+  validateConfig,
+  getDefaultOptions
 } from '../../../../src/common/utils/setup-helpers';
+import {Env} from '@playkit-js/playkit-js';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 
@@ -41,17 +43,20 @@ describe('error handling', function() {
     }
   });
 
-  it('should throw error because no partner id provided', function(done) {
+  it('should emit a beacon when no partner id provided', function(done) {
     const div = document.createElement('DIV');
     div.id = 'test-id';
     document.body.appendChild(div);
-    try {
-      validateConfig({targetId: div.id, provider: {}});
-    } catch (e) {
-      document.body.removeChild(div);
-      e.message.should.equal(ValidationErrorType.PARTNER_ID_REQUIRED);
-      done();
-    }
+    sinon.spy(navigator, 'sendBeacon');
+    (navigator.sendBeacon.getCall(0) === null).should.be.true;
+    validateConfig({targetId: div.id, provider: {}});
+    document.body.removeChild(div);
+    navigator.sendBeacon
+      .getCall(0)
+      .args[0].should.include(
+        'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
+      );
+    done();
   });
 });
 
@@ -294,5 +299,63 @@ describe('supportLegacyOptions', function() {
   it('check method support duplicate configuration take the new configuration', function() {
     supportLegacyOptions(duplicateOptions);
     duplicateOptions.should.deep.equal(options);
+  });
+});
+
+describe('plugins config', function() {
+  let sandbox, osName;
+
+  beforeEach(function() {
+    osName = Env.os.name;
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function() {
+    Env.os.name = osName;
+    sandbox.restore();
+  });
+
+  it('should config bumper plugin according to the env and configuration', function() {
+    Env.os.name = 'iOS';
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        playsinline: false
+      },
+      plugins: {
+        bumper: {},
+        imadai: {}
+      }
+    };
+    const defaultOptions = getDefaultOptions(options);
+    defaultOptions.plugins.bumper.position.should.deep.equal([0]);
+    defaultOptions.plugins.bumper.disableMediaPreload.should.be.true;
+    defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.true;
+  });
+
+  it('should not change the bumper plugin', function() {
+    Env.os.name = 'iOS';
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        playsinline: false
+      },
+      plugins: {
+        bumper: {
+          playOnMainVideoTag: false,
+          position: [0, -1],
+          disableMediaPreload: false
+        },
+        imadai: {}
+      }
+    };
+    const defaultOptions = getDefaultOptions(options);
+    defaultOptions.plugins.bumper.position.should.deep.equal([0, -1]);
+    defaultOptions.plugins.bumper.disableMediaPreload.should.be.false;
+    defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.false;
   });
 });

@@ -7,8 +7,9 @@ import {
   applyStorageSupport,
   attachToFirstClick,
   getDefaultOptions,
+  printKalturaPlayerVersionToLog,
   printSetupMessages,
-  setLogLevel,
+  setLogOptions,
   setStorageConfig,
   setStorageTextStyle,
   supportLegacyOptions,
@@ -22,10 +23,11 @@ import {
  * @returns {KalturaPlayer} - The Kaltura Player.
  */
 function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): KalturaPlayer {
+  printKalturaPlayerVersionToLog(options);
   options = supportLegacyOptions(options);
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
-  setLogLevel(defaultOptions);
+  setLogOptions(defaultOptions);
   printSetupMessages();
   evaluatePluginsConfig(defaultOptions.plugins, defaultOptions);
   setStorageConfig(defaultOptions);
