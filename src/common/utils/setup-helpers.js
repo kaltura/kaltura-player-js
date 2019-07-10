@@ -278,6 +278,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
   }
   checkNativeHlsSupport(defaultOptions);
+  configureAdsWithMSE(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
@@ -328,6 +329,30 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
   }
 }
 
+/**
+ * Sets config option for Ads with MSE
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureAdsWithMSE(options: KPOptionsObject): void {
+  const preferNativeHls = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
+  if (!preferNativeHls && options.plugins && options.plugins.ima) {
+    const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
+    const imaPlayAdsWithMSE = Utils.Object.getPropertyPath(options, 'plugins.ima.playAdsWithMSE');
+    const disableMediaPreload = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+
+    if (typeof playAdsWithMSE !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
+    }
+    if (typeof imaPlayAdsWithMSE !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.playAdsWithMSE', true);
+    }
+    if (typeof disableMediaPreload !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
+    }
+  }
+}
 /**
  * Sets config option for LG TV
  * @private
