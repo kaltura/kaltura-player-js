@@ -337,7 +337,8 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  */
 function configureAdsWithMSE(options: KPOptionsObject): void {
   const preferNativeHls = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
-  if (!preferNativeHls && options.plugins && options.plugins.ima) {
+  const preferNativeDash = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
+  if ((!preferNativeHls || !preferNativeDash) && options.plugins && options.plugins.ima) {
     const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
     const imaPlayAdsWithMSE = Utils.Object.getPropertyPath(options, 'plugins.ima.playAdsWithMSE');
     const disableMediaPreload = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
