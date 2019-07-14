@@ -278,7 +278,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
   }
   checkNativeHlsSupport(defaultOptions);
-  configureAdsWithMSE(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
@@ -335,7 +334,7 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureAdsWithMSE(options: KPOptionsObject): void {
+function _configureAdsWithMSE(options: KPOptionsObject): void {
   const preferNativeHls = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
   const preferNativeDash = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
   if ((!preferNativeHls || !preferNativeDash) && options.plugins && options.plugins.ima) {
@@ -363,9 +362,14 @@ function configureAdsWithMSE(options: KPOptionsObject): void {
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
   if (isLGTV()) {
     const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
+    const preferNativeDash = Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
     if (typeof preferNativeHls !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
+      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', false);
     }
+    if (typeof preferNativeDash !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.dash', false);
+    }
+    _configureAdsWithMSE(options);
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
       const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
