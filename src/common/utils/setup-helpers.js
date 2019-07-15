@@ -549,7 +549,7 @@ function isIos(): boolean {
  * @returns {boolean} - if browser is in LG TV
  */
 function isSmartTv(): boolean {
-  return Env.isSmartTV;
+  return Env.os.name.toLowerCase() === 'web0s' || Env.os.name.toLowerCase() === 'tizen';
 }
 
 /**
