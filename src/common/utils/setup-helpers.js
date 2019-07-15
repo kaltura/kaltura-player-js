@@ -360,7 +360,7 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
-  if (isLGTV()) {
+  if (isSmartTv()) {
     const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     const preferNativeDash = Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
     if (typeof preferNativeHls !== 'boolean') {
@@ -422,7 +422,7 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
     const newBumperConfig: Object = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
-      (isLGTV() || (isIos() && options.playback && options.playback.playsinline === false))
+      (isSmartTv() || (isIos() && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
@@ -544,12 +544,12 @@ function isIos(): boolean {
 }
 
 /**
- * Returns true if user agent indicate that browser is LG TV
+ * Returns true if user agent indicate that browser is smart TV
  * @private
  * @returns {boolean} - if browser is in LG TV
  */
-function isLGTV(): boolean {
-  return Env.os.name.toLowerCase() === 'web0s';
+function isSmartTv(): boolean {
+  return Env.isSmartTV;
 }
 
 /**
