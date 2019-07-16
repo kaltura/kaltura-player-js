@@ -361,14 +361,6 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
   if (isSmartTv()) {
-    const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
-    const preferNativeDash = Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
-    if (typeof preferNativeHls !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', false);
-    }
-    if (typeof preferNativeDash !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.dash', false);
-    }
     _configureAdsWithMSE(options);
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
