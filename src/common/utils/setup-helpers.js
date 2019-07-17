@@ -339,14 +339,10 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
   const preferNativeDash = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
   if ((!preferNativeHls || !preferNativeDash) && options.plugins && options.plugins.ima) {
     const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
-    const reloadSourceOnComplete = Utils.Object.getPropertyPath(options, 'plugins.ima.reloadSourceOnComplete');
     const disableMediaPreload = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
 
     if (typeof playAdsWithMSE !== 'boolean') {
       options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
-    }
-    if (typeof reloadSourceOnComplete !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'plugins.ima.reloadSourceOnComplete', false);
     }
     if (typeof disableMediaPreload !== 'boolean') {
       options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
