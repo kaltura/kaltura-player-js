@@ -387,24 +387,27 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
  */
 function configureBumperDefaultOptions(options: KPOptionsObject): void {
   const bumperConfig = Utils.Object.getPropertyPath(options, 'plugins.bumper');
-  const daiConfig = Utils.Object.getPropertyPath(options, 'plugins.imadai');
   if (bumperConfig) {
     const newBumperConfig: Object = {};
+    const newPlaybackConfig: Object = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
       (isLGTV() || (isIos() && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
+    const daiConfig = Utils.Object.getPropertyPath(options, 'plugins.imadai');
     if (daiConfig && !daiConfig.disable) {
       if (!Array.isArray(bumperConfig.position)) {
         newBumperConfig['position'] = [0];
       }
-      if (typeof bumperConfig.disableMediaPreload !== 'boolean') {
-        newBumperConfig['disableMediaPreload'] = true;
+      const disableMediaPreloadWhileAd = Utils.Object.getPropertyPath(options, 'playback.disableMediaPreloadWhileAd');
+      if (typeof disableMediaPreloadWhileAd !== 'boolean') {
+        newPlaybackConfig['disableMediaPreloadWhileAd'] = true;
       }
     }
     Utils.Object.mergeDeep(options, {
+      playback: newPlaybackConfig,
       plugins: {
         bumper: newBumperConfig
       }
@@ -470,7 +473,9 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
-    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
+    ['plugins.ima.disableMediaPreload', 'playback.disableMediaPreloadWhileAd'],
+    ['plugins.bumper.disableMediaPreload', 'playback.disableMediaPreloadWhileAd']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
