@@ -331,8 +331,8 @@ describe('plugins config', function() {
     };
     const defaultOptions = getDefaultOptions(options);
     defaultOptions.plugins.bumper.position.should.deep.equal([0]);
-    defaultOptions.plugins.bumper.disableMediaPreload.should.be.true;
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.true;
+    defaultOptions.playback.disableMediaPreloadWhileAd.should.be.true;
   });
 
   it('should not change the bumper plugin', function() {
@@ -342,20 +342,20 @@ describe('plugins config', function() {
         partnerId: 1091
       },
       playback: {
-        playsinline: false
+        playsinline: false,
+        disableMediaPreloadWhileAd: false
       },
       plugins: {
         bumper: {
           playOnMainVideoTag: false,
-          position: [0, -1],
-          disableMediaPreload: false
+          position: [0, -1]
         },
         imadai: {}
       }
     };
     const defaultOptions = getDefaultOptions(options);
     defaultOptions.plugins.bumper.position.should.deep.equal([0, -1]);
-    defaultOptions.plugins.bumper.disableMediaPreload.should.be.false;
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.false;
+    defaultOptions.playback.disableMediaPreloadWhileAd.should.be.false;
   });
 });
