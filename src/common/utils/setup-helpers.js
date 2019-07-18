@@ -335,18 +335,23 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function _configureAdsWithMSE(options: KPOptionsObject): void {
-  const preferNativeHls = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
-  const preferNativeDash = !!Utils.Object.getPropertyPath(options, 'playback.preferNative.dash');
-  if ((!preferNativeHls || !preferNativeDash) && options.plugins && options.plugins.ima) {
-    const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
-    const disableMediaPreload = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
-
-    if (typeof playAdsWithMSE !== 'boolean') {
+  const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
+  //dai should play without playAdsWithMSE config
+  if (typeof playAdsWithMSE !== 'boolean') {
+    if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
+      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', false);
+    } else {
       options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
     }
-    if (typeof disableMediaPreload !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
-    }
+  }
+  const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+  const disableMediaPreloadBumper = Utils.Object.getPropertyPath(options, 'plugins.bumper.disableMediaPreload');
+
+  if (options.plugins && options.plugins.ima && typeof disableMediaPreloadIma !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
+  }
+  if (options.plugins && options.plugins.bumper && typeof disableMediaPreloadBumper !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.bumper.disableMediaPreload', true);
   }
 }
 /**
