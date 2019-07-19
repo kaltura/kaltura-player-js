@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.45.0"></a>
+# [0.45.0](https://github.com/kaltura/kaltura-player-js/compare/v0.44.0...v0.45.0) (2019-07-19)
+
+
+### Features
+
+* **FEC-9156:** getting bumper from playback context ([#252](https://github.com/kaltura/kaltura-player-js/issues/252)) ([dfe18ac](https://github.com/kaltura/kaltura-player-js/commit/dfe18ac))
+* **FEC-9227:** support reInit of MSE ([#254](https://github.com/kaltura/kaltura-player-js/issues/254)) ([2b78cd7](https://github.com/kaltura/kaltura-player-js/commit/2b78cd7))
+
+
+
 <a name="0.44.0"></a>
 # [0.44.0](https://github.com/kaltura/kaltura-player-js/compare/v0.41.2...v0.44.0) (2019-07-07)
 
