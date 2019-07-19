@@ -329,17 +329,40 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
 }
 
 /**
+ * Sets config option for Ads with MSE
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function _configureAdsWithMSE(options: KPOptionsObject): void {
+  const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
+  //dai should play without playAdsWithMSE config
+  if (typeof playAdsWithMSE !== 'boolean') {
+    if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
+      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', false);
+    } else {
+      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
+    }
+  }
+  const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+  const disableMediaPreloadBumper = Utils.Object.getPropertyPath(options, 'plugins.bumper.disableMediaPreload');
+
+  if (options.plugins && options.plugins.ima && typeof disableMediaPreloadIma !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
+  }
+  if (options.plugins && options.plugins.bumper && typeof disableMediaPreloadBumper !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.bumper.disableMediaPreload', true);
+  }
+}
+/**
  * Sets config option for LG TV
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
-  if (isLGTV()) {
-    const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
-    if (typeof preferNativeHls !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
-    }
+  if (isSmartTv()) {
+    _configureAdsWithMSE(options);
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
       const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
@@ -392,7 +415,7 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
     const newBumperConfig: Object = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
-      (isLGTV() || (isIos() && options.playback && options.playback.playsinline === false))
+      (isSmartTv() || (isIos() && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
@@ -514,12 +537,12 @@ function isIos(): boolean {
 }
 
 /**
- * Returns true if user agent indicate that browser is LG TV
+ * Returns true if user agent indicate that browser is smart TV
  * @private
  * @returns {boolean} - if browser is in LG TV
  */
-function isLGTV(): boolean {
-  return Env.os.name.toLowerCase() === 'web0s';
+function isSmartTv(): boolean {
+  return Env.os.name.toLowerCase() === 'web0s' || Env.os.name.toLowerCase() === 'tizen';
 }
 
 /**
