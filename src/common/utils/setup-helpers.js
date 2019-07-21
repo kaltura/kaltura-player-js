@@ -3,15 +3,18 @@ import {Env, TextStyle, Utils, setCapabilities, EngineType} from '@playkit-js/pl
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
-import getLogger, {LogLevel, setLogLevel as _setLogLevel} from './logger';
+import getLogger, {LogLevel, setLogHandler, setLogLevel as _setLogLevel} from './logger';
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
+import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
+const KAVA_DEFAULT_IMPRESSION =
+  'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0';
 
 declare var __CONFIG_DOCS_URL__: string;
 
@@ -55,8 +58,16 @@ function validateTargetId(targetId: string): void {
  * @returns {void}
  */
 function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
-  if (!providerOptions.partnerId && providerOptions.partnerId !== 0) {
-    throw new Error(ValidationErrorType.PARTNER_ID_REQUIRED);
+  if (!providerOptions.partnerId) {
+    //create source object as a 'hack' to be able to use utility functions on url
+    const source = {
+      url: KAVA_DEFAULT_IMPRESSION,
+      mimetype: ''
+    };
+    addReferrer(source);
+    addClientTag(source);
+    updateSessionIdInUrl(source, Utils.Generator.guid() + ':' + Utils.Generator.guid());
+    navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
 }
 
@@ -174,15 +185,33 @@ function isDebugMode(): boolean {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setLogLevel(options: KPOptionsObject): void {
-  let logLevelObj: LogLevelObject = LogLevel.ERROR;
-  if (isDebugMode()) {
-    logLevelObj = LogLevel.DEBUG;
-    options.logLevel = LogLevel.DEBUG.name;
-  } else if (options.logLevel && LogLevel[options.logLevel]) {
-    logLevelObj = LogLevel[options.logLevel];
+function setLogOptions(options: KPOptionsObject): void {
+  if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
+    Utils.Object.createPropertyPath(options, 'ui.log', {});
   }
-  options.ui.logLevel = options.provider.logLevel = logLevelObj.name;
+  if (!Utils.Object.getPropertyPath(options, 'provider.log')) {
+    Utils.Object.createPropertyPath(options, 'provider.log', {});
+  }
+  if (!Utils.Object.getPropertyPath(options, 'log')) {
+    Utils.Object.createPropertyPath(options, 'log', {});
+  }
+
+  if (options.log && typeof options.log.handler === 'function') {
+    setLogHandler(options.log.handler);
+    // $FlowFixMe
+    options.ui.log.handler = options.provider.log.handler = options.log.handler;
+  }
+
+  let logLevelObj: LogLevelObject = LogLevel.ERROR;
+  if (options.log && isDebugMode()) {
+    logLevelObj = LogLevel.DEBUG;
+    options.log.level = LogLevel.DEBUG.name;
+  } else if (options.log && options.log.level && LogLevel[options.log.level]) {
+    logLevelObj = LogLevel[options.log.level];
+  }
+
+  // $FlowFixMe
+  options.ui.log.level = options.provider.log.level = logLevelObj.name;
   _setLogLevel(logLevelObj);
 }
 
@@ -251,10 +280,11 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
-  configureVrDefaultOptions(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
+  configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
+  maybeSetFullScreenConfig(defaultOptions);
   return defaultOptions;
 }
 
@@ -317,24 +347,31 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
 }
 
 /**
- * Sets config option fullscreen element for Vr Mode support
+ * Sets config option for Ads with MSE
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureVrDefaultOptions(options: KPOptionsObject): void {
-  if (options.plugins && options.plugins.vr && !options.plugins.vr.disable) {
-    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
-    if (typeof fullscreenConfig !== 'boolean') {
-      Utils.Object.mergeDeep(options, {
-        playback: {
-          inBrowserFullscreen: true
-        }
-      });
+function _configureAdsWithMSE(options: KPOptionsObject): void {
+  const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
+  //dai should play without playAdsWithMSE config
+  if (typeof playAdsWithMSE !== 'boolean') {
+    if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
+      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', false);
+    } else {
+      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
     }
   }
-}
+  const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+  const disableMediaPreloadBumper = Utils.Object.getPropertyPath(options, 'plugins.bumper.disableMediaPreload');
 
+  if (options.plugins && options.plugins.ima && typeof disableMediaPreloadIma !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
+  }
+  if (options.plugins && options.plugins.bumper && typeof disableMediaPreloadBumper !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.bumper.disableMediaPreload', true);
+  }
+}
 /**
  * Sets config option for LG TV
  * @private
@@ -342,19 +379,18 @@ function configureVrDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
-  if (isLGTV() && options.plugins && options.plugins.ima) {
-    const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
-    const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
-    const preferNativeHls = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
+  if (isSmartTv()) {
+    _configureAdsWithMSE(options);
+    if (options.plugins && options.plugins.ima) {
+      const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
+      const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
 
-    if (typeof imaForceReload !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
-    }
-    if (typeof preferNativeHls !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'playback.preferNative.hls', true);
-    }
-    if (typeof delayUntilSourceSelected !== 'boolean') {
-      options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+      if (typeof imaForceReload !== 'boolean') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
+      }
+      if (typeof delayUntilSourceSelected !== 'boolean') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+      }
     }
   }
 }
@@ -381,6 +417,54 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
         }
       });
     }
+  }
+}
+
+/**
+ * Sets default config option for bumper plugin when ima-dai enabled
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureBumperDefaultOptions(options: KPOptionsObject): void {
+  const bumperConfig = Utils.Object.getPropertyPath(options, 'plugins.bumper');
+  const daiConfig = Utils.Object.getPropertyPath(options, 'plugins.imadai');
+  if (bumperConfig) {
+    const newBumperConfig: Object = {};
+    if (
+      typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
+      (isSmartTv() || (isIos() && options.playback && options.playback.playsinline === false))
+    ) {
+      newBumperConfig['playOnMainVideoTag'] = true;
+    }
+    if (daiConfig && !daiConfig.disable) {
+      if (!Array.isArray(bumperConfig.position)) {
+        newBumperConfig['position'] = [0];
+      }
+      if (typeof bumperConfig.disableMediaPreload !== 'boolean') {
+        newBumperConfig['disableMediaPreload'] = true;
+      }
+    }
+    Utils.Object.mergeDeep(options, {
+      plugins: {
+        bumper: newBumperConfig
+      }
+    });
+  }
+}
+
+/**
+ * print kaltura version to log by configuration
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function printKalturaPlayerVersionToLog(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): void {
+  const playerVersion = Utils.Object.getPropertyPath(options, 'log.playerVersion');
+  if (playerVersion !== false) {
+    _setLogLevel(LogLevel.INFO);
+    getLogger().log(`%c ${__NAME__} ${__VERSION__}`, 'color: #ff98f9;  font-size: large');
+    getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, 'color: #ff98f9;');
   }
 }
 
@@ -426,6 +510,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['name', 'metadata.name'],
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
+    ['logLevel', 'log.level'],
     ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
   ];
   removePlayerEntry();
@@ -470,12 +555,12 @@ function isIos(): boolean {
 }
 
 /**
- * Returns true if user agent indicate that browser is LG TV
+ * Returns true if user agent indicate that browser is smart TV
  * @private
  * @returns {boolean} - if browser is in LG TV
  */
-function isLGTV(): boolean {
-  return Env.os.name.toLowerCase() === 'web0s';
+function isSmartTv(): boolean {
+  return Env.os.name.toLowerCase() === 'web0s' || Env.os.name.toLowerCase() === 'tizen';
 }
 
 /**
@@ -514,16 +599,37 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
   return !!(source && source[0] && source[0].mimetype === 'video/youtube');
 }
 
+/**
+ * Maybe set inBrowserFullscreen config based on the plugins.
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeSetFullScreenConfig(options: KPOptionsObject): void {
+  const vrPlugin = Utils.Object.getPropertyPath(options, 'plugins.vr');
+  if (vrPlugin && !vrPlugin.disable) {
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
+    if (typeof fullscreenConfig !== 'boolean') {
+      Utils.Object.mergeDeep(options, {
+        playback: {
+          inBrowserFullscreen: true
+        }
+      });
+    }
+  }
+}
+
 export {
   printSetupMessages,
   supportLegacyOptions,
+  printKalturaPlayerVersionToLog,
   setStorageConfig,
   applyStorageSupport,
   applyCastSupport,
   setStorageTextStyle,
   attachToFirstClick,
   validateConfig,
-  setLogLevel,
+  setLogOptions,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,

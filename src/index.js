@@ -1,7 +1,6 @@
 // @flow
 import PolyfillManager from './common/polyfills/polyfill-manager';
 import './common/polyfills/all';
-import getLogger, {getLogLevel, LogLevel, setLogLevel} from './common/utils/logger';
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
@@ -25,12 +24,6 @@ import {playlist} from './common/playlist';
 import * as providers from './common/provider-manager';
 //Import UI manager helper
 import {registerUIManager} from './common/ui-wrapper';
-
-const currentLogLevel = getLogLevel();
-setLogLevel(LogLevel.INFO);
-getLogger().log(`%c ${__NAME__} ${__VERSION__}`, 'color: #ff98f9;  font-size: large');
-getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, 'color: #ff98f9;');
-setLogLevel(currentLogLevel);
 
 PolyfillManager.installAll();
 
