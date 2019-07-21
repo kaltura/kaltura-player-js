@@ -1,11 +1,10 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
+import {hasYoutubeSource, maybeSetStreamPriority, supportLegacyOptions} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
-import {addKalturaPoster as addOVPKalturaPoster} from './ovp/poster';
-import {addKalturaPoster as addOTTKalturaPoster} from './ott/poster';
+import {getKalturaPoster} from './common/poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
 import * as providers from './common/provider-manager';
@@ -28,12 +27,14 @@ import {
   Track,
   Utils
 } from '@playkit-js/playkit-js';
+import type BaseProvider from '@playkit-js/core-provider/src/base-provider';
+
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
   _mediaInfo: ?ProviderMediaInfoObject = null;
   _remotePlayer: ?BaseRemotePlayer = null;
   _localPlayer: Player;
-  _provider: Provider | null = null;
+  _provider: BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject> | null = null;
   _uiWrapper: UIWrapper;
   _logger: any;
 
@@ -45,7 +46,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
-    if (providers.exists(options.provider.type)) {
+    if (options.provider.type === 'string' && providers.exists(options.provider.type)) {
       const Provider = providers.get(options.provider.type);
       this._provider = new Provider(options.provider, __VERSION__);
     }
@@ -57,27 +58,38 @@ class KalturaPlayer extends FakeEventTarget {
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
     this._logger.debug('loadMedia', mediaInfo);
-    if (this._provider === null) {
-      this._logger.error('loadMedia requires a provider, but no provider was found. Did you forget setting a provider type?');
-      return Promise.reject();
-    }
     this._mediaInfo = mediaInfo;
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getMediaConfig(mediaInfo);
-    providerResult
-      .then(
-        mediaConfig => this.setMedia(mediaConfig),
-        e =>
-          this._localPlayer.dispatchEvent(
-            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-          )
-      )
-      .then(() => {
-        this._maybeSetEmbedConfig();
-      });
-    return providerResult;
+    if (this._provider === null) {
+      this._logger.error('loadMedia requires a provider, but no provider was found. Did you forget setting a provider type?');
+      this._localPlayer.loadingMedia = false;
+      this._uiWrapper.setLoadingSpinnerState(false);
+      return Promise.reject();
+    } else {
+      const providerResult = this._provider.getMediaConfig(mediaInfo);
+      providerResult
+
+        .then(
+          mediaConfig => {
+            const playerConfig = Utils.Object.copyDeep(mediaConfig);
+            Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
+            if (this._provider && this._provider.type) {
+              mediaConfig.sources.poster = getKalturaPoster(this._provider.type, playerConfig.sources, mediaConfig.sources, this._player.dimensions);
+            }
+            this.setMedia(mediaConfig);
+          },
+          e =>
+            this._localPlayer.dispatchEvent(
+              new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+            )
+        )
+        .then(() => {
+          this._maybeSetEmbedConfig();
+        });
+      return providerResult;
+    }
   }
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
@@ -88,14 +100,6 @@ class KalturaPlayer extends FakeEventTarget {
     Object.keys(this._localPlayer.config.plugins).forEach(name => {
       playerConfig.plugins[name] = {};
     });
-    switch (this._provider.type) {
-      case 'ott':
-        addOTTKalturaPoster(mediaConfig.sources, mediaConfig.sources, this._player.dimensions);
-        break;
-      case 'ovp':
-        addOVPKalturaPoster(mediaConfig.sources, mediaConfig.sources, this._player.dimensions);
-        break;
-    }
     addKalturaParams(this, playerConfig);
     maybeSetStreamPriority(this, playerConfig);
     if (!hasYoutubeSource(playerConfig.sources)) {
@@ -117,15 +121,21 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getPlaylistConfig(playlistInfo);
-    providerResult.then(
-      playlistData => this.setPlaylist(playlistData, playlistConfig),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
-    return providerResult;
+    if (this._provider === null) {
+      this._logger.error('loadPlaylist requires a provider, but no provider was found. Did you forget setting a provider type?');
+      this._uiWrapper.setLoadingSpinnerState(false);
+      return Promise.reject();
+    } else {
+      const providerResult = this._provider.getPlaylistConfig(playlistInfo);
+      providerResult.then(
+        playlistData => this.setPlaylist(playlistData, playlistConfig),
+        e =>
+          this._localPlayer.dispatchEvent(
+            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+          )
+      );
+      return providerResult;
+    }
   }
 
   /**
@@ -141,15 +151,21 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     this._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getEntryListConfig(entryList);
-    providerResult.then(
-      playlistData => this.setPlaylist(playlistData, playlistConfig, entryList),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
-    return providerResult;
+    if (this._provider === null) {
+      this._logger.error('loadPlaylistByEntryList requires a provider, but no provider was found. Did you forget setting a provider type?');
+      this._uiWrapper.setLoadingSpinnerState(false);
+      return Promise.reject();
+    } else {
+      const providerResult = this._provider.getEntryListConfig(entryList);
+      providerResult.then(
+        playlistData => this.setPlaylist(playlistData, playlistConfig, entryList),
+        e =>
+          this._localPlayer.dispatchEvent(
+            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+          )
+      );
+      return providerResult;
+    }
   }
 
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {

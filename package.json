@@ -47,6 +47,8 @@
     }
   },
   "devDependencies": {
+    "@playkit-js/core-provider": "^1.0.0",
+    "@playkit-js/playkit-js-ui": "^0.40.1",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-eslint": "^8.2.3",
@@ -68,7 +70,7 @@
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-mocha-no-only": "^0.0.6",
     "eslint-plugin-prettier": "^2.6.2",
-    "flow-bin": "0.71.0",
+    "flow-bin": "0.59.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.5",
     "karma": "^2.0.2",

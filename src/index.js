@@ -23,6 +23,8 @@ import {cast} from './common/cast';
 import {playlist} from './common/playlist';
 //Import provider-manager
 import * as providers from './common/provider-manager';
+//Import UI manager helper
+import {registerUIManager} from './common/ui-wrapper';
 
 const currentLogLevel = getLogLevel();
 setLogLevel(LogLevel.INFO);
@@ -32,4 +34,4 @@ setLogLevel(currentLogLevel);
 
 PolyfillManager.installAll();
 
-export {getPlayers, getPlayer, core, ui, providers, setup, cast, playlist, VERSION, NAME, PLAYER_NAME};
+export {getPlayers, getPlayer, core, ui, registerUIManager, providers, setup, cast, playlist, VERSION, NAME, PLAYER_NAME};

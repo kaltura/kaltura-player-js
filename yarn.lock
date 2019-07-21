@@ -78,6 +78,13 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@playkit-js/core-provider@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/core-provider/-/core-provider-1.0.0.tgz#e641b853eca2f6cb2ad6a753e7d6de591a30ca56"
+  integrity sha512-dMWFv5+FwqKvUnf46lH2qfk69VLam901ypRzYkaYgjoU3GNQzv4TNIbk2lTjOTo5OLRvQivNXPXUYa+SYPH5Ug==
+  dependencies:
+    js-logger "^1.3.0"
+
 "@playkit-js/playkit-js-ui@^0.40.1":
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.40.1.tgz#a188cb10d308e6f0f351988ee0832782a9fd787d"
@@ -3844,9 +3851,10 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@0.71.0:
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.71.0.tgz#fd1b27a6458c3ebaa5cb811853182ed631918b70"
+flow-bin@0.59.0:
+  version "0.59.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.59.0.tgz#8c151ee7f09f1deed9bf0b9d1f2e8ab9d470f1bb"
+  integrity sha512-yJDRffvby5mCTkbwOdXwiGDjeea8Z+BPVuP53/tHqHIZC+KtQD790zopVf7mHk65v+wRn+TZ7tkRSNA9oDmyLg==
 
 flow-parser@^0.*:
   version "0.71.0"

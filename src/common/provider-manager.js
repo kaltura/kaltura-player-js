@@ -1,18 +1,23 @@
 // @flow
-const providers = new Map();
+import getLogger from '../common/utils/logger';
+
+const logger = getLogger('provider-manager');
+const providers: Map<string, Function> = new Map();
 
 /**
  * register a provider with a name
  * @param {string} name - the provider name
  * @param {*} provider - the provider
- * @returns {void}
+ * @returns {boolean} - If the registration request succeeded
  */
-function register(name: string, provider: any): void {
-  if (providers.has(name)) {
-    //do nothing
-  } else {
+function register(name: string, provider: any): boolean {
+  if (!providers.has(name)) {
+    logger.debug(`provider <${name}> has been registered successfully`);
     providers.set(name, provider);
+    return true;
   }
+  logger.debug(`provider <${name}> is already registered, do not register again`);
+  return false;
 }
 
 /**
@@ -28,11 +33,6 @@ function get(name: string): any {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
-function list() {
-  return providers.keys();
-}
-
 /**
  * returns if a provider exist
  * @param {string} name - the provider name
@@ -42,4 +42,4 @@ function exists(name: string): boolean {
   return providers.has(name);
 }
 
-export {register, get, exists, list};
+export {register, get, exists};
