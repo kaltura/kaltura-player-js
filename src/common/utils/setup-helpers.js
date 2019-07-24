@@ -295,7 +295,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
  * @returns {void}
  */
 function checkNativeHlsSupport(options: KPOptionsObject): void {
-  if (isSafari() || isIos()) {
+  if ((isMacOS() && isSafari()) || isIos()) {
     const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(options, {
