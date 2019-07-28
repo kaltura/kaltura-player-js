@@ -362,6 +362,7 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
   if (isSmartTv()) {
+    setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
