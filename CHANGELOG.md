@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.45.2"></a>
+## [0.45.2](https://github.com/kaltura/kaltura-player-js/compare/v0.45.1...v0.45.2) (2019-07-28)
+
+
+### Bug Fixes
+
+* useNativeTextTrack doesn't change to true by default on MacOS ([#258](https://github.com/kaltura/kaltura-player-js/issues/258)) ([f4ee047](https://github.com/kaltura/kaltura-player-js/commit/f4ee047))
+* **FEC-9260:** Autoplay is not working on LG TV ([#260](https://github.com/kaltura/kaltura-player-js/issues/260)) ([ce838e0](https://github.com/kaltura/kaltura-player-js/commit/ce838e0))
+
+
+
 <a name="0.45.1"></a>
 ## [0.45.1](https://github.com/kaltura/kaltura-player-js/compare/v0.45.0...v0.45.1) (2019-07-21)
 
