@@ -524,7 +524,7 @@ function isSafari(): boolean {
  * @returns {boolean} - if browser is Safari
  */
 function isMacOS(): boolean {
-  return Env.os.name.toLowerCase() === 'Mac OS';
+  return Env.os.name === 'Mac OS';
 }
 
 /**
