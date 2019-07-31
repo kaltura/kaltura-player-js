@@ -1,7 +1,7 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource, maybeAddPluginsInfo} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
@@ -56,6 +56,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
+    maybeAddPluginsInfo(this._localPlayer.config.plugins, mediaInfo);
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     const providerResult = this._provider.getMediaConfig(mediaInfo);
