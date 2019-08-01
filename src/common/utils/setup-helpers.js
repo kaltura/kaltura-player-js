@@ -281,6 +281,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
+  configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
@@ -375,6 +376,22 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
       if (typeof delayUntilSourceSelected !== 'boolean') {
         options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
       }
+    }
+  }
+}
+
+/**
+ * Sets default config option for ima plugin
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureIMADefaultOptions(options: KPOptionsObject): void {
+  if (isIos() && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+    if (playsinline === false && typeof disableMediaPreloadIma !== 'boolean') {
+      Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
     }
   }
 }
