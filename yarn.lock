@@ -30,9 +30,10 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.51.3":
-  version "0.51.3"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.51.3.tgz#844cd11bfed6a759148db7afe2f4dce655c7e968"
+"@playkit-js/playkit-js@^0.51.4":
+  version "0.51.4"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.51.4.tgz#4fd9f3dee38124c640dc518687865b9bd4b4ddf0"
+  integrity sha512-2eVC9UP1/vJc/WnxrqjjrxJIWQTjLArTFBaW61Va2p0xlOYyb8QjDLX1TQxempGnRnd+/SeEolTx2BY9GlafIA==
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
