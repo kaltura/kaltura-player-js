@@ -1,5 +1,6 @@
 // @flow
 import {KPPlaylistObject} from './playlist';
+import type {ProviderEnumType} from '../../src/common/provider-manager';
 
 declare type KPOptionsObject = {
   targetId: string,
@@ -9,7 +10,7 @@ declare type KPOptionsObject = {
   sources?: PKSourcesConfigObject,
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
-  provider: ProviderOptionsObject,
+  provider: ProviderOptionsObject & {type: ProviderEnumType},
   playlist?: KPPlaylistObject,
   ui: UIOptionsObject,
   cast?: { [key: string]: any }
@@ -23,7 +24,7 @@ declare type PartialKPOptionsObject = {
   sources?: PKSourcesConfigObject,
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
-  provider: ProviderOptionsObject,
+  provider: ProviderOptionsObject & {type: ProviderEnumType},
   ui?: UIOptionsObject,
   cast?: { [key: string]: any }
 };
@@ -33,6 +34,6 @@ declare type LegacyPartialKPOptionsObject = {
   logLevel?: string,
   disableUserCache?: boolean,
   player?: PKPlayerOptionsObject,
-  provider: ProviderOptionsObject,
+  provider: ProviderOptionsObject & {type: ProviderEnumType},
   ui?: UIOptionsObject
 };

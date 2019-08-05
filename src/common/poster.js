@@ -1,4 +1,7 @@
 // @flow
+import type {ProviderEnumType} from './provider-manager';
+import {ProviderEnum} from './provider-manager';
+
 /**
  * get poster with player dimensions to thumbnail API call
  * @param {string} providerType - the provider type
@@ -9,19 +12,20 @@
  * @returns {string | null} the poster
  */
 function getKalturaPoster(
-  providerType: string,
+  providerType: ProviderEnumType,
   playerSources: PKSourcesConfigObject,
   mediaSources: ProviderMediaConfigSourcesObject,
   dimensions: Object
 ): string | null {
   let poster = null;
   switch (providerType) {
-    case 'ott':
+    case ProviderEnum.OTT:
       poster = getKalturaOvpPoster(playerSources, mediaSources, dimensions);
       break;
-    case 'ovp':
+    case ProviderEnum.OVP:
       poster = getKalturaOttPoster(playerSources, mediaSources, dimensions);
       break;
+    case ProviderEnum.NONE:
     case null:
       break;
   }

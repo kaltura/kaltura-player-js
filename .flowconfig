@@ -4,10 +4,7 @@
 [libs]
 ./src/index.js
 node_modules/@playkit-js/playkit-js/flow-typed/
-node_modules/@playkit-js/playkit-js-hls/flow-typed/
-node_modules/@playkit-js/playkit-js-dash/flow-typed/
 node_modules/@playkit-js/playkit-js-ui/flow-typed/
-node_modules/playkit-js-providers/flow-typed/
 node_modules/@playkit-js/core-provider/flow-typed/
 node_modules/@playkit-js/core-provider/src/
 [options]

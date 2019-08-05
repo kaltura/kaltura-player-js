@@ -9,6 +9,8 @@ import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
+import {ProviderEnum} from '../provider-manager';
+import type {ProviderEnumType} from '../provider-manager';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -266,7 +268,8 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   let defaultOptions: KPOptionsObject = {
     targetId: options.targetId,
     provider: {
-      partnerId: options.provider.partnerId
+      partnerId: options.provider.partnerId,
+      type: (options.provider.type: ProviderEnumType) || ProviderEnum.NONE
     },
     ui: {
       targetId: targetId
@@ -314,15 +317,23 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @param {KalturaPlayerOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function setDefaultAnalyticsPlugin(options: KalturaPlayerOptionsObject): void {
-  if (options.provider && options.provider.type === 'ott') {
+function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
+  if (options.provider.type === ProviderEnum.OTT) {
     const ottAnalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.ottAnalytics');
     if (!ottAnalyticsPlugin) {
-      Utils.Object.mergeDeep(options, {
-        plugins: {
-          ottAnalytics: {}
-        }
-      });
+      Utils.Object.createPropertyPath(options, 'plugins.ottAnalytics', {});
+    }
+
+    //TODO: refactor to determine by OTT BE data
+    const kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
+    if (!kavaPlugin) {
+      Utils.Object.createPropertyPath(options, 'plugins.kava', {disable: true});
+    }
+  }
+  if (options.provider.type === ProviderEnum.OVP) {
+    let kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
+    if (!kavaPlugin) {
+      Utils.Object.createPropertyPath(options, 'plugins.kava', {});
     }
   }
 }

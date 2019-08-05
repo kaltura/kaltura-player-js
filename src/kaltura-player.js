@@ -27,7 +27,7 @@ import {
   Track,
   Utils
 } from '@playkit-js/playkit-js';
-import type BaseProvider from '@playkit-js/core-provider/src/base-provider';
+import {ProviderEnum} from './common/provider-manager';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;
@@ -35,6 +35,7 @@ class KalturaPlayer extends FakeEventTarget {
   _remotePlayer: ?BaseRemotePlayer = null;
   _localPlayer: Player;
   _provider: BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject> | null = null;
+  _providerType: ProviderEnumType = ProviderEnum.NONE;
   _uiWrapper: UIWrapper;
   _logger: any;
 
@@ -46,9 +47,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._uiWrapper = new UIWrapper(this, options);
-    if (options.provider.type === 'string' && providers.exists(options.provider.type)) {
+    if (providers.exists(options.provider.type)) {
       const Provider = providers.get(options.provider.type);
       this._provider = new Provider(options.provider, __VERSION__);
+      this._providerType = options.provider.type;
     }
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
@@ -75,9 +77,7 @@ class KalturaPlayer extends FakeEventTarget {
           mediaConfig => {
             const playerConfig = Utils.Object.copyDeep(mediaConfig);
             Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
-            if (this._provider && this._provider.type) {
-              mediaConfig.sources.poster = getKalturaPoster(this._provider.type, playerConfig.sources, mediaConfig.sources, this._player.dimensions);
-            }
+            mediaConfig.sources.poster = getKalturaPoster(this._providerType, playerConfig.sources, mediaConfig.sources, this._player.dimensions);
             this.setMedia(mediaConfig);
           },
           e =>
@@ -126,7 +126,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.setLoadingSpinnerState(false);
       return Promise.reject();
     } else {
-      const providerResult = this._provider.getPlaylistConfig(playlistInfo);
+      const providerResult = (this._provider: any).getPlaylistConfig(playlistInfo);
       providerResult.then(
         playlistData => this.setPlaylist(playlistData, playlistConfig),
         e =>
@@ -156,7 +156,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.setLoadingSpinnerState(false);
       return Promise.reject();
     } else {
-      const providerResult = this._provider.getEntryListConfig(entryList);
+      const providerResult = (this._provider: any).getEntryListConfig(entryList);
       providerResult.then(
         playlistData => this.setPlaylist(playlistData, playlistConfig, entryList),
         e =>

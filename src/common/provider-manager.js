@@ -4,6 +4,13 @@ import getLogger from '../common/utils/logger';
 const logger = getLogger('provider-manager');
 const providers: Map<string, Function> = new Map();
 
+const ProviderEnum = {
+  OTT: 'OTT',
+  OVP: 'OVP',
+  NONE: 'NONE'
+};
+type ProviderEnumType = $Keys<typeof ProviderEnum>;
+
 /**
  * register a provider with a name
  * @param {string} name - the provider name
@@ -42,4 +49,5 @@ function exists(name: string): boolean {
   return providers.has(name);
 }
 
-export {register, get, exists};
+export {register, get, exists, ProviderEnum};
+export type {ProviderEnumType};
