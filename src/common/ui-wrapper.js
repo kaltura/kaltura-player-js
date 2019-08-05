@@ -10,6 +10,7 @@ class UIWrapper {
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     const config: UIOptionsObject = options.ui;
+    config.uiComponents = [...(player._localPlayer.uiComponents || []), ...(config.uiComponents || [])];
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
