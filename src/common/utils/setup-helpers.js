@@ -284,6 +284,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
+  configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
@@ -298,7 +299,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
  * @returns {void}
  */
 function checkNativeHlsSupport(options: KPOptionsObject): void {
-  if (isSafari() || isIos()) {
+  if ((isMacOS() && isSafari()) || isIos()) {
     const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -391,6 +392,8 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
   if (isSmartTv()) {
+    //relevant for LG SDK 4 which doesn't support our check for autoplay
+    setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
@@ -402,6 +405,22 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
       if (typeof delayUntilSourceSelected !== 'boolean') {
         options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
       }
+    }
+  }
+}
+
+/**
+ * Sets default config option for ima plugin
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureIMADefaultOptions(options: KPOptionsObject): void {
+  if (isIos() && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+    if (playsinline === false && typeof disableMediaPreloadIma !== 'boolean') {
+      Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
     }
   }
 }
@@ -553,7 +572,7 @@ function isSafari(): boolean {
  * @returns {boolean} - if browser is Safari
  */
 function isMacOS(): boolean {
-  return Env.os.name.toLowerCase() === 'Mac OS';
+  return Env.os.name === 'Mac OS';
 }
 
 /**

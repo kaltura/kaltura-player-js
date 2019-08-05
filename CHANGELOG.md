@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.45.5"></a>
+## [0.45.5](https://github.com/kaltura/kaltura-player-js/compare/v0.45.4...v0.45.5) (2019-08-04)
+
+
+
+<a name="0.45.4"></a>
+## [0.45.4](https://github.com/kaltura/kaltura-player-js/compare/v0.45.3...v0.45.4) (2019-08-01)
+
+
+### Bug Fixes
+
+* **FEC-9273:** playing preroll on AV player (ios+playsinline=false) gets the player stuck ([#262](https://github.com/kaltura/kaltura-player-js/issues/262)) ([fb238b4](https://github.com/kaltura/kaltura-player-js/commit/fb238b4))
+
+
+
+<a name="0.45.3"></a>
+## [0.45.3](https://github.com/kaltura/kaltura-player-js/compare/v0.45.2...v0.45.3) (2019-07-30)
+
+
+
+<a name="0.45.2"></a>
+## [0.45.2](https://github.com/kaltura/kaltura-player-js/compare/v0.45.1...v0.45.2) (2019-07-28)
+
+
+### Bug Fixes
+
+* useNativeTextTrack doesn't change to true by default on MacOS ([#258](https://github.com/kaltura/kaltura-player-js/issues/258)) ([f4ee047](https://github.com/kaltura/kaltura-player-js/commit/f4ee047))
+* **FEC-9260:** Autoplay is not working on LG TV ([#260](https://github.com/kaltura/kaltura-player-js/issues/260)) ([ce838e0](https://github.com/kaltura/kaltura-player-js/commit/ce838e0))
+
+
+
+<a name="0.45.1"></a>
+## [0.45.1](https://github.com/kaltura/kaltura-player-js/compare/v0.45.0...v0.45.1) (2019-07-21)
+
+
+
 <a name="0.45.0"></a>
 # [0.45.0](https://github.com/kaltura/kaltura-player-js/compare/v0.44.0...v0.45.0) (2019-07-19)
 
