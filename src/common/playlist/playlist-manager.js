@@ -225,7 +225,7 @@ class PlaylistManager {
           itemData.sources,
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
         );
-        if (Array.isArray(itemData.sources.poster) && this._playerOptions.provider.type) {
+        if (Array.isArray(itemData.sources.poster)) {
           itemData.sources.poster = getKalturaPoster(this._playerOptions.provider.type, itemData.sources, item.sources, this._player.dimensions);
         }
         return {
