@@ -61,7 +61,6 @@ module.exports = {
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   externals: [
-    '@playkit-js/playkit-js',
-    '@playkit-js/playkit-js-ui'
+    '@playkit-js/playkit-js'
   ]
 };
