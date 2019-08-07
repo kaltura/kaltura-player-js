@@ -5,24 +5,14 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
-    "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
-    "dev": "webpack-dev-server --config webpack.config.js --mode production",
-    "build:ovp": "NODE_ENV=production webpack --config webpack.config.ovp.js",
-    "dev:ovp": "webpack-dev-server --config webpack.config.ovp.js",
-    "watch:ovp": "webpack --progress --colors --watch --config webpack.config.ovp.js",
-    "build:ott": "NODE_ENV=production webpack --config webpack.config.ott.js",
-    "dev:ott": "webpack-dev-server --config webpack.config.ott.js",
-    "watch:ott": "webpack --progress --colors --watch --config webpack.config.ott.js",
-    "test": "NODE_ENV=test karma start --color",
+    "build": "webpack --config webpack.config.js --mode production",
+    "dev": "webpack-dev-server --config webpack.config.js --mode development",
+    "watch": "webpack --progress --colors --watch --config webpack.config.js --mode development",
+    "test": "NODE_ENV=test karma start --color --mode development",
     "release": "standard-version",
-    "publish": "git push --follow-tags --no-verify origin master",
+    "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "eslint": "eslint . --color",
     "flow": "flow check",
-    "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)",
-    "playkit-dev-ovp:start": "playkit-dev start ovp",
-    "playkit-dev-ott:start": "playkit-dev start ott",
-    "playkit-dev:stop": "playkit-dev stop",
-    "playkit-rel": "playkit-rel start",
     "precommit": "lint-staged",
     "docs:generate": "documentation build flow-typed/** src/** -f md -o docs/api.md",
     "docs:serve": "documentation serve flow-typed/** src/** --watch"
@@ -36,15 +26,6 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "envManager": {
-    "devMode": {},
-    "releaseMode": []
-  },
-  "standard-version": {
-    "scripts": {
-      "postbump": "yarn run build:ovp && yarn run build:ott && npm run commit:dist"
-    }
   },
   "devDependencies": {
     "@playkit-js/core-provider": "^1.0.0",
