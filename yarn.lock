@@ -4552,12 +4552,6 @@ hipchat-notifier@^1.1.0:
     lodash "^4.0.0"
     request "^2.0.0"
 
-hls.js@^0.8.9:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.9.tgz#db367cc99ce5b0976ea3e059a1d044d7b0790697"
-  dependencies:
-    url-toolkit "^2.0.1"
-
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -9879,10 +9873,6 @@ url-parse@^1.1.8:
 url-to-options@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/url-to-options/-/url-to-options-1.0.1.tgz#1505a03a289a48cbd7a434efbaeec5055f5633a9"
-
-url-toolkit@^2.0.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.1.1.tgz#96c2da3cd672df1aa2ac7fc89240b2dcf5c99a80"
 
 url@^0.11.0:
   version "0.11.0"
