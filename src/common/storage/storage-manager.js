@@ -1,5 +1,6 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
+import {UI} from '../ui-wrapper';
 import getLogger from '../utils/logger';
 import {Utils} from '@playkit-js/playkit-js';
 
@@ -31,43 +32,45 @@ export default class StorageManager {
    * @returns {void}
    */
   static attach(player: Player): void {
-    StorageManager._logger.debug('Attach local storage');
-    player.addEventListener(player.Event.UI.USER_CLICKED_MUTE, () => {
-      if (!player.isCasting()) {
-        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
-      }
-    });
-    player.addEventListener(player.Event.UI.USER_CLICKED_UNMUTE, () => {
-      if (!player.isCasting()) {
-        StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
-      }
-    });
-    player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
-      if (!player.isCasting()) {
-        if (player.volume > 0) {
-          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, false);
-        } else {
-          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, true);
+    if (UI) {
+      StorageManager._logger.debug('Attach local storage');
+      player.addEventListener(player.Event.UI.USER_CLICKED_MUTE, () => {
+        if (!player.isCasting()) {
+          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
         }
-        StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
-      }
-    });
-    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
-      const audioTrack = event.payload.audioTrack;
-      StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
-    });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
-      const textTrack = event.payload.captionTrack;
-      StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
-    });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
-      try {
-        const textStyle = JSON.stringify(event.payload.captionsStyle);
-        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
-      } catch (e) {
-        this._logger.error(e.message);
-      }
-    });
+      });
+      player.addEventListener(player.Event.UI.USER_CLICKED_UNMUTE, () => {
+        if (!player.isCasting()) {
+          StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+        }
+      });
+      player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
+        if (!player.isCasting()) {
+          if (player.volume > 0) {
+            StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, false);
+          } else {
+            StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, true);
+          }
+          StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
+        }
+      });
+      player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
+        const audioTrack = event.payload.audioTrack;
+        StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
+      });
+      player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
+        const textTrack = event.payload.captionTrack;
+        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
+      });
+      player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
+        try {
+          const textStyle = JSON.stringify(event.payload.captionsStyle);
+          StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
+        } catch (e) {
+          this._logger.error(e.message);
+        }
+      });
+    }
   }
 
   /**

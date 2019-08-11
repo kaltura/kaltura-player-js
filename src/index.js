@@ -12,7 +12,8 @@ const NAME = __NAME__;
 // Import core
 import * as core from '@playkit-js/playkit-js';
 // Import ui
-import * as ui from '@playkit-js/playkit-js-ui';
+import {UI} from './common/ui-wrapper';
+export {UI as ui};
 // Import setup method
 import {setup} from './setup';
 import {getPlayers, getPlayer} from './proxy';
@@ -23,8 +24,8 @@ import {playlist} from './common/playlist';
 //Import provider-manager
 import * as providers from './common/provider-manager';
 //Import UI manager helper
-import {registerUIManager} from './common/ui-wrapper';
+import {registerUI} from './common/ui-wrapper';
 
 PolyfillManager.installAll();
 
-export {getPlayers, getPlayer, core, ui, registerUIManager, providers, setup, cast, playlist, VERSION, NAME, PLAYER_NAME};
+export {getPlayers, getPlayer, core, registerUI, providers, setup, cast, playlist, VERSION, NAME, PLAYER_NAME};

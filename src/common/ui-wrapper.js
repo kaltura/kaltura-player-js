@@ -3,7 +3,7 @@ import {Env, Utils} from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
 import {KalturaPlayer} from '../kaltura-player';
 
-let UIManager: Function | null = null;
+let _UI: Function | null = null;
 
 class UIWrapper {
   _uiManager: any;
@@ -11,11 +11,11 @@ class UIWrapper {
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     const config: UIOptionsObject = options.ui;
-    if (config.disable || !UIManager) {
+    if (config.disable || (!_UI || !_UI.UIManager)) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
     } else {
-      this._uiManager = new UIManager(player, config);
+      this._uiManager = new _UI.UIManager(player, config);
       if (config.customPreset) {
         this._uiManager.buildCustomUI(config.customPreset);
       } else {
@@ -104,11 +104,11 @@ function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekb
 
 /**
  * register UI manager handler
- * @param {Function} manager - a UIManager class
+ * @param {Function} UI - UI
  * @returns {void}
  */
-function registerUIManager(manager: Function): void {
-  UIManager = manager;
+function registerUI(UI: Function): void {
+  _UI = UI;
 }
 
-export {UIWrapper, registerUIManager};
+export {UIWrapper, registerUI, _UI as UI};

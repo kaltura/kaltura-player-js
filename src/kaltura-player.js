@@ -1,12 +1,11 @@
 // @flow
-import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {hasYoutubeSource, maybeSetStreamPriority, supportLegacyOptions} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
 import {getKalturaPoster} from './common/poster';
 import './assets/style.css';
-import {UIWrapper} from './common/ui-wrapper';
+import {UIWrapper, UI} from './common/ui-wrapper';
 import * as providers from './common/provider-manager';
 import {PlaylistManager} from './common/playlist/playlist-manager';
 import {PlaylistEventType} from './common/playlist/playlist-event-type';
@@ -77,7 +76,12 @@ class KalturaPlayer extends FakeEventTarget {
           mediaConfig => {
             const playerConfig = Utils.Object.copyDeep(mediaConfig);
             Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
-            mediaConfig.sources.poster = getKalturaPoster(this._providerType, playerConfig.sources, mediaConfig.sources, this._player.dimensions);
+            mediaConfig.sources.poster = getKalturaPoster(
+              this._providerType,
+              playerConfig.sources,
+              mediaConfig.sources,
+              this._localPlayer.dimensions
+            );
             this.setMedia(mediaConfig);
           },
           e =>
@@ -502,7 +506,7 @@ class KalturaPlayer extends FakeEventTarget {
       Cast: CastEventType,
       Core: CoreEventType,
       Playlist: PlaylistEventType,
-      UI: UIEventType,
+      UI: UI && UI.EventType,
       // For backward compatibility
       ...CoreEventType
     };

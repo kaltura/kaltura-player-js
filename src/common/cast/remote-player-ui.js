@@ -1,5 +1,5 @@
 // @flow
-import {Presets} from '@playkit-js/playkit-js-ui';
+import {UI} from '../ui-wrapper';
 
 /**
  * @class RemotePlayerUI
@@ -21,7 +21,10 @@ class RemotePlayerUI {
    * @memberof RemotePlayerUI
    */
   playbackUI(props: Object): any {
-    return Presets.playbackUI(props);
+    if (UI) {
+      return UI.Presets.playbackUI(props);
+    }
+    return null;
   }
 
   /**
@@ -32,7 +35,10 @@ class RemotePlayerUI {
    * @memberof RemotePlayerUI
    */
   idleUI(props: Object): any {
-    return Presets.idleUI(props);
+    if (UI) {
+      return UI.Presets.idleUI(props);
+    }
+    return null;
   }
 
   /**
@@ -43,7 +49,10 @@ class RemotePlayerUI {
    * @memberof RemotePlayerUI
    */
   adsUI(props: Object): any {
-    return Presets.adsUI(props);
+    if (UI) {
+      return UI.Presets.adsUI(props);
+    }
+    return null;
   }
 
   /**
@@ -54,7 +63,10 @@ class RemotePlayerUI {
    * @memberof RemotePlayerUI
    */
   liveUI(props: Object): any {
-    return Presets.liveUI(props);
+    if (UI) {
+      return UI.Presets.liveUI(props);
+    }
+    return null;
   }
 
   /**
@@ -65,7 +77,10 @@ class RemotePlayerUI {
    * @memberof RemotePlayerUI
    */
   errorUI(props: Object): any {
-    return Presets.errorUI(props);
+    if (UI) {
+      return UI.Presets.errorUI(props);
+    }
+    return null;
   }
 
   /**
