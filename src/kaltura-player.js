@@ -71,7 +71,6 @@ class KalturaPlayer extends FakeEventTarget {
     } else {
       const providerResult = this._provider.getMediaConfig(mediaInfo);
       providerResult
-
         .then(
           mediaConfig => {
             const playerConfig = Utils.Object.copyDeep(mediaConfig);

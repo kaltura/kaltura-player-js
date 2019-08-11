@@ -20,10 +20,10 @@ function getKalturaPoster(
   let poster = null;
   switch (providerType) {
     case ProviderEnum.OTT:
-      poster = getKalturaOvpPoster(playerSources, mediaSources, dimensions);
+      poster = getKalturaOttPoster(playerSources, mediaSources, dimensions);
       break;
     case ProviderEnum.OVP:
-      poster = getKalturaOttPoster(playerSources, mediaSources, dimensions);
+      poster = getKalturaOvpPoster(playerSources, mediaSources, dimensions);
       break;
     case ProviderEnum.NONE:
     case null:
