@@ -45,8 +45,8 @@ function getKalturaOvpPoster(
   mediaSources: ProviderMediaConfigSourcesObject,
   dimensions: Object
 ): string | null {
-  let poster = null;
   const playerPoster = playerSources.poster;
+  let poster = playerPoster;
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
@@ -71,8 +71,8 @@ function getKalturaOttPoster(
   mediaSources: ProviderMediaConfigSourcesObject,
   dimensions: Object
 ): string | null {
-  let poster = null;
   const playerPoster = playerSources.poster;
+  let poster = playerPoster;
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
