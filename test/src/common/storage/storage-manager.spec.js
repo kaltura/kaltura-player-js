@@ -1,26 +1,35 @@
 import StorageManager from '../../../../src/common/storage/storage-manager';
 import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
 import * as TestUtils from '../../utils/test-utils';
-import {setup} from '../../../../src';
-import {FakeEvent} from '@playkit-js/playkit-js';
+import {registerUI, setup} from '../../../../src';
+import {FakeEvent, registerPlugin} from '@playkit-js/playkit-js';
+import {ProviderEnum, register} from '../../../../src/common/provider-manager';
+import {MediaConfig} from '../../mock-data/media';
+import {UIStub} from '../../mock-data/ui.stub';
+import {Provider} from '../../mock-data/provider.stub';
+import {KavaStub} from '../../mock-data/kava.stub';
 
 const targetId = 'player-placeholder_storage-manager.spec';
 
 describe('StorageManager', function() {
-  let config, player, sandbox;
+  let config: PartialKPOptionsObject, player, sandbox;
   const partnerId = 1091;
   const entryId = '0_wifqaipd';
 
   before(function() {
     TestUtils.createElement('DIV', targetId);
+    registerPlugin('kava', KavaStub);
+    register(ProviderEnum.OVP, Provider);
   });
 
   beforeEach(function() {
     sandbox = sinon.sandbox.create();
     config = {
       targetId: targetId,
+      log: {playerVersion: false},
       provider: {
-        partnerId: partnerId
+        partnerId: partnerId,
+        type: ProviderEnum.OVP
       }
     };
   });
@@ -36,9 +45,6 @@ describe('StorageManager', function() {
   });
 
   it('should return it has no storage', function() {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
     sandbox.stub(StorageWrapper, 'size').get(() => {
       return 0;
     });
@@ -46,9 +52,6 @@ describe('StorageManager', function() {
   });
 
   it('should return it has storage', function() {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper.prototype._isLocalStorageAvailable = true;
-    });
     sandbox.stub(StorageWrapper, 'size').get(() => {
       return 1;
     });
@@ -56,9 +59,6 @@ describe('StorageManager', function() {
   });
 
   it('should return config for volume', function() {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
     sandbox.stub(StorageWrapper, 'size').get(() => {
       return 1;
     });
@@ -74,9 +74,6 @@ describe('StorageManager', function() {
   });
 
   it('should return config for all properties', function() {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
     let getItemStub = sandbox.stub(StorageWrapper, 'getItem');
     getItemStub.withArgs('volume').returns(0.5);
     getItemStub.withArgs('muted').returns(false);
@@ -92,23 +89,34 @@ describe('StorageManager', function() {
     });
   });
 
-  it('should set muted to true/false depends on changed volume', function() {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
+  it('should set muted to true/false depends on changed volume', function(done) {
+    registerUI(UIStub);
     player = setup(config);
-    player.loadMedia({entryId: entryId}).then(() => {
-      player.muted = true;
-      player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
-      StorageManager.getStorageConfig().playback.muted.should.be.true;
-      player.volume = 0.5;
-      player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-      StorageManager.getStorageConfig().playback.muted.should.be.false;
-      StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
-      player.volume = 0;
-      player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-      StorageManager.getStorageConfig().playback.muted.should.be.true;
-      StorageManager.getStorageConfig().playback.volume.should.equals(0);
-    });
+    sinon.stub(player._provider, 'getMediaConfig').resolves(MediaConfig[entryId]);
+    player
+      .loadMedia({entryId: entryId})
+      .then(() => {
+        try {
+          player.muted = true;
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
+          StorageManager.getStorageConfig().playback.muted.should.be.true;
+          player.volume = 0.5;
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+          StorageManager.getStorageConfig().playback.muted.should.be.false;
+          StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
+          player.volume = 0;
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+          StorageManager.getStorageConfig().playback.muted.should.be.true;
+          StorageManager.getStorageConfig().playback.volume.should.equals(0);
+          registerUI(null);
+          done();
+        } catch (e) {
+          registerUI({UIManager: null});
+          done(e);
+        }
+      })
+      .catch(e => {
+        done(e);
+      });
   });
 });

@@ -2,6 +2,10 @@ import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
+import {ProviderEnum, register} from '../../src/common/provider-manager';
+import {EMPTY_CONFIG_RESPONSE, Provider} from './mock-data/provider.stub';
+import {registerPlugin} from '@playkit-js/playkit-js';
+import {KavaStub} from './mock-data/kava.stub';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -11,14 +15,18 @@ describe('kaltura player api', function() {
 
   before(function() {
     TestUtils.createElement('DIV', targetId);
+    registerPlugin('kava', KavaStub);
+    register(ProviderEnum.OVP, Provider);
   });
 
   beforeEach(function() {
     sandbox = sinon.sandbox.create();
     config = {
       targetId: targetId,
+      log: {playerVersion: false},
       provider: {
-        partnerId: partnerId
+        partnerId: partnerId,
+        type: ProviderEnum.OVP
       }
     };
   });
@@ -50,11 +58,20 @@ describe('kaltura player api', function() {
       });
 
       it('should get media by id from the provider and set it', function(done) {
-        kalturaPlayer.loadMedia({playlistId: entryId}).then(mediaConfig => {
-          mediaConfig.sources.id.should.equal(entryId);
-          kalturaPlayer.config.sources.id.should.equal(entryId);
-          done();
-        });
+        kalturaPlayer
+          .loadMedia({playlistId: entryId})
+          .then(mediaConfig => {
+            try {
+              mediaConfig.sources.id.should.equal(entryId);
+              kalturaPlayer.config.sources.id.should.equal(entryId);
+              done();
+            } catch (e) {
+              done(e);
+            }
+          })
+          .catch(e => {
+            done(e);
+          });
       });
 
       it('should reject and throw an error when the provider request failed', function(done) {
@@ -63,30 +80,39 @@ describe('kaltura player api', function() {
           errorEventTriggered = true;
         });
         kalturaPlayer.loadMedia({}).catch(error => {
-          error.data.should.equal('Missing mandatory parameter');
-          error.success.should.be.false;
-          errorEventTriggered.should.be.true;
-          done();
+          try {
+            error.data.should.equal('Missing mandatory parameter');
+            error.success.should.be.false;
+            errorEventTriggered.should.be.true;
+            done();
+          } catch (e) {
+            done(e);
+          }
         });
       });
 
       describe('maybeSetStreamPriority', function() {
         describe('media source mime type is video/youtube', function() {
           it('should add youtube to stream priority if not already set', function(done) {
-            kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
-              let hasYoutube = false;
-              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
-                if (sp.engine === 'youtube') {
-                  hasYoutube = true;
+            kalturaPlayer
+              .loadMedia({entryId: 'Youtube'})
+              .then(() => {
+                let hasYoutube = false;
+                kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+                  if (sp.engine === 'youtube') {
+                    hasYoutube = true;
+                  }
+                });
+                try {
+                  hasYoutube.should.be.true;
+                  done();
+                } catch (e) {
+                  done("youtube engine wasn't added to stream priority list");
                 }
+              })
+              .catch(e => {
+                done(e);
               });
-              try {
-                hasYoutube.should.be.true;
-                done();
-              } catch (e) {
-                done("youtube engine wasn't added to stream priority list");
-              }
-            });
           });
           it('should not add youtube to stream priority if already set', function(done) {
             kalturaPlayer.configure({
@@ -99,39 +125,49 @@ describe('kaltura player api', function() {
                 ]
               }
             });
-            kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
-              let hasYoutube = false;
-              kalturaPlayer.config.playback.streamPriority.length.should.equal(1);
-              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
-                if (sp.engine === 'youtube') {
-                  hasYoutube = true;
+            kalturaPlayer
+              .loadMedia({entryId: 'Youtube'})
+              .then(() => {
+                let hasYoutube = false;
+                kalturaPlayer.config.playback.streamPriority.length.should.equal(1);
+                kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+                  if (sp.engine === 'youtube') {
+                    hasYoutube = true;
+                  }
+                });
+                try {
+                  hasYoutube.should.be.true;
+                  done();
+                } catch (e) {
+                  done("youtube engine wasn't added to stream priority list");
                 }
+              })
+              .catch(e => {
+                done(e);
               });
-              try {
-                hasYoutube.should.be.true;
-                done();
-              } catch (e) {
-                done("youtube engine wasn't added to stream priority list");
-              }
-            });
           });
         });
         describe('media source mime type is not video/youtube', function() {
           it('should not add youtube to stream priority', function(done) {
-            kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-              let hasYoutube = false;
-              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
-                if (sp.engine === 'youtube') {
-                  hasYoutube = true;
+            kalturaPlayer
+              .loadMedia({entryId: entryId})
+              .then(() => {
+                let hasYoutube = false;
+                kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+                  if (sp.engine === 'youtube') {
+                    hasYoutube = true;
+                  }
+                });
+                try {
+                  hasYoutube.should.be.false;
+                  done();
+                } catch (e) {
+                  done('youtube engine was added to stream priority list');
                 }
+              })
+              .catch(e => {
+                done(e);
               });
-              try {
-                hasYoutube.should.be.false;
-                done();
-              } catch (e) {
-                done('youtube engine was added to stream priority list');
-              }
-            });
           });
         });
       });
@@ -144,6 +180,7 @@ describe('kaltura player api', function() {
 
       beforeEach(function() {
         kalturaPlayer = setup(config);
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(EMPTY_CONFIG_RESPONSE);
         sinon.stub(kalturaPlayer._provider, 'getPlaylistConfig').callsFake(function(playlistInfo) {
           return playlistInfo.playlistId
             ? Promise.resolve(PlaylistMockData.playlistByID)
@@ -189,6 +226,7 @@ describe('kaltura player api', function() {
     describe('loadPlaylistByEntryList', function() {
       beforeEach(function() {
         kalturaPlayer = setup(config);
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(EMPTY_CONFIG_RESPONSE);
         sinon.stub(kalturaPlayer._provider, 'getEntryListConfig').callsFake(function(entryList) {
           return entryList.entries
             ? Promise.resolve(PlaylistMockData.playlistByEntryList)

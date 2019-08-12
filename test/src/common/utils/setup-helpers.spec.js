@@ -12,6 +12,7 @@ import {
   getDefaultOptions
 } from '../../../../src/common/utils/setup-helpers';
 import {Env} from '@playkit-js/playkit-js';
+import {ProviderEnum} from '../../../../src/common/provider-manager';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 
@@ -170,9 +171,9 @@ describe('setStorageConfig', function() {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
-    sandbox.stub(StorageManager, 'hasStorage', () => true);
-    sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
+    sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
@@ -186,9 +187,9 @@ describe('setStorageConfig', function() {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
-    sandbox.stub(StorageManager, 'hasStorage', () => true);
-    sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
+    sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
@@ -212,7 +213,8 @@ describe('supportLegacyOptions', function() {
       }
     },
     provider: {
-      partnerId: 1091
+      partnerId: 1091,
+      type: ProviderEnum.OVP
     },
     ui: {
       components: {
@@ -241,7 +243,8 @@ describe('supportLegacyOptions', function() {
       }
     },
     provider: {
-      partnerId: 1091
+      partnerId: 1091,
+      type: ProviderEnum.OVP
     },
     ui: {
       components: {
@@ -267,7 +270,8 @@ describe('supportLegacyOptions', function() {
       autoplay: false
     },
     provider: {
-      partnerId: 1091
+      partnerId: 1091,
+      type: ProviderEnum.OVP
     },
     ui: {
       components: {
@@ -319,7 +323,8 @@ describe('plugins config', function() {
     Env.os.name = 'iOS';
     const options = {
       provider: {
-        partnerId: 1091
+        partnerId: 1091,
+        type: ProviderEnum.OVP
       },
       playback: {
         playsinline: false
@@ -339,7 +344,8 @@ describe('plugins config', function() {
     Env.os.name = 'iOS';
     const options = {
       provider: {
-        partnerId: 1091
+        partnerId: 1091,
+        type: ProviderEnum.OVP
       },
       playback: {
         playsinline: false

@@ -3,6 +3,7 @@ import {evaluatePluginsConfig} from '../../../../src/common/plugins/plugins-conf
 describe('evaluatePluginsConfig', function() {
   const playerConfig = {
     targetId: 'myTargetId',
+    log: {playerVersion: false},
     provider: {
       partnerId: '1234'
     }

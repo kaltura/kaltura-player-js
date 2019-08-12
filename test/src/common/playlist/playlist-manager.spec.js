@@ -2,14 +2,19 @@ import {KalturaPlayer} from '../../../../src/kaltura-player';
 import {PlaylistManager} from '../../../../src/common/playlist/playlist-manager';
 import * as MediaMockData from '../../mock-data/media';
 import * as PlaylistMockData from '../../mock-data/playlist';
-import {FakeEvent} from '@playkit-js/playkit-js';
+import {FakeEvent, registerPlugin} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
+import {ProviderEnum} from '../../../../src/common/provider-manager';
+import {KavaStub} from '../../mock-data/kava.stub';
 
 describe('PlaylistManager', function() {
   let kalturaPlayer, playlistManager, sandbox;
-  const config = {
+  const config: PartialKPOptionsObject = {
     ui: {},
-    provider: {},
+    log: {playerVersion: false},
+    provider: {
+      type: ProviderEnum.OVP
+    },
     playback: {
       autoplay: true
     }
@@ -17,6 +22,7 @@ describe('PlaylistManager', function() {
 
   before(function() {
     sandbox = sinon.sandbox.create();
+    registerPlugin('kava', KavaStub);
     kalturaPlayer = new KalturaPlayer(config);
   });
 
@@ -115,6 +121,7 @@ describe('PlaylistManager', function() {
         eventCounter++;
         if (eventCounter === 2) {
           done();
+          return;
         }
         playlistManager._options.autoContinue = false;
         playlistManager._options.loop = true;
@@ -152,6 +159,7 @@ describe('PlaylistManager', function() {
         eventCounter++;
         if (eventCounter === 2) {
           done();
+          return;
         }
         playlistManager._options.autoContinue = true;
         playlistManager._options.loop = true;
@@ -188,8 +196,12 @@ describe('PlaylistManager', function() {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ENDED, () => {
         kalturaPlayer._eventManager.unlisten(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, onItemChanged);
         kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, e => {
-          e.payload.index.should.equal(0);
-          done();
+          try {
+            e.payload.index.should.equal(0);
+            done();
+          } catch (e) {
+            done(e);
+          }
         });
       });
       playlistManager.configure(PlaylistMockData.playlistByConfig);
@@ -272,7 +284,12 @@ describe('PlaylistManager', function() {
         items: [
           {
             sources: {
-              hls: [{url: 'source_url'}],
+              progressive: [
+                {
+                  url: 'source_url',
+                  mimetype: 'video/mp4'
+                }
+              ],
               poster: 'poster_url',
               dvr: true
             }
@@ -388,6 +405,7 @@ describe('PlaylistManager', function() {
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         if (eventCounter === 2) {
           done();
+          return;
         }
         eventCounter++;
         playlistManager.playNext();

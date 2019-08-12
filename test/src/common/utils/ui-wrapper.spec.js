@@ -1,8 +1,11 @@
-import {UIWrapper} from '../../../../src/common/ui-wrapper';
+import {UIWrapper, registerUI} from '../../../../src/common/ui-wrapper';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../../../../src/common/utils/thumbs';
 import * as TestUtils from '../../utils/test-utils';
 import {getPlayerProxy} from '../../../../src/proxy';
 import {getDefaultOptions} from '../../../../src/common/utils/setup-helpers';
+import {UIStub} from '../../mock-data/ui.stub';
+import {registerPlugin} from '@playkit-js/playkit-js';
+import {KavaStub} from '../../mock-data/kava.stub';
 
 const targetId = 'player-placeholder_ui-wrapper.spec';
 
@@ -12,6 +15,7 @@ describe('UIWrapper', function() {
 
   before(function() {
     TestUtils.createElement('DIV', targetId);
+    registerPlugin('kava', KavaStub);
   });
 
   afterEach(function() {
@@ -25,6 +29,7 @@ describe('UIWrapper', function() {
   describe('setSeekbarConfig', function() {
     beforeEach(function() {
       sandbox = sinon.sandbox.create();
+      registerUI(UIStub);
       player = getPlayerProxy(getDefaultOptions({targetId: 'player', provider: {partnerId: 123}}));
       mediaConfig = {
         session: {
@@ -53,11 +58,11 @@ describe('UIWrapper', function() {
     });
 
     afterEach(function() {
-      uiWrapper._uiManager.store.getState().config.components.seekbar = {};
       sandbox.restore();
       uiWrapper = null;
       player.destroy();
       player = null;
+      registerUI(null);
     });
 
     it('should set the configured thumbs sprite with default sizes', function(done) {

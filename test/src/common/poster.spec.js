@@ -1,7 +1,10 @@
 import {getKalturaPoster} from '../../../src/common/poster';
 import * as TestUtils from '../utils/test-utils';
 import {setup} from '../../../src/setup';
-import {ProviderEnum} from '../../../src/common/provider-manager';
+import {ProviderEnum, register} from '../../../src/common/provider-manager';
+import {registerPlugin} from '@playkit-js/playkit-js';
+import {KavaStub} from '../mock-data/kava.stub';
+import {Provider} from '../mock-data/provider.stub';
 
 const targetId = 'player-placeholder_ovp/poster.spec';
 
@@ -9,15 +12,15 @@ describe('getKalturaPoster', function() {
   it('should append width and height to kaltura poster', function() {
     const mediaSources = {poster: 'https//my/kaltura/poster'};
     const playerSources = {poster: 'https//my/kaltura/poster'};
-    const poster = getKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
-    poster.should.equal('https//my/kaltura/poster/height/360/width/640');
+    const poster = getKalturaPoster(ProviderEnum.OVP, playerSources, mediaSources, {width: 640, height: 360});
+    'https//my/kaltura/poster/height/360/width/640'.should.equal(poster);
   });
 
   it('should not append width and height to kaltura poster', function() {
     const mediaSources = {poster: 'https//my/kaltura/poster'};
     const playerSources = {poster: 'https//my/non/kaltura/poster'};
-    const poster = getKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
-    poster.should.equal('https//my/non/kaltura/poster');
+    const poster = getKalturaPoster(ProviderEnum.OVP, playerSources, mediaSources, {width: 640, height: 360});
+    'https//my/non/kaltura/poster'.should.equal(poster);
   });
 
   describe('Poster Integration', function() {
@@ -33,12 +36,15 @@ describe('getKalturaPoster', function() {
 
     before(function() {
       TestUtils.createElement('DIV', targetId);
+      registerPlugin('kava', KavaStub);
+      register(ProviderEnum.OVP, Provider);
     });
 
     beforeEach(function() {
       sandbox = sinon.sandbox.create();
       config = {
         targetId: targetId,
+        log: {playerVersion: false},
         provider: {
           partnerId: partnerId,
           env: env,
@@ -62,86 +68,108 @@ describe('getKalturaPoster', function() {
     it('should choose configured poster', function(done) {
       config.sources.poster = myCustomPosterUrl;
       kalturaPlayer = setup(config);
-      kalturaPlayer._provider = {getMediaConfig: () => {}};
-      kalturaPlayer._providerType = ProviderEnum.OVP;
       sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
-      kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-        try {
-          kalturaPlayer.config.sources.poster.should.equal(myCustomPosterUrl);
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-    });
-
-    it('should choose backend poster', function(done) {
-      kalturaPlayer = setup(config);
-      kalturaPlayer._provider = {getMediaConfig: () => {}};
-      kalturaPlayer._providerType = ProviderEnum.OVP;
-      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
-      kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-        try {
-          kalturaPlayer.config.sources.poster.should.have.string(mediaConfig1.sources.poster);
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-    });
-
-    it('should choose backend poster on change media', function(done) {
-      kalturaPlayer = setup(config);
-      kalturaPlayer._provider = {getMediaConfig: () => {}};
-      kalturaPlayer._providerType = ProviderEnum.OVP;
-      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
-      kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-        try {
-          kalturaPlayer.config.sources.poster.should.have.string(mediaConfig1.sources.poster);
-        } catch (e) {
-          done(e);
-          return;
-        }
-        sandbox.restore();
-        sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig2)));
-        kalturaPlayer.loadMedia({entryId: alterEntryId}).then(() => {
-          try {
-            kalturaPlayer.config.sources.poster.should.have.string(mediaConfig2.sources.poster);
-            done();
-          } catch (e) {
-            done(e);
-          }
-        });
-      });
-    });
-
-    it('should choose configured poster on change media', function(done) {
-      kalturaPlayer = setup(config);
-      kalturaPlayer._provider = {getMediaConfig: () => {}};
-      kalturaPlayer._providerType = ProviderEnum.OVP;
-      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
-      kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-        try {
-          kalturaPlayer.config.sources.poster.should.have.string(mediaConfig1.sources.poster);
-        } catch (e) {
-          done(e);
-          return;
-        }
-        kalturaPlayer.reset();
-        kalturaPlayer.configure({
-          sources: {
-            poster: myCustomPosterUrl
-          }
-        });
-        kalturaPlayer.loadMedia({entryId: alterEntryId}).then(() => {
+      kalturaPlayer
+        .loadMedia({entryId: entryId})
+        .then(() => {
           try {
             kalturaPlayer.config.sources.poster.should.equal(myCustomPosterUrl);
             done();
           } catch (e) {
             done(e);
           }
+        })
+        .catch(e => {
+          done(e);
         });
-      });
+    });
+
+    it('should choose backend poster', function(done) {
+      kalturaPlayer = setup(config);
+      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
+      kalturaPlayer
+        .loadMedia({entryId: entryId})
+        .then(() => {
+          try {
+            kalturaPlayer.config.sources.poster.should.have.string(mediaConfig1.sources.poster);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        })
+        .catch(e => {
+          done(e);
+        });
+    });
+
+    it('should choose backend poster on change media', function(done) {
+      kalturaPlayer = setup(config);
+      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
+      kalturaPlayer
+        .loadMedia({entryId: entryId})
+        .then(() => {
+          try {
+            kalturaPlayer.config.sources.poster.should.have.string(mediaConfig1.sources.poster);
+          } catch (e) {
+            done(e);
+            return;
+          }
+          sandbox.restore();
+          sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig2)));
+          kalturaPlayer
+            .loadMedia({entryId: alterEntryId})
+            .then(() => {
+              try {
+                kalturaPlayer.config.sources.poster.should.have.string(mediaConfig2.sources.poster);
+                done();
+              } catch (e) {
+                done(e);
+              }
+            })
+            .catch(e => {
+              done(e);
+            });
+        })
+        .catch(e => {
+          done(e);
+        });
+    });
+
+    it('should choose configured poster on change media', function(done) {
+      kalturaPlayer = setup(config);
+      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
+      kalturaPlayer
+        .loadMedia({entryId: entryId})
+        .then(() => {
+          try {
+            kalturaPlayer.config.sources.poster.should.have.string(mediaConfig1.sources.poster);
+          } catch (e) {
+            done(e);
+            return;
+          }
+          kalturaPlayer.reset();
+          kalturaPlayer.configure({
+            sources: {
+              poster: myCustomPosterUrl
+            }
+          });
+          kalturaPlayer
+            .loadMedia({entryId: alterEntryId})
+            .then(() => {
+              try {
+                kalturaPlayer.config.sources.poster.should.equal(myCustomPosterUrl);
+                done();
+              } catch (e) {
+                done(e);
+              }
+            })
+            .catch(e => {
+              done(e);
+            });
+        })
+        .catch(e => {
+          done(e);
+        });
     });
   });
 });
