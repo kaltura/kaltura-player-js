@@ -68,7 +68,7 @@ describe('getKalturaPoster', function() {
     it('should choose configured poster', function(done) {
       config.sources.poster = myCustomPosterUrl;
       kalturaPlayer = setup(config);
-      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
+      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(mediaConfig1);
       kalturaPlayer
         .loadMedia({entryId: entryId})
         .then(() => {
@@ -86,7 +86,7 @@ describe('getKalturaPoster', function() {
 
     it('should choose backend poster', function(done) {
       kalturaPlayer = setup(config);
-      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
+      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(mediaConfig1);
       kalturaPlayer
         .loadMedia({entryId: entryId})
         .then(() => {
@@ -104,7 +104,7 @@ describe('getKalturaPoster', function() {
 
     it('should choose backend poster on change media', function(done) {
       kalturaPlayer = setup(config);
-      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(JSON.parse(JSON.stringify(mediaConfig1)));
+      sandbox.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(mediaConfig1);
       kalturaPlayer
         .loadMedia({entryId: entryId})
         .then(() => {
