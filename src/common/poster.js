@@ -38,11 +38,15 @@ function getKalturaPoster(
  * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
  * @param {Object} dimensions - player dimensions object
  * @private
- * @returns {string} the poster
+ * @returns {string | null} the poster
  */
-function getKalturaOvpPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): string {
+function getKalturaOvpPoster(
+  playerSources: PKSourcesConfigObject,
+  mediaSources: ProviderMediaConfigSourcesObject,
+  dimensions: Object
+): string | null {
   const playerPoster = playerSources.poster;
-  let poster = playerPoster || '';
+  let poster = playerPoster;
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
@@ -60,11 +64,15 @@ function getKalturaOvpPoster(playerSources: PKSourcesConfigObject, mediaSources:
  * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
  * @param {Object} dimensions - player dimensions object
  * @private
- * @returns {string} the poster
+ * @returns {string | null} the poster
  */
-function getKalturaOttPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): string {
+function getKalturaOttPoster(
+  playerSources: PKSourcesConfigObject,
+  mediaSources: ProviderMediaConfigSourcesObject,
+  dimensions: Object
+): string | null {
   const playerPoster = playerSources.poster;
-  let poster = playerPoster || '';
+  let poster = playerPoster;
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
