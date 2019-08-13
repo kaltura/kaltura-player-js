@@ -59,7 +59,7 @@ describe('kaltura player api', function() {
 
       it('should get media by id from the provider and set it', function(done) {
         kalturaPlayer
-          .loadMedia({playlistId: entryId})
+          .loadMedia({entryId: entryId})
           .then(mediaConfig => {
             try {
               mediaConfig.sources.id.should.equal(entryId);

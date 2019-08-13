@@ -165,4 +165,83 @@ const MediaConfig = {
   }
 };
 
-export {MediaConfig};
+const mediaConfig1 = {
+  session: {
+    isAnonymous: true,
+    partnerId: 1234,
+    ks: '1234'
+  },
+  sources: {
+    hls: [
+      {
+        id: '0_wifqaipd_861,applehttp',
+        url: 'http://myDomain.com/a.m3u8',
+        mimetype: 'application/x-mpegURL'
+      }
+    ],
+    dash: [],
+    progressive: [
+      {
+        id: '0_wifqaipd_861,applehttp',
+        url: 'http://myDomain.com/b.mp4',
+        mimetype: 'video/mp4'
+      }
+    ],
+    id: '0_wifqaipd',
+    duration: 741,
+    type: 'Vod',
+    poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+    dvr: false,
+    vr: null,
+    metadata: {
+      name: 'MPEG Dash with MultiAudio New Transcoding',
+      description: '',
+      tags: '',
+      MediaType: 'Movie',
+      WatchPermissionRule: 'Parrent Allowed'
+    },
+    captions: []
+  },
+  plugins: {}
+};
+const mediaConfig2 = {
+  session: {
+    isAnonymous: true,
+    partnerId: 12345,
+    ks: '12345'
+  },
+  sources: {
+    hls: [
+      {
+        id: '0_4ktof5po_861,applehttp',
+        url: 'http://myDomain.com/b.m3u8',
+        mimetype: 'application/x-mpegURL'
+      }
+    ],
+    dash: [],
+    progressive: [
+      {
+        id: '0_4ktof5po_861,applehttp',
+        url: 'http://myDomain.com/b.mp4',
+        mimetype: 'video/mp4'
+      }
+    ],
+    id: '0_4ktof5po',
+    duration: 741,
+    type: 'Vod',
+    poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_4ktof5po/version/100042',
+    dvr: false,
+    vr: null,
+    metadata: {
+      name: 'MPEG Dash with MultiAudio New Transcoding',
+      description: '',
+      tags: '',
+      MediaType: 'Movie',
+      WatchPermissionRule: 'Parrent Allowed'
+    },
+    captions: []
+  },
+  plugins: {}
+};
+
+export {MediaConfig, mediaConfig1, mediaConfig2};

@@ -319,6 +319,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
+  const kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
   if (options.provider.type === ProviderEnum.OTT) {
     const ottAnalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.ottAnalytics');
     if (!ottAnalyticsPlugin) {
@@ -326,13 +327,11 @@ function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
     }
 
     //TODO: refactor to determine by OTT BE data
-    const kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
     if (!kavaPlugin) {
       Utils.Object.createPropertyPath(options, 'plugins.kava', {disable: true});
     }
   }
   if (options.provider.type === ProviderEnum.OVP) {
-    let kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
     if (!kavaPlugin) {
       Utils.Object.createPropertyPath(options, 'plugins.kava', {});
     }

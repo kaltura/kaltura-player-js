@@ -5,7 +5,6 @@ import './common/polyfills/all';
 declare var __VERSION__: string;
 declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
-const PLAYER_NAME = __NAME__;
 const VERSION = __VERSION__;
 const NAME = __NAME__;
 
@@ -26,4 +25,4 @@ import * as providers from './common/provider-manager';
 
 PolyfillManager.installAll();
 
-export {getPlayers, getPlayer, core, registerUI, providers, setup, cast, playlist, VERSION, NAME, PLAYER_NAME};
+export {getPlayers, getPlayer, core, registerUI, providers, setup, cast, playlist, VERSION, NAME};

@@ -11,7 +11,7 @@ import {KavaStub} from './mock-data/kava.stub';
 const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function() {
-  let config, kalturaPlayer, sandbox;
+  let config: PartialKPOptionsObject, kalturaPlayer, sandbox;
   const entryId = '0_wifqaipd';
   const partnerId = 1091;
   const env = {
