@@ -1,5 +1,7 @@
 export class Provider {
-  getMediaConfig() {}
+  getMediaConfig() {
+    return Promise.resolve(EMPTY_CONFIG_RESPONSE);
+  }
   getPlaylistConfig() {}
   getEntryListConfig() {}
 }

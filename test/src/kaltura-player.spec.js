@@ -3,7 +3,7 @@ import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
 import {ProviderEnum, register} from '../../src/common/provider-manager';
-import {EMPTY_CONFIG_RESPONSE, Provider} from './mock-data/provider.stub';
+import {Provider} from './mock-data/provider.stub';
 import {registerPlugin} from '@playkit-js/playkit-js';
 import {KavaStub} from './mock-data/kava.stub';
 
@@ -180,7 +180,6 @@ describe('kaltura player api', function() {
 
       beforeEach(function() {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(EMPTY_CONFIG_RESPONSE);
         sinon.stub(kalturaPlayer._provider, 'getPlaylistConfig').callsFake(function(playlistInfo) {
           return playlistInfo.playlistId
             ? Promise.resolve(PlaylistMockData.playlistByID)
@@ -226,7 +225,6 @@ describe('kaltura player api', function() {
     describe('loadPlaylistByEntryList', function() {
       beforeEach(function() {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(EMPTY_CONFIG_RESPONSE);
         sinon.stub(kalturaPlayer._provider, 'getEntryListConfig').callsFake(function(entryList) {
           return entryList.entries
             ? Promise.resolve(PlaylistMockData.playlistByEntryList)
@@ -277,13 +275,16 @@ describe('kaltura player api', function() {
         kalturaPlayer.destroy();
       });
 
-      it('should set the playlist and evaluate the plugins - without config and entry list', function() {
+      it('should set the playlist and evaluate the plugins - without config and entry list', function(done) {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList);
         kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
+        //setPlaylist calls internally to loadMedia which is async, and until we finish the flow we already destroy
+        // the player so it resets internals and we crash, so adding timeout to enable player to finish loading
+        setTimeout(done);
       });
 
-      it('should set the playlist and evaluate the plugins - with config and entry list', function() {
+      it('should set the playlist and evaluate the plugins - with config and entry list', function(done) {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList, {options: {autoContinue: false}}, [
           {entryId: '0_nwkp7jtx'},
           {entryId: '0_wifqaipd'}
@@ -292,6 +293,9 @@ describe('kaltura player api', function() {
         kalturaPlayer.playlist.id.should.equal('a1234');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer._playlistManager._mediaInfoList.length.should.equal(2);
+        //setPlaylist calls internally to loadMedia which is async, and until we finish the flow we already destroy
+        // the player so it resets internals and we crash, so adding timeout to enable player to finish loading
+        setTimeout(done);
       });
     });
 
