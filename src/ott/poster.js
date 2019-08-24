@@ -3,24 +3,30 @@
  * Add poster with player dimensions.
  * If poster is string and width and height exists in template we need to make a thumbnail API call.
  * If poster is array of objects we need to choose the best fit dimensions according to the player dimensions.
- * @param {PKSourcesConfigObject} playerSources - player sources container
+ * @param {PKPlayerOptionsObject} playerOptions - player options container
  * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
  * @param {Object} dimensions - player dimensions object
  * @private
  * @returns {void}
  */
-function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): void {
-  const playerPoster = playerSources.poster;
+function addKalturaPoster(playerOptions: PKPlayerOptionsObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object): void {
+  const playerPoster = playerOptions.sources.poster;
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
+  const ks = playerOptions.session.ks;
+
   if (typeof playerPoster === 'string' && playerPoster === mediaConfigPoster) {
     const regex = /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
     if (regex.test(playerPoster)) {
-      playerSources.poster = setPlayerDimensionsOnPoster(playerPoster, playerWidth, playerHeight);
+      playerOptions.sources.poster = setPlayerDimensionsOnPoster(playerPoster, playerWidth, playerHeight);
     }
   } else if (Array.isArray(playerPoster)) {
-    playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
+    playerOptions.sources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
+  }
+
+  if (typeof ks === 'string' && ks !== '') {
+    playerOptions.sources.poster += `/ks/${ks}`;
   }
 }
 
