@@ -1,6 +1,18 @@
 {
   "presets": [
-    "es2015"
+    [
+      "env",
+      {
+        "modules": false,
+        "useBuiltIns": true,
+        "targets": {
+          "browsers": [
+            ">0.25%",
+            "not op_mini all"
+          ]
+        }
+      }
+    ]
   ],
   "ignore": [
     "node_modules/**/*"

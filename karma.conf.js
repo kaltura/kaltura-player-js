@@ -1,7 +1,8 @@
-let webpackConfig = require('./webpack.config.ovp.js');
+let webpackConfig = require('./webpack.config.js');
 //Need to remove externals otherwise they won't be included in test
 delete webpackConfig.externals;
 webpackConfig.devtool = 'inline-source-map';
+webpackConfig.mode = 'development';
 
 const isWindows = /^win/.test(process.platform);
 const isMacOS = /^darwin/.test(process.platform);
@@ -13,10 +14,18 @@ const customLaunchers = {
   }
 };
 
-module.exports = function(config) {
+const launchers = {
+  Chrome_browser: {
+    base: 'Chrome',
+    flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
+  }
+};
+
+module.exports = function (config) {
   let karmaConf = {
     logLevel: config.LOG_INFO,
-    browsers: ['Chrome', 'Firefox'],
+    customLaunchers: launchers,
+    browsers: ['Chrome_browser', 'Firefox'],
     concurrency: 1,
     singleRun: true,
     colors: true,
@@ -26,7 +35,7 @@ module.exports = function(config) {
       'src/**/*.js': ['webpack', 'sourcemap'],
       'test/setup/karma.js': ['webpack', 'sourcemap']
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['mocha', 'coverage'],
     webpack: webpackConfig,
     webpackServer: {
       noInfo: true

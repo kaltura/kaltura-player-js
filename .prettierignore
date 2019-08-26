@@ -5,3 +5,4 @@ yarn.lock
 yarn-error.log
 LICENSE
 /samples
+src/common/cast/remote-player.js

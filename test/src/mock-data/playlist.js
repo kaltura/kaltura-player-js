@@ -218,6 +218,12 @@ const playlistByConfig = {
             url:
               'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_fu4ifhie/protocol/http/format/applehttp/flavorIds/0_wbawecj0,0_cj2odpyt,0_uj45vim0,0_xlpm7btj,0_6p25la0i,0_cmq5aigy/a.m3u8'
           }
+        ],
+        progressive: [
+          {
+            mimetype: 'video/mp4',
+            url: 'http://myDomain.com/a.mp4'
+          }
         ]
       }
     },
@@ -232,6 +238,12 @@ const playlistByConfig = {
             url:
               'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_15xrxwvo/protocol/http/format/applehttp/flavorIds/0_io24exzg,0_5r0geh30,0_b647tbfs,0_fzqa9ew4/a.m3u8'
           }
+        ],
+        progressive: [
+          {
+            mimetype: 'video/mp4',
+            url: 'http://myDomain.com/a.mp4'
+          }
         ]
       }
     },
@@ -243,6 +255,12 @@ const playlistByConfig = {
             mimetype: 'application/x-mpegURL',
             url:
               'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_p8aigvgu/protocol/http/format/applehttp/flavorIds/0_80115tmg/a.m3u8'
+          }
+        ],
+        progressive: [
+          {
+            mimetype: 'video/mp4',
+            url: 'http://myDomain.com/a.mp4'
           }
         ]
       }

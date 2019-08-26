@@ -205,11 +205,11 @@ We'll use both Vanilla JavaScript & ES6 examples.
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
-</head>
+  </head>
 </html>
 ```
 
@@ -218,14 +218,13 @@ We'll use both Vanilla JavaScript & ES6 examples.
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
     <script src="PATH/TO/FILE/my-plugin.js"></script>
-</head>
-<body>
-</body>
+  </head>
+  <body></body>
 </html>
 ```
 
@@ -410,17 +409,17 @@ Use the factory `registerPlugin` method to register your plugin in the player fr
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
     <script src="PATH/TO/FILE/my-plugin.js"></script>
-</head>
-<body>
-<script>
-	KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
-</script>
-</body>
+  </head>
+  <body>
+    <script>
+      KalturaPlayer.core.registerPlugin('myPlugin', MyPlugin);
+    </script>
+  </body>
 </html>
 ```
 
@@ -480,36 +479,36 @@ player.loadMedia(mediaInfo).then(function() {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
     <script src="PATH/TO/FILE/my-plugin.js"></script>
-</head>
-<body>
-<script>
-KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
+  </head>
+  <body>
+    <script>
+      KalturaPlayer.core.registerPlugin('myPlugin', MyPlugin);
 
-var config = {
-    logLevel: "DEBUG",
-    targetId: "player-div",
-    provider: {
-        partnerId: "YOUR_PARTNER_ID"
-    },
-    plugins: {
-        myPlugin: {
+      var config = {
+        logLevel: 'DEBUG',
+        targetId: 'player-div',
+        provider: {
+          partnerId: 'YOUR_PARTNER_ID'
+        },
+        plugins: {
+          myPlugin: {
             myValue: 10
+          }
         }
-    }
-};
+      };
 
-var mediaInfo = {entryId: "YOUR_ENTRY_ID"};
-var player = KalturaPlayer.setup(config);
-player.loadMedia(mediaInfo).then(function() {
-  player.play();
-});
-</script>
-</body>
+      var mediaInfo = {entryId: 'YOUR_ENTRY_ID'};
+      var player = KalturaPlayer.setup(config);
+      player.loadMedia(mediaInfo).then(function() {
+        player.play();
+      });
+    </script>
+  </body>
 </html>
 ```
 

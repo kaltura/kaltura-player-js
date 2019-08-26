@@ -20,6 +20,7 @@
   "globals": {
     "should": true,
     "sinon": true,
+    "playkit": true,
     "__VERSION__": true,
     "__NAME__": true,
     "__PACKAGE_URL__": true,

@@ -1,12 +1,17 @@
-import '../../src/index';
-import {setup} from '../../src/setup';
-import * as TestUtils from './utils/test-utils';
-import StorageWrapper from '../../src/common/storage/storage-wrapper';
+import 'index';
+import {setup} from 'setup';
+import * as TestUtils from './testutils/test-utils';
+import StorageWrapper from 'storage/storage-wrapper';
+import {ProviderEnum, register} from 'provider-manager';
+import {MediaConfig} from './mock-data/media';
+import {Provider} from './mock-data/provider.stub';
+import {registerPlugin} from '@playkit-js/playkit-js';
+import {KavaStub} from './mock-data/kava.stub';
 
 const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function() {
-  let config, kalturaPlayer, sandbox;
+  let config: PartialKPOptionsObject, kalturaPlayer, sandbox;
   const entryId = '0_wifqaipd';
   const partnerId = 1091;
   const env = {
@@ -16,15 +21,19 @@ describe('setup', function() {
 
   before(function() {
     TestUtils.createElement('DIV', targetId);
+    registerPlugin('kava', KavaStub);
+    register(ProviderEnum.OVP, Provider);
   });
 
   beforeEach(function() {
     sandbox = sinon.sandbox.create();
     config = {
       targetId: targetId,
+      log: {playerVersion: false},
       provider: {
         partnerId: partnerId,
-        env: env
+        env: env,
+        type: ProviderEnum.OVP
       }
     };
   });
@@ -43,11 +52,21 @@ describe('setup', function() {
   it('should create a full player', function(done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
-    kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-      kalturaPlayer.config.sources.id.should.equal(entryId);
-      kalturaPlayer.config.session.partnerId.should.equal(partnerId);
-      done();
-    });
+    sinon.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(MediaConfig[entryId]);
+    kalturaPlayer
+      .loadMedia({entryId: entryId})
+      .then(() => {
+        try {
+          kalturaPlayer.config.sources.id.should.equal(entryId);
+          kalturaPlayer.config.session.partnerId.should.equal(partnerId);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      })
+      .catch(e => {
+        done(e);
+      });
   });
 
   it('should create an empty player', function() {
@@ -58,14 +77,25 @@ describe('setup', function() {
   it('should decorate the selected source by session id', function(done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
-    kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-      kalturaPlayer.ready().then(() => {
-        let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
-        sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
-        done();
+    sinon.stub(kalturaPlayer._provider, 'getMediaConfig').resolves(MediaConfig[entryId]);
+    kalturaPlayer
+      .loadMedia({entryId: entryId})
+      .then(() => {
+        kalturaPlayer.ready().then(() => {
+          try {
+            let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
+
+            sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+        kalturaPlayer.load();
+      })
+      .catch(e => {
+        done(e);
       });
-      kalturaPlayer.load();
-    });
   });
 
   it('should set text style from storage', function() {

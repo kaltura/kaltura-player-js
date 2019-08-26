@@ -5,27 +5,156 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <title>Title</title>
   <link rel="stylesheet" type="text/css" href="./style.css"/>
-  <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
+
+  <script src="http://localhost/playkit-js/dist/playkit.js" type="text/javascript"></script>
+  <script src="http://localhost/playkit-js-ui/dist/playkit-ui.js" type="text/javascript"></script>
+  <script src="http://localhost/playkit-js-providers/dist/playkit-ovp-provider.js" type="text/javascript"></script>
+  <script src="http://localhost/playkit-js-providers/dist/playkit-ott-provider.js" type="text/javascript"></script>
+  <script src="http://localhost/kaltura-player-js/dist/kaltura-ovp-player.js" type="text/javascript"></script>
+  <script src="http://localhost/playkit-js-kanalytics/dist/playkit-kanalytics.js" type="text/javascript"></script>
+  <script src="https://video-dev.github.io/hls.js/dist/hls.min.js" type="text/javascript"></script>
+  <script src="http://localhost/playkit-js-hls/dist/playkit-hls.js" type="text/javascript"></script>
+
+
 </head>
 <body>
 <div id="player-placeholder"></div>
 <script>
+  var h = KalturaPlayer.ui.h;
+  var mycomponent = () => {
+    return h(
+      'div',{id: 'my-player-gui', style: "width:100px;height:100px;background-color:red;position:relative;right:0"})
+  };
+/**
+  var Components = KalturaPlayer.ui.Components;
+  var playbackUI = function(props){
+    return h(
+      'div',
+      { className: "xyz" },
+      h(Components.KeyboardControl, { player: props.player, config: {} }),
+      h(Components.Loading, { player: props.player }),
+      h(
+        'div',
+        { className: "playkit-player-gui", id: 'player-gui' },
+        h(Components.OverlayAction, null),
+        h(Components.UnmuteIndication, { player: props.player }),
+        h(mycomponent),
+        h(Components.OverlayAction, { player: props.player }),
+        h(
+          Components.BottomBar,
+          null,
+          h(Components.SeekBarPlaybackContainer, {
+            showFramePreview: false,
+            showTimeBubble: true,
+            player: props.player,
+            playerContainer: props.playerContainer,
+            }),
+          h(
+            'div',
+            { className: "playkit-left-controls" }
+          ),
+          h(
+            'div',
+            { className: "playkit-right-controls" },
+            h(Components.FullscreenControl, { player: props.player, config: props.config })
+          )
+        )
+      ),
+      h(Components.PrePlaybackPlayOverlay, { player: props.player })
+    )
+  };
+  const uis = [
+    {template: props => playbackUI(props)}
+  ];
+ **/
   var config = {
+    logLevel: "DEBUG",
     targetId: 'player-placeholder',
     provider: {
+      type: "ovp",
       partnerId: 1091,
       env: {
         cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
       }
-    }
+    },
+    player: {
+      customLabels: {
+        qualities: (track) => {
+          // if (track.height > 500) {
+          //   return "High";
+          // } else {
+          //   return "Low"
+          // }
+        }
+      },
+      abr: {
+        // enabled: false,
+        // defaultBandwidthEstimate: 10e6,
+        // capLevelToPlayerSize: false,
+        // restrictions: {
+        //   minBitrate: 600000,
+          // maxBitrate: 1100000
+        // },
+      },
+      playback:{
+        startTime: 12,
+        // "textLanguage": 'ru',
+        autoplay: false,
+        "options": {
+          html5:{
+            "hls": {
+              // "maxBufferLength": 10,
+              // "maxBufferSize": 20000000,
+              // "maxMaxBufferLength": 60,
+              // "capLevelToPlayerSize": true,
+              // "debug": true,
+              // "appendErrorMaxRetry": 10,
+              // "autoLevelCapping": 1
+            }
+          }
+        },
+        "streamPriority": [
+          {
+            "engine": "html5",
+            "format": "hls"
+          }
+        ]
+      },
+      plugins: {
+        // youbora:{
+        //   options: {
+        //     accountCode: "kalturatest"
+        //   }
+        // },
+      //   kanalytics: {
+      //     serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
+      //   },
+      //   ima: {
+          // setDisableCustomPlaybackForIOS10Plus: false,
+
+          // adsRenderingSettings: {useStyledLinearAds:true, uiElements: []},
+          // debug:true,
+          // adWillAutoPlay: true,
+          // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator='
+          // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=850x478&iu=%2F21633895671%2Fvideo%2Fdesktop&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&ad_rule=1&cmsid=2467608&vid=0_kxfx47g1&cust_params=sample_ar%3Dskippablelinear&correlator=3463038905338945&eid=41351088%2C495644008&sdkv=h.3.198.2&sdki=3c0d&scor=2585879817649983&adk=79606385&u_so=l&osd=2&frm=0&sdr=1&is_amp=0&adsid=NT&jar=2018-4-1-11&vpa=auto&vpmute=0&mpt=kaltura-player-js&mpv=0.20.0-pwa-10&afvsz=450x50%2C468x60%2C480x70%2C728x90&url=https%3A%2F%2Feta.voot.com%2Fshows%2Ftroll-police%2F1%2F561263%2Fnora-and-troll-s-furious-argument%2F594873&ged=ve4_td7_tt1_pd7_la7000_er74.172.224.172_vi0.0.960.1193_vp0_eb16491'
+          // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator='
+          // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=[timestamp]'
+        // }
+      }
+    },
+    // ui:{
+      // UIManager: KalturaPlayer.ui.UIManager,
+      // customPreset: uis
+    // }
   };
 
   try {
+    // KalturaPlayer.core._prepareVideoElement();
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
+    kalturaPlayer.loadMedia({entryId: '0_wu32qrt3'}); //0_fl4ioobl //0_wu32qrt3
   } catch (e) {
-    console.error(e.message)
+    console.error(e)
   }
 </script>
 </body>
