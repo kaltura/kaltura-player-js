@@ -1,8 +1,8 @@
-import {setup} from '../../src/setup';
-import * as TestUtils from './utils/test-utils';
+import {setup} from 'setup';
+import * as TestUtils from './testutils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
-import {ProviderEnum, register} from '../../src/common/provider-manager';
+import {ProviderEnum, register} from 'provider-manager';
 import {Provider} from './mock-data/provider.stub';
 import {registerPlugin} from '@playkit-js/playkit-js';
 import {KavaStub} from './mock-data/kava.stub';

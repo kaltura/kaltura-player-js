@@ -1,11 +1,11 @@
 // @flow
-import {KalturaPlayer} from '../../kaltura-player';
+import {KalturaPlayer} from '../kaltura-player';
 import {FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
 import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
-import {getKalturaPoster} from '../../common/poster';
+import {getKalturaPoster} from '../poster';
 
 /**
  * @class PlaylistManager

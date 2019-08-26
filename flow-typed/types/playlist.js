@@ -1,5 +1,5 @@
 // @flow
-import {PlaylistItem} from '../../src/common/playlist/playlist-item';
+import {PlaylistItem} from '../../src/playlist/playlist-item';
 
 /**
  * @typedef {Object} KPPlaylistOptions

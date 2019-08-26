@@ -1,6 +1,6 @@
 // @flow
-import PolyfillManager from './common/polyfills/polyfill-manager';
-import './common/polyfills/all';
+import PolyfillManager from './polyfills/polyfill-manager';
+import './polyfills/all';
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
@@ -11,17 +11,17 @@ const NAME = __NAME__;
 // Import core
 import * as core from '@playkit-js/playkit-js';
 // Import ui
-import {UI, registerUI} from './common/ui-wrapper';
+import {UI, registerUI} from './ui-wrapper';
 export {UI as ui};
 // Import setup method
 import {setup} from './setup';
 import {getPlayers, getPlayer} from './proxy';
 // Import cast framework
-import {cast} from './common/cast';
+import {cast} from './cast';
 // Import playlist
-import {playlist} from './common/playlist';
+import {playlist} from './playlist';
 //Import provider-manager
-import * as providers from './common/provider-manager';
+import * as providers from './provider-manager';
 
 PolyfillManager.installAll();
 

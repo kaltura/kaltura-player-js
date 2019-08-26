@@ -1,6 +1,6 @@
 // @flow
 import {FakeEvent, TextStyle, Track} from '@playkit-js/playkit-js';
-import {RemoteSession} from './remote-session';
+import {RemoteSession} from '../../src/cast/remote-session';
 
 /**
  * @interface IRemotePlayer

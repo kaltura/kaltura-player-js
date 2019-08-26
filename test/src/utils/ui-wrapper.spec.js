@@ -1,11 +1,11 @@
-import {UIWrapper, registerUI} from '../../../../src/common/ui-wrapper';
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../../../../src/common/utils/thumbs';
-import * as TestUtils from '../../utils/test-utils';
-import {getPlayerProxy} from '../../../../src/proxy';
-import {getDefaultOptions} from '../../../../src/common/utils/setup-helpers';
-import {UIStub} from '../../mock-data/ui.stub';
+import {UIWrapper, registerUI} from 'ui-wrapper';
+import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from 'utils/thumbs';
+import * as TestUtils from '../testutils/test-utils';
+import {getPlayerProxy} from 'proxy';
+import {getDefaultOptions} from 'utils/setup-helpers';
+import {UIStub} from '../mock-data/ui.stub';
 import {registerPlugin} from '@playkit-js/playkit-js';
-import {KavaStub} from '../../mock-data/kava.stub';
+import {KavaStub} from '../mock-data/kava.stub';
 
 const targetId = 'player-placeholder_ui-wrapper.spec';
 

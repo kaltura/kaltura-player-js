@@ -7,7 +7,7 @@ import getLogger, {LogLevel, setLogHandler, setLogLevel as _setLogLevel} from '.
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
-import {KalturaPlayer} from '../../kaltura-player';
+import {KalturaPlayer} from '../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
 import {ProviderEnum} from '../provider-manager';
 import type {ProviderEnumType} from '../provider-manager';

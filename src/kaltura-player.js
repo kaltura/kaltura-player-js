@@ -1,18 +1,18 @@
 // @flow
-import {hasYoutubeSource, maybeSetStreamPriority, supportLegacyOptions} from './common/utils/setup-helpers';
-import getLogger from './common/utils/logger';
-import {addKalturaParams} from './common/utils/kaltura-params';
-import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
-import {getKalturaPoster} from './common/poster';
+import {hasYoutubeSource, maybeSetStreamPriority, supportLegacyOptions} from './utils/setup-helpers';
+import getLogger from './utils/logger';
+import {addKalturaParams} from './utils/kaltura-params';
+import {evaluatePluginsConfig, evaluateUIConfig} from './plugins/plugins-config';
+import {getKalturaPoster} from './poster';
 import './assets/style.css';
-import {UIWrapper, UI} from './common/ui-wrapper';
-import * as providers from './common/provider-manager';
-import {PlaylistManager} from './common/playlist/playlist-manager';
-import {PlaylistEventType} from './common/playlist/playlist-event-type';
-import {CastEventType} from './common/cast/cast-event-type';
-import {RemotePlayerManager} from './common/cast/remote-player-manager';
-import {BaseRemotePlayer} from './common/cast/base-remote-player';
-import {RemoteSession} from './common/cast/remote-session';
+import {UIWrapper, UI} from './ui-wrapper';
+import * as providers from './provider-manager';
+import {PlaylistManager} from './playlist/playlist-manager';
+import {PlaylistEventType} from './playlist/playlist-event-type';
+import {CastEventType} from './cast/cast-event-type';
+import {RemotePlayerManager} from './cast/remote-player-manager';
+import {BaseRemotePlayer} from './cast/base-remote-player';
+import {RemoteSession} from './cast/remote-session';
 import {
   AdsController,
   BasePlugin,
@@ -26,7 +26,7 @@ import {
   Track,
   Utils
 } from '@playkit-js/playkit-js';
-import {ProviderEnum} from './common/provider-manager';
+import {ProviderEnum} from './provider-manager';
 
 class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager;

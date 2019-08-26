@@ -1,5 +1,5 @@
 // @flow
-import getLogger from '../common/utils/logger';
+import getLogger from './utils/logger';
 
 const logger = getLogger('provider-manager');
 const providers: Map<string, Function> = new Map();

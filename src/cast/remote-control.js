@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 // @flow
-import {KalturaPlayer} from '../../kaltura-player';
+import {KalturaPlayer} from '../kaltura-player';
 import {PlayerSnapshot} from './player-snapshot';
 import {CastEventType} from './cast-event-type';
 import {EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils} from '@playkit-js/playkit-js';

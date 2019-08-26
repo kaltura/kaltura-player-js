@@ -1,11 +1,11 @@
-import {getKalturaPoster} from '../../../src/common/poster';
-import * as TestUtils from '../utils/test-utils';
-import {setup} from '../../../src/setup';
-import {ProviderEnum, register} from '../../../src/common/provider-manager';
+import {getKalturaPoster} from '../../src/poster';
+import * as TestUtils from './testutils/test-utils';
+import {setup} from 'setup';
+import {ProviderEnum, register} from 'provider-manager';
 import {registerPlugin} from '@playkit-js/playkit-js';
-import {KavaStub} from '../mock-data/kava.stub';
-import {Provider} from '../mock-data/provider.stub';
-import {mediaConfig1, mediaConfig2} from '../mock-data/media';
+import {KavaStub} from './mock-data/kava.stub';
+import {Provider} from './mock-data/provider.stub';
+import {mediaConfig1, mediaConfig2} from './mock-data/media';
 
 const targetId = 'player-placeholder_ovp/poster.spec';
 

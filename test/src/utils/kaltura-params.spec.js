@@ -1,11 +1,4 @@
-import {
-  addClientTag,
-  addKalturaParams,
-  addReferrer,
-  getReferrer,
-  handleSessionId,
-  updateSessionIdInUrl
-} from '../../../../src/common/utils/kaltura-params';
+import {addClientTag, addKalturaParams, addReferrer, getReferrer, handleSessionId, updateSessionIdInUrl} from 'utils/kaltura-params';
 
 class Player {
   set sessionId(s) {

@@ -1,13 +1,14 @@
-import StorageManager from '../../../../src/common/storage/storage-manager';
-import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
-import * as TestUtils from '../../utils/test-utils';
-import {registerUI, setup} from '../../../../src';
+import StorageManager from 'storage/storage-manager';
+import StorageWrapper from 'storage/storage-wrapper';
+import * as TestUtils from '../testutils/test-utils';
+import {registerUI} from 'ui-wrapper';
+import {setup} from 'setup';
 import {FakeEvent, registerPlugin} from '@playkit-js/playkit-js';
-import {ProviderEnum, register} from '../../../../src/common/provider-manager';
-import {MediaConfig} from '../../mock-data/media';
-import {UIStub} from '../../mock-data/ui.stub';
-import {Provider} from '../../mock-data/provider.stub';
-import {KavaStub} from '../../mock-data/kava.stub';
+import {ProviderEnum, register} from 'provider-manager';
+import {MediaConfig} from '../mock-data/media';
+import {UIStub} from '../mock-data/ui.stub';
+import {Provider} from '../mock-data/provider.stub';
+import {KavaStub} from '../mock-data/kava.stub';
 
 const targetId = 'player-placeholder_storage-manager.spec';
 

@@ -1,4 +1,4 @@
-import {evaluatePluginsConfig} from '../../../../src/common/plugins/plugins-config';
+import {evaluatePluginsConfig} from 'plugins/plugins-config';
 
 describe('evaluatePluginsConfig', function() {
   const playerConfig = {

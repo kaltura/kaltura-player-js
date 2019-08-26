@@ -1,4 +1,4 @@
-import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
+import StorageWrapper from 'storage/storage-wrapper';
 
 const STORAGE_PREFIX = __NAME__ + '_';
 

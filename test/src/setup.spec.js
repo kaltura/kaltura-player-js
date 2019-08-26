@@ -1,8 +1,8 @@
-import '../../src/index';
-import {setup} from '../../src/setup';
-import * as TestUtils from './utils/test-utils';
-import StorageWrapper from '../../src/common/storage/storage-wrapper';
-import {ProviderEnum, register} from '../../src/common/provider-manager';
+import 'index';
+import {setup} from 'setup';
+import * as TestUtils from './testutils/test-utils';
+import StorageWrapper from 'storage/storage-wrapper';
+import {ProviderEnum, register} from 'provider-manager';
 import {MediaConfig} from './mock-data/media';
 import {Provider} from './mock-data/provider.stub';
 import {registerPlugin} from '@playkit-js/playkit-js';

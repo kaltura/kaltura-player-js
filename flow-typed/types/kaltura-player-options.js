@@ -1,6 +1,6 @@
 // @flow
 import {KPPlaylistObject} from './playlist';
-import type {ProviderEnumType} from '../../src/common/provider-manager';
+import type {ProviderEnumType} from '../../src/provider-manager';
 
 declare type KPOptionsObject = {
   targetId: string,

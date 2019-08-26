@@ -1,11 +1,11 @@
-import {KalturaPlayer} from '../../../../src/kaltura-player';
-import {PlaylistManager} from '../../../../src/common/playlist/playlist-manager';
-import * as MediaMockData from '../../mock-data/media';
-import * as PlaylistMockData from '../../mock-data/playlist';
+import {KalturaPlayer} from 'kaltura-player';
+import {PlaylistManager} from 'playlist/playlist-manager';
+import * as MediaMockData from '../mock-data/media';
+import * as PlaylistMockData from '../mock-data/playlist';
 import {FakeEvent, registerPlugin} from '@playkit-js/playkit-js';
-import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
-import {ProviderEnum} from '../../../../src/common/provider-manager';
-import {KavaStub} from '../../mock-data/kava.stub';
+import {PlaylistEventType} from 'playlist/playlist-event-type';
+import {ProviderEnum} from 'provider-manager';
+import {KavaStub} from '../mock-data/kava.stub';
 
 describe('PlaylistManager', function() {
   let kalturaPlayer, playlistManager, sandbox;

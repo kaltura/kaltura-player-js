@@ -1,6 +1,6 @@
-import * as TestUtils from '../../utils/test-utils';
-import {ValidationErrorType} from '../../../../src/common/utils/validation-error';
-import StorageManager from '../../../../src/common/storage/storage-manager';
+import * as TestUtils from '../testutils/test-utils';
+import {ValidationErrorType} from 'utils/validation-error';
+import StorageManager from 'storage/storage-manager';
 import {
   checkNativeHlsSupport,
   createKalturaPlayerContainer,
@@ -10,9 +10,9 @@ import {
   supportLegacyOptions,
   validateConfig,
   getDefaultOptions
-} from '../../../../src/common/utils/setup-helpers';
+} from 'utils/setup-helpers';
 import {Env} from '@playkit-js/playkit-js';
-import {ProviderEnum} from '../../../../src/common/provider-manager';
+import {ProviderEnum} from 'provider-manager';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 

@@ -1,4 +1,4 @@
-import evaluate from '../../../../src/common/utils/evaluate';
+import evaluate from 'utils/evaluate';
 
 describe('evaluate', function() {
   const dataObject = {
