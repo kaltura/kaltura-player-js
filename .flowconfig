@@ -9,9 +9,3 @@ node_modules/@playkit-js/core-provider/flow-typed/
 node_modules/@playkit-js/core-provider/src/
 [options]
 unsafe.enable_getters_and_setters=true
-module.name_mapper='playkit-js-providers' -> 'playkit-js-providers/dist/playkit-ovp-provider'
-module.name_mapper='playkit-js-providers' -> 'playkit-js-providers/dist/playkit-ott-provider'
-module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ovp/player-defaults'
-module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ott/player-defaults'
-module.name_mapper='poster' -> '<PROJECT_ROOT>/src/ovp/poster'
-module.name_mapper='poster' -> '<PROJECT_ROOT>/src/ott/poster'
