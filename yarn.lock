@@ -78,7 +78,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@playkit-js/core-provider@^1.0.0":
+"@playkit-js/core-provider@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/core-provider/-/core-provider-1.1.0.tgz#7e199a29370b932c86529259e6478d9767baeec2"
   integrity sha512-kqFUCj3nOQ3abfeeK42i9xqWszDLQau/Sj7cvx+1cf3TeplbOeQQs2yS1jSu0KAqW9CKrSGhBdqFhErWa4ZH8g==
