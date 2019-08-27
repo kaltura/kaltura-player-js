@@ -368,7 +368,7 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
     _configureAdsWithMSE(options);
 
     const keySystem = Utils.Object.getPropertyPath(options, 'drm.keySystem');
-    if (typeof keySystem !== 'boolean') {
+    if (!keySystem) {
       options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.WIDEVINE);
     }
     if (options.plugins && options.plugins.ima) {
