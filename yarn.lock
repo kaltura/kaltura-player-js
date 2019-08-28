@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@playkit-js/playkit-js-dash@^1.14.0":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.14.0.tgz#0ac4b0cd52a295186d2b8e211f0a08c7efdc3145"
+"@playkit-js/playkit-js-dash@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.14.1.tgz#bdf6b64529ecfc1295a1e25ccf4336afe447c38f"
+  integrity sha512-Ia27BtFj8tmoDev1EIySJrxt8VLwT/HRozwFMtGPplqGZTTTKaeuF6Qr7OBXJqYsfpRQqeTQsh76yTDdVT9fUQ==
 
 "@playkit-js/playkit-js-hls@^1.17.0":
   version "1.17.0"
@@ -30,9 +31,10 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.52.0":
-  version "0.52.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.52.0.tgz#36cbae8c9d2e8f467e2e351e569dc82ba9c1a0a6"
+"@playkit-js/playkit-js@^0.52.1":
+  version "0.52.1"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.52.1.tgz#9b29df058c58a17ada33eee80f4970d90a7b9180"
+  integrity sha512-SxkNsHf5F3wutjnS9LSNC5997Qko+gKdx0+cH/3hZfG7tpGq/197nyMIjXqAmk7Tqe2oxwEmwPeeG+2hHRgp4w==
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
