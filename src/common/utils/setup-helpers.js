@@ -362,7 +362,7 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureLGTVDefaultOptions(options: KPOptionsObject): void {
-  if (isSmartTv()) {
+  if (Env.isSmartTV) {
     //relevant for LG SDK 4 which doesn't support our check for autoplay
     setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
@@ -439,7 +439,7 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
     const newBumperConfig: Object = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
-      (isSmartTv() || (isIos() && options.playback && options.playback.playsinline === false))
+      (Env.isSmartTV || (isIos() && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
@@ -558,15 +558,6 @@ function isMacOS(): boolean {
  */
 function isIos(): boolean {
   return Env.os.name === 'iOS';
-}
-
-/**
- * Returns true if user agent indicate that browser is smart TV
- * @private
- * @returns {boolean} - if browser is in LG TV
- */
-function isSmartTv(): boolean {
-  return Env.os.name.toLowerCase() === 'web0s' || Env.os.name.toLowerCase() === 'tizen';
 }
 
 /**
