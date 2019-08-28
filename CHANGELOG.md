@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.45.8"></a>
+## [0.45.8](https://github.com/kaltura/kaltura-player-js/compare/v0.45.7...v0.45.8) (2019-08-28)
+
+
+### Bug Fixes
+
+* **FEC-9137:** Samsung smart tv doesn't success playing playready  ([#267](https://github.com/kaltura/kaltura-player-js/issues/267)) ([c14a319](https://github.com/kaltura/kaltura-player-js/commit/c14a319))
+
+
+
 <a name="0.45.7"></a>
 ## [0.45.7](https://github.com/kaltura/kaltura-player-js/compare/v0.45.4...v0.45.7) (2019-08-26)
 
