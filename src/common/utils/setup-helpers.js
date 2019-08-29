@@ -1,6 +1,6 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme} from '@playkit-js/playkit-js';
+import {Env, TextStyle, Utils, setCapabilities, EngineType} from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
@@ -367,10 +367,6 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
     setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
 
-    const keySystem = Utils.Object.getPropertyPath(options, 'drm.keySystem');
-    if (!keySystem) {
-      options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.WIDEVINE);
-    }
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
       const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
