@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.46.0"></a>
+# [0.46.0](https://github.com/kaltura/kaltura-player-js/compare/v0.45.8...v0.46.0) (2019-09-15)
+
+
+### Features
+
+* **FEC-9314:** update Shaka version ([#268](https://github.com/kaltura/kaltura-player-js/issues/268)) ([0739090](https://github.com/kaltura/kaltura-player-js/commit/0739090))
+
+
+
 <a name="0.45.8"></a>
 ## [0.45.8](https://github.com/kaltura/kaltura-player-js/compare/v0.45.7...v0.45.8) (2019-08-28)
 
