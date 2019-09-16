@@ -31,7 +31,7 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.54.0-canary.6b4596f":
+"@playkit-js/playkit-js@^0.54.0-canary.566bcf8":
   version "0.54.0-canary.6b4596f"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.54.0-canary.6b4596f.tgz#4a6065c7584fdf2af7b49914106a43df56289692"
   integrity sha512-m2Tpv7FHNALDGCpnyAgq3MJ8eLwRq2gI2CWCqNxcFa3nhHa1tzclwTC8JppxED7i4fNxrAUz3EcuIYd073T0og==
