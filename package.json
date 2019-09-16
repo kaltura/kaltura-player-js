@@ -95,7 +95,7 @@
     "webpack-dev-server": "latest"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "^0.54.0-canary.566bcf8",
+    "@playkit-js/playkit-js": "^0.54.0-canary.5056ca0",
     "@playkit-js/playkit-js-dash": "^1.15.0",
     "@playkit-js/playkit-js-hls": "^1.17.0",
     "@playkit-js/playkit-js-kava": "^0.11.3",
