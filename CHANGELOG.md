@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.47.0"></a>
+# [0.47.0](https://github.com/kaltura/kaltura-player-js/compare/v0.46.0...v0.47.0) (2019-09-18)
+
+
+### Features
+
+* **FEC-8696:** allow adding/changing discrete components in U ([#264](https://github.com/kaltura/kaltura-player-js/issues/264)) ([880762e](https://github.com/kaltura/kaltura-player-js/commit/880762e))
+
+
+
 <a name="0.46.0"></a>
 # [0.46.0](https://github.com/kaltura/kaltura-player-js/compare/v0.45.8...v0.46.0) (2019-09-15)
 
