@@ -149,7 +149,7 @@ function setStorageTextStyle(player: KalturaPlayer): void {
  * @returns {void}
  */
 function attachToFirstClick(player: Player): void {
-  if (isIos()) {
+  if (isIos() || Env.isIPadOS) {
     const onUIClicked = () => {
       player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
       setCapabilities(EngineType.HTML5, {autoplay: true});
