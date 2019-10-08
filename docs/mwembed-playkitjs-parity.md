@@ -35,8 +35,8 @@
 |-------------------|-----------------------|-----------------------|
 | Chromecast  	| Yes              | Yes	|
 | AirPlay  	| Yes              | Yes	|
-| Samsung (Tizen, Orsay)  	| No              | Q2 2019	|
-| LG (WebOS, Netcast)  	| No              | Q2 2019	|
+| Samsung (Tizen, Orsay)  	| No              | Yes	|
+| LG (WebOS, Netcast)  	| No              | Yes	|
 
 ## Tracks 
 
@@ -88,7 +88,7 @@
 | Mobile Skin						| Yes					| Yes 					|
 | i18n UI Translations 				| Yes					| Yes		|
 | Playlist							| Yes					|Yes (No UI)		|
-| Share and Embed screen			| Yes					| H1 2019 		|
+| Share and Embed screen			| Yes					| Yes 		|
 | Titlebar							| Yes					| H2 2019 		|
 | End of Playback Screen / Related	| Yes					| H1 2019 		|
 | Info Screen 						| Yes					| N/A 			 		|
@@ -107,7 +107,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 |-----------------------------------|-----------------------|-----------------------|
 | CVAA Captions Style Controls 		| Yes					| Yes 					|
 | Keyboard Shortcuts / Navigation 	| Yes					| Yes 					|
-| Aria Tags (Screen Readers Support)| Yes					| H1 2019		|
+| Aria Tags (Screen Readers Support)| Yes					| H3 2019		|
 
 ## Analytics
 
@@ -130,7 +130,7 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 |-----------------------------------|-----------------------|-----------------------|
 | Playback and UI				 	| Yes					| Yes 					|
 | DVR							 	| Yes					| Yes 					|
-| Waiting Screen (isLive?) 			| Yes					| No 		|
+| Waiting Screen (isLive?) 			| Yes					| Q1 2020 		|
 
 > See Interactivity and Use-Case Functionality for Webcasting.
 
@@ -146,10 +146,10 @@ All player plugins and capabilities (e.g. 360, Analytics, IMA Ads, etc.) are bun
 
 | Functionality			  			| mwEmbed 				| kaltura-player-js 			|
 |-----------------------------------|-----------------------|-----------------------|
-| Webcasting 				 		| Yes					| No 					|
-| Webcasting:Slides			 		| Yes					| No 					|
-| Webcasting:Polls 			 		| Yes					| No 					|
-| Webcasting:QnA 			 		| Yes					| No 					|
+| Webcasting 				 		| Yes					| Q1 2020 					|
+| Webcasting:Slides			 		| Yes					| Q1 2020 					|
+| Webcasting:Polls 			 		| Yes					| Q1 2020 					|
+| Webcasting:QnA 			 		| Yes					| Q1 2020 					|
 | In-Video Quizzes 				 	| Yes					| No 					|
 | Slides and Chapters 			 	| Yes					| No 					|
 | Dual-Stream 					 	| Yes					| No 					|
