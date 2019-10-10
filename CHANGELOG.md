@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.47.8"></a>
+## [0.47.8](https://github.com/kaltura/kaltura-player-js/compare/v0.47.2...v0.47.8) (2019-10-10)
+
+
+### Bug Fixes
+
+* **FEC-9389:** media playing unmuted after unmute fallback ([#272](https://github.com/kaltura/kaltura-player-js/issues/272)) ([dafa0d6](https://github.com/kaltura/kaltura-player-js/commit/dafa0d6))
+
+
+
 <a name="0.47.7"></a>
 ## [0.47.7](https://github.com/kaltura/kaltura-player-js/compare/v0.47.6...v0.47.7) (2019-10-07)
 
