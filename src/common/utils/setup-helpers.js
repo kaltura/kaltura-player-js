@@ -356,6 +356,19 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
   }
 }
 /**
+ * Sets config option for LG TV SDK 2 live which has problem with long duration buffer
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
+  const hlsLiveConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount');
+  //webos SDK 2 and less detect as safari browser greater version is chrome
+  if (typeof hlsLiveConfig !== 'boolean' && isSafari()) {
+    options = Utils.Object.createPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount', 2);
+  }
+}
+/**
  * Sets config option for LG TV
  * @private
  * @param {KPOptionsObject} options - kaltura player options
@@ -366,7 +379,7 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
     //relevant for LG SDK 4 which doesn't support our check for autoplay
     setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
-
+    _configureLGSDK2HlsLiveConfig(options);
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
       const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
