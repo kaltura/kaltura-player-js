@@ -1,6 +1,6 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils, setCapabilities, EngineType} from '@playkit-js/playkit-js';
+import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme} from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import type {LogLevelObject} from './logger';
@@ -281,6 +281,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
   configureLGTVDefaultOptions(defaultOptions);
+  configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
@@ -394,6 +395,20 @@ function configureLGTVDefaultOptions(options: KPOptionsObject): void {
   }
 }
 
+/**
+ * prefer Playready in edge - from chromium version of edge Widevine is option as well
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
+  if (Env.browser.name === 'Edge') {
+    const keySystem = Utils.Object.getPropertyPath(options, 'drm.keySystem');
+    if (typeof keySystem !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.PLAYREADY);
+    }
+  }
+}
 /**
  * Sets default config option for ima plugin
  * @private
