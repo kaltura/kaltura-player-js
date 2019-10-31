@@ -40,7 +40,7 @@ const removeUnevaluatedExpression = (obj = {}): Object =>
  */
 const getModel = (options: KPOptionsObject): Object => {
   const dataModel: Object = {
-    pVersion: __VERSION__,
+    pVersion: options.productVersion ? options.productVersion : __VERSION__,
     pName: __NAME__
   };
   if (options.targetId) {
