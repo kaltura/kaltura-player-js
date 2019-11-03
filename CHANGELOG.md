@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.48.0"></a>
+# [0.48.0](https://github.com/kaltura/kaltura-player-js/compare/v0.47.8...v0.48.0) (2019-11-03)
+
+
+### Bug Fixes
+
+* **FEC-9307:** live issue on LG SDK2 with hls.js ([#273](https://github.com/kaltura/kaltura-player-js/issues/273)) ([1ca1b5d](https://github.com/kaltura/kaltura-player-js/commit/1ca1b5d))
+* **FEC-9379:** Edge chromium should use playready when exist ([#274](https://github.com/kaltura/kaltura-player-js/issues/274)) ([6b87274](https://github.com/kaltura/kaltura-player-js/commit/6b87274))
+
+
+### Features
+
+* **FEC-9326:** report productVersion ([#275](https://github.com/kaltura/kaltura-player-js/issues/275)) ([304f9ca](https://github.com/kaltura/kaltura-player-js/commit/304f9ca))
+
+
+
 <a name="0.47.8"></a>
 ## [0.47.8](https://github.com/kaltura/kaltura-player-js/compare/v0.47.2...v0.47.8) (2019-10-10)
 
