@@ -443,6 +443,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.config;
   }
 
+  get hasUserInteracted(): boolean {
+    return this._localPlayer.hasUserInteracted;
+  }
+
   set loadingMedia(loading: boolean): void {
     this._localPlayer.loadingMedia = loading;
   }
