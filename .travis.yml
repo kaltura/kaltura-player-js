@@ -18,6 +18,5 @@ before_install:
  - export DISPLAY=:99.0
 
 script:
-- npm run eslint
-- npm run flow
-- npm run test
+- echo I changed this
+
