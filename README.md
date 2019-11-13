@@ -1,5 +1,7 @@
 # Kaltura Player JS Platform - Cloud TV and OVP Media Players Based on the [PlayKit JS Player]
 
+Testing...
+
 [![Build Status](https://travis-ci.org/kaltura/kaltura-player-js.svg?branch=master)](https://travis-ci.org/kaltura/kaltura-player-js)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
