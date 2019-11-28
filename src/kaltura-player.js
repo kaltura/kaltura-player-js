@@ -222,6 +222,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.isLive();
   }
 
+  isOnLiveEdge(): boolean {
+    return this._localPlayer.isOnLiveEdge();
+  }
+
   isDvr(): boolean {
     return this._localPlayer.isDvr();
   }
