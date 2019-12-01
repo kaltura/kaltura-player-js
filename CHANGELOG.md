@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.49.0"></a>
+# [0.49.0](https://github.com/kaltura/kaltura-player-js/compare/v0.48.0...v0.49.0) (2019-11-12)
+
+
+### Bug Fixes
+
+* config keySystem isn't boolean ([#283](https://github.com/kaltura/kaltura-player-js/issues/283)) ([4280dc5](https://github.com/kaltura/kaltura-player-js/commit/4280dc5))
+
+
+### Features
+
+* new hasUserInteracted api ([#284](https://github.com/kaltura/kaltura-player-js/issues/284)) ([6855309](https://github.com/kaltura/kaltura-player-js/commit/6855309))
+
+
+
 <a name="0.48.0"></a>
 # [0.48.0](https://github.com/kaltura/kaltura-player-js/compare/v0.47.8...v0.48.0) (2019-11-03)
 
