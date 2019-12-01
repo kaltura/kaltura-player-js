@@ -140,10 +140,18 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       const originPlaybackConfig = this.config.playback;
       const shouldPause = !snapshot.config.playback.autoplay;
       const mediaInfo = snapshot.mediaInfo;
+      const mediaConfig = snapshot.mediaConfig;
       snapshot.config.playback.autoplay = true;
       configurePlayback.call(this, snapshot.config.playback);
+      let mediaPromise;
       if (mediaInfo) {
-        this.loadMedia(mediaInfo).then(() => {
+        mediaPromise = this.loadMedia(mediaInfo);
+      } else if (mediaConfig) {
+        mediaPromise = Promise.resolve();
+        this.setMedia(mediaConfig);
+      }
+      mediaPromise &&
+        mediaPromise.then(() => {
           this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             this.textStyle = snapshot.textStyle;
             configurePlayback.call(this, originPlaybackConfig);
@@ -153,7 +161,6 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
             }
           });
         });
-      }
     }
   }
 }

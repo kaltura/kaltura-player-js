@@ -9,6 +9,7 @@ import {TextStyle, TrackType, Utils} from '@playkit-js/playkit-js';
  */
 class PlayerSnapshot {
   mediaInfo: ?ProviderMediaInfoObject;
+  mediaConfig: ?ProviderMediaConfigObject;
   /**
    * @type {TextStyle}
    * @instance
@@ -31,6 +32,7 @@ class PlayerSnapshot {
   constructor(player: KalturaPlayer) {
     this.textStyle = player.textStyle;
     this.mediaInfo = player.getMediaInfo();
+    this.mediaConfig = player.getMediaConfig();
     this.advertising = player.config.plugins && player.config.plugins.ima;
     this.config = Utils.Object.mergeDeep({}, player.config, {
       playback: {
