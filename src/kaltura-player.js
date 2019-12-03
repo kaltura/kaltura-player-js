@@ -154,6 +154,14 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
+  getMediaConfig(): ?ProviderMediaConfigObject {
+    const mediaConfig = {
+      sources: this._localPlayer.config.sources,
+      plugins: this._localPlayer.config.plugins
+    };
+    return Utils.Object.copyDeep(mediaConfig);
+  }
+
   /**
    * Config the player.
    * @param {Object} [config={}] - The player config.
