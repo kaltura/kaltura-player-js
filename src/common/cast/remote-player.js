@@ -189,6 +189,14 @@ export interface IRemotePlayer {
 
   /**
    * @method
+   * @returns {Object}
+   * @instance
+   * @memberof IRemotePlayer
+   */
+  getMediaConfig(): ?Object;
+
+  /**
+   * @method
    * @param {Object} config
    * @instance
    * @memberof IRemotePlayer

@@ -94,6 +94,14 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   getMediaInfo(): ?Object {}
 
   /**
+   * Gets the media config.
+   * @returns {?Object} - The media config.
+   * @instance
+   * @memberof BaseRemotePlayer
+   */
+  getMediaConfig(): ?Object {}
+
+  /**
    * Configure the remote player
    * @param {Object} config - Configuration to set.
    * @instance
