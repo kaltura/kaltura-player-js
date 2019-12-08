@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.50.0"></a>
+# [0.50.0](https://github.com/kaltura/kaltura-player-js/compare/v0.49.1...v0.50.0) (2019-12-08)
+
+
+### Bug Fixes
+
+* **FEC-9471:** slider progress bar exceeds 100% ([#287](https://github.com/kaltura/kaltura-player-js/issues/287)) ([a617eae](https://github.com/kaltura/kaltura-player-js/commit/a617eae))
+
+
+### Features
+
+* **FEC-9175:** cast content coming from external sources ([#288](https://github.com/kaltura/kaltura-player-js/issues/288)) ([43a46b2](https://github.com/kaltura/kaltura-player-js/commit/43a46b2))
+
+
+
 <a name="0.49.1"></a>
 ## [0.49.1](https://github.com/kaltura/kaltura-player-js/compare/v0.49.0...v0.49.1) (2019-12-01)
 
