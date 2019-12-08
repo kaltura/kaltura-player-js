@@ -6,6 +6,8 @@ Ad layout is a new config option lets the application to sets a scheme of vasts 
 
 - [Basic Usage](#basic-usage)
   - [Single Ad](#single-ad)
+  - [Ad Pod](#ad-pod)
+- [Waterfalling](#waterfalling)
 
 ### Basic Usage
 
@@ -141,7 +143,7 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> Important: A fallback url (e.g. PRE_ROLL_1.2_VAST_URL) will be used only if the previous request (PRE_ROLL_1.1_VAST_UR) is failed.
+> Important: A fallback url (e.g. PRE_ROLL_1.2_VAST_URL) will be only used if the previous request (PRE_ROLL_1.1_VAST_UR) is failed.
 > Hence, In this sample while the playback will still be played 8 ads.
 
 > Note: There is no limit to the fallback url list.
