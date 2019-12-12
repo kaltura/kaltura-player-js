@@ -14,7 +14,7 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 
 ### Single Ad
 
-Here's a simple scheme contains 4 ad breaks - 1 pre-roll, 2 mid-rolls and 1 post-roll:
+Here's a simple scheme contains 4 ad breaks: 1 pre-roll, 2 mid-rolls and 1 post-roll:
 
 ```ecmascript 6
 const config = {
@@ -48,7 +48,7 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> In this sample the player will try to request and play 4 ads.  
+> In this sample, the player will try to request and play 4 ads.  
 > Note: `position: 0` means pre-roll. `position: -1` means postroll.
 
 ### Ad Pod
@@ -83,7 +83,7 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> In this sample the player will try to request and play 8 ads in 4 ad breaks, each one contains 2 ads consecutively.
+> In this sample, the player will try to request and play 4 ads in 2 ad breaks, each one contains 2 ads consecutively.
 
 ### Waterfalling
 
@@ -114,7 +114,8 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> Important: A fallback url (e.g. MID_ROLL_VAST_URL_2) will be only used if the previous request (MID_ROLL_VAST_URL_1) is failed. Hence, In this sample while the playback will still be played 8 ads.  
+> Important: A fallback url (e.g. MID_ROLL_VAST_URL_2) will be only used if the previous request (MID_ROLL_VAST_URL_1) is failed.
+> Hence, In this sample, while the playback will be played only one ad.  
 > Note: There is no limit to the fallback url list.
 
 ### Ad Options
