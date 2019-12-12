@@ -1,9 +1,7 @@
 # Advertisement layout management
 
-With ad layout config you can create your own ad break timeline using your vast tags.
-Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a Waterfall\*
-
-> \* See what is waterfall in waterfalling section
+With ad layout config you can create your own ad break timeline using your vast tags.  
+Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a [Waterfall](#waterfalling)
 
 ## Table of Contents
 
@@ -50,16 +48,12 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
+> In this sample the player will try to request and play 4 ads.  
 > Note: `position: 0` means pre-roll. `position: -1` means postroll.
-
-> In this sample the player will try to request and play 4 ads
 
 ### Ad Pod
 
-An ad break may contain a list of ads, also referred to as ad pod\*.
-
-> \* IAB definition of ad pod:
-> An individual ad pod is a group of ads expected to play back-to-back in one commercial ad break similar to how consumers experience commercial ad breaks in broadcast television. An ad pod can be of varying lengths and can be inserted at any point in a stream of content (pre, mid, or post).
+An ad break may contain a list of ads, also referred to as [Ad Pod](https://www.iab.com/insights/digital-video-advertising-glossary/#index-20).
 
 ```ecmascript 6
 const config = {
@@ -108,7 +102,7 @@ const config = {
     adBreaks: [{
       position: 15,
       ads: [{
-          url: [MID_ROLL_1.1_VAST_URL, MID_ROLL_1.2_VAST_URL, ...]
+          url: [MID_ROLL_1.2_VAST_URL, MID_ROLL_1.2_VAST_URL, ...]
         }]
       }
     ]
@@ -118,9 +112,8 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> Important: A fallback url (e.g. PRE_ROLL_1.2_VAST_URL) will be only used if the previous request (PRE_ROLL_1.1_VAST_UR) is failed.
-> Hence, In this sample while the playback will still be played 8 ads.
-
+> Important: A fallback url (e.g. MID_ROLL_1.2_VAST_URL) will be only used if the previous request (MID_ROLL_1.2_VAST_URL) is failed.  
+> Hence, In this sample while the playback will still be played 8 ads.  
 > Note: There is no limit to the fallback url list.
 
 ### Ad Options
