@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.50.0",
+  "version": "0.50.1",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -100,7 +100,7 @@
     "@playkit-js/playkit-js-hls": "^1.17.4",
     "@playkit-js/playkit-js-kava": "^0.14.0",
     "@playkit-js/playkit-js-ott-analytics": "^0.5.2",
-    "@playkit-js/playkit-js-ui": "^0.49.1",
+    "@playkit-js/playkit-js-ui": "^0.49.2",
     "babel-polyfill": "^6.23.0",
     "hls.js": "^0.12.2",
     "js-logger": "^1.3.0",
