@@ -117,8 +117,7 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> Important: A fallback url (e.g. MID_ROLL_1.2_VAST_URL) will be only used if the previous request (MID_ROLL_1.2_VAST_URL) is failed.  
-> Hence, In this sample while the playback will still be played 8 ads.  
+> Important: A fallback url (e.g. MID_ROLL_1.2_VAST_URL) will be only used if the previous request (MID_ROLL_1.2_VAST_URL) is failed. Hence, In this sample while the playback will still be played 8 ads.  
 > Note: There is no limit to the fallback url list.
 
 ### Ad Options
