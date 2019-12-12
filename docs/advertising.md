@@ -28,12 +28,12 @@ const config = {
       }, {
       position: 15,
       ads: [{
-          url: [MID_ROLL_VAST_URL]
+          url: [MID_ROLL_1_VAST_URL]
         }]
       }, {
       position: 60,
       ads: [{
-          url: [MID_ROLL_VAST_URL]
+          url: [MID_ROLL_2_VAST_URL]
         }]
       }, {
       position: -1,
@@ -104,7 +104,7 @@ const config = {
     adBreaks: [{
       position: 15,
       ads: [{
-          url: [MID_ROLL_1.2_VAST_URL, MID_ROLL_1.2_VAST_URL, ...]
+          url: [MID_ROLL_VAST_URL_1, MID_ROLL_VAST_URL_2, ...]
         }]
       }
     ]
@@ -114,7 +114,7 @@ const config = {
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
-> Important: A fallback url (e.g. MID_ROLL_1.2_VAST_URL) will be only used if the previous request (MID_ROLL_1.2_VAST_URL) is failed. Hence, In this sample while the playback will still be played 8 ads.  
+> Important: A fallback url (e.g. MID_ROLL_VAST_URL_2) will be only used if the previous request (MID_ROLL_VAST_URL_1) is failed. Hence, In this sample while the playback will still be played 8 ads.  
 > Note: There is no limit to the fallback url list.
 
 ### Ad Options
@@ -125,7 +125,7 @@ Each ad in the `ads` list gets the following options:
 `response:Array<string>` - List of XMLs, each one specifies a VAST 2.0 document to be used as the ads response instead of making a request via an ad tag url.  
 `bumper:boolean` - Specifies whether the is a bumper. `false` by default.
 
-All the options above works together, means the application may use and mix them in a single `advertising` object.
+All the options above works together, means the application may use and mix them in the same `advertising` object.
 Here's a sample:
 
 ```ecmascript 6
