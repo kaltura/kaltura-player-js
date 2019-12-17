@@ -124,7 +124,7 @@ Each ad in the `ads` list gets the following options:
 
 `url:Array<string>` - List of urls, each one specifies the ad tag url that is requested from the ad server.  
 `response:Array<string>` - List of XMLs, each one specifies a VAST 2.0 document to be used as the ads response instead of making a request via an ad tag url.  
-`bumper:boolean` - Specifies whether the is a bumper. `false` by default.
+`bumper:boolean` - Specifies whether the ad is a bumper. `false` by default.
 
 All the options above works together, means the application may use and mix them in the same `advertising` object.
 Here's a sample:
