@@ -93,7 +93,7 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 > Meaning, if the first priority server did not "purchase" the impression, it would cascade down to the next server and to the next, until someone bought it.  
 >  The same process is applied also if the ad server returned an error (or the client failed to communicate with it), and then it would cascade to the next server and to the next...
 
-An application may want to set a fallback vast url, in case the primary ad request will failed the ad won't be skipped.  
+An application may want to set a fallback vast url, so in case the primary ad request had failed, the ad won't be skipped.  
 This mechanism called _Waterfalling_, and it's configurable easily using the ad layout config.  
 Here's a sample of a mid-roll with waterfalling:
 
