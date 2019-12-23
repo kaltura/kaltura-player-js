@@ -173,7 +173,7 @@ In addition to the current [ad events](./ads.md#ad-events) (`adbreakstart, adbre
 `adwaterfalling` - Fired when an ad request failed and the player is trying to request the fallback.  
 `adwaterfallingfailed` - Fired when the all fallback requests failed.
 
-> Note. `aderror` not fired with `adwaterfalling` but fired with `adwaterfallingfailed`.
+> Note: `aderror` will not be fired with `adwaterfalling` but with `adwaterfallingfailed`.
 
 ### Play Ad Now
 
