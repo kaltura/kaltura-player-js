@@ -14,7 +14,7 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 
 ### Single Ad
 
-Here's a simple scheme contains 4 ad breaks: 1 pre-roll, 2 mid-rolls and 1 post-roll:
+Here's a simple scheme sample which contains 4 ad breaks: 1 pre-roll, 2 mid-rolls and 1 post-roll:
 
 ```ecmascript 6
 const config = {
