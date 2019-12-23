@@ -178,7 +178,7 @@ In addition to the current [ad events](./ads.md#ad-events) (`adbreakstart, adbre
 ### Play Ad Now
 
 All the above features are supported not only by `advertising` config, but also by `playAdNow` api which gets an ad pod as a parameter.  
-So, the app may call whenever wants to play a ad pod.
+The app may call it whenever it wants to play an ad pod.
 
 ```ecmascript 6
 const kalturaPlayer = KalturaPlayer.setup(config);
