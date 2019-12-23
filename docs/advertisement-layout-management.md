@@ -49,7 +49,7 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 ```
 
 > In this sample, the player will try to request and play 4 ads.  
-> Note: `position: 0` means pre-roll. `position: -1` means postroll.
+> Note: `position: 0` means pre-roll. `position: -1` means post-roll.
 
 ### Ad Pod
 
