@@ -56,7 +56,9 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 An ad break may contain a list of ads, also referred to as ad pod.
 
 > Ad Pod definition (from [IAB](https://www.iab.com/insights/digital-video-advertising-glossary)): An individual ad pod is a group of ads expected to play back-to-back in one commercial ad break similar to how consumers experience commercial ad breaks in broadcast television. An ad pod can be of varying lengths and can be inserted at any point in a stream of content (pre, mid, or post).
+
 Ad pod sample:
+
 ```ecmascript 6
 const config = {
   ...
@@ -89,7 +91,7 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 
 > Waterfalling ("daisy chain") is a process used by publishers selling ads in order to get a better fill-rate.
 > This process can be implemented on the ad server itself, but it can also be implemented on the client - which is what we did.
-> The process is rather simple: if the first ad server doesn't have any ads to serve, a call to a second network is made etc.
+> The process is rather simple: if the first ad server doesn't have any ads to serve, a call to a second server is made etc.
 > Meaning, if the first priority server did not "purchase" the impression, it would cascade down to the next server and to the next, until someone bought it.  
 >  The same process is applied also if the ad server returned an error (or the client failed to communicate with it), and then it would cascade to the next server and to the next...
 
