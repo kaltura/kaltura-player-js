@@ -56,7 +56,7 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 An ad break may contain a list of ads, also referred to as ad pod.
 
 > Ad Pod definition (from [IAB](https://www.iab.com/insights/digital-video-advertising-glossary)): An individual ad pod is a group of ads expected to play back-to-back in one commercial ad break similar to how consumers experience commercial ad breaks in broadcast television. An ad pod can be of varying lengths and can be inserted at any point in a stream of content (pre, mid, or post).
-
+Ad pod sample:
 ```ecmascript 6
 const config = {
   ...
