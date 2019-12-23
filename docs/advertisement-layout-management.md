@@ -168,7 +168,7 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 
 ### Events
 
-In addition the current [ad events](./ads.md#ad-events) (`adbreakstart, adbreakend, adloaded` etc.) have added 2 new events:
+In addition to the current [ad events](./ads.md#ad-events) (`adbreakstart, adbreakend, adloaded` etc.) we have added 2 new events:
 
 `adwaterfalling` - Fired when an ad request failed and the player is trying to request the fallback.  
 `adwaterfallingfailed` - Fired when the all fallback requests failed.
