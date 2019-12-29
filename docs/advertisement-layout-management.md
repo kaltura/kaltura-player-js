@@ -133,7 +133,9 @@ Each ad break in the `adBreaks` list gets the following options:
 
 > Note. `position`, `percentage` and `every` are several options to configure the ad break position.  
 > Only one should be provided. If none will be provided, the ad break will be ignored.
-> If more than one will be provided, only one configuration will be considered, by the following priority: 1. `position` 2. `percentage` 3. `every`.
+> If more than one will be provided, only one configuration will be considered, by the following priority:
+>
+> 1.  `position` 2. `percentage` 3. `every`.
 
 ### Ad Options
 
@@ -190,7 +192,7 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 
 ### Play Ads After Time
 
-An application may want to configure the player to play ads only from a specific time.
+An application may want to configure the player to play ads only from a specific time.  
 This can be achieved by `playAdsAfterTime` parameter. For example:
 
 ```ecmascript 6
@@ -221,7 +223,7 @@ In this sample, the player will skip the pre-roll, and will play the mid-roll on
 > Note: This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
 
 This option can be used also when `playback.startTime` is set, which by default causes the player to skip the ads scheduled before the start time.  
-Although, An application may want to force the player to play these ads. This also can be achieved by `playAdsAfterTime` parameter. For example:
+Although, An application may want to force the player to play these ads. This can be achieved also by `playAdsAfterTime` parameter. For example:
 
 ```ecmascript 6
 const config = {
