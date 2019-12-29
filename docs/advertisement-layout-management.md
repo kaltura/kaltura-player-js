@@ -222,7 +222,7 @@ In this sample, the player will skip the pre-roll, and will play the mid-roll on
 
 > Note: This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
 
-This option can be used also when `playback.startTime` is set, which by default causes the player to skip the ads scheduled before the start time.  
+This option can be used also when `playback.startTime` is set, which by default causes the player to skip the ads scheduled before the start time.
 Although, An application may want to force the player to play these ads. This can be achieved also by `playAdsAfterTime` parameter. For example:
 
 ```ecmascript 6
