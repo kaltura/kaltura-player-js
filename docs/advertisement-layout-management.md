@@ -8,7 +8,9 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 - [Single Ad](#single-ad)
 - [Ad Pod](#ad-pod)
 - [Waterfalling](#waterfalling)
+- [Ad Break Options](#ad-break-options)
 - [Ad Options](#ad-options)
+- [Play Ads After Time](#play-ads-after-time)
 - [Events](#events)
 - [Play Ad Now](#play-ad-now)
 
@@ -120,6 +122,19 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 > Hence, In this sample, only one ad will be played.  
 > Note: There is no limit to the fallback url list.
 
+### Ad Break Options
+
+Each ad break in the `adBreaks` list gets the following options:
+
+`position: number` - The position, in seconds, to show the ad break.  
+`percentage?: number` - Alternative parameter to `position`. The position, in percentage of the media length, to show the ad break (optional).  
+`every?: number` - Alternative parameter to `position`. Play ad break every X seconds (optional).  
+`ads: Array<Object>` - An array of ads to play ([Ad pod](#ad-pod)).
+
+> Note. `position`, `percentage` and `every` are several options to configure the ad break position.  
+> Only one should be provided. If none will be provided, the ad break will be ignored.
+> If more than one will be provided, only one configuration will be considered, by the following priority: 1. `position` 2. `percentage` 3. `every`.
+
 ### Ad Options
 
 Each ad in the `ads` list gets the following options:
@@ -149,11 +164,16 @@ const config = {
          response: [MID_ROLL_1_XML]
        }]
      }, {
-     position: 60,
+     percentage: 50,
      ads: [{
          url: [MID_ROLL_2_VAST_URL]
        },{
          url: [MID_ROLL_3_VAST_URL_1, MID_ROLL_3_VAST_URL_2, ...]
+       }]
+     }, {
+     every: 300,
+     ads: [{
+         response: [MID_ROLL_4_VAST_URL]
        }]
      }, {
      position: -1,
@@ -167,6 +187,64 @@ const config = {
 }
 const kalturaPlayer = KalturaPlayer.setup(config);
 ```
+
+### Play Ads After Time
+
+An application may want to configure the player to play ads only from a specific time.
+This can be achieved by `playAdsAfterTime` parameter. For example:
+
+```ecmascript 6
+const config = {
+  ...
+  advertising: {
+    playAdsAfterTime: 10,
+    adBreaks: [{
+      position: 0,
+      ads: [{
+          url: [PRE_ROLL_VAST_URL]
+        }]
+      }, {
+      position: 15,
+      ads: [{
+          url: [MID_ROLL_1_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+const kalturaPlayer = KalturaPlayer.setup(config);
+```
+
+In this sample, the player will skip the pre-roll, and will play the mid-roll only.
+
+> Note: This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
+
+This option can be used also when `playback.startTime` is set, which by default causes the player to skip the ads scheduled before the start time.  
+Although, An application may want to force the player to play these ads. This also can be achieved by `playAdsAfterTime` parameter. For example:
+
+```ecmascript 6
+const config = {
+  ...
+  playback: {
+    startTime: 60
+  },
+  advertising: {
+    playAdsAfterTime: -1,
+    adBreaks: [{
+      position: 0,
+      ads: [{
+          url: [PRE_ROLL_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+const kalturaPlayer = KalturaPlayer.setup(config);
+```
+
+In this sample, the player will play the pre-roll, and only after that will start the playback from the 60's second.
 
 ### Events
 
