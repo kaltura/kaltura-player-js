@@ -1,4 +1,6 @@
 // @flow
+import {THUMBNAIL_REGEX} from '../common/utils/thumbs';
+
 /**
  * Add poster with player dimensions to thumbnail API call
  * @param {PKSourcesConfigObject} playerSources - player sources container
@@ -12,7 +14,7 @@ function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: Pr
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
-  if (typeof playerPoster === 'string' && playerPoster === mediaConfigPoster) {
+  if (THUMBNAIL_REGEX.test(playerPoster) && playerPoster === mediaConfigPoster) {
     playerSources.poster = `${playerPoster}/height/${playerHeight}/width/${playerWidth}`;
   }
 }
