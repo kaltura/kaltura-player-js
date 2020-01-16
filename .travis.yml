@@ -17,7 +17,34 @@ cache:
 before_install:
  - export DISPLAY=:99.0
 
-script:
-- npm run eslint
-- npm run flow
-- npm run test
+stages:
+  - Tests
+  - Release canary
+  - Release
+
+jobs:
+  fast_finish: true
+  include:
+    # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
+    # publish canary package if on master
+    - stage: Release canary
+      if: (branch = master) AND (type != pull_request) AND commit_message =~ /^chore\(release\)/
+      env: TRAVIS_MODE=releaseCanary
+      script:
+      ￿  - ./scripts/after_deploy.sh "$branch"
+    # Required tests
+    - stage: Tests
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: "Running lint"
+      script:
+        - npm run eslint
+    - stage: Tests
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: "Running Flow type check"
+      script:
+        - npm run flow
+    - stage: Tests
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: "Running unit tests"
+      script:
+        - npm run test
