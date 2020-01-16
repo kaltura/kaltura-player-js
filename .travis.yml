@@ -31,7 +31,7 @@ jobs:
       if: (branch = master) AND (type != pull_request) AND commit_message =~ /^chore\(release\)/
       env: TRAVIS_MODE=releaseCanary
       script:
-      ￿  - ./scripts/after_deploy.sh "$branch"
+        - ./scripts/after_deploy.sh "$branch"
     # Required tests
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
