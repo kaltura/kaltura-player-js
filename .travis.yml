@@ -23,10 +23,18 @@ script:
 stages:
   - Tests
   - Release canary
+  - Release
 
 jobs:
   fast_finish: true
   include:
+    # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
+    # publish canary package if on master
+    - stage: Release
+      if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/
+      env: TRAVIS_MODE=release
+      script:
+        - ./scripts/after_deploy.sh "$branch" $JENKINS_RELEASE_TOKEN
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release canary
