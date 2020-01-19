@@ -34,7 +34,7 @@ jobs:
       env: TRAVIS_MODE=releaseCanary
       script:
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
-        - ./scripts/after_deploy.sh "$branch"
+        - ./scripts/after_deploy.sh "$branch" $JENKINS_CANARY_TOKEN
     # Required tests
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
