@@ -17,6 +17,9 @@ cache:
 before_install:
  - export DISPLAY=:99.0
 
+script:
+  - yarn install
+
 stages:
   - Tests
   - Release canary
@@ -27,9 +30,10 @@ jobs:
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release canary
-      if: (branch = master) AND (type != pull_request) AND commit_message =~ /^chore\(release\)/
+      if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore)(.*)(update dist)$/
       env: TRAVIS_MODE=releaseCanary
       script:
+        - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - ./scripts/after_deploy.sh "$branch"
     # Required tests
     - stage: Tests
