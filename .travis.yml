@@ -31,15 +31,15 @@ jobs:
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release
-      if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/
-      env: TRAVIS_MODE=release
+      if: (tag IS present)
+      name: "Release"
       script:
         - ./scripts/after_deploy.sh "$branch" $JENKINS_RELEASE_TOKEN
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release canary
       if: (branch = master) AND (type != pull_request) AND ( commit_message =~ /^(chore)(.*)(playkit)(.*)(versions)$/ OR commit_message !~ /^(chore)(.*)$/ )
-      env: TRAVIS_MODE=releaseCanary
+      name: "Release canary"
       script:
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - ./scripts/after_deploy.sh "$branch" $JENKINS_CANARY_TOKEN
