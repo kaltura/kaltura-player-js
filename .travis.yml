@@ -20,7 +20,6 @@ before_install:
 stages:
   - Tests
   - Release canary
-  - Release
 
 jobs:
   fast_finish: true
