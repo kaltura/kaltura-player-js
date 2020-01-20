@@ -16,7 +16,7 @@ The configuration uses the following structure:
 ```js
 {
   targetId: string,
-  logLevel: string,
+  log: PKLogConfigObject,
   disableUserCache: boolean,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
@@ -41,15 +41,11 @@ The configuration uses the following structure:
 
 ##
 
-> ### config.logLevel
+> ### config.log
 >
-> ##### Type: `string`
->
-> ##### Default: `"ERROR"`
+> ##### Type: [PKLogConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configlog)
 >
 > ##### Description: Defines the player log level.
->
-> Possible values: `"DEBUG", "INFO", "TIME", "WARN", "ERROR", "OFF"`
 
 ##
 

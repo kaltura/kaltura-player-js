@@ -34,7 +34,9 @@ http://my/page/url?debugKalturaPlayer
 ```js
 var config = {
     ...
-    logLevel: "DEBUG"
+    log :{
+        level: "DEBUG"
+    }
     ...
 };
 var player = KalturaPlayer.setup(config);
@@ -63,7 +65,9 @@ If you want to use different log level than `DEBUG`, you'll need to configure th
 ```js
 var config = {
     ...
-    logLevel: "WARN"
+    log:{
+        level: "WARN"
+    }
     ...
 };
 ```
