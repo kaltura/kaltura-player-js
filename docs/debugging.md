@@ -73,3 +73,64 @@ var config = {
 ```
 
 <br>For a complete list of log levels, click ~~here~~.
+
+### Controlling the handler for debugging
+
+Send console logs as network requests - good when you wanna recored them to a charles/fiddler session
+
+```js
+var config = {
+  ...
+   log: {
+     level: "DEBUG",
+     handler: (msg, ctx) => {
+        navigator.sendBeacon(`//myTest/
+          ${encodeURIComponent(JSON.stringify(ctx.name + ': ' + Array.from(msg).join(), null, '  '))}`
+        )}
+     }
+   }
+    ...
+```
+
+Send console logs to textarea on the browser - good when you wanna debug the player in cases where devtools
+is not available
+
+```js
+//create textarea html element and save ref to it in a var, in our example it is called "textAreaEl"
+let textAreaEl = document.createElement('textarea');
+textAreaEl.style.width = "100%";
+textAreaEl.style.height = "300px";
+document.body.appendChild(textAreaEl);
+//helper method to get formatted timestamp
+function msToTime(duration) {
+  let milliseconds = parseInt((duration % 1000) / 100),
+    seconds = parseInt((duration / 1000) % 60),
+    minutes = parseInt((duration / (1000 * 60)) % 60),
+    hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+}
+function getCurrentTimestamp() {
+  return msToTime(new Date().getTime());
+}
+var config = {
+    ...
+    log: {
+      level: "DEBUG",
+      handler: (msg, ctx) => {
+        const text =
+          ctx.name +
+          ": " +
+          Array.from(msg)
+            .map(m => JSON.stringify(m, null, "\t"))
+            .join();
+        textAreaEl.value = getCurrentTimestamp() + ": " + text + "\n" + textAreaEl.value;
+      }
+    }
+    ...
+}
+```
