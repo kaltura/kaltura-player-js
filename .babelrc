@@ -8,6 +8,12 @@
   "plugins": [
     "transform-flow-strip-types",
     "transform-class-properties",
+    ["babel-plugin-transform-es2015-classes",
+      {
+        "loose": true
+      }
+    ],
+    "babel-plugin-transform-es5-property-mutators",
     "transform-object-rest-spread"
   ],
   "env": {
