@@ -68,7 +68,8 @@ function setSessionId(playerConfig: PartialKPOptionsObject, sessionId: string): 
  * @return {string} - the url with the new sessionId
  * @private
  */
-function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: ?string = PLAY_SESSION_ID): string {
+function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: ?string): string {
+  paramName = paramName || PLAY_SESSION_ID;
   if (sessionId) {
     let sessionIdInUrlRegex = new RegExp(paramName + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
     let sessionIdInUrl = sessionIdInUrlRegex.exec(url);
@@ -119,8 +120,9 @@ function addReferrer(url: string): string {
  * @private
  */
 function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string {
-  if (url.indexOf(UICONF_ID) === -1 && typeof playerConfig.session.uiConfId === 'number') {
+  if (url.indexOf(UICONF_ID) === -1 && playerConfig.session && typeof playerConfig.session.uiConfId === 'number') {
     let delimiter = url.indexOf('?') === -1 ? '?' : '&';
+    // $FlowFixMe
     url += delimiter + UICONF_ID + playerConfig.session.uiConfId;
   }
   return url;
