@@ -3,8 +3,11 @@ import {StreamType, Utils} from '@playkit-js/playkit-js';
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
+const DRM_SESSION_ID = 'sessionId=';
 const REFERRER = 'referrer=';
+const UICONF_ID = 'uiConfId=';
 const CLIENT_TAG = 'clientTag=html5:v';
+const UDRM_DOMAIN = 'udrm.kaltura';
 
 /**
  * @param {Player} player - player
@@ -59,23 +62,25 @@ function setSessionId(playerConfig: PartialKPOptionsObject, sessionId: string): 
 }
 
 /**
- * @param {PKMediaSourceObject} source - PKMediaSourceObject
+ * @param {string} url - url
  * @param {string} sessionId - session id
- * @return {void}
+ * @param {string} paramName - optional param name of the session id
+ * @return {string} - the url with the new sessionId
  * @private
  */
-function updateSessionIdInUrl(source: Object = {}, sessionId: ?string): void {
+function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: ?string = PLAY_SESSION_ID): string {
   if (sessionId) {
-    let sessionIdInUrlRegex = new RegExp(PLAY_SESSION_ID + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
-    let sessionIdInUrl = sessionIdInUrlRegex.exec(source.url);
+    let sessionIdInUrlRegex = new RegExp(paramName + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
+    let sessionIdInUrl = sessionIdInUrlRegex.exec(url);
     if (sessionIdInUrl && sessionIdInUrl[1]) {
       // this url has session id (has already been played)
-      source.url = source.url.replace(sessionIdInUrl[1], sessionId);
+      url = url.replace(sessionIdInUrl[1], sessionId);
     } else {
-      let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-      source.url += delimiter + PLAY_SESSION_ID + sessionId;
+      let delimiter = url.indexOf('?') === -1 ? '?' : '&';
+      url += delimiter + paramName + sessionId;
     }
   }
+  return url;
 }
 
 /**
@@ -94,28 +99,44 @@ function getReferrer(): string {
 }
 
 /**
- * @param {PKMediaSourceObject} source - source
- * @return {void}
+ * @param {string} url - url
+ * @return {string} - the url with the referrer appended in the query params
  * @private
  */
-function addReferrer(source: PKMediaSourceObject): void {
-  if (source.url.indexOf(REFERRER) === -1) {
-    let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
+function addReferrer(url: string): string {
+  if (url.indexOf(REFERRER) === -1) {
+    let delimiter = url.indexOf('?') === -1 ? '?' : '&';
     let referrer = btoa(getReferrer().substr(0, 1000));
-    source.url += delimiter + REFERRER + referrer;
+    url += delimiter + REFERRER + referrer;
   }
+  return url;
 }
 
 /**
- * @param {PKMediaSourceObject} source - source
- * @return {void}
+ * @param {string} url - url
+ * @param {PartialKPOptionsObject} playerConfig - player config
+ * @return {string} - the url with the uiconf id appended in the query params
  * @private
  */
-function addClientTag(source: PKMediaSourceObject): void {
-  if (source.url.indexOf(CLIENT_TAG) === -1) {
-    let delimiter = source.url.indexOf('?') === -1 ? '?' : '&';
-    source.url += delimiter + CLIENT_TAG + __VERSION__;
+function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string {
+  if (url.indexOf(UICONF_ID) === -1 && typeof playerConfig.session.uiConfId === 'number') {
+    let delimiter = url.indexOf('?') === -1 ? '?' : '&';
+    url += delimiter + UICONF_ID + playerConfig.session.uiConfId;
   }
+  return url;
+}
+
+/**
+ * @param {string} url - url
+ * @return {string} - the url with the client tag appended in the query params
+ * @private
+ */
+function addClientTag(url: string): string {
+  if (url.indexOf(CLIENT_TAG) === -1) {
+    let delimiter = url.indexOf('?') === -1 ? '?' : '&';
+    url += delimiter + CLIENT_TAG + __VERSION__;
+  }
+  return url;
 }
 
 /**
@@ -133,13 +154,23 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
     if (sources[key]) {
       sources[key].forEach(source => {
         if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
-          updateSessionIdInUrl(source, playerConfig.session && playerConfig.session.id);
-          addReferrer(source);
-          addClientTag(source);
+          source.url = updateSessionIdInUrl(source.url, playerConfig.session && playerConfig.session.id);
+          source.url = addReferrer(source.url);
+          source.url = addClientTag(source.url);
+        }
+        if (source.drmData && source.drmData.length) {
+          source.drmData.forEach(drmData => {
+            if (typeof drmData.licenseUrl === 'string' && drmData.licenseUrl.indexOf(UDRM_DOMAIN) > -1) {
+              drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, playerConfig.session && playerConfig.session.id, DRM_SESSION_ID);
+              drmData.licenseUrl = addClientTag(drmData.licenseUrl);
+              drmData.licenseUrl = addReferrer(drmData.licenseUrl);
+              drmData.licenseUrl = addUIConfId(drmData.licenseUrl, playerConfig);
+            }
+          });
         }
       });
     }
   });
 }
 
-export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag};
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId};
