@@ -94,6 +94,15 @@ function getReferrer(): string {
 }
 
 /**
+ * @return {string} - The referrer after URIComponent encoded
+ * @private
+ */
+function getEncodedReferrer(): string {
+  const referrer = getReferrer();
+  return typeof referrer === 'string' ? encodeURIComponent(referrer) : referrer;
+}
+
+/**
  * @param {PKMediaSourceObject} source - source
  * @return {void}
  * @private
@@ -142,4 +151,4 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   });
 }
 
-export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag};
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, getEncodedReferrer};

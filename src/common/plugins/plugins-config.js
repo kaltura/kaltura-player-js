@@ -1,7 +1,7 @@
 //@flow
 import {pluginConfig, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
-import {getReferrer} from '../utils/kaltura-params';
+import {getReferrer, getEncodedReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
 
 /**
@@ -54,7 +54,8 @@ const getModel = (options: KPOptionsObject): Object => {
     }
   }
   const entryDataModel = {
-    referrer: getReferrer()
+    referrer: getReferrer(),
+    encodedReferrer: getEncodedReferrer()
   };
   if (options.provider) {
     Utils.Object.mergeDeep(entryDataModel, {

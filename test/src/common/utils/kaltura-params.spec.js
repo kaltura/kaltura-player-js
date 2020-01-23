@@ -3,6 +3,7 @@ import {
   addKalturaParams,
   addReferrer,
   getReferrer,
+  getEncodedReferrer,
   handleSessionId,
   updateSessionIdInUrl
 } from '../../../../src/common/utils/kaltura-params';
@@ -14,6 +15,7 @@ class Player {
 }
 
 let player = new Player();
+let sandbox = sinon.sandbox.create();
 
 describe('addKalturaParams', function() {
   it('should add session id, referrer and client tag for playManifest source', function() {
@@ -138,6 +140,15 @@ describe('addReferrer', function() {
     player.config = {session: {}};
     addReferrer(source, player);
     source.url.should.be.equal('a/b/c/playmanifest/source?a&referrer=' + btoa(getReferrer().substr(0, 1000)));
+  });
+});
+
+describe('getEncodedReferrer', function() {
+  it('should encode the referrer', function() {
+    sandbox.stub(window.parent.document, 'URL').get(() => {
+      return 'http://localhost:3000/?debugKalturaPlayer';
+    });
+    getEncodedReferrer().should.be.equal('http%3A%2F%2Flocalhost%3A3000%2F%3FdebugKalturaPlayer');
   });
 });
 
