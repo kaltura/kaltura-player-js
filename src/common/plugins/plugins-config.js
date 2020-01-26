@@ -1,7 +1,7 @@
 //@flow
 import {pluginConfig, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
-import {getReferrer, getEncodedReferrer} from '../utils/kaltura-params';
+import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
 
 /**
@@ -95,6 +95,15 @@ const getModel = (options: KPOptionsObject): Object => {
 };
 
 /**
+ * @return {string} - The referrer after URIComponent encoded
+ * @private
+ */
+function getEncodedReferrer(): string {
+  const referrer = getReferrer();
+  return typeof referrer === 'string' ? encodeURIComponent(referrer) : referrer;
+}
+
+/**
  * @param {PKPluginsConfigObject} options - plugins options
  * @param {KPOptionsObject} config - player config
  * @private
@@ -173,4 +182,4 @@ function _mergeConfig(data: Object, evaluatedConfig: Object): void {
   }
 }
 
-export {evaluatePluginsConfig, evaluateUIConfig};
+export {evaluatePluginsConfig, evaluateUIConfig, getEncodedReferrer};
