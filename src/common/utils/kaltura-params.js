@@ -7,7 +7,9 @@ const DRM_SESSION_ID = 'sessionId=';
 const REFERRER = 'referrer=';
 const UICONF_ID = 'uiConfId=';
 const CLIENT_TAG = 'clientTag=html5:v';
-const UDRM_DOMAIN = 'udrm.kaltura';
+const UDRM_DOMAIN = 'kaltura.com';
+const CUSTOM_DATA = 'custom_data=';
+const SIGNATURE = 'signature=';
 
 /**
  * @param {Player} player - player
@@ -162,7 +164,12 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
         }
         if (source.drmData && source.drmData.length) {
           source.drmData.forEach(drmData => {
-            if (typeof drmData.licenseUrl === 'string' && drmData.licenseUrl.indexOf(UDRM_DOMAIN) > -1) {
+            if (
+              typeof drmData.licenseUrl === 'string' &&
+              drmData.licenseUrl.indexOf(UDRM_DOMAIN) > -1 &&
+              drmData.licenseUrl.indexOf(CUSTOM_DATA) > -1 &&
+              drmData.licenseUrl.indexOf(SIGNATURE) > -1
+            ) {
               drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, playerConfig.session && playerConfig.session.id, DRM_SESSION_ID);
               drmData.licenseUrl = addClientTag(drmData.licenseUrl);
               drmData.licenseUrl = addReferrer(drmData.licenseUrl);
