@@ -77,6 +77,46 @@ describe('addKalturaParams', function() {
     player.config.session.id.should.be.exist;
     source1.url.should.be.equal('a/b/c/PLAYMANIFEST/source');
   });
+
+  it('should add session id, referrer and client tag for PLAYMANIFEST source and session id, referrer, client tag and uiconfid to udrm license', function() {
+    let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.kaltura.com?custom_data=someData&signature=Sig'}]};
+    player.config = {session: {uiConfId: 123}, sources: {progressive: [source1]}};
+    addKalturaParams(player, player.config);
+    source1.url.should.be.equal(
+      'a/b/c/PLAYMANIFEST/source?playSessionId=' +
+        player.config.session.id +
+        '&referrer=' +
+        btoa(getReferrer().substr(0, 1000)) +
+        '&clientTag=html5:v' +
+        __VERSION__
+    );
+
+    source1.drmData[0].licenseUrl.should.be.equal(
+      'udrm.kaltura.com?custom_data=someData&signature=Sig&sessionId=' +
+        player.config.session.id +
+        '&clientTag=html5:v' +
+        __VERSION__ +
+        '&referrer=' +
+        btoa(getReferrer().substr(0, 1000)) +
+        '&uiConfId=123'
+    );
+  });
+
+  it('should not add session id, referrer, client tag and uiconfid to  other drm system', function() {
+    let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.other.com?custom_data=someData&signature=Sig'}]};
+    player.config = {session: {uiConfId: 123}, sources: {progressive: [source1]}};
+    addKalturaParams(player, player.config);
+
+    source1.drmData[0].licenseUrl.should.be.equal('udrm.other.com?custom_data=someData&signature=Sig');
+  });
+
+  it('should not add session id, referrer, client tag and uiconfid to  other drm system', function() {
+    let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.kaltura.com?custommm_data=someData&signature=Sig'}]};
+    player.config = {session: {uiConfId: 123}, sources: {progressive: [source1]}};
+    addKalturaParams(player, player.config);
+
+    source1.drmData[0].licenseUrl.should.be.equal('udrm.kaltura.com?custommm_data=someData&signature=Sig');
+  });
 });
 
 describe('handleSessionId', function() {

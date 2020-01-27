@@ -70,8 +70,7 @@ function setSessionId(playerConfig: PartialKPOptionsObject, sessionId: string): 
  * @return {string} - the url with the new sessionId
  * @private
  */
-function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: ?string): string {
-  paramName = paramName || PLAY_SESSION_ID;
+function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: string = PLAY_SESSION_ID): string {
   if (sessionId) {
     let sessionIdInUrlRegex = new RegExp(paramName + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
     let sessionIdInUrl = sessionIdInUrlRegex.exec(url);
@@ -79,8 +78,7 @@ function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: ?strin
       // this url has session id (has already been played)
       url = url.replace(sessionIdInUrl[1], sessionId);
     } else {
-      let delimiter = url.indexOf('?') === -1 ? '?' : '&';
-      url += delimiter + paramName + sessionId;
+      url += getNextDelimiter(url) + paramName + sessionId;
     }
   }
   return url;
@@ -108,9 +106,8 @@ function getReferrer(): string {
  */
 function addReferrer(url: string): string {
   if (url.indexOf(REFERRER) === -1) {
-    let delimiter = url.indexOf('?') === -1 ? '?' : '&';
     let referrer = btoa(getReferrer().substr(0, 1000));
-    url += delimiter + REFERRER + referrer;
+    url += getNextDelimiter(url) + REFERRER + referrer;
   }
   return url;
 }
@@ -122,12 +119,20 @@ function addReferrer(url: string): string {
  * @private
  */
 function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string {
-  if (url.indexOf(UICONF_ID) === -1 && playerConfig.session && typeof playerConfig.session.uiConfId === 'number') {
-    let delimiter = url.indexOf('?') === -1 ? '?' : '&';
-    // $FlowFixMe
-    url += delimiter + UICONF_ID + playerConfig.session.uiConfId;
+  const uiConfId = Utils.Object.getPropertyPath(playerConfig, 'session.uiConfId');
+  if (url.indexOf(UICONF_ID) === -1 && typeof uiConfId === 'number') {
+    url += getNextDelimiter(url) + UICONF_ID + uiConfId;
   }
   return url;
+}
+
+/**
+ * @param {string} url - url
+ * @return {string} - returns the next param delimiter (? or &) according to the current url structure
+ * @private
+ */
+function getNextDelimiter(url: string): string {
+  return url.indexOf('?') === -1 ? '?' : '&';
 }
 
 /**
@@ -137,8 +142,7 @@ function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string 
  */
 function addClientTag(url: string): string {
   if (url.indexOf(CLIENT_TAG) === -1) {
-    let delimiter = url.indexOf('?') === -1 ? '?' : '&';
-    url += delimiter + CLIENT_TAG + __VERSION__;
+    url += getNextDelimiter(url) + CLIENT_TAG + __VERSION__;
   }
   return url;
 }
@@ -153,24 +157,20 @@ function addClientTag(url: string): string {
 function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject): void {
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
+  const sessionId = playerConfig.session && playerConfig.session.id;
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
       sources[key].forEach(source => {
         if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
-          source.url = updateSessionIdInUrl(source.url, playerConfig.session && playerConfig.session.id);
+          source.url = updateSessionIdInUrl(source.url, sessionId);
           source.url = addReferrer(source.url);
           source.url = addClientTag(source.url);
         }
         if (source.drmData && source.drmData.length) {
           source.drmData.forEach(drmData => {
-            if (
-              typeof drmData.licenseUrl === 'string' &&
-              drmData.licenseUrl.indexOf(UDRM_DOMAIN) > -1 &&
-              drmData.licenseUrl.indexOf(CUSTOM_DATA) > -1 &&
-              drmData.licenseUrl.indexOf(SIGNATURE) > -1
-            ) {
-              drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, playerConfig.session && playerConfig.session.id, DRM_SESSION_ID);
+            if (typeof drmData.licenseUrl === 'string' && [UDRM_DOMAIN, CUSTOM_DATA, SIGNATURE].every(t => drmData.licenseUrl.includes(t))) {
+              drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, sessionId, DRM_SESSION_ID);
               drmData.licenseUrl = addClientTag(drmData.licenseUrl);
               drmData.licenseUrl = addReferrer(drmData.licenseUrl);
               drmData.licenseUrl = addUIConfId(drmData.licenseUrl, playerConfig);
