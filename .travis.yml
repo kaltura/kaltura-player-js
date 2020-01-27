@@ -61,14 +61,14 @@ jobs:
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
       name: "Running lint"
       script:
-        - npm run eslint
+        - yarn run eslint
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
       name: "Running Flow type check"
       script:
-        - npm run flow
+        - yarn run flow
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
       name: "Running unit tests"
       script:
-        - npm run test
+        - yarn run test
