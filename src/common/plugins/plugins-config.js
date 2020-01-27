@@ -100,7 +100,7 @@ const getModel = (options: KPOptionsObject): Object => {
  */
 function getEncodedReferrer(): string {
   const referrer = getReferrer();
-  return typeof referrer === 'string' ? encodeURIComponent(referrer) : referrer;
+  return encodeURIComponent(referrer);
 }
 
 /**
