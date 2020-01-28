@@ -78,7 +78,7 @@ function updateSessionIdInUrl(url: string, sessionId: ?string, paramName: string
       // this url has session id (has already been played)
       url = url.replace(sessionIdInUrl[1], sessionId);
     } else {
-      url += getNextDelimiter(url) + paramName + sessionId;
+      url += getQueryStringParamDelimiter(url) + paramName + sessionId;
     }
   }
   return url;
@@ -107,7 +107,7 @@ function getReferrer(): string {
 function addReferrer(url: string): string {
   if (url.indexOf(REFERRER) === -1) {
     let referrer = btoa(getReferrer().substr(0, 1000));
-    url += getNextDelimiter(url) + REFERRER + referrer;
+    url += getQueryStringParamDelimiter(url) + REFERRER + referrer;
   }
   return url;
 }
@@ -119,9 +119,9 @@ function addReferrer(url: string): string {
  * @private
  */
 function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string {
-  const uiConfId = Utils.Object.getPropertyPath(playerConfig, 'session.uiConfId');
+  const uiConfId = Utils.Object.getPropertyPath(playerConfig, 'provider.uiConfId');
   if (url.indexOf(UICONF_ID) === -1 && typeof uiConfId === 'number') {
-    url += getNextDelimiter(url) + UICONF_ID + uiConfId;
+    url += getQueryStringParamDelimiter(url) + UICONF_ID + uiConfId;
   }
   return url;
 }
@@ -131,7 +131,7 @@ function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string 
  * @return {string} - returns the next param delimiter (? or &) according to the current url structure
  * @private
  */
-function getNextDelimiter(url: string): string {
+function getQueryStringParamDelimiter(url: string): string {
   return url.indexOf('?') === -1 ? '?' : '&';
 }
 
@@ -142,7 +142,7 @@ function getNextDelimiter(url: string): string {
  */
 function addClientTag(url: string): string {
   if (url.indexOf(CLIENT_TAG) === -1) {
-    url += getNextDelimiter(url) + CLIENT_TAG + __VERSION__;
+    url += getQueryStringParamDelimiter(url) + CLIENT_TAG + __VERSION__;
   }
   return url;
 }
