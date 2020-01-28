@@ -34,7 +34,7 @@ jobs:
       if: (tag IS present)
       name: "Release"
       script:
-        - ./scripts/after_deploy.sh "$TRAVIS_TAG" $JENKINS_RELEASE_TOKEN
+        - ./scripts/after_deploy.sh "$TRAVIS_TAG" "$JENKINS_RELEASE_TOKEN"
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release canary
@@ -55,7 +55,7 @@ jobs:
         - rm package.jsonE
         - rm CHANGELOG.mdE
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
-        - ./scripts/after_deploy.sh "${newVersion}" $JENKINS_CANARY_TOKEN
+        - ./scripts/after_deploy.sh "${newVersion}" "$JENKINS_CANARY_TOKEN"
     # Required tests
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
