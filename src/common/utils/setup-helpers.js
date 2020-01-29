@@ -280,7 +280,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
-  configureLGTVDefaultOptions(defaultOptions);
+  configureSmartTVDefaultOptions(defaultOptions);
   configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
@@ -375,9 +375,9 @@ function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureLGTVDefaultOptions(options: KPOptionsObject): void {
+function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
   if (Env.isSmartTV) {
-    //relevant for LG SDK 4 which doesn't support our check for autoplay
+    //relevant for LG SDK 4 and HISENSE which doesn't support our check for autoplay with base64 source
     setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
     _configureLGSDK2HlsLiveConfig(options);
