@@ -80,7 +80,7 @@ describe('addKalturaParams', function() {
 
   it('should add session id, referrer and client tag for PLAYMANIFEST source and session id, referrer, client tag and uiconfid to udrm license', function() {
     let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.kaltura.com?custom_data=someData&signature=Sig'}]};
-    player.config = {session: {uiConfId: 123}, sources: {progressive: [source1]}};
+    player.config = {provider: {uiConfId: 123}, sources: {progressive: [source1]}};
     addKalturaParams(player, player.config);
     source1.url.should.be.equal(
       'a/b/c/PLAYMANIFEST/source?playSessionId=' +
@@ -104,7 +104,7 @@ describe('addKalturaParams', function() {
 
   it('should not add session id, referrer, client tag and uiconfid to  other drm system', function() {
     let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.other.com?custom_data=someData&signature=Sig'}]};
-    player.config = {session: {uiConfId: 123}, sources: {progressive: [source1]}};
+    player.config = {provider: {uiConfId: 123}, sources: {progressive: [source1]}};
     addKalturaParams(player, player.config);
 
     source1.drmData[0].licenseUrl.should.be.equal('udrm.other.com?custom_data=someData&signature=Sig');
@@ -112,7 +112,7 @@ describe('addKalturaParams', function() {
 
   it('should not add session id, referrer, client tag and uiconfid to  other drm system', function() {
     let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.kaltura.com?custommm_data=someData&signature=Sig'}]};
-    player.config = {session: {uiConfId: 123}, sources: {progressive: [source1]}};
+    player.config = {provider: {uiConfId: 123}, sources: {progressive: [source1]}};
     addKalturaParams(player, player.config);
 
     source1.drmData[0].licenseUrl.should.be.equal('udrm.kaltura.com?custommm_data=someData&signature=Sig');
@@ -192,14 +192,14 @@ describe('addReferrer', function() {
 describe('addUIConfId', function() {
   it('should add uiConfId as first param', function() {
     let source = {url: 'a/b/c/playmanifest/source'};
-    player.config = {session: {uiConfId: 123}};
+    player.config = {provider: {uiConfId: 123}};
     source.url = addUIConfId(source.url, player.config);
     source.url.should.be.equal('a/b/c/playmanifest/source?uiConfId=123');
   });
 
   it('should add uiConfId as second param', function() {
     let source = {url: 'a/b/c/playmanifest/source?a'};
-    player.config = {session: {uiConfId: 123}};
+    player.config = {provider: {uiConfId: 123}};
     source.url = addUIConfId(source.url, player.config);
     source.url.should.be.equal('a/b/c/playmanifest/source?a&uiConfId=123');
   });
