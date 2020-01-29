@@ -405,7 +405,11 @@ function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
   if (Env.browser.name === 'Edge') {
     const keySystem = Utils.Object.getPropertyPath(options, 'drm.keySystem');
     if (!keySystem) {
-      options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.PLAYREADY);
+      if (Env.os.name === 'Windows') {
+        options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.PLAYREADY);
+      } else {
+        options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.WIDEVINE);
+      }
     }
   }
 }
