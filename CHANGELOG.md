@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.51.0"></a>
+# [0.51.0](https://github.com/kaltura/kaltura-player-js/compare/v0.50.9...v0.51.0) (2020-01-29)
+
+
+### Bug Fixes
+
+* **FEC-9489:** IE11 proxy issue in get set ([#295](https://github.com/kaltura/kaltura-player-js/issues/295)) ([d95ef8c](https://github.com/kaltura/kaltura-player-js/commit/d95ef8c))
+* **FEC-9577:** Hisense playback doesn't work ([#298](https://github.com/kaltura/kaltura-player-js/issues/298)) ([f6da3ca](https://github.com/kaltura/kaltura-player-js/commit/f6da3ca))
+* **FEC-9632:** edge play playready on mac os when it's not supported ([#301](https://github.com/kaltura/kaltura-player-js/issues/301)) ([efb4665](https://github.com/kaltura/kaltura-player-js/commit/efb4665))
+
+
+### Features
+
+* **FEC-8998:** add url encoded for referrer token ([#299](https://github.com/kaltura/kaltura-player-js/issues/299)) ([b540625](https://github.com/kaltura/kaltura-player-js/commit/b540625))
+* **FEC-9545:** add ability to correlate udrm calls to player type and session ([#297](https://github.com/kaltura/kaltura-player-js/issues/297)) ([c7f7748](https://github.com/kaltura/kaltura-player-js/commit/c7f7748))
+
+
+
 <a name="0.50.9"></a>
 ## [0.50.9](https://github.com/kaltura/kaltura-player-js/compare/v0.50.8...v0.50.9) (2020-01-09)
 
