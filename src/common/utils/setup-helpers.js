@@ -65,9 +65,9 @@ function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
       url: KAVA_DEFAULT_IMPRESSION,
       mimetype: ''
     };
-    addReferrer(source);
-    addClientTag(source);
-    updateSessionIdInUrl(source, Utils.Generator.guid() + ':' + Utils.Generator.guid());
+    source.url = addReferrer(source.url);
+    source.url = addClientTag(source.url);
+    source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
 }
