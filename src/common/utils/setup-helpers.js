@@ -287,6 +287,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   maybeSetFullScreenConfig(defaultOptions);
+  maybeSetCapabilitiesForIos(defaultOptions);
   return defaultOptions;
 }
 
@@ -641,6 +642,19 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
         }
       });
     }
+  }
+}
+
+/**
+ * Set the autoplay capability to false for native Ios player.
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
+  const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+  if (playsinline === false) {
+    setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
   }
 }
 
