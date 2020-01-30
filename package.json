@@ -97,7 +97,7 @@
     "webpack-dev-server": "latest"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "^0.59.5",
+    "@playkit-js/playkit-js": "^0.59.8",
     "@playkit-js/playkit-js-dash": "^1.16.0",
     "@playkit-js/playkit-js-hls": "^1.18.0",
     "@playkit-js/playkit-js-kava": "^0.15.1",
