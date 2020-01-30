@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.51.2"></a>
+## [0.51.2](https://github.com/kaltura/kaltura-player-js/compare/v0.51.1...v0.51.2) (2020-01-30)
+
+
+### Bug Fixes
+
+* **FEC-9629:** Player is not inline when rendered after the DOM loads ([#302](https://github.com/kaltura/kaltura-player-js/issues/302)) ([cdd85d0](https://github.com/kaltura/kaltura-player-js/commit/cdd85d0))
+
+
+
 <a name="0.51.1"></a>
 ## [0.51.1](https://github.com/kaltura/kaltura-player-js/compare/v0.51.0...v0.51.1) (2020-01-30)
 
