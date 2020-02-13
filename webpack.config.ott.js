@@ -16,7 +16,15 @@ const plugins = [
     __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
     __PLAYER_TYPE__: JSON.stringify(playerType),
     __CONFIG_DOCS_URL__: JSON.stringify(configDocsUrl)
-  })
+  }),
+  new CopyPlugin([{
+    from: '../node_modules/@playkit-js/playkit-js-ui/translations',
+    transform: function(content) {
+      // minify json
+      return JSON.stringify(JSON.parse(content));
+    },
+    to: 'translations',
+  }])
 ];
 
 if (PROD) {
