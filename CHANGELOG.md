@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.52.0"></a>
+# [0.52.0](https://github.com/kaltura/kaltura-player-js/compare/v0.51.3...v0.52.0) (2020-02-16)
+
+
+### Features
+
+* **FEC-9465:** internationalization (i18n) - player localization ([#304](https://github.com/kaltura/kaltura-player-js/issues/304)) ([6b33757](https://github.com/kaltura/kaltura-player-js/commit/6b33757))
+
+
+
 <a name="0.51.3"></a>
 ## [0.51.3](https://github.com/kaltura/kaltura-player-js/compare/v0.51.2...v0.51.3) (2020-02-03)
 
