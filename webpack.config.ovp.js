@@ -19,11 +19,12 @@ const plugins = [
   }),
   new CopyPlugin([{
     from: '../node_modules/@playkit-js/playkit-js-ui/translations',
+    ignore: ['en.i18n.json'],
     transform: function(content) {
       // minify json
       return JSON.stringify(JSON.parse(content));
     },
-    to: 'translations',
+    to: 'translations'
   }])
 ];
 
