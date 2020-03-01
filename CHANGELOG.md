@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.53.0"></a>
+# [0.53.0](https://github.com/kaltura/kaltura-player-js/compare/v0.52.1...v0.53.0) (2020-03-01)
+
+
+### Features
+
+* **FEC-9109:** add DRM Load time metric ([#305](https://github.com/kaltura/kaltura-player-js/issues/305)) ([e0b267e](https://github.com/kaltura/kaltura-player-js/commit/e0b267e))
+
+
+
 <a name="0.52.1"></a>
 ## [0.52.1](https://github.com/kaltura/kaltura-player-js/compare/v0.52.0...v0.52.1) (2020-02-24)
 
