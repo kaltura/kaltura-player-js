@@ -10,9 +10,10 @@
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.18.0.tgz#f368fa64409ea5bc889dcec65d0d6658fc795b25"
 
-"@playkit-js/playkit-js-kava@^0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.15.1.tgz#761c4f0e150fa8205716b4b689d54a3a50362d30"
+"@playkit-js/playkit-js-kava@^0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.16.0.tgz#08f6aba95430639fc3c7affd4c47df24601b66fc"
+  integrity sha512-LI5SVP9eqaydCIrUABY7BhW+LYYkRHG9ZPu5Pn4Irs9Nrq9yoP8ZQ3iFEHx8Odw2JssGD8VMTamflmPremdkOw==
 
 "@playkit-js/playkit-js-ott-analytics@^0.5.2":
   version "0.5.2"

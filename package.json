@@ -100,7 +100,7 @@
     "@playkit-js/playkit-js": "^0.60.0",
     "@playkit-js/playkit-js-dash": "^1.17.0",
     "@playkit-js/playkit-js-hls": "^1.18.0",
-    "@playkit-js/playkit-js-kava": "^0.15.1",
+    "@playkit-js/playkit-js-kava": "^0.16.0",
     "@playkit-js/playkit-js-ott-analytics": "^0.5.2",
     "@playkit-js/playkit-js-ui": "^0.53.1",
     "babel-polyfill": "^6.23.0",
