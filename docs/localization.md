@@ -65,4 +65,4 @@ There are 2 ways to change this behavior:
 
 1.  By the Studio.
 2.  By a Url parameter called `langs` on the embed player Url. For example:
-    _https://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/embedPlaykitJs/uiconf_id/15215933/partner_id/1091/**langs/de,fr**_.
+    _https://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/embedPlaykitJs/uiconf_id/15215933/partner_id/1091/langs/de,fr_.
