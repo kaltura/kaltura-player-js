@@ -11,7 +11,7 @@ Plugin which served by Kaltura platform (via the bundle builder) can upload its 
 To get this ability, The plugin needs to add the translation json file/s (`*.i18n.json`) under a `translations` folder in the location of the plugin source code and source map.  
 For example: Plugin called _playkit-ui-plugin_, which contains, in the dist folder, 2 files - `playkit-ui-plugin.js` and `playkit-ui-plugin.js.map`,
 Will add a `translations` folder with the translation file/s:
-![](images/translation-tree.png)
+![](images/translation-tree.png)  
 Each json file contains the translation dictionary under the language code key.
 For example `en.i18n.json` looks like:
 
