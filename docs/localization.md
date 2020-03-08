@@ -3,14 +3,14 @@
 This article explains how to upload translation dictionaries to Kaltura platform,
 and how to control the language that actually will be served to the player.
 
-> This feature uses the `ui.translations` config, for more details see [Adding translations and choosing locale language](https://github.com/kaltura/playkit-js-ui/blob/master/docs/translations.md)
+> This feature uses the `ui.translations` config, for more details see [Adding translations and choosing locale language](https://github.com/kaltura/playkit-js-ui/blob/master/docs/translations.md).
 
 ## Uploading translation dictionaries via Kaltura platform
 
 Plugin which served by Kaltura platform (via the bundle builder) can upload its translation dictionaries also by Kaltura platform.
-To get this ability, The plugin needs to add the translation json file/s (`*.i18n.json`) under a `translation` folder in location of the plugin source code and source map.
+To get this ability, The plugin needs to add the translation json file/s (`*.i18n.json`) under a `translations` folder in the location of the plugin source code and source map.  
 For example: Plugin called _playkit-ui-plugin_, which contains, in the dist folder, 2 files - `playkit-ui-plugin.js` and `playkit-ui-plugin.js.map`,
-Will add a `translation` folder with the translation file/s:
+Will add a `translations` folder with the translation file/s:
 ![](images/translation-tree.png)
 Each json file contains the translation dictionary under the language code key.
 For example `en.i18n.json` looks like:
