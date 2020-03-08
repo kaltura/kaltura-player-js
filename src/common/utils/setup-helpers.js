@@ -65,9 +65,9 @@ function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
       url: KAVA_DEFAULT_IMPRESSION,
       mimetype: ''
     };
-    addReferrer(source);
-    addClientTag(source);
-    updateSessionIdInUrl(source, Utils.Generator.guid() + ':' + Utils.Generator.guid());
+    source.url = addReferrer(source.url);
+    source.url = addClientTag(source.url);
+    source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
 }
@@ -280,13 +280,14 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
-  configureLGTVDefaultOptions(defaultOptions);
+  configureSmartTVDefaultOptions(defaultOptions);
   configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
   configureExternalStreamRedirect(defaultOptions);
   maybeSetFullScreenConfig(defaultOptions);
+  maybeSetCapabilitiesForIos(defaultOptions);
   return defaultOptions;
 }
 
@@ -375,9 +376,9 @@ function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function configureLGTVDefaultOptions(options: KPOptionsObject): void {
+function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
   if (Env.isSmartTV) {
-    //relevant for LG SDK 4 which doesn't support our check for autoplay
+    //relevant for LG SDK 4 and HISENSE which doesn't support our check for autoplay with base64 source
     setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
     _configureLGSDK2HlsLiveConfig(options);
@@ -405,7 +406,11 @@ function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
   if (Env.browser.name === 'Edge') {
     const keySystem = Utils.Object.getPropertyPath(options, 'drm.keySystem');
     if (!keySystem) {
-      options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.PLAYREADY);
+      if (Env.os.name === 'Windows') {
+        options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.PLAYREADY);
+      } else {
+        options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.WIDEVINE);
+      }
     }
   }
 }
@@ -637,6 +642,19 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
         }
       });
     }
+  }
+}
+
+/**
+ * Set the autoplay capability to false for native Ios player.
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
+  const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+  if (playsinline === false) {
+    setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
   }
 }
 

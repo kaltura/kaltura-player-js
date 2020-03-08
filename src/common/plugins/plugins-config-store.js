@@ -39,7 +39,8 @@ const defaultConfig: dataStoreType = {
     sessionId: '{{sessionId}}',
     ks: '{{ks}}',
     uiConfId: '{{uiConfId}}',
-    referrer: '{{referrer}}'
+    referrer: '{{referrer}}',
+    encodedReferrer: '{{encodedReferrer}}'
   },
   comscore: {
     playerVersion: '{{pVersion}}'
