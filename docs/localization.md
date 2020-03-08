@@ -26,7 +26,7 @@ For example `en.i18n.json` looks like:
 }
 ```
 
-And `fr.i18n.json` looks like:
+`fr.i18n.json` looks like:
 
 ```json
 {
@@ -39,7 +39,7 @@ And `fr.i18n.json` looks like:
 }
 ```
 
-Actually, the plugin could supply only one json contains multi translation dictionary. For example `langs.i18n.json` looks like:
+Actually, the plugin could supply only one json contains multi language dictionaries. For example `langs.i18n.json` looks like:
 
 ```json
 {
