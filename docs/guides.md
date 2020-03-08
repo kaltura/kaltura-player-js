@@ -17,4 +17,5 @@
 - [How to Build a Plugin](./how-to-build-a-plugin.md)
 - [Customizing the Player CSS](https://github.com/kaltura/playkit-js-ui/blob/master/docs/css-classes-override.md)
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
+- [Localization](./localization.md)
 - [Coding Guidelines](./coding-guidlines.md)
