@@ -382,6 +382,9 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
     setCapabilities(EngineType.HTML5, {autoplay: true});
     _configureAdsWithMSE(options);
     _configureLGSDK2HlsLiveConfig(options);
+    if (typeof options.disableUserCache !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'disableUserCache', true);
+    }
     if (options.plugins && options.plugins.ima) {
       const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
       const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
