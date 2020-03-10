@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.53.2"></a>
+## [0.53.2](https://github.com/kaltura/kaltura-player-js/compare/v0.53.1...v0.53.2) (2020-03-10)
+
+
+### Bug Fixes
+
+* remove french (fr) translation file ([5529611](https://github.com/kaltura/kaltura-player-js/commit/5529611))
+
+
+
 <a name="0.53.1"></a>
 ## [0.53.1](https://github.com/kaltura/kaltura-player-js/compare/v0.53.0...v0.53.1) (2020-03-10)
 
