@@ -13,15 +13,14 @@
 "@playkit-js/playkit-js-kava@^0.16.0":
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.16.0.tgz#08f6aba95430639fc3c7affd4c47df24601b66fc"
-  integrity sha512-LI5SVP9eqaydCIrUABY7BhW+LYYkRHG9ZPu5Pn4Irs9Nrq9yoP8ZQ3iFEHx8Odw2JssGD8VMTamflmPremdkOw==
 
 "@playkit-js/playkit-js-ott-analytics@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.2.tgz#a6e14c3d51e8448bf8c93e0ece503c6853741a27"
 
-"@playkit-js/playkit-js-ui@^0.53.1":
-  version "0.53.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.53.1.tgz#8e69c1efd38cbe5c45716e8eb12e4b98ec9f9770"
+"@playkit-js/playkit-js-ui@^0.53.2":
+  version "0.53.2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.53.2.tgz#d1ae4c35911ae42fa1c94ee9aaa2b291b192fe4a"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.6.0"
@@ -31,9 +30,9 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.60.0":
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.60.0.tgz#1e7d15c8eb95aec40a5b10aa5c8ab540e3b38244"
+"@playkit-js/playkit-js@^0.60.1":
+  version "0.60.1"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.60.1.tgz#1384ac16ead2346d77e614d6abffe9e51f114232"
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
@@ -2761,7 +2760,6 @@ elliptic@^6.0.0:
 eme-encryption-scheme-polyfill@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.0.0.tgz#b44a8fb7d5c7c0be869897be9d77a8cb9c0ba795"
-  integrity sha512-/zoXuACHLGQ8w5nkJrVr3YI0IGe05ZS8HR1x5uTqiAoHuj5hPzdnoyW9Zom8iPv93arPzwpde93GrKCFKLFK4g==
 
 "emoji-regex@>=6.0.0 <=6.1.1":
   version "6.1.1"
@@ -7520,7 +7518,6 @@ sha.js@^2.4.0, sha.js@^2.4.8:
 shaka-player@^2.5.9:
   version "2.5.9"
   resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.5.9.tgz#007dc19df2bb5d3d959d278b2d894af05adffe38"
-  integrity sha512-XavLBqxvIbvLOPfk7VKZu5fbMJyVko9bBfzxmMWdX5bvQwUSjU7ZhV8v2tHqXQYafpHml1hlGHzKkLs7idouNQ==
   dependencies:
     eme-encryption-scheme-polyfill "^2.0.0"
 
