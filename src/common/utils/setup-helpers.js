@@ -653,7 +653,7 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
  */
 function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
   const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-  if (isIos() && playsinline === false) {
+  if (Env.device.model === 'iPhone' && playsinline === false) {
     setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
   }
 }
