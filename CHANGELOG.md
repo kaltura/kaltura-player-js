@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.53.3"></a>
+## [0.53.3](https://github.com/kaltura/kaltura-player-js/compare/v0.53.2...v0.53.3) (2020-03-12)
+
+
+### Bug Fixes
+
+* **FEC-9734:** auto play doesn't works, if "playsinline"=false on all platforms ([#307](https://github.com/kaltura/kaltura-player-js/issues/307)) ([3c562fd](https://github.com/kaltura/kaltura-player-js/commit/3c562fd))
+
+
+
 <a name="0.53.2"></a>
 ## [0.53.2](https://github.com/kaltura/kaltura-player-js/compare/v0.53.1...v0.53.2) (2020-03-10)
 
