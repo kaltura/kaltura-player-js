@@ -35,7 +35,7 @@ jobs:
       name: "Release"
       script:
         - chmod +x ./scripts/after_deploy.sh
-        - ./scripts/after_deploy.sh "$TRAVIS_TAG" "$JENKINS_RELEASE_TOKEN"
+        - ./scripts/after_deploy.sh "$TRAVIS_TAG" "$JENKINS_TAG_TOKEN"
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release canary
