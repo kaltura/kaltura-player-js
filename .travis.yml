@@ -34,6 +34,7 @@ jobs:
       if: (tag IS present)
       name: "Release"
       script:
+        - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "$TRAVIS_TAG" "$JENKINS_RELEASE_TOKEN"
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
@@ -55,6 +56,8 @@ jobs:
         - rm package.jsonE
         - rm CHANGELOG.mdE
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
+        - echo $newVersion
+        - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "${newVersion}" "$JENKINS_CANARY_TOKEN"
     # Required tests
     - stage: Tests
