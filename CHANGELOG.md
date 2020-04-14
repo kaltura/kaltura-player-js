@@ -2,6 +2,99 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.53.4"></a>
+## [0.53.4](https://github.com/kaltura/kaltura-player-js/compare/v0.53.3...v0.53.4) (2020-04-13)
+
+
+
+<a name="0.53.3"></a>
+## [0.53.3](https://github.com/kaltura/kaltura-player-js/compare/v0.53.2...v0.53.3) (2020-03-12)
+
+
+### Bug Fixes
+
+* **FEC-9734:** auto play doesn't works, if "playsinline"=false on all platforms ([#307](https://github.com/kaltura/kaltura-player-js/issues/307)) ([3c562fd](https://github.com/kaltura/kaltura-player-js/commit/3c562fd))
+
+
+
+<a name="0.53.2"></a>
+## [0.53.2](https://github.com/kaltura/kaltura-player-js/compare/v0.53.1...v0.53.2) (2020-03-10)
+
+
+### Bug Fixes
+
+* remove french (fr) translation file ([5529611](https://github.com/kaltura/kaltura-player-js/commit/5529611))
+
+
+
+<a name="0.53.1"></a>
+## [0.53.1](https://github.com/kaltura/kaltura-player-js/compare/v0.53.0...v0.53.1) (2020-03-10)
+
+
+
+<a name="0.53.0"></a>
+# [0.53.0](https://github.com/kaltura/kaltura-player-js/compare/v0.52.1...v0.53.0) (2020-03-01)
+
+
+### Features
+
+* **FEC-9109:** add DRM Load time metric ([#305](https://github.com/kaltura/kaltura-player-js/issues/305)) ([e0b267e](https://github.com/kaltura/kaltura-player-js/commit/e0b267e))
+
+
+
+<a name="0.52.1"></a>
+## [0.52.1](https://github.com/kaltura/kaltura-player-js/compare/v0.52.0...v0.52.1) (2020-02-24)
+
+
+
+<a name="0.52.0"></a>
+# [0.52.0](https://github.com/kaltura/kaltura-player-js/compare/v0.51.3...v0.52.0) (2020-02-16)
+
+
+### Features
+
+* **FEC-9465:** internationalization (i18n) - player localization ([#304](https://github.com/kaltura/kaltura-player-js/issues/304)) ([6b33757](https://github.com/kaltura/kaltura-player-js/commit/6b33757))
+
+
+
+<a name="0.51.3"></a>
+## [0.51.3](https://github.com/kaltura/kaltura-player-js/compare/v0.51.2...v0.51.3) (2020-02-03)
+
+
+
+<a name="0.51.2"></a>
+## [0.51.2](https://github.com/kaltura/kaltura-player-js/compare/v0.51.1...v0.51.2) (2020-01-30)
+
+
+### Bug Fixes
+
+* **FEC-9629:** Player is not inline when rendered after the DOM loads ([#302](https://github.com/kaltura/kaltura-player-js/issues/302)) ([cdd85d0](https://github.com/kaltura/kaltura-player-js/commit/cdd85d0))
+
+
+
+<a name="0.51.1"></a>
+## [0.51.1](https://github.com/kaltura/kaltura-player-js/compare/v0.51.0...v0.51.1) (2020-01-30)
+
+
+
+<a name="0.51.0"></a>
+# [0.51.0](https://github.com/kaltura/kaltura-player-js/compare/v0.50.9...v0.51.0) (2020-01-29)
+
+
+### Bug Fixes
+
+* **FEC-9489:** IE11 proxy issue in get set ([#295](https://github.com/kaltura/kaltura-player-js/issues/295)) ([d95ef8c](https://github.com/kaltura/kaltura-player-js/commit/d95ef8c))
+* **FEC-9577:** Hisense playback doesn't work ([#298](https://github.com/kaltura/kaltura-player-js/issues/298)) ([f6da3ca](https://github.com/kaltura/kaltura-player-js/commit/f6da3ca))
+* **FEC-9632:** edge play playready on mac os when it's not supported ([#301](https://github.com/kaltura/kaltura-player-js/issues/301)) ([efb4665](https://github.com/kaltura/kaltura-player-js/commit/efb4665))
+
+
+### Features
+
+* **FEC-8998:** add url encoded for referrer token ([#299](https://github.com/kaltura/kaltura-player-js/issues/299)) ([b540625](https://github.com/kaltura/kaltura-player-js/commit/b540625))
+* **FEC-9545:** add ability to correlate udrm calls to player type and session ([#297](https://github.com/kaltura/kaltura-player-js/issues/297)) ([c7f7748](https://github.com/kaltura/kaltura-player-js/commit/c7f7748))
+
+
+
 <a name="0.50.9"></a>
 ## [0.50.9](https://github.com/kaltura/kaltura-player-js/compare/v0.50.8...v0.50.9) (2020-01-09)
 

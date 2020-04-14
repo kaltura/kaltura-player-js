@@ -452,7 +452,9 @@ b . A basic player configuration:
 
 ```js
 var config = {
-  logLevel: 'DEBUG',
+  log: {
+    level: 'DEBUG'
+  },
   targetId: 'player-div',
   provider: {
     partnerId: 'YOUR_PARTNER_ID'
@@ -491,7 +493,9 @@ player.loadMedia(mediaInfo).then(function() {
 KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
 
 var config = {
-    logLevel: "DEBUG",
+    log:{
+      level: 'DEBUG'
+    },
     targetId: "player-div",
     provider: {
         partnerId: "YOUR_PARTNER_ID"

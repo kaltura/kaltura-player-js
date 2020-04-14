@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.50.9",
+  "version": "0.53.4",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -46,6 +46,8 @@
     "babel-loader": "^6.2.7",
     "babel-plugin-istanbul": "^4.0.0",
     "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-es2015-classes": "^6.24.1",
+    "babel-plugin-transform-es5-property-mutators": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.18.0",
@@ -90,18 +92,18 @@
     "webpack-dev-server": "latest"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "^0.59.4",
-    "@playkit-js/playkit-js-dash": "^1.16.0",
-    "@playkit-js/playkit-js-hls": "^1.18.0",
-    "@playkit-js/playkit-js-kava": "^0.14.1",
+    "@playkit-js/playkit-js": "^0.61.1",
+    "@playkit-js/playkit-js-dash": "^1.18.1",
+    "@playkit-js/playkit-js-hls": "^1.19.1",
+    "@playkit-js/playkit-js-kava": "^0.17.1",
     "@playkit-js/playkit-js-ott-analytics": "^0.5.2",
-    "@playkit-js/playkit-js-ui": "^0.51.2",
+    "@playkit-js/playkit-js-ui": "^0.53.2",
     "babel-polyfill": "^6.23.0",
     "hls.js": "^0.13.1",
     "js-logger": "^1.3.0",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.20.5",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.21.0",
     "proxy-polyfill": "^0.3.0",
-    "shaka-player": "^2.5.5"
+    "shaka-player": "^2.5.9"
   },
   "repository": {
     "type": "git",

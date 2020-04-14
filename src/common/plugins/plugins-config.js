@@ -54,7 +54,8 @@ const getModel = (options: KPOptionsObject): Object => {
     }
   }
   const entryDataModel = {
-    referrer: getReferrer()
+    referrer: getReferrer(),
+    encodedReferrer: getEncodedReferrer()
   };
   if (options.provider) {
     Utils.Object.mergeDeep(entryDataModel, {
@@ -92,6 +93,15 @@ const getModel = (options: KPOptionsObject): Object => {
   Utils.Object.mergeDeep(dataModel, entryDataModel);
   return dataModel;
 };
+
+/**
+ * @return {string} - The referrer after URIComponent encoded
+ * @private
+ */
+function getEncodedReferrer(): string {
+  const referrer = getReferrer();
+  return encodeURIComponent(referrer);
+}
 
 /**
  * @param {PKPluginsConfigObject} options - plugins options
@@ -172,4 +182,4 @@ function _mergeConfig(data: Object, evaluatedConfig: Object): void {
   }
 }
 
-export {evaluatePluginsConfig, evaluateUIConfig};
+export {evaluatePluginsConfig, evaluateUIConfig, getEncodedReferrer};
