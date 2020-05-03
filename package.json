@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.53.4",
+  "version": "0.53.5",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
