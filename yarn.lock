@@ -2,41 +2,42 @@
 # yarn lockfile v1
 
 
+"@babel/runtime@^7.5.5":
+  version "7.9.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@playkit-js/playkit-js-dash@^1.18.1":
   version "1.18.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.18.1.tgz#2b8055ea0bbb7cd29411dd97ad77a00187893047"
-  integrity sha512-HhAVjwkAjV0AOUL/GUonapTzlWPuQJUTz3d0Ma+lZVdq3rP8sLmIHFcMwoAtGO5dllz+4aPtKFW6I+thRh4Vmg==
 
 "@playkit-js/playkit-js-hls@^1.19.1":
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.19.1.tgz#ddede5681cb9520fbd8e9d0954f89e3ee1e1dad0"
-  integrity sha512-AJnxCBzIJaW0nVH50vkDbdduE0m3pk7vbCFUf/PcLWpdzcWh4G+IsNQ/75VtyaiERP+L/HoYVeB140iB/Khhdw==
 
 "@playkit-js/playkit-js-kava@^0.17.1":
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-kava/-/playkit-js-kava-0.17.1.tgz#1929a8173bc4a39d3052c152e10231cb7ff9f878"
-  integrity sha512-D+Dd5Cx40OqJ+ZZ86LeyAid8i5JrfZ4pk6BVUyEY5yK2poDc5oiFmOOkOaGwbDNT8+VAZb3krd1WuHvnkxIyvQ==
 
 "@playkit-js/playkit-js-ott-analytics@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.2.tgz#a6e14c3d51e8448bf8c93e0ece503c6853741a27"
 
-"@playkit-js/playkit-js-ui@^0.53.2":
-  version "0.53.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.53.2.tgz#d1ae4c35911ae42fa1c94ee9aaa2b291b192fe4a"
+"@playkit-js/playkit-js-ui@^0.54.0":
+  version "0.54.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.54.0.tgz#1d6919a004d2923fffa9956d6a63f6f9e341d9a5"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.6.0"
-    preact "^8.1.0"
-    preact-i18n "^1.0.1"
-    preact-portal "^1.1.2"
-    preact-redux "^2.0.1"
+    preact "^10.3.4"
+    preact-i18n "^2.0.0-preactx.2"
+    react-redux "^7.2.0"
     redux "^3.6.0"
 
 "@playkit-js/playkit-js@^0.61.1":
   version "0.61.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.61.1.tgz#ad80b3565eeecdf1631cb3974abd301ea03ae8eb"
-  integrity sha512-tehThr1/Z7wD1IMWsSKDEqooFLvUZBJqXfAMVU+zcwObc17YA7aST/IzxvH61fLgZWc+oLbxeQWblld2rFB8qQ==
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
@@ -4026,6 +4027,12 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
+hoist-non-react-statics@^3.3.0:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  dependencies:
+    react-is "^16.7.0"
+
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -5274,7 +5281,7 @@ loose-envify@^1.0.0:
   dependencies:
     js-tokens "^3.0.0"
 
-loose-envify@^1.1.0:
+loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   dependencies:
@@ -5878,7 +5885,7 @@ object-assign@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-2.1.1.tgz#43c36e5d569ff8e4816c4efa8be02d26967c18aa"
 
-object-assign@^4.0.1, object-assign@^4.1.0:
+object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -6622,23 +6629,15 @@ postcss@^6.0.1:
     source-map "^0.5.7"
     supports-color "^4.4.0"
 
-preact-i18n@^1.0.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/preact-i18n/-/preact-i18n-1.4.1.tgz#f9454485bbd589a5cee9064132cfbf4f4ab8ee0f"
+preact-i18n@^2.0.0-preactx.2:
+  version "2.0.0-preactx.2"
+  resolved "https://registry.yarnpkg.com/preact-i18n/-/preact-i18n-2.0.0-preactx.2.tgz#13736788bf7c677c042e640517dd1d32cef49a06"
   dependencies:
     dlv "^1.1.2"
 
-preact-portal@^1.1.2:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/preact-portal/-/preact-portal-1.1.3.tgz#22cdd3ecf6ad9aaa3f830607a9c6591de90aedb7"
-
-preact-redux@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/preact-redux/-/preact-redux-2.1.0.tgz#f9bf88cdfbb0b09323d50e15410693c7d72bc6c7"
-
-preact@^8.1.0:
-  version "8.5.2"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.2.tgz#2f532da485287c07369e08150cf4d23921a09789"
+preact@^10.3.4:
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.4.1.tgz#9b3ba020547673a231c6cf16f0fbaef0e8863431"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -6701,6 +6700,14 @@ prompt@^1.0.0:
     revalidator "0.1.x"
     utile "0.3.x"
     winston "2.1.x"
+
+prop-types@^15.7.2:
+  version "15.7.2"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.8.1"
 
 property-information@^3.1.0:
   version "3.2.0"
@@ -6874,6 +6881,20 @@ rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-is@^16.7.0, react-is@^16.8.1, react-is@^16.9.0:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+
+react-redux@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.0.tgz#f970f62192b3981642fec46fd0db18a074fe879d"
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    hoist-non-react-statics "^3.3.0"
+    loose-envify "^1.4.0"
+    prop-types "^15.7.2"
+    react-is "^16.9.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -7055,6 +7076,10 @@ regenerator-runtime@^0.10.5:
 regenerator-runtime@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.0.tgz#7e54fe5b5ccd5d6624ea6255c3473be090b802e1"
+
+regenerator-runtime@^0.13.4:
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.5.tgz#d878a1d094b4306d10b9096484b33ebd55e26697"
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
