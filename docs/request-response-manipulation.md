@@ -29,7 +29,7 @@ Each response object that getting to the response filter contains the followings
 
 ## Examples
 
-Here's an example of license wrapping using **synchronously** request and response filters passed on the player configuration:
+Here's an example of license wrapping using **synchronous** request and response filters passed on the player configuration:
 
 ```js
 var config = {
@@ -53,7 +53,7 @@ var kalturaPlayer = KalturaPlayer.setup(config);
 ...
 ```
 
-Here's an example of **asynchronously** request filter on the manifest and segments fetching, passed on the player configuration:
+Here's an example of **asynchronous** request filter on the manifest and segments fetching, passed on the player configuration:
 
 ```js
 var config = {
