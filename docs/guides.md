@@ -18,3 +18,4 @@
 - [Customizing the Player CSS](https://github.com/kaltura/playkit-js-ui/blob/master/docs/css-classes-override.md)
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
 - [Coding Guidelines](./coding-guidlines.md)
+- [Request/Response Manipulation](./request-response-manipulation.md)
