@@ -37,7 +37,6 @@ jobs:
       name: "Release"
       script:
         - currentVersion=$(npx -c 'echo "$npm_package_version"')
-        - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "$currentVersion" "$JENKINS_TAG_TOKEN"
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
