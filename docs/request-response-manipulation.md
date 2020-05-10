@@ -22,7 +22,9 @@ Each response object that getting to the response filter contains the followings
 `data: ArrayBuffer` - The body of the response.  
 `headers: Object` - A mapping of headers of the response. e.g.: {'HEADER': 'VALUE'}.
 
-> The request/response filter can run both synchronously by returning void and asynchronously by returning a promise.
+##
+
+> The request/response filter can run both **synchronously** by returning void and **asynchronously** by returning a promise.
 > More details about filters can be found in the [player documentation](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#confignetwork).
 
 ## Examples
@@ -61,7 +63,7 @@ var config = {
        if (type === KalturaPlayer.core.RequestType.MANIFEST || type === KalturaPlayer.core.RequestType.SEGMENT) {
         return new Promise(function (resolve) {
           setTimeout(() => {
-            // Sending a custom data as a query parameter and as a request header
+            // Sending a custom data as query parameter and request header
             request.url += '&' + CUSTOM_DATA;
             request.headers['customData'] = CUSTOM_DATA;
             resolve(request);
