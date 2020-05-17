@@ -1,7 +1,7 @@
 # Request and Response Manipulation
 
 An application may have to manipulate the player requests and responses to adjust them to its own specific environment (e.g. for DRM license wrapping).  
-To achieve this ability Kaltura-player exposes a dedicated configuration which allows the application to pass a request filter to get the request object just before it sent to the server, and a response filter to get the response object just after it returned from the server.
+To achieve this ability Kaltura-player exposes a dedicated configuration which allows the application to pass a request filter to get the request object just before it is sent to the server, and a response filter to get the response object just after it returned from the server.
 
 There are 3 types of requests the application can manipulate: DRM license, manifest and segments fetching.
 
