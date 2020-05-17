@@ -11,6 +11,7 @@
 - [Managing Tracks on the Player](managing-tracks.md)
 - [Ads](./ads.md)
 - [Advertisement layout management](./advertisement-layout-management.md)
+- [Request/Response Manipulation](./request-response-manipulation.md)
 - [User Preferences](./user-preferences.md)
 - [Controlling Errors](errors.md)
 - [Debugging & Troubleshooting](./debugging.md)
