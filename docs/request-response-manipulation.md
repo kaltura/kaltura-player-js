@@ -7,7 +7,7 @@ There are 3 types of requests the application can manipulate: DRM license, manif
 
 ## Request Params
 
-Each request object that getting to the request filter contains the followings:
+Each request object contains the followings:
 
 `url: string` - The request URL.  
 `body: string || ArrayBuffer` - The request body, the type depends on the request type.  
