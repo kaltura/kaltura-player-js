@@ -15,7 +15,7 @@ Each request object contains the followings:
 
 ## Response Params
 
-Each response object that getting to the response filter contains the followings:
+Each response object contains the followings:
 
 `url: string` - The URI which was loaded.  
 `originalUrl: string` - The original URI before any redirects.  
