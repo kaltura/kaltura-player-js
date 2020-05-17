@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.53.7"></a>
+## [0.53.7](https://github.com/kaltura/kaltura-player-js/compare/v0.53.6...v0.53.7) (2020-05-11)
+
+
+
+<a name="0.53.6"></a>
+## [0.53.6](https://github.com/kaltura/kaltura-player-js/compare/v0.53.5...v0.53.6) (2020-05-10)
+
+
+### Bug Fixes
+
+* **FEC-9495:** travis ping to jenkins for deployment ([#294](https://github.com/kaltura/kaltura-player-js/issues/294)) ([871b096](https://github.com/kaltura/kaltura-player-js/commit/871b096))
+
+
+
 <a name="0.53.5"></a>
 ## [0.53.5](https://github.com/kaltura/kaltura-player-js/compare/v0.53.3...v0.53.5) (2020-05-03)
 
