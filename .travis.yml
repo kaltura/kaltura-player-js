@@ -37,6 +37,7 @@ jobs:
       name: "Release"
       script:
         - currentVersion=$(npx -c 'echo "$npm_package_version"')
+        - conventional-github-releaser -t "$GH_TOKEN"
         - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "$currentVersion" "$JENKINS_TAG_TOKEN"
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
