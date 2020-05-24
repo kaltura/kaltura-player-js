@@ -211,6 +211,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   reset(): void {
+    this._playlistManager.reset();
     this._localPlayer.reset();
     this._uiWrapper.reset();
   }
