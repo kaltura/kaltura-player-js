@@ -45,6 +45,7 @@ jobs:
       if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: "Release canary"
       script:
+        - git checkout master
         - echo "Run standard-version"
         - yarn run release --prerelease canary --skip.commit=true --skip.tag=true
         - sha=$(git rev-parse --verify --short HEAD)
@@ -59,6 +60,7 @@ jobs:
         - rm package.jsonE
         - rm CHANGELOG.mdE
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
+        - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master"
         - echo $newVersion
         - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "${newVersion}" "$JENKINS_CANARY_TOKEN"
