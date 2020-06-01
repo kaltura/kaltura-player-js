@@ -158,7 +158,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
           this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             this.textStyle = snapshot.textStyle;
             configurePlayback.call(this, originPlaybackConfig);
-            setInitialTracks.call(this, snapshot);
+            setInitialTracks.call(this, snapshot.config.playback);
             if (shouldPause) {
               this.pause();
             }
