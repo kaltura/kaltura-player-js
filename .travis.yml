@@ -47,23 +47,14 @@ jobs:
       script:
         - git checkout master
         - echo "Run standard-version"
-        - yarn run release --prerelease canary --skip.commit=true --skip.tag=true
         - sha=$(git rev-parse --verify --short HEAD)
-        - echo "Current sha ${sha}"
-        - currentVersion=$(npx -c 'echo "$npm_package_version"')
         - commitNumberAfterTag=$(git rev-list  `git rev-list --tags --no-walk --max-count=1`..HEAD --count)
-        - echo "Current version ${currentVersion}"
-        - newVersion=$(echo $currentVersion | sed -e "s/canary\.[[:digit:]]/canary.${commitNumberAfterTag}-${sha}/g")
-        - echo "New version ${newVersion}"
-        - sed -iE "s/$currentVersion/$newVersion/g" package.json
-        - sed -iE "s/$currentVersion/$newVersion/g" CHANGELOG.md
-        - rm package.jsonE
-        - rm CHANGELOG.mdE
+        - yarn run release --prerelease canary-${commitNumberAfterTag}-${sha} --skip.commit=true --skip.tag=true
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master"
-        - echo $newVersion
+        - currentVersion=$(npx -c 'echo "$npm_package_version"')
         - chmod +x ./scripts/after_deploy.sh
-        - ./scripts/after_deploy.sh "${newVersion}" "$JENKINS_CANARY_TOKEN"
+        - ./scripts/after_deploy.sh "${currentVersion}" "$JENKINS_CANARY_TOKEN"
     # Required tests
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
