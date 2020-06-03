@@ -34,6 +34,11 @@
     preact-redux "^2.0.1"
     redux "^3.6.0"
 
+"@playkit-js/playkit-js-youbora@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-youbora/-/playkit-js-youbora-1.1.4.tgz#a8e80a731c6bc40fab0645d1ac0f09846fa7396f"
+  integrity sha512-EMld+YSZft1LUhiJBuLSmFhX7pgIgLCUikqnouRQB4RVSTg2lzinyiFz4tVr53PYhSIW6nSHF2omMO+JtJQ5TA==
+
 "@playkit-js/playkit-js@^0.58.0":
   version "0.58.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.58.0.tgz#3caa764412722d12929b4e4c391cad915a5f71a4"
