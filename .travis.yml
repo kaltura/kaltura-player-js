@@ -51,7 +51,7 @@ jobs:
         - commitNumberAfterTag=$(git rev-list  `git rev-list --tags --no-walk --max-count=1`..HEAD --count)
         - yarn run release --prerelease canary-${commitNumberAfterTag}-${sha} --skip.commit=true --skip.tag=true
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
-        - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master"
+        - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
         - currentVersion=$(npx -c 'echo "$npm_package_version"')
         - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "${currentVersion}" "$JENKINS_CANARY_TOKEN"
