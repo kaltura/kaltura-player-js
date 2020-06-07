@@ -50,6 +50,13 @@ jobs:
         - sha=$(git rev-parse --verify --short HEAD)
         - commitNumberAfterTag=$(git rev-list  `git rev-list --tags --no-walk --max-count=1`..HEAD --count)
         - yarn run release --prerelease canary-${commitNumberAfterTag}-${sha} --skip.commit=true --skip.tag=true
+        - yarn upgrade @playkit-js/playkit-js@canary
+        - yarn upgrade @playkit-js/playkit-js-dash@canary
+        - yarn upgrade @playkit-js/playkit-js-hls@canary
+        - yarn upgrade @playkit-js/playkit-js-kava@canary
+        - yarn upgrade @playkit-js/playkit-js-ott-analytics@canary
+        - yarn upgrade @playkit-js/playkit-js-ui@canary
+        - yarn install
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
         - currentVersion=$(npx -c 'echo "$npm_package_version"')
