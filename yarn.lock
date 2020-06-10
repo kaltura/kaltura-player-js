@@ -8,9 +8,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@playkit-js/playkit-js-dash@^1.18.1":
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.18.1.tgz#2b8055ea0bbb7cd29411dd97ad77a00187893047"
+"@playkit-js/playkit-js-dash@^1.18.2":
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.18.2.tgz#998ee3a8c055eb0a69d3157dc8cf46dd06eb42b2"
+  integrity sha512-nN7ddvCLD8IFHX7bf3rE1TigM1zeW6XxI2Gk2JProDuZAYaTzYzl26HecqhCtctxw6IrLjG9teoMZ9jNHp8OPA==
 
 "@playkit-js/playkit-js-hls@^1.19.1":
   version "1.19.1"
@@ -24,10 +25,10 @@
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ott-analytics/-/playkit-js-ott-analytics-0.5.2.tgz#a6e14c3d51e8448bf8c93e0ece503c6853741a27"
 
-"@playkit-js/playkit-js-ui@^0.55.0":
-  version "0.55.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.55.0.tgz#281ad94480a616e07d159aa976f23e507bad1a34"
-  integrity sha512-GW7UToexZ18r7P30nObW08XqEf60sdrWdUXFnnMQ/d0LVoEPQOUSXM9knaBd2o9mTh/s/EF4OxCOSAKkITFZrw==
+"@playkit-js/playkit-js-ui@^0.56.0":
+  version "0.56.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.56.0.tgz#ee30090ab3c26aeaa6a23b9eaabd9b996cf8b95e"
+  integrity sha512-GCIajE0c6A8pxdrKd2GZDL865gDK17Z8nBLlstg5d4up+MfD5H6KdvLcRwOD19cmbJZJouuQmn3MIMCEdX+WGA==
   dependencies:
     empty "^0.10.1"
     js-logger "^1.6.0"
@@ -36,10 +37,10 @@
     react-redux "^7.2.0"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.61.2":
-  version "0.61.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.61.2.tgz#f323604381015351b1badd178e2bea6d0c0d2c9c"
-  integrity sha512-7y2vyXq5RiP/tLWT3vWrgouvrWYvC9coA90wVjjfyF558GpnT1fBo41Y4Zdt7dbfAOee62e9Qf98HBlv9HujMQ==
+"@playkit-js/playkit-js@^0.61.3":
+  version "0.61.3"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.61.3.tgz#2382afaca69f222f4f2cd209bf4eb3906ef004d3"
+  integrity sha512-iYHXcBWoVVU7fD/jbCSz/l/OSHlYQtg7P4VP5+qxeph78BOdeecFMbV0oswaDWeauu4DmZqXBiawaq9tr0F1qw==
   dependencies:
     js-logger "^1.3.0"
     ua-parser-js "^0.7.13"
