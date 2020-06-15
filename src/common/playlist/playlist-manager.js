@@ -284,8 +284,6 @@ class PlaylistManager {
   }
 
   destroy(): void {
-    delete this._player;
-    delete this._playlist;
     this._eventManager.destroy();
   }
 }
