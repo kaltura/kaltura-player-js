@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.54.0"></a>
+# [0.54.0](https://github.com/kaltura/kaltura-player-js/compare/v0.53.7...v0.54.0) (2020-06-10)
+
+
+### Bug Fixes
+
+* **FEC-10053:** Subtitle issue for Player with TTML in MP4 container ([#316](https://github.com/kaltura/kaltura-player-js/issues/316)) ([c053ac2](https://github.com/kaltura/kaltura-player-js/commit/c053ac2))
+* **FEC-10155:** text track language is incorrect on cast disconnecting ([#318](https://github.com/kaltura/kaltura-player-js/issues/318)) ([75690a3](https://github.com/kaltura/kaltura-player-js/commit/75690a3)), closes [#188](https://github.com/kaltura/kaltura-player-js/issues/188)
+
+
+### Features
+
+* **FEC-9631:** add support for out of band text tracks on cast sdk ([#319](https://github.com/kaltura/kaltura-player-js/issues/319)) ([16562b6](https://github.com/kaltura/kaltura-player-js/commit/16562b6))
+
+
+
 <a name="0.53.7"></a>
 ## [0.53.7](https://github.com/kaltura/kaltura-player-js/compare/v0.53.6...v0.53.7) (2020-05-11)
 

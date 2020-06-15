@@ -143,6 +143,9 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       const mediaConfig = snapshot.mediaConfig;
       snapshot.config.playback.autoplay = true;
       configurePlayback.call(this, snapshot.config.playback);
+      this._eventManager.listenOnce(this, this.Event.Core.CHANGE_SOURCE_ENDED, () => {
+        configureTracks.call(this, snapshot.config.sources);
+      });
       let mediaPromise;
       if (mediaInfo) {
         mediaPromise = this.loadMedia(mediaInfo);
@@ -155,7 +158,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
           this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             this.textStyle = snapshot.textStyle;
             configurePlayback.call(this, originPlaybackConfig);
-            setInitialTracks.call(this, snapshot);
+            setInitialTracks.call(this, snapshot.config.playback);
             if (shouldPause) {
               this.pause();
             }
@@ -237,6 +240,17 @@ function configurePlayback(playbackConfig: Object): void {
       autoplay
     }
   });
+}
+
+function configureTracks(sourcesConfig: Object): void {
+  if (sourcesConfig.captions.length) {
+    const {captions} = sourcesConfig;
+    this.configure({
+      sources: {
+        captions
+      }
+    });
+  }
 }
 
 function setInitialTracks(playbackConfig: Object): void {
