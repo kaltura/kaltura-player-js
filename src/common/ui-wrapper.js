@@ -3,7 +3,14 @@ import {UIManager} from '@playkit-js/playkit-js-ui';
 import {Env, Utils} from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
 import {KalturaPlayer} from '../kaltura-player';
+import getLogger from './utils/logger';
 
+/**
+ * The logger of the UIWrapper class.
+ * @private
+ * @const
+ */
+const logger = getLogger('UIWrapper');
 class UIWrapper {
   _uiManager: UIManager;
   _disabled: boolean = false;
@@ -22,6 +29,7 @@ class UIWrapper {
         this._uiManager.buildDefaultUI();
       }
       this._handleVr(options.plugins);
+      this._handleExternalCSS(config);
     }
     return new Proxy(this, {
       get: (uiw: UIWrapper, prop: string) => {
@@ -56,6 +64,19 @@ class UIWrapper {
 
   setLoadingSpinnerState(show: boolean): void {
     this.setConfig({show: show}, 'loading');
+  }
+
+  _handleExternalCSS(config: UIOptionsObject = {}): void {
+    if (config.css) {
+      Utils.Dom.loadStyleSheetAsync(config.css).then(
+        () => {
+          logger.debug(`external css was loaded successfully`);
+        },
+        () => {
+          logger.error(`external css failed to load`);
+        }
+      );
+    }
   }
 
   _handleVr(config: PKPluginsConfigObject = {}): void {
