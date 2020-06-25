@@ -66,7 +66,7 @@ class UIWrapper {
     this.setConfig({show: show}, 'loading');
   }
 
-  _handleExternalCSS(config: UIOptionsObject = {}): void {
+  _handleExternalCSS(config: UIOptionsObject): void {
     if (config.css) {
       Utils.Dom.loadStyleSheetAsync(config.css).then(
         () => {
