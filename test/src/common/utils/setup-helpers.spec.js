@@ -4,8 +4,6 @@ import StorageManager from '../../../../src/common/storage/storage-manager';
 import {
   checkNativeHlsSupport,
   createKalturaPlayerContainer,
-  isIos,
-  isSafari,
   setStorageConfig,
   supportLegacyOptions,
   validateConfig,
@@ -105,7 +103,7 @@ describe('checkNativeHlsSupport', function() {
   it('set preferNative to default value if user preference was not set 1', function() {
     const playerConfig = {};
     checkNativeHlsSupport(playerConfig);
-    if (isSafari() || isIos()) {
+    if (Env.isSafari || Env.isIOS) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({});
@@ -117,7 +115,7 @@ describe('checkNativeHlsSupport', function() {
       playback: {}
     };
     checkNativeHlsSupport(playerConfig);
-    if (isSafari() || isIos()) {
+    if (Env.isSafari || Env.isIOS) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
@@ -133,7 +131,7 @@ describe('checkNativeHlsSupport', function() {
       }
     };
     checkNativeHlsSupport(playerConfig);
-    if (isSafari() || isIos()) {
+    if (Env.isSafari || Env.isIOS) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
