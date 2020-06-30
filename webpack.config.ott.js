@@ -2,48 +2,20 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const packageData = require('./package.json');
-const CopyPlugin = require('copy-webpack-plugin');
-const webpackConfig = require('./webpack.config');
-const PROD = process.env.NODE_ENV === 'production';
+const baseConfig = require('./webpack.config');
+const merge = require('webpack-merge');
 const playerType = 'ott';
-const configDocsUrl = 'https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md';
 
 const plugins = [
   new webpack.DefinePlugin({
-    __VERSION__: JSON.stringify(packageData.version),
-    __NAME__: JSON.stringify(packageData.name),
-    __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
-    __PLAYER_TYPE__: JSON.stringify(playerType),
-    __CONFIG_DOCS_URL__: JSON.stringify(configDocsUrl)
-  }),
-  new CopyPlugin([{
-    from: '../node_modules/@playkit-js/playkit-js-ui/translations',
-    ignore: ['en.i18n.json'],
-    transform: function(content) {
-      // minify json
-      return JSON.stringify(JSON.parse(content));
-    },
-    to: 'translations'
-  }])
+    __PLAYER_TYPE__: JSON.stringify(playerType)
+  })
 ];
-
-if (PROD) {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
-} else {
-  plugins.push(
-    new CopyPlugin([
-      {
-        from: '../samples/style.css',
-        to: '.'
-      }
-    ])
-  );
-}
 
 const entry = {
   'kaltura-tv-player': 'index.js'
 };
+
 const alias = {
   'playkit-js-providers': path.resolve('./node_modules/playkit-js-providers/dist/playkit-ott-provider'),
   'playkit-js-analytics': path.resolve('./src/ott/analytics'),
@@ -51,10 +23,12 @@ const alias = {
   poster: path.resolve('./src/ott/poster')
 };
 
-// TODO: Webpack merge?
-Object.assign(webpackConfig.resolve.alias, alias);
-
-webpackConfig.entry = entry;
-webpackConfig.plugins = plugins;
+const webpackConfig = merge(baseConfig, {
+  resolve: {
+    alias
+  },
+  entry,
+  plugins
+});
 
 module.exports = webpackConfig;
