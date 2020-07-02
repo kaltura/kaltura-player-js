@@ -14,18 +14,22 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
+import {ControllerProvider} from './common/controllers/controller-provider';
+import {AdsController} from './common/controllers/ads-controller';
 import {
-  AdsController,
   BasePlugin,
   Error,
   EventManager,
   EventType as CoreEventType,
+  AdEventType,
   FakeEvent,
   FakeEventTarget,
   loadPlayer,
   TextStyle,
   Track,
-  Utils
+  Utils,
+  PluginManager,
+  registerEngineDecoratorProvider
 } from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
@@ -36,20 +40,103 @@ class KalturaPlayer extends FakeEventTarget {
   _provider: Provider;
   _uiWrapper: UIWrapper;
   _logger: any;
+  _pluginManager: PluginManager;
+  _controllerProvider: ControllerProvider;
+  _adsController: ?AdsController;
 
   constructor(options: KPOptionsObject) {
     super();
     this._eventManager = new EventManager();
-    const {sources} = options;
+    const {sources, plugins} = options;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     this._localPlayer = loadPlayer(noSourcesOptions);
+    this._pluginManager = new PluginManager();
+    this._controllerProvider = new ControllerProvider(this._pluginManager);
+    this._configureOrLoadPlugins(plugins);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    this._uiComponents = [];
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
+    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => {
+      this._configureOrLoadPlugins(plugins);
+      this._pluginManager.loadMedia();
+    });
+    this._eventManager.listen(this, CoreEventType.ENDED, () => {
+      if (this._adsController && !this._adsController.allAdsCompleted) {
+        this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
+          this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
+        });
+      } else {
+        // Make sure the all ENDED listeners have been invoked
+        setTimeout(() => this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED)), 0);
+      }
+    });
     this._localPlayer.configure({sources});
+  }
+
+  /**
+   * Configures or load the plugins defined in the configuration.
+   * @param {Object} plugins - The new received plugins configuration.
+   * @private
+   * @returns {void}
+   */
+  _configureOrLoadPlugins(plugins: Object = {}): void {
+    const middlewares = [];
+    const uiComponents = [];
+    Object.keys(plugins).forEach(name => {
+      // If the plugin is already exists in the registry we are updating his config
+      const plugin = this._pluginManager.get(name);
+      if (plugin) {
+        plugin.updateConfig(plugins[name]);
+        plugins[name] = plugin.getConfig();
+      } else {
+        // We allow to load plugins as long as the player has no engine
+        if (!this._engine) {
+          try {
+            this._pluginManager.load(name, this, plugins[name]);
+          } catch (error) {
+            //bounce the plugin load error up
+            this.dispatchEvent(new FakeEvent(Error.Code.ERROR, error));
+          }
+          let plugin = this._pluginManager.get(name);
+          if (plugin) {
+            plugins[name] = plugin.getConfig();
+            if (typeof plugin.getMiddlewareImpl === 'function') {
+              // push the bumper middleware to the end, to play the bumper right before the content
+              plugin.name === 'bumper' ? middlewares.push(plugin.getMiddlewareImpl()) : middlewares.unshift(plugin.getMiddlewareImpl());
+            }
+
+            if (typeof plugin.getUIComponents === 'function') {
+              uiComponents.push(...(plugin.getUIComponents() || []));
+            }
+
+            if (typeof plugin.getEngineDecorator === 'function') {
+              registerEngineDecoratorProvider(plugin);
+            }
+          }
+        } else {
+          delete plugins[name];
+        }
+      }
+    });
+    this._uiComponents = uiComponents;
+    middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
+    this._maybeCreateAdsController();
+  }
+
+  _maybeCreateAdsController(): void {
+    if (!this._adsController) {
+      const adsPluginControllers = this._controllerProvider.getAdsControllers();
+      if (adsPluginControllers.length) {
+        this._adsController = new AdsController(this, adsPluginControllers);
+        this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, event => {
+          this.dispatchEvent(event);
+        });
+      }
+    }
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
@@ -146,7 +233,6 @@ class KalturaPlayer extends FakeEventTarget {
     });
     // $FlowFixMe
     evaluatePluginsConfig(config.plugins, config);
-    this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
@@ -173,8 +259,9 @@ class KalturaPlayer extends FakeEventTarget {
    */
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
-    const configDoctionary = Utils.Object.mergeDeep({}, this.config, config);
-    evaluatePluginsConfig(config.plugins, configDoctionary);
+    const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
+    evaluatePluginsConfig(config.plugins, configDictionary);
+    this._configureOrLoadPlugins(config.plugins);
     this._localPlayer.configure(config);
     const uiConfig = config.ui;
     if (uiConfig) {
@@ -341,11 +428,18 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   toggleVrStereoMode(): void {
-    this._localPlayer.toggleVrStereoMode();
+    const vrPlugin: ?BasePlugin = this._pluginManager.get('vr');
+    if (vrPlugin && typeof vrPlugin.toggleVrStereoMode === 'function') {
+      vrPlugin.toggleVrStereoMode();
+    }
   }
 
   isInVrStereoMode(): boolean {
-    return this._localPlayer.isInVrStereoMode();
+    const vrPlugin: ?BasePlugin = this._pluginManager.get('vr');
+    if (vrPlugin && typeof vrPlugin.isInStereoMode === 'function') {
+      return vrPlugin.isInStereoMode();
+    }
+    return false;
   }
 
   setLogLevel(level: Object, name?: string) {
@@ -465,11 +559,23 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   get ads(): ?AdsController {
-    return this._localPlayer.ads;
+    return this._adsController;
   }
 
   get plugins(): {[name: string]: BasePlugin} {
-    return this._localPlayer.plugins;
+    return this._pluginManager.getAll();
+  }
+
+  get uiComponents(): Array<PKUIComponent> {
+    return [...this._uiComponents];
+  }
+
+  get provider(): Provider {
+    return this._provider;
+  }
+
+  get ui(): UIWrapper {
+    return this._uiWrapper;
   }
 
   /**
