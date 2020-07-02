@@ -94,7 +94,8 @@
     "style-loader": "^0.18.2",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@playkit-js/playkit-js": "^0.61.3",
