@@ -282,6 +282,10 @@ class PlaylistManager {
     }
     return Promise.reject();
   }
+
+  destroy(): void {
+    this._eventManager.destroy();
+  }
 }
 
 export {PlaylistManager};
