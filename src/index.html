@@ -6,9 +6,6 @@
   <title>Title</title>
   <link rel="stylesheet" type="text/css" href="./style.css"/>
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
-  <script src="//qa-apache-php7.dev.kaltura.com/p/1091/embedPlaykitJs/uiconf_id/15214497"
-          type="text/javascript"></script>
-<!--    <script src="//qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/embedPlaykitJs/uiconf_id/15225670/partner_id/1091/versions/" type="text/javascript"></script>-->
 </head>
 <body>
 <div id="player-placeholder"></div>
@@ -20,63 +17,6 @@
       env: {
         cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
-      }
-    },
-    advertising: {
-      adBreaks: [
-        {
-          position: 0,
-          ads: [
-            {
-              url: ['http://rrrrrexternaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_terminator.xml', 'http://externaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_transformers.xml', 'https://externaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_KalturaVideo.xml']
-            }
-          ]
-        },
-        {
-          position: -1,
-          ads: [
-            {
-              url: ['http://rrrrrexternaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_terminator.xml', 'http://externaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_transformers.xml', 'https://externaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_KalturaVideo.xml']
-            }
-          ]
-        },
-        {
-          position: 90,
-          ads: [
-            {
-              url: ['http://externaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_terminator.xml', 'http://externaltests.dev.kaltura.com/standalonePlayer/Ads/adManager/customAdTags/vast/single_preroll_skip_transformers.xml']
-            }
-          ]
-        }
-      ]
-    },
-    // playback: {
-    //   preload: 'auto'
-    // },
-    sources: {
-      vr: {}
-    },
-    plugins: {
-      imadai: {
-        disable: true,
-        assetTitle: 'VOD - Tears of Steel',
-        contentSourceId: '19463',
-        videoId: 'tears-of-steel'
-      },
-      vr: {
-        toggleStereo: true
-      },
-      ima: {
-        disable: true,
-        // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator='
-        // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator='
-        // adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator='
-      },
-      bumper: {
-        disable: true,
-        id: '123456',
-        disableMediaPreload: true,
-        url: 'http://externaltests.dev.kaltura.com/player/library_Player_V3/Bumper/bumper_samples/Bumper.mp4',
       }
     }
   };
