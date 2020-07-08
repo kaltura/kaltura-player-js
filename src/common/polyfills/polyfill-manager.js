@@ -2,7 +2,7 @@
 import getLogger from '../utils/logger';
 
 if (!window._babelPolyfill) {
-  require('babel-polyfill');
+  require('@babel/polyfill');
 }
 
 export default class PolyfillManager {

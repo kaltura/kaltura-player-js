@@ -59,7 +59,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
-    "copy-webpack-plugin": "^6.0.2",
+    "copy-webpack-plugin": "6.0.3",
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
     "documentation": "^13.0.1",
@@ -99,13 +99,13 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@playkit-js/playkit-js": "^0.61.3",
     "@playkit-js/playkit-js-dash": "^1.18.2",
     "@playkit-js/playkit-js-hls": "^1.19.1",
     "@playkit-js/playkit-js-kava": "^0.17.1",
     "@playkit-js/playkit-js-ott-analytics": "^0.5.3",
     "@playkit-js/playkit-js-ui": "^0.56.0",
-    "babel-polyfill": "^6.26.0",
     "hls.js": "^0.13.1",
     "js-logger": "^1.6.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.21.1",
