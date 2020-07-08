@@ -43,6 +43,7 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginManager: PluginManager;
   _controllerProvider: ControllerProvider;
   _adsController: ?AdsController;
+  _pluginEvents: {[plugin: string]: {[event: string]: string}};
 
   constructor(options: KPOptionsObject) {
     super();
@@ -50,6 +51,7 @@ class KalturaPlayer extends FakeEventTarget {
     const {sources, plugins} = options;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     this._localPlayer = loadPlayer(noSourcesOptions);
+    this._pluginEvents = {};
     this._pluginManager = new PluginManager();
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._configureOrLoadPlugins(plugins);
@@ -115,6 +117,10 @@ class KalturaPlayer extends FakeEventTarget {
 
             if (typeof plugin.getEngineDecorator === 'function') {
               registerEngineDecoratorProvider(plugin);
+            }
+
+            if (typeof plugin.getEvents === 'function') {
+              this._pluginEvents[plugin.name] = plugin.getEvents();
             }
           }
         } else {
@@ -308,6 +314,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._uiWrapper.destroy();
     this._eventManager.destroy();
     this._playlistManager.destroy();
+    this._pluginEvents = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
       Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
@@ -596,6 +603,7 @@ class KalturaPlayer extends FakeEventTarget {
       Core: CoreEventType,
       Playlist: PlaylistEventType,
       UI: UIEventType,
+      Plugins: this._pluginEvents,
       // For backward compatibility
       ...CoreEventType
     };
