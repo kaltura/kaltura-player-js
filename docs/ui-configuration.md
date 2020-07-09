@@ -1,6 +1,6 @@
 ## UI Configuration
 
-In elaboration to the [Player configuration parameters](./docs/configuration.md), this section will detail the UI configuration.
+In elaboration to the [Player configuration parameters](./configuration.md), this section will detail the UI configuration.
 
 The UI configuration supports the following params:
 
