@@ -1,10 +1,10 @@
 ## UI Configuration
 
-In elaboration to the [Player configuration parameters](https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md), this section will detail the UI configuration.
+In elaboration to the [Player configuration parameters](./docs/configuration.md), this section will detail the UI configuration.
 
 The UI configuration supports the following params:
 
-- As defined in type [UIOptionsObject](./docs/configuration.md)
+- As defined in type [UIOptionsObject](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md)
 - css - Applying an external style sheet URL is possible as described in [External CSS](#External-CSS)
 
 ##
