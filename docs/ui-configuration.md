@@ -1,7 +1,5 @@
 ## UI Configuration
 
-In elaboration to the [Player configuration parameters](./configuration.md), this section will detail the UI configuration.
-
 The UI configuration supports the following params:
 
 - As defined in type [UIOptionsObject](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md)
@@ -16,7 +14,7 @@ An external style sheet URL can be given in the configuration as follows:
 ```js
 {
   ui: {
-    css: '###'; // place a valid css file URL String
+    css: 'https://myDomain.com/path/to/css'; // place a valid css file URL String
   }
 }
 ```
