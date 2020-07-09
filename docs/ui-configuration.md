@@ -22,6 +22,6 @@ An external style sheet URL can be given in the configuration as follows:
 ```
 
 The styling will be applied on the entire page.
-The main use case of this parameter is for [Auto Embed](./docs/embed-types.md#auto-embed) and [IFrame Embed](./docs/embed-types.md#iframe-embed)
+The main use case of this parameter is for [Auto Embed](./embed-types.md#auto-embed) and [IFrame Embed](./embed-types.md#iframe-embed)
 
 ##
