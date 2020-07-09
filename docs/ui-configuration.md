@@ -4,8 +4,8 @@ In elaboration to the [Player configuration parameters](https://github.com/kaltu
 
 The UI configuration supports the following params:
 
-1.  As defined in type [UIOptionsObject](./docs/configuration.md)
-2.  css - Applying an external style sheet URL is possible as described [here](#ExternalCSS)
+- As defined in type [UIOptionsObject](./docs/configuration.md)
+- css - Applying an external style sheet URL is possible as described [here](#ExternalCSS)
 
 ##
 
