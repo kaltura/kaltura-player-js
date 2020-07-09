@@ -5,23 +5,23 @@ In elaboration to the [Player configuration parameters](https://github.com/kaltu
 The UI configuration supports the following params:
 
 - As defined in type [UIOptionsObject](./docs/configuration.md)
-- css - Applying an external style sheet URL is possible as described [here](#ExternalCSS)
+- css - Applying an external style sheet URL is possible as described in [External CSS](#External-CSS)
 
 ##
 
-### <a name="ExternalCSS"></a>External CSS
+### External CSS
 
 An external style sheet URL can be given in the configuration as follows:
 
 ```js
 {
   ui: {
-    css: '###'; // place a valid URL String
+    css: '###'; // place a valid css file URL String
   }
 }
 ```
 
 The styling will be applied on the entire page.
-The main use case of this parameter is for embedded players.
+The main use case of this parameter is for [Auto Embed](./docs/embed-types.md#auto-embed) and [IFrame Embed](./docs/embed-types.md#iframe-embed)
 
 ##
