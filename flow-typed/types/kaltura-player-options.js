@@ -12,7 +12,7 @@ declare type KPOptionsObject = {
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
   ui: UIOptionsObject,
-  cast?: { [key: string]: any }
+  cast?: {[key: string]: any}
 };
 
 declare type PartialKPOptionsObject = {
@@ -25,7 +25,7 @@ declare type PartialKPOptionsObject = {
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   ui?: UIOptionsObject,
-  cast?: { [key: string]: any }
+  cast?: {[key: string]: any}
 };
 
 declare type LegacyPartialKPOptionsObject = {

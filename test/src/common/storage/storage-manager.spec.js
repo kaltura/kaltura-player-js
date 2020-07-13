@@ -6,16 +6,16 @@ import {FakeEvent} from '@playkit-js/playkit-js';
 
 const targetId = 'player-placeholder_storage-manager.spec';
 
-describe('StorageManager', function() {
+describe('StorageManager', function () {
   let config, player, sandbox;
   const partnerId = 1091;
   const entryId = '0_wifqaipd';
 
-  before(function() {
+  before(function () {
     TestUtils.createElement('DIV', targetId);
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     sandbox = sinon.sandbox.create();
     config = {
       targetId: targetId,
@@ -25,17 +25,17 @@ describe('StorageManager', function() {
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     sandbox.restore();
     TestUtils.removeVideoElementsFromTestPage();
     window.localStorage.clear();
   });
 
-  after(function() {
+  after(function () {
     TestUtils.removeElement(targetId);
   });
 
-  it('should return it has no storage', function() {
+  it('should return it has no storage', function () {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });
@@ -45,7 +45,7 @@ describe('StorageManager', function() {
     StorageManager.hasStorage().should.be.false;
   });
 
-  it('should return it has storage', function() {
+  it('should return it has storage', function () {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper.prototype._isLocalStorageAvailable = true;
     });
@@ -55,17 +55,14 @@ describe('StorageManager', function() {
     StorageManager.hasStorage().should.be.true;
   });
 
-  it('should return config for volume', function() {
+  it('should return config for volume', function () {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });
     sandbox.stub(StorageWrapper, 'size').get(() => {
       return 1;
     });
-    sandbox
-      .stub(StorageWrapper, 'getItem')
-      .withArgs('volume')
-      .returns(1);
+    sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
     StorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 1
@@ -73,7 +70,7 @@ describe('StorageManager', function() {
     });
   });
 
-  it('should return config for all properties', function() {
+  it('should return config for all properties', function () {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });
@@ -92,7 +89,7 @@ describe('StorageManager', function() {
     });
   });
 
-  it('should set muted to true/false depends on changed volume', function() {
+  it('should set muted to true/false depends on changed volume', function () {
     sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
       StorageWrapper._isLocalStorageAvailable = true;
     });

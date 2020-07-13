@@ -50,19 +50,19 @@ const baseConfig = {
       __CONFIG_DOCS_URL__: JSON.stringify(`${packageData.repository.url}/blob/master/docs/configuration.md`)
     }),
     new CopyPlugin({
-        patterns: [
-          {
-            from: '../node_modules/@playkit-js/playkit-js-ui/translations',
-            to: 'translations',
-            globOptions: {
-              ignore: ['en.i18n.json']
-            },
-            transform: function(content) {
-              // minify json
-              return JSON.stringify(JSON.parse(content));
-            }
+      patterns: [
+        {
+          from: '../node_modules/@playkit-js/playkit-js-ui/translations',
+          to: 'translations',
+          globOptions: {
+            ignore: ['en.i18n.json']
+          },
+          transform: function (content) {
+            // minify json
+            return JSON.stringify(JSON.parse(content));
           }
-        ]
+        }
+      ]
     })
   ],
   resolve: {
@@ -78,16 +78,14 @@ if (PROD) {
   baseConfig.optimization = {minimize: true};
 } else {
   baseConfig.plugins.push(
-    new CopyPlugin(
-      {
-        patterns: [
-          {
-            from: '../samples/style.css',
-            to: '.'
-          }
-        ]
-      }
-    )
+    new CopyPlugin({
+      patterns: [
+        {
+          from: '../samples/style.css',
+          to: '.'
+        }
+      ]
+    })
   );
 }
 

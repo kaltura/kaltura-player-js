@@ -1,14 +1,10 @@
 {
   "env": {
     "test": {
-      "plugins": [
-        "istanbul"
-      ]
+      "plugins": ["istanbul"]
     }
   },
-  "ignore": [
-    "node_modules/**/*"
-  ],
+  "ignore": ["node_modules/**/*"],
   "plugins": [
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-transform-flow-strip-types",
@@ -22,8 +18,5 @@
       }
     ]
   ],
-  "presets": [
-    "@babel/preset-env",
-    "@babel/preset-flow"
-  ]
+  "presets": ["@babel/preset-env", "@babel/preset-flow"]
 }

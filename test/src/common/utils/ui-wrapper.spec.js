@@ -6,24 +6,24 @@ import {getDefaultOptions} from '../../../../src/common/utils/setup-helpers';
 
 const targetId = 'player-placeholder_ui-wrapper.spec';
 
-describe('UIWrapper', function() {
+describe('UIWrapper', function () {
   let uiWrapper, uiConfig, mediaConfig, player, sandbox;
   const thumbsSprite = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
 
-  before(function() {
+  before(function () {
     TestUtils.createElement('DIV', targetId);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     TestUtils.removeVideoElementsFromTestPage();
   });
 
-  after(function() {
+  after(function () {
     TestUtils.removeElement(targetId);
   });
 
-  describe('setSeekbarConfig', function() {
-    beforeEach(function() {
+  describe('setSeekbarConfig', function () {
+    beforeEach(function () {
       sandbox = sinon.sandbox.create();
       player = getPlayerProxy(getDefaultOptions({targetId: 'player', provider: {partnerId: 123}}));
       mediaConfig = {
@@ -52,7 +52,7 @@ describe('UIWrapper', function() {
       };
     });
 
-    afterEach(function() {
+    afterEach(function () {
       uiWrapper._uiManager.store.getState().config.components.seekbar = {};
       sandbox.restore();
       uiWrapper = null;
@@ -60,7 +60,7 @@ describe('UIWrapper', function() {
       player = null;
     });
 
-    it('should set the configured thumbs sprite with default sizes', function(done) {
+    it('should set the configured thumbs sprite with default sizes', function (done) {
       uiConfig.components.seekbar.thumbsSprite = thumbsSprite;
       uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
@@ -74,7 +74,7 @@ describe('UIWrapper', function() {
       uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
-    it('should set the configured thumbs sprite with configured sizes', function(done) {
+    it('should set the configured thumbs sprite with configured sizes', function (done) {
       uiConfig.components.seekbar = {
         thumbsSlices: 200,
         thumbsSprite: thumbsSprite,
@@ -92,7 +92,7 @@ describe('UIWrapper', function() {
       uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
-    it('should set the backend thumbs sprite with default sizes', function(done) {
+    it('should set the backend thumbs sprite with default sizes', function (done) {
       uiConfig.components.seekbar = {};
       uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
@@ -104,7 +104,7 @@ describe('UIWrapper', function() {
       uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
     });
 
-    it('should set the backend thumbs sprite with configured sizes', function(done) {
+    it('should set the backend thumbs sprite with configured sizes', function (done) {
       uiConfig.components.seekbar = {
         thumbsSlices: 200,
         thumbsWidth: 300

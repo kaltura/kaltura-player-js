@@ -59,7 +59,7 @@ if (player.ads.isAdBreak()) {
 ## Ad Events Timeline
 
 During ad playback, there are events that get triggered to indicate the current ad state or state changes.
-Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions -- such as the user clicking the ad -- and may or may not be triggered.  
+Some events are life cycle indicators and will always get triggered, while others are reactive to specific actions -- such as the user clicking the ad -- and may or may not be triggered.
 
 In the following diagram you can observe the events timeline from the point that an ad break starts to the point that the ad break ends.
 
@@ -112,8 +112,8 @@ You can observe the following timeline diagram that simulates these events' exac
 > Fires when the ad manifest has been loaded and the ad layout is available.
 > <br><br>_payload parameters:_
 >
-> | Name               | Type            | Description                                                      |
-> | ------------------ | --------------- | ---------------------------------------------------------------- |
+> | Name               | Type            | Description                                                         |
+> | ------------------ | --------------- | ------------------------------------------------------------------- |
 > | `adBreaksPosition` | `Array<number>` | An array that represents the ad break's time on the media timeline. |
 
 #
@@ -123,8 +123,8 @@ You can observe the following timeline diagram that simulates these events' exac
 > Fires when an ad has been loaded and ad data is available.
 > <br><br>_payload parameters:_
 >
-> | Name | Type        | Description  |
-> | ---- | ----------- | ------------ |
+> | Name | Type        | Description |
+> | ---- | ----------- | ----------- |
 > | `ad` | [`Ad`](#Ad) | The ad data |
 
 #
@@ -134,8 +134,8 @@ You can observe the following timeline diagram that simulates these events' exac
 > Fires when an ad has been started and ad data is available.
 > <br><br>_payload parameters:_
 >
-> | Name | Type        | Description  |
-> | ---- | ----------- | ------------ |
+> | Name | Type        | Description |
+> | ---- | ----------- | ----------- |
 > | `ad` | [`Ad`](#Ad) | The ad data |
 
 #
@@ -177,9 +177,9 @@ You can observe the following timeline diagram that simulates these events' exac
 >
 > | Name       | Type     | Description                                                                 |
 > | ---------- | -------- | --------------------------------------------------------------------------- |
-> | `severity` | `string` | The error severity                                                    |
-> | `category` | `string` | The error category                                                        |
-> | `code`     | `number` | The error code                                                             |
+> | `severity` | `string` | The error severity                                                          |
+> | `category` | `string` | The error category                                                          |
+> | `code`     | `number` | The error code                                                              |
 > | `data`     | `Object` | The error data: the original ad error can be accessed by `data.innerError`. |
 
 #
@@ -195,8 +195,8 @@ You can observe the following timeline diagram that simulates these events' exac
 > Fires before an ad break is about to start.
 > <br><br>_payload parameters:_
 >
-> | Name      | Type                  | Description        |
-> | --------- | --------------------- | ------------------ |
+> | Name      | Type                  | Description       |
+> | --------- | --------------------- | ----------------- |
 > | `adBreaK` | [`AdBreak`](#AdBreak) | The ad break data |
 
 #
@@ -248,8 +248,8 @@ You can observe the following timeline diagram that simulates these events' exac
 > Fires on ad time progress.
 > <br><br>_payload parameters:_
 >
-> | Name         | Type               | Description           |
-> | ------------ | ------------------ | --------------------- |
+> | Name         | Type               | Description          |
+> | ------------ | ------------------ | -------------------- |
 > | `adProgress` | `AdProgressObject` | The ad progress data |
 >
 > ###### Type `AdProgressObject`

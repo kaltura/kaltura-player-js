@@ -4,16 +4,8 @@
     "ecmaVersion": 6,
     "sourceType": "module"
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:flowtype/recommended"
-  ],
-  "plugins": [
-    "prettier",
-    "import",
-    "flowtype",
-    "mocha-no-only"
-  ],
+  "extends": ["eslint:recommended", "plugin:flowtype/recommended"],
+  "plugins": ["prettier", "import", "flowtype", "mocha-no-only"],
   "env": {
     "browser": true,
     "es6": true,
@@ -32,11 +24,7 @@
   "rules": {
     "prettier/prettier": "error",
     "mocha-no-only/mocha-no-only": "off",
-    "require-jsdoc": [
-      "error"
-    ],
-    "valid-jsdoc": [
-      "error"
-    ]
+    "require-jsdoc": ["error"],
+    "valid-jsdoc": ["error"]
   }
 }

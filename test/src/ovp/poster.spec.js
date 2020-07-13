@@ -5,29 +5,29 @@ import {Provider} from 'playkit-js-providers';
 
 const targetId = 'player-placeholder_ovp/poster.spec';
 
-describe('addKalturaPoster', function() {
-  it('should append width and height to kaltura poster', function() {
+describe('addKalturaPoster', function () {
+  it('should append width and height to kaltura poster', function () {
     const mediaSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
     const playerSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640');
   });
 
-  it('should not append width and height to non kaltura poster', function() {
+  it('should not append width and height to non kaltura poster', function () {
     const mediaSources = {poster: 'https//my/kaltura/poster'};
     const playerSources = {poster: 'https//my/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('https//my/kaltura/poster');
   });
 
-  it('should not append width and height to configured kaltura poster', function() {
+  it('should not append width and height to configured kaltura poster', function () {
     const mediaSources = {poster: 'https//my/kaltura/poster'};
     const playerSources = {poster: 'https//my/non/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('https//my/non/kaltura/poster');
   });
 
-  describe('Poster Integration', function() {
+  describe('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
     const myCustomPosterUrl = 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg';
     const entryId = '0_wifqaipd';
@@ -38,11 +38,11 @@ describe('addKalturaPoster', function() {
       serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
     };
 
-    before(function() {
+    before(function () {
       TestUtils.createElement('DIV', targetId);
     });
 
-    beforeEach(function() {
+    beforeEach(function () {
       sandbox = sinon.sandbox.create();
       provider = new Provider({
         partnerId: partnerId,
@@ -58,18 +58,18 @@ describe('addKalturaPoster', function() {
       };
     });
 
-    afterEach(function() {
+    afterEach(function () {
       sandbox.restore();
       kalturaPlayer.destroy();
       provider = null;
       TestUtils.removeVideoElementsFromTestPage();
     });
 
-    after(function() {
+    after(function () {
       TestUtils.removeElement(targetId);
     });
 
-    it('should choose configured poster', function(done) {
+    it('should choose configured poster', function (done) {
       config.sources.poster = myCustomPosterUrl;
       kalturaPlayer = setup(config);
       kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -78,7 +78,7 @@ describe('addKalturaPoster', function() {
       });
     });
 
-    it('should choose backend poster', function(done) {
+    it('should choose backend poster', function (done) {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({entryId: entryId}).then(mediaConfig => {
         kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -88,7 +88,7 @@ describe('addKalturaPoster', function() {
       });
     });
 
-    it('should choose backend poster on change media', function(done) {
+    it('should choose backend poster on change media', function (done) {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({entryId: entryId}).then(mediaConfig => {
         kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -103,7 +103,7 @@ describe('addKalturaPoster', function() {
       });
     });
 
-    it('should choose configured poster on change media', function(done) {
+    it('should choose configured poster on change media', function (done) {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({entryId: entryId}).then(mediaConfig => {
         kalturaPlayer.loadMedia({entryId: entryId}).then(() => {

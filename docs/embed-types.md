@@ -11,23 +11,23 @@ Basic dynamic embed codes look like this:
 ```html
 <div id="{TARGET_ID}" style="width: 640px;height: 360px"></div>
 <script type="text/javascript" src="https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}"></script>
-  <script type="text/javascript">
-    try {
-      var kalturaPlayer = KalturaPlayer.setup({
-        targetId: "{TARGET_ID}",
-        provider: {
-          partnerId: {PARTNER_ID},
-          uiConfId: {UICONF_ID}
-        },
-        playback: {
-          autoplay: true
-        }
-      });
-      kalturaPlayer.loadMedia({entryId: '{ENTRY_ID}'});
-    } catch (e) {
-      console.error(e.message)
-    }
-  </script>
+<script type="text/javascript">
+  try {
+    var kalturaPlayer = KalturaPlayer.setup({
+      targetId: '{TARGET_ID}',
+      provider: {
+        partnerId: {PARTNER_ID},
+        uiConfId: {UICONF_ID}
+      },
+      playback: {
+        autoplay: true
+      }
+    });
+    kalturaPlayer.loadMedia({entryId: '{ENTRY_ID}'});
+  } catch (e) {
+    console.error(e.message);
+  }
+</script>
 ```
 
 ## Auto Embed
@@ -43,7 +43,10 @@ The configuration will be decoded properly to the original characters.
 
 ```html
 <div id="{TARGET_ID}" style="width: 640px;height: 360px"></div>
-<script type="text/javascript" src='https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config[playback]={"autoplay":true}'></script>
+<script
+  type="text/javascript"
+  src='https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?autoembed=true&targetId={TARGET_ID}&entry_id={ENTRY_ID}&config[playback]={"autoplay":true}'
+></script>
 ```
 
 ## IFrame Embed
@@ -55,7 +58,14 @@ It is possible to control the configuration passed to the player by adding query
 Note that if you use the iframe only embed mode, the page won't be able to access the player API:
 
 ```html
-<iframe type="text/javascript" src='https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?iframeembed=true&entry_id={ENTRY_ID}&config[playback]={"autoplay":true}'
-   style="width: 640px;height: 360px" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0">
+<iframe
+  type="text/javascript"
+  src='https://cdnapisec.kaltura.com/p/{PARTNER_ID}/embedPlaykitJs/uiconf_id/{UICONF_ID}?iframeembed=true&entry_id={ENTRY_ID}&config[playback]={"autoplay":true}'
+  style="width: 640px;height: 360px"
+  allowfullscreen
+  webkitallowfullscreen
+  mozAllowFullScreen
+  frameborder="0"
+>
 </iframe>
 ```

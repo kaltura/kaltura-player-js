@@ -8,7 +8,7 @@ const playerType = 'ovp';
 
 const plugins = [
   new webpack.DefinePlugin({
-    __PLAYER_TYPE__: JSON.stringify(playerType),
+    __PLAYER_TYPE__: JSON.stringify(playerType)
   })
 ];
 

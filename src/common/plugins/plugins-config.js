@@ -151,7 +151,7 @@ function evaluateUIConfig(options: UIOptionsObject, config: KPOptionsObject): vo
 function _formatConfigString(config: string): Object {
   let configObj;
   try {
-    configObj = JSON.parse(config, function(key) {
+    configObj = JSON.parse(config, function (key) {
       try {
         return JSON.parse(this[key]);
       } catch (e) {

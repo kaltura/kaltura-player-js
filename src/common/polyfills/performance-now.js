@@ -16,7 +16,7 @@ export default class PerformanceNowPolyfill {
     if (!global.performance) {
       global.performance = {};
     }
-    global.performance.now = function() {
+    global.performance.now = function () {
       return Date.now() - startTime;
     };
   }

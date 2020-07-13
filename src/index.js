@@ -32,17 +32,4 @@ const PLAYER_TYPE = __PLAYER_TYPE__;
 const VERSION = __VERSION__;
 PolyfillManager.installAll();
 
-export {
-  getPlayers,
-  getPlayer,
-  core,
-  ui,
-  providers,
-  setup,
-  shaka,
-  cast,
-  playlist,
-  PLAYER_TYPE,
-  VERSION,
-  PLAYER_NAME
-};
+export {getPlayers, getPlayer, core, ui, providers, setup, shaka, cast, playlist, PLAYER_TYPE, VERSION, PLAYER_NAME};
