@@ -1,10 +1,11 @@
 //@flow
 import {KalturaPlayer as Player} from '../../kaltura-player';
 import getLogger from '../utils/logger';
+import {Ad} from '../ads/ad';
+import {AdBreak} from '../ads/ad-break';
+import {Error, EventManager, AdEventType, FakeEvent, FakeEventTarget, Html5EventType, CustomEventType} from '@playkit-js/playkit-js';
 
-import {Error, EventManager, AdEventType, AdBreak, Ad, FakeEvent, FakeEventTarget, Html5EventType, CustomEventType} from '@playkit-js/playkit-js';
-
-declare type RunTimeAdBreakObject = PKAdBreakObject & {
+declare type RunTimeAdBreakObject = KPAdBreakObject & {
   played: boolean
 };
 
@@ -94,12 +95,12 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   /**
    * Play an ad on demand.
-   * @param {PKAdPod} adPod - The ad pod play.
+   * @param {KPAdPod} adPod - The ad pod play.
    * @instance
    * @memberof AdsController
    * @returns {void}
    */
-  playAdNow(adPod: PKAdPod): void {
+  playAdNow(adPod: KPAdPod): void {
     if (this.isAdBreak()) {
       AdsController._logger.warn('Tried to call playAdNow during an ad break');
     } else {
@@ -142,8 +143,9 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _handleConfiguredAdBreaks(): void {
-    const playAdsAfterTime = this._player.config.advertising.playAdsAfterTime || this._player.config.playback.startTime;
-    this._configAdBreaks = this._player.config.advertising.adBreaks
+    const advertising = this._player.config.advertising || {adBreaks: []};
+    const playAdsAfterTime = advertising.playAdsAfterTime || this._player.config.playback.startTime;
+    this._configAdBreaks = advertising.adBreaks
       .filter(
         adBreak =>
           (typeof adBreak.every === 'number' || typeof adBreak.position === 'number' || typeof adBreak.percentage === 'number') && adBreak.ads.length
@@ -175,7 +177,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     }
   }
 
-  _validateOneTimeConfig(adBreak: PKAdBreakObject): void {
+  _validateOneTimeConfig(adBreak: KPAdBreakObject): void {
     if (typeof adBreak.position === 'number') {
       if (typeof adBreak.percentage === 'number') {
         AdsController._logger.warn(`Validate ad break - ignore percentage ${adBreak.percentage} as position ${adBreak.position} configured`);

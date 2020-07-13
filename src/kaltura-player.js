@@ -16,8 +16,9 @@ import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
 import {ControllerProvider} from './common/controllers/controller-provider';
 import {AdsController} from './common/controllers/ads-controller';
+import {BasePlugin} from './common/plugins/base-plugin';
+import {PluginManager} from './common/plugins/plugin-manager';
 import {
-  BasePlugin,
   Error,
   EventManager,
   EventType as CoreEventType,
@@ -28,7 +29,6 @@ import {
   TextStyle,
   Track,
   Utils,
-  PluginManager,
   registerEngineDecoratorProvider
 } from '@playkit-js/playkit-js';
 
@@ -44,6 +44,7 @@ class KalturaPlayer extends FakeEventTarget {
   _controllerProvider: ControllerProvider;
   _adsController: ?AdsController;
   _pluginEvents: {[plugin: string]: {[event: string]: string}};
+  _reset: boolean;
 
   constructor(options: KPOptionsObject) {
     super();
@@ -51,6 +52,7 @@ class KalturaPlayer extends FakeEventTarget {
     const {sources, plugins} = options;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     this._localPlayer = loadPlayer(noSourcesOptions);
+    this._reset = true;
     this._pluginEvents = {};
     this._pluginManager = new PluginManager();
     this._controllerProvider = new ControllerProvider(this._pluginManager);
@@ -62,87 +64,9 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
-    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => {
-      this._configureOrLoadPlugins(plugins);
-      this._pluginManager.loadMedia();
-    });
-    this._eventManager.listen(this, CoreEventType.ENDED, () => {
-      if (this._adsController && !this._adsController.allAdsCompleted) {
-        this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
-          this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
-        });
-      } else {
-        // Make sure the all ENDED listeners have been invoked
-        setTimeout(() => this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED)), 0);
-      }
-    });
+    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
+    this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._localPlayer.configure({sources});
-  }
-
-  /**
-   * Configures or load the plugins defined in the configuration.
-   * @param {Object} plugins - The new received plugins configuration.
-   * @private
-   * @returns {void}
-   */
-  _configureOrLoadPlugins(plugins: Object = {}): void {
-    const middlewares = [];
-    const uiComponents = [];
-    Object.keys(plugins).forEach(name => {
-      // If the plugin is already exists in the registry we are updating his config
-      const plugin = this._pluginManager.get(name);
-      if (plugin) {
-        plugin.updateConfig(plugins[name]);
-        plugins[name] = plugin.getConfig();
-      } else {
-        // We allow to load plugins as long as the player has no engine
-        if (!this._engine) {
-          try {
-            this._pluginManager.load(name, this, plugins[name]);
-          } catch (error) {
-            //bounce the plugin load error up
-            this.dispatchEvent(new FakeEvent(Error.Code.ERROR, error));
-          }
-          let plugin = this._pluginManager.get(name);
-          if (plugin) {
-            plugins[name] = plugin.getConfig();
-            if (typeof plugin.getMiddlewareImpl === 'function') {
-              // push the bumper middleware to the end, to play the bumper right before the content
-              plugin.name === 'bumper' ? middlewares.push(plugin.getMiddlewareImpl()) : middlewares.unshift(plugin.getMiddlewareImpl());
-            }
-
-            if (typeof plugin.getUIComponents === 'function') {
-              uiComponents.push(...(plugin.getUIComponents() || []));
-            }
-
-            if (typeof plugin.getEngineDecorator === 'function') {
-              registerEngineDecoratorProvider(plugin);
-            }
-
-            if (typeof plugin.getEvents === 'function') {
-              this._pluginEvents[plugin.name] = plugin.getEvents();
-            }
-          }
-        } else {
-          delete plugins[name];
-        }
-      }
-    });
-    this._uiComponents = uiComponents;
-    middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
-    this._maybeCreateAdsController();
-  }
-
-  _maybeCreateAdsController(): void {
-    if (!this._adsController) {
-      const adsPluginControllers = this._controllerProvider.getAdsControllers();
-      if (adsPluginControllers.length) {
-        this._adsController = new AdsController(this, adsPluginControllers);
-        this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, event => {
-          this.dispatchEvent(event);
-        });
-      }
-    }
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
@@ -304,8 +228,12 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   reset(): void {
-    this._localPlayer.reset();
-    this._uiWrapper.reset();
+    if (!this._reset) {
+      this._reset = true;
+      this._localPlayer.reset();
+      this._uiWrapper.reset();
+      this._pluginManager.reset();
+    }
   }
 
   destroy(): void {
@@ -314,6 +242,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._uiWrapper.destroy();
     this._eventManager.destroy();
     this._playlistManager.destroy();
+    this._pluginManager.destroy();
     this._pluginEvents = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
@@ -647,6 +576,83 @@ class KalturaPlayer extends FakeEventTarget {
 
   get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  _onChangeSourceStarted(): void {
+    this._configureOrLoadPlugins(this.config.plugins);
+    this._pluginManager.loadMedia();
+    this._reset = false;
+  }
+
+  _onEnded(): void {
+    if (this._adsController && !this._adsController.allAdsCompleted) {
+      this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
+        this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
+      });
+    } else {
+      // Make sure the all ENDED listeners have been invoked
+      setTimeout(() => this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED)), 0);
+    }
+  }
+
+  _configureOrLoadPlugins(plugins: Object = {}): void {
+    const middlewares = [];
+    const uiComponents = [];
+    Object.keys(plugins).forEach(name => {
+      // If the plugin is already exists in the registry we are updating his config
+      const plugin = this._pluginManager.get(name);
+      if (plugin) {
+        plugin.updateConfig(plugins[name]);
+        plugins[name] = plugin.getConfig();
+      } else {
+        // We allow to load plugins as long as the player has no engine
+        if (!this._engine) {
+          try {
+            this._pluginManager.load(name, this, plugins[name]);
+          } catch (error) {
+            //bounce the plugin load error up
+            this.dispatchEvent(new FakeEvent(Error.Code.ERROR, error));
+          }
+          let plugin = this._pluginManager.get(name);
+          if (plugin) {
+            plugins[name] = plugin.getConfig();
+            if (typeof plugin.getMiddlewareImpl === 'function') {
+              // push the bumper middleware to the end, to play the bumper right before the content
+              plugin.name === 'bumper' ? middlewares.push(plugin.getMiddlewareImpl()) : middlewares.unshift(plugin.getMiddlewareImpl());
+            }
+
+            if (typeof plugin.getUIComponents === 'function') {
+              uiComponents.push(...(plugin.getUIComponents() || []));
+            }
+
+            if (typeof plugin.getEngineDecorator === 'function') {
+              registerEngineDecoratorProvider(plugin);
+            }
+
+            if (typeof plugin.getEvents === 'function') {
+              this._pluginEvents[plugin.name] = plugin.getEvents();
+            }
+          }
+        } else {
+          delete plugins[name];
+        }
+      }
+    });
+    this._uiComponents = uiComponents;
+    middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
+    this._maybeCreateAdsController();
+  }
+
+  _maybeCreateAdsController(): void {
+    if (!this._adsController) {
+      const adsPluginControllers = this._controllerProvider.getAdsControllers();
+      if (adsPluginControllers.length) {
+        this._adsController = new AdsController(this, adsPluginControllers);
+        this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, event => {
+          this.dispatchEvent(event);
+        });
+      }
+    }
   }
 
   /**

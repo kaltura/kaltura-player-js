@@ -2,6 +2,10 @@ import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
+import {PluginManager} from '../../src/common/plugins/plugin-manager';
+import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
+import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
+import {KalturaPlayer as Player} from '../../src/kaltura-player';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -352,6 +356,217 @@ describe('kaltura player api', function() {
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer.playlist.countdown.showing.should.be.false;
         kalturaPlayer.playlist.countdown.duration.should.equal(20);
+      });
+    });
+  });
+
+  describe('plugins lifecycle', () => {
+    let player, sourcesConfig;
+    beforeEach(() => {
+      PluginManager.register('colors', ColorsPlugin);
+      PluginManager.register('numbers', NumbersPlugin);
+    });
+
+    afterEach(() => {
+      PluginManager.unRegister('colors');
+      PluginManager.unRegister('numbers');
+    });
+
+    it('should load 2 plugins on initial config and configure them on configure', function() {
+      player = new Player({
+        plugins: {
+          colors: {
+            size: 5
+          },
+          numbers: {
+            size: 20
+          }
+        }
+      });
+      player._pluginManager.get('colors').should.exists;
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(2);
+      player.config.plugins.colors.should.deep.equals({
+        size: 5,
+        favouriteColor: 'green'
+      });
+      player.config.plugins.numbers.should.deep.equals({
+        size: 20,
+        firstCellValue: 4,
+        lastCellValue: 6
+      });
+      player.configure({
+        plugins: {
+          colors: {
+            size: 50
+          },
+          numbers: {
+            size: 200
+          }
+        }
+      });
+      player._pluginManager.get('colors').should.exists;
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(2);
+      player.config.plugins.colors.should.deep.equals({
+        size: 50,
+        favouriteColor: 'green'
+      });
+      player.config.plugins.numbers.should.deep.equals({
+        size: 200,
+        firstCellValue: 4,
+        lastCellValue: 6
+      });
+    });
+
+    it('should load 1st plugin on initial config, load 2nd plugin and configure the 1st on configure', function() {
+      player = new Player({
+        plugins: {
+          numbers: {
+            size: 20
+          }
+        }
+      });
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.numbers.should.deep.equals({
+        size: 20,
+        firstCellValue: 4,
+        lastCellValue: 6
+      });
+      player.configure({
+        plugins: {
+          colors: {
+            size: 50
+          },
+          numbers: {
+            size: 200
+          }
+        }
+      });
+      player._pluginManager.get('colors').should.exists;
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(2);
+      player.config.plugins.colors.should.deep.equals({
+        size: 50,
+        favouriteColor: 'green'
+      });
+      player.config.plugins.numbers.should.deep.equals({
+        size: 200,
+        firstCellValue: 4,
+        lastCellValue: 6
+      });
+    });
+
+    it('should create player without plugins, load plugins on configure', function() {
+      player = new Player();
+      Object.keys(player._pluginManager._plugins).length.should.equals(0);
+      player.config.plugins.should.deep.equals({});
+      player.configure({
+        plugins: {
+          colors: {
+            size: 50
+          },
+          numbers: {
+            size: 200
+          }
+        }
+      });
+      player._pluginManager.get('colors').should.exists;
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(2);
+      player.config.plugins.colors.should.deep.equals({
+        size: 50,
+        favouriteColor: 'green'
+      });
+      player.config.plugins.numbers.should.deep.equals({
+        size: 200,
+        firstCellValue: 4,
+        lastCellValue: 6
+      });
+    });
+
+    it('should create player without plugins, load 1st plugin on configure, configure 1st plugin with/after sources', function() {
+      player = new Player();
+      Object.keys(player._pluginManager._plugins).length.should.equals(0);
+      player.config.plugins.should.deep.equals({});
+      player.configure({
+        plugins: {
+          numbers: {
+            size: 200
+          }
+        }
+      });
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.numbers.should.deep.equals({
+        size: 200,
+        firstCellValue: 4,
+        lastCellValue: 6
+      });
+      player.configure({
+        sources: sourcesConfig.Mp4,
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
+          }
+        }
+      });
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.numbers.should.deep.equals({
+        size: 2,
+        firstCellValue: 3,
+        lastCellValue: 6
+      });
+      player.configure({
+        plugins: {
+          numbers: {
+            size: 78
+          }
+        }
+      });
+      player.config.plugins.numbers.should.deep.equals({
+        size: 78,
+        firstCellValue: 3,
+        lastCellValue: 6
+      });
+    });
+
+    it('should create player with plugin and fail to configure other plugin after sources', function() {
+      player = new Player({
+        sources: sourcesConfig.Mp4,
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
+          }
+        }
+      });
+      player._pluginManager.get('numbers').should.exists;
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
+      });
+      player.configure({
+        plugins: {
+          colors: {
+            size: 200
+          }
+        }
+      });
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
       });
     });
   });

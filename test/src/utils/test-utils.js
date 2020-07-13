@@ -1,4 +1,37 @@
 /**
+ * Configuration structure of the player.
+ * @returns {Object} - The configuration structure of the player.
+ */
+function getConfigStructure() {
+  return {
+    provider: {},
+    ui: {},
+    sources: {},
+    playback: {
+      enableCEA708Captions: true,
+      preload: 'none',
+      autoplay: false,
+      muted: false,
+      playbackRates: [2, 3, 4],
+      streamPriority: [
+        {
+          engine: 'html5',
+          format: 'hls'
+        },
+        {
+          engine: 'html5',
+          format: 'dash'
+        },
+        {
+          engine: 'html5',
+          format: 'progressive'
+        }
+      ]
+    }
+  };
+}
+
+/**
  * Creates a dom element.
  * @param {string} type - The element type.
  * @param {string} id - The element id.
@@ -42,4 +75,4 @@ function removeVideoElementsFromTestPage() {
   }
 }
 
-export {createElement, removeElement, removeVideoElementsFromTestPage};
+export {createElement, removeElement, removeVideoElementsFromTestPage, getConfigStructure};
