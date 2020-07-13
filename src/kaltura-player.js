@@ -220,6 +220,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.destroy();
     this._uiWrapper.destroy();
     this._eventManager.destroy();
+    this._playlistManager.destroy();
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
       Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
