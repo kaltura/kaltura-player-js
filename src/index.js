@@ -27,7 +27,7 @@ declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
 declare var __PLAYER_TYPE__: string;
 
-const NAME = __NAME__;
+const PLAYER_NAME = __NAME__;
 const PLAYER_TYPE = __PLAYER_TYPE__;
 const VERSION = __VERSION__;
 PolyfillManager.installAll();
@@ -44,5 +44,5 @@ export {
   playlist,
   PLAYER_TYPE,
   VERSION,
-  NAME
+  PLAYER_NAME
 };
