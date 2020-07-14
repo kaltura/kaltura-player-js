@@ -43,7 +43,7 @@ describe('addKalturaPoster', function () {
     });
 
     beforeEach(function () {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       provider = new Provider({
         partnerId: partnerId,
         env: env

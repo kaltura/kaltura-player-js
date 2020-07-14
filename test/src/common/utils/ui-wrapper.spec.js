@@ -24,7 +24,7 @@ describe('UIWrapper', function () {
 
   describe('setSeekbarConfig', function () {
     beforeEach(function () {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       player = getPlayerProxy(getDefaultOptions({targetId: 'player', provider: {partnerId: 123}}));
       mediaConfig = {
         session: {

@@ -149,7 +149,7 @@ describe('setStorageConfig', function () {
   let sandbox;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   afterEach(() => {
@@ -170,9 +170,9 @@ describe('setStorageConfig', function () {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
-    sandbox.stub(StorageManager, 'hasStorage', () => true);
-    sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
+    sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
@@ -186,9 +186,9 @@ describe('setStorageConfig', function () {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable', () => true);
-    sandbox.stub(StorageManager, 'hasStorage', () => true);
-    sandbox.stub(StorageManager, 'getStorageConfig', () => storageConfig);
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
+    sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
@@ -279,7 +279,7 @@ describe('supportLegacyOptions', function () {
   };
 
   beforeEach(function () {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   afterEach(function () {
@@ -307,7 +307,7 @@ describe('plugins config', function () {
 
   beforeEach(function () {
     osName = Env.os.name;
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   afterEach(function () {

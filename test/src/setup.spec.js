@@ -19,7 +19,7 @@ describe('setup', function () {
   });
 
   beforeEach(function () {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
       provider: {

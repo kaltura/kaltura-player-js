@@ -14,7 +14,7 @@ describe('kaltura player api', function () {
   });
 
   beforeEach(function () {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
       provider: {

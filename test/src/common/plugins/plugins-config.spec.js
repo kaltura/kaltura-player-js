@@ -1,5 +1,6 @@
 import {evaluatePluginsConfig, getEncodedReferrer} from '../../../../src/common/plugins/plugins-config';
-let sandbox = sinon.sandbox.create();
+debugger;
+let sandbox = sinon.createSandbox();
 
 describe('evaluatePluginsConfig', function () {
   const playerConfig = {

@@ -16,7 +16,7 @@ describe('PlaylistManager', function () {
   };
 
   before(function () {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     kalturaPlayer = new KalturaPlayer(config);
   });
 

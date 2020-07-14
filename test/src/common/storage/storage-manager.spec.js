@@ -16,7 +16,7 @@ describe('StorageManager', function () {
   });
 
   beforeEach(function () {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
       provider: {
@@ -36,32 +36,20 @@ describe('StorageManager', function () {
   });
 
   it('should return it has no storage', function () {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
-    sandbox.stub(StorageWrapper, 'size').get(() => {
-      return 0;
-    });
+    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
+    sandbox.stub(StorageWrapper, 'size').get(() => 0);
     StorageManager.hasStorage().should.be.false;
   });
 
   it('should return it has storage', function () {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper.prototype._isLocalStorageAvailable = true;
-    });
-    sandbox.stub(StorageWrapper, 'size').get(() => {
-      return 1;
-    });
+    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
+    sandbox.stub(StorageWrapper, 'size').get(() => 1);
     StorageManager.hasStorage().should.be.true;
   });
 
   it('should return config for volume', function () {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
-    sandbox.stub(StorageWrapper, 'size').get(() => {
-      return 1;
-    });
+    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
+    sandbox.stub(StorageWrapper, 'size').get(() => 1);
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
     StorageManager.getStorageConfig().should.deep.equal({
       playback: {
@@ -71,9 +59,7 @@ describe('StorageManager', function () {
   });
 
   it('should return config for all properties', function () {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
+    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     let getItemStub = sandbox.stub(StorageWrapper, 'getItem');
     getItemStub.withArgs('volume').returns(0.5);
     getItemStub.withArgs('muted').returns(false);
@@ -90,9 +76,7 @@ describe('StorageManager', function () {
   });
 
   it('should set muted to true/false depends on changed volume', function () {
-    sandbox.stub(StorageWrapper, '_testForLocalStorage').callsFake(() => {
-      StorageWrapper._isLocalStorageAvailable = true;
-    });
+    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({entryId: entryId}).then(() => {
       player.muted = true;
