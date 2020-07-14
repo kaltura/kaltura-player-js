@@ -67,19 +67,25 @@ The configuration uses the following structure:
 > ##### Type: [PKPlaybackConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configplayback)
 >
 > ##### Description: Defines the playback configuration.
->
+
+##
+
 > ### config.sources
 >
 > ##### Type: [PKSourcesConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configsources)
 >
 > ##### Description: Defines the sources configuration.
->
+
+##
+
 > ### config.playlist
 >
 > ##### Type: [KPPlaylistObject](./api.md#kpplaylistobject)
 >
 > ##### Description: Defines the playlist configuration.
->
+
+##
+
 > ### config.plugins
 >
 > ##### Type: [KPPluginsConfigObject](./api.md#kppluginsconfigobject)
@@ -160,8 +166,6 @@ The configuration uses the following structure:
 > >
 > > ##
 > >
-> > > ##### Type `PKAdBreakObject`
-> > >
 > > > ##### Type [PKAdBreakObject](./api.md#kpadbreakobject)
 > > >
 > > > ```js
@@ -215,8 +219,6 @@ The configuration uses the following structure:
 > > > >
 > > > > ##
 > > > >
-> > > > > ##### Type `PKAdObject`
-> > > > >
 > > > > > ##### Type [PKAdObject](./api.md#kpadobject)
 > > > > >
 > > > > > ```js
