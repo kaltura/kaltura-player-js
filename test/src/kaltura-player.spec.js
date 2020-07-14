@@ -6,6 +6,7 @@ import {PluginManager} from '../../src/common/plugins/plugin-manager';
 import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
+import SourcesConfig from './configs/sources';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -361,7 +362,7 @@ describe('kaltura player api', function() {
   });
 
   describe('plugins lifecycle', () => {
-    let player, sourcesConfig;
+    let player;
     beforeEach(() => {
       PluginManager.register('colors', ColorsPlugin);
       PluginManager.register('numbers', NumbersPlugin);
@@ -374,6 +375,8 @@ describe('kaltura player api', function() {
 
     it('should load 2 plugins on initial config and configure them on configure', function() {
       player = new Player({
+        ui: {},
+        provider: {},
         plugins: {
           colors: {
             size: 5
@@ -421,6 +424,8 @@ describe('kaltura player api', function() {
 
     it('should load 1st plugin on initial config, load 2nd plugin and configure the 1st on configure', function() {
       player = new Player({
+        ui: {},
+        provider: {},
         plugins: {
           numbers: {
             size: 20
@@ -459,7 +464,11 @@ describe('kaltura player api', function() {
     });
 
     it('should create player without plugins, load plugins on configure', function() {
-      player = new Player();
+      player = new Player({
+        ui: {},
+        plugins: {},
+        provider: {}
+      });
       Object.keys(player._pluginManager._plugins).length.should.equals(0);
       player.config.plugins.should.deep.equals({});
       player.configure({
@@ -487,7 +496,11 @@ describe('kaltura player api', function() {
     });
 
     it('should create player without plugins, load 1st plugin on configure, configure 1st plugin with/after sources', function() {
-      player = new Player();
+      player = new Player({
+        ui: {},
+        plugins: {},
+        provider: {}
+      });
       Object.keys(player._pluginManager._plugins).length.should.equals(0);
       player.config.plugins.should.deep.equals({});
       player.configure({
@@ -505,7 +518,7 @@ describe('kaltura player api', function() {
         lastCellValue: 6
       });
       player.configure({
-        sources: sourcesConfig.Mp4,
+        sources: SourcesConfig.Mp4,
         plugins: {
           numbers: {
             size: 2,
@@ -536,7 +549,9 @@ describe('kaltura player api', function() {
 
     it('should create player with plugin and fail to configure other plugin after sources', function() {
       player = new Player({
-        sources: sourcesConfig.Mp4,
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
         plugins: {
           numbers: {
             size: 2,
@@ -561,13 +576,6 @@ describe('kaltura player api', function() {
         }
       });
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
-      player.config.plugins.should.deep.equals({
-        numbers: {
-          size: 2,
-          firstCellValue: 3,
-          lastCellValue: 6
-        }
-      });
     });
   });
 });

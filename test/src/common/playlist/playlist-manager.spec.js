@@ -9,6 +9,7 @@ describe('PlaylistManager', function() {
   let kalturaPlayer, playlistManager, sandbox;
   const config = {
     ui: {},
+    plugins: {},
     provider: {},
     playback: {
       autoplay: true

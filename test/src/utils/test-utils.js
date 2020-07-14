@@ -6,6 +6,7 @@ function getConfigStructure() {
   return {
     provider: {},
     ui: {},
+    plugins: {},
     sources: {},
     playback: {
       enableCEA708Captions: true,

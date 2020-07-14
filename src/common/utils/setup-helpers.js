@@ -270,7 +270,8 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     },
     ui: {
       targetId: targetId
-    }
+    },
+    plugins: {}
   };
   Utils.Object.mergeDeep(defaultOptions, options);
   if (defaultOptions.provider.uiConfId) {

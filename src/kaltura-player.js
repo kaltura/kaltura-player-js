@@ -45,6 +45,7 @@ class KalturaPlayer extends FakeEventTarget {
   _adsController: ?AdsController;
   _pluginEvents: {[plugin: string]: {[event: string]: string}};
   _reset: boolean;
+  _sourceSelected: boolean;
 
   constructor(options: KPOptionsObject) {
     super();
@@ -66,6 +67,7 @@ class KalturaPlayer extends FakeEventTarget {
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
     this._localPlayer.configure({sources});
   }
 
@@ -95,7 +97,7 @@ class KalturaPlayer extends FakeEventTarget {
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
-    Object.keys(this._localPlayer.config.plugins || {}).forEach(name => {
+    Object.keys(this._localPlayer.config.plugins).forEach(name => {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
@@ -158,7 +160,7 @@ class KalturaPlayer extends FakeEventTarget {
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
     this._logger.debug('setPlaylist', playlistData);
     const config = {playlist: playlistData, plugins: {}};
-    Object.keys(this._localPlayer.config.plugins || {}).forEach(name => {
+    Object.keys(this._localPlayer.config.plugins).forEach(name => {
       config.plugins[name] = {};
     });
     // $FlowFixMe
@@ -173,7 +175,7 @@ class KalturaPlayer extends FakeEventTarget {
   getMediaConfig(): ?ProviderMediaConfigObject {
     const mediaConfig = {
       sources: this._localPlayer.config.sources,
-      plugins: this._localPlayer.config.plugins || {}
+      plugins: this._localPlayer.config.plugins
     };
     return Utils.Object.copyDeep(mediaConfig);
   }
@@ -606,9 +608,10 @@ class KalturaPlayer extends FakeEventTarget {
       if (plugin) {
         plugin.updateConfig(plugins[name]);
         plugins[name] = plugin.getConfig();
+        this._localPlayer.configure({plugins});
       } else {
         // We allow to load plugins as long as the player has no engine
-        if (!this._engine) {
+        if (!this._sourceSelected) {
           try {
             this._pluginManager.load(name, this, plugins[name]);
           } catch (error) {
@@ -618,6 +621,7 @@ class KalturaPlayer extends FakeEventTarget {
           let plugin = this._pluginManager.get(name);
           if (plugin) {
             plugins[name] = plugin.getConfig();
+            this._localPlayer.configure({plugins});
             if (typeof plugin.getMiddlewareImpl === 'function') {
               // push the bumper middleware to the end, to play the bumper right before the content
               plugin.name === 'bumper' ? middlewares.push(plugin.getMiddlewareImpl()) : middlewares.unshift(plugin.getMiddlewareImpl());
@@ -631,8 +635,6 @@ class KalturaPlayer extends FakeEventTarget {
               registerEngineDecoratorProvider(plugin);
             }
           }
-        } else {
-          delete plugins[name];
         }
       }
     });
