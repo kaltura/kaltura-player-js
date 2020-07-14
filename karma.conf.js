@@ -16,7 +16,7 @@ const customLaunchers = {
 module.exports = function (config) {
   let karmaConf = {
     logLevel: config.LOG_INFO,
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox'],
     concurrency: 1,
     singleRun: true,
     colors: true,
@@ -46,7 +46,7 @@ module.exports = function (config) {
     if (isWindows) {
       karmaConf.browsers.push('IE');
     } else if (isMacOS) {
-      // karmaConf.browsers.push('Safari');
+      karmaConf.browsers.push('Safari');
     }
   }
 
