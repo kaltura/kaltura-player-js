@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.55.0"></a>
+# [0.55.0](https://github.com/kaltura/kaltura-player-js/compare/v0.54.0...v0.55.0) (2020-07-07)
+
+
+### Bug Fixes
+
+* **FEC-10122:** destroy cleanup process ([#326](https://github.com/kaltura/kaltura-player-js/issues/326)) ([5fbe11b](https://github.com/kaltura/kaltura-player-js/commit/5fbe11b))
+* update shaka version for TTML container fix ([#327](https://github.com/kaltura/kaltura-player-js/issues/327)) ([a270df1](https://github.com/kaltura/kaltura-player-js/commit/a270df1))
+
+
+### Features
+
+* **FEC-9649:** loading external CSS ([#329](https://github.com/kaltura/kaltura-player-js/issues/329)) ([0f74daf](https://github.com/kaltura/kaltura-player-js/commit/0f74daf))
+
+
+
 <a name="0.54.0"></a>
 # [0.54.0](https://github.com/kaltura/kaltura-player-js/compare/v0.53.7...v0.54.0) (2020-06-10)
 
