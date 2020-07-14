@@ -1,7 +1,7 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
 import getLogger from '../utils/logger';
-import {Utils} from '@playkit-js/playkit-js';
+import {EventManager, Utils} from '@playkit-js/playkit-js';
 
 export default class StorageManager {
   static StorageKeys: {[key: string]: string} = {
@@ -32,17 +32,19 @@ export default class StorageManager {
    */
   static attach(player: Player): void {
     StorageManager._logger.debug('Attach local storage');
-    player.addEventListener(player.Event.UI.USER_CLICKED_MUTE, () => {
+    let eventManager = new EventManager();
+    eventManager.listen(player, player.Event.UI.USER_CLICKED_MUTE, () => {
       if (!player.isCasting()) {
         StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
       }
     });
-    player.addEventListener(player.Event.UI.USER_CLICKED_UNMUTE, () => {
+    eventManager.listen(player, player.Event.UI.USER_CLICKED_UNMUTE, () => {
       if (!player.isCasting()) {
         StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
       }
     });
-    player.addEventListener(player.Event.UI.USER_CHANGED_VOLUME, () => {
+
+    eventManager.listen(player, player.Event.UI.USER_CHANGED_VOLUME, () => {
       if (!player.isCasting()) {
         if (player.volume > 0) {
           StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, false);
@@ -52,15 +54,18 @@ export default class StorageManager {
         StorageWrapper.setItem(StorageManager.StorageKeys.VOLUME, player.volume);
       }
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
+
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
       const audioTrack = event.payload.audioTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
+
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
       const textTrack = event.payload.captionTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
     });
-    player.addEventListener(player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
+
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
         StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
@@ -68,6 +73,8 @@ export default class StorageManager {
         this._logger.error(e.message);
       }
     });
+
+    eventManager.listen(player, player.Event.PLAYER_DESTROY, () => eventManager.destroy());
   }
 
   /**
