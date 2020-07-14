@@ -19,6 +19,7 @@ const launchers = {
     flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
   }
 };
+
 module.exports = function (config) {
   let karmaConf = {
     logLevel: config.LOG_INFO,
@@ -30,10 +31,10 @@ module.exports = function (config) {
     frameworks: ['mocha'],
     files: ['test/setup/karma.js',
       {
-        pattern: 'test/src/assets/mov_bbb.mp4',
+        pattern: 'test/assets/mov_bbb.mp4',
         included: false
       }, {
-        pattern: 'test/src/assets/audios.mp4',
+        pattern: 'test/assets/audios.mp4',
         included: false
       }
     ],
