@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "0.54.0",
+  "version": "0.55.0",
   "main": "dist/kaltura-player.js",
   "scripts": {
     "clean": "rm -rf ./dist",
@@ -98,12 +98,12 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "^0.61.3",
-    "@playkit-js/playkit-js-dash": "^1.18.2",
+    "@playkit-js/playkit-js": "^0.62.0",
+    "@playkit-js/playkit-js-dash": "^1.18.3",
     "@playkit-js/playkit-js-hls": "^1.19.1",
     "@playkit-js/playkit-js-kava": "^0.17.1",
     "@playkit-js/playkit-js-ott-analytics": "^0.5.2",
-    "@playkit-js/playkit-js-ui": "^0.56.0",
+    "@playkit-js/playkit-js-ui": "^0.57.0",
     "babel-polyfill": "^6.23.0",
     "hls.js": "^0.13.1",
     "js-logger": "^1.3.0",
