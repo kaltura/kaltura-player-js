@@ -1,4 +1,4 @@
-import {PluginManager} from '../../../../src/common/plugins/plugin-manager';
+import {PluginManager} from '../../../../src/common/plugins';
 import ColorsPlugin from './test-plugins/colors-plugin';
 import NumbersPlugin from './test-plugins/numbers-plugin';
 

@@ -1,7 +1,7 @@
 //@flow
 
-import {Ad} from '../../src/common/ads/ad';
-import {AdBreak} from '../../src/common/ads/ad-break';
+import {Ad} from '../../src/common/ads';
+import {AdBreak} from '../../src/common/ads';
 
 declare interface IAdsController {
   +allAdsCompleted: boolean;

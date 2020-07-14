@@ -1,6 +1,6 @@
 //@flow
 
-import {PluginManager} from '@playkit-js/playkit-js';
+import {PluginManager} from '../plugins';
 
 /**
  * Controller provider

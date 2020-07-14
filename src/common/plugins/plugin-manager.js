@@ -1,5 +1,5 @@
 //@flow
-import {BasePlugin} from './base-plugin';
+import {BasePlugin} from '.';
 import getLogger from '../utils/logger';
 import {Error} from '@playkit-js/playkit-js';
 

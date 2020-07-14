@@ -2,7 +2,7 @@ import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
-import {PluginManager} from '../../src/common/plugins/plugin-manager';
+import {PluginManager} from '../../src/common/plugins';
 import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';

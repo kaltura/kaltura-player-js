@@ -4,7 +4,7 @@ import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
-import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins/plugins-config';
+import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -14,10 +14,9 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
-import {ControllerProvider} from './common/controllers/controller-provider';
-import {AdsController} from './common/controllers/ads-controller';
-import {BasePlugin} from './common/plugins/base-plugin';
-import {PluginManager} from './common/plugins/plugin-manager';
+import {ControllerProvider, AdsController} from './common/controllers';
+import {BasePlugin} from './common/plugins';
+import {PluginManager} from './common/plugins';
 import {
   Error,
   EventManager,

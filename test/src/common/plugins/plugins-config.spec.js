@@ -1,4 +1,4 @@
-import {evaluatePluginsConfig, getEncodedReferrer} from '../../../../src/common/plugins/plugins-config';
+import {evaluatePluginsConfig, getEncodedReferrer} from '../../../../src/common/plugins';
 let sandbox = sinon.sandbox.create();
 
 describe('evaluatePluginsConfig', function() {

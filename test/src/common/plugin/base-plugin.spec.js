@@ -1,4 +1,4 @@
-import {BasePlugin} from '../../../../src/common/plugins/base-plugin';
+import {BasePlugin} from '../../../../src/common/plugins';
 
 describe('BasePlugin', () => {
   let basePlugin;

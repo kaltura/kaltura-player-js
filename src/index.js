@@ -22,12 +22,7 @@ import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
 // Import plugin framework
-import {BasePlugin} from './common/plugins/base-plugin';
-import {registerPlugin} from './common/plugins/plugin-manager';
-
-// Import ads framework
-import {Ad} from './common/ads/ad';
-import {AdBreak} from './common/ads/ad-break';
+import {BasePlugin, registerPlugin} from './common/plugins';
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
@@ -46,11 +41,11 @@ export {
   shaka,
   cast,
   playlist,
-  Ad,
-  AdBreak,
   BasePlugin,
   registerPlugin,
   __PLAYER_TYPE__ as PLAYER_TYPE,
   __VERSION__ as VERSION,
   __NAME__ as PLAYER_NAME
 };
+
+export * from './common/ads';

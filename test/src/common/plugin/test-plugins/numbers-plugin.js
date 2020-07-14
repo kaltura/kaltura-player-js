@@ -1,4 +1,4 @@
-import {BasePlugin} from '../../../../../src/common/plugins/base-plugin';
+import {BasePlugin} from '../../../../../src/common/plugins';
 import {KalturaPlayer as Player} from '../../../../../src/kaltura-player';
 
 export default class NumbersPlugin extends BasePlugin {
