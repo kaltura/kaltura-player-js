@@ -9,19 +9,34 @@ const isMacOS = /^darwin/.test(process.platform);
 const customLaunchers = {
   Chrome_travis_ci: {
     base: 'Chrome',
-    flags: ['--no-sandbox']
+    flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
   }
 };
 
-module.exports = function(config) {
+const launchers = {
+  Chrome_browser: {
+    base: 'Chrome',
+    flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
+  }
+};
+module.exports = function (config) {
   let karmaConf = {
     logLevel: config.LOG_INFO,
-    browsers: ['Chrome', 'Firefox'],
+    customLaunchers: launchers,
+    browsers: ['Chrome_browser', 'Firefox'],
     concurrency: 1,
     singleRun: true,
     colors: true,
     frameworks: ['mocha'],
-    files: ['test/setup/karma.js'],
+    files: ['test/setup/karma.js',
+      {
+        pattern: 'test/src/assets/mov_bbb.mp4',
+        included: false
+      }, {
+        pattern: 'test/src/assets/audios.mp4',
+        included: false
+      }
+    ],
     preprocessors: {
       'src/**/*.js': ['webpack', 'sourcemap'],
       'test/setup/karma.js': ['webpack', 'sourcemap']
@@ -33,7 +48,7 @@ module.exports = function(config) {
     },
     client: {
       mocha: {
-        timeout: 50000,
+        timeout: 10000,
         reporter: 'html'
       }
     }

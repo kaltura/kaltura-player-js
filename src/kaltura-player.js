@@ -95,7 +95,7 @@ class KalturaPlayer extends FakeEventTarget {
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
-    Object.keys(this._localPlayer.config.plugins).forEach(name => {
+    Object.keys(this._localPlayer.config.plugins || {}).forEach(name => {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
@@ -158,7 +158,7 @@ class KalturaPlayer extends FakeEventTarget {
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
     this._logger.debug('setPlaylist', playlistData);
     const config = {playlist: playlistData, plugins: {}};
-    Object.keys(this._localPlayer.config.plugins).forEach(name => {
+    Object.keys(this._localPlayer.config.plugins || {}).forEach(name => {
       config.plugins[name] = {};
     });
     // $FlowFixMe
@@ -173,7 +173,7 @@ class KalturaPlayer extends FakeEventTarget {
   getMediaConfig(): ?ProviderMediaConfigObject {
     const mediaConfig = {
       sources: this._localPlayer.config.sources,
-      plugins: this._localPlayer.config.plugins
+      plugins: this._localPlayer.config.plugins || {}
     };
     return Utils.Object.copyDeep(mediaConfig);
   }
@@ -191,8 +191,8 @@ class KalturaPlayer extends FakeEventTarget {
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
     evaluatePluginsConfig(config.plugins, configDictionary);
-    this._configureOrLoadPlugins(config.plugins);
     this._localPlayer.configure(config);
+    this._configureOrLoadPlugins(config.plugins);
     const uiConfig = config.ui;
     if (uiConfig) {
       evaluateUIConfig(uiConfig, this.config);
@@ -585,14 +585,16 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   _onEnded(): void {
-    if (this._adsController && !this._adsController.allAdsCompleted) {
-      this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
+    // Make sure the all ENDED listeners have been invoked
+    setTimeout(() => {
+      if (this._adsController && !this._adsController.allAdsCompleted) {
+        this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
+          this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
+        });
+      } else {
         this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
-      });
-    } else {
-      // Make sure the all ENDED listeners have been invoked
-      setTimeout(() => this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED)), 0);
-    }
+      }
+    });
   }
 
   _configureOrLoadPlugins(plugins: Object = {}): void {
@@ -627,10 +629,6 @@ class KalturaPlayer extends FakeEventTarget {
 
             if (typeof plugin.getEngineDecorator === 'function') {
               registerEngineDecoratorProvider(plugin);
-            }
-
-            if (typeof plugin.getEvents === 'function') {
-              this._pluginEvents[plugin.name] = plugin.getEvents();
             }
           }
         } else {
