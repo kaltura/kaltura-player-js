@@ -18,7 +18,6 @@ const entry = {
 
 const alias = {
   'playkit-js-providers': path.resolve('./node_modules/playkit-js-providers/dist/playkit-ott-provider'),
-  'playkit-js-analytics': path.resolve('./src/ott/analytics'),
   'player-defaults': path.resolve('./src/ott/player-defaults'),
   poster: path.resolve('./src/ott/poster')
 };
