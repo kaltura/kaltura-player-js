@@ -467,6 +467,9 @@ describe('kaltura player api', function() {
       player = new Player({
         ui: {},
         plugins: {},
+        advertising: {
+          adBreaks: []
+        },
         provider: {}
       });
       Object.keys(player._pluginManager._plugins).length.should.equals(0);

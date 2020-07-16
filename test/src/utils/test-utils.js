@@ -7,6 +7,9 @@ function getConfigStructure() {
     provider: {},
     ui: {},
     plugins: {},
+    advertising: {
+      adBreaks: []
+    },
     sources: {},
     playback: {
       enableCEA708Captions: true,

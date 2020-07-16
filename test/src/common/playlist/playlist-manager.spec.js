@@ -10,6 +10,9 @@ describe('PlaylistManager', function() {
   const config = {
     ui: {},
     plugins: {},
+    advertising: {
+      adBreaks: []
+    },
     provider: {},
     playback: {
       autoplay: true

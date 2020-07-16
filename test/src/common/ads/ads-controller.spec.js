@@ -667,7 +667,7 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should validate only one tine configured', done => {
+    it('Should validate only one time is configured', done => {
       const fakeCtrl = {
         playAdNow: () => {}
       };
