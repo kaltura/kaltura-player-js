@@ -164,6 +164,7 @@ class KalturaPlayer extends FakeEventTarget {
     });
     // $FlowFixMe
     evaluatePluginsConfig(config.plugins, config);
+    this._localPlayer.configure({plugins: config.plugins});
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
