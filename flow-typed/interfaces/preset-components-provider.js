@@ -1,5 +1,5 @@
 // @flow
 
 declare interface IUIComponentsProvider {
-  getUIComponents(): Array<PKUIComponent>;
+  getUIComponents(): Array<KPUIComponent>;
 }

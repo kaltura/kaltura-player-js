@@ -44,6 +44,7 @@ class KalturaPlayer extends FakeEventTarget {
   _adsController: ?AdsController;
   _pluginsConfig: KPPluginsConfigObject;
   _pluginEvents: {[plugin: string]: {[event: string]: string}};
+  _pluginsUiComponents: Array<KPUIComponent>;
   _reset: boolean;
   _sourceSelected: boolean;
 
@@ -60,8 +61,9 @@ class KalturaPlayer extends FakeEventTarget {
     this._pluginEvents = {};
     this._pluginManager = new PluginManager();
     this._controllerProvider = new ControllerProvider(this._pluginManager);
-    this._uiComponents = [];
-    this._uiWrapper = new UIWrapper(this, options);
+    this._pluginsUiComponents = [];
+    this.configure({plugins});
+    this._uiWrapper = new UIWrapper(this, options, this._pluginsUiComponents);
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
@@ -69,7 +71,6 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
-    this.configure({plugins});
     this._localPlayer.configure({sources});
   }
 
@@ -196,8 +197,10 @@ class KalturaPlayer extends FakeEventTarget {
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
     evaluatePluginsConfig(config.plugins, configDictionary);
+    const {plugins} = config;
+    delete config.plugins;
     this._localPlayer.configure(config);
-    this._configureOrLoadPlugins(config.plugins);
+    this._configureOrLoadPlugins(plugins);
     const uiConfig = config.ui;
     if (uiConfig) {
       evaluateUIConfig(uiConfig, this.config);
@@ -508,10 +511,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  get uiComponents(): Array<PKUIComponent> {
-    return [...this._uiComponents];
-  }
-
   get provider(): Provider {
     return this._provider;
   }
@@ -642,7 +641,7 @@ class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    this._uiComponents = uiComponents;
+    this._pluginsUiComponents = uiComponents;
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, plugins);
     this._maybeCreateAdsController();
