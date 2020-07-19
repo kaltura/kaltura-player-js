@@ -17,10 +17,9 @@
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.19.1.tgz#ddede5681cb9520fbd8e9d0954f89e3ee1e1dad0"
 
-"@playkit-js/playkit-js-ui@^0.57.0":
+"@playkit-js/playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#FEC-10057":
   version "0.57.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.57.0.tgz#164c044f280887f277c7ecdff032a78a4d7bd7cb"
-  integrity sha512-0NRxfHzNu29AITVRbQ5DwGSbsWLlHRe6frcyq3zOnvoPMHAd3R8m80RbqNuXxBFVjdeAeK/kV3TN2CFIzGCeBA==
+  resolved "https://github.com/kaltura/playkit-js-ui.git#4af100e9ec77d7c2e04a1764717df0741457b369"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.6.0"
@@ -8333,8 +8332,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 ua-parser-js@^0.7.13:
-  version "0.7.20"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.20.tgz#7527178b82f6a62a0f243d1f94fd30e3e3c21098"
+  version "0.7.21"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
+  integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
 
 uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
