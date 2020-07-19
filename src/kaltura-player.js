@@ -63,7 +63,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._pluginsUiComponents = [];
     this.configure({plugins});
-    this._uiWrapper = new UIWrapper(this, options, this._pluginsUiComponents);
+    this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
@@ -509,6 +509,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   get plugins(): {[name: string]: BasePlugin} {
     return this._pluginManager.getAll();
+  }
+
+  get uiComponents(): Array<PKUIComponent> {
+    return [...this._pluginsUiComponents];
   }
 
   get provider(): Provider {
