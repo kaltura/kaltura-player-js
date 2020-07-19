@@ -52,8 +52,8 @@ class KalturaPlayer extends FakeEventTarget {
     super();
     this._eventManager = new EventManager();
     const {sources, plugins} = options;
-    delete options.plugins;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
+    delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
     this._reset = true;
@@ -198,8 +198,9 @@ class KalturaPlayer extends FakeEventTarget {
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
     evaluatePluginsConfig(config.plugins, configDictionary);
     const {plugins} = config;
-    delete config.plugins;
-    this._localPlayer.configure(config);
+    const localPlayerConfig = Utils.Object.mergeDeep({}, config);
+    delete localPlayerConfig.plugins;
+    this._localPlayer.configure(localPlayerConfig);
     this._configureOrLoadPlugins(plugins);
     const uiConfig = config.ui;
     if (uiConfig) {
