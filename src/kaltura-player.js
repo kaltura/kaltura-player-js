@@ -197,11 +197,10 @@ class KalturaPlayer extends FakeEventTarget {
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
     evaluatePluginsConfig(config.plugins, configDictionary);
-    const {plugins} = config;
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     this._localPlayer.configure(localPlayerConfig);
-    this._configureOrLoadPlugins(plugins);
+    this._configureOrLoadPlugins(config.plugins);
     const uiConfig = config.ui;
     if (uiConfig) {
       evaluateUIConfig(uiConfig, this.config);

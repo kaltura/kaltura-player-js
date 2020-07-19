@@ -98,7 +98,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.62.1-canary.4015286",
+    "@playkit-js/playkit-js": "https://github.com/kaltura/playkit-js.git#FEC-10057",
     "@playkit-js/playkit-js-dash": "^1.18.3",
     "@playkit-js/playkit-js-hls": "^1.19.1",
     "@playkit-js/playkit-js-ui": "^0.57.0",
