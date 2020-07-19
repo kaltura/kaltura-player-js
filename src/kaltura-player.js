@@ -511,7 +511,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  get uiComponents(): Array<PKUIComponent> {
+  get uiComponents(): Array<KPUIComponent> {
     return [...this._pluginsUiComponents];
   }
 
