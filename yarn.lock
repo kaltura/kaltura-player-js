@@ -19,7 +19,7 @@
 
 "@playkit-js/playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#FEC-10057":
   version "0.57.0"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#4af100e9ec77d7c2e04a1764717df0741457b369"
+  resolved "https://github.com/kaltura/playkit-js-ui.git#4380e6da2c473aab1f53f2538d5f386dbddc1a35"
   dependencies:
     empty "^0.10.1"
     js-logger "^1.6.0"
