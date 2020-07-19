@@ -579,6 +579,13 @@ describe('kaltura player api', function() {
         }
       });
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
+      });
     });
   });
 });
