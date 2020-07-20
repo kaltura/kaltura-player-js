@@ -4,10 +4,16 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const packageData = require('./package.json');
+
 const PROD = process.env.NODE_ENV === 'production';
+const playerType = process.env.PLAYER_TYPE || 'ovp';
+const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
 
 const baseConfig = {
   context: __dirname + '/src',
+  entry: {
+    [`kaltura-${playerFileType}-player`]: 'index.js'
+  },
   output: {
     path: __dirname + '/dist',
     filename: '[name].js',
@@ -44,6 +50,7 @@ const baseConfig = {
   },
   plugins: [
     new webpack.DefinePlugin({
+      __PLAYER_TYPE__: JSON.stringify(playerType),
       __VERSION__: JSON.stringify(packageData.version),
       __NAME__: JSON.stringify(packageData.name),
       __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
@@ -68,7 +75,10 @@ const baseConfig = {
   resolve: {
     alias: {
       'playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
-      '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js')
+      '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
+      'playkit-js-providers': path.resolve(`./node_modules/playkit-js-providers/dist/playkit-${playerType}-provider`),
+      'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
+      poster: path.resolve(`./src/${playerType}/poster`)
     },
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
   }
