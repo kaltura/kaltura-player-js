@@ -1,16 +1,7 @@
 import * as TestUtils from '../../utils/test-utils';
 import {ValidationErrorType} from '../../../../src/common/utils/validation-error';
 import StorageManager from '../../../../src/common/storage/storage-manager';
-import {
-  checkNativeHlsSupport,
-  createKalturaPlayerContainer,
-  isIos,
-  isSafari,
-  setStorageConfig,
-  supportLegacyOptions,
-  validateConfig,
-  getDefaultOptions
-} from '../../../../src/common/utils/setup-helpers';
+import * as SetupHelpers from '../../../../src/common/utils/setup-helpers';
 import {Env} from '@playkit-js/playkit-js';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
@@ -18,7 +9,7 @@ const targetId = 'player-placeholder_setup-helpers.spec';
 describe('error handling', function () {
   it('should throw error because no config provided', function (done) {
     try {
-      validateConfig();
+      SetupHelpers.validateConfig();
     } catch (e) {
       e.message.should.equal(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
       done();
@@ -27,7 +18,7 @@ describe('error handling', function () {
 
   it('should throw error because no target id provided', function (done) {
     try {
-      validateConfig({});
+      SetupHelpers.validateConfig({});
     } catch (e) {
       e.message.should.equal(ValidationErrorType.TARGET_ID_REQUIRED);
       done();
@@ -36,7 +27,7 @@ describe('error handling', function () {
 
   it('should throw error because no DOM element found', function (done) {
     try {
-      validateConfig({targetId: 'my-player-div'});
+      SetupHelpers.validateConfig({targetId: 'my-player-div'});
     } catch (e) {
       e.message.should.equal(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + 'my-player-div');
       done();
@@ -49,7 +40,7 @@ describe('error handling', function () {
     document.body.appendChild(div);
     sinon.spy(navigator, 'sendBeacon');
     (navigator.sendBeacon.getCall(0) === null).should.be.true;
-    validateConfig({targetId: div.id, provider: {}});
+    SetupHelpers.validateConfig({targetId: div.id, provider: {}});
     document.body.removeChild(div);
     navigator.sendBeacon
       .getCall(0)
@@ -70,7 +61,7 @@ describe('createKalturaPlayerContainer', function () {
   });
 
   it('should create kaltura player container', function () {
-    let containerId = createKalturaPlayerContainer(targetId);
+    let containerId = SetupHelpers.createKalturaPlayerContainer(targetId);
     let el = document.getElementById(containerId);
     el.should.exist;
     el.className.should.equal('kaltura-player-container');
@@ -86,7 +77,7 @@ describe('checkNativeHlsSupport', function () {
         }
       }
     };
-    checkNativeHlsSupport(playerConfig);
+    SetupHelpers.checkNativeHlsSupport(playerConfig);
     playerConfig.playback.preferNative.hls.should.be.true;
   });
 
@@ -98,14 +89,14 @@ describe('checkNativeHlsSupport', function () {
         }
       }
     };
-    checkNativeHlsSupport(playerConfig);
+    SetupHelpers.checkNativeHlsSupport(playerConfig);
     playerConfig.playback.preferNative.hls.should.be.false;
   });
 
   it('set preferNative to default value if user preference was not set 1', function () {
     const playerConfig = {};
-    checkNativeHlsSupport(playerConfig);
-    if (isSafari() || isIos()) {
+    SetupHelpers.checkNativeHlsSupport(playerConfig);
+    if (Env.isSafari || Env.isIOS) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({});
@@ -116,8 +107,8 @@ describe('checkNativeHlsSupport', function () {
     const playerConfig = {
       playback: {}
     };
-    checkNativeHlsSupport(playerConfig);
-    if (isSafari() || isIos()) {
+    SetupHelpers.checkNativeHlsSupport(playerConfig);
+    if (Env.isSafari || Env.isIOS) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
@@ -132,8 +123,8 @@ describe('checkNativeHlsSupport', function () {
         preferNative: {}
       }
     };
-    checkNativeHlsSupport(playerConfig);
-    if (isSafari() || isIos()) {
+    SetupHelpers.checkNativeHlsSupport(playerConfig);
+    if (Env.isSafari || Env.isIOS) {
       playerConfig.playback.preferNative.hls.should.be.true;
     } else {
       playerConfig.should.deep.equal({
@@ -173,7 +164,7 @@ describe('setStorageConfig', function () {
     sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
     sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
     sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
-    setStorageConfig(config);
+    SetupHelpers.setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
   });
@@ -189,7 +180,7 @@ describe('setStorageConfig', function () {
     sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
     sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
     sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
-    setStorageConfig(config);
+    SetupHelpers.setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
   });
@@ -287,36 +278,36 @@ describe('supportLegacyOptions', function () {
   });
 
   it('should transform options with the old structure', function () {
-    supportLegacyOptions(legacyOptions);
+    SetupHelpers.supportLegacyOptions(legacyOptions);
     legacyOptions.should.deep.equal(options);
   });
 
   it('should not transform config with the new structure', function () {
-    supportLegacyOptions(options);
+    SetupHelpers.supportLegacyOptions(options);
     legacyOptions.should.deep.equal(options);
   });
 
   it('check method support duplicate configuration take the new configuration', function () {
-    supportLegacyOptions(duplicateOptions);
+    SetupHelpers.supportLegacyOptions(duplicateOptions);
     duplicateOptions.should.deep.equal(options);
   });
 });
 
 describe('plugins config', function () {
-  let sandbox, osName;
+  let sandbox, isIOS;
 
   beforeEach(function () {
-    osName = Env.os.name;
+    isIOS = Env.isIOS;
     sandbox = sinon.createSandbox();
   });
 
   afterEach(function () {
-    Env.os.name = osName;
+    Env.isIOS = isIOS;
     sandbox.restore();
   });
 
   it('should config bumper plugin according to the env and configuration', function () {
-    Env.os.name = 'iOS';
+    Env.isIOS = true;
     const options = {
       provider: {
         partnerId: 1091
@@ -329,14 +320,14 @@ describe('plugins config', function () {
         imadai: {}
       }
     };
-    const defaultOptions = getDefaultOptions(options);
+    const defaultOptions = SetupHelpers.getDefaultOptions(options);
     defaultOptions.plugins.bumper.position.should.deep.equal([0]);
     defaultOptions.plugins.bumper.disableMediaPreload.should.be.true;
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.true;
   });
 
   it('should not change the bumper plugin', function () {
-    Env.os.name = 'iOS';
+    Env.isIOS = true;
     const options = {
       provider: {
         partnerId: 1091
@@ -353,7 +344,7 @@ describe('plugins config', function () {
         imadai: {}
       }
     };
-    const defaultOptions = getDefaultOptions(options);
+    const defaultOptions = SetupHelpers.getDefaultOptions(options);
     defaultOptions.plugins.bumper.position.should.deep.equal([0, -1]);
     defaultOptions.plugins.bumper.disableMediaPreload.should.be.false;
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.false;

@@ -12,7 +12,8 @@ declare type KPOptionsObject = {
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
   ui: UIOptionsObject,
-  cast?: {[key: string]: any}
+  cast?: {[key: string]: any},
+  productVersion?: string
 };
 
 declare type PartialKPOptionsObject = {
@@ -24,6 +25,7 @@ declare type PartialKPOptionsObject = {
   plugins?: PKPluginsConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
+  playlist?: KPPlaylistObject,
   ui?: UIOptionsObject,
   cast?: {[key: string]: any}
 };

@@ -105,8 +105,6 @@
     "@playkit-js/playkit-js": "0.62.1-canary.724715e",
     "@playkit-js/playkit-js-dash": "^1.18.3",
     "@playkit-js/playkit-js-hls": "^1.19.1",
-    "@playkit-js/playkit-js-kava": "^0.17.1",
-    "@playkit-js/playkit-js-ott-analytics": "^0.5.2",
     "@playkit-js/playkit-js-ui": "^0.57.0",
     "hls.js": "^0.13.1",
     "js-logger": "^1.6.0",
