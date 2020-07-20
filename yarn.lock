@@ -1172,13 +1172,13 @@
     react-redux "^7.2.0"
     redux "^3.6.0"
 
-"@playkit-js/playkit-js@^0.62.0":
-  version "0.62.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.62.0.tgz#af68874b1182e5ae436ab1ca4e7a49cd0f7d3cee"
-  integrity sha512-96IP8Sb3qQ7her5kdAfxD9ly3gO435CEuHrvY+mC2pqV/ELvHtezFg1jVl/jrlXlvwsHqf5VQJU+70NaO/Vliw==
+"@playkit-js/playkit-js@0.62.1-canary.724715e":
+  version "0.62.1-canary.724715e"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.62.1-canary.724715e.tgz#64456aba4f2f51b14f7bef9ad81c82f1b2a8af96"
+  integrity sha512-rgyZwbhY97PQ+7fpE7Yhofpi5hOx+oWsVBAtbawdhMbu6butNQjLh4e9TV0jdgz8ydfC27oZmHdVgnJOwE4mQA==
   dependencies:
-    js-logger "^1.3.0"
-    ua-parser-js "^0.7.13"
+    js-logger "^1.6.0"
+    ua-parser-js "^0.7.21"
 
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.6.0", "@sinonjs/commons@^1.7.0", "@sinonjs/commons@^1.7.2":
   version "1.8.0"
@@ -9429,7 +9429,7 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-ua-parser-js@0.7.21, ua-parser-js@^0.7.13:
+ua-parser-js@0.7.21, ua-parser-js@^0.7.21:
   version "0.7.21"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
   integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==

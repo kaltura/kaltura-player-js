@@ -1,5 +1,5 @@
 import {evaluatePluginsConfig, getEncodedReferrer} from '../../../../src/common/plugins/plugins-config';
-debugger;
+
 let sandbox = sinon.createSandbox();
 
 describe('evaluatePluginsConfig', function () {
