@@ -20,6 +20,7 @@ import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
 // Import plugin framework
+import {Ad, AdBreak} from './common/ads';
 import {BasePlugin, registerPlugin} from './common/plugins';
 
 declare var __VERSION__: string;
@@ -28,6 +29,11 @@ declare var __PACKAGE_URL__: string;
 declare var __PLAYER_TYPE__: string;
 
 PolyfillManager.installAll();
+
+core.Ad = Ad;
+core.AdBreak = AdBreak;
+core.BasePlugin = BasePlugin;
+core.registerPlugin = registerPlugin;
 
 export {
   getPlayers,
@@ -39,11 +45,11 @@ export {
   shaka,
   cast,
   playlist,
+  Ad,
+  AdBreak,
   BasePlugin,
   registerPlugin,
   __PLAYER_TYPE__ as PLAYER_TYPE,
   __VERSION__ as VERSION,
   __NAME__ as PLAYER_NAME
 };
-
-export * from './common/ads';
