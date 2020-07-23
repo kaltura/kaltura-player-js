@@ -140,6 +140,15 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._eventManager.listen(this._player, CustomEventType.PLAYER_DESTROY, () => this._destroy());
     this._eventManager.listenOnce(this._player, Html5EventType.ENDED, () => this._onEnded());
     this._eventManager.listenOnce(this._player, CustomEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
+    if (this._player.config.playback.playAdsWithMSE) {
+      this._eventManager.listen(this._player, AdEventType.AD_BREAK_START, () => {
+        if (!!this.getAd() && this.getAd().linear) {
+          this._player.detachMediaSource();
+        }
+      });
+      this._eventManager.listen(this._player, AdEventType.AD_BREAK_END, () => this._player.attachMediaSource());
+      this._eventManager.listen(this._player, AdEventType.AD_ERROR, () => this._player.attachMediaSource());
+    }
   }
 
   _handleConfiguredAdBreaks(): void {

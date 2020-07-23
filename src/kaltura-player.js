@@ -319,6 +319,14 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.notifyExitFullscreen();
   }
 
+  attachMediaSource(): void {
+    this._localPlayer.attachMediaSource();
+  }
+
+  detachMediaSource(): void {
+    this._localPlayer.detachMediaSource();
+  }
+
   enterFullscreen(fullScreenElementId: ?string): void {
     const elementId = fullScreenElementId ? fullScreenElementId : this.config.ui.targetId;
     this._localPlayer.enterFullscreen(elementId);
