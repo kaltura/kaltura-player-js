@@ -589,6 +589,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
+    this.reset();
     this._pluginManager.loadMedia();
     this._reset = false;
   }
