@@ -16,17 +16,17 @@ PACKAGE_VERSION=$(cat package.json |
 
 build() {
   echo "${reset}${blue}Building player..."
-  NODE_ENV=production PLAYER_TYPE=$PLAYER_TYPE webpack --config webpack.config.js
+  PLAYER_TYPE=$PLAYER_TYPE webpack --config webpack.config.js --mode production
 }
 
 watch() {
   echo "${reset}${blue}Watching player..."
-  PLAYER_TYPE=$PLAYER_TYPE webpack --progress --colors --watch --config webpack.config.js
+  PLAYER_TYPE=$PLAYER_TYPE webpack --progress --colors --watch --config webpack.config.js --mode development
 }
 
 dev() {
   echo "${blue}Serving player...${reset}"
-  PLAYER_TYPE=$PLAYER_TYPE webpack-dev-server --config webpack.config.js
+  PLAYER_TYPE=$PLAYER_TYPE webpack-dev-server --config webpack.config.js  --mode development
 }
 
 echo

@@ -2,53 +2,15 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const packageData = require('./package.json');
 
-const PROD = process.env.NODE_ENV === 'production';
 const playerType = process.env.PLAYER_TYPE || 'ovp';
 const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
 
-const baseConfig = {
-  context: __dirname + '/src',
-  entry: {
-    [`kaltura-${playerFileType}-player`]: 'index.js'
-  },
-  output: {
-    path: __dirname + '/dist',
-    filename: '[name].js',
-    library: 'KalturaPlayer',
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
-  },
-  devtool: 'source-map',
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        use: [
-          {
-            loader: 'babel-loader'
-          }
-        ],
-        exclude: [/node_modules/]
-      },
-      {
-        test: /\.js$/,
-        use: ['source-map-loader'],
-        enforce: 'pre'
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
-  },
-  devServer: {
-    contentBase: __dirname + '/src'
-  },
-  plugins: [
+module.exports = (env, argv) => {
+  const isProd = argv.mode === 'production';
+  const plugins = [
     new webpack.DefinePlugin({
       __PLAYER_TYPE__: JSON.stringify(playerType),
       __VERSION__: JSON.stringify(packageData.version),
@@ -56,7 +18,7 @@ const baseConfig = {
       __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
       __CONFIG_DOCS_URL__: JSON.stringify(`${packageData.repository.url}/blob/master/docs/configuration.md`)
     }),
-    new CopyPlugin({
+    new CopyWebpackPlugin({
       patterns: [
         {
           from: '../node_modules/@playkit-js/playkit-js-ui/translations',
@@ -71,32 +33,70 @@ const baseConfig = {
         }
       ]
     })
-  ],
-  resolve: {
-    alias: {
-      'playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
-      '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
-      'playkit-js-providers': path.resolve(`./node_modules/playkit-js-providers/dist/playkit-${playerType}-provider`),
-      'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
-      poster: path.resolve(`./src/${playerType}/poster`)
-    },
-    modules: [path.resolve(__dirname, 'src'), 'node_modules']
-  }
-};
+  ];
 
-if (PROD) {
-  baseConfig.optimization = {minimize: true};
-} else {
-  baseConfig.plugins.push(
-    new CopyPlugin({
-      patterns: [
+  if (!isProd) {
+    plugins.push(
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: '../samples/style.css',
+            to: '.'
+          }
+        ]
+      })
+    );
+  }
+
+  return {
+    context: __dirname + '/src',
+    entry: {
+      [`kaltura-${playerFileType}-player`]: 'index.js'
+    },
+    output: {
+      path: __dirname + '/dist',
+      filename: '[name].js',
+      library: 'KalturaPlayer',
+      libraryTarget: 'umd',
+      umdNamedDefine: true,
+      devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
+    },
+    devtool: 'source-map',
+    module: {
+      rules: [
         {
-          from: '../samples/style.css',
-          to: '.'
+          test: /\.js$/,
+          use: [
+            {
+              loader: 'babel-loader'
+            }
+          ],
+          exclude: [/node_modules/]
+        },
+        {
+          test: /\.js$/,
+          use: ['source-map-loader'],
+          enforce: 'pre'
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader']
         }
       ]
-    })
-  );
-}
-
-module.exports = baseConfig;
+    },
+    devServer: {
+      contentBase: __dirname + '/src'
+    },
+    plugins,
+    resolve: {
+      alias: {
+        'playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
+        '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
+        'playkit-js-providers': path.resolve(`./node_modules/playkit-js-providers/dist/playkit-${playerType}-provider`),
+        'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
+        poster: path.resolve(`./src/${playerType}/poster`)
+      },
+      modules: [path.resolve(__dirname, 'src'), 'node_modules']
+    }
+  };
+};
