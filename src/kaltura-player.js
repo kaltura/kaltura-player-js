@@ -47,6 +47,7 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginsUiComponents: Array<KPUIComponent>;
   _reset: boolean;
   _sourceSelected: boolean;
+  _firstPlay: boolean;
 
   constructor(options: KPOptionsObject) {
     super();
@@ -56,6 +57,7 @@ class KalturaPlayer extends FakeEventTarget {
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+    this._firstPlay = true;
     this._reset = true;
     this._pluginsConfig = {};
     this._pluginEvents = {};
@@ -68,9 +70,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     this._playlistManager.configure(options.playlist);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
-    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
-    this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
-    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
+    this._addBinding();
     this._localPlayer.configure({sources});
   }
 
@@ -237,6 +237,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   reset(): void {
     if (!this._reset) {
+      this._firstPlay = true;
       this._reset = true;
       this._localPlayer.reset();
       this._uiWrapper.reset();
@@ -587,6 +588,25 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
+  _addBinding(): void {
+    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
+    this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
+    this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
+    this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
+    this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
+    if (this.config.playback.playAdsWithMSE) {
+      this._eventManager.listen(this, AdEventType.AD_BREAK_START, () => {
+        const adData = this._adsController && this._adsController.getAd();
+        if (adData && adData.linear) {
+          this._detachMediaSource();
+        }
+      });
+      this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
+      this._eventManager.listen(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
+    }
+  }
+
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
     this.reset();
@@ -605,6 +625,19 @@ class KalturaPlayer extends FakeEventTarget {
         this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
       }
     });
+  }
+  _onAdStarted(): void {
+    if (this._firstPlay) {
+      this._localPlayer.posterManager.hide();
+      this._localPlayer.hideBlackCover();
+    }
+  }
+
+  _onAdAutoplayFailed(event: FakeEvent): void {
+    if (this._firstPlay && this.config.playback.autoplay) {
+      this._localPlayer.posterManager.show();
+      this.dispatchEvent(new FakeEvent(CoreEventType.AUTOPLAY_FAILED, event.payload));
+    }
   }
 
   _configureOrLoadPlugins(plugins: Object = {}): void {
@@ -675,6 +708,14 @@ class KalturaPlayer extends FakeEventTarget {
       evaluateUIConfig(ui, this.config);
       this._uiWrapper.setConfig(ui);
     }
+  }
+
+  _attachMediaSource(): void {
+    this._localPlayer.attachMediaSource();
+  }
+
+  _detachMediaSource(): void {
+    this._localPlayer.detachMediaSource();
   }
 }
 
