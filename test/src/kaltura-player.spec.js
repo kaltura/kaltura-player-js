@@ -601,7 +601,10 @@ describe('kaltura player api', function() {
     it('should fire auto play failed and show the poster once get AD_AUTOPLAY_FAILED', done => {
       player = new Player({
         ui: {},
-        provider: {}
+        provider: {},
+        playback: {
+          autoplay: true
+        }
       });
       player.addEventListener(AdEventType.AUTOPLAY_FAILED, event => {
         try {
