@@ -8,10 +8,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@playkit-js/playkit-js-dash@^1.18.3":
-  version "1.18.3"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.18.3.tgz#23683a7c47b4a0c268790f75ac10d4c456931a12"
-  integrity sha512-iaPwuhZo66NGVYAu6Kp3P7sWXLG+fcqBo4O7eE3vC5c141BeYu+Xgv9lJnVFXgAydIeQozdLlT4Ik3Mksy0M5Q==
+"@playkit-js/playkit-js-dash@canary":
+  version "1.19.0-canary.136926f"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.19.0-canary.136926f.tgz#15f1d0c7e7dbe51ae480d062c11ed585733a3084"
+  integrity sha512-3FD8R89EHPE8bk8M6JzvB+m1FVDq2Wxr0EyYBRi3Tz9Ab8sros4uRjS4kJVmXjNRTQiLE3rvZFvPAnpc7NxQrg==
 
 "@playkit-js/playkit-js-hls@^1.19.1":
   version "1.19.1"

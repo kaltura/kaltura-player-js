@@ -99,7 +99,7 @@
   },
   "dependencies": {
     "@playkit-js/playkit-js": "https://github.com/kaltura/playkit-js.git#FEC-10057",
-    "@playkit-js/playkit-js-dash": "^1.18.3",
+    "@playkit-js/playkit-js-dash": "canary",
     "@playkit-js/playkit-js-hls": "^1.19.1",
     "@playkit-js/playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#FEC-10057",
     "babel-polyfill": "^6.23.0",

@@ -7,7 +7,7 @@ import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources';
-import {AdEventType, FakeEvent} from '@playkit-js/playkit-js';
+import {FakeEvent} from '@playkit-js/playkit-js';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -606,7 +606,7 @@ describe('kaltura player api', function() {
           autoplay: true
         }
       });
-      player.addEventListener(AdEventType.AUTOPLAY_FAILED, event => {
+      player.addEventListener(player.Event.AUTOPLAY_FAILED, event => {
         try {
           player._localPlayer.posterManager._el.style.display.should.equal('');
           event.payload.error.should.equal('mock failure');
@@ -615,7 +615,7 @@ describe('kaltura player api', function() {
           done(e);
         }
       });
-      player.dispatchEvent(new FakeEvent(AdEventType.AD_AUTOPLAY_FAILED, {error: 'mock failure'}));
+      player.dispatchEvent(new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, {error: 'mock failure'}));
     });
   });
 });
