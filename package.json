@@ -1,30 +1,44 @@
 {
   "name": "kaltura-player-js",
   "version": "0.55.0",
+  "keywords": [
+    "kaltura",
+    "player",
+    "html5 player"
+  ],
+  "homepage": "https://github.com/kaltura/kaltura-player-js",
+  "bugs": {
+    "url": "https://github.com/kaltura/kaltura-player-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaltura/kaltura-player-js"
+  },
+  "license": "AGPLV3",
   "main": "dist/kaltura-ovp-player.js",
   "scripts": {
-    "clean": "rm -rf ./dist",
-    "prebuild": "npm run clean",
-    "build:ovp": "sh scripts/job.sh build ovp",
-    "dev:ovp": "sh ./scripts/job.sh dev ovp",
-    "watch:ovp": "sh ./scripts/job.sh watch ovp",
     "build:ott": "sh ./scripts/job.sh build ott",
-    "dev:ott": "sh ./scripts/job.sh dev ott",
-    "watch:ott": "sh ./scripts/job.sh watch ott",
-    "test": "NODE_ENV=test karma start --color",
-    "release": "standard-version",
-    "publish": "git push --follow-tags --no-verify origin master",
-    "eslint": "eslint . --color",
-    "flow": "flow check",
+    "build:ovp": "sh scripts/job.sh build ovp",
+    "clean": "rm -rf ./dist",
     "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' || exit 0)",
-    "playkit-dev-ovp:start": "playkit-dev start ovp",
-    "playkit-dev-ott:start": "playkit-dev start ott",
-    "playkit-dev:stop": "playkit-dev stop",
-    "playkit-rel": "playkit-rel start",
-    "precommit": "lint-staged",
+    "dev:ott": "sh ./scripts/job.sh dev ott",
+    "dev:ovp": "sh ./scripts/job.sh dev ovp",
     "docs:generate": "documentation build flow-typed/** src/** -f md -o docs/api.md",
     "docs:serve": "documentation serve flow-typed/** src/** --watch",
-    "prettier:fix": "prettier --write ."
+    "eslint": "eslint . --color",
+    "flow": "flow check",
+    "playkit-dev-ott:start": "playkit-dev start ott",
+    "playkit-dev-ovp:start": "playkit-dev start ovp",
+    "playkit-dev:stop": "playkit-dev stop",
+    "playkit-rel": "playkit-rel start",
+    "prebuild": "npm run clean",
+    "precommit": "lint-staged",
+    "prettier:fix": "prettier --write .",
+    "publish": "git push --follow-tags --no-verify origin master",
+    "release": "standard-version",
+    "test": "NODE_ENV=test karma start --color",
+    "watch:ott": "sh ./scripts/job.sh watch ott",
+    "watch:ovp": "sh ./scripts/job.sh watch ovp"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -36,14 +50,17 @@
       "git add"
     ]
   },
-  "envManager": {
-    "devMode": {},
-    "releaseMode": []
-  },
-  "standard-version": {
-    "scripts": {
-      "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott && npm run commit:dist)"
-    }
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "@playkit-js/playkit-js": "0.62.1-canary.724715e",
+    "@playkit-js/playkit-js-dash": "^1.18.3",
+    "@playkit-js/playkit-js-hls": "^1.19.1",
+    "@playkit-js/playkit-js-ui": "^0.57.0",
+    "hls.js": "^0.13.1",
+    "js-logger": "^1.6.0",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.21.1",
+    "proxy-polyfill": "^0.3.0",
+    "shaka-player": "^2.5.13"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -88,6 +105,7 @@
     "lint-staged": "^10.2.11",
     "mocha": "^8.0.1",
     "mocha-cli": "^1.0.1",
+    "playkit-js-env-manager": "https://github.com/kaltura/playkit-js-env-manager.git#v3.3.2",
     "prettier": "^2.0.5",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0",
@@ -100,30 +118,13 @@
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
   },
-  "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.62.1-canary.724715e",
-    "@playkit-js/playkit-js-dash": "^1.18.3",
-    "@playkit-js/playkit-js-hls": "^1.19.1",
-    "@playkit-js/playkit-js-ui": "^0.57.0",
-    "hls.js": "^0.13.1",
-    "js-logger": "^1.6.0",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.21.1",
-    "proxy-polyfill": "^0.3.0",
-    "shaka-player": "^2.5.13"
+  "envManager": {
+    "devMode": {},
+    "releaseMode": []
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kaltura/kaltura-player-js"
-  },
-  "keywords": [
-    "kaltura",
-    "player",
-    "html5 player"
-  ],
-  "license": "AGPLV3",
-  "bugs": {
-    "url": "https://github.com/kaltura/kaltura-player-js/issues"
-  },
-  "homepage": "https://github.com/kaltura/kaltura-player-js"
+  "standard-version": {
+    "scripts": {
+      "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott && npm run commit:dist)"
+    }
+  }
 }

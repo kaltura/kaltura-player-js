@@ -120,12 +120,12 @@ function evaluatePluginsConfig(options: ?PKPluginsConfigObject, config: KPOption
 }
 
 /**
- * @param {UIOptionsObject} options - UI options
+ * @param {KPUIOptionsObject} options - UI options
  * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluateUIConfig(options: UIOptionsObject, config: KPOptionsObject): void {
+function evaluateUIConfig(options: KPUIOptionsObject, config: KPOptionsObject): void {
   if (options) {
     const defaultUiConfig = {
       components: {

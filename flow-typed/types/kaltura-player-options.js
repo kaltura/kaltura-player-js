@@ -11,7 +11,7 @@ declare type KPOptionsObject = {
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
-  ui: UIOptionsObject,
+  ui: KPUIOptionsObject,
   cast?: {[key: string]: any},
   productVersion?: string
 };
@@ -26,7 +26,7 @@ declare type PartialKPOptionsObject = {
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
-  ui?: UIOptionsObject,
+  ui?: KPUIOptionsObject,
   cast?: {[key: string]: any}
 };
 
@@ -36,5 +36,5 @@ declare type LegacyPartialKPOptionsObject = {
   disableUserCache?: boolean,
   player?: PKPlayerOptionsObject,
   provider: ProviderOptionsObject,
-  ui?: UIOptionsObject
+  ui?: KPUIOptionsObject
 };
