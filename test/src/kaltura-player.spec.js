@@ -7,6 +7,7 @@ import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources';
+import {AdEventType, FakeEvent} from '@playkit-js/playkit-js';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -46,7 +47,12 @@ describe('kaltura player api', function() {
         kalturaPlayer = setup(config);
         sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function(info) {
           const id = info.playlistId || info.entryId;
-          return id ? Promise.resolve(MediaMockData.MediaConfig[id]) : Promise.reject({success: false, data: 'Missing mandatory parameter'});
+          return id
+            ? Promise.resolve(MediaMockData.MediaConfig[id])
+            : Promise.reject({
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
         });
       });
 
@@ -586,6 +592,27 @@ describe('kaltura player api', function() {
           lastCellValue: 6
         }
       });
+    });
+  });
+
+  describe('events', function() {
+    let player;
+
+    it('should fire auto play failed and show the poster once get AD_AUTOPLAY_FAILED', done => {
+      player = new Player({
+        ui: {},
+        provider: {}
+      });
+      player.addEventListener(AdEventType.AUTOPLAY_FAILED, event => {
+        try {
+          player._localPlayer.posterManager._el.style.display.should.equal('');
+          event.payload.error.should.equal('mock failure');
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+      player.dispatchEvent(new FakeEvent(AdEventType.AD_AUTOPLAY_FAILED, {error: 'mock failure'}));
     });
   });
 });
