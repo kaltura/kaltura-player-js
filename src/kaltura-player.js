@@ -32,38 +32,29 @@ import {
 } from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
-  _eventManager: EventManager;
-  _mediaInfo: ?ProviderMediaInfoObject = null;
-  _remotePlayer: ?BaseRemotePlayer = null;
   _localPlayer: Player;
   _provider: Provider;
   _uiWrapper: UIWrapper;
-  _logger: any;
-  _pluginManager: PluginManager;
   _controllerProvider: ControllerProvider;
   _adsController: ?AdsController;
-  _pluginsConfig: KPPluginsConfigObject;
-  _pluginEvents: {[plugin: string]: {[event: string]: string}};
-  _pluginsUiComponents: Array<KPUIComponent>;
-  _reset: boolean;
-  _sourceSelected: boolean;
-  _firstPlay: boolean;
+  _eventManager: EventManager = new EventManager();
+  _mediaInfo: ?ProviderMediaInfoObject = null;
+  _remotePlayer: ?BaseRemotePlayer = null;
+  _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+  _pluginManager: PluginManager = new PluginManager();
+  _pluginsConfig: KPPluginsConfigObject = {};
+  _pluginsUiComponents: Array<KPUIComponent> = [];
+  _reset: boolean = true;
+  _firstPlay: boolean = true;
+  _sourceSelected: boolean = false;
 
   constructor(options: KPOptionsObject) {
     super();
-    this._eventManager = new EventManager();
     const {sources, plugins} = options;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
-    this._logger = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-    this._firstPlay = true;
-    this._reset = true;
-    this._pluginsConfig = {};
-    this._pluginEvents = {};
-    this._pluginManager = new PluginManager();
     this._controllerProvider = new ControllerProvider(this._pluginManager);
-    this._pluginsUiComponents = [];
     this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
@@ -253,7 +244,6 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager.destroy();
     this._pluginManager.destroy();
     this._pluginsConfig = {};
-    this._pluginEvents = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
       Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
@@ -542,7 +532,6 @@ class KalturaPlayer extends FakeEventTarget {
       Core: CoreEventType,
       Playlist: PlaylistEventType,
       UI: UIEventType,
-      Plugins: this._pluginEvents,
       // For backward compatibility
       ...CoreEventType
     };
