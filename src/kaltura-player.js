@@ -394,6 +394,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.buffered;
   }
 
+  get stats(): PKStatsObject {
+    return this._localPlayer.stats;
+  }
+
   set currentTime(to: number): void {
     this._localPlayer.currentTime = to;
   }
