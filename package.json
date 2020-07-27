@@ -58,7 +58,7 @@
     "@playkit-js/playkit-js-ui": "^0.57.0",
     "hls.js": "^0.13.1",
     "js-logger": "^1.6.0",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.21.1",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#update-dist",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "^2.5.13"
   },
