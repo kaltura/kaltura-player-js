@@ -20,7 +20,7 @@ const isValueEvaluated = (value: any): boolean =>
  * @param {Object} obj - the object examine
  * @returns {Object} - the object without unevaluated strings
  */
-const removeUnevaluatedExpression = (obj = {}): Object =>
+const removeUnevaluatedExpression = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (typeof value !== 'function' && Utils.Object.isObject(value)) {
       product[key] = removeUnevaluatedExpression(value);
