@@ -46,6 +46,7 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginsUiComponents: Array<KPUIComponent> = [];
   _reset: boolean = true;
   _firstPlay: boolean = true;
+  _playbackStart: boolean = false;
   _sourceSelected: boolean = false;
 
   constructor(options: KPOptionsObject) {
@@ -211,6 +212,10 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   play(): void {
+    if (!this._playbackStart) {
+      this._playbackStart = true;
+      this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_START));
+    }
     this._localPlayer.play();
   }
 
@@ -228,8 +233,9 @@ class KalturaPlayer extends FakeEventTarget {
 
   reset(): void {
     if (!this._reset) {
-      this._firstPlay = true;
       this._reset = true;
+      this._firstPlay = true;
+      this._playbackStart = false;
       this._localPlayer.reset();
       this._uiWrapper.reset();
       this._pluginManager.reset();
@@ -238,6 +244,9 @@ class KalturaPlayer extends FakeEventTarget {
 
   destroy(): void {
     const targetId = this.config.ui.targetId;
+    this._reset = true;
+    this._firstPlay = true;
+    this._playbackStart = false;
     this._localPlayer.destroy();
     this._uiWrapper.destroy();
     this._eventManager.destroy();
@@ -586,6 +595,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
     this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
+    this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, this._onPlaybackEnded.bind(this));
     this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
     this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
@@ -619,6 +629,14 @@ class KalturaPlayer extends FakeEventTarget {
       }
     });
   }
+
+  _onPlaybackEnded(): void {
+    if (this.config.playback.loop) {
+      this.currentTime = 0;
+      this.play();
+    }
+  }
+
   _onAdStarted(): void {
     if (this._firstPlay) {
       this._localPlayer.posterManager.hide();
