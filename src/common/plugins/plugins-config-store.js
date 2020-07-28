@@ -59,7 +59,7 @@ const templateRegex = new RegExp('{{.*}}');
  * @param {Object} obj - the config object
  * @returns {dataStoreType} - the new object with new tokens
  */
-const resolveNewConfig = (obj = {}): Object =>
+const resolveNewConfig = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (Utils.Object.isObject(value)) {
       product[key] = resolveNewConfig(value);
@@ -77,7 +77,7 @@ const resolveNewConfig = (obj = {}): Object =>
  * @param {Object} obj - the config object
  * @returns {dataStoreType} - the new object with valid evaluate tokens
  */
-const removeUndefineds = (obj = {}): Object =>
+const removeUndefineds = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (Utils.Object.isObject(value)) {
       product[key] = removeUndefineds(value);
