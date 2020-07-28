@@ -52,13 +52,13 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.62.1-canary.724715e",
-    "@playkit-js/playkit-js-dash": "^1.18.3",
-    "@playkit-js/playkit-js-hls": "^1.19.1",
-    "@playkit-js/playkit-js-ui": "^0.57.0",
+    "@playkit-js/playkit-js": "0.62.1-canary.2264c8f",
+    "@playkit-js/playkit-js-dash": "1.19.0-canary.136926f",
+    "@playkit-js/playkit-js-hls": "1.20.0-canary.4f901e3",
+    "@playkit-js/playkit-js-ui": "^0.57.1-canary.c2b66d2",
     "hls.js": "^0.13.1",
     "js-logger": "^1.6.0",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#update-dist",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#master",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "^2.5.13"
   },
