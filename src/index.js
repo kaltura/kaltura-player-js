@@ -34,6 +34,7 @@ const VERSION = __VERSION__;
 
 PolyfillManager.installAll();
 
+/* eslint-disable no-import-assign */
 core.Ad = Ad;
 core.AdBreak = AdBreak;
 core.BasePlugin = BasePlugin;
