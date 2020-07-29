@@ -1263,7 +1263,7 @@ Playback UI of the remote player.
 
 - `props` **[Object][347]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### idleUI
 
@@ -1273,7 +1273,7 @@ Idle UI of the remote player.
 
 - `props` **[Object][347]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### adsUI
 
@@ -1283,7 +1283,7 @@ Idle UI of the remote player.
 
 - `props` **[Object][347]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### liveUI
 
@@ -1293,7 +1293,7 @@ Live UI of the remote player.
 
 - `props` **[Object][347]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### errorUI
 
@@ -1303,7 +1303,7 @@ Error UI of the remote player.
 
 - `props` **[Object][347]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### uis
 

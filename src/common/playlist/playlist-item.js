@@ -34,7 +34,7 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   get sources(): ?ProviderMediaConfigSourcesObject {
-    formats.forEach(format => {
+    formats.forEach((format: string) => {
       if (this._sources && this._sources[format] && this._sources[format].length === 0) {
         delete this._sources[format];
       }

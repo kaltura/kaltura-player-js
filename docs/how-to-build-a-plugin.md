@@ -149,7 +149,7 @@ You can help the player instance API with your decision logic. For example, if y
 
 ```js
 // Plain JavaScript
-MyPlugin.isValid = function() {
+MyPlugin.isValid = function () {
   return player.env.browser.name === 'Chrome';
 };
 ```
@@ -205,11 +205,11 @@ We'll use both Vanilla JavaScript & ES6 examples.
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
-</head>
+  </head>
 </html>
 ```
 
@@ -218,14 +218,13 @@ We'll use both Vanilla JavaScript & ES6 examples.
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
     <script src="PATH/TO/FILE/my-plugin.js"></script>
-</head>
-<body>
-</body>
+  </head>
+  <body></body>
 </html>
 ```
 
@@ -236,7 +235,7 @@ We'll use both Vanilla JavaScript & ES6 examples.
 ### _Plain JavaScript_
 
 ```js
-var MyPlugin = function(name, player, config) {};
+var MyPlugin = function (name, player, config) {};
 ```
 
 ### _ES6_
@@ -252,7 +251,7 @@ class MyPlugin {
 ### _Plain JavaScript_
 
 ```js
-var MyPlugin = function(name, player, config) {
+var MyPlugin = function (name, player, config) {
   KalturaPlayer.core.BasePlugin.call(this, name, player, config);
 };
 
@@ -278,7 +277,7 @@ In **_my-plugin.js_**, add the necessary methods and properties to override as e
 ### _Plain JavaScript_
 
 ```js
-var MyPlugin = function(name, player, config) {
+var MyPlugin = function (name, player, config) {
   KalturaPlayer.core.BasePlugin.call(this, name, player, config);
 };
 
@@ -288,11 +287,11 @@ MyPlugin.prototype = new KalturaPlayer.core.BasePlugin();
 
 MyPlugin.defaultConfig = {};
 
-MyPlugin.isValid = function(player) {};
+MyPlugin.isValid = function (player) {};
 
-MyPlugin.prototype.destroy = function() {};
+MyPlugin.prototype.destroy = function () {};
 
-MyPlugin.prototype.reset = function() {};
+MyPlugin.prototype.reset = function () {};
 ```
 
 ### _ES6_
@@ -320,7 +319,7 @@ To see the plugin in action, lets fill in some simple implementations:
 ### _Plain JavaScript_
 
 ```js
-var MyPlugin = function(name, player, config) {
+var MyPlugin = function (name, player, config) {
   KalturaPlayer.core.BasePlugin.call(this, name, player, config);
   this.logger.debug('Hello from ' + this.getName() + ' plugin constructor!');
   this._myCollection = [this.config.myValue];
@@ -335,25 +334,25 @@ MyPlugin.defaultConfig = {
   myValue: 1
 };
 
-MyPlugin.isValid = function(player) {
+MyPlugin.isValid = function (player) {
   return true;
 };
 
-MyPlugin.prototype.destroy = function() {
+MyPlugin.prototype.destroy = function () {
   this.logger.debug('Empty collection');
   this._myCollection = [];
 };
 
-MyPlugin.prototype.reset = function() {
+MyPlugin.prototype.reset = function () {
   this.logger.debug('Reset collection');
   this._myCollection = [this.config.myValue];
 };
 
-MyPlugin.prototype._addBindings = function() {
+MyPlugin.prototype._addBindings = function () {
   this.eventManager.listen(
     this.player,
     this.player.Event.SEEKED,
-    function() {
+    function () {
       this.logger.debug(this.player.currentTime + ' Added to my collection');
       this._myCollection.push(this.player.currentTime);
       this.dispatchEvent('collectionUpdate', {collection: this._myCollection});
@@ -410,17 +409,17 @@ Use the factory `registerPlugin` method to register your plugin in the player fr
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
     <script src="PATH/TO/FILE/my-plugin.js"></script>
-</head>
-<body>
-<script>
-	KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
-</script>
-</body>
+  </head>
+  <body>
+    <script>
+      KalturaPlayer.core.registerPlugin('myPlugin', MyPlugin);
+    </script>
+  </body>
 </html>
 ```
 
@@ -472,7 +471,7 @@ c . Setup code.
 ```js
 var mediaInfo = {entryId: 'YOUR_ENTRY_ID'};
 var player = KalturaPlayer.setup(config);
-player.loadMedia(mediaInfo).then(function() {
+player.loadMedia(mediaInfo).then(function () {
   player.play();
 });
 ```
@@ -482,38 +481,38 @@ player.loadMedia(mediaInfo).then(function() {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
     <script src="PATH/TO/FILE/my-plugin.js"></script>
-</head>
-<body>
-<script>
-KalturaPlayer.core.registerPlugin("myPlugin", MyPlugin);
+  </head>
+  <body>
+    <script>
+      KalturaPlayer.core.registerPlugin('myPlugin', MyPlugin);
 
-var config = {
-    log:{
-      level: 'DEBUG'
-    },
-    targetId: "player-div",
-    provider: {
-        partnerId: "YOUR_PARTNER_ID"
-    },
-    plugins: {
-        myPlugin: {
+      var config = {
+        log: {
+          level: 'DEBUG'
+        },
+        targetId: 'player-div',
+        provider: {
+          partnerId: 'YOUR_PARTNER_ID'
+        },
+        plugins: {
+          myPlugin: {
             myValue: 10
+          }
         }
-    }
-};
+      };
 
-var mediaInfo = {entryId: "YOUR_ENTRY_ID"};
-var player = KalturaPlayer.setup(config);
-player.loadMedia(mediaInfo).then(function() {
-  player.play();
-});
-</script>
-</body>
+      var mediaInfo = {entryId: 'YOUR_ENTRY_ID'};
+      var player = KalturaPlayer.setup(config);
+      player.loadMedia(mediaInfo).then(function () {
+        player.play();
+      });
+    </script>
+  </body>
 </html>
 ```
 

@@ -7,8 +7,8 @@ export default class PrependPolyfill {
   static _logger: any = getLogger('PrependPolyfill');
 
   static install(): void {
-    [Element.prototype, Document.prototype, DocumentFragment.prototype].forEach(function(item) {
-      if (item.hasOwnProperty('prepend')) {
+    [Element.prototype, Document.prototype, DocumentFragment.prototype].forEach(function (item) {
+      if (Object.prototype.hasOwnProperty.call(item, 'prepend')) {
         PrependPolyfill._logger.debug('No need to install polyfill on item', item);
         return;
       }
@@ -22,7 +22,7 @@ export default class PrependPolyfill {
           var argArr = Array.prototype.slice.call(arguments),
             docFrag = document.createDocumentFragment();
 
-          argArr.forEach(function(argItem) {
+          argArr.forEach(function (argItem) {
             var isNode = argItem instanceof Node;
             docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
           });

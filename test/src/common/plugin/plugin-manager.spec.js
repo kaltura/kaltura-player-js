@@ -35,7 +35,7 @@ describe('PluginManager.registry', () => {
 
   it("shouldn't register the plugin because handler isn't derived from BasePlugin", () => {
     unRegisterAll();
-    PluginManager.register('numbers', function() {}).should.be.false;
+    PluginManager.register('numbers', function () {}).should.be.false;
     (PluginManager._registry.get('numbers') === undefined).should.be.true;
   });
 
@@ -101,7 +101,7 @@ describe('PluginManager.plugins', () => {
   });
 
   it("shouldn't load() the plugin", () => {
-    sandbox.stub(ColorsPlugin, 'isValid').callsFake(function() {
+    sandbox.stub(ColorsPlugin, 'isValid').callsFake(function () {
       return false;
     });
     pluginManager.load('colors', {}, {}).should.be.false;
