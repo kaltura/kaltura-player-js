@@ -121,21 +121,6 @@ export interface IRemotePlayer {
    * @memberof IRemotePlayer
    */
   +config: Object;
-  /**
-   * @readonly
-   * @static
-   * @type {string}
-   * @memberof IRemotePlayer
-   */
-  static +Type: string;
-
-  /**
-   * @static
-   * @method
-   * @returns {boolean}
-   * @memberof IRemotePlayer
-   */
-  static isSupported(): boolean;
 
   /**
    * @method

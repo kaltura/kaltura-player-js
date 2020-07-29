@@ -1,5 +1,5 @@
 [ignore]
-.*/node_modules
+.*/node_modules/.*
 [include]
 [libs]
 ./src/index.js
@@ -9,7 +9,6 @@ node_modules/@playkit-js/playkit-js-dash/flow-typed/
 node_modules/@playkit-js/playkit-js-ui/flow-typed/
 node_modules/playkit-js-providers/flow-typed/
 [options]
-unsafe.enable_getters_and_setters=true
 module.name_mapper='playkit-js-providers' -> 'playkit-js-providers/dist/playkit-ovp-provider'
 module.name_mapper='playkit-js-providers' -> 'playkit-js-providers/dist/playkit-ott-provider'
 module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ovp/player-defaults'

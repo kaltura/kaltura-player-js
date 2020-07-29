@@ -149,7 +149,7 @@ function setStorageTextStyle(player: KalturaPlayer): void {
  * @returns {void}
  */
 function attachToFirstClick(player: Player): void {
-  if (isIos() || Env.isIPadOS) {
+  if (Env.isIOS || Env.isIPadOS) {
     const onUIClicked = () => {
       player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
       setCapabilities(EngineType.HTML5, {autoplay: true});
@@ -223,7 +223,7 @@ function setLogOptions(options: KPOptionsObject): void {
  * @returns {string} - value of the query string param
  */
 function getUrlParameter(name: string) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   const results = regex.exec(location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
@@ -298,7 +298,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
  * @returns {void}
  */
 function checkNativeHlsSupport(options: KPOptionsObject): void {
-  if ((isMacOS() && isSafari()) || isIos()) {
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
     const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -319,7 +319,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if ((isMacOS() && isSafari()) || isIos()) {
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -357,6 +357,7 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
     options = Utils.Object.createPropertyPath(options, 'plugins.bumper.disableMediaPreload', true);
   }
 }
+
 /**
  * Sets config option for LG TV SDK 2 live which has problem with long duration buffer
  * @private
@@ -366,10 +367,11 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
 function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
   const hlsLiveConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount');
   //webos SDK 2 and less detect as safari browser greater version is chrome
-  if (typeof hlsLiveConfig !== 'boolean' && isSafari()) {
+  if (typeof hlsLiveConfig !== 'boolean' && Env.isSafari) {
     options = Utils.Object.createPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount', 2);
   }
 }
+
 /**
  * Sets config option for LG TV
  * @private
@@ -414,6 +416,7 @@ function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
     }
   }
 }
+
 /**
  * Sets default config option for ima plugin
  * @private
@@ -421,7 +424,7 @@ function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureIMADefaultOptions(options: KPOptionsObject): void {
-  if (isIos() && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
+  if (Env.isIOS && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
     const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
     const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
     if (playsinline === false && typeof disableMediaPreloadIma !== 'boolean') {
@@ -468,7 +471,7 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
     const newBumperConfig: Object = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
-      (Env.isSmartTV || (isIos() && options.playback && options.playback.playsinline === false))
+      (Env.isSmartTV || (Env.isIOS && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
@@ -563,33 +566,6 @@ function printSetupMessages(): void {
 }
 
 /**
- * Returns true if user agent indicate that browser is Safari
- * @private
- * @returns {boolean} - if browser is Safari
- */
-function isSafari(): boolean {
-  return Utils.Object.hasPropertyPath(Env, 'browser.name') && Env.browser.name.includes('Safari');
-}
-
-/**
- * Returns true if user agent indicate that os is mac
- * @private
- * @returns {boolean} - if browser is Safari
- */
-function isMacOS(): boolean {
-  return Env.os.name === 'Mac OS';
-}
-
-/**
- * Returns true if user agent indicate that browser is Chrome on iOS
- * @private
- * @returns {boolean} - if browser is Chrome on iOS
- */
-function isIos(): boolean {
-  return Env.os.name === 'iOS';
-}
-
-/**
  * set stream priority according to playerConfig
  * @param {Player} player - player
  * @param {PartialKPOptionsObject} playerConfig - player config
@@ -672,8 +648,6 @@ export {
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
-  isSafari,
-  isIos,
   maybeSetStreamPriority,
   hasYoutubeSource
 };

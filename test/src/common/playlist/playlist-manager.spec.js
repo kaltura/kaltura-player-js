@@ -5,7 +5,7 @@ import * as PlaylistMockData from '../../mock-data/playlist';
 import {FakeEvent} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
 
-describe('PlaylistManager', function() {
+describe('PlaylistManager', function () {
   let kalturaPlayer, playlistManager, sandbox;
   const config = {
     ui: {},
@@ -15,24 +15,24 @@ describe('PlaylistManager', function() {
     }
   };
 
-  before(function() {
-    sandbox = sinon.sandbox.create();
+  before(function () {
+    sandbox = sinon.createSandbox();
     kalturaPlayer = new KalturaPlayer(config);
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     playlistManager = new PlaylistManager(kalturaPlayer, config);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     playlistManager.reset();
     playlistManager = null;
     kalturaPlayer._eventManager.removeAll();
     kalturaPlayer.reset();
   });
 
-  describe('configure', function() {
-    it('should create a playlist manager with default values', function() {
+  describe('configure', function () {
+    it('should create a playlist manager with default values', function () {
       playlistManager._player.should.exist;
       playlistManager._eventManager.should.exist;
       playlistManager._playlist.should.exist;
@@ -44,11 +44,11 @@ describe('PlaylistManager', function() {
       playlistManager._mediaInfoList.length.should.equal(0);
     });
 
-    it('should do nothing for empty config', function() {
+    it('should do nothing for empty config', function () {
       playlistManager.configure();
     });
 
-    it('should update config', function() {
+    it('should update config', function () {
       playlistManager.configure({id: '1234', options: {autoContinue: false}, countdown: {duration: 20, showing: false, timeToShow: 50}});
       playlistManager._playlist.id.should.equal('1234');
       playlistManager._options.autoContinue.should.be.false;
@@ -57,14 +57,14 @@ describe('PlaylistManager', function() {
       playlistManager._countdown.timeToShow.should.equal(50);
     });
 
-    it('should load playlist by config and fire event', function() {
+    it('should load playlist by config and fire event', function () {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_LOADED, event => {
         event.payload.playlist.id.should.equal('b1234');
       });
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should not load playlist by config and fire event is no items', function(done) {
+    it('should not load playlist by config and fire event is no items', function (done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_LOADED, () => {
         done(new Error('fail'));
       });
@@ -72,7 +72,7 @@ describe('PlaylistManager', function() {
       done();
     });
 
-    it('should not load playlist by config and fire event is no sources', function(done) {
+    it('should not load playlist by config and fire event is no sources', function (done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_LOADED, () => {
         done(new Error('fail'));
       });
@@ -80,7 +80,7 @@ describe('PlaylistManager', function() {
       done();
     });
 
-    it('should update the media info list', function() {
+    it('should update the media info list', function () {
       playlistManager.configure(PlaylistMockData.playlistByConfig, {entries: ['abc', {entryId: '123'}]});
       playlistManager._mediaInfoList.length.should.equal(3);
       playlistManager._mediaInfoList[0].entryId.should.equal('id1');
@@ -88,14 +88,14 @@ describe('PlaylistManager', function() {
       playlistManager._mediaInfoList[2].entryId.should.equal('id3');
     });
 
-    it('should play the first item', function(done) {
+    it('should play the first item', function (done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
         done();
       });
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should play next on ended when auto continue is true', function(done) {
+    it('should play next on ended when auto continue is true', function (done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
         eventCounter++;
@@ -109,7 +109,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should play next on ended when loop is true', function(done) {
+    it('should play next on ended when loop is true', function (done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
         eventCounter++;
@@ -124,7 +124,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should not play next on ended when auto continue and loop is false', function(done) {
+    it('should not play next on ended when auto continue and loop is false', function (done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
         done();
         playlistManager._options.autoContinue = false;
@@ -135,7 +135,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should not play next on ended when ui is enabled', function(done) {
+    it('should not play next on ended when ui is enabled', function (done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
         done();
         playlistManager._options.autoContinue = true;
@@ -146,7 +146,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should play next on ended when ui is enabled but countdown is hidden', function(done) {
+    it('should play next on ended when ui is enabled but countdown is hidden', function (done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
         eventCounter++;
@@ -162,7 +162,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should fire playlist ended event', function(done) {
+    it('should fire playlist ended event', function (done) {
       let onItemChanged = () => {
         playlistManager._options.autoContinue = true;
         playlistManager._options.loop = true;
@@ -177,7 +177,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should play in loop when loop is true', function(done) {
+    it('should play in loop when loop is true', function (done) {
       let onItemChanged = () => {
         playlistManager._options.autoContinue = false;
         playlistManager._options.loop = true;
@@ -195,7 +195,7 @@ describe('PlaylistManager', function() {
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
 
-    it('should not play in loop when loop is false', function(done) {
+    it('should not play in loop when loop is false', function (done) {
       let onItemChanged = () => {
         playlistManager._options.autoContinue = true;
         playlistManager._options.loop = false;
@@ -214,8 +214,8 @@ describe('PlaylistManager', function() {
     });
   });
 
-  describe('load', function() {
-    it('should merge the playlist data and config', function() {
+  describe('load', function () {
+    it('should merge the playlist data and config', function () {
       const playlistConfig = {
         options: {
           autoContinue: false
@@ -265,8 +265,8 @@ describe('PlaylistManager', function() {
     });
   });
 
-  describe('reset', function() {
-    it('should reset but keep the previous config', function() {
+  describe('reset', function () {
+    it('should reset but keep the previous config', function () {
       playlistManager.configure({
         id: '1234',
         items: [
@@ -298,8 +298,8 @@ describe('PlaylistManager', function() {
     });
   });
 
-  describe('get next', function() {
-    it('should get the second item', function() {
+  describe('get next', function () {
+    it('should get the second item', function () {
       playlistManager.configure({
         id: '1234',
         items: [
@@ -318,7 +318,7 @@ describe('PlaylistManager', function() {
       playlistManager.next.sources.id.should.equal('id2');
     });
 
-    it('should get null when in the last item and loop is false', function() {
+    it('should get null when in the last item and loop is false', function () {
       playlistManager.configure({
         id: '1234',
         items: [
@@ -338,7 +338,7 @@ describe('PlaylistManager', function() {
       (playlistManager.next === null).should.be.true;
     });
 
-    it('should get the first item when in the last item and loop is true', function() {
+    it('should get the first item when in the last item and loop is true', function () {
       playlistManager.configure({
         id: '1234',
         items: [
@@ -362,28 +362,28 @@ describe('PlaylistManager', function() {
     });
   });
 
-  describe('playNext', function() {
-    before(function() {
-      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function({entryId}) {
+  describe('playNext', function () {
+    before(function () {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
         return Promise.resolve(MediaMockData.MediaConfig[entryId]);
       });
     });
 
-    beforeEach(function() {
+    beforeEach(function () {
       playlistManager.load(PlaylistMockData.playlistByEntryList);
     });
 
-    after(function() {
+    after(function () {
       sandbox.restore();
     });
 
-    it('should call playNext automatically once the playlist loaded', function(done) {
+    it('should call playNext automatically once the playlist loaded', function (done) {
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         done();
       });
     });
 
-    it('should call playNext programmatically', function(done) {
+    it('should call playNext programmatically', function (done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         if (eventCounter === 2) {
