@@ -392,8 +392,8 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('colors').should.exists;
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('colors').should.exist;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(2);
       player.config.plugins.colors.should.deep.equals({
         size: 5,
@@ -414,8 +414,8 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('colors').should.exists;
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('colors').should.exist;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(2);
       player.config.plugins.colors.should.deep.equals({
         size: 50,
@@ -438,7 +438,7 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.numbers.should.deep.equals({
         size: 20,
@@ -455,8 +455,8 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('colors').should.exists;
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('colors').should.exist;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(2);
       player.config.plugins.colors.should.deep.equals({
         size: 50,
@@ -490,8 +490,8 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('colors').should.exists;
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('colors').should.exist;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(2);
       player.config.plugins.colors.should.deep.equals({
         size: 50,
@@ -519,7 +519,7 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.numbers.should.deep.equals({
         size: 200,
@@ -535,7 +535,7 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.numbers.should.deep.equals({
         size: 2,
@@ -568,7 +568,7 @@ describe('kaltura player api', function () {
           }
         }
       });
-      player._pluginManager.get('numbers').should.exists;
+      player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.should.deep.equals({
         numbers: {

@@ -12,7 +12,7 @@ describe('AdsController', () => {
 
   beforeEach(() => {
     player = new Player(config);
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   afterEach(() => {

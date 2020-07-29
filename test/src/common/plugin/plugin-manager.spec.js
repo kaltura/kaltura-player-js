@@ -74,7 +74,7 @@ describe('PluginManager.plugins', () => {
 
   beforeEach(() => {
     pluginManager = new PluginManager();
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     registerAll();
   });
 
