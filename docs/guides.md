@@ -16,6 +16,6 @@
 - [Controlling Errors](errors.md)
 - [Debugging & Troubleshooting](./debugging.md)
 - [How to Build a Plugin](./how-to-build-a-plugin.md)
-- [Customizing the Player CSS](https://github.com/kaltura/playkit-js-ui/blob/master/docs/css-classes-override.md)
+- [Customizing the Player UI](./ui.md)
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
 - [Coding Guidelines](./coding-guidlines.md)
