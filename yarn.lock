@@ -1161,7 +1161,7 @@
 
 "@playkit-js/playkit-js@https://github.com/kaltura/playkit-js.git#FEC-10057":
   version "0.62.0"
-  resolved "https://github.com/kaltura/playkit-js.git#3c0f2ee46eae2bff7521534286d00e6f45640881"
+  resolved "https://github.com/kaltura/playkit-js.git#6c635ea0f9928c3b89641988d8d00f4755f857cb"
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^0.7.21"
