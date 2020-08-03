@@ -53,8 +53,6 @@ jobs:
         - yarn upgrade @playkit-js/playkit-js@canary
         - yarn upgrade @playkit-js/playkit-js-dash@canary
         - yarn upgrade @playkit-js/playkit-js-hls@canary
-        - yarn upgrade @playkit-js/playkit-js-kava@canary
-        - yarn upgrade @playkit-js/playkit-js-ott-analytics@canary
         - yarn upgrade @playkit-js/playkit-js-ui@canary
         - yarn install
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
