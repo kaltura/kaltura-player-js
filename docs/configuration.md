@@ -67,6 +67,18 @@ The configuration uses the following structure:
 > ##### Type: [PKPlaybackConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configplayback)
 >
 > ##### Description: Defines the playback configuration.
+>
+> ##
+>
+> > ### config.playback.loop
+> >
+> > ##### Type: `boolean`
+> >
+> > ##### Default: `false`
+> >
+> > ##### Description: Indicates whether the video should play in loop.
+> >
+> > This is a Boolean attribute that indicates the default setting of the loop playback option. If set, the player will restart playback upon completion. The attribute's default value is false, which means that the video will pause when the video is finished playing.
 
 ##
 
