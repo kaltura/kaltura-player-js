@@ -161,6 +161,7 @@ class KalturaPlayer extends FakeEventTarget {
     // $FlowFixMe
     evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
+    this._maybeCreateAdsController();
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
@@ -189,10 +190,11 @@ class KalturaPlayer extends FakeEventTarget {
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
     evaluatePluginsConfig(config.plugins, configDictionary);
+    this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     this._localPlayer.configure(localPlayerConfig);
-    this._configureOrLoadPlugins(config.plugins);
+    this._maybeCreateAdsController();
     const uiConfig = config.ui;
     if (uiConfig) {
       evaluateUIConfig(uiConfig, this.config);
@@ -612,6 +614,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
+    this._maybeCreateAdsController();
     this.reset();
     this._pluginManager.loadMedia();
     this._reset = false;
@@ -693,7 +696,6 @@ class KalturaPlayer extends FakeEventTarget {
     this._pluginsUiComponents = uiComponents;
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, plugins);
-    this._maybeCreateAdsController();
   }
 
   _maybeCreateAdsController(): void {
