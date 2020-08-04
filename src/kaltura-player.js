@@ -597,7 +597,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
     this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
-    this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, this._onPlaybackEnded.bind(this));
+    this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
     this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
     this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
