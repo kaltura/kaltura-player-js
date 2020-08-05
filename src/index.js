@@ -19,6 +19,9 @@ import {getPlayers, getPlayer} from './proxy';
 import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
+// Import plugin framework
+import {Ad, AdBreak} from './common/ads';
+import {BasePlugin, registerPlugin} from './common/plugins';
 
 declare var __VERSION__: string;
 declare var __NAME__: string;
@@ -31,4 +34,27 @@ const VERSION = __VERSION__;
 
 PolyfillManager.installAll();
 
-export {getPlayers, getPlayer, core, ui, providers, setup, shaka, cast, playlist, PLAYER_TYPE, VERSION, PLAYER_NAME};
+/* eslint-disable no-import-assign */
+core.Ad = Ad;
+core.AdBreak = AdBreak;
+core.BasePlugin = BasePlugin;
+core.registerPlugin = registerPlugin;
+
+export {
+  getPlayers,
+  getPlayer,
+  core,
+  ui,
+  providers,
+  setup,
+  shaka,
+  cast,
+  playlist,
+  Ad,
+  AdBreak,
+  BasePlugin,
+  registerPlugin,
+  PLAYER_TYPE,
+  VERSION,
+  PLAYER_NAME
+};

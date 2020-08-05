@@ -9,6 +9,10 @@ describe('PlaylistManager', function () {
   let kalturaPlayer, playlistManager, sandbox;
   const config = {
     ui: {},
+    plugins: {},
+    advertising: {
+      adBreaks: []
+    },
     provider: {},
     playback: {
       autoplay: true

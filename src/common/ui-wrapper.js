@@ -17,7 +17,7 @@ class UIWrapper {
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     const config: KPUIOptionsObject = options.ui;
-    config.uiComponents = [...(player._localPlayer.uiComponents || []), ...(config.uiComponents || [])];
+    config.uiComponents = [...(player.uiComponents || []), ...(config.uiComponents || [])];
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
@@ -79,7 +79,7 @@ class UIWrapper {
     }
   }
 
-  _handleVr(config: PKPluginsConfigObject = {}): void {
+  _handleVr(config: KPPluginsConfigObject = {}): void {
     if (config.vr && !config.vr.disable) {
       this._setStereoConfig(config.vr);
     }

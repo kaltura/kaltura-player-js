@@ -1,0 +1,30 @@
+{
+  "all_plugins_default_config": {
+    "plugins": {
+      "colors": {},
+      "numbers": {}
+    },
+    "all_plugins_custom_config": {
+      "plugins": {
+        "colors": {
+          "favouriteColor": "black"
+        },
+        "numbers": {
+          "size": 25,
+          "firstCellValue": 100,
+          "lastCellValue": 200
+        }
+      }
+    },
+    "only_colors_plugin": {
+      "plugins": {
+        "colors": {}
+      }
+    },
+    "only_numbers_plugin": {
+      "plugins": {
+        "numbers": {}
+      }
+    }
+  }
+}

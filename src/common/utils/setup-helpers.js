@@ -270,6 +270,10 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     },
     ui: {
       targetId: targetId
+    },
+    plugins: {},
+    advertising: {
+      adBreaks: []
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);

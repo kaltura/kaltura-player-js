@@ -1,7 +1,7 @@
 // @flow
 import {KalturaPlayer} from './kaltura-player';
 import {getPlayerProxy} from './proxy';
-import {evaluatePluginsConfig} from './common/plugins/plugins-config';
+import {evaluatePluginsConfig} from './common/plugins';
 import {
   applyCastSupport,
   applyStorageSupport,

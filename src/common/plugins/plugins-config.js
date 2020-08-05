@@ -104,12 +104,12 @@ function getEncodedReferrer(): string {
 }
 
 /**
- * @param {PKPluginsConfigObject} options - plugins options
+ * @param {KPPluginsConfigObject} options - plugins options
  * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluatePluginsConfig(options: ?PKPluginsConfigObject, config: KPOptionsObject): void {
+function evaluatePluginsConfig(options: ?KPPluginsConfigObject, config: KPOptionsObject): void {
   if (options) {
     pluginConfig.set(options);
     const dataModel = getModel(config);
