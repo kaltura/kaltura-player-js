@@ -1,6 +1,24 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [0.56.0](https://github.com/kaltura/kaltura-player-js/compare/v0.55.0...v0.56.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* downgrade shaka from 3.0.x ([#346](https://github.com/kaltura/kaltura-player-js/issues/346)) ([f126796](https://github.com/kaltura/kaltura-player-js/commit/f126796))
+* old browser(IE11) get mehtod in proxy doesn't work ([#345](https://github.com/kaltura/kaltura-player-js/issues/345)) ([4d3f69c](https://github.com/kaltura/kaltura-player-js/commit/4d3f69c))
+* **FEC-10356:** 4K DASH HEVC + LIVE doesn't play correctly on LG ([#342](https://github.com/kaltura/kaltura-player-js/issues/342)) ([111cdac](https://github.com/kaltura/kaltura-player-js/commit/111cdac))
+
+
+### Features
+
+* **FEC-10057:** move the plugin manager to kaltura player ([#332](https://github.com/kaltura/kaltura-player-js/issues/332)) ([66b2f3d](https://github.com/kaltura/kaltura-player-js/commit/66b2f3d))
+* **FEC-10290:** upgrade NPM packages ([#335](https://github.com/kaltura/kaltura-player-js/issues/335)) ([07fa73b](https://github.com/kaltura/kaltura-player-js/commit/07fa73b))
+* **FEC-10291:** migrate analytics plugins injection from kaltura player to server ([#337](https://github.com/kaltura/kaltura-player-js/issues/337)) ([1caf168](https://github.com/kaltura/kaltura-player-js/commit/1caf168))
+
+
 
 <a name="0.55.1"></a>
 ## [0.55.1](https://github.com/kaltura/kaltura-player-js/compare/v0.55.0...v0.55.1) (2020-07-27)
