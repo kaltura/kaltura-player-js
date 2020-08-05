@@ -1148,9 +1148,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.20.0-canary.4f901e3.tgz#0c131439aa87742e4f0c4cccb82340da296676f8"
   integrity sha512-pIczr0745n08+Bym0cu8fxmR0B8cgpqctzpNJM9zAeSgX42EH57BzFHp2TwwFcjxoRtSau8u5rSxvVilVJOsTA==
 
-"@playkit-js/playkit-js-ui@https://github.com/kaltura/playkit-js-ui.git#master":
-  version "0.57.1"
-  resolved "https://github.com/kaltura/playkit-js-ui.git#167726a40fda499dd41a8ee2d93f6628e3ee48a0"
+"@playkit-js/playkit-js-ui@0.57.2-canary.2d69920":
+  version "0.57.2-canary.2d69920"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.57.2-canary.2d69920.tgz#d35c7bd70ce3b5c2c21a15ad42b5fe156ffa5746"
+  integrity sha512-fYlKrTYXmbvEM3O0vlc6nntzVsLfIa92hpzkVDn1AmXmef/uCdtvW6kAV3nmd/OXjsyBS92SeQEcMpSsumIs/Q==
   dependencies:
     js-logger "^1.6.0"
     preact "^10.3.4"

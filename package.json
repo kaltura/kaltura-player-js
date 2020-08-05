@@ -55,7 +55,7 @@
     "@playkit-js/playkit-js": "0.62.1-canary.59026c0",
     "@playkit-js/playkit-js-dash": "1.19.0-canary.136926f",
     "@playkit-js/playkit-js-hls": "1.20.0-canary.4f901e3",
-    "@playkit-js/playkit-js-ui": "https://github.com/kaltura/playkit-js-ui.git#master",
+    "@playkit-js/playkit-js-ui": "0.57.2-canary.2d69920",
     "hls.js": "^0.13.1",
     "js-logger": "^1.6.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#master",
