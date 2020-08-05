@@ -16,8 +16,8 @@ class UIWrapper {
   _disabled: boolean = false;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
-    const config: UIOptionsObject = options.ui;
-    config.uiComponents = [...(player._localPlayer.uiComponents || []), ...(config.uiComponents || [])];
+    const config: KPUIOptionsObject = options.ui;
+    config.uiComponents = [...(player.uiComponents || []), ...(config.uiComponents || [])];
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
@@ -56,7 +56,7 @@ class UIWrapper {
     this.setConfig({hasError: false}, 'engine');
   }
 
-  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: UIOptionsObject): void {
+  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: KPUIOptionsObject): void {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
@@ -66,7 +66,7 @@ class UIWrapper {
     this.setConfig({show: show}, 'loading');
   }
 
-  _handleExternalCSS(config: UIOptionsObject): void {
+  _handleExternalCSS(config: KPUIOptionsObject): void {
     if (config.css) {
       Utils.Dom.loadStyleSheetAsync(config.css).then(
         () => {
@@ -79,7 +79,7 @@ class UIWrapper {
     }
   }
 
-  _handleVr(config: PKPluginsConfigObject = {}): void {
+  _handleVr(config: KPPluginsConfigObject = {}): void {
     if (config.vr && !config.vr.disable) {
       this._setStereoConfig(config.vr);
     }

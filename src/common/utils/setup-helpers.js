@@ -223,7 +223,7 @@ function setLogOptions(options: KPOptionsObject): void {
  * @returns {string} - value of the query string param
  */
 function getUrlParameter(name: string) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   const results = regex.exec(location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
@@ -270,6 +270,10 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     },
     ui: {
       targetId: targetId
+    },
+    plugins: {},
+    advertising: {
+      adBreaks: []
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);

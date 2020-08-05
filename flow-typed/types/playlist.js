@@ -61,6 +61,6 @@ declare type KPPlaylistObject = _KPPlaylistObject;
  * @property {KPPlaylistCountdownOptions} [countdown] - Countdown options
  */
 type _KPPlaylistItemConfigObject = {
-  countdown?: KPPlaylistCountdownOptions;
+  countdown?: KPPlaylistCountdownOptions
 };
 declare type KPPlaylistItemConfigObject = _KPPlaylistItemConfigObject;

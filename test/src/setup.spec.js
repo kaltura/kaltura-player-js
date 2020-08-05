@@ -5,7 +5,7 @@ import StorageWrapper from '../../src/common/storage/storage-wrapper';
 
 const targetId = 'player-placeholder_setup.spec';
 
-describe('setup', function() {
+describe('setup', function () {
   let config, kalturaPlayer, sandbox;
   const entryId = '0_wifqaipd';
   const partnerId = 1091;
@@ -14,12 +14,12 @@ describe('setup', function() {
     serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
   };
 
-  before(function() {
+  before(function () {
     TestUtils.createElement('DIV', targetId);
   });
 
-  beforeEach(function() {
-    sandbox = sinon.sandbox.create();
+  beforeEach(function () {
+    sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
       provider: {
@@ -29,18 +29,18 @@ describe('setup', function() {
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     sandbox.restore();
     kalturaPlayer.destroy();
     kalturaPlayer = null;
     TestUtils.removeVideoElementsFromTestPage();
   });
 
-  after(function() {
+  after(function () {
     TestUtils.removeElement(targetId);
   });
 
-  it('should create a full player', function(done) {
+  it('should create a full player', function (done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -50,12 +50,12 @@ describe('setup', function() {
     });
   });
 
-  it('should create an empty player', function() {
+  it('should create an empty player', function () {
     kalturaPlayer = setup(config);
     (!kalturaPlayer.config.id).should.be.true;
   });
 
-  it('should decorate the selected source by session id', function(done) {
+  it('should decorate the selected source by session id', function (done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -68,7 +68,7 @@ describe('setup', function() {
     });
   });
 
-  it('should set text style from storage', function() {
+  it('should set text style from storage', function () {
     let textStyle = {
       fontSize: '20%',
       fontFamily: 'sans-serif',
@@ -79,15 +79,12 @@ describe('setup', function() {
       fontEdge: [],
       fontScale: 1
     };
-    sandbox
-      .stub(StorageWrapper, 'getItem')
-      .withArgs('textStyle')
-      .returns(textStyle);
+    sandbox.stub(StorageWrapper, 'getItem').withArgs('textStyle').returns(textStyle);
     kalturaPlayer = setup(config);
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
 
-  it('should configure sources', function(done) {
+  it('should configure sources', function (done) {
     const url = 'http://cfvod.kaltura.com/pd/p/2196781/sp/219678100/serveFlavor/entryId/1_afvj3z0u/v/1/flavorId/1_vpmhfzgl/name/a.mp4';
     config.sources = {
       progressive: [

@@ -25,7 +25,7 @@ Tracks are available only when the video source has loaded.
 <br>Using the `TRACKS_CHANGED` event:
 
 ```javascript
-player.addEventListener(player.Event.TRACKS_CHANGED, function(event) {
+player.addEventListener(player.Event.TRACKS_CHANGED, function (event) {
   var tracks = event.payload.tracks;
   console.log('This source has ' + tracks.length + ' tracks');
 });
@@ -34,7 +34,7 @@ player.addEventListener(player.Event.TRACKS_CHANGED, function(event) {
 <br>Using the `ready` promise:
 
 ```javascript
-player.ready().then(function() {
+player.ready().then(function () {
   var tracks = player.getTracks();
   console.log('This source has ' + tracks.length + ' tracks');
 });
@@ -103,7 +103,7 @@ if (player.isAdaptiveBitrateEnabled()) {
 You can also use the `ABR_MODE_CHANGED` event to expose the current mode:
 
 ```javascript
-player.addEventListener(player.Event.ABR_MODE_CHANGED, function(event) {
+player.addEventListener(player.Event.ABR_MODE_CHANGED, function (event) {
   if (event.payload.mode === 'auto') {
     console.log('The player has switched to Adaptive Bitrate');
   } else {
@@ -135,7 +135,7 @@ By selecting a specific video track, the player switches to _Manual Selection_ m
 <br>To go back to the _Adaptive Bitrate_ mode, use the `enableAdaptiveBitrate` method:
 
 ```javascript
-player.addEventListener(player.Event.ABR_MODE_CHANGED, function(event) {
+player.addEventListener(player.Event.ABR_MODE_CHANGED, function (event) {
   // event.payload.mode === "auto"
 });
 player.enableAdaptiveBitrate();
@@ -144,7 +144,7 @@ player.enableAdaptiveBitrate();
 Once the video track has changed, either automatically or manually, the player triggers a `VIDEO_TRACK_CHANGED` event:
 
 ```javascript
-player.addEventListener(player.Event.VIDEO_TRACK_CHANGED, function(event) {
+player.addEventListener(player.Event.VIDEO_TRACK_CHANGED, function (event) {
   console.log('The new bitrate is: ' + event.payload.selectedVideoTrack.bandwidth);
 });
 ```
@@ -170,7 +170,7 @@ for (var i = 0; i < audioTracks.length; i++) {
 Once the audio track has changed, the player triggers an `AUDIO_TRACK_CHANGED` event:
 
 ```javascript
-player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, function(event) {
+player.addEventListener(player.Event.AUDIO_TRACK_CHANGED, function (event) {
   console.log('The new audio track is: ' + event.payload.selectedAudioTrack.label);
 });
 ```
@@ -196,7 +196,7 @@ for (var i = 0; i < textTracks.length; i++) {
 Once the text track has changed, the player triggers a `TEXT_TRACK_CHANGED` event:
 
 ```javascript
-player.addEventListener(player.Event.TEXT_TRACK_CHANGED, function(event) {
+player.addEventListener(player.Event.TEXT_TRACK_CHANGED, function (event) {
   console.log('The new text track is: ' + event.payload.selectedTextTrack.label);
 });
 ```
@@ -207,7 +207,7 @@ To disable the text track, use the `hideTextTrack` method.
 <br>In this case the player triggers a `TEXT_TRACK_CHANGED` event with 'off' track:
 
 ```javascript
-player.addEventListener(player.Event.TEXT_TRACK_CHANGED, function(event) {
+player.addEventListener(player.Event.TEXT_TRACK_CHANGED, function (event) {
   // event.payload.selectedTextTrack.label === 'Off'
 });
 player.hideTextTrack();

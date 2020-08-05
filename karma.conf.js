@@ -1,27 +1,47 @@
-let webpackConfig = require('./webpack.config.ovp.js');
-//Need to remove externals otherwise they won't be included in test
-delete webpackConfig.externals;
-webpackConfig.devtool = 'inline-source-map';
-
 const isWindows = /^win/.test(process.platform);
 const isMacOS = /^darwin/.test(process.platform);
 // Create custom launcher in case running with Travis
 const customLaunchers = {
   Chrome_travis_ci: {
     base: 'Chrome',
-    flags: ['--no-sandbox']
+    flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
   }
 };
 
-module.exports = function(config) {
-  let karmaConf = {
+const launchers = {
+  Chrome_browser: {
+    base: 'Chrome',
+    flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
+  }
+};
+
+module.exports = config => {
+  const {mode} = config;
+  const webpackConfig = require('./webpack.config.js')(process.env.NODE_ENV, {mode});
+  //Need to remove externals otherwise they won't be included in test
+  delete webpackConfig.externals;
+  // Need to define inline source maps when using karma
+  webpackConfig.devtool = 'inline-source-map';
+
+  const karmaConf = {
     logLevel: config.LOG_INFO,
-    browsers: ['Chrome', 'Firefox'],
+    customLaunchers: launchers,
+    browsers: ['Chrome_browser', 'Firefox'],
     concurrency: 1,
     singleRun: true,
     colors: true,
     frameworks: ['mocha'],
-    files: ['test/setup/karma.js'],
+    files: [
+      'test/setup/karma.js',
+      {
+        pattern: 'test/assets/mov_bbb.mp4',
+        included: false
+      },
+      {
+        pattern: 'test/assets/audios.mp4',
+        included: false
+      }
+    ],
     preprocessors: {
       'src/**/*.js': ['webpack', 'sourcemap'],
       'test/setup/karma.js': ['webpack', 'sourcemap']
@@ -33,7 +53,7 @@ module.exports = function(config) {
     },
     client: {
       mocha: {
-        timeout: 5000,
+        timeout: 10000,
         reporter: 'html'
       }
     }

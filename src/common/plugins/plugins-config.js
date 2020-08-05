@@ -20,7 +20,7 @@ const isValueEvaluated = (value: any): boolean =>
  * @param {Object} obj - the object examine
  * @returns {Object} - the object without unevaluated strings
  */
-const removeUnevaluatedExpression = (obj = {}): Object =>
+const removeUnevaluatedExpression = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (typeof value !== 'function' && Utils.Object.isObject(value)) {
       product[key] = removeUnevaluatedExpression(value);
@@ -104,12 +104,12 @@ function getEncodedReferrer(): string {
 }
 
 /**
- * @param {PKPluginsConfigObject} options - plugins options
+ * @param {KPPluginsConfigObject} options - plugins options
  * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluatePluginsConfig(options: ?PKPluginsConfigObject, config: KPOptionsObject): void {
+function evaluatePluginsConfig(options: ?KPPluginsConfigObject, config: KPOptionsObject): void {
   if (options) {
     pluginConfig.set(options);
     const dataModel = getModel(config);
@@ -120,12 +120,12 @@ function evaluatePluginsConfig(options: ?PKPluginsConfigObject, config: KPOption
 }
 
 /**
- * @param {UIOptionsObject} options - UI options
+ * @param {KPUIOptionsObject} options - UI options
  * @param {KPOptionsObject} config - player config
  * @private
  * @return {void}
  */
-function evaluateUIConfig(options: UIOptionsObject, config: KPOptionsObject): void {
+function evaluateUIConfig(options: KPUIOptionsObject, config: KPOptionsObject): void {
   if (options) {
     const defaultUiConfig = {
       components: {
@@ -151,7 +151,7 @@ function evaluateUIConfig(options: UIOptionsObject, config: KPOptionsObject): vo
 function _formatConfigString(config: string): Object {
   let configObj;
   try {
-    configObj = JSON.parse(config, function(key) {
+    configObj = JSON.parse(config, function (key) {
       try {
         return JSON.parse(this[key]);
       } catch (e) {
