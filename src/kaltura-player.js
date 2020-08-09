@@ -749,15 +749,6 @@ class KalturaPlayer extends FakeEventTarget {
   get crossOrigin(): ?string {
     return this._localPlayer.crossOrigin;
   }
-
-  /**
-   * Gets the player cors types.
-   * @returns {PKCorsTypes} - The player cors types.
-   * @public
-   */
-  get CorsType(): PKCorsTypes {
-    return CorsType;
-  }
 }
 
 export {KalturaPlayer};
