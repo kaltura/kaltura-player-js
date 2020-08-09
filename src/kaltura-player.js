@@ -730,6 +730,24 @@ class KalturaPlayer extends FakeEventTarget {
   _detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
   }
+
+  /**
+   * Set crossOrigin attribute.
+   * @param {?string} crossOrigin - 'anonymous', 'use-credentials' or null to remove attribute
+   * anonymous: CORS requests for this element will not have the credentials flag set.
+   * use-credentials: CORS requests for this element will have the credentials flag set; this means the request will provide credentials.
+   */
+  set crossOrigin(crossOrigin: ?string): void {
+    this._localPlayer.crossOrigin = crossOrigin;
+  }
+
+  /**
+   * Get crossOrigin attribute.
+   * @returns {?string} - 'anonymous' or 'use-credentials'
+   */
+  get crossOrigin(): ?string {
+    return this._localPlayer.crossOrigin;
+  }
 }
 
 export {KalturaPlayer};
