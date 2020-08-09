@@ -733,7 +733,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   /**
    * Set crossOrigin attribute.
-   * @param {?string} crossOrigin - 'anonymous' or 'use-credentials'
+   * @param {?string} crossOrigin - 'anonymous', 'use-credentials' or null to remove attribute
    * anonymous: CORS requests for this element will not have the credentials flag set.
    * use-credentials: CORS requests for this element will have the credentials flag set; this means the request will provide credentials.
    */
