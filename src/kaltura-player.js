@@ -28,8 +28,7 @@ import {
   TextStyle,
   Track,
   Utils,
-  registerEngineDecoratorProvider,
-  CorsType
+  registerEngineDecoratorProvider
 } from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
