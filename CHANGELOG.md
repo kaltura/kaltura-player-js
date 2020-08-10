@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.56.1](https://github.com/kaltura/kaltura-player-js/compare/v0.56.0...v0.56.1) (2020-08-10)
+
+
+### Bug Fixes
+
+* **FEC-10404:** media doesn't work properly on Safari browser - no video displayed - Regression bug ([#347](https://github.com/kaltura/kaltura-player-js/issues/347)) ([7456bee](https://github.com/kaltura/kaltura-player-js/commit/7456bee))
+
+
+
 ## [0.56.0](https://github.com/kaltura/kaltura-player-js/compare/v0.55.0...v0.56.0) (2020-08-05)
 
 
