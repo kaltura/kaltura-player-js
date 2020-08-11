@@ -3917,12 +3917,7 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-eventemitter3@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
-  integrity sha512-ivIvhpq/Y0uSjcHDcOIccjmYjGLcP09MFGE7ysAwkAvkXfpZlC985pH2/ui64DKazbTW/4kN3yqozUxlXzI6cA==
-
-eventemitter3@^4.0.0:
+eventemitter3@^4.0.0, eventemitter3@^4.0.3:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.4.tgz#b5463ace635a083d018bdc7c917b4c5f10a85384"
   integrity sha512-rlaVLnVxtxvoyLsQQFBx53YmXHDxRIzzTLbdfxqi4yocpSjAxXwkU0cScM5JgSKMqEhrZpnvQ2D9gjylR0AimQ==
@@ -4851,12 +4846,12 @@ highlight.js@^9.15.5:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
   integrity sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
 
-hls.js@^0.13.1:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.13.2.tgz#3e7dd28e3787c69c6aba42b64b11eb2c3c8c29f1"
-  integrity sha512-sIg2t4uGpWQLzuK1Iid9614WOKqxj4OYg+EbFbhhTDCsxpENBN+Du3yBFnoi+a83DuOOHdiQd1ydnti9loSGXw==
+hls.js@^0.14.8:
+  version "0.14.8"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.14.8.tgz#c2c6ca7005524c81eece316c2a4a199258bd0590"
+  integrity sha512-4fh8k/sl1SmYXsT4Om8AY5fKa5tUUtAxup2sffrSMh5MNk4Kt4FOZxbjqTGL5VwkroY1oJ9twSciNQNFbPA/WQ==
   dependencies:
-    eventemitter3 "3.1.0"
+    eventemitter3 "^4.0.3"
     url-toolkit "^2.1.6"
 
 hmac-drbg@^1.0.0:

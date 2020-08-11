@@ -56,7 +56,7 @@
     "@playkit-js/playkit-js-dash": "1.19.1",
     "@playkit-js/playkit-js-hls": "1.20.0",
     "@playkit-js/playkit-js-ui": "0.58.1",
-    "hls.js": "^0.13.1",
+    "hls.js": "^0.14.8",
     "js-logger": "^1.6.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.22.0",
     "proxy-polyfill": "^0.3.0",
