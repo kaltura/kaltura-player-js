@@ -57,7 +57,6 @@ module.exports = (env, argv) => {
       path: __dirname + '/dist',
       filename: '[name].js',
       library: 'KalturaPlayer',
-      libraryTarget: 'umd',
       umdNamedDefine: true,
       devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
     },
