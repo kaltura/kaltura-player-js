@@ -52,6 +52,16 @@ class UIWrapper {
     this._uiManager.setConfig(config, componentAlias);
   }
 
+  /**
+   * Add a component dynamically
+   *
+   * @param {KPUIComponent} component - The component to add
+   * @returns {Function} - Removal function
+   */
+  addComponent(component: KPUIComponent): Function {
+    return this._uiManager.addComponent(component);
+  }
+
   _resetErrorState(): void {
     this.setConfig({hasError: false}, 'engine');
   }
