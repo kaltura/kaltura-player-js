@@ -15,7 +15,7 @@
     "url": "https://github.com/kaltura/kaltura-player-js"
   },
   "license": "AGPL-3.0",
-  "main": "dist/kaltura-ovp-player.js",
+  "main": "dist/kaltura-ovp-player.cjs.js",
   "scripts": {
     "build:ott": "sh ./scripts/job.sh build ott",
     "build:ovp": "sh scripts/job.sh build ovp",

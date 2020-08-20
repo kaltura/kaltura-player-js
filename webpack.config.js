@@ -9,6 +9,16 @@ const playerType = process.env.PLAYER_TYPE || 'ovp';
 const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
 
 module.exports = (env, argv) => {
+  const configs = [
+    createConfig(env, argv, 'var')
+  ];
+  if (argv.mode === 'production') {
+    configs.push(createConfig(env, argv, 'commonjs2'));
+  }
+  return configs;
+};
+
+function createConfig(env, argv, target) {
   const isProd = argv.mode === 'production';
   const plugins = [
     new webpack.DefinePlugin({
@@ -55,10 +65,9 @@ module.exports = (env, argv) => {
     },
     output: {
       path: __dirname + '/dist',
-      filename: '[name].js',
+      filename: `[name]${target === 'commonjs2' ? '.cjs' : ''}.js`,
       library: 'KalturaPlayer',
-      libraryTarget: 'umd',
-      umdNamedDefine: true,
+      libraryTarget: target,
       devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
     },
     devtool: 'source-map',
