@@ -133,6 +133,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._adBreaksLayout = [];
     this._adBreak = null;
     this._ad = null;
+    this._pendingAd = null;
     this._adPlayed = false;
     this._snapback = 0;
     this._adIsLoading = false;

@@ -605,7 +605,7 @@ class KalturaPlayer extends FakeEventTarget {
         const {
           payload: {ad}
         } = event;
-        if (ad && ad.linear) {
+        if (ad && ad.linear && ad.position === 1) {
           this._eventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this._detachMediaSource());
         }
       });
