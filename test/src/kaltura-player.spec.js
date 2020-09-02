@@ -285,6 +285,7 @@ describe('kaltura player api', function () {
         kalturaPlayer.playlist.items.length.should.equal(3);
         kalturaPlayer.playlist.countdown.duration.should.equal(20);
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
+        kalturaPlayer._sourceSelected.should.be.true;
       });
     });
 

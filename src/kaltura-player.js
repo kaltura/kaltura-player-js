@@ -60,9 +60,9 @@ class KalturaPlayer extends FakeEventTarget {
     this._uiWrapper = new UIWrapper(this, options);
     this._provider = new Provider(options.provider, __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
-    this._playlistManager.configure(options.playlist);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
-    this._addBinding();
+    this._addBindings();
+    this._playlistManager.configure(options.playlist);
     this._localPlayer.configure({sources});
   }
 
@@ -238,9 +238,9 @@ class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._playbackStart = false;
-      this._localPlayer.reset();
       this._uiWrapper.reset();
       this._pluginManager.reset();
+      this._localPlayer.reset();
     }
   }
 
@@ -249,11 +249,11 @@ class KalturaPlayer extends FakeEventTarget {
     this._reset = true;
     this._firstPlay = true;
     this._playbackStart = false;
-    this._localPlayer.destroy();
     this._uiWrapper.destroy();
-    this._eventManager.destroy();
-    this._playlistManager.destroy();
     this._pluginManager.destroy();
+    this._playlistManager.destroy();
+    this._localPlayer.destroy();
+    this._eventManager.destroy();
     this._pluginsConfig = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
@@ -592,7 +592,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  _addBinding(): void {
+  _addBindings(): void {
     this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
