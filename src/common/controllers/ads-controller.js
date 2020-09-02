@@ -131,7 +131,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _addBindings(): void {
     this._eventManager.listen(this._player, AdEventType.AD_MANIFEST_LOADED, event => this._onAdManifestLoaded(event));
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_START, event => this._onAdBreakStart(event));
-    this._eventManager.listen(this._player, AdEventType.AD_LOADED, event => this._onAdLoaded(event));
+    this._eventManager.listen(this._player, AdEventType.AD_LOADED, () => this._onAdLoaded());
     this._eventManager.listen(this._player, AdEventType.AD_STARTED, event => this._onAdStarted(event));
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_END, () => this._onAdBreakEnd());
     this._eventManager.listen(this._player, AdEventType.ADS_COMPLETED, () => this._onAdsCompleted());
