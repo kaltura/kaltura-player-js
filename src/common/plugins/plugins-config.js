@@ -50,7 +50,7 @@ const getModel = (options: KPOptionsObject): Object => {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
 
     if (options.provider.env.analyticsServiceUrl) {
-      dataModel['analyticsServiceUrl'] = options.provider.env.analyticsServiceUrl;
+      dataModel['analyticsServiceUrl'] = `${options.provider.env.analyticsServiceUrl}/api_v3/index.php`;
     }
     if (dataModel['serviceUrl']) {
       dataModel['embedBaseUrl'] = dataModel['serviceUrl'].replace('api_v3', '');
