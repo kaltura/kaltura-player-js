@@ -49,8 +49,8 @@ const getModel = (options: KPOptionsObject): Object => {
   if (options.provider && options.provider.env) {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
 
-    const analyticsServiceUrl = Utils.Object.getPropertyPath(options, 'provider.env.analyticsServiceUrl')
-    if (!!analyticsServiceUrl) {
+    const analyticsServiceUrl = Utils.Object.getPropertyPath(options, 'provider.env.analyticsServiceUrl');
+    if (analyticsServiceUrl) {
       dataModel['analyticsServiceUrl'] = `${analyticsServiceUrl}/api_v3/index.php`;
     }
     if (dataModel['serviceUrl']) {
