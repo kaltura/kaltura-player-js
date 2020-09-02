@@ -238,9 +238,9 @@ class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._playbackStart = false;
-      this._localPlayer.reset();
       this._uiWrapper.reset();
       this._pluginManager.reset();
+      this._localPlayer.reset();
     }
   }
 
@@ -249,11 +249,11 @@ class KalturaPlayer extends FakeEventTarget {
     this._reset = true;
     this._firstPlay = true;
     this._playbackStart = false;
-    this._localPlayer.destroy();
     this._uiWrapper.destroy();
-    this._eventManager.destroy();
-    this._playlistManager.destroy();
     this._pluginManager.destroy();
+    this._playlistManager.destroy();
+    this._localPlayer.destroy();
+    this._eventManager.destroy();
     this._pluginsConfig = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
