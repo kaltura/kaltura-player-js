@@ -278,7 +278,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._adBreak = event.payload.adBreak;
   }
 
-  _onAdLoaded(event: FakeEvent): void {
+  _onAdLoaded(): void {
     this._adIsLoading = false;
   }
 
