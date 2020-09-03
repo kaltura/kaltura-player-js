@@ -46,7 +46,6 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginsUiComponents: Array<KPUIComponent> = [];
   _reset: boolean = true;
   _firstPlay: boolean = true;
-  _playbackStart: boolean = false;
   _sourceSelected: boolean = false;
 
   constructor(options: KPOptionsObject) {
@@ -214,10 +213,6 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   play(): void {
-    if (!this._playbackStart) {
-      this._playbackStart = true;
-      this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_START));
-    }
     this._localPlayer.play();
   }
 
@@ -237,7 +232,6 @@ class KalturaPlayer extends FakeEventTarget {
     if (!this._reset) {
       this._reset = true;
       this._firstPlay = true;
-      this._playbackStart = false;
       this._uiWrapper.reset();
       this._pluginManager.reset();
       this._localPlayer.reset();
@@ -248,7 +242,6 @@ class KalturaPlayer extends FakeEventTarget {
     const targetId = this.config.ui.targetId;
     this._reset = true;
     this._firstPlay = true;
-    this._playbackStart = false;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
     this._playlistManager.destroy();
