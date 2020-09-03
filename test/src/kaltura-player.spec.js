@@ -599,6 +599,33 @@ describe('kaltura player api', function () {
   describe('events', function () {
     let player;
 
+    it('should fire PLAYBACK_START on play', done => {
+      player = new Player({
+        ui: {},
+        provider: {}
+      });
+      player.addEventListener(player.Event.PLAYBACK_START, () => {
+        done();
+      });
+      player.play();
+    });
+
+    it('should fire PLAYBACK_START on autoplay', done => {
+      player = new Player({
+        ui: {},
+        provider: {}
+      });
+      player.addEventListener(player.Event.PLAYBACK_START, () => {
+        done();
+      });
+      player.configure({
+        sources: SourcesConfig.Mp4,
+        playback: {
+          autoplay: true
+        }
+      });
+    });
+
     it('should fire auto play failed and show the poster once get AD_AUTOPLAY_FAILED', done => {
       player = new Player({
         ui: {},
