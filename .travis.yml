@@ -36,6 +36,7 @@ jobs:
       if: (tag IS present)
       name: 'Release'
       script:
+        - conventional-github-releaser -p angular -t $GH_TOKEN
         - currentVersion=$(npx -c 'echo "$npm_package_version"')
         - chmod +x ./scripts/after_deploy.sh
         - ./scripts/after_deploy.sh "$currentVersion" "$JENKINS_TAG_TOKEN"
