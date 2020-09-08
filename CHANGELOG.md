@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.57.0](https://github.com/kaltura/kaltura-player-js/compare/v0.56.1...v0.57.0) (2020-09-08)
+
+
+### Bug Fixes
+
+* **FEC-10161:** add kava analytics url from server response ([#355](https://github.com/kaltura/kaltura-player-js/issues/355)) ([e4ce3f1](https://github.com/kaltura/kaltura-player-js/commit/e4ce3f1))
+* **FEC-10275:** Bumper incorrectly recognised as ad ([#352](https://github.com/kaltura/kaltura-player-js/issues/352)) ([716d01a](https://github.com/kaltura/kaltura-player-js/commit/716d01a))
+* **FEC-10417:** playlist by sources stuck after press Play button when set IMA or bumper plugins ([#349](https://github.com/kaltura/kaltura-player-js/issues/349)) ([b2256f3](https://github.com/kaltura/kaltura-player-js/commit/b2256f3))
+* **FEC-10455:** incorrect order in reset and destroy process ([#353](https://github.com/kaltura/kaltura-player-js/issues/353)) ([fc9bf96](https://github.com/kaltura/kaltura-player-js/commit/fc9bf96))
+* **FEC-10468:** PLAYBACK_START not fired on autoplay ([#356](https://github.com/kaltura/kaltura-player-js/issues/356)) ([78c3ed5](https://github.com/kaltura/kaltura-player-js/commit/78c3ed5))
+
+
+### Build System
+
+* **FEC-10064:** add automatic release notes ([#357](https://github.com/kaltura/kaltura-player-js/issues/357)) ([b0b6988](https://github.com/kaltura/kaltura-player-js/commit/b0b6988))
+
+
+### Features
+
+* **FEC-10076:** add support for dynamic injection ([#351](https://github.com/kaltura/kaltura-player-js/issues/351)) ([b9e9a31](https://github.com/kaltura/kaltura-player-js/commit/b9e9a31))
+* **FEC-10296:** upgrade hls.js to 0.14.9 ([#348](https://github.com/kaltura/kaltura-player-js/issues/348)) ([2d0ec6e](https://github.com/kaltura/kaltura-player-js/commit/2d0ec6e))
+* **FEC-10435:** upgrade shaka for fixing live issue and optimizations for smartTV ([#354](https://github.com/kaltura/kaltura-player-js/issues/354)) ([90ce625](https://github.com/kaltura/kaltura-player-js/commit/90ce625))
+
+
+
 ### [0.56.1](https://github.com/kaltura/kaltura-player-js/compare/v0.56.0...v0.56.1) (2020-08-10)
 
 
