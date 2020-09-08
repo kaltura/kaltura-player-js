@@ -1,6 +1,21 @@
-# Changelog
+# Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/kaltura/kaltura-player-js/compare/v0.57.0...v1.0.0) (2020-09-08)
+
+
+### Features
+
+* **FEC-10347:** expose kaltura player as a global variable instead of UMD ([#350](https://github.com/kaltura/kaltura-player-js/issues/350)) ([b6253ff](https://github.com/kaltura/kaltura-player-js/commit/b6253ff))
+
+
+### BREAKING CHANGES
+
+* **FEC-10347:** kaltura-player is not UMD anymore
+
+
 
 ## [0.57.0](https://github.com/kaltura/kaltura-player-js/compare/v0.56.1...v0.57.0) (2020-09-08)
 
