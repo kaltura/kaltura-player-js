@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/kaltura/kaltura-player-js"
   },
-  "license": "AGPLV3",
+  "license": "AGPL-3.0",
   "main": "dist/kaltura-ovp-player.js",
   "scripts": {
     "build:ott": "sh ./scripts/job.sh build ott",
@@ -52,10 +52,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.64.0-canary.950da7a",
-    "@playkit-js/playkit-js-dash": "1.19.1",
-    "@playkit-js/playkit-js-hls": "1.20.0",
-    "@playkit-js/playkit-js-ui": "0.58.1",
+    "@playkit-js/playkit-js": "0.64.1",
+    "@playkit-js/playkit-js-dash": "1.20.1",
+    "@playkit-js/playkit-js-hls": "1.21.1",
+    "@playkit-js/playkit-js-ui": "0.59.1",
     "hls.js": "^0.14.9",
     "js-logger": "^1.6.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.22.1",
