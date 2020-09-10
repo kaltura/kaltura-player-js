@@ -292,6 +292,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureExternalStreamRedirect(defaultOptions);
   maybeSetFullScreenConfig(defaultOptions);
   maybeSetCapabilitiesForIos(defaultOptions);
+  maybeConfigureAirplay(defaultOptions);
   return defaultOptions;
 }
 
@@ -635,6 +636,22 @@ function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
   const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
   if (Env.device.model === 'iPhone' && playsinline === false) {
     setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
+  }
+}
+
+/**
+ * Configures airplay plugin in case we're running in Safari browser.
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeConfigureAirplay(options: KPOptionsObject): void {
+  if (Env.isSafari) {
+    Utils.Object.mergeDeep(options, {
+      plugins: {
+        airplay: {}
+      }
+    });
   }
 }
 
