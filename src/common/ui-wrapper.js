@@ -62,6 +62,10 @@ class UIWrapper {
     return this._uiManager.addComponent(component);
   }
 
+  get managers(): Object {
+    return this._uiManager.managers;
+  }
+
   _resetErrorState(): void {
     this.setConfig({hasError: false}, 'engine');
   }

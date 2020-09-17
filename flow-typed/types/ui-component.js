@@ -2,7 +2,7 @@
 declare type KPUIComponent = {
   label: string,
   presets: Array<string>,
-  container: string,
+  area: string,
   get: Function,
   props: {},
   beforeComponent?: string,
