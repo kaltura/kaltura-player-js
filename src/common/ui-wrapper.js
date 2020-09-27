@@ -1,17 +1,16 @@
 // @flow
 import {UIManager} from '@playkit-js/playkit-js-ui';
-import {Env, Utils} from '@playkit-js/playkit-js';
+import {Env, Utils, getLogger} from '@playkit-js/playkit-js';
 import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
 import {KalturaPlayer} from '../kaltura-player';
-import getLogger from './utils/logger';
 
 /**
  * The logger of the UIWrapper class.
  * @private
  * @const
  */
-const logger = getLogger('UIWrapper');
 class UIWrapper {
+  static _logger = getLogger('UIWrapper');
   _uiManager: UIManager;
   _disabled: boolean = false;
 
@@ -80,10 +79,10 @@ class UIWrapper {
     if (config.css) {
       Utils.Dom.loadStyleSheetAsync(config.css).then(
         () => {
-          logger.debug(`external css was loaded successfully`);
+          UIWrapper._logger.debug(`external css was loaded successfully`);
         },
         () => {
-          logger.error(`external css failed to load`);
+          UIWrapper._logger.error(`external css failed to load`);
         }
       );
     }

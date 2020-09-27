@@ -1,5 +1,5 @@
 // @flow
-import getLogger from '../utils/logger';
+import {getLogger} from '@playkit-js/playkit-js';
 
 const STORAGE_PREFIX = __NAME__ + '_';
 

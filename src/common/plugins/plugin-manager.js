@@ -1,19 +1,18 @@
 //@flow
 import {BasePlugin} from '.';
-import getLogger from '../utils/logger';
-import {Error} from '@playkit-js/playkit-js';
+import {Error, getLogger} from '@playkit-js/playkit-js';
 
 /**
  * The logger of the PluginManager class.
  * @private
  * @const
  */
-const logger = getLogger('PluginManager');
 
 /** The PluginManager responsible for register plugins definitions and store plugins instances.
  * @classdesc
  */
 export class PluginManager {
+  static _logger = getLogger('PluginManager');
   /**
    * The registry of the plugins.
    * Maps plugin's name to his class.
@@ -49,15 +48,15 @@ export class PluginManager {
    */
   static register(name: string, handler: Function): boolean {
     if (typeof handler !== 'function' || handler.prototype instanceof BasePlugin === false) {
-      logger.error(`Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`);
+      PluginManager._logger.error(`Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`);
       return false;
     }
     if (!PluginManager._registry.has(name)) {
       PluginManager._registry.set(name, handler);
-      logger.debug(`Plugin <${name}> has been registered successfully`);
+      PluginManager._logger.debug(`Plugin <${name}> has been registered successfully`);
       return true;
     }
-    logger.debug(`Plugin <${name}> is already registered, do not register again`);
+    PluginManager._logger.debug(`Plugin <${name}> is already registered, do not register again`);
     return false;
   }
 
@@ -71,7 +70,7 @@ export class PluginManager {
   static unRegister(name: string): void {
     if (PluginManager._registry.has(name)) {
       PluginManager._registry.delete(name);
-      logger.debug(`Unregistered <${name}> plugin.`);
+      PluginManager._logger.debug(`Unregistered <${name}> plugin.`);
     }
   }
 
@@ -85,7 +84,7 @@ export class PluginManager {
    */
   load(name: string, player: Object, config: Object = {}): boolean {
     if (!PluginManager._registry.has(name)) {
-      logger.warn(`Plugin <${name}> loading failed, plugin is not registered`);
+      PluginManager._logger.warn(`Plugin <${name}> loading failed, plugin is not registered`);
       throw new Error(Error.Severity.RECOVERABLE, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_NOT_REGISTERED_PLUGIN, name);
     }
     let pluginClass = PluginManager._registry.get(name);
@@ -101,10 +100,10 @@ export class PluginManager {
         throw new Error(Error.Severity.RECOVERABLE, Error.Category.PLAYER, Error.Code.PLUGIN_LOAD_FAILED, e);
       }
       this._isDisabledPluginMap.set(name, false);
-      logger.debug(`Plugin <${name}> has been loaded`);
+      PluginManager._logger.debug(`Plugin <${name}> has been loaded`);
       return true;
     }
-    logger.debug(`Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`);
+    PluginManager._logger.debug(`Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`);
     return false;
   }
 
