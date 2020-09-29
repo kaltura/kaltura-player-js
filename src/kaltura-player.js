@@ -58,7 +58,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, options);
-    this._provider = new Provider(options.provider, __VERSION__, getLogger);
+    this._provider = new Provider(Utils.Object.mergeDeep(options.provider, {logger: getLogger}), __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();

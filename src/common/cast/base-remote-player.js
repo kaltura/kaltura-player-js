@@ -48,7 +48,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return true;
   }
 
-  static _logger;
+  static _logger: any;
   _remoteControl: RemoteControl;
   _playerConfig: Object;
   _castConfig: Object;

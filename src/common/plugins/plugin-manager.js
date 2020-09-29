@@ -48,7 +48,9 @@ export class PluginManager {
    */
   static register(name: string, handler: Function): boolean {
     if (typeof handler !== 'function' || handler.prototype instanceof BasePlugin === false) {
-      PluginManager._logger.error(`Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`);
+      PluginManager._logger.error(
+        `Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`
+      );
       return false;
     }
     if (!PluginManager._registry.has(name)) {

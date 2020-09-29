@@ -17,11 +17,12 @@ class UIWrapper {
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     const config: KPUIOptionsObject = options.ui;
     config.uiComponents = [...(player.uiComponents || []), ...(config.uiComponents || [])];
+    config.logger = getLogger;
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
     } else {
-      this._uiManager = new UIManager(player, config, getLogger);
+      this._uiManager = new UIManager(player, config);
       if (config.customPreset) {
         this._uiManager.buildCustomUI(config.customPreset);
       } else {
