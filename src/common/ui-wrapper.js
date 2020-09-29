@@ -21,7 +21,7 @@ class UIWrapper {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
     } else {
-      this._uiManager = new UIManager(player, config);
+      this._uiManager = new UIManager(player, config, getLogger);
       if (config.customPreset) {
         this._uiManager.buildCustomUI(config.customPreset);
       } else {
