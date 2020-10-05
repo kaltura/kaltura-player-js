@@ -1,9 +1,8 @@
 //@flow
 import {KalturaPlayer as Player} from '../../kaltura-player';
-import getLogger from '../utils/logger';
 import {Ad} from '../ads';
 import {AdBreak} from '../ads';
-import {Error, EventManager, AdEventType, FakeEvent, FakeEventTarget, Html5EventType, CustomEventType} from '@playkit-js/playkit-js';
+import {Error, EventManager, AdEventType, FakeEvent, FakeEventTarget, Html5EventType, CustomEventType, getLogger} from '@playkit-js/playkit-js';
 
 declare type RunTimeAdBreakObject = KPAdBreakObject & {
   played: boolean

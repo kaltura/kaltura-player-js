@@ -1,6 +1,6 @@
 // @flow
 import PolyfillManager from './polyfill-manager';
-import getLogger from '../utils/logger';
+import {getLogger} from '@playkit-js/playkit-js';
 
 export default class PerformanceNowPolyfill {
   static id: string = 'performance.now';

@@ -1,9 +1,8 @@
 // @flow
 /* eslint no-unused-vars: 0 */
 import {IRemotePlayer} from './remote-player';
-import {EventManager, FakeEventTarget, TextStyle, Track, Utils} from '@playkit-js/playkit-js';
+import {EventManager, FakeEventTarget, TextStyle, Track, Utils, getLogger} from '@playkit-js/playkit-js';
 import {RemoteControl} from './remote-control';
-import getLogger from '../utils/logger';
 import {RemoteSession} from './remote-session';
 
 /**
@@ -49,20 +48,20 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return true;
   }
 
+  static _logger: any;
   _remoteControl: RemoteControl;
   _playerConfig: Object;
   _castConfig: Object;
-  _logger: any;
   _eventManager: EventManager;
 
   constructor(name: string, castConfig: Object, remoteControl: RemoteControl) {
     super();
     this._playerConfig = {};
-    this._logger = getLogger(name);
+    BaseRemotePlayer._logger = getLogger(name);
     this._remoteControl = remoteControl;
     this._castConfig = Utils.Object.mergeDeep({}, this.constructor.defaultConfig, castConfig);
     this._eventManager = new EventManager();
-    this._logger.debug(`Initialized`);
+    BaseRemotePlayer._logger.debug(`Initialized`);
   }
 
   /**

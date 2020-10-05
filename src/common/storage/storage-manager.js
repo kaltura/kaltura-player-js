@@ -1,7 +1,6 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
-import getLogger from '../utils/logger';
-import {EventManager, Utils} from '@playkit-js/playkit-js';
+import {EventManager, Utils, getLogger} from '@playkit-js/playkit-js';
 
 export default class StorageManager {
   static StorageKeys: {[key: string]: string} = {
@@ -97,9 +96,9 @@ export default class StorageManager {
     const storageSize = StorageWrapper.size;
     const hasStorage = storageSize !== 0;
     if (hasStorage) {
-      this._logger.debug('Storage found with size of ', storageSize);
+      StorageManager._logger.debug('Storage found with size of ', storageSize);
     } else {
-      this._logger.debug('No storage found');
+      StorageManager._logger.debug('No storage found');
     }
     return hasStorage;
   }
@@ -113,7 +112,7 @@ export default class StorageManager {
   static getStorageConfig(): Object {
     const values = StorageManager._getExistingValues();
     const storageConfig = StorageManager._buildStorageConfig(values);
-    this._logger.debug('Gets storage config', storageConfig);
+    StorageManager._logger.debug('Gets storage config', storageConfig);
     return storageConfig;
   }
 

@@ -2,7 +2,6 @@
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
-import getLogger from './common/utils/logger';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins';
 import {addKalturaPoster} from 'poster';
@@ -28,10 +27,14 @@ import {
   TextStyle,
   Track,
   Utils,
-  registerEngineDecoratorProvider
+  registerEngineDecoratorProvider,
+  getLogger,
+  LogLevel
 } from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
+  static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
+
   _localPlayer: Player;
   _provider: Provider;
   _uiWrapper: UIWrapper;
@@ -40,7 +43,6 @@ class KalturaPlayer extends FakeEventTarget {
   _eventManager: EventManager = new EventManager();
   _mediaInfo: ?ProviderMediaInfoObject = null;
   _remotePlayer: ?BaseRemotePlayer = null;
-  _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
   _pluginManager: PluginManager = new PluginManager();
   _pluginsConfig: KPPluginsConfigObject = {};
   _pluginsUiComponents: Array<KPUIComponent> = [];
@@ -56,8 +58,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this.configure({plugins});
-    this._uiWrapper = new UIWrapper(this, options);
-    this._provider = new Provider(options.provider, __VERSION__);
+    this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
+    this._provider = new Provider(Utils.Object.mergeDeep(options.provider, {logger: {getLogger, LogLevel}}), __VERSION__);
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
@@ -66,7 +68,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
-    this._logger.debug('loadMedia', mediaInfo);
+    KalturaPlayer._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
     this._localPlayer.loadingMedia = true;
@@ -87,7 +89,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   setMedia(mediaConfig: ProviderMediaConfigObject): void {
-    this._logger.debug('setMedia', mediaConfig);
+    KalturaPlayer._logger.debug('setMedia', mediaConfig);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
@@ -114,7 +116,7 @@ class KalturaPlayer extends FakeEventTarget {
    * kalturaPlayer.loadPlaylist({playlistId: '123456'}, {options: {autoContinue: false}});
    */
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
-    this._logger.debug('loadPlaylist', playlistInfo);
+    KalturaPlayer._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     const providerResult = this._provider.getPlaylistConfig(playlistInfo);
     providerResult.then(
@@ -138,7 +140,7 @@ class KalturaPlayer extends FakeEventTarget {
    * kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {options: {autoContinue: false}});
    */
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
-    this._logger.debug('loadPlaylistByEntryList', entryList);
+    KalturaPlayer._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     const providerResult = this._provider.getEntryListConfig(entryList);
     providerResult.then(
@@ -152,7 +154,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
-    this._logger.debug('setPlaylist', playlistData);
+    KalturaPlayer._logger.debug('setPlaylist', playlistData);
     const config = {playlist: playlistData, plugins: {}};
     Object.keys(this._pluginsConfig).forEach(name => {
       config.plugins[name] = {};
