@@ -52,12 +52,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.64.1",
-    "@playkit-js/playkit-js-dash": "1.20.1",
+    "@playkit-js/playkit-js": "0.64.2",
+    "@playkit-js/playkit-js-dash": "1.20.2",
     "@playkit-js/playkit-js-hls": "1.21.1",
-    "@playkit-js/playkit-js-ui": "0.59.1",
+    "@playkit-js/playkit-js-ui": "0.60.0",
     "hls.js": "^0.14.9",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.22.1",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.22.2",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "^3.0.4"
   },
