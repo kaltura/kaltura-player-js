@@ -1,6 +1,21 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.0.1](https://github.com/kaltura/kaltura-player-js/compare/v1.0.0...v1.0.1) (2020-10-06)
+
+
+### Bug Fixes
+
+* incorrect order in import dependencies break IE11 ([#362](https://github.com/kaltura/kaltura-player-js/issues/362)) ([6da6518](https://github.com/kaltura/kaltura-player-js/commit/6da6518))
+* **FEC-10524:** get logger from playkit and set to ui and provider ([#360](https://github.com/kaltura/kaltura-player-js/issues/360)) ([7387569](https://github.com/kaltura/kaltura-player-js/commit/7387569))
+
+
+### Build System
+
+* upgrade provider version to master on canary version ([#361](https://github.com/kaltura/kaltura-player-js/issues/361)) ([88435a5](https://github.com/kaltura/kaltura-player-js/commit/88435a5))
+
+
 
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/kaltura/kaltura-player-js/compare/v0.57.0...v1.0.0) (2020-09-08)
