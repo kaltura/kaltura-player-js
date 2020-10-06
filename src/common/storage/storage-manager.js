@@ -69,7 +69,7 @@ export default class StorageManager {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
         StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_STYLE, textStyle);
       } catch (e) {
-        this._logger.error(e.message);
+        StorageManager._logger.error(e.message);
       }
     });
 
