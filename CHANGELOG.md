@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/kaltura/kaltura-player-js/compare/v1.0.1...v1.0.2) (2020-10-06)
+
+
+### Tests
+
+* textStyle from kaltura player has get method which doesn't exist on textStyle object ([#363](https://github.com/kaltura/kaltura-player-js/issues/363)) ([d463067](https://github.com/kaltura/kaltura-player-js/commit/d463067))
+
+
+
 ### [1.0.1](https://github.com/kaltura/kaltura-player-js/compare/v1.0.0...v1.0.1) (2020-10-06)
 
 
