@@ -71,20 +71,25 @@ var mediaInfo = {
   assetReferenceType: string,
   protocol: string,
   fileIds: string,
+  streamerType: string,
+  urlType: string,
   formats: Array<string>
 }
 ```
 
 **Parameters**
 
-| Name                 | Type            | Required | Description                            | Possible Values                                        | Default Value |
-| -------------------- | --------------- | -------- | -------------------------------------- | ------------------------------------------------------ | ------------- |
+| Name                 | Type            | Required | Description                            | Possible Values                                                    | Default Value |
+| -------------------- | --------------- | -------- | -------------------------------------- | ------------------------------------------------------------------ | ------------- |
 | `entryId`            | `string`        | V        | The entry ID of the media              |
-| `mediaType`          | `string`        |          | The type of the specific media         | `"media"`, `"epg"`, `"recording"`                      | `"media"`     |
-| `assetReferenceType` | `string`        |          | The asset type of the specific media   | `"media"`, `"epg_internal"`, `"epg_external"`          | `"media"`     |
-| `contextType`        | `string`        |          | The playback context type              | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"` | `"PLAYBACK"`  |
+| `mediaType`          | `string`        |          | The type of the specific media         | `"media"`, `"epg"`, `"recording"`                                  | `"media"`     |
+| `assetReferenceType` | `string`        |          | The asset type of the specific media   | `"media"`, `"epg_internal"`, `"epg_external"`                      | `"media"`     |
+| `contextType`        | `string`        |          | The playback context type              | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"`             | `"PLAYBACK"`  |
 | `ks`                 | `string`        |          | The KS (Kaltura Session) secret        |
-| `protocol`           | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                    |
+| `protocol`           | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                                |
+| `fileIds`            | `string`        |          | List of comma-separated media file IDs |
+| `streamerType`       | `string`        |          | The playback streamer type             | `"applehttp"`, `"mpegdash"`, `"url"`, `"smothstreaming"`, `"none"` |
+| `urlType     `       | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
 | `fileIds`            | `string`        |          | List of comma-separated media file IDs |
 | `formats`            | `Array<string>` |          | Device types as defined in the system. |
 
