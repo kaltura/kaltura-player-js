@@ -90,7 +90,6 @@ var mediaInfo = {
 | `fileIds`            | `string`        |          | List of comma-separated media file IDs |
 | `streamerType`       | `string`        |          | The playback streamer type             | `"applehttp"`, `"mpegdash"`, `"url"`, `"smothstreaming"`, `"none"` |
 | `urlType     `       | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
-| `fileIds`            | `string`        |          | List of comma-separated media file IDs |
 | `formats`            | `Array<string>` |          | Device types as defined in the system. |
 
 ## Examples
