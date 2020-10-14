@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/kaltura/kaltura-player-js/compare/v1.0.2...v1.0.3) (2020-10-14)
+
+
+### Bug Fixes
+
+* DRM doesn't play on edge chromium ([#364](https://github.com/kaltura/kaltura-player-js/issues/364)) ([cc4cce4](https://github.com/kaltura/kaltura-player-js/commit/cc4cce4))
+
+
+
 ### [1.0.2](https://github.com/kaltura/kaltura-player-js/compare/v1.0.1...v1.0.2) (2020-10-06)
 
 
