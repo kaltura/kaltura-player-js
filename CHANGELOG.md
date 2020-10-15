@@ -1,6 +1,39 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.0.3](https://github.com/kaltura/kaltura-player-js/compare/v1.0.2...v1.0.3) (2020-10-14)
+
+
+### Bug Fixes
+
+* DRM doesn't play on edge chromium ([#364](https://github.com/kaltura/kaltura-player-js/issues/364)) ([cc4cce4](https://github.com/kaltura/kaltura-player-js/commit/cc4cce4))
+
+
+
+### [1.0.2](https://github.com/kaltura/kaltura-player-js/compare/v1.0.1...v1.0.2) (2020-10-06)
+
+
+### Tests
+
+* textStyle from kaltura player has get method which doesn't exist on textStyle object ([#363](https://github.com/kaltura/kaltura-player-js/issues/363)) ([d463067](https://github.com/kaltura/kaltura-player-js/commit/d463067))
+
+
+
+### [1.0.1](https://github.com/kaltura/kaltura-player-js/compare/v1.0.0...v1.0.1) (2020-10-06)
+
+
+### Bug Fixes
+
+* incorrect order in import dependencies break IE11 ([#362](https://github.com/kaltura/kaltura-player-js/issues/362)) ([6da6518](https://github.com/kaltura/kaltura-player-js/commit/6da6518))
+* **FEC-10524:** get logger from playkit and set to ui and provider ([#360](https://github.com/kaltura/kaltura-player-js/issues/360)) ([7387569](https://github.com/kaltura/kaltura-player-js/commit/7387569))
+
+
+### Build System
+
+* upgrade provider version to master on canary version ([#361](https://github.com/kaltura/kaltura-player-js/issues/361)) ([88435a5](https://github.com/kaltura/kaltura-player-js/commit/88435a5))
+
+
 
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/kaltura/kaltura-player-js/compare/v0.57.0...v1.0.0) (2020-09-08)

@@ -55,6 +55,7 @@ jobs:
         - yarn upgrade @playkit-js/playkit-js-dash@canary
         - yarn upgrade @playkit-js/playkit-js-hls@canary
         - yarn upgrade @playkit-js/playkit-js-ui@canary
+        - yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
         - yarn install
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1

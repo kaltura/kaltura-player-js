@@ -1,6 +1,5 @@
 //@flow
-import getLogger from '../utils/logger';
-import {Error, EventManager, FakeEvent, Utils} from '@playkit-js/playkit-js';
+import {Error, EventManager, FakeEvent, Utils, getLogger} from '@playkit-js/playkit-js';
 
 /** The BasePlugin responsible to implement the plugin interface.
  * Contains several default implementations.
@@ -8,6 +7,7 @@ import {Error, EventManager, FakeEvent, Utils} from '@playkit-js/playkit-js';
  * @classdesc
  */
 export class BasePlugin implements IPlugin {
+  logger: any;
   /**
    * The runtime configuration of the plugin.
    * @member
@@ -22,7 +22,6 @@ export class BasePlugin implements IPlugin {
    * The logger of the plugin.
    * @member
    */
-  logger: any;
   /**
    * Reference to the actual player.
    * @member

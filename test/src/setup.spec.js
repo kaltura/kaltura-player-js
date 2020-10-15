@@ -81,7 +81,8 @@ describe('setup', function () {
     };
     sandbox.stub(StorageWrapper, 'getItem').withArgs('textStyle').returns(textStyle);
     kalturaPlayer = setup(config);
-    kalturaPlayer.textStyle.should.deep.equal(textStyle);
+    const textStyleObj = JSON.parse(JSON.stringify(kalturaPlayer.textStyle));
+    textStyleObj.should.deep.equal(textStyle);
   });
 
   it('should configure sources', function (done) {

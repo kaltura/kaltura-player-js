@@ -1,10 +1,20 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme} from '@playkit-js/playkit-js';
+import {
+  Env,
+  TextStyle,
+  Utils,
+  setCapabilities,
+  EngineType,
+  DrmScheme,
+  getLogger,
+  LogLevel,
+  setLogHandler,
+  setLogLevel as _setLogLevel,
+  type LogLevelObject
+} from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
-import type {LogLevelObject} from './logger';
-import getLogger, {LogLevel, setLogHandler, setLogLevel as _setLogLevel} from './logger';
 import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';

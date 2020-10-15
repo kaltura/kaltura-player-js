@@ -1,8 +1,7 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
+import {FakeEvent, Utils, EventManager, getLogger} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
-import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
 import {addKalturaPoster} from 'poster';
@@ -13,7 +12,7 @@ import {addKalturaPoster} from 'poster';
  * @param {KPOptionsObject} options - The player config object
  */
 class PlaylistManager {
-  _logger: any = getLogger('PlaylistManager');
+  static _logger: any = getLogger('PlaylistManager');
   _player: KalturaPlayer;
   _eventManager: EventManager;
   _playlist: Playlist;
@@ -91,7 +90,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   playNext(): void {
-    this._logger.debug('playNext');
+    PlaylistManager._logger.debug('playNext');
     const next = this._playlist.getNext(true);
     if (next.item) {
       this._setItem(next.item, next.index);
@@ -105,7 +104,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   playPrev(): void {
-    this._logger.debug('playPrev');
+    PlaylistManager._logger.debug('playPrev');
     const prev = this._playlist.prev;
     if (prev.item) {
       this._setItem(prev.item, prev.index);
@@ -120,7 +119,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   playItem(index: number): void {
-    this._logger.debug(`playItem(${index})`);
+    PlaylistManager._logger.debug(`playItem(${index})`);
     const item = this._playlist.items[index];
     if (item) {
       this._setItem(item, index);
@@ -254,7 +253,7 @@ class PlaylistManager {
   }
 
   _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
-    this._logger.debug(`Playing item number ${index}`, activeItem);
+    PlaylistManager._logger.debug(`Playing item number ${index}`, activeItem);
     const playback: Object = {loop: false};
     if (this._playlist.current.item) {
       // from the second item onwards
