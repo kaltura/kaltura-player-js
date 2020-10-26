@@ -322,28 +322,21 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this._adIsLoading) {
       return;
     }
+    let playbackEndedHandler;
+    const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
+    const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
+    const bumperCompletePromise = bumperCtrl ? bumperCtrl.onPlaybackEnded() : Promise.resolve();
     if (!(this._adBreaksLayout.includes(-1) || this._adBreaksLayout.includes('100%'))) {
-      const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
-      if (adCtrl) {
-        adCtrl.onPlaybackEnded().finally(() => {
-          this._allAdsCompleted = true;
-        });
-      } else {
-        this._allAdsCompleted = true;
-      }
+      playbackEndedHandler = () => (this._allAdsCompleted = true);
     } else {
-      const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
-      const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
-      const bumperCompletePromise = bumperCtrl ? bumperCtrl.onPlaybackEnded() : Promise.resolve();
-      // $FlowFixMe
-      bumperCompletePromise.finally(() => {
-        adCtrl &&
-          // $FlowFixMe
-          adCtrl.onPlaybackEnded().finally(() => {
-            this._handleConfiguredPostroll();
-          });
-      });
+      playbackEndedHandler = () => this._handleConfiguredPostroll();
     }
+    // $FlowFixMe
+    bumperCompletePromise.finally(() => {
+      adCtrl &&
+        // $FlowFixMe
+        adCtrl.onPlaybackEnded().finally(playbackEndedHandler);
+    });
   }
 
   _onPlaybackEnded(): void {
