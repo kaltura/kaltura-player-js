@@ -322,21 +322,20 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this._adIsLoading) {
       return;
     }
-    let playbackEndedHandler;
     const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
     const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
     const bumperCompletePromise = bumperCtrl && typeof bumperCtrl.onPlaybackEnded === 'function' ? bumperCtrl.onPlaybackEnded() : Promise.resolve();
     const adCompletePromise = adCtrl && typeof adCtrl.onPlaybackEnded === 'function' ? adCtrl.onPlaybackEnded() : Promise.resolve();
     if (!(this._adBreaksLayout.includes(-1) || this._adBreaksLayout.includes('100%'))) {
-      playbackEndedHandler = () => (this._allAdsCompleted = true);
+      this._allAdsCompleted = true;
     } else {
-      playbackEndedHandler = () => this._handleConfiguredPostroll();
-    }
-    // $FlowFixMe
-    bumperCompletePromise.finally(() => {
+      const playbackEndedHandler = () => this._handleConfiguredPostroll();
       // $FlowFixMe
-      adCompletePromise.finally(playbackEndedHandler);
-    });
+      bumperCompletePromise.finally(() => {
+        // $FlowFixMe
+        adCompletePromise.finally(playbackEndedHandler);
+      });
+    }
   }
 
   _onPlaybackEnded(): void {
