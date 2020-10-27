@@ -4,7 +4,7 @@ declare type KPUIComponent = {
   presets: Array<string>,
   area: string,
   get: Function,
-  props: {},
+  props?: {},
   beforeComponent?: string,
   afterComponent?: string,
   replaceComponent?: string
