@@ -5,18 +5,18 @@
     }
   },
   "ignore": ["node_modules/**/*"],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-flow-strip-types",
-    "@babel/plugin-transform-property-mutators",
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-proposal-class-properties",
+  "plugins": ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-proposal-class-properties"],
+  "presets": [
     [
-      "@babel/plugin-transform-classes",
+      "@babel/preset-env",
       {
-        "loose": true
+        "loose": true,
+        "bugfixes": true,
+        "targets": {
+          "browsers": ["chrome >= 47", "firefox >= 51", "ie >= 11", "safari >= 8", "ios >= 8", "android >= 4"]
+        }
       }
-    ]
-  ],
-  "presets": ["@babel/preset-env", "@babel/preset-flow"]
+    ],
+    "@babel/preset-flow"
+  ]
 }
