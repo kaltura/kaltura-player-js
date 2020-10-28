@@ -61,8 +61,31 @@ class UIWrapper {
     return this._uiManager.addComponent(component);
   }
 
-  get managers(): Object {
-    return this._uiManager.managers;
+  /**
+   * @param {string} name - the manager name
+   * @param {Object} manager - the manager object
+   * @returns {void}
+   */
+  registerManager(name: string, manager: Object): void {
+    this._uiManager.registerManager(name, manager);
+  }
+
+  /**
+   *
+   * @param {string} name - the manager name
+   * @returns {Object} - the manager object
+   */
+  getManager(name: string): Object | void {
+    return this._uiManager.getManager(name);
+  }
+
+  /**
+   *
+   * @param {string} name - the manager name
+   * @returns {boolean} - if the manager exist
+   */
+  hasManager(name: string): boolean {
+    return this._uiManager.hasManager(name);
   }
 
   _resetErrorState(): void {
