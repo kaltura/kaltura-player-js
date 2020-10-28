@@ -10,8 +10,6 @@ import * as providers from 'playkit-js-providers';
 // Import media source adapters
 import '@playkit-js/playkit-js-hls';
 import '@playkit-js/playkit-js-dash';
-// Import shaka-player
-import * as shaka from 'shaka-player';
 // Import setup method
 import {setup} from './setup';
 import {getPlayers, getPlayer} from './proxy';
@@ -47,7 +45,6 @@ export {
   ui,
   providers,
   setup,
-  shaka,
   cast,
   playlist,
   Ad,
