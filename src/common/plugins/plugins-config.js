@@ -26,7 +26,7 @@ const isValueEvaluated = (value: any): boolean =>
  */
 const removeUnevaluatedExpression = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
-    if (typeof value !== 'function' && Utils.Object.isObject(value) && !Utils.Object.isClassInstance(value)) {
+    if (Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value)) {
       product[key] = removeUnevaluatedExpression(value);
     } else if (Array.isArray(value)) {
       product[key] = value.filter(index => isValueEvaluated(index));
