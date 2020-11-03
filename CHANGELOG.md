@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/kaltura/kaltura-player-js/compare/v1.0.3...v1.0.4) (2020-11-03)
+
+
+### Bug Fixes
+
+* **FEC-10469:** pre-roll Ad for playlist displays for each second media instead of for each one ([#367](https://github.com/kaltura/kaltura-player-js/issues/367)) ([c3a52cd](https://github.com/kaltura/kaltura-player-js/commit/c3a52cd))
+
+
+### Build System
+
+* remove plugins that already exist on preset-env ([#366](https://github.com/kaltura/kaltura-player-js/issues/366)) ([9ac3fd6](https://github.com/kaltura/kaltura-player-js/commit/9ac3fd6))
+
+
+
 ### [1.0.3](https://github.com/kaltura/kaltura-player-js/compare/v1.0.2...v1.0.3) (2020-10-14)
 
 
