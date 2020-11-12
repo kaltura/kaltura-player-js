@@ -173,7 +173,7 @@ The player will call this method before destroying itself.
 >
 > Returns: `void` - Runs the plugin reset logic.
 
-The player will call this method before changing media.>
+The player will call this method before changing media.
 
 > #### `get loadReady()`
 >
