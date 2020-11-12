@@ -173,7 +173,23 @@ The player will call this method before destroying itself.
 >
 > Returns: `void` - Runs the plugin reset logic.
 
-The player will call this method before changing media.
+The player will call this method before changing media.>
+
+> #### `get loadReady()`
+>
+> Returns: `Promise<*>` - a Promise which is resolved when plugin is ready for the player load
+
+By default the base plugin returns a resolved plugin. If you wish the player load (and middleware load interception) to wait
+for some async action (i.e loading a 3rd party library) you can override and return a Promise which is resolved
+when the plugin completes all async requirements.
+
+> #### `get playReady()`
+>
+> Returns: `Promise<*>` - a Promise which is resolved when plugin is ready for the player play
+
+By default the base plugin returns a resolved plugin. If you wish the player play (and middleware play interception) to wait
+for some async action (i.e loading a 3rd party library) you can override and return a Promise which is resolved
+when the plugin completes all async requirements.
 
 #
 
