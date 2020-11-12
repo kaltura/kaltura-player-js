@@ -1,5 +1,5 @@
 // @flow
-import {Utils} from '@playkit-js/playkit-js';
+import {Env, Utils} from '@playkit-js/playkit-js';
 
 /**
  * Sets the default analytics plugin for the ovp player.
@@ -16,4 +16,25 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
       }
     });
   }
+}
+
+/**
+ * get the default config for forcing external stream redirect.
+ * @public
+ * @param {KPOptionsObject} options - The player config.
+ * @returns {Object} - config object
+ */
+export function getDefaultRedirectDefaultOptions(options: KPOptionsObject): Object {
+  const configObj = {};
+  if (Env.browser.name === 'IE') {
+    const forceRedirectExternalStreams = Utils.Object.getPropertyPath(options, 'sources.options.forceRedirectExternalStreams');
+    if (typeof forceRedirectExternalStreams !== 'boolean') {
+      configObj.sources = {
+        options: {
+          forceRedirectExternalStreams: true
+        }
+      };
+    }
+  }
+  return configObj;
 }

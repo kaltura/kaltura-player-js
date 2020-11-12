@@ -27,3 +27,12 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
     });
   }
 }
+
+/**
+ * get the default config for forcing external stream redirect.
+ * @public
+ * @returns {Object} - config object
+ */
+export function getDefaultRedirectDefaultOptions(): Object {
+  return {};
+}
