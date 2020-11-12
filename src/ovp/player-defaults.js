@@ -26,7 +26,7 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
  */
 export function getDefaultRedirectOptions(options: KPOptionsObject): Object {
   const configObj = {};
-  if (Env.browser.name === 'IE') {
+  if (Env.browser.name === 'IE' || Env.device.model === 'Chromecast') {
     const forceRedirectExternalStreams = Utils.Object.getPropertyPath(options, 'sources.options.forceRedirectExternalStreams');
     if (typeof forceRedirectExternalStreams !== 'boolean') {
       configObj.sources = {
