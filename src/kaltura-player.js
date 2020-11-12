@@ -31,6 +31,7 @@ import {
   getLogger,
   LogLevel
 } from '@playkit-js/playkit-js';
+import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -49,6 +50,7 @@ class KalturaPlayer extends FakeEventTarget {
   _reset: boolean = true;
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
+  _pluginReadinessMiddleware: PluginReadinessMiddleware;
 
   constructor(options: KPOptionsObject) {
     super();
@@ -143,6 +145,7 @@ class KalturaPlayer extends FakeEventTarget {
     KalturaPlayer._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     const providerResult = this._provider.getEntryListConfig(entryList);
+
     providerResult.then(
       playlistData => this.setPlaylist(playlistData, playlistConfig, entryList),
       e =>
@@ -651,27 +654,29 @@ class KalturaPlayer extends FakeEventTarget {
     }
   }
 
-  _configureOrLoadPlugins(plugins: Object = {}): void {
+  _configureOrLoadPlugins(pluginsConfig: Object = {}): void {
     const middlewares = [];
     const uiComponents = [];
-    Object.keys(plugins).forEach(name => {
+    const plugins = [];
+    Object.keys(pluginsConfig).forEach(name => {
       // If the plugin is already exists in the registry we are updating his config
       const plugin = this._pluginManager.get(name);
       if (plugin) {
-        plugin.updateConfig(plugins[name]);
-        plugins[name] = plugin.getConfig();
+        plugin.updateConfig(pluginsConfig[name]);
+        pluginsConfig[name] = plugin.getConfig();
       } else {
-        // We allow to load plugins as long as the player has no engine
+        // We allow to load pluginsConfig as long as the player has no engine
         if (!this._sourceSelected) {
           try {
-            this._pluginManager.load(name, this, plugins[name]);
+            this._pluginManager.load(name, this, pluginsConfig[name]);
           } catch (error) {
             //bounce the plugin load error up
             this.dispatchEvent(new FakeEvent(Error.Code.ERROR, error));
           }
           let plugin = this._pluginManager.get(name);
+          plugins.push(plugin);
           if (plugin) {
-            plugins[name] = plugin.getConfig();
+            pluginsConfig[name] = plugin.getConfig();
             if (typeof plugin.getMiddlewareImpl === 'function') {
               // push the bumper middleware to the end, to play the bumper right before the content
               plugin.name === 'bumper' ? middlewares.push(plugin.getMiddlewareImpl()) : middlewares.unshift(plugin.getMiddlewareImpl());
@@ -686,13 +691,19 @@ class KalturaPlayer extends FakeEventTarget {
             }
           }
         } else {
-          delete plugins[name];
+          delete pluginsConfig[name];
         }
       }
     });
     this._pluginsUiComponents = uiComponents;
+
+    // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
+    if (!this._pluginReadinessMiddleware) {
+      this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
+      this._localPlayer.playbackMiddleware.use(this._pluginReadinessMiddleware);
+    }
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
-    Utils.Object.mergeDeep(this._pluginsConfig, plugins);
+    Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
   }
 
   _maybeCreateAdsController(): void {
