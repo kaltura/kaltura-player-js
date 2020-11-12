@@ -29,7 +29,8 @@ import {
   Utils,
   registerEngineDecoratorProvider,
   getLogger,
-  LogLevel
+  LogLevel,
+  Env
 } from '@playkit-js/playkit-js';
 
 class KalturaPlayer extends FakeEventTarget {
