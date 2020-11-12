@@ -33,6 +33,6 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
  * @public
  * @returns {Object} - config object
  */
-export function getDefaultRedirectDefaultOptions(): Object {
+export function getDefaultRedirectOptions(): Object {
   return {};
 }

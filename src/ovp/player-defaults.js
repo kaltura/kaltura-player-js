@@ -24,7 +24,7 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
  * @param {KPOptionsObject} options - The player config.
  * @returns {Object} - config object
  */
-export function getDefaultRedirectDefaultOptions(options: KPOptionsObject): Object {
+export function getDefaultRedirectOptions(options: KPOptionsObject): Object {
   const configObj = {};
   if (Env.browser.name === 'IE') {
     const forceRedirectExternalStreams = Utils.Object.getPropertyPath(options, 'sources.options.forceRedirectExternalStreams');

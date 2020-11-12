@@ -16,7 +16,7 @@ import {RemoteSession} from './common/cast/remote-session';
 import {ControllerProvider, AdsController} from './common/controllers';
 import {BasePlugin} from './common/plugins';
 import {PluginManager} from './common/plugins';
-import {getDefaultRedirectDefaultOptions} from 'player-defaults';
+import {getDefaultRedirectOptions} from 'player-defaults';
 import {
   Error,
   EventManager,
@@ -78,7 +78,7 @@ class KalturaPlayer extends FakeEventTarget {
     providerResult
       .then(
         mediaConfig => {
-          this.configure(getDefaultRedirectDefaultOptions(this.config));
+          this.configure(getDefaultRedirectOptions(this.config));
           this.setMedia(mediaConfig);
         },
         e =>
