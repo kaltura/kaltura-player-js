@@ -456,7 +456,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.dimensions = dimensions;
   }
 
-  get dimensions(): Object {
+  get dimensions(): PKPlayerDimensions {
     return this._localPlayer.dimensions;
   }
 
