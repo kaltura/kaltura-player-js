@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "keywords": [
     "kaltura",
     "player",
@@ -52,12 +52,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.64.2",
-    "@playkit-js/playkit-js-dash": "1.20.2",
-    "@playkit-js/playkit-js-hls": "1.21.1",
-    "@playkit-js/playkit-js-ui": "0.60.0",
+    "@playkit-js/playkit-js": "0.64.3",
+    "@playkit-js/playkit-js-dash": "1.20.3",
+    "@playkit-js/playkit-js-hls": "1.21.2",
+    "@playkit-js/playkit-js-ui": "0.60.1",
     "hls.js": "^0.14.9",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.23.0",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.24.0",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "^3.0.5"
   },
@@ -65,11 +65,7 @@
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/plugin-proposal-object-rest-spread": "^7.10.1",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-classes": "^7.10.1",
     "@babel/plugin-transform-flow-strip-types": "^7.10.1",
-    "@babel/plugin-transform-property-mutators": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-flow": "^7.10.1",
     "@babel/register": "^7.10.1",
