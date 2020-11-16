@@ -97,20 +97,11 @@ export class BasePlugin implements IPlugin {
   }
 
   /**
-   * Getter for the load ready promise of the plugin.
+   * Getter for the ready promise of the plugin.
    * @returns {Promise<*>} - returns a resolved promise unless the plugin overrides this ready getter.
    * @public
    */
-  get loadReady(): Promise<*> {
-    return Promise.resolve();
-  }
-
-  /**
-   * Getter for the play ready promise of the plugin.
-   * @returns {Promise<*>} - returns a resolved promise unless the plugin overrides this ready getter.
-   * @public
-   */
-  get playReady(): Promise<*> {
+  get ready(): Promise<*> {
     return Promise.resolve();
   }
 

@@ -674,8 +674,8 @@ class KalturaPlayer extends FakeEventTarget {
             this.dispatchEvent(new FakeEvent(Error.Code.ERROR, error));
           }
           let plugin = this._pluginManager.get(name);
-          plugins.push(plugin);
           if (plugin) {
+            plugins.push(plugin);
             pluginsConfig[name] = plugin.getConfig();
             if (typeof plugin.getMiddlewareImpl === 'function') {
               // push the bumper middleware to the end, to play the bumper right before the content

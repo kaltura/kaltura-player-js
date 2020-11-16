@@ -1,13 +1,16 @@
 //@flow
 
-import {BaseMiddleware} from '@playkit-js/playkit-js';
+import {BaseMiddleware, getLogger} from '@playkit-js/playkit-js';
 import {BasePlugin} from './base-plugin';
 class PluginReadinessMiddleware extends BaseMiddleware {
   _plugins: Array<BasePlugin>;
   id: string = 'PluginReadinessMiddleware';
+  static _logger = getLogger('PluginReadinessMiddleware');
+
   constructor(plugins: Array<BasePlugin>) {
     super();
     this._plugins = plugins;
+    PluginReadinessMiddleware._logger.debug('plugins readiness', this._plugins);
   }
 
   /**
@@ -17,15 +20,26 @@ class PluginReadinessMiddleware extends BaseMiddleware {
    * @memberof PluginReadinessMiddleware
    */
   load(next: Function): void {
-    Promise.all(this._plugins.map(plugin => plugin.loadReady))
+    this.checkSettle(0, next);
+  }
+  checkNextSettle(index, next: Function) {
+    if (index < this._plugins.length) {
+      this.checkSettle(index, next);
+    } else {
+      this.callNext(next);
+    }
+  }
+  checkSettle(index: number, next: Function) {
+    this._plugins[index].ready
       .then(() => {
-        this.callNext(next);
+        PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise resolved`);
+        this.checkNextSettle(index + 1, next);
       })
       .catch(() => {
-        this.callNext(next);
+        PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise rejected`);
+        this.checkNextSettle(index + 1, next);
       });
   }
-
   /**
    * Play middleware handler.
    * @param {Function} next - The play handler in the middleware chain.
@@ -33,13 +47,7 @@ class PluginReadinessMiddleware extends BaseMiddleware {
    * @memberof PluginReadinessMiddleware
    */
   play(next: Function): void {
-    Promise.all(this._plugins.map(plugin => plugin.playReady))
-      .then(() => {
-        this.callNext(next);
-      })
-      .catch(() => {
-        this.callNext(next);
-      });
+    this.checkSettle(0, next);
   }
 }
 export {PluginReadinessMiddleware};
