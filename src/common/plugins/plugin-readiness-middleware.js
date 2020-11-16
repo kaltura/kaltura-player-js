@@ -20,7 +20,7 @@ class PluginReadinessMiddleware extends BaseMiddleware {
    * @memberof PluginReadinessMiddleware
    */
   load(next: Function): void {
-    this.checkSettle(0, next);
+    this.checkNextSettle(0, next);
   }
   checkNextSettle(index, next: Function) {
     if (index < this._plugins.length) {
@@ -30,7 +30,8 @@ class PluginReadinessMiddleware extends BaseMiddleware {
     }
   }
   checkSettle(index: number, next: Function) {
-    this._plugins[index].ready
+    const readyPromise = this._plugins[index].ready ? this._plugins[index].ready : Promise.resolve();
+    readyPromise
       .then(() => {
         PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise resolved`);
         this.checkNextSettle(index + 1, next);
