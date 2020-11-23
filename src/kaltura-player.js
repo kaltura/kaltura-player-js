@@ -179,6 +179,15 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
+   * The state of the browser tab
+   * @public
+   * @returns {boolean} - The state of the browser tab (active or not)
+   */
+  get isTabActive(): boolean {
+    return this._localPlayer.isTabActive;
+  }
+
+  /**
    * Config the player.
    * @param {Object} [config={}] - The player config.
    * @returns {void}
