@@ -745,6 +745,10 @@ class KalturaPlayer extends FakeEventTarget {
   get crossOrigin(): ?string {
     return this._localPlayer.crossOrigin;
   }
+
+  get orientationTypes(): PKOrientationType {
+    return this._localPlayer.orientationTypes;
+  }
 }
 
 export {KalturaPlayer};
