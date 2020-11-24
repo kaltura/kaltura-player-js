@@ -89,7 +89,7 @@ var mediaInfo = {
 | `protocol`           | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                                |
 | `fileIds`            | `string`        |          | List of comma-separated media file IDs |
 | `streamerType`       | `string`        |          | The playback streamer type             | `"applehttp"`, `"mpegdash"`, `"url"`, `"smothstreaming"`, `"none"` |
-| `urlType     `       | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
+| `urlType`            | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
 | `formats`            | `Array<string>` |          | Device types as defined in the system. |
 
 ## Examples
