@@ -322,20 +322,22 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this._adIsLoading) {
       return;
     }
+    let playbackEndedHandler;
     const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
     const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
-    const bumperCompletePromise = bumperCtrl && typeof bumperCtrl.onPlaybackEnded === 'function' ? bumperCtrl.onPlaybackEnded() : Promise.resolve();
-    const adCompletePromise = adCtrl && typeof adCtrl.onPlaybackEnded === 'function' ? adCtrl.onPlaybackEnded() : Promise.resolve();
+    const bumperCompleted =
+      bumperCtrl && typeof bumperCtrl.onPlaybackEnded === 'function' ? () => bumperCtrl.onPlaybackEnded() : () => Promise.resolve();
+    const adCompleted = adCtrl && typeof adCtrl.onPlaybackEnded === 'function' ? () => adCtrl.onPlaybackEnded() : () => Promise.resolve();
     if (!(this._adBreaksLayout.includes(-1) || this._adBreaksLayout.includes('100%'))) {
       this._allAdsCompleted = true;
     } else {
-      const playbackEndedHandler = () => this._handleConfiguredPostroll();
-      // $FlowFixMe
-      bumperCompletePromise.finally(() => {
-        // $FlowFixMe
-        adCompletePromise.finally(playbackEndedHandler);
-      });
+      playbackEndedHandler = () => this._handleConfiguredPostroll();
     }
+    // $FlowFixMe
+    bumperCompleted().finally(() => {
+      // $FlowFixMe
+      adCompleted().finally(playbackEndedHandler);
+    });
   }
 
   _onPlaybackEnded(): void {
