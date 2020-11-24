@@ -22,14 +22,15 @@ class PluginReadinessMiddleware extends BaseMiddleware {
   load(next: Function): void {
     this._checkNextSettle(0, next);
   }
-  _checkNextSettle(index, next: Function) {
+  _checkNextSettle(index: number, next: Function) {
     if (index < this._plugins.length) {
-      this.checkSettle(index, next);
+      this._checkSettle(index, next);
     } else {
       this.callNext(next);
     }
   }
-  checkSettle(index: number, next: Function) {
+
+  _checkSettle(index: number, next: Function) {
     const readyPromise = this._plugins[index].ready ? this._plugins[index].ready : Promise.resolve();
     readyPromise
       .then(() => {
@@ -48,7 +49,7 @@ class PluginReadinessMiddleware extends BaseMiddleware {
    * @memberof PluginReadinessMiddleware
    */
   play(next: Function): void {
-    this.checkSettle(0, next);
+    this._checkSettle(0, next);
   }
 }
 export {PluginReadinessMiddleware};
