@@ -14,7 +14,9 @@ var mediaInfo = {
 
 To learn how to fill your media info object correctly, click the relevant media information documentation below.
 
-> Note: For OVP players, you'll only need to fill the entryId or referenceId (mandatory) and the KS (optional). For Cloud TV players, you'll need to provide these parameters and more. See details below.
+> Note: For OVP players, you'll only need to fill the entryId or referenceId (at least one is mandatory)
+> and the KS (optional). If both entryid and referenceId are provided, the entryid has precendence.
+> For Cloud TV players, you'll need to provide these parameters and more. See details below.
 
 <details><summary><b>MediaInfo Documentation - OVP</b></summary>
 <p>
