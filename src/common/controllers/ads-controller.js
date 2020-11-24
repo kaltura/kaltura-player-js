@@ -322,7 +322,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this._adIsLoading) {
       return;
     }
-    let playbackEndedHandler;
+    let playbackEndedHandler = () => {};
     const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
     const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
     const bumperCompleted =
