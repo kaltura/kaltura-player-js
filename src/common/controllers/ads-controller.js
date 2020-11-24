@@ -322,7 +322,6 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this._adIsLoading) {
       return;
     }
-    let playbackEndedHandler = () => {};
     const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
     const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
     const bumperCompleted =
@@ -330,13 +329,11 @@ class AdsController extends FakeEventTarget implements IAdsController {
     const adCompleted = adCtrl && typeof adCtrl.onPlaybackEnded === 'function' ? () => adCtrl.onPlaybackEnded() : () => Promise.resolve();
     if (!(this._adBreaksLayout.includes(-1) || this._adBreaksLayout.includes('100%'))) {
       this._allAdsCompleted = true;
-    } else {
-      playbackEndedHandler = () => this._handleConfiguredPostroll();
     }
     // $FlowFixMe
     bumperCompleted().finally(() => {
       // $FlowFixMe
-      adCompleted().finally(playbackEndedHandler);
+      adCompleted().finally(() => this._handleConfiguredPostroll());
     });
   }
 
