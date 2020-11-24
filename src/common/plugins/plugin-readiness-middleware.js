@@ -20,9 +20,9 @@ class PluginReadinessMiddleware extends BaseMiddleware {
    * @memberof PluginReadinessMiddleware
    */
   load(next: Function): void {
-    this.checkNextSettle(0, next);
+    this._checkNextSettle(0, next);
   }
-  checkNextSettle(index, next: Function) {
+  _checkNextSettle(index, next: Function) {
     if (index < this._plugins.length) {
       this.checkSettle(index, next);
     } else {
@@ -34,11 +34,11 @@ class PluginReadinessMiddleware extends BaseMiddleware {
     readyPromise
       .then(() => {
         PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise resolved`);
-        this.checkNextSettle(index + 1, next);
+        this._checkNextSettle(index + 1, next);
       })
       .catch(() => {
         PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise rejected`);
-        this.checkNextSettle(index + 1, next);
+        this._checkNextSettle(index + 1, next);
       });
   }
   /**
