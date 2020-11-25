@@ -9,7 +9,7 @@ import {TextStyle, TrackType, Utils} from '@playkit-js/playkit-js';
  */
 class PlayerSnapshot {
   mediaInfo: ?ProviderMediaInfoObject;
-  mediaConfig: ?ProviderMediaConfigObject;
+  mediaConfig: ?KPMediaConfig;
   /**
    * @type {TextStyle}
    * @instance

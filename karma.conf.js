@@ -16,13 +16,6 @@ const launchers = {
 };
 
 module.exports = config => {
-  const {mode} = config;
-  const webpackConfig = require('./webpack.config.js')(process.env.NODE_ENV, {mode});
-  //Need to remove externals otherwise they won't be included in test
-  delete webpackConfig.externals;
-  // Need to define inline source maps when using karma
-  webpackConfig.devtool = 'inline-source-map';
-
   const karmaConf = {
     logLevel: config.LOG_INFO,
     customLaunchers: launchers,
@@ -47,7 +40,12 @@ module.exports = config => {
       'test/setup/karma.js': ['webpack', 'sourcemap']
     },
     reporters: ['progress', 'coverage'],
-    webpack: webpackConfig,
+    webpack: {
+      ...require('./webpack.config.js')(process.env.NODE_ENV, {mode: config.mode || 'development'})[0],
+      externals: {}, //Need to remove externals otherwise they won't be included in test
+      devtool: 'inline-source-map', // Need to define inline source maps when using karma
+      mode: config.mode || 'development' // run in development mode by default to avoid minifying -> faster
+    },
     webpackServer: {
       noInfo: true
     },

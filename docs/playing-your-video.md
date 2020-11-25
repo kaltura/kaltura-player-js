@@ -109,6 +109,7 @@ var mediaInfo = {
 
 > Note: \*\*\* Either entryId or referenceId must be supplied (if both will be supplied, the media will be loaded by mediaId)
 
+
 ## Examples
 
 Let's look at some examples.
@@ -197,7 +198,22 @@ player.loadMedia(mediaInfo).then(() => {
 });
 ```
 
-Click ~~here~~ to see the full `loadMedia` API.
+Click [here](api.md#loadmedia) to see the full `loadMedia` API.
+
+### Media Options
+
+In addition to `mediaInfo`, you can also pass media options to the `loadMedia` API. Those options will override the default options supplied from the backend or those configured in the player.
+Example:
+
+```javascript
+const mediaOptions = {
+  ...
+  poster: 'my/poster/url',
+  startTime: 30,
+  ...
+};
+player.loadMedia(mediaInfo, mediaOptions);
+```
 
 ## Next Step
 
