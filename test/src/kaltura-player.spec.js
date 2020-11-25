@@ -81,6 +81,23 @@ describe('kaltura player api', function () {
         });
       });
 
+      it('should use the configured start time from loadMedia options', function (done) {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.FIRST_PLAYING, () => {
+          (kalturaPlayer.currentTime >= 10).should.be.true;
+          done();
+        });
+        kalturaPlayer.loadMedia({entryId}, {startTime: 10}).then(() => kalturaPlayer.play());
+      });
+
+      it('should use the configured poster from loadMedia options', function (done) {
+        const poster = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
+          kalturaPlayer.poster.should.equal(poster);
+          done();
+        });
+        kalturaPlayer.loadMedia({entryId}, {poster});
+      });
+
       describe('maybeSetStreamPriority', function () {
         describe('media source mime type is video/youtube', function () {
           it('should add youtube to stream priority if not already set', function (done) {
