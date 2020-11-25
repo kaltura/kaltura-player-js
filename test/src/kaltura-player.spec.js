@@ -82,7 +82,7 @@ describe('kaltura player api', function () {
       });
 
       it('should use the configured start time from loadMedia options', function (done) {
-        kalturaPlayer.addEventListener(kalturaPlayer.Event.PLAYBACK_START, () => {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.FIRST_PLAYING, () => {
           (kalturaPlayer.currentTime >= 10).should.be.true;
           done();
         });
@@ -91,8 +91,8 @@ describe('kaltura player api', function () {
 
       it('should use the configured poster from loadMedia options', function (done) {
         const poster = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
-        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, () => {
-          kalturaPlayer.poster.should.equal.poster;
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
+          kalturaPlayer.poster.should.equal(poster);
           done();
         });
         kalturaPlayer.loadMedia({entryId}, {poster});
