@@ -49,7 +49,7 @@ class PluginReadinessMiddleware extends BaseMiddleware {
    * @memberof PluginReadinessMiddleware
    */
   play(next: Function): void {
-    this._checkSettle(0, next);
+    this._checkNextSettle(0, next);
   }
 }
 export {PluginReadinessMiddleware};
