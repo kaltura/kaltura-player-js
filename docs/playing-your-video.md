@@ -89,7 +89,7 @@ var mediaInfo = {
 | `protocol`           | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                                |
 | `fileIds`            | `string`        |          | List of comma-separated media file IDs |
 | `streamerType`       | `string`        |          | The playback streamer type             | `"applehttp"`, `"mpegdash"`, `"url"`, `"smothstreaming"`, `"none"` |
-| `urlType     `       | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
+| `urlType`            | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
 | `formats`            | `Array<string>` |          | Device types as defined in the system. |
 
 ## Examples
@@ -180,7 +180,22 @@ player.loadMedia(mediaInfo).then(() => {
 });
 ```
 
-Click ~~here~~ to see the full `loadMedia` API.
+Click [here](api.md#loadmedia) to see the full `loadMedia` API.
+
+### Media Options
+
+In addition to `mediaInfo`, you can also pass media options to the `loadMedia` API. Those options will override the default options supplied from the backend or those configured in the player.
+Example:
+
+```javascript
+const mediaOptions = {
+  ...
+  poster: 'my/poster/url',
+  startTime: 30,
+  ...
+};
+player.loadMedia(mediaInfo, mediaOptions);
+```
 
 ## Next Step
 

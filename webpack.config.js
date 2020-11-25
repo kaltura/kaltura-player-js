@@ -9,9 +9,7 @@ const playerType = process.env.PLAYER_TYPE || 'ovp';
 const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
 
 module.exports = (env, argv) => {
-  const configs = [
-    createConfig(env, argv, 'var')
-  ];
+  const configs = [createConfig(env, argv, 'var')];
   if (argv.mode === 'production') {
     configs.push(createConfig(env, argv, 'commonjs2'));
   }
@@ -108,4 +106,4 @@ function createConfig(env, argv, target) {
       modules: [path.resolve(__dirname, 'src'), 'node_modules']
     }
   };
-};
+}
