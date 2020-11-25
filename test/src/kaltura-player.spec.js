@@ -81,6 +81,23 @@ describe('kaltura player api', function () {
         });
       });
 
+      it('should use the configured start time from loadMedia options', function (done) {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.FIRST_PLAYING, () => {
+          (kalturaPlayer.currentTime >= 10).should.be.true;
+          done();
+        });
+        kalturaPlayer.loadMedia({entryId}, {startTime: 10}).then(() => kalturaPlayer.play());
+      });
+
+      it('should use the configured poster from loadMedia options', function (done) {
+        const poster = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
+          kalturaPlayer.poster.should.equal(poster);
+          done();
+        });
+        kalturaPlayer.loadMedia({entryId}, {poster});
+      });
+
       describe('maybeSetStreamPriority', function () {
         describe('media source mime type is video/youtube', function () {
           it('should add youtube to stream priority if not already set', function (done) {
@@ -644,6 +661,88 @@ describe('kaltura player api', function () {
         }
       });
       player.dispatchEvent(new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, {error: 'mock failure'}));
+    });
+  });
+
+  describe('evaluate plugins config', function () {
+    beforeEach(() => {
+      PluginManager.register('colors', ColorsPlugin);
+    });
+
+    afterEach(() => {
+      PluginManager.unRegister('colors');
+    });
+
+    it('should pass deep object as plugin config', () => {
+      const test = {a: {b: {c: 'd'}}};
+      const config = {
+        plugins: {
+          colors: {
+            prop: test
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+    });
+
+    it('should pass class as plugin config', () => {
+      const test = class Test {
+        constructor() {}
+        print() {}
+      };
+      const config = {
+        plugins: {
+          colors: {
+            prop: test
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+    });
+
+    it('should pass class instance as plugin config', done => {
+      const test = class Test {
+        constructor() {}
+        check() {
+          done();
+        }
+      };
+      const config = {
+        plugins: {
+          colors: {
+            prop: new test()
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+      player.plugins.colors.config.prop.check();
+    });
+
+    it('should pass function as plugin config', done => {
+      const test = () => {
+        done();
+      };
+      const config = {
+        plugins: {
+          colors: {
+            prop: test
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+      player.plugins.colors.config.prop();
     });
   });
 });

@@ -77,7 +77,17 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.configure({sources});
   }
 
-  loadMedia(mediaInfo: ProviderMediaInfoObject): Promise<*> {
+  /**
+   * Loads a media.
+   * @param {ProviderMediaInfoObject} mediaInfo - The media info.
+   * @param {KPLoadMediaOptions} [mediaOptions] - The media options.
+   * @returns {Promise<*>} - Promise which resolves when the media is loaded, or rejected if error occurs.
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.loadMedia({entryId: 'entry123'}, {startTime: 5, poster: 'my/poster/url'});
+   */
+  loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: KPLoadMediaOptions): Promise<*> {
     KalturaPlayer._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
@@ -86,19 +96,30 @@ class KalturaPlayer extends FakeEventTarget {
     const providerResult = this._provider.getMediaConfig(mediaInfo);
     providerResult
       .then(
-        mediaConfig => this.setMedia(mediaConfig),
+        (providerMediaConfig: ProviderMediaConfigObject) => {
+          const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+          if (mediaOptions) {
+            mediaConfig.playback = mediaConfig.playback || {};
+            mediaConfig.sources = mediaConfig.sources || {};
+            const {startTime} = mediaOptions;
+            if (typeof startTime === 'number') {
+              mediaConfig.playback = Utils.Object.mergeDeep(mediaConfig.playback, {startTime});
+              delete mediaOptions.startTime;
+            }
+            mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
+          }
+          this.setMedia(mediaConfig);
+        },
         e =>
           this._localPlayer.dispatchEvent(
             new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
           )
       )
-      .then(() => {
-        this._maybeSetEmbedConfig();
-      });
+      .then(() => this._maybeSetEmbedConfig());
     return providerResult;
   }
 
-  setMedia(mediaConfig: ProviderMediaConfigObject): void {
+  setMedia(mediaConfig: KPMediaConfig): void {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
@@ -182,7 +203,7 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
-  getMediaConfig(): ?ProviderMediaConfigObject {
+  getMediaConfig(): ?KPMediaConfig {
     const mediaConfig = {
       sources: this._localPlayer.config.sources,
       plugins: this._pluginsConfig
