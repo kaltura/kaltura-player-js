@@ -646,4 +646,86 @@ describe('kaltura player api', function () {
       player.dispatchEvent(new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, {error: 'mock failure'}));
     });
   });
+
+  describe('evaluate plugins config', function () {
+    beforeEach(() => {
+      PluginManager.register('colors', ColorsPlugin);
+    });
+
+    afterEach(() => {
+      PluginManager.unRegister('colors');
+    });
+
+    it('should pass deep object as plugin config', () => {
+      const test = {a: {b: {c: 'd'}}};
+      const config = {
+        plugins: {
+          colors: {
+            prop: test
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+    });
+
+    it('should pass class as plugin config', () => {
+      const test = class Test {
+        constructor() {}
+        print() {}
+      };
+      const config = {
+        plugins: {
+          colors: {
+            prop: test
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+    });
+
+    it('should pass class instance as plugin config', done => {
+      const test = class Test {
+        constructor() {}
+        check() {
+          done();
+        }
+      };
+      const config = {
+        plugins: {
+          colors: {
+            prop: new test()
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+      player.getMediaConfig().plugins.colors.config.prop.check();
+    });
+
+    it('should pass function as plugin config', done => {
+      const test = () => {
+        done();
+      };
+      const config = {
+        plugins: {
+          colors: {
+            prop: test
+          }
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.getMediaConfig().plugins.should.deep.equals(config.plugins);
+      player.getMediaConfig().plugins.colors.config.prop();
+    });
+  });
 });
