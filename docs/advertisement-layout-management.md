@@ -1,7 +1,8 @@
 # Advertisement layout management
 
 With ad layout config you can create your own ad break timeline using your vast tags.  
-Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a [Waterfall](#waterfalling)
+Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a [Waterfall](#waterfalling).
+> **Important:** [IMA plugin](https://github.com/kaltura/playkit-js-ima) must be active to enable this feature.
 
 ## Table of Contents
 
@@ -21,6 +22,9 @@ Here's a simple scheme sample which contains 4 ad breaks: 1 pre-roll, 2 mid-roll
 ```ecmascript 6
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     adBreaks: [{
       position: 0,
@@ -64,6 +68,9 @@ Ad pod sample:
 ```ecmascript 6
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     adBreaks: [{
       position: 0,
@@ -104,6 +111,9 @@ Here's a sample of a mid-roll with waterfalling:
 ```ecmascript 6
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     adBreaks: [{
       position: 15,
@@ -151,6 +161,9 @@ Here's a sample:
 ```ecmascript 6
 const config = {
  ...
+  plugins: {
+    ima: {}
+  },
  advertising: {
    adBreaks: [{
      position: 0,
@@ -198,6 +211,9 @@ This can be achieved by `playAdsAfterTime` parameter. For example:
 ```ecmascript 6
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     playAdsAfterTime: 10,
     adBreaks: [{
@@ -231,6 +247,9 @@ const config = {
   playback: {
     startTime: 60
   },
+  plugins: {
+    ima: {}
+  },
   advertising: {
     playAdsAfterTime: -1,
     adBreaks: [{
@@ -263,6 +282,12 @@ All the above features are supported not only by `advertising` config, but also 
 The app may call it whenever it wants to play an ad pod.
 
 ```ecmascript 6
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  }
+}
 const kalturaPlayer = KalturaPlayer.setup(config);
 kalturaPlayer.play();
 ... // playback
