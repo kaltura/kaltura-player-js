@@ -107,6 +107,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
+          this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
           this.setMedia(mediaConfig);
         },
         e =>
