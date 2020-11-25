@@ -1,6 +1,6 @@
 // @flow
 import {Env, Utils, MediaType} from '@playkit-js/playkit-js';
-import {getDirectManifestUri} from '../common/utils/external-stream-redirect-helper'
+import {getDirectManifestUri} from '../common/utils/external-stream-redirect-helper';
 
 /**
  * Sets the default analytics plugin for the ovp player.
