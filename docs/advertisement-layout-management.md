@@ -160,12 +160,12 @@ Here's a sample:
 
 ```ecmascript 6
 const config = {
- ...
+  ...
   plugins: {
     ima: {}
   },
- advertising: {
-   adBreaks: [{
+  advertising: {
+    adBreaks: [{
      position: 0,
      ads: [{
          url: [PRE_ROLL_VAST_URL_1, PRE_ROLL_VAST_URL_2, ...]
@@ -196,8 +196,8 @@ const config = {
          url: [POST_ROLL_VAST_URL_1, POST_ROLL_VAST_URL_2, POST_ROLL_VAST_URL_3, ...]
        }]
      }
-   ]
- }
+    ]
+  }
  ...
 }
 const kalturaPlayer = KalturaPlayer.setup(config);
