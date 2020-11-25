@@ -707,7 +707,7 @@ describe('kaltura player api', function () {
       };
       const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
-      player.getMediaConfig().plugins.colors.config.prop.check();
+      player.plugins.colors.config.prop.check();
     });
 
     it('should pass function as plugin config', done => {
@@ -725,7 +725,7 @@ describe('kaltura player api', function () {
       };
       const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
-      player.getMediaConfig().plugins.colors.config.prop();
+      player.plugins.colors.config.prop();
     });
   });
 });
