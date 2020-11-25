@@ -12,6 +12,7 @@ declare type KPOptionsObject = {
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
+  dimensions?: PKDimensionsConfig,
   ui: KPUIOptionsObject,
   cast?: {[key: string]: any},
   productVersion?: string
@@ -28,6 +29,7 @@ declare type PartialKPOptionsObject = {
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
+  dimensions?: PKDimensionsConfig,
   ui?: KPUIOptionsObject,
   cast?: {[key: string]: any}
 };
