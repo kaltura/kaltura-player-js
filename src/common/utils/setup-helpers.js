@@ -15,7 +15,6 @@ import {
 } from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
-import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
@@ -299,7 +298,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
-  configureExternalStreamRedirect(defaultOptions);
   maybeSetFullScreenConfig(defaultOptions);
   maybeSetCapabilitiesForIos(defaultOptions);
   return defaultOptions;
