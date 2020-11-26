@@ -622,8 +622,6 @@ describe('kaltura player api', function () {
     });
 
     afterEach(() => {
-      if (player._pluginManager.get('asyncResolve')) player._pluginManager.get('asyncResolve').destroy();
-      if (player._pluginManager.get('asyncReject')) player._pluginManager.get('asyncReject').destroy();
       PluginManager.unRegister('asyncResolve');
       PluginManager.unRegister('asyncReject');
       player.destroy();
