@@ -719,25 +719,28 @@ describe('kaltura player api', function () {
 
     it('should create player with async resolve plugin and reject plugin - check async play', done => {
       try {
-      } catch (e) {}
-      player = new Player({
-        ui: {},
-        provider: {},
-        sources: SourcesConfig.Mp4,
-        plugins: {
-          asyncReject: {},
-          asyncResolve: {}
-        }
-      });
-      player._pluginManager.get('asyncReject').should.exist;
-      player._pluginManager.get('asyncResolve').should.exist;
-      sinon.stub(player._localPlayer, '_load').callsFake(function () {
-        const timeDiff = Date.now() - timeStart;
-        timeDiff.should.gt(Math.max(AsyncRejectPlugin.DELAY_ASYNC, AsyncResolvePlugin.DELAY_ASYNC));
-        done();
-      });
-      timeStart = Date.now();
-      player.load();
+        player = new Player({
+          ui: {},
+          provider: {},
+          sources: SourcesConfig.Mp4,
+          plugins: {
+            asyncReject: {},
+            asyncResolve: {}
+          }
+        });
+        player._pluginManager.get('asyncReject').should.exist;
+        player._pluginManager.get('asyncResolve').should.exist;
+        sinon.stub(player._localPlayer, '_load').callsFake(function () {
+          player._pluginManager.get('asyncResolve').ready.then(() => {
+            player._pluginManager.get('asyncReject').ready.catch(() => {
+              done();
+            });
+          });
+        });
+        player.load();
+      } catch (e) {
+        done(e);
+      }
     });
   });
 
