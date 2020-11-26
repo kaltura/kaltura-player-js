@@ -97,6 +97,15 @@ export class BasePlugin implements IPlugin {
   }
 
   /**
+   * Getter for the ready promise of the plugin.
+   * @returns {Promise<*>} - returns a resolved promise unless the plugin overrides this ready getter.
+   * @public
+   */
+  get ready(): Promise<*> {
+    return Promise.resolve();
+  }
+
+  /**
    * Updates the config of the plugin.
    * @param {Object} update - The updated configuration.
    * @public

@@ -175,6 +175,15 @@ The player will call this method before destroying itself.
 
 The player will call this method before changing media.
 
+> #### `get ready()`
+>
+> Returns: `Promise<*>` - a Promise which is resolved when plugin is ready for the player load
+
+Signal player that plugin has finished loading its dependencies and player can continue to loading and playing states.
+Use this when your plugin requires to load 3rd party dependencies which are required for the plugin operation.
+By default the base plugin returns a resolved plugin. 
+If you wish the player load and play (and middlewares interception) to wait for some async action (i.e loading a 3rd party library) you can override and return a Promise which is resolved when the plugin completes all async requirements.
+
 #
 
 Now, lets take a look at the `registerPlugin` API.
