@@ -2,14 +2,14 @@
 const formats = ['hls', 'dash', 'progressive'];
 /**
  * @class PlaylistItem
- * @param {ProviderMediaConfigSourcesObject} [sources] - The item sources
+ * @param {PKSourcesConfigObject} [sources] - The item sources
  * @param {KPPlaylistItemConfigObject} [config] - The item config
  */
 class PlaylistItem {
-  _sources: ?ProviderMediaConfigSourcesObject;
+  _sources: ?PKSourcesConfigObject;
   _config: ?KPPlaylistItemConfigObject;
 
-  constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject) {
+  constructor(sources: ?PKSourcesConfigObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
     this._config = config;
   }
@@ -22,21 +22,21 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   updateSources(sourcesObject: PKSourcesConfigObject): void {
-    if (this._sources) {
-      formats.forEach(format => {
-        this._sources[format] = sourcesObject[format];
-      });
+    formats.forEach(format => {
+      this._sources && (this._sources[format] = sourcesObject[format]);
+    });
+    if (this._sources && sourcesObject.options) {
       this._sources.options = sourcesObject.options;
     }
   }
 
   /**
    * Playlist item sources
-   * @type {?ProviderMediaConfigSourcesObject}
+   * @type {?PKSourcesConfigObject}
    * @instance
    * @memberof PlaylistItem
    */
-  get sources(): ?ProviderMediaConfigSourcesObject {
+  get sources(): ?PKSourcesConfigObject {
     formats.forEach((format: string) => {
       if (this._sources && this._sources[format] && this._sources[format].length === 0) {
         delete this._sources[format];
