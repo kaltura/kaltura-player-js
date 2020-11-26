@@ -60,7 +60,6 @@ class KalturaPlayer extends FakeEventTarget {
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
-    this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
@@ -75,6 +74,7 @@ class KalturaPlayer extends FakeEventTarget {
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
     this._playlistManager.configure(options.playlist);
+    this.configure({plugins});
     this._localPlayer.configure({sources});
   }
 
