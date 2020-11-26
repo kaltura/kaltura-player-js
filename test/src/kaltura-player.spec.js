@@ -8,6 +8,8 @@ import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources';
 import {FakeEvent} from '@playkit-js/playkit-js';
+import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
+import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -610,6 +612,115 @@ describe('kaltura player api', function () {
           lastCellValue: 6
         }
       });
+    });
+  });
+  describe('async plugins loading', () => {
+    let player;
+    let timeStart;
+    beforeEach(() => {
+      PluginManager.register('asyncResolve', AsyncResolvePlugin);
+      PluginManager.register('asyncReject', AsyncRejectPlugin);
+    });
+
+    afterEach(() => {
+      PluginManager.unRegister('asyncResolve');
+      PluginManager.unRegister('asyncReject');
+    });
+
+    it('should create player with async resolve plugin - check async load', done => {
+      player = new Player({
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
+        plugins: {
+          asyncResolve: {}
+        }
+      });
+      player._pluginManager.get('asyncResolve').should.exist;
+      sinon.stub(player._localPlayer, '_load').callsFake(function () {
+        const timeDiff = Date.now() - timeStart;
+        timeDiff.should.gt(AsyncResolvePlugin.DELAY_ASYNC);
+        done();
+      });
+      timeStart = Date.now();
+      player.load();
+    });
+
+    it('should create player with async resolve plugin - check async play', done => {
+      player = new Player({
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
+        plugins: {
+          asyncResolve: {}
+        }
+      });
+      player._pluginManager.get('asyncResolve').should.exist;
+      sinon.stub(player._localPlayer, '_play').callsFake(function () {
+        const timeDiff = Date.now() - timeStart;
+        timeDiff.should.gt(AsyncResolvePlugin.DELAY_ASYNC);
+        done();
+      });
+      timeStart = Date.now();
+      player.play();
+    });
+    it('should create player with async reject plugin - check async load', done => {
+      player = new Player({
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
+        plugins: {
+          asyncReject: {}
+        }
+      });
+      player._pluginManager.get('asyncReject').should.exist;
+      sinon.stub(player._localPlayer, '_load').callsFake(function () {
+        const timeDiff = Date.now() - timeStart;
+        timeDiff.should.gt(AsyncRejectPlugin.DELAY_ASYNC);
+        done();
+      });
+      timeStart = Date.now();
+      player.load();
+    });
+
+    it('should create player with async reject plugin - check async play', done => {
+      player = new Player({
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
+        plugins: {
+          asyncReject: {}
+        }
+      });
+      player._pluginManager.get('asyncReject').should.exist;
+      sinon.stub(player._localPlayer, '_play').callsFake(function () {
+        const timeDiff = Date.now() - timeStart;
+        timeDiff.should.gt(AsyncRejectPlugin.DELAY_ASYNC);
+        done();
+      });
+      timeStart = Date.now();
+      player.play();
+    });
+
+    it('should create player with async resolve plugin and reject plugin - check async play', done => {
+      player = new Player({
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
+        plugins: {
+          asyncReject: {},
+          asyncResolve: {}
+        }
+      });
+      player._pluginManager.get('asyncReject').should.exist;
+      player._pluginManager.get('asyncResolve').should.exist;
+      sinon.stub(player._localPlayer, '_load').callsFake(function () {
+        const timeDiff = Date.now() - timeStart;
+        timeDiff.should.gt(Math.max(AsyncRejectPlugin.DELAY_ASYNC, AsyncResolvePlugin.DELAY_ASYNC));
+        done();
+      });
+      timeStart = Date.now();
+      player.load();
     });
   });
 

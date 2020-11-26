@@ -109,7 +109,6 @@ var mediaInfo = {
 
 > Note: \*\*\* Either entryId or referenceId must be supplied (if both will be supplied, the media will be loaded by mediaId)
 
-
 ## Examples
 
 Let's look at some examples.
