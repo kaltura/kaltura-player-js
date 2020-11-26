@@ -22,10 +22,12 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   updateSources(sourcesObject: PKSourcesConfigObject): void {
-    formats.forEach(format => {
-      this._sources && (this._sources[format] = sourcesObject[format]);
-    });
-    this._sources && (this._sources.options = sourcesObject.options);
+    if (this._sources) {
+      formats.forEach(format => {
+        this._sources[format] = sourcesObject[format];
+      });
+      this._sources.options = sourcesObject.options;
+    }
   }
 
   /**
