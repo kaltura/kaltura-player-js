@@ -16,15 +16,16 @@ class PlaylistItem {
 
   /**
    * Update the playlist item sources
-   * @param {ProviderMediaConfigSourcesObject} sourcesObject - The sources
+   * @param {PKSourcesConfigObject} sourcesObject - The sources
    * @returns {void}
    * @instance
    * @memberof PlaylistItem
    */
-  updateSources(sourcesObject: ProviderMediaConfigSourcesObject): void {
+  updateSources(sourcesObject: PKSourcesConfigObject): void {
     formats.forEach(format => {
       this._sources && (this._sources[format] = sourcesObject[format]);
     });
+    this._sources && (this._sources.options = sourcesObject.options);
   }
 
   /**

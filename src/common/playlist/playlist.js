@@ -28,7 +28,7 @@ class Playlist {
     }
   }
 
-  updateItemSources(index: number, sourcesObject: ProviderMediaConfigSourcesObject) {
+  updateItemSources(index: number, sourcesObject: PKSourcesConfigObject) {
     this._items[index].updateSources(sourcesObject);
   }
 
