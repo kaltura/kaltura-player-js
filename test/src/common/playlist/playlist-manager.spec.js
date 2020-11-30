@@ -216,6 +216,24 @@ describe('PlaylistManager', function () {
       });
       playlistManager.configure(PlaylistMockData.playlistByConfig);
     });
+
+    it('should set the configured sources.options for all items', function () {
+      kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1}}});
+      playlistManager.configure({items: [{}, {}]});
+      playlistManager.items.forEach(item => item.sources.options.forceRedirectExternalStreams.should.be.true);
+      playlistManager.items.forEach(item => (item.sources.options.redirectExternalStreamsHandler() === 1).should.be.true);
+    });
+
+    it('should prefer the item configuration before the sources.options', function () {
+      kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1}}});
+      playlistManager.configure({
+        items: [{sources: {options: {forceRedirectExternalStreams: false}}}, {sources: {options: {redirectExternalStreamsHandler: () => 2}}}]
+      });
+      playlistManager.items[0].sources.options.forceRedirectExternalStreams.should.be.false;
+      playlistManager.items[1].sources.options.forceRedirectExternalStreams.should.be.true;
+      (playlistManager.items[0].sources.options.redirectExternalStreamsHandler() === 1).should.be.true;
+      (playlistManager.items[1].sources.options.redirectExternalStreamsHandler() === 2).should.be.true;
+    });
   });
 
   describe('load', function () {
