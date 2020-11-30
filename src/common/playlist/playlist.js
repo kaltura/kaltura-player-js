@@ -24,10 +24,11 @@ class Playlist {
     if (config.items) {
       this._items = [];
       config.items.forEach(item => {
-        const configSourcesOptions = Utils.Object.mergeDeep({}, sourcesOptions);
-        const itemSourcesOptions = (item.sources && item.sources.options) || {};
-        item.sources = item.sources || {};
-        item.sources.options = Utils.Object.mergeDeep(configSourcesOptions, itemSourcesOptions);
+        if (item.sources) {
+          const configSourcesOptions = Utils.Object.mergeDeep({}, sourcesOptions);
+          const itemSourcesOptions = item.sources.options || {};
+          item.sources.options = Utils.Object.mergeDeep(configSourcesOptions, itemSourcesOptions);
+        }
         this._items.push(new PlaylistItem(item.sources, item.config));
       });
     }

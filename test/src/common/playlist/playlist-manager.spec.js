@@ -219,7 +219,7 @@ describe('PlaylistManager', function () {
 
     it('should set the configured sources.options for all items', function () {
       kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1}}});
-      playlistManager.configure({items: [{}, {}]});
+      playlistManager.configure({items: [{sources: {}}, {sources: {}}]});
       playlistManager.items.forEach(item => item.sources.options.forceRedirectExternalStreams.should.be.true);
       playlistManager.items.forEach(item => (item.sources.options.redirectExternalStreamsHandler() === 1).should.be.true);
     });
