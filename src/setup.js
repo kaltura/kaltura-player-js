@@ -1,7 +1,7 @@
 // @flow
 import {KalturaPlayer} from './kaltura-player';
 import {getPlayerProxy} from './proxy';
-import {evaluatePluginsConfig} from './common/plugins';
+import {PluginsConfigure} from './common/plugins';
 import {
   applyCastSupport,
   applyStorageSupport,
@@ -29,9 +29,10 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   const defaultOptions = getDefaultOptions(options);
   setLogOptions(defaultOptions);
   printSetupMessages();
-  evaluatePluginsConfig(defaultOptions.plugins, defaultOptions);
+  const pluginsConfigure = new PluginsConfigure();
+  pluginsConfigure.evaluatePluginsConfig(defaultOptions.plugins, defaultOptions);
   setStorageConfig(defaultOptions);
-  const player = getPlayerProxy(defaultOptions);
+  const player = getPlayerProxy(defaultOptions, pluginsConfigure);
   setStorageTextStyle(player);
   applyStorageSupport(player);
   applyCastSupport(defaultOptions, player);

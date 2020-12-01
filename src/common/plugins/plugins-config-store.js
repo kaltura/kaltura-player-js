@@ -51,7 +51,6 @@ const defaultConfig: dataStoreType = {
   }
 };
 
-let config = Utils.Object.copyDeep(defaultConfig);
 const templateRegex = new RegExp('{{.*}}');
 
 /**
@@ -88,36 +87,43 @@ const removeUndefineds = (obj: Object = {}): Object =>
     return product;
   }, {});
 
-const pluginConfig = {
+class pluginConfig {
+  _config: dataStoreType;
+
+  /**
+   * constructor
+   * @constructor
+   */
+  constructor() {
+    this._config = Utils.Object.copyDeep(defaultConfig);
+  }
+
   /**
    * return the token store object
-   * @private
    * @returns {*|any} - token store object
    */
-  get: (): dataStoreType => {
-    return config;
-  },
+  get(): dataStoreType {
+    return this._config;
+  }
   /**
    * recalculate the token store data, if new config with token is passed then add it to the data store, and if
    * an existing token needs to be removed then remove it
-   * @private
    * @param {?dataStoreType} pluginsConfig - the new config object
    * @returns {void}
    */
-  set: (pluginsConfig: ?dataStoreType): void => {
+  set(pluginsConfig: ?dataStoreType): void {
     if (pluginsConfig) {
       const newConfig = resolveNewConfig(pluginsConfig);
-      config = removeUndefineds(Utils.Object.mergeDeep(config, newConfig));
+      this._config = removeUndefineds(Utils.Object.mergeDeep(this._config, newConfig));
     }
-  },
+  }
   /**
    * reset the config store to its initial state
-   * @private
    * @returns {void}
    */
-  reset: (): void => {
-    config = Utils.Object.copyDeep(defaultConfig);
+  reset(): void {
+    this._config = Utils.Object.copyDeep(defaultConfig);
   }
-};
+}
 
 export {pluginConfig, templateRegex};

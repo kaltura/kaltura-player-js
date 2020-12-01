@@ -3,7 +3,7 @@ import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
-import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins';
+import {PluginsConfigure} from './common/plugins';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -52,12 +52,14 @@ class KalturaPlayer extends FakeEventTarget {
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
+  _pluginsConfigure: PluginsConfigure;
 
-  constructor(options: KPOptionsObject) {
+  constructor(options: KPOptionsObject, pluginsConfigure: PluginsConfigure) {
     super();
     const {sources, plugins} = options;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
+    this._pluginsConfigure = pluginsConfigure;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this.configure({plugins});
@@ -195,7 +197,7 @@ class KalturaPlayer extends FakeEventTarget {
       config.plugins[name] = {};
     });
     // $FlowFixMe
-    evaluatePluginsConfig(config.plugins, config);
+    this._pluginsConfigure.evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
     this._maybeCreateAdsController();
     this._playlistManager.load(playlistData, playlistConfig, entryList);
@@ -225,7 +227,7 @@ class KalturaPlayer extends FakeEventTarget {
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
-    evaluatePluginsConfig(config.plugins, configDictionary);
+    this._pluginsConfigure.evaluatePluginsConfig(config.plugins, configDictionary);
     this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
@@ -233,7 +235,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._maybeCreateAdsController();
     const uiConfig = config.ui;
     if (uiConfig) {
-      evaluateUIConfig(uiConfig, this.config);
+      this._pluginsConfigure.evaluateUIConfig(uiConfig, this.config);
       this._uiWrapper.setConfig(uiConfig);
     }
     if (config.playlist) {
@@ -762,7 +764,7 @@ class KalturaPlayer extends FakeEventTarget {
   _maybeSetEmbedConfig(): void {
     const ui = this.config.ui;
     if (ui && ui.components && ui.components.share) {
-      evaluateUIConfig(ui, this.config);
+      this._pluginsConfigure.evaluateUIConfig(ui, this.config);
       this._uiWrapper.setConfig(ui);
     }
   }
