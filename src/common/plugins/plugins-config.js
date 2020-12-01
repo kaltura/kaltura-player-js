@@ -1,5 +1,5 @@
 //@flow
-import {pluginConfig, templateRegex} from './plugins-config-store.js';
+import {pluginConfigStore, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
@@ -157,7 +157,7 @@ class PluginsConfigure {
    * @constructor
    */
   constructor() {
-    this._pluginConfig = new pluginConfig();
+    this._pluginConfigStore = new pluginConfigStore();
   }
 
   /**
@@ -167,9 +167,9 @@ class PluginsConfigure {
    */
   evaluatePluginsConfig(options: ?KPPluginsConfigObject, config: KPOptionsObject): void {
     if (options) {
-      this._pluginConfig.set(options);
+      this._pluginConfigStore.set(options);
       const dataModel = getModel(config);
-      const mergedConfig = Utils.Object.mergeDeep({}, this._pluginConfig.get(), options);
+      const mergedConfig = Utils.Object.mergeDeep({}, this._pluginConfigStore.get(), options);
       const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
       _mergeConfig(options, evaluatedConfig);
     }

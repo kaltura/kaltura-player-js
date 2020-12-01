@@ -87,7 +87,7 @@ const removeUndefineds = (obj: Object = {}): Object =>
     return product;
   }, {});
 
-class pluginConfig {
+class pluginConfigStore {
   _config: dataStoreType;
 
   /**
@@ -126,4 +126,4 @@ class pluginConfig {
   }
 }
 
-export {pluginConfig, templateRegex};
+export {pluginConfigStore, templateRegex};
