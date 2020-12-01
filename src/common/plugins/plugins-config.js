@@ -152,6 +152,7 @@ function _mergeConfig(data: Object, evaluatedConfig: Object): void {
 }
 
 class PluginsConfigure {
+  _pluginConfigStore: pluginConfigStore;
   /**
    * constructor
    * @constructor
