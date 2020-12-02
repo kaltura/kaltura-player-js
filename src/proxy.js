@@ -55,7 +55,7 @@ const proxyHandler: Object = {
   }
 };
 
-const getPlayerProxy = (options: KPOptionsObject, pluginsConfigure: PluginsConfigure) => {
+const getPlayerProxy = (options: KPOptionsObject, pluginsConfigure: ?PluginsConfigure) => {
   const player = new KalturaPlayer(options, pluginsConfigure);
   const proxy = new Proxy(player, proxyHandler);
   Players[options.targetId] = proxy;

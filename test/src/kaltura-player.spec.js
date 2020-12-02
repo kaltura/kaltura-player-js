@@ -2,7 +2,7 @@ import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
-import {PluginManager, PluginsConfigure} from '../../src/common/plugins';
+import {PluginManager} from '../../src/common/plugins';
 import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
@@ -400,21 +400,18 @@ describe('kaltura player api', function () {
     });
 
     it('should load 2 plugins on initial config and configure them on configure', function () {
-      player = new Player(
-        {
-          ui: {},
-          provider: {},
-          plugins: {
-            colors: {
-              size: 5
-            },
-            numbers: {
-              size: 20
-            }
+      player = new Player({
+        ui: {},
+        provider: {},
+        plugins: {
+          colors: {
+            size: 5
+          },
+          numbers: {
+            size: 20
           }
-        },
-        new PluginsConfigure()
-      );
+        }
+      });
       player._pluginManager.get('colors').should.exist;
       player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(2);
@@ -452,18 +449,15 @@ describe('kaltura player api', function () {
     });
 
     it('should load 1st plugin on initial config, load 2nd plugin and configure the 1st on configure', function () {
-      player = new Player(
-        {
-          ui: {},
-          provider: {},
-          plugins: {
-            numbers: {
-              size: 20
-            }
+      player = new Player({
+        ui: {},
+        provider: {},
+        plugins: {
+          numbers: {
+            size: 20
           }
-        },
-        new PluginsConfigure()
-      );
+        }
+      });
       player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.numbers.should.deep.equals({
@@ -496,17 +490,14 @@ describe('kaltura player api', function () {
     });
 
     it('should create player without plugins, load plugins on configure', function () {
-      player = new Player(
-        {
-          ui: {},
-          plugins: {},
-          advertising: {
-            adBreaks: []
-          },
-          provider: {}
+      player = new Player({
+        ui: {},
+        plugins: {},
+        advertising: {
+          adBreaks: []
         },
-        new PluginsConfigure()
-      );
+        provider: {}
+      });
       Object.keys(player._pluginManager._plugins).length.should.equals(0);
       player.config.plugins.should.deep.equals({});
       player.configure({
@@ -534,26 +525,20 @@ describe('kaltura player api', function () {
     });
 
     it('should create player without plugins, load 1st plugin on configure, configure 1st plugin with/after sources', function () {
-      player = new Player(
-        {
-          ui: {},
-          plugins: {},
-          provider: {}
-        },
-        new PluginsConfigure()
-      );
+      player = new Player({
+        ui: {},
+        plugins: {},
+        provider: {}
+      });
       Object.keys(player._pluginManager._plugins).length.should.equals(0);
       player.config.plugins.should.deep.equals({});
-      player.configure(
-        {
-          plugins: {
-            numbers: {
-              size: 200
-            }
+      player.configure({
+        plugins: {
+          numbers: {
+            size: 200
           }
-        },
-        new PluginsConfigure()
-      );
+        }
+      });
       player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.numbers.should.deep.equals({
@@ -592,21 +577,17 @@ describe('kaltura player api', function () {
     });
 
     it('should create player with plugin and fail to configure other plugin after sources', function () {
-      player = new Player(
-        {
-          ui: {},
-          provider: {},
-          sources: SourcesConfig.Mp4,
-          plugins: {
-            numbers: {
-              size: 2,
-              firstCellValue: 3
-            }
+      player = new Player({
+        ui: {},
+        provider: {},
+        sources: SourcesConfig.Mp4,
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
           }
-        },
-
-        new PluginsConfigure()
-      );
+        }
+      });
       player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
       player.config.plugins.should.deep.equals({
@@ -648,17 +629,14 @@ describe('kaltura player api', function () {
 
     it('should create player with async resolve plugin - check async load', done => {
       try {
-        player = new Player(
-          {
-            ui: {},
-            provider: {},
-            sources: SourcesConfig.Mp4,
-            plugins: {
-              asyncResolve: {}
-            }
-          },
-          new PluginsConfigure()
-        );
+        player = new Player({
+          ui: {},
+          provider: {},
+          sources: SourcesConfig.Mp4,
+          plugins: {
+            asyncResolve: {}
+          }
+        });
         player._pluginManager.get('asyncResolve').should.exist;
         sinon.stub(player._localPlayer, '_load').callsFake(function () {
           player._pluginManager.get('asyncResolve').ready.then(() => {
@@ -673,17 +651,14 @@ describe('kaltura player api', function () {
 
     it('should create player with async resolve plugin - check async play', done => {
       try {
-        player = new Player(
-          {
-            ui: {},
-            provider: {},
-            sources: SourcesConfig.Mp4,
-            plugins: {
-              asyncResolve: {}
-            }
-          },
-          new PluginsConfigure()
-        );
+        player = new Player({
+          ui: {},
+          provider: {},
+          sources: SourcesConfig.Mp4,
+          plugins: {
+            asyncResolve: {}
+          }
+        });
         player._pluginManager.get('asyncResolve').should.exist;
         sinon.stub(player._localPlayer, '_play').callsFake(function () {
           player._pluginManager.get('asyncResolve').ready.then(() => {
@@ -698,17 +673,14 @@ describe('kaltura player api', function () {
 
     it('should create player with async reject plugin - check async load', done => {
       try {
-        player = new Player(
-          {
-            ui: {},
-            provider: {},
-            sources: SourcesConfig.Mp4,
-            plugins: {
-              asyncReject: {}
-            }
-          },
-          new PluginsConfigure()
-        );
+        player = new Player({
+          ui: {},
+          provider: {},
+          sources: SourcesConfig.Mp4,
+          plugins: {
+            asyncReject: {}
+          }
+        });
         player._pluginManager.get('asyncReject').should.exist;
         sinon.stub(player._localPlayer, '_load').callsFake(function () {
           player._pluginManager.get('asyncReject').ready.catch(() => {
@@ -723,17 +695,14 @@ describe('kaltura player api', function () {
 
     it('should create player with async reject plugin - check async play', done => {
       try {
-        player = new Player(
-          {
-            ui: {},
-            provider: {},
-            sources: SourcesConfig.Mp4,
-            plugins: {
-              asyncReject: {}
-            }
-          },
-          new PluginsConfigure()
-        );
+        player = new Player({
+          ui: {},
+          provider: {},
+          sources: SourcesConfig.Mp4,
+          plugins: {
+            asyncReject: {}
+          }
+        });
         player._pluginManager.get('asyncReject').should.exist;
         sinon.stub(player._localPlayer, '_play').callsFake(function () {
           player._pluginManager.get('asyncReject').ready.catch(() => {
@@ -748,18 +717,15 @@ describe('kaltura player api', function () {
 
     it('should create player with async resolve plugin and reject plugin - check async play', done => {
       try {
-        player = new Player(
-          {
-            ui: {},
-            provider: {},
-            sources: SourcesConfig.Mp4,
-            plugins: {
-              asyncReject: {},
-              asyncResolve: {}
-            }
-          },
-          new PluginsConfigure()
-        );
+        player = new Player({
+          ui: {},
+          provider: {},
+          sources: SourcesConfig.Mp4,
+          plugins: {
+            asyncReject: {},
+            asyncResolve: {}
+          }
+        });
         player._pluginManager.get('asyncReject').should.exist;
         player._pluginManager.get('asyncResolve').should.exist;
         sinon.stub(player._localPlayer, '_load').callsFake(function () {
@@ -780,13 +746,10 @@ describe('kaltura player api', function () {
     let player;
 
     it('should fire PLAYBACK_START on play', done => {
-      player = new Player(
-        {
-          ui: {},
-          provider: {}
-        },
-        new PluginsConfigure()
-      );
+      player = new Player({
+        ui: {},
+        provider: {}
+      });
       player.addEventListener(player.Event.PLAYBACK_START, () => {
         done();
       });
@@ -794,13 +757,10 @@ describe('kaltura player api', function () {
     });
 
     it('should fire PLAYBACK_START on autoplay', done => {
-      player = new Player(
-        {
-          ui: {},
-          provider: {}
-        },
-        new PluginsConfigure()
-      );
+      player = new Player({
+        ui: {},
+        provider: {}
+      });
       player.addEventListener(player.Event.PLAYBACK_START, () => {
         done();
       });
@@ -813,16 +773,13 @@ describe('kaltura player api', function () {
     });
 
     it('should fire auto play failed and show the poster once get AD_AUTOPLAY_FAILED', done => {
-      player = new Player(
-        {
-          ui: {},
-          provider: {},
-          playback: {
-            autoplay: true
-          }
-        },
-        new PluginsConfigure()
-      );
+      player = new Player({
+        ui: {},
+        provider: {},
+        playback: {
+          autoplay: true
+        }
+      });
       player.addEventListener(player.Event.AUTOPLAY_FAILED, event => {
         try {
           player._localPlayer.posterManager._el.style.display.should.equal('');
@@ -856,7 +813,7 @@ describe('kaltura player api', function () {
         ui: {},
         provider: {}
       };
-      const player = new Player(config, new PluginsConfigure());
+      const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
     });
 
@@ -874,7 +831,7 @@ describe('kaltura player api', function () {
         ui: {},
         provider: {}
       };
-      const player = new Player(config, new PluginsConfigure());
+      const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
     });
 
@@ -894,7 +851,7 @@ describe('kaltura player api', function () {
         ui: {},
         provider: {}
       };
-      const player = new Player(config, new PluginsConfigure());
+      const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
       player.plugins.colors.config.prop.check();
     });
@@ -912,7 +869,7 @@ describe('kaltura player api', function () {
         ui: {},
         provider: {}
       };
-      const player = new Player(config, new PluginsConfigure());
+      const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
       player.plugins.colors.config.prop();
     });

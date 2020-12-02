@@ -1,7 +1,6 @@
 import SourcesConfig from '../../configs/sources';
 import {getConfigStructure} from '../../utils/test-utils';
 import {KalturaPlayer as Player} from '../../../../src/kaltura-player';
-import {PluginsConfigure} from '../../../../src/common/plugins';
 import {CustomEventType, AdEventType, Error, FakeEvent} from '@playkit-js/playkit-js';
 
 describe('AdsController', () => {
@@ -12,7 +11,7 @@ describe('AdsController', () => {
   });
 
   beforeEach(() => {
-    player = new Player(config, new PluginsConfigure());
+    player = new Player(config);
     sandbox = sinon.createSandbox();
   });
 

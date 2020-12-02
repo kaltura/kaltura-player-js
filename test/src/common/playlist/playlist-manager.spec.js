@@ -4,7 +4,6 @@ import * as MediaMockData from '../../mock-data/media';
 import * as PlaylistMockData from '../../mock-data/playlist';
 import {FakeEvent} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
-import {PluginsConfigure} from '../../../../src/common/plugins';
 
 describe('PlaylistManager', function () {
   let kalturaPlayer, playlistManager, sandbox;
@@ -22,7 +21,7 @@ describe('PlaylistManager', function () {
 
   before(function () {
     sandbox = sinon.createSandbox();
-    kalturaPlayer = new KalturaPlayer(config, new PluginsConfigure());
+    kalturaPlayer = new KalturaPlayer(config);
   });
 
   beforeEach(function () {
