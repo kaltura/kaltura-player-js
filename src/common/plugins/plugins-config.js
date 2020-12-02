@@ -151,7 +151,7 @@ function _mergeConfig(data: Object, evaluatedConfig: Object): void {
   }
 }
 
-class PluginsConfigure {
+class ConfigEvaluator {
   _pluginConfigStore: PluginConfigStore;
   /**
    * constructor
@@ -199,4 +199,4 @@ class PluginsConfigure {
   }
 }
 
-export {PluginsConfigure, getEncodedReferrer};
+export {ConfigEvaluator, getEncodedReferrer};

@@ -1,4 +1,4 @@
-import {PluginsConfigure, getEncodedReferrer} from '../../../../src/common/plugins';
+import {ConfigEvaluator, getEncodedReferrer} from '../../../../src/common/plugins';
 
 let sandbox = sinon.createSandbox();
 
@@ -17,7 +17,7 @@ describe('evaluatePluginsConfig', function () {
     }
   };
 
-  const pluginsConfigure = new PluginsConfigure();
+  const pluginsConfigure = new ConfigEvaluator();
 
   it('should save the function after evaluatePluginsConfig called', function () {
     pluginsConfigure.evaluatePluginsConfig(pluginsConfig, playerConfig);

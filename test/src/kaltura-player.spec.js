@@ -889,7 +889,7 @@ describe('kaltura player api', function () {
 
       beforeEach(() => {
         player = new Player(Utils.Object.mergeDeep({}, config));
-        player._pluginsConfigure._pluginConfigStore._config = {
+        player._configEvaluator._pluginConfigStore._config = {
           colors: {
             entryId: '{{entryId}}',
             partnerId: '{{partnerId}}',
@@ -989,7 +989,7 @@ describe('kaltura player api', function () {
             }
           )
         );
-        player2._pluginsConfigure._pluginConfigStore._config = {
+        player2._configEvaluator._pluginConfigStore._config = {
           colors: {
             entryId: '{{entryId}}',
             partnerId: '{{partnerId}}'
