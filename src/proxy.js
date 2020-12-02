@@ -1,7 +1,6 @@
 // @flow
 import {KalturaPlayer} from './kaltura-player';
 import {FakeEventTarget} from '@playkit-js/playkit-js';
-import {PluginsConfigure} from './common/plugins';
 
 const Players: KalturaPlayers = {};
 /**
@@ -55,8 +54,8 @@ const proxyHandler: Object = {
   }
 };
 
-const getPlayerProxy = (options: KPOptionsObject, pluginsConfigure: ?PluginsConfigure) => {
-  const player = new KalturaPlayer(options, pluginsConfigure);
+const getPlayerProxy = (options: KPOptionsObject) => {
+  const player = new KalturaPlayer(options);
   const proxy = new Proxy(player, proxyHandler);
   Players[options.targetId] = proxy;
   return proxy;

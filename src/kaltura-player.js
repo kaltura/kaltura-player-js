@@ -54,12 +54,13 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _pluginsConfigure: PluginsConfigure;
 
-  constructor(options: KPOptionsObject, pluginsConfigure: ?PluginsConfigure) {
+  constructor(options: KPOptionsObject) {
     super();
     const {sources, plugins} = options;
+    this._pluginsConfigure = new PluginsConfigure();
+    this._pluginsConfigure.evaluatePluginsConfig(plugins, options);
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
-    this._pluginsConfigure = pluginsConfigure || new PluginsConfigure();
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this.configure({plugins});
