@@ -2,7 +2,7 @@ import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
-import {PluginManager} from '../../src/common/plugins';
+import {PluginManager, PluginConfigStore} from '../../src/common/plugins';
 import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
@@ -872,6 +872,25 @@ describe('kaltura player api', function () {
       const player = new Player(config);
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
       player.plugins.colors.config.prop();
+    });
+
+    it('should evaluate the plugin config well for first media', () => {
+      sandbox.stub(PluginConfigStore.prototype, 'get').callsFake(() => {
+        return {
+          colors: {
+            playerName: '{{pName}}'
+          }
+        };
+      });
+      const config = {
+        plugins: {
+          colors: {}
+        },
+        ui: {},
+        provider: {}
+      };
+      const player = new Player(config);
+      player.plugins.colors.config.playerName.should.equals(__NAME__);
     });
   });
 });

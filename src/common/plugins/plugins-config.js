@@ -1,5 +1,5 @@
 //@flow
-import {pluginConfigStore, templateRegex} from './plugins-config-store.js';
+import {PluginConfigStore, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
@@ -152,13 +152,13 @@ function _mergeConfig(data: Object, evaluatedConfig: Object): void {
 }
 
 class PluginsConfigure {
-  _pluginConfigStore: pluginConfigStore;
+  _pluginConfigStore: PluginConfigStore;
   /**
    * constructor
    * @constructor
    */
   constructor() {
-    this._pluginConfigStore = new pluginConfigStore();
+    this._pluginConfigStore = new PluginConfigStore();
   }
 
   /**

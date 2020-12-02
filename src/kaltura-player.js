@@ -196,7 +196,6 @@ class KalturaPlayer extends FakeEventTarget {
     Object.keys(this._pluginsConfig).forEach(name => {
       config.plugins[name] = {};
     });
-    // $FlowFixMe
     this._pluginsConfigure.evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
     this._maybeCreateAdsController();
