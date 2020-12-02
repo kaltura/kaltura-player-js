@@ -2,14 +2,15 @@ import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
-import {PluginManager, PluginConfigStore} from '../../src/common/plugins';
+import {PluginManager} from '../../src/common/plugins';
 import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources';
-import {FakeEvent} from '@playkit-js/playkit-js';
+import {FakeEvent, Utils} from '@playkit-js/playkit-js';
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
+import {Provider} from 'playkit-js-providers';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -820,6 +821,7 @@ describe('kaltura player api', function () {
     it('should pass class as plugin config', () => {
       const test = class Test {
         constructor() {}
+
         print() {}
       };
       const config = {
@@ -838,6 +840,7 @@ describe('kaltura player api', function () {
     it('should pass class instance as plugin config', done => {
       const test = class Test {
         constructor() {}
+
         check() {
           done();
         }
@@ -874,23 +877,134 @@ describe('kaltura player api', function () {
       player.plugins.colors.config.prop();
     });
 
-    it('should evaluate the plugin config well for first media', () => {
-      sandbox.stub(PluginConfigStore.prototype, 'get').callsFake(() => {
-        return {
-          colors: {
-            playerName: '{{pName}}'
-          }
-        };
-      });
+    describe('changeMedia and multi players', function () {
       const config = {
-        plugins: {
-          colors: {}
-        },
+        plugins: {},
         ui: {},
         provider: {}
       };
-      const player = new Player(config);
-      player.plugins.colors.config.playerName.should.equals(__NAME__);
+      let player;
+      const entryId = '0_wifqaipd';
+      const entryId2 = '0_nwkp7jtx';
+
+      beforeEach(() => {
+        player = new Player(Utils.Object.mergeDeep({}, config));
+        player._pluginsConfigure._pluginConfigStore._config = {
+          colors: {
+            entryId: '{{entryId}}',
+            partnerId: '{{partnerId}}',
+            entryName: '{{entryName}}',
+            entryType: '{{entryType}}'
+          }
+        };
+        player.configure({
+          plugins: {
+            colors: {
+              entryName: '{{entryType}}',
+              entryType: 'custom'
+            }
+          }
+        });
+        sinon.stub(Provider.prototype, 'getMediaConfig').callsFake(info => {
+          const id = info.playlistId || info.entryId;
+          return id
+            ? Promise.resolve(MediaMockData.MediaConfig[id])
+            : Promise.reject({
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
+        });
+      });
+
+      afterEach(() => {
+        sandbox.restore();
+        Provider.prototype.getMediaConfig.restore();
+        player.destroy();
+      });
+
+      it('should evaluate the plugin config - first media', done => {
+        player.loadMedia({entryId}).then(() => {
+          try {
+            player.plugins.colors.config.entryId.should.equals(entryId);
+            player.plugins.colors.config.partnerId.should.equals(1091);
+            player.plugins.colors.config.entryName.should.equals('Vod');
+            player.plugins.colors.config.entryType.should.equals('custom');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+      });
+
+      it('should evaluate the default plugin config - second media', done => {
+        player.loadMedia({entryId}).then(() => {
+          player.loadMedia({entryId: entryId2}).then(() => {
+            try {
+              player.plugins.colors.config.entryId.should.equals(entryId2);
+              player.plugins.colors.config.partnerId.should.equals(1091);
+              player.plugins.colors.config.entryName.should.equals('Live');
+              player.plugins.colors.config.entryType.should.equals('custom');
+              done();
+            } catch (e) {
+              done(e);
+            }
+          });
+        });
+      });
+
+      it('should evaluate the configured plugin config - second media', done => {
+        player.loadMedia({entryId}).then(() => {
+          player.configure({
+            plugins: {
+              colors: {
+                partnerId: '{{entryId}}',
+                entryName: 'name'
+              }
+            }
+          });
+          player.loadMedia({entryId: entryId2}).then(() => {
+            try {
+              player.plugins.colors.config.entryId.should.equals(entryId2);
+              player.plugins.colors.config.partnerId.should.equals(entryId2);
+              player.plugins.colors.config.entryName.should.equals('name');
+              player.plugins.colors.config.entryType.should.equals('custom');
+              done();
+            } catch (e) {
+              done(e);
+            }
+          });
+        });
+      });
+
+      it('should evaluate the plugin config - another player', done => {
+        const player2 = new Player(
+          Utils.Object.mergeDeep(
+            {},
+            {
+              plugins: {
+                colors: {}
+              },
+              ui: {},
+              provider: {}
+            }
+          )
+        );
+        player2._pluginsConfigure._pluginConfigStore._config = {
+          colors: {
+            entryId: '{{entryId}}',
+            partnerId: '{{partnerId}}'
+          }
+        };
+        player2.loadMedia({entryId}).then(() => {
+          try {
+            player2.plugins.colors.config.entryId.should.equals(entryId);
+            player2.plugins.colors.config.partnerId.should.equals(1091);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+      });
     });
   });
 });
