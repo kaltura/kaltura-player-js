@@ -1,4 +1,5 @@
 // @flow
+import {Utils} from '@playkit-js/playkit-js';
 const formats = ['hls', 'dash', 'progressive'];
 /**
  * @class PlaylistItem
@@ -22,12 +23,7 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   updateSources(sourcesObject: PKSourcesConfigObject): void {
-    formats.forEach(format => {
-      this._sources && (this._sources[format] = sourcesObject[format]);
-    });
-    if (this._sources && sourcesObject.options) {
-      this._sources.options = sourcesObject.options;
-    }
+    this._sources = Utils.Object.mergeDeep({}, sourcesObject);
   }
 
   /**
