@@ -75,7 +75,7 @@ class KalturaPlayer extends FakeEventTarget {
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
     this._playlistManager.configure(options.playlist);
-    sources && this._localPlayer.configure({sources});
+    this._localPlayer.configure({sources: sources || {}});
   }
 
   /**
