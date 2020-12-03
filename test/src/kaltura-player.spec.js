@@ -42,8 +42,14 @@ describe('kaltura player api', function () {
   });
 
   describe('constructor', function () {
-    it('config.sources should be an empty object if no configured', function () {
+    beforeEach(function () {
       kalturaPlayer = setup(config);
+    });
+
+    afterEach(function () {
+      kalturaPlayer.destroy();
+    });
+    it('config.sources should be an empty object if no configured', function () {
       kalturaPlayer.config.sources.should.be.exist;
     });
   });
