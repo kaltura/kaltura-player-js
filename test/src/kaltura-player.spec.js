@@ -41,6 +41,18 @@ describe('kaltura player api', function () {
     TestUtils.removeElement(targetId);
   });
 
+  describe('constructor', function () {
+    beforeEach(function () {
+      kalturaPlayer = setup(config);
+    });
+
+    afterEach(function () {
+      kalturaPlayer.destroy();
+    });
+    it('config.sources should be an empty object if no configured', function () {
+      kalturaPlayer.config.sources.should.be.exist;
+    });
+  });
   describe('media api', function () {
     describe('loadMedia', function () {
       const entryId = '0_wifqaipd';
@@ -614,6 +626,7 @@ describe('kaltura player api', function () {
       });
     });
   });
+
   describe('async plugins loading', () => {
     let player;
     beforeEach(() => {
