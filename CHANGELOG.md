@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/kaltura/kaltura-player-js/compare/v1.0.5...v1.2.0) (2020-12-07)
+
+
+### Bug Fixes
+
+* **FEC-10324:** class instances merged like simple object ([#368](https://github.com/kaltura/kaltura-player-js/issues/368)) ([4968c5f](https://github.com/kaltura/kaltura-player-js/commit/4968c5f))
+* **FEC-10694:** Ima post roll overrides the post bumper ([#378](https://github.com/kaltura/kaltura-player-js/issues/378)) ([e350cbe](https://github.com/kaltura/kaltura-player-js/commit/e350cbe))
+* **FEC-10749:** playlist by sources stuck ([#386](https://github.com/kaltura/kaltura-player-js/issues/386)) ([a747f70](https://github.com/kaltura/kaltura-player-js/commit/a747f70)), closes [#370](https://github.com/kaltura/kaltura-player-js/issues/370) [/github.com/kaltura/kaltura-player-js/pull/370/files#diff-b20fda8cac0288af75e0f3c4304df5420584de585d923934f9606e3634d2dbf5L302](https://github.com/kaltura/kaltura-player-js/issues/diff-b20fda8cac0288af75e0f3c4304df5420584de585d923934f9606e3634d2dbf5L302)
+
+
+### Features
+
+* **FEC-10233:** plugin async loading support ([#372](https://github.com/kaltura/kaltura-player-js/issues/372)) ([716e8c0](https://github.com/kaltura/kaltura-player-js/commit/716e8c0))
+* **FEC-10632:** handle player dimensions dynamically  ([#373](https://github.com/kaltura/kaltura-player-js/issues/373)) ([c0bf2e1](https://github.com/kaltura/kaltura-player-js/commit/c0bf2e1))
+* **FEC-10656:** set forceRedirectExternalStreams as true by default on IE11 and Chromecast ([#370](https://github.com/kaltura/kaltura-player-js/issues/370)) ([51d8a4a](https://github.com/kaltura/kaltura-player-js/commit/51d8a4a))
+* **FEC-10669:** add ability to pass options to loadMedia request ([#374](https://github.com/kaltura/kaltura-player-js/issues/374)) ([1db395a](https://github.com/kaltura/kaltura-player-js/commit/1db395a))
+* **FEC-10684:** reset player automatically inside setMedia ([#376](https://github.com/kaltura/kaltura-player-js/issues/376)) ([63f698d](https://github.com/kaltura/kaltura-player-js/commit/63f698d))
+* update playkit-js-* versions ([318d87a](https://github.com/kaltura/kaltura-player-js/commit/318d87a))
+
+
+
 ## [1.1.0](https://github.com/kaltura/kaltura-player-js/compare/v1.0.5...v1.1.0) (2020-11-22)
 
 
