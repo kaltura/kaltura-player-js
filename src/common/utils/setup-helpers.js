@@ -332,10 +332,10 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
   if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
-    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
+    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
-        playback: {
+        text: {
           useNativeTextTrack: true
         }
       });
@@ -561,7 +561,13 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
-    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
+    ['playback.enableCEA708Captions', 'text.enableCEA708Captions'],
+    ['playback.useNativeTextTrack', 'text.useNativeTextTrack'],
+    ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
+    ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
+    ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
+    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
