@@ -1,4 +1,4 @@
-import {evaluatePluginsConfig, getEncodedReferrer} from '../../../../src/common/plugins';
+import {ConfigEvaluator, getEncodedReferrer} from '../../../../src/common/plugins';
 
 let sandbox = sinon.createSandbox();
 
@@ -17,25 +17,27 @@ describe('evaluatePluginsConfig', function () {
     }
   };
 
+  const configEvaluator = new ConfigEvaluator();
+
   it('should save the function after evaluatePluginsConfig called', function () {
-    evaluatePluginsConfig(pluginsConfig, playerConfig);
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.myHandler.should.exist;
     pluginsConfig.kava.myHandler.should.be.instanceof(Function);
   });
 
   it('should evaluate plugins config', function () {
-    evaluatePluginsConfig(pluginsConfig, playerConfig);
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.partnerId.should.exist;
     pluginsConfig.kava.partnerId.should.equal(1234);
   });
 
   it('should remove unevaluated plugins config', function () {
-    evaluatePluginsConfig(pluginsConfig, playerConfig);
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.should.not.have.property('myUnevaluatedConfig');
   });
 
   it('should remove unevaluated plugins config from array', function () {
-    evaluatePluginsConfig(pluginsConfig, playerConfig);
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.myArray.should.deep.equal([1, 'value', 0, true, false]);
   });
 });
