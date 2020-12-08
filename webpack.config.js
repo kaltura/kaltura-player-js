@@ -9,9 +9,7 @@ const playerType = process.env.PLAYER_TYPE || 'ovp';
 const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
 
 module.exports = (env, argv) => {
-  const configs = [
-    createConfig(env, argv, 'var')
-  ];
+  const configs = [createConfig(env, argv, 'var')];
   if (argv.mode === 'production') {
     configs.push(createConfig(env, argv, 'commonjs2'));
   }
@@ -103,9 +101,10 @@ function createConfig(env, argv, target) {
         '@playkit-js/playkit-js': path.resolve('./node_modules/@playkit-js/playkit-js'),
         'playkit-js-providers': path.resolve(`./node_modules/playkit-js-providers/dist/playkit-${playerType}-provider`),
         'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
+        'hls.js': path.resolve('./node_modules/hls.js/dist/hls.min.js'),
         poster: path.resolve(`./src/${playerType}/poster`)
       },
       modules: [path.resolve(__dirname, 'src'), 'node_modules']
     }
   };
-};
+}

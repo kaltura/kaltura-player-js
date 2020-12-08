@@ -14,7 +14,9 @@ var mediaInfo = {
 
 To learn how to fill your media info object correctly, click the relevant media information documentation below.
 
-> Note: For OVP players, you'll only need to fill the entryid (mandatory) and the KS (optional). For Cloud TV players, you'll need to provide these parameters and more. See details below.
+> Note: For OVP players, you'll only need to fill the entryId or referenceId (at least one is mandatory)
+> and the KS (optional). If both entryid and referenceId are provided, the entryid has precendence.
+> For Cloud TV players, you'll need to provide these parameters and more. See details below.
 
 <details><summary><b>MediaInfo Documentation - OVP</b></summary>
 <p>
@@ -24,16 +26,20 @@ To learn how to fill your media info object correctly, click the relevant media 
 ```js
 {
   entryId: string,
-  ks: string
+  ks: string,
+  referenceId: string
 }
 ```
 
 **Parameters**
 
-| Name      | Type     | Required | Description                     | Possible Values | Default Value |
-| --------- | -------- | -------- | ------------------------------- | --------------- | ------------- |
-| `entryId` | `string` | V        | The entry ID of the media       |
-| `ks`      | `string` |          | The KS (Kaltura Session) secret |
+| Name          | Type     | Description                                           | Possible Values | Default Value |
+| ------------- | -------- | ----------------------------------------------------- | --------------- | ------------- |
+| `entryId`     | `string` | The entry ID of the media                             |
+| `referenceId` | `string` | A reference ID of the media (instead of the entry ID) |
+| `ks`          | `string` | The KS (Kaltura Session) secret                       |
+
+> Note: \*\*\* Either entryId or referenceId must be supplied (if both will be supplied, the media will be loaded by mediaId)
 
 ### Examples
 
@@ -51,6 +57,14 @@ var mediaInfo = {
 var mediaInfo = {
   entryId: 'YOUR_ENTRY_ID',
   ks: 'YOUR_KS'
+};
+```
+
+#### Using the reference Id
+
+```js
+var mediaInfo = {
+  referenceId: 'YOUR_REFERENCE_ID'
 };
 ```
 
@@ -79,18 +93,21 @@ var mediaInfo = {
 
 **Parameters**
 
-| Name                 | Type            | Required | Description                            | Possible Values                                                    | Default Value |
-| -------------------- | --------------- | -------- | -------------------------------------- | ------------------------------------------------------------------ | ------------- |
-| `entryId`            | `string`        | V        | The entry ID of the media              |
-| `mediaType`          | `string`        |          | The type of the specific media         | `"media"`, `"epg"`, `"recording"`                                  | `"media"`     |
-| `assetReferenceType` | `string`        |          | The asset type of the specific media   | `"media"`, `"epg_internal"`, `"epg_external"`                      | `"media"`     |
-| `contextType`        | `string`        |          | The playback context type              | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"`             | `"PLAYBACK"`  |
-| `ks`                 | `string`        |          | The KS (Kaltura Session) secret        |
-| `protocol`           | `string`        |          | The protocol of the specific media     | `"https"`, `"http"`                                                |
-| `fileIds`            | `string`        |          | List of comma-separated media file IDs |
-| `streamerType`       | `string`        |          | The playback streamer type             | `"applehttp"`, `"mpegdash"`, `"url"`, `"smothstreaming"`, `"none"` |
-| `urlType     `       | `string`        |          | The playback url type                  | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
-| `formats`            | `Array<string>` |          | Device types as defined in the system. |
+| Name                 | Type            | Description                                             | Possible Values                                                    | Default Value |
+| -------------------- | --------------- | ------------------------------------------------------- | ------------------------------------------------------------------ | ------------- |
+| `entryId`            | `string`        | The entry ID of the media                               |
+| `referenceId`        | `string`        | The reference ID of the media (instead of the entry ID) |
+| `mediaType`          | `string`        | The type of the specific media                          | `"media"`, `"epg"`, `"recording"`                                  | `"media"`     |
+| `assetReferenceType` | `string`        | The asset type of the specific media                    | `"media"`, `"epg_internal"`, `"epg_external"`                      | `"media"`     |
+| `contextType`        | `string`        | The playback context type                               | `"PLAYBACK"`, `"CATCHUP"`, `"START_OVER"`, `"TRAILER"`             | `"PLAYBACK"`  |
+| `ks`                 | `string`        | The KS (Kaltura Session) secret                         |
+| `protocol`           | `string`        | The protocol of the specific media                      | `"https"`, `"http"`                                                |
+| `fileIds`            | `string`        | List of comma-separated media file IDs                  |
+| `streamerType`       | `string`        | The playback streamer type                              | `"applehttp"`, `"mpegdash"`, `"url"`, `"smothstreaming"`, `"none"` |
+| `urlType`            | `string`        | The playback url type                                   | `"PLAYMANIFEST"`, `"DIRECT"`                                       |
+| `formats`            | `Array<string>` | Device types as defined in the system.                  |
+
+> Note: \*\*\* Either entryId or referenceId must be supplied (if both will be supplied, the media will be loaded by mediaId)
 
 ## Examples
 
@@ -180,7 +197,22 @@ player.loadMedia(mediaInfo).then(() => {
 });
 ```
 
-Click ~~here~~ to see the full `loadMedia` API.
+Click [here](api.md#loadmedia) to see the full `loadMedia` API.
+
+### Media Options
+
+In addition to `mediaInfo`, you can also pass media options to the `loadMedia` API. Those options will override the default options supplied from the backend or those configured in the player.
+Example:
+
+```javascript
+const mediaOptions = {
+  ...
+  poster: 'my/poster/url',
+  startTime: 30,
+  ...
+};
+player.loadMedia(mediaInfo, mediaOptions);
+```
 
 ## Next Step
 
