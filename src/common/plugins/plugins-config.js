@@ -1,5 +1,5 @@
 //@flow
-import {pluginConfig, templateRegex} from './plugins-config-store.js';
+import {PluginConfigStore, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
@@ -112,45 +112,6 @@ function getEncodedReferrer(): string {
 }
 
 /**
- * @param {KPPluginsConfigObject} options - plugins options
- * @param {KPOptionsObject} config - player config
- * @private
- * @return {void}
- */
-function evaluatePluginsConfig(options: ?KPPluginsConfigObject, config: KPOptionsObject): void {
-  if (options) {
-    pluginConfig.set(options);
-    const dataModel = getModel(config);
-    const mergedConfig = Utils.Object.mergeDeep({}, pluginConfig.get(), options);
-    const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
-    _mergeConfig(options, evaluatedConfig);
-  }
-}
-
-/**
- * @param {KPUIOptionsObject} options - UI options
- * @param {KPOptionsObject} config - player config
- * @private
- * @return {void}
- */
-function evaluateUIConfig(options: KPUIOptionsObject, config: KPOptionsObject): void {
-  if (options) {
-    const defaultUiConfig = {
-      components: {
-        share: {
-          shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
-          embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
-        }
-      }
-    };
-    const dataModel = getModel(config);
-    const mergedConfig = Utils.Object.mergeDeep({}, defaultUiConfig, options);
-    const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
-    _mergeConfig(options, evaluatedConfig);
-  }
-}
-
-/**
  *
  * @param {string} config - the config string
  * @returns {Object} - the config object
@@ -190,4 +151,52 @@ function _mergeConfig(data: Object, evaluatedConfig: Object): void {
   }
 }
 
-export {evaluatePluginsConfig, evaluateUIConfig, getEncodedReferrer};
+class ConfigEvaluator {
+  _pluginConfigStore: PluginConfigStore;
+  /**
+   * constructor
+   * @constructor
+   */
+  constructor() {
+    this._pluginConfigStore = new PluginConfigStore();
+  }
+
+  /**
+   * @param {KPPluginsConfigObject} options - plugins options
+   * @param {KPOptionsObject} config - player config
+   * @return {void}
+   */
+  evaluatePluginsConfig(options: ?KPPluginsConfigObject, config: KPOptionsObject): void {
+    if (options) {
+      this._pluginConfigStore.set(options);
+      const dataModel = getModel(config);
+      const mergedConfig = Utils.Object.mergeDeep({}, this._pluginConfigStore.get(), options);
+      const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
+      _mergeConfig(options, evaluatedConfig);
+    }
+  }
+
+  /**
+   * @param {KPUIOptionsObject} options - UI options
+   * @param {KPOptionsObject} config - player config
+   * @return {void}
+   */
+  evaluateUIConfig(options: KPUIOptionsObject, config: KPOptionsObject): void {
+    if (options) {
+      const defaultUiConfig = {
+        components: {
+          share: {
+            shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
+            embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
+          }
+        }
+      };
+      const dataModel = getModel(config);
+      const mergedConfig = Utils.Object.mergeDeep({}, defaultUiConfig, options);
+      const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
+      _mergeConfig(options, evaluatedConfig);
+    }
+  }
+}
+
+export {ConfigEvaluator, getEncodedReferrer};
