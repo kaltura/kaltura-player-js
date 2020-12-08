@@ -47,7 +47,6 @@ class KalturaPlayer extends FakeEventTarget {
   _remotePlayer: ?BaseRemotePlayer = null;
   _pluginManager: PluginManager = new PluginManager();
   _pluginsConfig: KPPluginsConfigObject = {};
-  _pluginsUiComponents: Array<KPUIComponent> = [];
   _reset: boolean = true;
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
@@ -551,10 +550,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  get uiComponents(): Array<KPUIComponent> {
-    return [...this._pluginsUiComponents];
-  }
-
   get provider(): Provider {
     return this._provider;
   }
@@ -731,8 +726,7 @@ class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    this._pluginsUiComponents = uiComponents;
-    this._pluginsUiComponents.forEach(component => this._uiWrapper.addComponent(component));
+    uiComponents.forEach(component => this._uiWrapper.addComponent(component));
     // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
