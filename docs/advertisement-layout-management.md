@@ -304,7 +304,7 @@ kalturaPlayer.ads.playAdNow(
 
 ### Seekbar Cue Points
 
-To display cue points on the seekbar to indicates the ad break positions use the following config:
+To display cue points on the seekbar to indicates the ad break positions use `showAdBreakCuePoint` option, as following:
 ```js
 const config = {
   ...
