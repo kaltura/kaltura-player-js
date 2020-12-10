@@ -14,6 +14,7 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 - [Play Ads After Time](#play-ads-after-time)
 - [Events](#events)
 - [Play Ad Now](#play-ad-now)
+- [Seekbar Cue Points](#seekbar-cue-points)
 
 ### Single Ad
 
@@ -300,3 +301,55 @@ kalturaPlayer.ads.playAdNow(
     },
   ]);
 ```
+
+### Seekbar Cue Points
+
+To display cue points on the seekbar to indicates the ad break positions use the following config:
+```ecmascript 6
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    showAdBreakCuePoint: true,
+    adBreaks: [{
+      position: 60,
+      ads: [{
+          url: [MID_ROLL_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+```
+
+To customize the cue points style use `adBreakCuePointStyle` option. for example:
+```ecmascript 6
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    showAdBreakCuePoint: true,
+    adBreakCuePointStyle: {
+     marker: {
+       width: 10,
+       color: 'rgb(255, 0, 0)' 
+      }   
+    },
+    adBreaks: [{
+      position: 60,
+      ads: [{
+          url: [MID_ROLL_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+```
+
+All style options are listed [here](https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject). 
