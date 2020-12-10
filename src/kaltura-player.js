@@ -47,7 +47,6 @@ class KalturaPlayer extends FakeEventTarget {
   _remotePlayer: ?BaseRemotePlayer = null;
   _pluginManager: PluginManager = new PluginManager();
   _pluginsConfig: KPPluginsConfigObject = {};
-  _pluginsUiComponents: Array<KPUIComponent> = [];
   _reset: boolean = true;
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
@@ -63,7 +62,6 @@ class KalturaPlayer extends FakeEventTarget {
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
-    this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
@@ -78,6 +76,7 @@ class KalturaPlayer extends FakeEventTarget {
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
     this._playlistManager.configure(options.playlist);
+    this.configure({plugins});
     this._localPlayer.configure({sources: sources || {}});
   }
 
@@ -553,10 +552,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  get uiComponents(): Array<KPUIComponent> {
-    return [...this._pluginsUiComponents];
-  }
-
   get provider(): Provider {
     return this._provider;
   }
@@ -733,8 +728,7 @@ class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    this._pluginsUiComponents = uiComponents;
-
+    uiComponents.forEach(component => this._uiWrapper.addComponent(component));
     // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
