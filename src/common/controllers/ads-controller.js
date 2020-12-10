@@ -205,6 +205,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._player.dispatchEvent(new FakeEvent(AdEventType.AD_MANIFEST_LOADED, {adBreaksPosition}));
     if (this._player.ui.hasManager('timeline') && this._player.config.advertising.showAdBreakCuePoint) {
       adBreaksPosition.forEach(position => {
+        // $FlowFixMe
         this._player.ui.getManager('timeline').addCuePoint({
           time: position !== -1 ? position : Infinity,
           ...this._player.config.advertising.adBreakCuePointStyle
