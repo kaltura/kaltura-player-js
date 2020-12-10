@@ -405,7 +405,7 @@ Type: [Object][369]
 -   `adBreaks` **[Array][370]&lt;[KPAdBreakObject][376]>** The ad breaks scheme.
 -   `playAdsAfterTime` **[number][374]?** Only play ad breaks scheduled after this time (in seconds). This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
 -   `showAdBreakCuePoint` **[boolean][372]?** Whether to show the ad breaks cue points.
--   `adBreakCuePointStyle` **[Object][369]?** Style options for the ad breaks cue points - See the options in [https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject][377].
+-   `adBreakCuePointStyle` **[Object][369]?** Style options for the ad breaks cue points - See the options [Here][377].
 
 ## KalturaPlayers
 
@@ -413,7 +413,7 @@ a map of player instances by player ids
 
 Type: [Object][369]&lt;[string][371], KalturaPlayer>
 
-## KPPlaylistOptions
+## KPPlaylistOptions  
 
 Type: [Object][369]
 
