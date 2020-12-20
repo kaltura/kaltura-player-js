@@ -18,11 +18,23 @@ cache:
 before_install:
   - export DISPLAY=:99.0
 
+if: (branch = master) OR (tag IS present) OR (type = pull_request)
+install:
+  - git checkout master
+  - echo "Run standard-version"
+  - yarn run release --prerelease canary --skip.commit=true --skip.tag=true
+  - yarn upgrade @playkit-js/playkit-js@canary
+  - yarn upgrade @playkit-js/playkit-js-dash@canary
+  - yarn upgrade @playkit-js/playkit-js-hls@canary
+  - yarn upgrade @playkit-js/playkit-js-ui@canary
+  - yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
+
 script:
   - set -ev
   - yarn install
 
 stages:
+  - Check
   - Tests
   - Release canary
   - Release
@@ -46,17 +58,6 @@ jobs:
       if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: 'Release canary'
       script:
-        - git checkout master
-        - echo "Run standard-version"
-        - sha=$(git rev-parse --verify --short HEAD)
-        - commitNumberAfterTag=$(git rev-list  `git rev-list --tags --no-walk --max-count=1`..HEAD --count)
-        - yarn run release --prerelease canary-${commitNumberAfterTag}-${sha} --skip.commit=true --skip.tag=true
-        - yarn upgrade @playkit-js/playkit-js@canary
-        - yarn upgrade @playkit-js/playkit-js-dash@canary
-        - yarn upgrade @playkit-js/playkit-js-hls@canary
-        - yarn upgrade @playkit-js/playkit-js-ui@canary
-        - yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
-        - yarn install
         - yarn run build:ovp && yarn run build:ott && npm run commit:dist
         - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
         - currentVersion=$(npx -c 'echo "$npm_package_version"')
@@ -78,3 +79,8 @@ jobs:
       name: 'Running unit tests'
       script:
         - yarn run test
+    - stage: Check
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: 'Check'
+      script:
+        - cat package.json
