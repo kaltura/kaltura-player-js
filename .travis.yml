@@ -18,19 +18,17 @@ cache:
 before_install:
   - export DISPLAY=:99.0
 
-if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
-install:
-  - git checkout master
-  - echo "Run standard-version"
-  - yarn run release --prerelease canary --skip.commit=true --skip.tag=true
-  - yarn upgrade @playkit-js/playkit-js@canary
-  - yarn upgrade @playkit-js/playkit-js-dash@canary
-  - yarn upgrade @playkit-js/playkit-js-hls@canary
-  - yarn upgrade @playkit-js/playkit-js-ui@canary
-  - yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
-
 script:
   - set -ev
+  - if [[ "${TRAVIS_BRANCH}" = "master" ]] && [[ "${TRAVIS_EVENT_TYPE}" != "pull_request" ]] && [[ ! "${TRAVIS_COMMIT_MESSAGE}" =~ '^(chore).*(update dist)$' ]] && [[ ! "${TRAVIS_COMMIT_MESSAGE}" =~ '^chore\(release\)' ]]; then
+      echo "Run standard-version";
+      yarn run release --prerelease canary --skip.commit=true --skip.tag=true;
+      yarn upgrade @playkit-js/playkit-js@canary;
+      yarn upgrade @playkit-js/playkit-js-dash@canary;
+      yarn upgrade @playkit-js/playkit-js-hls@canary;
+      yarn upgrade @playkit-js/playkit-js-ui@canary;
+      yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master;
+    fi
   - yarn install
 
 stages:
