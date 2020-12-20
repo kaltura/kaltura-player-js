@@ -36,7 +36,7 @@
     "prettier:fix": "prettier --write .",
     "publish": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
-    "test": "NODE_ENV=testing karma start --color --mode development",
+    "test": "NODE_ENV=testing karma start --color --mode development  --browsers Chrome",
     "watch:ott": "sh ./scripts/job.sh watch ott",
     "watch:ovp": "sh ./scripts/job.sh watch ovp"
   },
@@ -55,7 +55,7 @@
     "@playkit-js/playkit-js": "0.65.0",
     "@playkit-js/playkit-js-dash": "1.20.4",
     "@playkit-js/playkit-js-hls": "1.21.2",
-    "@playkit-js/playkit-js-ui": "0.61.0",
+    "@playkit-js/playkit-js-ui": "0.62.0-canary.7a208cc",
     "hls.js": "^0.14.9",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.26.0",
     "proxy-polyfill": "^0.3.0",
