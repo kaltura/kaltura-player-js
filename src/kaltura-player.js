@@ -78,7 +78,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager.configure(Utils.Object.mergeDeep({}, options.playlist, {items: []}));
     this.configure({plugins});
     //configure sources after configure finished for all components - making sure all we'll set up correctly
-    this._playlistManager.configure({items: options.playlist.items || []});
+    this._playlistManager.configure({items: options.playlist && options.playlist.items || []});
     this._localPlayer.configure({sources: sources || {}});
   }
 
