@@ -52,6 +52,7 @@ class KalturaPlayer extends FakeEventTarget {
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
+  _appPluginConfig: KPPluginsConfigObject = {};
 
   constructor(options: KPOptionsObject) {
     super();
@@ -776,9 +777,11 @@ class KalturaPlayer extends FakeEventTarget {
     const mergePluginConfig: KPPluginsConfigObject = {};
     Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]) => {
       mergePluginConfig[pluginName] = {};
+      this._appPluginConfig[pluginName] = {};
       Object.entries(pluginConfig).forEach(([key, providerValue]) => {
         const appValue = Utils.Object.getPropertyPath(this.config.plugins[pluginName], key);
         mergePluginConfig[pluginName][key] = appValue || providerValue;
+        this._appPluginConfig[pluginName][key] = appValue;
       });
     });
     return mergePluginConfig;
