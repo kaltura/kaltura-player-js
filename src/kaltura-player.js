@@ -111,6 +111,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
+          mediaConfig.plugins = this._mergeProviderPluginsConfig(mediaConfig.plugins);
           this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
           this.setMedia(mediaConfig);
         },
@@ -769,6 +770,18 @@ class KalturaPlayer extends FakeEventTarget {
 
   _detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
+  }
+
+  _mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
+    const mergePluginConfig: KPPluginsConfigObject = {};
+    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]) => {
+      mergePluginConfig[pluginName] = {};
+      Object.entries(pluginConfig).forEach(([key, providerValue]) => {
+        const appValue = Utils.Object.getPropertyPath(this.config.plugins[pluginName], key);
+        mergePluginConfig[pluginName][key] = appValue || providerValue;
+      });
+    });
+    return mergePluginConfig;
   }
 
   /**
