@@ -775,7 +775,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   _mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
     const mergePluginConfig: KPPluginsConfigObject = {};
-    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]) => {
+    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
       mergePluginConfig[pluginName] = {};
       this._appPluginConfig[pluginName] = {};
       Object.entries(pluginConfig).forEach(([key, providerValue]) => {
