@@ -3,7 +3,7 @@ import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
-import {evaluatePluginsConfig, evaluateUIConfig} from './common/plugins';
+import {ConfigEvaluator} from './common/plugins';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -47,20 +47,21 @@ class KalturaPlayer extends FakeEventTarget {
   _remotePlayer: ?BaseRemotePlayer = null;
   _pluginManager: PluginManager = new PluginManager();
   _pluginsConfig: KPPluginsConfigObject = {};
-  _pluginsUiComponents: Array<KPUIComponent> = [];
   _reset: boolean = true;
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
+  _configEvaluator: ConfigEvaluator;
 
   constructor(options: KPOptionsObject) {
     super();
     const {sources, plugins} = options;
+    this._configEvaluator = new ConfigEvaluator();
+    this._configEvaluator.evaluatePluginsConfig(plugins, options);
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
-    this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
@@ -75,7 +76,8 @@ class KalturaPlayer extends FakeEventTarget {
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
     this._playlistManager.configure(options.playlist);
-    this._localPlayer.configure({sources});
+    this.configure({plugins});
+    this._localPlayer.configure({sources: sources || {}});
   }
 
   /**
@@ -194,8 +196,7 @@ class KalturaPlayer extends FakeEventTarget {
     Object.keys(this._pluginsConfig).forEach(name => {
       config.plugins[name] = {};
     });
-    // $FlowFixMe
-    evaluatePluginsConfig(config.plugins, config);
+    this._configEvaluator.evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
     this._maybeCreateAdsController();
     this._playlistManager.load(playlistData, playlistConfig, entryList);
@@ -225,7 +226,7 @@ class KalturaPlayer extends FakeEventTarget {
   configure(config: Object = {}): void {
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
-    evaluatePluginsConfig(config.plugins, configDictionary);
+    this._configEvaluator.evaluatePluginsConfig(config.plugins, configDictionary);
     this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
@@ -233,7 +234,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._maybeCreateAdsController();
     const uiConfig = config.ui;
     if (uiConfig) {
-      evaluateUIConfig(uiConfig, this.config);
+      this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
       this._uiWrapper.setConfig(uiConfig);
     }
     if (config.playlist) {
@@ -551,10 +552,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  get uiComponents(): Array<KPUIComponent> {
-    return [...this._pluginsUiComponents];
-  }
-
   get provider(): Provider {
     return this._provider;
   }
@@ -731,8 +728,7 @@ class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    this._pluginsUiComponents = uiComponents;
-
+    uiComponents.forEach(component => this._uiWrapper.addComponent(component));
     // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
@@ -762,7 +758,7 @@ class KalturaPlayer extends FakeEventTarget {
   _maybeSetEmbedConfig(): void {
     const ui = this.config.ui;
     if (ui && ui.components && ui.components.share) {
-      evaluateUIConfig(ui, this.config);
+      this._configEvaluator.evaluateUIConfig(ui, this.config);
       this._uiWrapper.setConfig(ui);
     }
   }
