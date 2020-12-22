@@ -264,7 +264,11 @@ class PlaylistManager {
     if (activeItem.isPlayable()) {
       this._player.reset();
       // $FlowFixMe
-      this._player.setMedia({session: this._player.config.session, plugins: {}, sources: activeItem.sources});
+      this._player.setMedia({
+        session: this._player.config.session,
+        plugins: this._player.mergeProviderPluginsConfig(activeItem.plugins),
+        sources: activeItem.sources
+      });
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
     } else {
@@ -275,6 +279,7 @@ class PlaylistManager {
         });
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
           this._playlist.updateItemSources(index, mediaConfig.sources);
+          this._playlist.updateItemPlugins(index, mediaConfig.plugins);
           this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
         });
       }

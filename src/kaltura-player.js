@@ -112,7 +112,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
-          mediaConfig.plugins = this._mergeProviderPluginsConfig(mediaConfig.plugins);
+          mediaConfig.plugins = this.mergeProviderPluginsConfig(mediaConfig.plugins);
           this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
           this.setMedia(mediaConfig);
         },
@@ -273,6 +273,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._uiWrapper.reset();
+      this._resetProviderPluginsConfig();
       this._pluginManager.reset();
       this._localPlayer.reset();
     }
@@ -773,7 +774,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.detachMediaSource();
   }
 
-  _mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
+  mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
     const mergePluginConfig: KPPluginsConfigObject = {};
     Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
       mergePluginConfig[pluginName] = {};
@@ -785,6 +786,11 @@ class KalturaPlayer extends FakeEventTarget {
       });
     });
     return mergePluginConfig;
+  }
+
+  _resetProviderPluginsConfig(): void {
+    this.configure({plugins: this._appPluginConfig});
+    this._appPluginConfig = {};
   }
 
   /**

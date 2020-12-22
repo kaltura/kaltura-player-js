@@ -1,4 +1,5 @@
 // @flow
+import {Utils} from '@playkit-js/playkit-js';
 const formats = ['hls', 'dash', 'progressive'];
 /**
  * @class PlaylistItem
@@ -8,6 +9,7 @@ const formats = ['hls', 'dash', 'progressive'];
 class PlaylistItem {
   _sources: ?ProviderMediaConfigSourcesObject;
   _config: ?KPPlaylistItemConfigObject;
+  _plugins: ?KPPluginsConfigObject;
 
   constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
@@ -25,6 +27,17 @@ class PlaylistItem {
     formats.forEach(format => {
       this._sources && (this._sources[format] = sourcesObject[format]);
     });
+  }
+
+  /**
+   * Update the playlist item plugins (e.g. bumper from BE)
+   * @param {KPPluginsConfigObject} pluginsObject - The plugins
+   * @returns {void}
+   * @instance
+   * @memberof PlaylistItem
+   */
+  updatePlugins(pluginsObject: KPPluginsConfigObject): void {
+    this._plugins = Utils.Object.copyDeep(pluginsObject);
   }
 
   /**
@@ -50,6 +63,16 @@ class PlaylistItem {
    */
   get config(): ?KPPlaylistItemConfigObject {
     return this._config;
+  }
+
+  /**
+   * Playlist item plugins
+   * @type {?KPPluginsConfigObject}
+   * @instance
+   * @memberof PlaylistItem
+   */
+  get plugins(): ?KPPluginsConfigObject {
+    return this._plugins;
   }
 
   /**
