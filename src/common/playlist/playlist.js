@@ -17,9 +17,9 @@ class Playlist {
   }
 
   configure(config: KPPlaylistObject) {
-    this._id = config.id;
-    this._poster = config.poster;
-    this._metadata = config.metadata;
+    this._id = config.id ? config.id : this._id;
+    this._poster = config.poster ? config.poster : this._poster;
+    this._metadata = config.metadata ? config.metadata : this._metadata;
     if (config.items) {
       this._items = [];
       config.items.forEach(item => {
