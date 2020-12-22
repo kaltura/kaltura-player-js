@@ -263,12 +263,10 @@ class PlaylistManager {
     this._playlist.activeItemIndex = index;
     if (activeItem.isPlayable()) {
       this._player.reset();
+      const providerPlugins = this._player.mergeProviderPluginsConfig(activeItem.plugins);
+      const media = {session: this._player.config.session, plugins: providerPlugins, sources: activeItem.sources};
       // $FlowFixMe
-      this._player.setMedia({
-        session: this._player.config.session,
-        plugins: this._player.mergeProviderPluginsConfig(activeItem.plugins),
-        sources: activeItem.sources
-      });
+      this._player.setMedia(media);
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
     } else {

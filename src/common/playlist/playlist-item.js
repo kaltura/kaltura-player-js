@@ -9,7 +9,7 @@ const formats = ['hls', 'dash', 'progressive'];
 class PlaylistItem {
   _sources: ?ProviderMediaConfigSourcesObject;
   _config: ?KPPlaylistItemConfigObject;
-  _plugins: ?KPPluginsConfigObject;
+  _plugins: KPPluginsConfigObject;
 
   constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
@@ -67,11 +67,11 @@ class PlaylistItem {
 
   /**
    * Playlist item plugins
-   * @type {?KPPluginsConfigObject}
+   * @type {KPPluginsConfigObject}
    * @instance
    * @memberof PlaylistItem
    */
-  get plugins(): ?KPPluginsConfigObject {
+  get plugins(): KPPluginsConfigObject {
     return this._plugins;
   }
 
