@@ -648,6 +648,9 @@ class KalturaPlayer extends FakeEventTarget {
       this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
       this._eventManager.listen(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
     }
+    this._eventManager.listen(this, 'floatingplayerstatechanged', e => {
+      this._localPlayer.changeFloatingState(e.payload.active);
+    });
   }
 
   _onChangeSourceStarted(): void {
@@ -793,6 +796,15 @@ class KalturaPlayer extends FakeEventTarget {
    */
   get crossOrigin(): ?string {
     return this._localPlayer.crossOrigin;
+  }
+
+  /**
+   * Gets the player tab visibility state
+   * @returns {boolean} - whether the browser player tab is visible
+   * @public
+   */
+  get isTabVisible(): boolean {
+    return this._localPlayer.isTabVisible;
   }
 }
 
