@@ -427,6 +427,21 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setLogLevel(level, name);
   }
 
+  mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
+    const mergePluginConfig: KPPluginsConfigObject = {};
+    Utils.Object.isObject(providerPluginsConfig) &&
+      Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
+        mergePluginConfig[pluginName] = {};
+        this._appPluginConfig[pluginName] = {};
+        Object.entries(pluginConfig).forEach(([key, providerValue]) => {
+          const appValue = Utils.Object.getPropertyPath(this.config.plugins[pluginName], key);
+          mergePluginConfig[pluginName][key] = appValue || providerValue;
+          this._appPluginConfig[pluginName][key] = appValue;
+        });
+      });
+    return mergePluginConfig;
+  }
+
   set textStyle(style: TextStyle): void {
     this._localPlayer.textStyle = style;
   }
@@ -772,21 +787,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   _detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
-  }
-
-  mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
-    const mergePluginConfig: KPPluginsConfigObject = {};
-    Utils.Object.isObject(providerPluginsConfig) &&
-      Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
-        mergePluginConfig[pluginName] = {};
-        this._appPluginConfig[pluginName] = {};
-        Object.entries(pluginConfig).forEach(([key, providerValue]) => {
-          const appValue = Utils.Object.getPropertyPath(this.config.plugins[pluginName], key);
-          mergePluginConfig[pluginName][key] = appValue || providerValue;
-          this._appPluginConfig[pluginName][key] = appValue;
-        });
-      });
-    return mergePluginConfig;
   }
 
   _resetProviderPluginsConfig(): void {
