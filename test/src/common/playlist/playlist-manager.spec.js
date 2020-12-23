@@ -403,6 +403,7 @@ describe('PlaylistManager', function () {
 
     after(function () {
       sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
     });
 
     it('should call playNext automatically once the playlist loaded', function (done) {
@@ -426,10 +427,8 @@ describe('PlaylistManager', function () {
   describe('provider plugins', function () {
     before(function () {
       PluginManager.register('colors', ColorsPlugin);
-      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
-        const mediaConfig = MediaMockData.MediaConfig[entryId];
-        mediaConfig.plugins = kalturaPlayer.mergeProviderPluginsConfig(mediaConfig.plugins);
-        kalturaPlayer.setMedia(mediaConfig);
+      sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+        const mediaConfig = MediaMockData.MediaConfig[info.entryId];
         return Promise.resolve(mediaConfig);
       });
     });
@@ -448,6 +447,7 @@ describe('PlaylistManager', function () {
 
     after(function () {
       sandbox.restore();
+      kalturaPlayer._provider.getMediaConfig.restore();
     });
 
     it("should apply the app's plugin config before the provider's and reset the provider's on change media", function (done) {
@@ -481,21 +481,25 @@ describe('PlaylistManager', function () {
                           done(e);
                         }
                       });
+                      kalturaPlayer._reset = false;
                       playlistManager.playPrev();
                     } catch (e) {
                       done(e);
                     }
                   });
+                  kalturaPlayer._reset = false;
                   playlistManager.playPrev();
                 } catch (e) {
                   done(e);
                 }
               });
+              kalturaPlayer._reset = false;
               playlistManager.playNext();
             } catch (e) {
               done(e);
             }
           });
+          kalturaPlayer._reset = false;
           playlistManager.playNext();
         } catch (e) {
           done(e);
