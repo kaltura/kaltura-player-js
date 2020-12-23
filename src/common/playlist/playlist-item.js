@@ -3,30 +3,28 @@ import {Utils} from '@playkit-js/playkit-js';
 const formats = ['hls', 'dash', 'progressive'];
 /**
  * @class PlaylistItem
- * @param {ProviderMediaConfigSourcesObject} [sources] - The item sources
+ * @param {PKSourcesConfigObject} [sources] - The item sources
  * @param {KPPlaylistItemConfigObject} [config] - The item config
  */
 class PlaylistItem {
-  _sources: ?ProviderMediaConfigSourcesObject;
+  _sources: ?PKSourcesConfigObject;
   _config: ?KPPlaylistItemConfigObject;
   _plugins: KPPluginsConfigObject;
 
-  constructor(sources: ?ProviderMediaConfigSourcesObject, config: ?KPPlaylistItemConfigObject) {
+  constructor(sources: ?PKSourcesConfigObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
     this._config = config;
   }
 
   /**
    * Update the playlist item sources
-   * @param {ProviderMediaConfigSourcesObject} sourcesObject - The sources
+   * @param {PKSourcesConfigObject} sourcesObject - The sources
    * @returns {void}
    * @instance
    * @memberof PlaylistItem
    */
-  updateSources(sourcesObject: ProviderMediaConfigSourcesObject): void {
-    formats.forEach(format => {
-      this._sources && (this._sources[format] = sourcesObject[format]);
-    });
+  updateSources(sourcesObject: PKSourcesConfigObject): void {
+    this._sources = Utils.Object.mergeDeep({}, sourcesObject);
   }
 
   /**
@@ -42,11 +40,11 @@ class PlaylistItem {
 
   /**
    * Playlist item sources
-   * @type {?ProviderMediaConfigSourcesObject}
+   * @type {?PKSourcesConfigObject}
    * @instance
    * @memberof PlaylistItem
    */
-  get sources(): ?ProviderMediaConfigSourcesObject {
+  get sources(): ?PKSourcesConfigObject {
     formats.forEach((format: string) => {
       if (this._sources && this._sources[format] && this._sources[format].length === 0) {
         delete this._sources[format];

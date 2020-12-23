@@ -6,6 +6,7 @@
   <title>Title</title>
   <link rel="stylesheet" type="text/css" href="./style.css"/>
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
+  <script src="//localhost:8082/playkit-bumper.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="player-placeholder"></div>
@@ -18,12 +19,18 @@
         cdnUrl: "http://qa-apache-php7.dev.kaltura.com/",
         serviceUrl: "http://qa-apache-php7.dev.kaltura.com/api_v3"
       }
+    },
+    plugins: {
+      bumper: {
+        // url: 'http://externaltests.dev.kaltura.com/player/library_Player_V3/Bumper/bumper_samples/Funny_Cat_And_mirror_Video_Funny_video_Whats_App_Videos_30_Seconds_Status_Video.mp4'
+      }
     }
   };
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
+    kalturaPlayer.loadPlaylistByEntryList({entries: ['0_wifqaipd', '0_h2m3oxcc', '0_wifqaipd']});
+    // kalturaPlayer.loadMedia({entryId: '0_h2m3oxcc'});
   } catch (e) {
     console.error(e.message)
   }

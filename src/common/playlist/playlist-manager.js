@@ -41,7 +41,7 @@ class PlaylistManager {
    */
   configure(config: ?KPPlaylistObject, entryList: ?ProviderEntryListObject) {
     if (config) {
-      this._playlist.configure(config);
+      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.config, 'sources.options'));
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
@@ -276,7 +276,7 @@ class PlaylistManager {
           sources: activeItem.sources
         });
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
-          this._playlist.updateItemSources(index, mediaConfig.sources);
+          this._playlist.updateItemSources(index, this._player.config.sources);
           this._playlist.updateItemPlugins(index, mediaConfig.plugins);
           this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
         });
