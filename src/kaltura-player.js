@@ -127,6 +127,7 @@ class KalturaPlayer extends FakeEventTarget {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
+    playerConfig.plugins = playerConfig.plugins || {};
     Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     Object.keys(this._pluginsConfig).forEach(name => {
