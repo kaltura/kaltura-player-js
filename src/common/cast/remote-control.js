@@ -3,7 +3,7 @@
 import {KalturaPlayer} from '../../kaltura-player';
 import {PlayerSnapshot} from './player-snapshot';
 import {CastEventType} from './cast-event-type';
-import {EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils, getLogger, AutoPlayType} from '@playkit-js/playkit-js';
+import {EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils, getLogger} from '@playkit-js/playkit-js';
 import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload';
 import {UIWrapper} from '../ui-wrapper';
 
@@ -136,7 +136,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     if (snapshot) {
       this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
       const originPlaybackConfig = this.config.playback;
-      const snapShotAutoPlay = snapshot.config.playback.autoplay;
+      const shouldPause = !snapshot.config.playback.autoplay;
       const mediaInfo = snapshot.mediaInfo;
       const mediaConfig = snapshot.mediaConfig;
       snapshot.config.playback.autoplay = true;
@@ -157,7 +157,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
             this.textStyle = snapshot.textStyle;
             configurePlayback.call(this, originPlaybackConfig);
             setInitialTracks.call(this, snapshot.config.playback);
-            if (!snapShotAutoPlay || (snapShotAutoPlay === AutoPlayType.IN_VIEW && !this.isVisible)) {
+            if (shouldPause) {
               this.pause();
             }
           });
