@@ -16,7 +16,6 @@ class UIWrapper {
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     const config: KPUIOptionsObject = options.ui;
-    config.uiComponents = [...(player.uiComponents || []), ...(config.uiComponents || [])];
     if (config.disable) {
       this._disabled = true;
       appendPlayerViewToTargetContainer(config.targetId, player.getView());
@@ -59,6 +58,33 @@ class UIWrapper {
    */
   addComponent(component: KPUIComponent): Function {
     return this._uiManager.addComponent(component);
+  }
+
+  /**
+   * @param {string} name - the manager name
+   * @param {Object} manager - the manager object
+   * @returns {void}
+   */
+  registerManager(name: string, manager: Object): void {
+    this._uiManager.registerManager(name, manager);
+  }
+
+  /**
+   *
+   * @param {string} name - the manager name
+   * @returns {Object} - the manager object
+   */
+  getManager(name: string): Object | void {
+    return this._uiManager.getManager(name);
+  }
+
+  /**
+   *
+   * @param {string} name - the manager name
+   * @returns {boolean} - if the manager exist
+   */
+  hasManager(name: string): boolean {
+    return this._uiManager.hasManager(name);
   }
 
   _resetErrorState(): void {
