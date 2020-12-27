@@ -7,7 +7,7 @@ import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources';
-import {FakeEvent, Utils} from '@playkit-js/playkit-js';
+import {EventType as CoreEventType, FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 import {Provider} from 'playkit-js-providers';
@@ -594,6 +594,86 @@ describe('kaltura player api', function () {
         ui: {},
         provider: {},
         sources: SourcesConfig.Mp4,
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
+          }
+        }
+      });
+      player._pluginManager.get('numbers').should.exist;
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
+      });
+      player.configure({
+        plugins: {
+          colors: {
+            size: 200
+          }
+        }
+      });
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
+      });
+    });
+
+    it('should create the plugin before playlist source selected', function () {
+      const eventManager = new EventManager();
+      player = new Player({
+        ui: {},
+        provider: {},
+        playlist: {
+          id: '1234',
+          metdata: {},
+          items: [
+            {
+              sources: SourcesConfig.Mp4
+            }
+          ]
+        },
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
+          }
+        }
+      });
+      eventManager.listen(player, CoreEventType.SOURCE_SELECTED, () => {
+        player._pluginManager.get('numbers').should.exist;
+        Object.keys(player._pluginManager._plugins).length.should.equals(1);
+        player.config.plugins.should.deep.equals({
+          numbers: {
+            size: 2,
+            firstCellValue: 3,
+            lastCellValue: 6
+          }
+        });
+      });
+    });
+
+    it('should create player with plugin and fail to configure other plugin after playlist source selected', function () {
+      player = new Player({
+        ui: {},
+        provider: {},
+        playlist: {
+          id: '1234',
+          metdata: {},
+          items: [
+            {
+              sources: SourcesConfig.Mp4
+            }
+          ]
+        },
         plugins: {
           numbers: {
             size: 2,
