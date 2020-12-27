@@ -157,7 +157,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
             this.textStyle = snapshot.textStyle;
             configurePlayback.call(this, originPlaybackConfig);
             setInitialTracks.call(this, snapshot.config.playback);
-            if (!snapShotAutoPlay || (snapShotAutoPlay === AutoPlayType.ON_VIEW && !this.isVisible)) {
+            if (!snapShotAutoPlay || (snapShotAutoPlay === AutoPlayType.IN_VIEW && !this.isVisible)) {
               this.pause();
             }
           });
