@@ -433,6 +433,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.textStyle;
   }
 
+  get textDisplaySetting(): Object {
+    return this._localPlayer.textDisplaySetting;
+  }
+
   get buffered(): ?TimeRanges {
     return this._localPlayer.buffered;
   }
