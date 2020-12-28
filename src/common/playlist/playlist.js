@@ -1,5 +1,6 @@
 // @flow
 import {PlaylistItem} from './playlist-item';
+import {Utils} from '@playkit-js/playkit-js';
 
 class Playlist {
   _id: string;
@@ -16,19 +17,24 @@ class Playlist {
     this._activeItemIndex = -1;
   }
 
-  configure(config: KPPlaylistObject) {
-    this._id = config.id;
-    this._poster = config.poster;
-    this._metadata = config.metadata;
+  configure(config: KPPlaylistObject, sourcesOptions: ?PKMediaSourceOptionsObject) {
+    this._id = config.id ? config.id : this._id;
+    this._poster = config.poster ? config.poster : this._poster;
+    this._metadata = config.metadata ? config.metadata : this._metadata;
     if (config.items) {
       this._items = [];
       config.items.forEach(item => {
+        if (item.sources) {
+          const configSourcesOptions = Utils.Object.mergeDeep({}, sourcesOptions);
+          const itemSourcesOptions = item.sources.options || {};
+          item.sources.options = Utils.Object.mergeDeep(configSourcesOptions, itemSourcesOptions);
+        }
         this._items.push(new PlaylistItem(item.sources, item.config));
       });
     }
   }
 
-  updateItemSources(index: number, sourcesObject: ProviderMediaConfigSourcesObject) {
+  updateItemSources(index: number, sourcesObject: PKSourcesConfigObject) {
     this._items[index].updateSources(sourcesObject);
   }
 
