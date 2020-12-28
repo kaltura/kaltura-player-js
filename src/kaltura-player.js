@@ -648,9 +648,6 @@ class KalturaPlayer extends FakeEventTarget {
       this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
       this._eventManager.listen(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
     }
-    this._eventManager.listen(this, 'floatingplayerstatechanged', e => {
-      this._localPlayer.changeFloatingState(e.payload.active);
-    });
   }
 
   _onChangeSourceStarted(): void {
