@@ -342,6 +342,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setTextDisplaySettings(settings);
   }
 
+  get textDisplaySetting(): Object {
+    return this._localPlayer.textDisplaySetting;
+  }
+  
   isFullscreen(): boolean {
     return this._localPlayer.isFullscreen();
   }
@@ -432,10 +436,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   get textStyle(): ?TextStyle {
     return this._localPlayer.textStyle;
-  }
-
-  get textDisplaySetting(): Object {
-    return this._localPlayer.textDisplaySetting;
   }
 
   get buffered(): ?TimeRanges {
