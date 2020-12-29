@@ -5,6 +5,7 @@ import {PlaylistEventType} from './playlist-event-type';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
 import {addKalturaPoster} from 'poster';
+import {mergeProviderPluginsConfig} from '../utils/setup-helpers';
 
 /**
  * @class PlaylistManager
@@ -20,6 +21,7 @@ class PlaylistManager {
   _countdown: KPPlaylistCountdownOptions;
   _playerOptions: KPOptionsObject;
   _mediaInfoList: Array<ProviderMediaInfoObject>;
+  _appPluginConfig: KPPluginsConfigObject;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
@@ -29,6 +31,7 @@ class PlaylistManager {
     this._countdown = {duration: 10, showing: true};
     this._mediaInfoList = [];
     this._playerOptions = options;
+    this._appPluginConfig = {};
   }
 
   /**
@@ -262,8 +265,11 @@ class PlaylistManager {
     this._player.configure({playback});
     this._playlist.activeItemIndex = index;
     if (activeItem.isPlayable()) {
+      this._resetProviderPluginsConfig();
       this._player.reset();
-      const providerPlugins = this._player.mergeProviderPluginsConfig(activeItem.plugins);
+      const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
+      const providerPlugins = mergedPluginsConfigAndFromApp[0];
+      this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
       const media = {session: this._player.config.session, plugins: providerPlugins, sources: activeItem.sources};
       // $FlowFixMe
       this._player.setMedia(media);
@@ -271,6 +277,7 @@ class PlaylistManager {
       return Promise.resolve();
     } else {
       if (this._mediaInfoList[index]) {
+        this._resetProviderPluginsConfig();
         this._player.reset();
         this._player.configure({
           sources: activeItem.sources
@@ -283,6 +290,11 @@ class PlaylistManager {
       }
     }
     return Promise.reject();
+  }
+
+  _resetProviderPluginsConfig(): void {
+    this._player.configure({plugins: this._appPluginConfig});
+    this._appPluginConfig = {};
   }
 
   destroy(): void {

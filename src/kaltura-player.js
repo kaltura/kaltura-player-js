@@ -1,7 +1,7 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource, mergeProviderPluginsConfig} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ConfigEvaluator} from './common/plugins';
 import {addKalturaPoster} from 'poster';
@@ -112,7 +112,9 @@ class KalturaPlayer extends FakeEventTarget {
             }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
-          mediaConfig.plugins = this.mergeProviderPluginsConfig(mediaConfig.plugins);
+          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
           this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
           this.setMedia(mediaConfig);
         },
@@ -425,21 +427,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   setLogLevel(level: Object, name?: string) {
     this._localPlayer.setLogLevel(level, name);
-  }
-
-  mergeProviderPluginsConfig(providerPluginsConfig: KPPluginsConfigObject): KPPluginsConfigObject {
-    const mergePluginConfig: KPPluginsConfigObject = {};
-    Utils.Object.isObject(providerPluginsConfig) &&
-      Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
-        mergePluginConfig[pluginName] = {};
-        this._appPluginConfig[pluginName] = {};
-        Object.entries(pluginConfig).forEach(([key, providerValue]) => {
-          const appValue = Utils.Object.getPropertyPath(this.config.plugins[pluginName], key);
-          mergePluginConfig[pluginName][key] = appValue || providerValue;
-          this._appPluginConfig[pluginName][key] = appValue;
-        });
-      });
-    return mergePluginConfig;
   }
 
   set textStyle(style: TextStyle): void {
