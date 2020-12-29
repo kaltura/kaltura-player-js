@@ -646,6 +646,31 @@ function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
   }
 }
 
+/**
+ * Merge the provider plugins config (e.g. bumper) into the app config and returns it and the respective app config to restore in change media
+ * @param {KPPluginsConfigObject} providerPluginsConfig - the provider plugins config
+ * @param {KPOptionsObject} appPluginsConfig - the entire app plugins config
+ * @returns {Array<KPPluginsConfigObject>} - the merged plugins config and the partial respective app plugins config
+ */
+function mergeProviderPluginsConfig(
+  providerPluginsConfig: KPPluginsConfigObject,
+  appPluginsConfig: KPPluginsConfigObject
+): Array<KPPluginsConfigObject> {
+  const mergePluginConfig: KPPluginsConfigObject = {};
+  const respectiveAppPluginsConfig: KPPluginsConfigObject = {};
+  Utils.Object.isObject(providerPluginsConfig) &&
+    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
+      mergePluginConfig[pluginName] = {};
+      respectiveAppPluginsConfig[pluginName] = {};
+      Object.entries(pluginConfig).forEach(([key, providerValue]) => {
+        const appValue = Utils.Object.getPropertyPath(appPluginsConfig[pluginName], key);
+        mergePluginConfig[pluginName][key] = appValue || providerValue;
+        respectiveAppPluginsConfig[pluginName][key] = appValue;
+      });
+    });
+  return [mergePluginConfig, respectiveAppPluginsConfig];
+}
+
 export {
   printSetupMessages,
   supportLegacyOptions,
@@ -661,5 +686,6 @@ export {
   checkNativeHlsSupport,
   getDefaultOptions,
   maybeSetStreamPriority,
-  hasYoutubeSource
+  hasYoutubeSource,
+  mergeProviderPluginsConfig
 };
