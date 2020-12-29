@@ -347,6 +347,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setTextDisplaySettings(settings);
   }
 
+  get textDisplaySetting(): Object {
+    return this._localPlayer.textDisplaySetting;
+  }
+
   isFullscreen(): boolean {
     return this._localPlayer.isFullscreen();
   }
