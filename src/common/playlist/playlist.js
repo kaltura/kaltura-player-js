@@ -38,6 +38,10 @@ class Playlist {
     this._items[index].updateSources(sourcesObject);
   }
 
+  updateItemPlugins(index: number, pluginsObject: KPPluginsConfigObject) {
+    this._items[index].updatePlugins(pluginsObject);
+  }
+
   get id(): string {
     return this._id;
   }

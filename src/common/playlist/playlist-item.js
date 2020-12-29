@@ -9,6 +9,7 @@ const formats = ['hls', 'dash', 'progressive'];
 class PlaylistItem {
   _sources: ?PKSourcesConfigObject;
   _config: ?KPPlaylistItemConfigObject;
+  _plugins: KPPluginsConfigObject;
 
   constructor(sources: ?PKSourcesConfigObject, config: ?KPPlaylistItemConfigObject) {
     this._sources = sources;
@@ -24,6 +25,17 @@ class PlaylistItem {
    */
   updateSources(sourcesObject: PKSourcesConfigObject): void {
     this._sources = Utils.Object.mergeDeep({}, sourcesObject);
+  }
+
+  /**
+   * Update the playlist item plugins (e.g. bumper from BE)
+   * @param {KPPluginsConfigObject} pluginsObject - The plugins
+   * @returns {void}
+   * @instance
+   * @memberof PlaylistItem
+   */
+  updatePlugins(pluginsObject: KPPluginsConfigObject): void {
+    this._plugins = Utils.Object.copyDeep(pluginsObject);
   }
 
   /**
@@ -49,6 +61,16 @@ class PlaylistItem {
    */
   get config(): ?KPPlaylistItemConfigObject {
     return this._config;
+  }
+
+  /**
+   * Playlist item plugins
+   * @type {KPPluginsConfigObject}
+   * @instance
+   * @memberof PlaylistItem
+   */
+  get plugins(): KPPluginsConfigObject {
+    return this._plugins;
   }
 
   /**
