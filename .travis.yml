@@ -19,7 +19,7 @@ before_install:
   - export DISPLAY=:99.0
   - chmod +x ./scripts/travis.sh
 
-script: sh ./scripts/travis.sh
+script: bash ./scripts/travis.sh
 
 stages:
   - Tests
