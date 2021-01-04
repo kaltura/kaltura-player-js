@@ -561,7 +561,9 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
-    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
+    ['plugins.visibility.threshold', 'visibility.playerThreshold'],
+    ['plugins.visibility.floating', 'plugins.floating']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
