@@ -3,6 +3,7 @@ import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
 import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
+import {ViewabilityManager} from './common/utils/viewability-manager';
 import {ConfigEvaluator} from './common/plugins';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
@@ -30,7 +31,8 @@ import {
   Utils,
   registerEngineDecoratorProvider,
   getLogger,
-  LogLevel
+  LogLevel,
+  AutoPlayType
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 
@@ -53,16 +55,50 @@ class KalturaPlayer extends FakeEventTarget {
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
+  _viewabilityManager: ViewabilityManager;
+  _visibilityTabChangeEventName: string;
+  _visibilityTabHiddenAttr: string;
+  _playbackStart: boolean;
+
+  /**
+   * Whether the player is visible in the page scroll view
+   * @type {boolean}
+   * @private
+   */
+  _isVisibleInScroll: boolean;
+
+  /**
+   * Whether the player browser tab is active or not
+   * @type {boolean}
+   * @private
+   */
+  _isTabVisible: boolean;
+
+  /**
+   * Whether the player browser tab is active and in the scroll view
+   * @type {boolean}
+   * @private
+   */
+  _isVisible: boolean;
+
+  /**
+   * Whether the player was auto paused
+   * @type {boolean}
+   * @private
+   */
+  _autoPaused: boolean = false;
 
   constructor(options: KPOptionsObject) {
     super();
     const {sources, plugins} = options;
     this._configEvaluator = new ConfigEvaluator();
+    this._playbackStart = false;
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
+    this._viewabilityManager = new ViewabilityManager(this.config.visibility.tolerance);
     this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._provider = new Provider(
@@ -280,12 +316,14 @@ class KalturaPlayer extends FakeEventTarget {
   destroy(): void {
     const targetId = this.config.ui.targetId;
     this._reset = true;
+    this._playbackStart = false;
     this._firstPlay = true;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
     this._playlistManager.destroy();
     this._localPlayer.destroy();
     this._eventManager.destroy();
+    this._viewabilityManager.destroy();
     this._pluginsConfig = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
@@ -630,10 +668,13 @@ class KalturaPlayer extends FakeEventTarget {
 
   _addBindings(): void {
     this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
+    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_ENDED, () => this._onChangeSourceEnded());
+    this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () => this._onPlayerReset());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
     this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
     this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
+    this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => this._onPlaybackStart());
     this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
     this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
@@ -648,6 +689,20 @@ class KalturaPlayer extends FakeEventTarget {
       this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
       this._eventManager.listen(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
     }
+  }
+
+  _onChangeSourceEnded(): void {
+    KalturaPlayer._logger.debug('_onChangeSourceEnded');
+    this._initAutoPause();
+    this._initTabVisibility();
+    this._initScrollVisibility();
+  }
+
+  _onPlayerReset(): void {
+    this._playbackStart = false;
+    this._eventManager.unlisten(this, CoreEventType.VISIBILITY_CHANGE, this._handleAutoPause.bind(this));
+    this._eventManager.unlisten(document, this._visibilityTabChangeEventName, this._handleTabVisibilityChange.bind(this));
+    this._viewabilityManager.unobserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleScrollVisibilityChange.bind(this));
   }
 
   _onChangeSourceStarted(): void {
@@ -676,6 +731,9 @@ class KalturaPlayer extends FakeEventTarget {
       this.currentTime = 0;
       this.play();
     }
+  }
+  _onPlaybackStart(): void {
+    this._playbackStart = true;
   }
 
   _onAdStarted(): void {
@@ -796,12 +854,96 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Gets the player tab visibility state
-   * @returns {boolean} - whether the browser player tab is visible
+   * Gets the player visibility state
+   * @returns {boolean} - whether the player is in the active browser tab and visible in the view port
    * @public
    */
-  get isTabVisible(): boolean {
-    return this._localPlayer.isTabVisible;
+  get isVisible(): boolean {
+    return this._isVisible;
+  }
+
+  /**
+   * Gets the player viewability manager service
+   * @returns {ViewabilityManager} - player viewability manager
+   * @public
+   */
+  get viewabilityManager(): ViewabilityManager {
+    return this._viewabilityManager;
+  }
+  _initScrollVisibility() {
+    this._viewabilityManager.observe(
+      Utils.Dom.getElementById(this.config.ui.targetId),
+      this.config.visibility.playerThreshold / 100,
+      this._handleScrollVisibilityChange.bind(this)
+    );
+  }
+
+  _handleScrollVisibilityChange(visible: boolean) {
+    this._isVisibleInScroll = visible;
+    this._handleVisibilityChange();
+  }
+
+  _handleVisibilityChange() {
+    const prevVisibility = this._isVisible;
+    this._isVisible = this._isTabVisible && this._isVisibleInScroll;
+
+    if (prevVisibility !== this._isVisible) {
+      this.dispatchEvent(new FakeEvent(CoreEventType.VISIBILITY_CHANGE, {visible: this._isVisible}));
+    }
+
+    if (this.config.playback.autoplay === AutoPlayType.IN_VIEW && this._isVisible && !this._playbackStart) {
+      this._localPlayer.autoPlay();
+    }
+  }
+
+  _initTabVisibility(): void {
+    KalturaPlayer._logger.debug('_initTabVisibility');
+    if (typeof document.hidden !== 'undefined') {
+      // Opera 12.10 and Firefox 18 and later support
+      this._visibilityTabHiddenAttr = 'hidden';
+      this._visibilityTabChangeEventName = 'visibilitychange';
+    } else if (typeof document.msHidden !== 'undefined') {
+      this._visibilityTabHiddenAttr = 'msHidden';
+      this._visibilityTabChangeEventName = 'msvisibilitychange';
+    } else if (typeof document.webkitHidden !== 'undefined') {
+      this._visibilityTabHiddenAttr = 'webkitHidden';
+      this._visibilityTabChangeEventName = 'webkitvisibilitychange';
+    }
+
+    if (this._visibilityTabHiddenAttr && this._visibilityTabChangeEventName) {
+      this._eventManager.listen(document, this._visibilityTabChangeEventName, this._handleTabVisibilityChange.bind(this));
+      this._isTabVisible = !document[this._visibilityTabHiddenAttr];
+    }
+  }
+
+  _handleTabVisibilityChange() {
+    this._isTabVisible = !document[this._visibilityTabHiddenAttr];
+    this._handleVisibilityChange();
+  }
+  /**
+   * Handles auto pause.
+   * @returns {void}
+   * @private
+   */
+  _initAutoPause(): void {
+    KalturaPlayer._logger.debug('_initAutoPause');
+    if (this.config.playback.autopause === true) {
+      this._eventManager.listen(this, CoreEventType.VISIBILITY_CHANGE, this._handleAutoPause.bind(this));
+    }
+  }
+
+  _handleAutoPause(e: FakeEvent) {
+    if (!e.payload.visible) {
+      if (!this.isInPictureInPicture() && this._playbackStart && !this.paused) {
+        this.pause();
+        this._autoPaused = true;
+      }
+    } else if (this._autoPaused) {
+      if (this.paused) {
+        this.play();
+      }
+      this._autoPaused = false;
+    }
   }
 }
 

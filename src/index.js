@@ -17,6 +17,12 @@ import {getPlayers, getPlayer} from './proxy';
 import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
+import 'intersection-observer';
+
+// Import ViewabilityManager
+import {ViewabilityManager} from './common/utils/viewability-manager';
+
+
 // Import plugin framework
 import {Ad, AdBreak} from './common/ads';
 import {BasePlugin, registerPlugin} from './common/plugins';
@@ -53,5 +59,6 @@ export {
   registerPlugin,
   PLAYER_TYPE,
   VERSION,
-  PLAYER_NAME
+  PLAYER_NAME,
+  ViewabilityManager
 };
