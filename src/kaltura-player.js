@@ -674,7 +674,9 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
     this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
     this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
-    this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => this._onPlaybackStart());
+    this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => {
+      this._playbackStart = true;
+    });
     this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
     this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
@@ -731,9 +733,6 @@ class KalturaPlayer extends FakeEventTarget {
       this.currentTime = 0;
       this.play();
     }
-  }
-  _onPlaybackStart(): void {
-    this._playbackStart = true;
   }
 
   _onAdStarted(): void {
