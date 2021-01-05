@@ -5,6 +5,7 @@ declare type KPOptionsObject = {
   targetId: string,
   log?: KPLogConfigObject,
   disableUserCache?: boolean,
+  text?: PKTextConfigObject,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
   plugins: KPPluginsConfigObject,

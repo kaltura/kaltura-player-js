@@ -1,7 +1,7 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource, mergeProviderPluginsConfig} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ConfigEvaluator} from './common/plugins';
 import {addKalturaPoster} from 'poster';
@@ -52,6 +52,7 @@ class KalturaPlayer extends FakeEventTarget {
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
+  _appPluginConfig: KPPluginsConfigObject = {};
 
   constructor(options: KPOptionsObject) {
     super();
@@ -113,6 +114,9 @@ class KalturaPlayer extends FakeEventTarget {
             }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
+          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
           this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
           this.setMedia(mediaConfig);
         },
@@ -274,6 +278,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._uiWrapper.reset();
+      this._resetProviderPluginsConfig();
       this._pluginManager.reset();
       this._localPlayer.reset();
     }
@@ -341,6 +346,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   setTextDisplaySettings(settings: Object): void {
     this._localPlayer.setTextDisplaySettings(settings);
+  }
+
+  get textDisplaySetting(): Object {
+    return this._localPlayer.textDisplaySetting;
   }
 
   isFullscreen(): boolean {
@@ -772,6 +781,11 @@ class KalturaPlayer extends FakeEventTarget {
 
   _detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
+  }
+
+  _resetProviderPluginsConfig(): void {
+    this.configure({plugins: this._appPluginConfig});
+    this._appPluginConfig = {};
   }
 
   /**

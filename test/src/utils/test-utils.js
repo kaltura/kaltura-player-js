@@ -11,8 +11,10 @@ function getConfigStructure() {
       adBreaks: []
     },
     sources: {},
+    text: {
+      enableCEA708Captions: true
+    },
     playback: {
-      enableCEA708Captions: true,
       preload: 'none',
       autoplay: false,
       muted: false,
