@@ -7,25 +7,19 @@ import {Utils} from '@playkit-js/playkit-js';
 class ViewabilityManager {
   _observer: window.IntersectionObserver;
   _targetsObserved: Utils.MultiMap<HTMLElement, _TargetObserveredBinding>;
+  _viewabilityConfig: KPViewabilityConfigObject;
 
   /**
-   * @param {number} tolerance - the tolerance of the observation - if set to 10, listener will be fired every 10% change, if set to 100, listener will be fired every 1% change
+   * @param {number} viewabilityConfig - the configuration needed to create the manager
    * @constructor
    */
-  constructor(tolerance: number) {
+  constructor(viewabilityConfig: KPViewabilityConfigObject) {
+    this._viewabilityConfig = viewabilityConfig;
     this._targetsObserved = new Utils.MultiMap<HTMLElement, _TargetObserveredBinding>();
-    const buildThresholdList = () => {
-      let thresholds = [];
-      for (let i = 1.0; i <= tolerance; i++) {
-        let ratio = i / tolerance;
-        thresholds.push(ratio);
-      }
-
-      thresholds.push(0);
-      return thresholds;
-    };
     const options = {
-      threshold: buildThresholdList()
+      threshold: viewabilityConfig.observedThresholds.map((val: number) => {
+        return val / 100;
+      })
     };
     this._observer = new window.IntersectionObserver(this._intersectionChangedHandler.bind(this), options);
   }
@@ -46,12 +40,13 @@ class ViewabilityManager {
 
   /**
    * @param {HTMLElement} target - the targeted element to check its visibility
-   * @param {number} threshold - a number between 0 to 1 that represents the minimum ratio considered visible
    * @param {Function} listener - the callback to be invoked when visibility is changed (and when starting to observe). The callback is called with a boolean param representing the visibility state
+   * @param {?number} threshold - a number between 0 to 100 that represents the minimum visible percentage considered as visible
    * @returns {void}
    */
-  observe(target: HTMLElement, threshold: number, listener: Function): void {
-    const newTargetObservedBinding = new _TargetObserveredBinding(threshold, listener);
+  observe(target: HTMLElement, listener: Function, threshold: ?number): void {
+    threshold = threshold !== undefined ? threshold : this._viewabilityConfig.playerThreshold;
+    const newTargetObservedBinding = new _TargetObserveredBinding(threshold / 100, listener);
     if (!this._targetsObserved.has(target)) {
       this._observer.observe(target);
     } else {
@@ -71,7 +66,7 @@ class ViewabilityManager {
    * @param {Function} listener - the callback function to be removed
    * @returns {void}
    */
-  unobserve(target: HTMLElement, listener: Function): void {
+  unObserve(target: HTMLElement, listener: Function): void {
     this._targetsObserved.remove(target, listener);
     if (!this._targetsObserved.has(target)) {
       this._observer.unobserve(target);

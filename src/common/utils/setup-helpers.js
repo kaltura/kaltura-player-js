@@ -283,6 +283,10 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     plugins: {},
     advertising: {
       adBreaks: []
+    },
+    viewability: {
+      observedThresholds: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+      playerThreshold: 50
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
@@ -562,7 +566,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
     ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
-    ['plugins.visibility.threshold', 'visibility.playerThreshold'],
+    ['plugins.visibility.threshold', 'viewability.playerThreshold'],
     ['plugins.visibility.floating', 'plugins.floating']
   ];
   removePlayerEntry();

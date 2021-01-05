@@ -98,7 +98,7 @@ class KalturaPlayer extends FakeEventTarget {
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
-    this._viewabilityManager = new ViewabilityManager(this.config.visibility.tolerance);
+    this._viewabilityManager = new ViewabilityManager(this.config.viewability);
     this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._provider = new Provider(
@@ -704,7 +704,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._playbackStart = false;
     this._eventManager.unlisten(this, CoreEventType.VISIBILITY_CHANGE, this._handleAutoPause.bind(this));
     this._eventManager.unlisten(document, this._visibilityTabChangeEventName, this._handleTabVisibilityChange.bind(this));
-    this._viewabilityManager.unobserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleScrollVisibilityChange.bind(this));
+    this._viewabilityManager.unObserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleScrollVisibilityChange.bind(this));
   }
 
   _onChangeSourceStarted(): void {
@@ -870,11 +870,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._viewabilityManager;
   }
   _initScrollVisibility() {
-    this._viewabilityManager.observe(
-      Utils.Dom.getElementById(this.config.ui.targetId),
-      this.config.visibility.playerThreshold / 100,
-      this._handleScrollVisibilityChange.bind(this)
-    );
+    this._viewabilityManager.observe(Utils.Dom.getElementById(this.config.ui.targetId), this._handleScrollVisibilityChange.bind(this));
   }
 
   _handleScrollVisibilityChange(visible: boolean) {
