@@ -1,5 +1,5 @@
 //@flow
-import {Utils} from '@playkit-js/playkit-js';
+import {EventManager, Utils} from '@playkit-js/playkit-js';
 
 /**
  * A service class to observe viewability of elements in the view port.
@@ -8,6 +8,14 @@ class ViewabilityManager {
   _observer: window.IntersectionObserver;
   _targetsObserved: Utils.MultiMap<HTMLElement, _TargetObserveredBinding>;
   _viewabilityConfig: KPViewabilityConfigObject;
+  _eventManager: EventManager;
+
+  /**
+   * Whether the player browser tab is active or not
+   * @type {boolean}
+   * @private
+   */
+  _isTabVisible: boolean;
 
   /**
    * @param {number} viewabilityConfig - the configuration needed to create the manager
@@ -15,6 +23,7 @@ class ViewabilityManager {
    */
   constructor(viewabilityConfig: KPViewabilityConfigObject) {
     this._viewabilityConfig = viewabilityConfig;
+    this._eventManager = new EventManager();
     this._targetsObserved = new Utils.MultiMap<HTMLElement, _TargetObserveredBinding>();
     const options = {
       threshold: viewabilityConfig.observedThresholds.map((val: number) => {
@@ -22,6 +31,7 @@ class ViewabilityManager {
       })
     };
     this._observer = new window.IntersectionObserver(this._intersectionChangedHandler.bind(this), options);
+    this._initTabVisibility();
   }
 
   _intersectionChangedHandler(entries: Array<window.IntersectionObserverEntry>) {
@@ -30,12 +40,40 @@ class ViewabilityManager {
       targetObserveredBindings.forEach((targetObservedBinding: _TargetObserveredBinding) => {
         const visible = entry.intersectionRatio >= targetObservedBinding.threshold;
         if (visible !== targetObservedBinding.lastVisible) {
-          targetObservedBinding.listener(visible);
+          targetObservedBinding.listener(visible, ViewabilityType.VIEWPORT);
         }
         targetObservedBinding.lastVisible = visible;
         targetObservedBinding.lastIntersectionRatio = entry.intersectionRatio;
       });
     });
+  }
+
+  _handleTabVisibilityChange() {
+    this._isTabVisible = !document[this._visibilityTabHiddenAttr];
+    this._targetsObserved.getAll().forEach((targetObservedBinding: _TargetObserveredBinding) => {
+      if (targetObservedBinding.lastVisible) {
+        targetObservedBinding.listener(this._isTabVisible, ViewabilityType.TAB);
+      }
+    });
+  }
+
+  _initTabVisibility(): void {
+    if (typeof document.hidden !== 'undefined') {
+      // Opera 12.10 and Firefox 18 and later support
+      this._visibilityTabHiddenAttr = 'hidden';
+      this._visibilityTabChangeEventName = 'visibilitychange';
+    } else if (typeof document.msHidden !== 'undefined') {
+      this._visibilityTabHiddenAttr = 'msHidden';
+      this._visibilityTabChangeEventName = 'msvisibilitychange';
+    } else if (typeof document.webkitHidden !== 'undefined') {
+      this._visibilityTabHiddenAttr = 'webkitHidden';
+      this._visibilityTabChangeEventName = 'webkitvisibilitychange';
+    }
+
+    if (this._visibilityTabHiddenAttr && this._visibilityTabChangeEventName) {
+      this._eventManager.listen(document, this._visibilityTabChangeEventName, this._handleTabVisibilityChange.bind(this));
+      this._isTabVisible = !document[this._visibilityTabHiddenAttr];
+    }
   }
 
   /**
@@ -44,7 +82,7 @@ class ViewabilityManager {
    * @param {?number} threshold - a number between 0 to 100 that represents the minimum visible percentage considered as visible
    * @returns {void}
    */
-  observe(target: HTMLElement, listener: Function, threshold: ?number): void {
+  observe(target: HTMLElement, listener: ListenerType, threshold: ?number): void {
     threshold = threshold !== undefined ? threshold : this._viewabilityConfig.playerThreshold;
     const newTargetObservedBinding = new _TargetObserveredBinding(threshold / 100, listener);
     if (!this._targetsObserved.has(target)) {
@@ -54,7 +92,10 @@ class ViewabilityManager {
       // if observer has already fired the initial callback due to previous observing then we need to invoke it to the new observer manually
       if (lastIntersectionRatio !== undefined) {
         newTargetObservedBinding.lastIntersectionRatio = lastIntersectionRatio;
-        newTargetObservedBinding.listener(lastIntersectionRatio >= newTargetObservedBinding.threshold);
+        newTargetObservedBinding.listener(
+          this._isTabVisible && lastIntersectionRatio >= newTargetObservedBinding.threshold,
+          VisibilityChangeReason.VIEWPORT
+        );
       }
     }
     this._targetsObserved.push(target, newTargetObservedBinding);
@@ -66,7 +107,7 @@ class ViewabilityManager {
    * @param {Function} listener - the callback function to be removed
    * @returns {void}
    */
-  unObserve(target: HTMLElement, listener: Function): void {
+  unObserve(target: HTMLElement, listener: ListenerType): void {
     this._targetsObserved.remove(target, listener);
     if (!this._targetsObserved.has(target)) {
       this._observer.unobserve(target);
@@ -77,12 +118,18 @@ class ViewabilityManager {
    * @override
    */
   destroy() {
+    this._eventManager.destroy();
     this._observer.disconnect();
     this._targetsObserved.clear();
   }
 }
 
-type ListenerType = (visible: boolean) => any;
+const ViewabilityType: {[type: string]: string} = {
+  VIEWPORT: 'viewport',
+  TAB: 'tab'
+};
+
+type ListenerType = (visible: boolean, reason: string) => any;
 
 class _TargetObserveredBinding {
   lastVisible: boolean;
@@ -95,4 +142,5 @@ class _TargetObserveredBinding {
     this.listener = listener;
   }
 }
-export {ViewabilityManager};
+const VISIBILITY_CHANGE = 'visibilitychange';
+export {ViewabilityManager, VISIBILITY_CHANGE, ViewabilityType};

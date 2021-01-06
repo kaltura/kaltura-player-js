@@ -19,9 +19,6 @@ import {cast} from './common/cast';
 import {playlist} from './common/playlist';
 import 'intersection-observer';
 
-// Import ViewabilityManager
-import {ViewabilityManager} from './common/utils/viewability-manager';
-
 
 // Import plugin framework
 import {Ad, AdBreak} from './common/ads';
@@ -59,6 +56,5 @@ export {
   registerPlugin,
   PLAYER_TYPE,
   VERSION,
-  PLAYER_NAME,
-  ViewabilityManager
+  PLAYER_NAME
 };
