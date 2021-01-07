@@ -1,7 +1,7 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource} from './common/utils/setup-helpers';
+import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource, mergeProviderPluginsConfig} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE} from './common/utils/viewability-manager';
 import {ConfigEvaluator} from './common/plugins';
@@ -49,12 +49,12 @@ class KalturaPlayer extends FakeEventTarget {
   _remotePlayer: ?BaseRemotePlayer = null;
   _pluginManager: PluginManager = new PluginManager();
   _pluginsConfig: KPPluginsConfigObject = {};
-  _pluginsUiComponents: Array<KPUIComponent> = [];
   _reset: boolean = true;
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
+  _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
   _visibilityTabChangeEventName: string;
   _visibilityTabHiddenAttr: string;
@@ -78,14 +78,13 @@ class KalturaPlayer extends FakeEventTarget {
     super();
     const {sources, plugins} = options;
     this._configEvaluator = new ConfigEvaluator();
-    this._playbackStart = false;
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
+    this._playbackStart = false;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
-    this.configure({plugins});
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
@@ -99,7 +98,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
-    this._playlistManager.configure(options.playlist);
+    this._playlistManager.configure(Utils.Object.mergeDeep({}, options.playlist, {items: null}));
+    this.configure({plugins});
+    //configure sources after configure finished for all components - making sure all we'll set up correctly
+    this._playlistManager.configure({items: (options.playlist && options.playlist.items) || []});
     this._localPlayer.configure({sources: sources || {}});
   }
 
@@ -134,6 +136,9 @@ class KalturaPlayer extends FakeEventTarget {
             }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
+          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
           this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
           this.setMedia(mediaConfig);
         },
@@ -294,6 +299,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._uiWrapper.reset();
+      this._resetProviderPluginsConfig();
       this._pluginManager.reset();
       this._localPlayer.reset();
     }
@@ -363,6 +369,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   setTextDisplaySettings(settings: Object): void {
     this._localPlayer.setTextDisplaySettings(settings);
+  }
+
+  get textDisplaySetting(): Object {
+    return this._localPlayer.textDisplaySetting;
   }
 
   isFullscreen(): boolean {
@@ -577,10 +587,6 @@ class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  get uiComponents(): Array<KPUIComponent> {
-    return [...this._pluginsUiComponents];
-  }
-
   get provider(): Provider {
     return this._provider;
   }
@@ -775,8 +781,7 @@ class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    this._pluginsUiComponents = uiComponents;
-
+    uiComponents.forEach(component => this._uiWrapper.addComponent(component));
     // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
@@ -817,6 +822,11 @@ class KalturaPlayer extends FakeEventTarget {
 
   _detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
+  }
+
+  _resetProviderPluginsConfig(): void {
+    this.configure({plugins: this._appPluginConfig});
+    this._appPluginConfig = {};
   }
 
   /**

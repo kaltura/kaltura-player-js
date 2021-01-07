@@ -150,6 +150,8 @@ The configuration uses the following structure:
 > ```js
 > {
 >   playAdsAfterTime?: number,
+>   showAdBreakCuePoint?: booleab,
+>   adBreakCuePointStyle?: Object,
 >   adBreaks: Array<KPAdBreakObject>
 > }
 > ```
@@ -167,6 +169,26 @@ The configuration uses the following structure:
 > > ##### Default: `config.playback.startTime`
 > >
 > > ##### Description: Only play ad breaks scheduled after this time (in seconds). This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
+> >
+> > ##
+> > 
+> > ### config.advertising.showAdBreakCuePoint
+> >
+> > ##### Type: `boolean`
+> >
+> > ##### Default: `false`
+> >
+> > ##### Description: Whether to show the ad breaks cue points.  
+> >
+> > ##
+> > 
+> > ### config.advertising.adBreakCuePointStyle
+> >
+> > ##### Type: `Object`
+> >
+> > ##### Default: `null`
+> >
+> > ##### Description: Style options for the ad breaks cue points.  
 > >
 > > ##
 > >

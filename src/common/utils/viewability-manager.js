@@ -94,7 +94,7 @@ class ViewabilityManager {
         newTargetObservedBinding.lastIntersectionRatio = lastIntersectionRatio;
         newTargetObservedBinding.listener(
           this._isTabVisible && lastIntersectionRatio >= newTargetObservedBinding.threshold,
-          VisibilityChangeReason.VIEWPORT
+          ViewabilityType.VIEWPORT
         );
       }
     }
