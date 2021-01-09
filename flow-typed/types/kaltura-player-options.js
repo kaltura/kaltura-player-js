@@ -16,8 +16,8 @@ declare type KPOptionsObject = {
   dimensions?: PKDimensionsConfig,
   ui: KPUIOptionsObject,
   cast?: {[key: string]: any},
-  productVersion?: string
-  viewability: KPViewabilityConfigObject
+  productVersion?: string,
+  viewability?: KPViewabilityConfigObject
 };
 
 declare type PartialKPOptionsObject = {

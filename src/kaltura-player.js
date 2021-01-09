@@ -56,8 +56,6 @@ class KalturaPlayer extends FakeEventTarget {
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
-  _visibilityTabChangeEventName: string;
-  _visibilityTabHiddenAttr: string;
   _playbackStart: boolean;
 
   /**
@@ -690,12 +688,16 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   _onChangeSourceEnded(): void {
-    this._viewabilityManager.observe(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+    if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
+      this._viewabilityManager.observe(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+    }
   }
 
   _onPlayerReset(): void {
     this._playbackStart = false;
-    this._viewabilityManager.unObserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+    if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
+      this._viewabilityManager.unObserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+    }
   }
 
   _onChangeSourceStarted(): void {

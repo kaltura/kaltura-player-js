@@ -9,6 +9,8 @@ class ViewabilityManager {
   _targetsObserved: Utils.MultiMap<HTMLElement, _TargetObserveredBinding>;
   _viewabilityConfig: KPViewabilityConfigObject;
   _eventManager: EventManager;
+  _visibilityTabChangeEventName: string;
+  _visibilityTabHiddenAttr: string;
 
   /**
    * Whether the player browser tab is active or not
@@ -21,7 +23,9 @@ class ViewabilityManager {
    * @param {number} viewabilityConfig - the configuration needed to create the manager
    * @constructor
    */
-  constructor(viewabilityConfig: KPViewabilityConfigObject) {
+  constructor(viewabilityConfig: KPViewabilityConfigObject = {}) {
+    if (typeof viewabilityConfig.observedThresholds === 'undefined' || typeof viewabilityConfig.playerThreshold === 'undefined') return;
+
     this._viewabilityConfig = viewabilityConfig;
     this._eventManager = new EventManager();
     this._targetsObserved = new Utils.MultiMap<HTMLElement, _TargetObserveredBinding>();
@@ -79,11 +83,12 @@ class ViewabilityManager {
   /**
    * @param {HTMLElement} target - the targeted element to check its visibility
    * @param {Function} listener - the callback to be invoked when visibility is changed (and when starting to observe). The callback is called with a boolean param representing the visibility state
-   * @param {?number} threshold - a number between 0 to 100 that represents the minimum visible percentage considered as visible
+   * @param {?number} optionalThreshold - a number between 0 to 100 that represents the minimum visible percentage considered as visible
    * @returns {void}
    */
-  observe(target: HTMLElement, listener: ListenerType, threshold: ?number): void {
-    threshold = threshold !== undefined ? threshold : this._viewabilityConfig.playerThreshold;
+  observe(target: HTMLElement, listener: ListenerType, optionalThreshold: ?number): void {
+    if (!this._observer) return;
+    const threshold = typeof optionalThreshold == 'number' ? optionalThreshold : this._viewabilityConfig.playerThreshold;
     const newTargetObservedBinding = new _TargetObserveredBinding(threshold / 100, listener);
     if (!this._targetsObserved.has(target)) {
       this._observer.observe(target);
@@ -108,6 +113,7 @@ class ViewabilityManager {
    * @returns {void}
    */
   unObserve(target: HTMLElement, listener: ListenerType): void {
+    if (!this._observer) return;
     this._targetsObserved.remove(target, listener);
     if (!this._targetsObserved.has(target)) {
       this._observer.unobserve(target);
@@ -118,6 +124,7 @@ class ViewabilityManager {
    * @override
    */
   destroy() {
+    if (!this._observer) return;
     this._eventManager.destroy();
     this._observer.disconnect();
     this._targetsObserved.clear();

@@ -571,7 +571,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
     ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
     ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
-    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode']
+    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode'],
     ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
     ['plugins.visibility.threshold', 'viewability.playerThreshold'],
     ['plugins.visibility.floating', 'plugins.floating']
