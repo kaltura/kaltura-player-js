@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/kaltura/kaltura-player-js/compare/v1.2.0...v1.3.0) (2021-01-07)
+
+
+### Bug Fixes
+
+* **FEC-10680:** back-end bumper: the app should decide what bumper will be displayed when also set user bumper ([#392](https://github.com/kaltura/kaltura-player-js/issues/392)) ([a062427](https://github.com/kaltura/kaltura-player-js/commit/a062427))
+* **FEC-10729:** forceRedirectExternalStreams is reset in playlist ([#381](https://github.com/kaltura/kaltura-player-js/issues/381)) ([77e86ec](https://github.com/kaltura/kaltura-player-js/commit/77e86ec)), closes [#370](https://github.com/kaltura/kaltura-player-js/issues/370)
+* **FEC-10732, FEC-10759:** player params are not injected to additional instances config ([#385](https://github.com/kaltura/kaltura-player-js/issues/385)) ([8c5a6c7](https://github.com/kaltura/kaltura-player-js/commit/8c5a6c7))
+* **FEC-10776:** set the plugins event registration after kaltura player internal events ([#383](https://github.com/kaltura/kaltura-player-js/issues/383)) ([4233d9f](https://github.com/kaltura/kaltura-player-js/commit/4233d9f))
+* **FEC-10797:** back-end bumper config is left from previous media played ([#393](https://github.com/kaltura/kaltura-player-js/issues/393)) ([f3905e7](https://github.com/kaltura/kaltura-player-js/commit/f3905e7))
+* **FEC-10806:** playlist has limitation which configure cause setMedia ([#390](https://github.com/kaltura/kaltura-player-js/issues/390)) ([c5caeda](https://github.com/kaltura/kaltura-player-js/commit/c5caeda))
+
+
+### Build System
+
+* remove webpack warnings ([#384](https://github.com/kaltura/kaltura-player-js/issues/384)) ([8926752](https://github.com/kaltura/kaltura-player-js/commit/8926752))
+
+
+### Features
+
+* **FEC-10015:** support smart scrubber preview and timeline marker ([#359](https://github.com/kaltura/kaltura-player-js/issues/359)) ([ed9606a](https://github.com/kaltura/kaltura-player-js/commit/ed9606a))
+* **FEC-10766:** create text config section and option for styling ([#387](https://github.com/kaltura/kaltura-player-js/issues/387)) ([dac194d](https://github.com/kaltura/kaltura-player-js/commit/dac194d))
+
+
+### Tests
+
+* fix tests ([#391](https://github.com/kaltura/kaltura-player-js/issues/391)) ([4731ea1](https://github.com/kaltura/kaltura-player-js/commit/4731ea1))
+
+
+
 ### [1.2.1](https://github.com/kaltura/kaltura-player-js/compare/v1.2.0...v1.2.1) (2020-12-10)
 
 
