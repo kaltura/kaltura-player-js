@@ -19,6 +19,7 @@ import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
+import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD, ViewabilityManager} from './viewability-manager';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -285,8 +286,8 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
       adBreaks: []
     },
     viewability: {
-      observedThresholds: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-      playerThreshold: 50
+      observedThresholds: DEFAULT_OBSERVED_THRESHOLDS,
+      playerThreshold: DEFAULT_PLAYER_THRESHOLD
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);

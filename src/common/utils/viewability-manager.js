@@ -24,7 +24,9 @@ class ViewabilityManager {
    * @constructor
    */
   constructor(viewabilityConfig: KPViewabilityConfigObject = {}) {
-    if (typeof viewabilityConfig.observedThresholds === 'undefined' || typeof viewabilityConfig.playerThreshold === 'undefined') return;
+    viewabilityConfig.observedThresholds = viewabilityConfig.observedThresholds || DEFAULT_OBSERVED_THRESHOLDS;
+    viewabilityConfig.playerThreshold =
+      typeof viewabilityConfig.playerThreshold === 'number' ? viewabilityConfig.playerThreshold : DEFAULT_PLAYER_THRESHOLD;
 
     this._viewabilityConfig = viewabilityConfig;
     this._eventManager = new EventManager();
@@ -43,11 +45,11 @@ class ViewabilityManager {
       const targetObserveredBindings: Array<_TargetObserveredBinding> = this._targetsObserved.get(entry.target);
       targetObserveredBindings.forEach((targetObservedBinding: _TargetObserveredBinding) => {
         const visible = entry.intersectionRatio >= targetObservedBinding.threshold;
+        targetObservedBinding.lastIntersectionRatio = entry.intersectionRatio;
         if (visible !== targetObservedBinding.lastVisible) {
+          targetObservedBinding.lastVisible = visible;
           targetObservedBinding.listener(visible, ViewabilityType.VIEWPORT);
         }
-        targetObservedBinding.lastVisible = visible;
-        targetObservedBinding.lastIntersectionRatio = entry.intersectionRatio;
       });
     });
   }
@@ -149,5 +151,7 @@ class _TargetObserveredBinding {
     this.listener = listener;
   }
 }
-const VISIBILITY_CHANGE = 'visibilitychange';
-export {ViewabilityManager, VISIBILITY_CHANGE, ViewabilityType};
+const VISIBILITY_CHANGE: string = 'visibilitychange';
+const DEFAULT_OBSERVED_THRESHOLDS: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const DEFAULT_PLAYER_THRESHOLD: number = 50;
+export {ViewabilityManager, VISIBILITY_CHANGE, ViewabilityType, DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD};

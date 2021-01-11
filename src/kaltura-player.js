@@ -613,7 +613,7 @@ class KalturaPlayer extends FakeEventTarget {
       UI: UIEventType,
       // For backward compatibility
       ...CoreEventType,
-      ...{VISIBILITY_CHANGE: VISIBILITY_CHANGE}
+      VISIBILITY_CHANGE
     };
   }
 
