@@ -4,6 +4,8 @@ import * as MediaMockData from '../../mock-data/media';
 import * as PlaylistMockData from '../../mock-data/playlist';
 import {FakeEvent} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
+import {PluginManager} from '../../../../src/common/plugins';
+import ColorsPlugin from '../plugin/test-plugins/colors-plugin';
 
 describe('PlaylistManager', function () {
   let kalturaPlayer, playlistManager, sandbox;
@@ -53,7 +55,11 @@ describe('PlaylistManager', function () {
     });
 
     it('should update config', function () {
-      playlistManager.configure({id: '1234', options: {autoContinue: false}, countdown: {duration: 20, showing: false, timeToShow: 50}});
+      playlistManager.configure({
+        id: '1234',
+        options: {autoContinue: false},
+        countdown: {duration: 20, showing: false, timeToShow: 50}
+      });
       playlistManager._playlist.id.should.equal('1234');
       playlistManager._options.autoContinue.should.be.false;
       playlistManager._countdown.duration.should.equal(20);
@@ -215,6 +221,24 @@ describe('PlaylistManager', function () {
         });
       });
       playlistManager.configure(PlaylistMockData.playlistByConfig);
+    });
+
+    it('should set the configured sources.options for all items', function () {
+      kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1}}});
+      playlistManager.configure({items: [{sources: {}}, {sources: {}}]});
+      playlistManager.items.forEach(item => item.sources.options.forceRedirectExternalStreams.should.be.true);
+      playlistManager.items.forEach(item => (item.sources.options.redirectExternalStreamsHandler() === 1).should.be.true);
+    });
+
+    it('should prefer the item configuration before the sources.options', function () {
+      kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1}}});
+      playlistManager.configure({
+        items: [{sources: {options: {forceRedirectExternalStreams: false}}}, {sources: {options: {redirectExternalStreamsHandler: () => 2}}}]
+      });
+      playlistManager.items[0].sources.options.forceRedirectExternalStreams.should.be.false;
+      playlistManager.items[1].sources.options.forceRedirectExternalStreams.should.be.true;
+      (playlistManager.items[0].sources.options.redirectExternalStreamsHandler() === 1).should.be.true;
+      (playlistManager.items[1].sources.options.redirectExternalStreamsHandler() === 2).should.be.true;
     });
   });
 
@@ -379,6 +403,7 @@ describe('PlaylistManager', function () {
 
     after(function () {
       sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
     });
 
     it('should call playNext automatically once the playlist loaded', function (done) {
@@ -395,6 +420,90 @@ describe('PlaylistManager', function () {
         }
         eventCounter++;
         playlistManager.playNext();
+      });
+    });
+  });
+
+  describe('provider plugins', function () {
+    before(function () {
+      PluginManager.register('colors', ColorsPlugin);
+      sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+        const mediaConfig = MediaMockData.MediaConfig[info.entryId];
+        return Promise.resolve(mediaConfig);
+      });
+    });
+
+    beforeEach(function () {
+      kalturaPlayer.configure({
+        plugins: {
+          colors: {
+            someProp1: 'app_prop1',
+            someProp2: ''
+          }
+        }
+      });
+      playlistManager.load(PlaylistMockData.playlistByEntryListWithPlugins);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer._provider.getMediaConfig.restore();
+    });
+
+    it("should apply the app's plugin config before the provider's and reset the provider's on change media", function (done) {
+      kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        try {
+          kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+          kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+          kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
+          kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+            try {
+              kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+              kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+              kalturaPlayer.config.plugins.colors.someProp2.should.equals('prop2');
+              kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+                try {
+                  kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+                  kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+                  kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
+                  kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+                    try {
+                      kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+                      kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+                      kalturaPlayer.config.plugins.colors.someProp2.should.equals('prop2');
+                      kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+                        try {
+                          kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+                          kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+                          kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
+                          done();
+                        } catch (e) {
+                          done(e);
+                        }
+                      });
+                      kalturaPlayer._reset = false;
+                      playlistManager.playPrev();
+                    } catch (e) {
+                      done(e);
+                    }
+                  });
+                  kalturaPlayer._reset = false;
+                  playlistManager.playPrev();
+                } catch (e) {
+                  done(e);
+                }
+              });
+              kalturaPlayer._reset = false;
+              playlistManager.playNext();
+            } catch (e) {
+              done(e);
+            }
+          });
+          kalturaPlayer._reset = false;
+          playlistManager.playNext();
+        } catch (e) {
+          done(e);
+        }
       });
     });
   });
