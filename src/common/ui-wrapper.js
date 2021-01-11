@@ -91,7 +91,7 @@ class UIWrapper {
     this.setConfig({hasError: false}, 'engine');
   }
 
-  setSeekbarConfig(mediaConfig: ProviderMediaConfigObject, uiConfig: KPUIOptionsObject): void {
+  setSeekbarConfig(mediaConfig: KPMediaConfig, uiConfig: KPUIOptionsObject): void {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
     this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
@@ -145,11 +145,11 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLElement):
 /**
  * Gets the preview thumbnail config for the ui seekbar component.
  * @private
- * @param {ProviderMediaConfigObject} mediaConfig - The provider media config.
+ * @param {KPMediaConfig} mediaConfig - The player media config.
  * @param {SeekbarConfig} seekbarConfig - The seek bar config.
  * @returns {SeekbarConfig} - The seekbar component config.
  */
-function getPreviewThumbnailConfig(mediaConfig: ProviderMediaConfigObject, seekbarConfig: SeekbarConfig): SeekbarConfig {
+function getPreviewThumbnailConfig(mediaConfig: KPMediaConfig, seekbarConfig: SeekbarConfig): SeekbarConfig {
   const previewThumbnailConfig: SeekbarConfig = {
     thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
     thumbsWidth: DEFAULT_THUMBS_WIDTH,
