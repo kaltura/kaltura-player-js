@@ -63,7 +63,7 @@ class KalturaPlayer extends FakeEventTarget {
    * @type {boolean}
    * @private
    */
-  _isVisible: boolean;
+  _isVisible: boolean = false;
 
   /**
    * Whether the player was auto paused
