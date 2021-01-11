@@ -1,2 +1,6 @@
 // @flow
-declare type KPMediaConfig = ProviderMediaConfigObject & PKPlaybackConfigObject;
+declare type KPMediaConfig = {
+  sources: ProviderMediaConfigSourcesObject,
+  session?: ProviderMediaConfigSessionObject,
+  plugins?: {[plugin: string]: Object}
+} & PKPlaybackConfigObject;
