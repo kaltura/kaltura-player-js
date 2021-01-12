@@ -7,7 +7,7 @@ import {EventManager, Utils} from '@playkit-js/playkit-js';
 class ViewabilityManager {
   _observer: window.IntersectionObserver;
   _targetsObserved: Utils.MultiMap<HTMLElement, _TargetObserveredBinding>;
-  _viewabilityConfig: KPViewabilityConfigObject;
+  _config: KPViewabilityConfigObject;
   _eventManager: EventManager;
   _visibilityTabChangeEventName: string;
   _visibilityTabHiddenAttr: string;
@@ -28,7 +28,7 @@ class ViewabilityManager {
     viewabilityConfig.playerThreshold =
       typeof viewabilityConfig.playerThreshold === 'number' ? viewabilityConfig.playerThreshold : DEFAULT_PLAYER_THRESHOLD;
 
-    this._viewabilityConfig = viewabilityConfig;
+    this._config = viewabilityConfig;
     this._eventManager = new EventManager();
     this._targetsObserved = new Utils.MultiMap<HTMLElement, _TargetObserveredBinding>();
     const options = {
@@ -90,7 +90,7 @@ class ViewabilityManager {
    */
   observe(target: HTMLElement, listener: ListenerType, optionalThreshold: ?number): void {
     if (!this._observer) return;
-    const threshold = typeof optionalThreshold == 'number' ? optionalThreshold : this._viewabilityConfig.playerThreshold;
+    const threshold = typeof optionalThreshold == 'number' ? optionalThreshold : this._config.playerThreshold;
     const newTargetObservedBinding = new _TargetObserveredBinding(threshold / 100, listener);
     if (!this._targetsObserved.has(target)) {
       this._observer.observe(target);
@@ -152,6 +152,6 @@ class _TargetObserveredBinding {
   }
 }
 const VISIBILITY_CHANGE: string = 'visibilitychange';
-const DEFAULT_OBSERVED_THRESHOLDS: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const DEFAULT_OBSERVED_THRESHOLDS: Array<number> = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 const DEFAULT_PLAYER_THRESHOLD: number = 50;
 export {ViewabilityManager, VISIBILITY_CHANGE, ViewabilityType, DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD};

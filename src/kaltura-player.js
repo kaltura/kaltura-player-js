@@ -690,6 +690,8 @@ class KalturaPlayer extends FakeEventTarget {
   _onChangeSourceEnded(): void {
     if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
       this._viewabilityManager.observe(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+    } else {
+      KalturaPlayer._logger.warn('Cannot observe visibility change without config.ui.targetId');
     }
   }
 
@@ -872,7 +874,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.dispatchEvent(new FakeEvent(VISIBILITY_CHANGE, {visible: this._isVisible}));
 
     if (this.config.playback.autoplay === AutoPlayType.IN_VIEW && this._isVisible && !this._playbackStart) {
-      this._localPlayer.autoPlay();
+      this._localPlayer.play(true);
     }
     if (this.config.playback.autopause === true) {
       this._handleAutoPause(visible);
