@@ -1,5 +1,6 @@
 //@flow
 import {EventManager, Utils} from '@playkit-js/playkit-js';
+import 'intersection-observer';
 
 /**
  * A service class to observe viewability of elements in the view port.

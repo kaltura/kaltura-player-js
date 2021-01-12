@@ -17,8 +17,6 @@ import {getPlayers, getPlayer} from './proxy';
 import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
-import 'intersection-observer';
-
 
 // Import plugin framework
 import {Ad, AdBreak} from './common/ads';
