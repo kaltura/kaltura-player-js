@@ -567,7 +567,8 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
     ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
     ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
-    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode']
+    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode'],
+    ['playback.startTime', 'sources.startTime']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));

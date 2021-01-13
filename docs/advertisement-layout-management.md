@@ -2,6 +2,7 @@
 
 With ad layout config you can create your own ad break timeline using your vast tags.  
 Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a [Waterfall](#waterfalling).
+
 > **Important:** [IMA plugin](https://github.com/kaltura/playkit-js-ima) must be active to enable this feature.
 
 ## Table of Contents
@@ -305,6 +306,7 @@ kalturaPlayer.ads.playAdNow(
 ### Seekbar Cue Points
 
 To display cue points on the seekbar to indicates the ad break positions use `showAdBreakCuePoint` option, as following:
+
 ```js
 const config = {
   ...
@@ -326,6 +328,7 @@ const config = {
 ```
 
 To customize the cue points style use `adBreakCuePointStyle` option. for example:
+
 ```js
 const config = {
   ...
@@ -337,8 +340,8 @@ const config = {
     adBreakCuePointStyle: {
      marker: {
        width: 10,
-       color: 'rgb(255, 0, 0)' 
-      }   
+       color: 'rgb(255, 0, 0)'
+      }
     },
     adBreaks: [{
       position: 60,
@@ -352,4 +355,4 @@ const config = {
 }
 ```
 
-All style options are listed [here](https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject). 
+All style options are listed [here](https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject).
