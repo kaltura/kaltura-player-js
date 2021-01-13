@@ -874,7 +874,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.dispatchEvent(new FakeEvent(VISIBILITY_CHANGE, {visible: this._isVisible}));
 
     if (this.config.playback.autoplay === AutoPlayType.IN_VIEW && this._isVisible && !this._playbackStart) {
-      this._localPlayer.play(true);
+      this._localPlayer.play({programmatic: true});
     }
     if (this.config.playback.autopause === true) {
       this._handleAutoPause(visible);
