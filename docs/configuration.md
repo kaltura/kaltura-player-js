@@ -371,12 +371,12 @@ The configuration uses the following structure:
 >
 > ##### Description: Defines the viewability configuration.
 >
->> #### KPViewabilityConfigObject
->>##### Properties
->>
->>-   `observedThresholds` **[Array][1]&lt;[number][2]>** An array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed.
->>-   `playerThreshold` **[number][2]** The minimal viewable percentage of the player to consider as visible.
-
+> > #### KPViewabilityConfigObject
+> >
+> > ##### Properties
+> >
+> > - `observedThresholds` **[Array][1]&lt;[number][2]>** An array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed.
+> > - `playerThreshold` **[number][2]** The minimal viewable percentage of the player to consider as visible.
 
 ## Configuration Priority
 
