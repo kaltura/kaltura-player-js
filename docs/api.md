@@ -2312,7 +2312,7 @@ Loads a media.
 ### Parameters
 
 - `mediaInfo` **ProviderMediaInfoObject** The media info.
-- `mediaOptions` **KPLoadMediaOptions?** The media options.
+- `mediaOptions` **PKSourcesConfigObject?** The media options.
 
 ### Examples
 

@@ -106,14 +106,14 @@ class KalturaPlayer extends FakeEventTarget {
   /**
    * Loads a media.
    * @param {ProviderMediaInfoObject} mediaInfo - The media info.
-   * @param {KPLoadMediaOptions} [mediaOptions] - The media options.
+   * @param {PKSourcesConfigObject} [mediaOptions] - The media options.
    * @returns {Promise<*>} - Promise which resolves when the media is loaded, or rejected if error occurs.
    * @instance
    * @memberof KalturaPlayer
    * @example
    * kalturaPlayer.loadMedia({entryId: 'entry123'}, {startTime: 5, poster: 'my/poster/url'});
    */
-  loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: KPLoadMediaOptions): Promise<*> {
+  loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: PKSourcesConfigObject): Promise<*> {
     KalturaPlayer._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
@@ -125,13 +125,7 @@ class KalturaPlayer extends FakeEventTarget {
         (providerMediaConfig: ProviderMediaConfigObject) => {
           const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
           if (mediaOptions) {
-            mediaConfig.playback = mediaConfig.playback || {};
             mediaConfig.sources = mediaConfig.sources || {};
-            const {startTime} = mediaOptions;
-            if (typeof startTime === 'number') {
-              mediaConfig.playback = Utils.Object.mergeDeep(mediaConfig.playback, {startTime});
-              delete mediaOptions.startTime;
-            }
             mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
           const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);

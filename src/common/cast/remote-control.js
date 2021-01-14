@@ -135,12 +135,12 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     reconstructPlayerComponents.call(this, snapshot);
     if (snapshot) {
       this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
-      const originPlaybackConfig = this.config.playback;
+      const originConfig = this.config;
       const shouldPause = !snapshot.config.playback.autoplay;
       const mediaInfo = snapshot.mediaInfo;
       const mediaConfig = snapshot.mediaConfig;
       snapshot.config.playback.autoplay = true;
-      configurePlayback.call(this, snapshot.config.playback);
+      configurePlayback.call(this, snapshot.config);
       this._eventManager.listenOnce(this, this.Event.Core.CHANGE_SOURCE_ENDED, () => {
         configureTracks.call(this, snapshot.config.sources);
       });
@@ -155,7 +155,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
         mediaPromise.then(() => {
           this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             this.textStyle = snapshot.textStyle;
-            configurePlayback.call(this, originPlaybackConfig);
+            configurePlayback.call(this, originConfig);
             setInitialTracks.call(this, snapshot.config.playback);
             if (shouldPause) {
               this.pause();
@@ -202,7 +202,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
     let imaConfig = {};
     // If it's a VAST ad we are empty the ad tag so ads won't play and configure it later
     if (playerConfig.cast.advertising && playerConfig.cast.advertising.vast) {
-      if (snapshot.config.playback.startTime > 0) {
+      if (snapshot.config.sources.startTime > 0) {
         const adTagUrl = playerConfig.plugins.ima.adTagUrl;
         imaConfig = {
           adTagUrl: ''
@@ -230,11 +230,14 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   this._uiWrapper.setConfig({isCastAvailable: this.isCastAvailable()}, 'engine');
 }
 
-function configurePlayback(playbackConfig: Object): void {
-  const {autoplay, startTime} = playbackConfig;
+function configurePlayback(config: Object): void {
+  const {startTime} = config.sources;
+  const {autoplay} = config.playback;
   this.configure({
+    sources: {
+      startTime
+    },
     playback: {
-      startTime,
       autoplay
     }
   });
