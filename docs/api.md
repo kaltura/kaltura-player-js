@@ -2,596 +2,610 @@
 
 ### Table of Contents
 
--   [KPAdObject][1]
-    -   [Properties][2]
--   [KPAdPod][3]
--   [KPAdBreakObject][4]
-    -   [Properties][5]
--   [KPAdvertisingConfigObject][6]
-    -   [Properties][7]
--   [KalturaPlayers][8]
--   [KPPlaylistOptions][9]
-    -   [Properties][10]
--   [KPPlaylistCountdownOptions][11]
-    -   [Properties][12]
--   [KPPlaylistConfigObject][13]
-    -   [Properties][14]
--   [KPPlaylistObject][15]
-    -   [Properties][16]
--   [KPPlaylistItemConfigObject][17]
-    -   [Properties][18]
--   [KPPluginsConfigObject][19]
--   [AdBreak][20]
-    -   [Parameters][21]
-    -   [type][22]
-    -   [position][23]
-    -   [numAds][24]
--   [Ad][25]
-    -   [Parameters][26]
-    -   [id][27]
-    -   [system][28]
-    -   [contentType][29]
-    -   [url][30]
-    -   [title][31]
-    -   [position][32]
-    -   [duration][33]
-    -   [clickThroughUrl][34]
-    -   [posterUrl][35]
-    -   [skipOffset][36]
-    -   [linear][37]
-    -   [width][38]
-    -   [height][39]
-    -   [bitrate][40]
-    -   [bumper][41]
-    -   [skippable][42]
--   [BaseRemotePlayer][43]
-    -   [Parameters][44]
-    -   [loadMedia][45]
-        -   [Parameters][46]
-    -   [setMedia][47]
-        -   [Parameters][48]
-    -   [getMediaInfo][49]
-    -   [getMediaConfig][50]
-    -   [configure][51]
-        -   [Parameters][52]
-    -   [ready][53]
-    -   [load][54]
-    -   [play][55]
-    -   [pause][56]
-    -   [reset][57]
-    -   [destroy][58]
-    -   [isLive][59]
-        -   [Examples][60]
-    -   [isDvr][61]
-        -   [Examples][62]
-    -   [seekToLiveEdge][63]
-    -   [getStartTimeOfDvrWindow][64]
-        -   [Examples][65]
-    -   [getTracks][66]
-        -   [Parameters][67]
-        -   [Examples][68]
-    -   [getActiveTracks][69]
-        -   [Examples][70]
-    -   [selectTrack][71]
-        -   [Parameters][72]
-    -   [hideTextTrack][73]
-    -   [enableAdaptiveBitrate][74]
-    -   [isAdaptiveBitrateEnabled][75]
-        -   [Examples][76]
-    -   [setTextDisplaySettings][77]
-        -   [Parameters][78]
-    -   [startCasting][79]
-    -   [stopCasting][80]
-    -   [isCasting][81]
-        -   [Examples][82]
-    -   [isCastAvailable][83]
-        -   [Examples][84]
-    -   [getCastSession][85]
-        -   [Examples][86]
-    -   [isVr][87]
-        -   [Examples][88]
-    -   [toggleVrStereoMode][89]
-    -   [isInVrStereoMode][90]
-        -   [Examples][91]
-    -   [ads][92]
-        -   [Examples][93]
-    -   [textStyle][94]
-        -   [Parameters][95]
-    -   [textStyle][96]
-        -   [Examples][97]
-    -   [buffered][98]
-        -   [Examples][99]
-    -   [currentTime][100]
-        -   [Parameters][101]
-    -   [currentTime][102]
-        -   [Examples][103]
-    -   [duration][104]
-        -   [Examples][105]
-    -   [volume][106]
-        -   [Parameters][107]
-    -   [volume][108]
-        -   [Examples][109]
-    -   [paused][110]
-        -   [Examples][111]
-    -   [ended][112]
-        -   [Examples][113]
-    -   [seeking][114]
-        -   [Examples][115]
-    -   [muted][116]
-        -   [Parameters][117]
-    -   [muted][118]
-        -   [Examples][119]
-    -   [src][120]
-        -   [Examples][121]
-    -   [poster][122]
-        -   [Examples][123]
-    -   [playbackRate][124]
-        -   [Parameters][125]
-    -   [playbackRate][126]
-        -   [Examples][127]
-    -   [engineType][128]
-        -   [Examples][129]
-    -   [streamType][130]
-        -   [Examples][131]
-    -   [type][132]
-        -   [Examples][133]
-    -   [config][134]
-    -   [defaultConfig][135]
-        -   [Examples][136]
-    -   [Type][137]
-        -   [Examples][138]
-    -   [isSupported][139]
-        -   [Examples][140]
--   [CastEventType][141]
-    -   [Examples][142]
--   [PlayerSnapshot][143]
-    -   [Parameters][144]
-    -   [textStyle][145]
-    -   [advertising][146]
-    -   [config][147]
--   [RemoteControl][148]
-    -   [Parameters][149]
-    -   [getPlayerSnapshot][150]
-    -   [getUIWrapper][151]
-    -   [onRemoteDeviceDisconnected][152]
-        -   [Parameters][153]
-    -   [onRemoteDeviceConnected][154]
-        -   [Parameters][155]
-    -   [onRemoteDeviceAvailable][156]
-        -   [Parameters][157]
-    -   [onRemoteDeviceConnecting][158]
-    -   [onRemoteDeviceDisconnecting][159]
-    -   [onRemoteDeviceConnectFailed][160]
--   [RemotePayload][161]
-    -   [Parameters][162]
-    -   [player][163]
--   [RemoteConnectedPayload][164]
-    -   [Parameters][165]
-    -   [ui][166]
-    -   [session][167]
--   [RemoteDisconnectedPayload][168]
-    -   [Parameters][169]
-    -   [snapshot][170]
--   [RemoteAvailablePayload][171]
-    -   [Parameters][172]
-    -   [available][173]
--   [RemotePlayerUI][174]
-    -   [playbackUI][175]
-        -   [Parameters][176]
-    -   [idleUI][177]
-        -   [Parameters][178]
-    -   [adsUI][179]
-        -   [Parameters][180]
-    -   [liveUI][181]
-        -   [Parameters][182]
-    -   [errorUI][183]
-        -   [Parameters][184]
-    -   [uis][185]
--   [IRemotePlayer][186]
-    -   [textStyle][187]
-    -   [muted][188]
-    -   [playbackRate][189]
-    -   [volume][190]
-    -   [currentTime][191]
-    -   [buffered][192]
-    -   [duration][193]
-    -   [paused][194]
-    -   [ended][195]
-    -   [seeking][196]
-    -   [src][197]
-    -   [poster][198]
-    -   [engineType][199]
-    -   [streamType][200]
-    -   [type][201]
-    -   [ads][202]
-    -   [config][203]
-    -   [addEventListener][204]
-        -   [Parameters][205]
-    -   [removeEventListener][206]
-        -   [Parameters][207]
-    -   [dispatchEvent][208]
-        -   [Parameters][209]
-    -   [loadMedia][210]
-        -   [Parameters][211]
-    -   [setMedia][212]
-        -   [Parameters][213]
-    -   [getMediaInfo][214]
-    -   [getMediaConfig][215]
-    -   [configure][216]
-        -   [Parameters][217]
-    -   [ready][218]
-    -   [load][219]
-    -   [play][220]
-    -   [pause][221]
-    -   [reset][222]
-    -   [destroy][223]
-    -   [isLive][224]
-    -   [isDvr][225]
-    -   [seekToLiveEdge][226]
-    -   [getStartTimeOfDvrWindow][227]
-    -   [getTracks][228]
-        -   [Parameters][229]
-    -   [getActiveTracks][230]
-    -   [selectTrack][231]
-        -   [Parameters][232]
-    -   [hideTextTrack][233]
-    -   [enableAdaptiveBitrate][234]
-    -   [isAdaptiveBitrateEnabled][235]
-    -   [setTextDisplaySettings][236]
-        -   [Parameters][237]
-    -   [startCasting][238]
-    -   [stopCasting][239]
-    -   [isCasting][240]
-    -   [isCastAvailable][241]
-    -   [getCastSession][242]
-    -   [isVr][243]
-    -   [toggleVrStereoMode][244]
-    -   [isInVrStereoMode][245]
--   [RemoteSession][246]
-    -   [Parameters][247]
-    -   [deviceFriendlyName][248]
-    -   [id][249]
-    -   [resuming][250]
--   [AdsController][251]
-    -   [Parameters][252]
-    -   [allAdsCompleted][253]
-    -   [isAdBreak][254]
-    -   [getAdBreaksLayout][255]
-    -   [getAdBreak][256]
-    -   [getAd][257]
-    -   [skipAd][258]
-    -   [playAdNow][259]
-        -   [Parameters][260]
--   [ControllerProvider][261]
-    -   [Parameters][262]
-    -   [getAdsControllers][263]
--   [PlaylistEventType][264]
-    -   [Examples][265]
--   [PlaylistItem][266]
-    -   [Parameters][267]
-    -   [updateSources][268]
-        -   [Parameters][269]
-    -   [sources][270]
-    -   [config][271]
-    -   [isPlayable][272]
--   [PlaylistManager][273]
-    -   [Parameters][274]
-    -   [configure][275]
-        -   [Parameters][276]
-    -   [load][277]
-        -   [Parameters][278]
-    -   [reset][279]
-    -   [playNext][280]
-    -   [playPrev][281]
-    -   [playItem][282]
-        -   [Parameters][283]
-    -   [items][284]
-    -   [next][285]
-    -   [prev][286]
-    -   [id][287]
-    -   [metadata][288]
-    -   [poster][289]
-    -   [countdown][290]
-    -   [options][291]
--   [BasePlugin][292]
-    -   [Parameters][293]
-    -   [config][294]
-    -   [name][295]
-    -   [player][296]
-    -   [player][297]
-    -   [eventManager][298]
-    -   [getConfig][299]
-        -   [Parameters][300]
-    -   [ready][301]
-    -   [updateConfig][302]
-        -   [Parameters][303]
-    -   [loadMedia][304]
-    -   [destroy][305]
-    -   [reset][306]
-    -   [getName][307]
-    -   [dispatchEvent][308]
-        -   [Parameters][309]
-    -   [defaultConfig][310]
-    -   [createPlugin][311]
-        -   [Parameters][312]
-    -   [isValid][313]
--   [PluginManager][314]
-    -   [load][315]
-        -   [Parameters][316]
-    -   [loadMedia][317]
-    -   [destroy][318]
-    -   [reset][319]
-    -   [get][320]
-        -   [Parameters][321]
-    -   [getAll][322]
-    -   [register][323]
-        -   [Parameters][324]
-    -   [unRegister][325]
-        -   [Parameters][326]
--   [registerPlugin][327]
--   [load][328]
-    -   [Parameters][329]
--   [play][330]
-    -   [Parameters][331]
--   [constructor][332]
--   [get][333]
--   [set][334]
-    -   [Parameters][335]
--   [reset][336]
--   [constructor][337]
--   [evaluatePluginsConfig][338]
-    -   [Parameters][339]
--   [evaluateUIConfig][340]
-    -   [Parameters][341]
--   [maybeSetStreamPriority][342]
-    -   [Parameters][343]
--   [hasYoutubeSource][344]
-    -   [Parameters][345]
--   [loadMedia][346]
-    -   [Parameters][347]
-    -   [Examples][348]
--   [loadPlaylist][349]
-    -   [Parameters][350]
-    -   [Examples][351]
--   [loadPlaylistByEntryList][352]
-    -   [Parameters][353]
-    -   [Examples][354]
--   [configure][355]
-    -   [Parameters][356]
-    -   [Examples][357]
--   [playlist][358]
-    -   [Examples][359]
--   [crossOrigin][360]
-    -   [Parameters][361]
--   [crossOrigin][362]
--   [getDefaultRedirectOptions][363]
--   [getDefaultRedirectOptions][364]
-    -   [Parameters][365]
--   [getPlayers][366]
--   [getPlayer][367]
-    -   [Parameters][368]
+- [KPAdObject][1]
+  - [Properties][2]
+- [KPAdPod][3]
+- [KPAdBreakObject][4]
+  - [Properties][5]
+- [KPAdvertisingConfigObject][6]
+  - [Properties][7]
+- [KalturaPlayers][8]
+- [KPPlaylistOptions][9]
+  - [Properties][10]
+- [KPPlaylistCountdownOptions][11]
+  - [Properties][12]
+- [KPPlaylistConfigObject][13]
+  - [Properties][14]
+- [KPPlaylistObject][15]
+  - [Properties][16]
+- [KPPlaylistItemConfigObject][17]
+  - [Properties][18]
+- [KPPluginsConfigObject][19]
+- [AdBreak][20]
+  - [Parameters][21]
+  - [type][22]
+  - [position][23]
+  - [numAds][24]
+- [Ad][25]
+  - [Parameters][26]
+  - [id][27]
+  - [system][28]
+  - [contentType][29]
+  - [url][30]
+  - [title][31]
+  - [position][32]
+  - [duration][33]
+  - [clickThroughUrl][34]
+  - [posterUrl][35]
+  - [skipOffset][36]
+  - [linear][37]
+  - [width][38]
+  - [height][39]
+  - [bitrate][40]
+  - [bumper][41]
+  - [skippable][42]
+- [BaseRemotePlayer][43]
+  - [Parameters][44]
+  - [loadMedia][45]
+    - [Parameters][46]
+  - [setMedia][47]
+    - [Parameters][48]
+  - [getMediaInfo][49]
+  - [getMediaConfig][50]
+  - [configure][51]
+    - [Parameters][52]
+  - [ready][53]
+  - [load][54]
+  - [play][55]
+  - [pause][56]
+  - [reset][57]
+  - [destroy][58]
+  - [isLive][59]
+    - [Examples][60]
+  - [isDvr][61]
+    - [Examples][62]
+  - [seekToLiveEdge][63]
+  - [getStartTimeOfDvrWindow][64]
+    - [Examples][65]
+  - [getTracks][66]
+    - [Parameters][67]
+    - [Examples][68]
+  - [getActiveTracks][69]
+    - [Examples][70]
+  - [selectTrack][71]
+    - [Parameters][72]
+  - [hideTextTrack][73]
+  - [enableAdaptiveBitrate][74]
+  - [isAdaptiveBitrateEnabled][75]
+    - [Examples][76]
+  - [setTextDisplaySettings][77]
+    - [Parameters][78]
+  - [startCasting][79]
+  - [stopCasting][80]
+  - [isCasting][81]
+    - [Examples][82]
+  - [isCastAvailable][83]
+    - [Examples][84]
+  - [getCastSession][85]
+    - [Examples][86]
+  - [isVr][87]
+    - [Examples][88]
+  - [toggleVrStereoMode][89]
+  - [isInVrStereoMode][90]
+    - [Examples][91]
+  - [ads][92]
+    - [Examples][93]
+  - [textStyle][94]
+    - [Parameters][95]
+  - [textStyle][96]
+    - [Examples][97]
+  - [buffered][98]
+    - [Examples][99]
+  - [currentTime][100]
+    - [Parameters][101]
+  - [currentTime][102]
+    - [Examples][103]
+  - [duration][104]
+    - [Examples][105]
+  - [volume][106]
+    - [Parameters][107]
+  - [volume][108]
+    - [Examples][109]
+  - [paused][110]
+    - [Examples][111]
+  - [ended][112]
+    - [Examples][113]
+  - [seeking][114]
+    - [Examples][115]
+  - [muted][116]
+    - [Parameters][117]
+  - [muted][118]
+    - [Examples][119]
+  - [src][120]
+    - [Examples][121]
+  - [poster][122]
+    - [Examples][123]
+  - [playbackRate][124]
+    - [Parameters][125]
+  - [playbackRate][126]
+    - [Examples][127]
+  - [engineType][128]
+    - [Examples][129]
+  - [streamType][130]
+    - [Examples][131]
+  - [type][132]
+    - [Examples][133]
+  - [config][134]
+  - [defaultConfig][135]
+    - [Examples][136]
+  - [Type][137]
+    - [Examples][138]
+  - [isSupported][139]
+    - [Examples][140]
+- [CastEventType][141]
+  - [Examples][142]
+- [PlayerSnapshot][143]
+  - [Parameters][144]
+  - [textStyle][145]
+  - [advertising][146]
+  - [config][147]
+- [RemoteControl][148]
+  - [Parameters][149]
+  - [getPlayerSnapshot][150]
+  - [getUIWrapper][151]
+  - [onRemoteDeviceDisconnected][152]
+    - [Parameters][153]
+  - [onRemoteDeviceConnected][154]
+    - [Parameters][155]
+  - [onRemoteDeviceAvailable][156]
+    - [Parameters][157]
+  - [onRemoteDeviceConnecting][158]
+  - [onRemoteDeviceDisconnecting][159]
+  - [onRemoteDeviceConnectFailed][160]
+- [RemotePayload][161]
+  - [Parameters][162]
+  - [player][163]
+- [RemoteConnectedPayload][164]
+  - [Parameters][165]
+  - [ui][166]
+  - [session][167]
+- [RemoteDisconnectedPayload][168]
+  - [Parameters][169]
+  - [snapshot][170]
+- [RemoteAvailablePayload][171]
+  - [Parameters][172]
+  - [available][173]
+- [RemotePlayerUI][174]
+  - [playbackUI][175]
+    - [Parameters][176]
+  - [idleUI][177]
+    - [Parameters][178]
+  - [adsUI][179]
+    - [Parameters][180]
+  - [liveUI][181]
+    - [Parameters][182]
+  - [errorUI][183]
+    - [Parameters][184]
+  - [uis][185]
+- [IRemotePlayer][186]
+  - [textStyle][187]
+  - [muted][188]
+  - [playbackRate][189]
+  - [volume][190]
+  - [currentTime][191]
+  - [buffered][192]
+  - [duration][193]
+  - [paused][194]
+  - [ended][195]
+  - [seeking][196]
+  - [src][197]
+  - [poster][198]
+  - [engineType][199]
+  - [streamType][200]
+  - [type][201]
+  - [ads][202]
+  - [config][203]
+  - [addEventListener][204]
+    - [Parameters][205]
+  - [removeEventListener][206]
+    - [Parameters][207]
+  - [dispatchEvent][208]
+    - [Parameters][209]
+  - [loadMedia][210]
+    - [Parameters][211]
+  - [setMedia][212]
+    - [Parameters][213]
+  - [getMediaInfo][214]
+  - [getMediaConfig][215]
+  - [configure][216]
+    - [Parameters][217]
+  - [ready][218]
+  - [load][219]
+  - [play][220]
+  - [pause][221]
+  - [reset][222]
+  - [destroy][223]
+  - [isLive][224]
+  - [isDvr][225]
+  - [seekToLiveEdge][226]
+  - [getStartTimeOfDvrWindow][227]
+  - [getTracks][228]
+    - [Parameters][229]
+  - [getActiveTracks][230]
+  - [selectTrack][231]
+    - [Parameters][232]
+  - [hideTextTrack][233]
+  - [enableAdaptiveBitrate][234]
+  - [isAdaptiveBitrateEnabled][235]
+  - [setTextDisplaySettings][236]
+    - [Parameters][237]
+  - [startCasting][238]
+  - [stopCasting][239]
+  - [isCasting][240]
+  - [isCastAvailable][241]
+  - [getCastSession][242]
+  - [isVr][243]
+  - [toggleVrStereoMode][244]
+  - [isInVrStereoMode][245]
+- [RemoteSession][246]
+  - [Parameters][247]
+  - [deviceFriendlyName][248]
+  - [id][249]
+  - [resuming][250]
+- [AdsController][251]
+  - [Parameters][252]
+  - [allAdsCompleted][253]
+  - [isAdBreak][254]
+  - [getAdBreaksLayout][255]
+  - [getAdBreak][256]
+  - [getAd][257]
+  - [skipAd][258]
+  - [playAdNow][259]
+    - [Parameters][260]
+- [ControllerProvider][261]
+  - [Parameters][262]
+  - [getAdsControllers][263]
+- [PlaylistEventType][264]
+  - [Examples][265]
+- [PlaylistItem][266]
+  - [Parameters][267]
+  - [updateSources][268]
+    - [Parameters][269]
+  - [updatePlugins][270]
+    - [Parameters][271]
+  - [sources][272]
+  - [config][273]
+  - [plugins][274]
+  - [isPlayable][275]
+- [PlaylistManager][276]
+  - [Parameters][277]
+  - [configure][278]
+    - [Parameters][279]
+  - [load][280]
+    - [Parameters][281]
+  - [reset][282]
+  - [playNext][283]
+  - [playPrev][284]
+  - [playItem][285]
+    - [Parameters][286]
+  - [items][287]
+  - [next][288]
+  - [prev][289]
+  - [id][290]
+  - [metadata][291]
+  - [poster][292]
+  - [countdown][293]
+  - [options][294]
+- [BasePlugin][295]
+  - [Parameters][296]
+  - [config][297]
+  - [name][298]
+  - [player][299]
+  - [player][300]
+  - [eventManager][301]
+  - [getConfig][302]
+    - [Parameters][303]
+  - [ready][304]
+  - [updateConfig][305]
+    - [Parameters][306]
+  - [loadMedia][307]
+  - [destroy][308]
+  - [reset][309]
+  - [getName][310]
+  - [dispatchEvent][311]
+    - [Parameters][312]
+  - [defaultConfig][313]
+  - [createPlugin][314]
+    - [Parameters][315]
+  - [isValid][316]
+- [PluginManager][317]
+  - [load][318]
+    - [Parameters][319]
+  - [loadMedia][320]
+  - [destroy][321]
+  - [reset][322]
+  - [get][323]
+    - [Parameters][324]
+  - [getAll][325]
+  - [register][326]
+    - [Parameters][327]
+  - [unRegister][328]
+    - [Parameters][329]
+- [registerPlugin][330]
+- [load][331]
+  - [Parameters][332]
+- [play][333]
+  - [Parameters][334]
+- [constructor][335]
+- [get][336]
+- [set][337]
+  - [Parameters][338]
+- [reset][339]
+- [constructor][340]
+- [evaluatePluginsConfig][341]
+  - [Parameters][342]
+- [evaluateUIConfig][343]
+  - [Parameters][344]
+- [maybeSetStreamPriority][345]
+  - [Parameters][346]
+- [hasYoutubeSource][347]
+  - [Parameters][348]
+- [mergeProviderPluginsConfig][349]
+  - [Parameters][350]
+- [ViewabilityManager][351]
+  - [Parameters][352]
+  - [observe][353]
+    - [Parameters][354]
+  - [unObserve][355]
+    - [Parameters][356]
+  - [destroy][357]
+- [loadMedia][358]
+  - [Parameters][359]
+  - [Examples][360]
+- [loadPlaylist][361]
+  - [Parameters][362]
+  - [Examples][363]
+- [loadPlaylistByEntryList][364]
+  - [Parameters][365]
+  - [Examples][366]
+- [configure][367]
+  - [Parameters][368]
+  - [Examples][369]
+- [playlist][370]
+  - [Examples][371]
+- [crossOrigin][372]
+  - [Parameters][373]
+- [crossOrigin][374]
+- [isVisible][375]
+- [viewabilityManager][376]
+- [getDefaultRedirectOptions][377]
+- [getDefaultRedirectOptions][378]
+  - [Parameters][379]
+- [getPlayers][380]
+- [getPlayer][381]
+  - [Parameters][382]
 
 ## KPAdObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `url` **[Array][370]&lt;[string][371]>** List of urls, each one specifies the ad tag url that is requested from the ad server. The player will request the first url, if failed, it will request the second url and so on (aka waterfalling).
--   `response` **[Array][370]&lt;[string][371]>** List of XMLs, each one specifies a VAST 2.0 document to be used as the ads response instead of making a request via an ad tag url. The player will use the first XML, if failed, it will use the second and so on (aka waterfalling).
--   `bumper` **[boolean][372]** Specifies whether this is a bumper.
+- `url` **[Array][384]&lt;[string][385]>** List of urls, each one specifies the ad tag url that is requested from the ad server. The player will request the first url, if failed, it will request the second url and so on (aka waterfalling).
+- `response` **[Array][384]&lt;[string][385]>** List of XMLs, each one specifies a VAST 2.0 document to be used as the ads response instead of making a request via an ad tag url. The player will use the first XML, if failed, it will use the second and so on (aka waterfalling).
+- `bumper` **[boolean][386]** Specifies whether this is a bumper.
 
 ## KPAdPod
 
-Type: [Array][370]&lt;[KPAdObject][373]>
+Type: [Array][384]&lt;[KPAdObject][387]>
 
 ## KPAdBreakObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `position` **[number][374]** The position, in seconds, to show the ad break.
--   `percentage` **[number][374]** Alternative parameter to `position`. The position, in percentage of the media length, to show the ad break (optional).
--   `every` **[number][374]** Alternative parameter to `position`. Play ad break every X seconds (optional).
--   `ads` **[KPAdPod][375]** An array of ads to play (Ad pod).
+- `position` **[number][388]** The position, in seconds, to show the ad break.
+- `percentage` **[number][388]** Alternative parameter to `position`. The position, in percentage of the media length, to show the ad break (optional).
+- `every` **[number][388]** Alternative parameter to `position`. Play ad break every X seconds (optional).
+- `ads` **[KPAdPod][389]** An array of ads to play (Ad pod).
 
 ## KPAdvertisingConfigObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `adBreaks` **[Array][370]&lt;[KPAdBreakObject][376]>** The ad breaks scheme.
--   `playAdsAfterTime` **[number][374]?** Only play ad breaks scheduled after this time (in seconds). This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
--   `showAdBreakCuePoint` **[boolean][372]?** Whether to show the ad breaks cue points.
--   `adBreakCuePointStyle` **[Object][369]?** Style options for the ad breaks cue points - See the options [Here][377].
+- `adBreaks` **[Array][384]&lt;[KPAdBreakObject][390]>** The ad breaks scheme.
+- `playAdsAfterTime` **[number][388]?** Only play ad breaks scheduled after this time (in seconds). This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
+- `showAdBreakCuePoint` **[boolean][386]?** Whether to show the ad breaks cue points.
+- `adBreakCuePointStyle` **[Object][383]?** Style options for the ad breaks cue points - See the options [Here][391].
 
 ## KalturaPlayers
 
 a map of player instances by player ids
 
-Type: [Object][369]&lt;[string][371], KalturaPlayer>
+Type: [Object][383]&lt;[string][385], KalturaPlayer>
 
-## KPPlaylistOptions  
+## KPPlaylistOptions
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `autoContinue` **[boolean][372]?** Determines whether to continue to the next item automatically.
--   `loop` **[boolean][372]?** Determines whether to play the playlist in a loop. When selected, the playlist will play automatically even if autoContinue is set to false.
+- `autoContinue` **[boolean][386]?** Determines whether to continue to the next item automatically.
+- `loop` **[boolean][386]?** Determines whether to play the playlist in a loop. When selected, the playlist will play automatically even if autoContinue is set to false.
 
 ## KPPlaylistCountdownOptions
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `timeToShow` **[number][374]?** Shows when the countdown is scheduled to appear (by default, this is towards the end).
--   `duration` **[number][374]?** Shows for how long the countdown will appear.
--   `showing` **[boolean][372]?** Determines whether to show the countdown.
+- `timeToShow` **[number][388]?** Shows when the countdown is scheduled to appear (by default, this is towards the end).
+- `duration` **[number][388]?** Shows for how long the countdown will appear.
+- `showing` **[boolean][386]?** Determines whether to show the countdown.
 
 ## KPPlaylistConfigObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `options` **[KPPlaylistOptions][378]** Sets the playlist options.
--   `countdown` **[KPPlaylistCountdownOptions][379]** Configures the playlist countdown.
--   `items` **[Array][370]&lt;[PlaylistItem][380]>** Lists the available playlist items.
+- `options` **[KPPlaylistOptions][392]** Sets the playlist options.
+- `countdown` **[KPPlaylistCountdownOptions][393]** Configures the playlist countdown.
+- `items` **[Array][384]&lt;[PlaylistItem][394]>** Lists the available playlist items.
 
 ## KPPlaylistObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `id` **[string][371]** This is playlist's ID.
--   `metadata` **ProviderPlaylistMetadataObject** This is the playlist metadata.
--   `options` **[KPPlaylistOptions][378]** These are the playlist options.
--   `countdown` **[KPPlaylistCountdownOptions][379]** This is the playlist countdown configuration.
--   `items` **[Array][370]&lt;[PlaylistItem][380]>** These are the playlist items.
+- `id` **[string][385]** This is playlist's ID.
+- `metadata` **ProviderPlaylistMetadataObject** This is the playlist metadata.
+- `options` **[KPPlaylistOptions][392]** These are the playlist options.
+- `countdown` **[KPPlaylistCountdownOptions][393]** This is the playlist countdown configuration.
+- `items` **[Array][384]&lt;[PlaylistItem][394]>** These are the playlist items.
 
 ## KPPlaylistItemConfigObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Properties
 
--   `countdown` **[KPPlaylistCountdownOptions][379]?** Countdown options
+- `countdown` **[KPPlaylistCountdownOptions][393]?** Countdown options
 
 ## KPPluginsConfigObject
 
-Type: [Object][369]
+Type: [Object][383]
 
 ## AdBreak
 
 ### Parameters
 
--   `options` **PKAdBreakOptions** Ad break data options.
+- `options` **PKAdBreakOptions** Ad break data options.
 
 ### type
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]** Ad break type - pre/mid/post.
+Returns **[string][385]** Ad break type - pre/mid/post.
 
 ### position
 
-Type: [number][374]?
+Type: [number][388]?
 
-Returns **[string][371]** Ad break position on the playback timeline.
+Returns **[string][385]** Ad break position on the playback timeline.
 
 ### numAds
 
-Type: [number][374]?
+Type: [number][388]?
 
-Returns **[string][371]** The number of ads inside the ad break.
+Returns **[string][385]** The number of ads inside the ad break.
 
 ## Ad
 
 ### Parameters
 
--   `id` **[string][371]** Ad ID.
--   `options` **PKAdOptions** Ad data options.
+- `id` **[string][385]** Ad ID.
+- `options` **PKAdOptions** Ad data options.
 
 ### id
 
-Type: [string][371]
+Type: [string][385]
 
-Returns **[string][371]** Ad ID.
+Returns **[string][385]** Ad ID.
 
 ### system
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]?** Ad system.
+Returns **[string][385]?** Ad system.
 
 ### contentType
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]** Ad content type.
+Returns **[string][385]** Ad content type.
 
 ### url
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]** Ad URL.
+Returns **[string][385]** Ad URL.
 
 ### title
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]** Ad title.
+Returns **[string][385]** Ad title.
 
 ### position
 
-Type: [number][374]?
+Type: [number][388]?
 
-Returns **[string][371]** Ad position inside the ad break.
+Returns **[string][385]** Ad position inside the ad break.
 
 ### duration
 
-Type: [number][374]?
+Type: [number][388]?
 
-Returns **[string][371]** Ad duration.
+Returns **[string][385]** Ad duration.
 
 ### clickThroughUrl
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]** Ad click through URL.
+Returns **[string][385]** Ad click through URL.
 
 ### posterUrl
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]** Ad poster URL.
+Returns **[string][385]** Ad poster URL.
 
 ### skipOffset
 
-Type: [number][374]?
+Type: [number][388]?
 
-Returns **[string][371]** Ad skip offset.
+Returns **[string][385]** Ad skip offset.
 
 ### linear
 
-Type: [boolean][372]
+Type: [boolean][386]
 
-Returns **[boolean][372]** Whether the ad is linear.
+Returns **[boolean][386]** Whether the ad is linear.
 
 ### width
 
-Type: [number][374]
+Type: [number][388]
 
-Returns **[string][371]** Ad width.
+Returns **[string][385]** Ad width.
 
 ### height
 
-Type: [number][374]
+Type: [number][388]
 
-Returns **[string][371]** Ad height.
+Returns **[string][385]** Ad height.
 
 ### bitrate
 
-Type: [number][374]
+Type: [number][388]
 
-Returns **[string][371]** Ad bitrate.
+Returns **[string][385]** Ad bitrate.
 
 ### bumper
 
-Type: [boolean][372]
+Type: [boolean][386]
 
-Returns **[boolean][372]** Whether the ad is bumper.
+Returns **[boolean][386]** Whether the ad is bumper.
 
 ### skippable
 
-Type: [boolean][372]
+Type: [boolean][386]
 
-Returns **[string][371]** Whether the ad is skippable or not.
+Returns **[string][385]** Whether the ad is skippable or not.
 
 ## BaseRemotePlayer
 
@@ -603,9 +617,9 @@ Remote players should extend this class and implement the needed API.
 
 ### Parameters
 
--   `name` **[string][371]** Remote player name.
--   `config` **[Object][369]** Cast configuration.
--   `remoteControl` **[RemoteControl][381]** Remote control.
+- `name` **[string][385]** Remote player name.
+- `config` **[Object][383]** Cast configuration.
+- `remoteControl` **[RemoteControl][395]** Remote control.
 
 ### loadMedia
 
@@ -613,9 +627,9 @@ Loads a media to the receiver application.
 
 #### Parameters
 
--   `mediaInfo` **[Object][369]** The entry media info.
+- `mediaInfo` **[Object][383]** The entry media info.
 
-Returns **[Promise][382]&lt;void>** Promise to indicate load succeed or failed.
+Returns **[Promise][396]&lt;void>** Promise to indicate load succeed or failed.
 
 ### setMedia
 
@@ -623,21 +637,21 @@ Sets a media to the remote player..
 
 #### Parameters
 
--   `mediaConfig` **[Object][369]** Media configuration to set.
+- `mediaConfig` **[Object][383]** Media configuration to set.
 
-Returns **void** 
+Returns **void**
 
 ### getMediaInfo
 
 Gets the media Info.
 
-Returns **[Object][369]?** The media info.
+Returns **[Object][383]?** The media info.
 
 ### getMediaConfig
 
 Gets the media config.
 
-Returns **[Object][369]?** The media config.
+Returns **[Object][383]?** The media config.
 
 ### configure
 
@@ -645,105 +659,105 @@ Configure the remote player
 
 #### Parameters
 
--   `config` **[Object][369]** Configuration to set. (optional, default `{}`)
+- `config` **[Object][383]** Configuration to set. (optional, default `{}`)
 
-Returns **void** 
+Returns **void**
 
 ### ready
 
 The remote player readiness.
 
-Returns **[Promise][382]&lt;any>** Promise which resolved when the remote player is ready.
+Returns **[Promise][396]&lt;any>** Promise which resolved when the remote player is ready.
 
 ### load
 
 Load the remote player.
 
-Returns **void** 
+Returns **void**
 
 ### play
 
 Play/resume the remote player.
 
-Returns **void** 
+Returns **void**
 
 ### pause
 
 Pause the remote player.
 
-Returns **void** 
+Returns **void**
 
 ### reset
 
 Reset the remote player.
 
-Returns **void** 
+Returns **void**
 
 ### destroy
 
 Destroy the remote player.
 
-Returns **void** 
+Returns **void**
 
 ### isLive
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isLive() // false
+BaseRemotePlayer.prototype.isLive(); // false
 ```
 
-Returns **[boolean][372]** Whether the current playback is a live playback.
+Returns **[boolean][386]** Whether the current playback is a live playback.
 
 ### isDvr
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isDvr() // false
+BaseRemotePlayer.prototype.isDvr(); // false
 ```
 
-Returns **[boolean][372]** Whether the current live playback has DVR window. In case of non-live playback will return false.
+Returns **[boolean][386]** Whether the current live playback has DVR window. In case of non-live playback will return false.
 
 ### seekToLiveEdge
 
 Seeks to the live edge.
 
-Returns **void** 
+Returns **void**
 
 ### getStartTimeOfDvrWindow
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.getStartTimeOfDvrWindow() // 0
+BaseRemotePlayer.prototype.getStartTimeOfDvrWindow(); // 0
 ```
 
-Returns **[number][374]** The start time of the DVR window.
+Returns **[number][388]** The start time of the DVR window.
 
 ### getTracks
 
 #### Parameters
 
--   `type` **[string][371]?** Track type.
+- `type` **[string][385]?** Track type.
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.getTracks() // []
+BaseRemotePlayer.prototype.getTracks(); // []
 ```
 
-Returns **[Array][370]&lt;Track>** The remote player tracks.
+Returns **[Array][384]&lt;Track>** The remote player tracks.
 
 ### getActiveTracks
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.getTracks() // {audio: undefined, video: undefined, text: undefined}
+BaseRemotePlayer.prototype.getTracks(); // {audio: undefined, video: undefined, text: undefined}
 ```
 
-Returns **[Object][369]** The remote player active tracks.
+Returns **[Object][383]** The remote player active tracks.
 
 ### selectTrack
 
@@ -751,31 +765,31 @@ Select a certain track to be active.
 
 #### Parameters
 
--   `track` **Track** The track to activate.
+- `track` **Track** The track to activate.
 
-Returns **void** 
+Returns **void**
 
 ### hideTextTrack
 
 Hides the active text track.
 
-Returns **void** 
+Returns **void**
 
 ### enableAdaptiveBitrate
 
 Enables automatic adaptive bitrate switching.
 
-Returns **void** 
+Returns **void**
 
 ### isAdaptiveBitrateEnabled
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isAdaptiveBitrateEnabled() // true
+BaseRemotePlayer.prototype.isAdaptiveBitrateEnabled(); // true
 ```
 
-Returns **[boolean][372]** Whether adaptive bitrate is enabled.
+Returns **[boolean][386]** Whether adaptive bitrate is enabled.
 
 ### setTextDisplaySettings
 
@@ -783,41 +797,41 @@ Sets the text display settings.
 
 #### Parameters
 
--   `settings` **[Object][369]** Text settings.
+- `settings` **[Object][383]** Text settings.
 
-Returns **void** 
+Returns **void**
 
 ### startCasting
 
 Start casting.
 
-Returns **[Promise][382]&lt;any>** A promise to indicate session is starting, or failed
+Returns **[Promise][396]&lt;any>** A promise to indicate session is starting, or failed
 
 ### stopCasting
 
 Stops the current cast session.
 
-Returns **void** 
+Returns **void**
 
 ### isCasting
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isCasting() // true
+BaseRemotePlayer.prototype.isCasting(); // true
 ```
 
-Returns **[boolean][372]** Whether casting is currently active.
+Returns **[boolean][386]** Whether casting is currently active.
 
 ### isCastAvailable
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isCastAvailable() // true
+BaseRemotePlayer.prototype.isCastAvailable(); // true
 ```
 
-Returns **[boolean][372]** Whether casting is available.
+Returns **[boolean][386]** Whether casting is available.
 
 ### getCastSession
 
@@ -826,50 +840,50 @@ Gets the current remote session.
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.getCastSession() // new RemoteSession('', '')
+BaseRemotePlayer.prototype.getCastSession(); // new RemoteSession('', '')
 ```
 
-Returns **[RemoteSession][383]** The remote session.
+Returns **[RemoteSession][397]** The remote session.
 
 ### isVr
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isVr() // false
+BaseRemotePlayer.prototype.isVr(); // false
 ```
 
-Returns **[boolean][372]** Whether the current media is of VR type (360 content).
+Returns **[boolean][386]** Whether the current media is of VR type (360 content).
 
 ### toggleVrStereoMode
 
 Toggles VR mode on the current content.
 
-Returns **void** 
+Returns **void**
 
 ### isInVrStereoMode
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.isInVrStereoMode() // false
+BaseRemotePlayer.prototype.isInVrStereoMode(); // false
 ```
 
-Returns **[boolean][372]** Whether the current content displayed in VR mode.
+Returns **[boolean][386]** Whether the current content displayed in VR mode.
 
 ### ads
 
 The remote player ads controller.
 
-Type: [Object][369]?
+Type: [Object][383]?
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.ads // null
+BaseRemotePlayer.prototype.ads; // null
 ```
 
-Returns **[Object][369]?** 
+Returns **[Object][383]?**
 
 ### textStyle
 
@@ -879,9 +893,9 @@ Type: TextStyle
 
 #### Parameters
 
--   `style` **TextStyle** The text style to set.
+- `style` **TextStyle** The text style to set.
 
-Returns **void** 
+Returns **void**
 
 ### textStyle
 
@@ -892,7 +906,7 @@ Type: TextStyle
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.textStyle // new TextStyle()
+BaseRemotePlayer.prototype.textStyle; // new TextStyle()
 ```
 
 Returns **TextStyle** The current text style.
@@ -901,229 +915,229 @@ Returns **TextStyle** The current text style.
 
 Gets the first buffered range of the remote player.
 
-Type: [Array][370]&lt;any>
+Type: [Array][384]&lt;any>
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.buffered // []
+BaseRemotePlayer.prototype.buffered; // []
 ```
 
-Returns **[Array][370]&lt;any>** First buffered range in seconds.
+Returns **[Array][384]&lt;any>** First buffered range in seconds.
 
 ### currentTime
 
 Setter.
 
-Type: [number][374]
+Type: [number][388]
 
 #### Parameters
 
--   `to` **[number][374]** The number to set in seconds.
+- `to` **[number][388]** The number to set in seconds.
 
-Returns **void** 
+Returns **void**
 
 ### currentTime
 
 Getter.
 
-Type: [number][374]
+Type: [number][388]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.currentTime // 0
+BaseRemotePlayer.prototype.currentTime; // 0
 ```
 
-Returns **[number][374]** The current time in seconds.
+Returns **[number][388]** The current time in seconds.
 
 ### duration
 
-Type: [number][374]
+Type: [number][388]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.duration // 0
+BaseRemotePlayer.prototype.duration; // 0
 ```
 
-Returns **[number][374]** The duration in seconds.
+Returns **[number][388]** The duration in seconds.
 
 ### volume
 
 Setter.
 
-Type: [number][374]
+Type: [number][388]
 
 #### Parameters
 
--   `vol` **[number][374]** The volume to set in the range of 0-1.
+- `vol` **[number][388]** The volume to set in the range of 0-1.
 
-Returns **void** 
+Returns **void**
 
 ### volume
 
 Getter.
 
-Type: [number][374]
+Type: [number][388]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.volume // 1
+BaseRemotePlayer.prototype.volume; // 1
 ```
 
-Returns **[number][374]** The current volume in the range of 0-1.
+Returns **[number][388]** The current volume in the range of 0-1.
 
 ### paused
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.paused // false
+BaseRemotePlayer.prototype.paused; // false
 ```
 
-Returns **[boolean][372]** Whether the cast player is in paused state.
+Returns **[boolean][386]** Whether the cast player is in paused state.
 
 ### ended
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.ended // false
+BaseRemotePlayer.prototype.ended; // false
 ```
 
-Returns **[boolean][372]** Whether the cast player is in ended state.
+Returns **[boolean][386]** Whether the cast player is in ended state.
 
 ### seeking
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.seeking // false
+BaseRemotePlayer.prototype.seeking; // false
 ```
 
-Returns **[boolean][372]** Whether the cast player is in seeking state.
+Returns **[boolean][386]** Whether the cast player is in seeking state.
 
 ### muted
 
 Setter.
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 #### Parameters
 
--   `mute` **[boolean][372]** The mute value to set.
+- `mute` **[boolean][386]** The mute value to set.
 
-Returns **void** 
+Returns **void**
 
 ### muted
 
 Getter.
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.muted // false
+BaseRemotePlayer.prototype.muted; // false
 ```
 
-Returns **[boolean][372]** The muted state.
+Returns **[boolean][386]** The muted state.
 
 ### src
 
-Type: [string][371]
+Type: [string][385]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.src // ''
+BaseRemotePlayer.prototype.src; // ''
 ```
 
-Returns **[string][371]** The current playing source url.
+Returns **[string][385]** The current playing source url.
 
 ### poster
 
-Type: [string][371]
+Type: [string][385]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.poster // ''
+BaseRemotePlayer.prototype.poster; // ''
 ```
 
-Returns **[string][371]** The current poster url.
+Returns **[string][385]** The current poster url.
 
 ### playbackRate
 
 Setter.
 
-Type: [number][374]
+Type: [number][388]
 
 #### Parameters
 
--   `rate` **[number][374]** The playback rate to set.
+- `rate` **[number][388]** The playback rate to set.
 
-Returns **void** 
+Returns **void**
 
 ### playbackRate
 
-Type: [number][374]
+Type: [number][388]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.playbackRate // 1
+BaseRemotePlayer.prototype.playbackRate; // 1
 ```
 
-Returns **[string][371]** The current playback rate.
+Returns **[string][385]** The current playback rate.
 
 ### engineType
 
-Type: [string][371]
+Type: [string][385]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.engineType // ''
+BaseRemotePlayer.prototype.engineType; // ''
 ```
 
-Returns **[string][371]** The active engine type.
+Returns **[string][385]** The active engine type.
 
 ### streamType
 
-Type: [string][371]
+Type: [string][385]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.streamType // ''
+BaseRemotePlayer.prototype.streamType; // ''
 ```
 
-Returns **[string][371]** The active stream type.
+Returns **[string][385]** The active stream type.
 
 ### type
 
-Type: [string][371]
+Type: [string][385]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.prototype.type // BaseRemotePlayer.Type
+BaseRemotePlayer.prototype.type; // BaseRemotePlayer.Type
 ```
 
-Returns **[string][371]** The remote player type.
+Returns **[string][385]** The remote player type.
 
 ### config
 
-Type: [Object][369]
+Type: [Object][383]
 
 Returns **KPOptionsObject** The runtime remote player config.
 
@@ -1131,24 +1145,24 @@ Returns **KPOptionsObject** The runtime remote player config.
 
 Default configuration of the remote player.
 
-Type: [Object][369]
+Type: [Object][383]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.defaultConfig // {}
+BaseRemotePlayer.defaultConfig; // {}
 ```
 
 ### Type
 
 Remote player type.
 
-Type: [string][371]
+Type: [string][385]
 
 #### Examples
 
 ```javascript
-BaseRemotePlayer.Type // 'BaseRemotePlayer'
+BaseRemotePlayer.Type; // 'BaseRemotePlayer'
 ```
 
 ### isSupported
@@ -1156,14 +1170,14 @@ BaseRemotePlayer.Type // 'BaseRemotePlayer'
 #### Examples
 
 ```javascript
-BaseRemotePlayer.isSupported() // true
+BaseRemotePlayer.isSupported(); // true
 ```
 
-Returns **[boolean][372]** Whether the remote player is supported in the current environment.
+Returns **[boolean][386]** Whether the remote player is supported in the current environment.
 
 ## CastEventType
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Examples
 
@@ -1187,7 +1201,7 @@ player.addEventListener(KalturaPlayer.cast.CastEventType.CAST_SESSION_STARTED, e
 
 ### Parameters
 
--   `player` **KalturaPlayer**  The Kaltura player.
+- `player` **KalturaPlayer** The Kaltura player.
 
 ### textStyle
 
@@ -1195,31 +1209,31 @@ Type: TextStyle
 
 ### advertising
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### config
 
-Type: [Object][369]
+Type: [Object][383]
 
 ## RemoteControl
 
 ### Parameters
 
--   `player` **KalturaPlayer** The Kaltura player.
+- `player` **KalturaPlayer** The Kaltura player.
 
 ### getPlayerSnapshot
 
 Gets the player snapshot.
 
-Type: [Function][384]
+Type: [Function][398]
 
-Returns **[PlayerSnapshot][385]** player snapshot.
+Returns **[PlayerSnapshot][399]** player snapshot.
 
 ### getUIWrapper
 
 Gets the UI wrapper.
 
-Type: [Function][384]
+Type: [Function][398]
 
 Returns **UIWrapper** The UI wrapper.
 
@@ -1227,75 +1241,75 @@ Returns **UIWrapper** The UI wrapper.
 
 On remote device disconnected handler.
 
-Type: [Function][384]
+Type: [Function][398]
 
 #### Parameters
 
--   `payload` **[RemoteDisconnectedPayload][386]** disconnected payload.
+- `payload` **[RemoteDisconnectedPayload][400]** disconnected payload.
 
-Returns **void** 
+Returns **void**
 
 ### onRemoteDeviceConnected
 
 On remote device connected handler.
 
-Type: [Function][384]
+Type: [Function][398]
 
 #### Parameters
 
--   `payload` **[RemoteConnectedPayload][387]** connected payload.
+- `payload` **[RemoteConnectedPayload][401]** connected payload.
 
-Returns **void** 
+Returns **void**
 
 ### onRemoteDeviceAvailable
 
 On remote device available handler.
 
-Type: [Function][384]
+Type: [Function][398]
 
 #### Parameters
 
--   `payload` **[RemoteAvailablePayload][388]** available payload.
+- `payload` **[RemoteAvailablePayload][402]** available payload.
 
-Returns **void** 
+Returns **void**
 
 ### onRemoteDeviceConnecting
 
 On remote device connecting handler.
 
-Type: [Function][384]
+Type: [Function][398]
 
-Returns **void** 
+Returns **void**
 
 ### onRemoteDeviceDisconnecting
 
 On remote device disconnecting handler.
 
-Type: [Function][384]
+Type: [Function][398]
 
-Returns **void** 
+Returns **void**
 
 ### onRemoteDeviceConnectFailed
 
 On remote device connect failed handler.
 
-Type: [Function][384]
+Type: [Function][398]
 
-Returns **void** 
+Returns **void**
 
 ## RemotePayload
 
 ### Parameters
 
--   `player` **[BaseRemotePlayer][389]** The active remote player.
+- `player` **[BaseRemotePlayer][403]** The active remote player.
 
 ### player
 
 The active remote player.
 
-Type: [BaseRemotePlayer][389]
+Type: [BaseRemotePlayer][403]
 
-Returns **[BaseRemotePlayer][389]** 
+Returns **[BaseRemotePlayer][403]**
 
 ## RemoteConnectedPayload
 
@@ -1303,25 +1317,25 @@ Returns **[BaseRemotePlayer][389]**
 
 ### Parameters
 
--   `player` **[BaseRemotePlayer][389]** The active remote player.
--   `session` **[RemoteSession][383]** The remote session.
--   `ui` **[RemotePlayerUI][390]?** Optional remote player UI preset.
+- `player` **[BaseRemotePlayer][403]** The active remote player.
+- `session` **[RemoteSession][397]** The remote session.
+- `ui` **[RemotePlayerUI][404]?** Optional remote player UI preset.
 
 ### ui
 
 Remote player UI preset.
 
-Type: [RemotePlayerUI][390]?
+Type: [RemotePlayerUI][404]?
 
-Returns **[RemotePlayerUI][390]?** 
+Returns **[RemotePlayerUI][404]?**
 
 ### session
 
 Remote session.
 
-Type: [RemoteSession][383]
+Type: [RemoteSession][397]
 
-Returns **[RemoteSession][383]?** 
+Returns **[RemoteSession][397]?**
 
 ## RemoteDisconnectedPayload
 
@@ -1329,16 +1343,16 @@ Returns **[RemoteSession][383]?**
 
 ### Parameters
 
--   `player` **[BaseRemotePlayer][389]** The active remote player.
--   `snapshot` **[PlayerSnapshot][385]** The remote player snapshot.
+- `player` **[BaseRemotePlayer][403]** The active remote player.
+- `snapshot` **[PlayerSnapshot][399]** The remote player snapshot.
 
 ### snapshot
 
 Remote player snapshot.
 
-Type: [PlayerSnapshot][385]
+Type: [PlayerSnapshot][399]
 
-Returns **[PlayerSnapshot][385]** 
+Returns **[PlayerSnapshot][399]**
 
 ## RemoteAvailablePayload
 
@@ -1346,16 +1360,16 @@ Returns **[PlayerSnapshot][385]**
 
 ### Parameters
 
--   `player` **[BaseRemotePlayer][389]** The active remote player.
--   `available` **[boolean][372]** Remote player availability.
+- `player` **[BaseRemotePlayer][403]** The active remote player.
+- `available` **[boolean][386]** Remote player availability.
 
 ### available
 
 Remote player availability.
 
-Type: [boolean][372]
+Type: [boolean][386]
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ## RemotePlayerUI
 
@@ -1365,9 +1379,9 @@ Playback UI of the remote player.
 
 #### Parameters
 
--   `props` **[Object][369]** UI creation parameters.
+- `props` **[Object][383]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### idleUI
 
@@ -1375,9 +1389,9 @@ Idle UI of the remote player.
 
 #### Parameters
 
--   `props` **[Object][369]** UI creation parameters.
+- `props` **[Object][383]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### adsUI
 
@@ -1385,9 +1399,9 @@ Idle UI of the remote player.
 
 #### Parameters
 
--   `props` **[Object][369]** UI creation parameters.
+- `props` **[Object][383]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### liveUI
 
@@ -1395,9 +1409,9 @@ Live UI of the remote player.
 
 #### Parameters
 
--   `props` **[Object][369]** UI creation parameters.
+- `props` **[Object][383]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### errorUI
 
@@ -1405,17 +1419,17 @@ Error UI of the remote player.
 
 #### Parameters
 
--   `props` **[Object][369]** UI creation parameters.
+- `props` **[Object][383]** UI creation parameters.
 
-Returns **React$Element&lt;any>** Component.
+Returns **React\$Element&lt;any>** Component.
 
 ### uis
 
 UI presets.
 
-Type: [Array][370]&lt;UIPreset>
+Type: [Array][384]&lt;UIPreset>
 
-Returns **[Array][370]&lt;UIPreset>** 
+Returns **[Array][384]&lt;UIPreset>**
 
 ## IRemotePlayer
 
@@ -1425,63 +1439,63 @@ Type: TextStyle
 
 ### muted
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 ### playbackRate
 
-Type: [number][374]
+Type: [number][388]
 
 ### volume
 
-Type: [number][374]
+Type: [number][388]
 
 ### currentTime
 
-Type: [number][374]
+Type: [number][388]
 
 ### buffered
 
-Type: [number][374]
+Type: [number][388]
 
 ### duration
 
-Type: [number][374]
+Type: [number][388]
 
 ### paused
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 ### ended
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 ### seeking
 
-Type: [boolean][372]
+Type: [boolean][386]
 
 ### src
 
-Type: [string][371]
+Type: [string][385]
 
 ### poster
 
-Type: [string][371]
+Type: [string][385]
 
 ### engineType
 
-Type: [string][371]
+Type: [string][385]
 
 ### streamType
 
-Type: [string][371]
+Type: [string][385]
 
 ### type
 
-Type: [string][371]
+Type: [string][385]
 
 ### ads
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### config
 
@@ -1491,238 +1505,238 @@ Type: KPOptionsObject
 
 #### Parameters
 
--   `type` **[string][371]** 
--   `listener` **[Function][384]** 
+- `type` **[string][385]**
+- `listener` **[Function][398]**
 
-Returns **void** 
+Returns **void**
 
 ### removeEventListener
 
 #### Parameters
 
--   `type` **[string][371]** 
--   `listener` **[Function][384]** 
+- `type` **[string][385]**
+- `listener` **[Function][398]**
 
-Returns **void** 
+Returns **void**
 
 ### dispatchEvent
 
 #### Parameters
 
--   `event` **FakeEvent** 
+- `event` **FakeEvent**
 
-Returns **void** 
+Returns **void**
 
 ### loadMedia
 
 #### Parameters
 
--   `mediaInfo` **[Object][369]** 
+- `mediaInfo` **[Object][383]**
 
-Returns **[Promise][382]&lt;any>** 
+Returns **[Promise][396]&lt;any>**
 
 ### setMedia
 
 #### Parameters
 
--   `mediaConfig` **[Object][369]** 
+- `mediaConfig` **[Object][383]**
 
-Returns **void** 
+Returns **void**
 
 ### getMediaInfo
 
-Returns **[Object][369]** 
+Returns **[Object][383]**
 
 ### getMediaConfig
 
-Returns **[Object][369]** 
+Returns **[Object][383]**
 
 ### configure
 
 #### Parameters
 
--   `config` **[Object][369]** 
+- `config` **[Object][383]**
 
-Returns **void** 
+Returns **void**
 
 ### ready
 
-Returns **[Promise][382]&lt;any>** 
+Returns **[Promise][396]&lt;any>**
 
 ### load
 
-Returns **void** 
+Returns **void**
 
 ### play
 
-Returns **void** 
+Returns **void**
 
 ### pause
 
-Returns **void** 
+Returns **void**
 
 ### reset
 
-Returns **void** 
+Returns **void**
 
 ### destroy
 
-Returns **void** 
+Returns **void**
 
 ### isLive
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ### isDvr
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ### seekToLiveEdge
 
-Returns **void** 
+Returns **void**
 
 ### getStartTimeOfDvrWindow
 
-Returns **[number][374]** 
+Returns **[number][388]**
 
 ### getTracks
 
 #### Parameters
 
--   `type` **[string][371]?** 
+- `type` **[string][385]?**
 
-Returns **[Array][370]&lt;Track>** 
+Returns **[Array][384]&lt;Track>**
 
 ### getActiveTracks
 
-Returns **[Object][369]** 
+Returns **[Object][383]**
 
 ### selectTrack
 
 #### Parameters
 
--   `track` **Track** 
+- `track` **Track**
 
-Returns **void** 
+Returns **void**
 
 ### hideTextTrack
 
-Returns **void** 
+Returns **void**
 
 ### enableAdaptiveBitrate
 
-Returns **void** 
+Returns **void**
 
 ### isAdaptiveBitrateEnabled
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ### setTextDisplaySettings
 
 #### Parameters
 
--   `settings` **[Object][369]** 
+- `settings` **[Object][383]**
 
-Returns **void** 
+Returns **void**
 
 ### startCasting
 
-Returns **void** 
+Returns **void**
 
 ### stopCasting
 
-Returns **void** 
+Returns **void**
 
 ### isCasting
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ### isCastAvailable
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ### getCastSession
 
-Returns **[RemoteSession][383]** 
+Returns **[RemoteSession][397]**
 
 ### isVr
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ### toggleVrStereoMode
 
-Returns **void** 
+Returns **void**
 
 ### isInVrStereoMode
 
-Returns **[boolean][372]** 
+Returns **[boolean][386]**
 
 ## RemoteSession
 
 ### Parameters
 
--   `id` **[string][371]** Session ID.
--   `friendlyName` **[string][371]** Receiver friendly name.
--   `resuming` **[boolean][372]?** Whether the session is resuming.
+- `id` **[string][385]** Session ID.
+- `friendlyName` **[string][385]** Receiver friendly name.
+- `resuming` **[boolean][386]?** Whether the session is resuming.
 
 ### deviceFriendlyName
 
 Receiver friendly name.
 
-Type: [string][371]
+Type: [string][385]
 
-Returns **[string][371]** 
+Returns **[string][385]**
 
 ### id
 
 Session ID.
 
-Type: [string][371]
+Type: [string][385]
 
-Returns **[string][371]** 
+Returns **[string][385]**
 
 ### resuming
 
 Whether the session is resuming.
 
-Type: [boolean][372]?
+Type: [boolean][386]?
 
-Returns **[boolean][372]?** 
+Returns **[boolean][386]?**
 
 ## AdsController
 
 ### Parameters
 
--   `player` **Player** The player.
--   `adsPluginController` **IAdsController** The controller of the current ads plugin instance.
+- `player` **Player** The player.
+- `adsPluginController` **IAdsController** The controller of the current ads plugin instance.
 
 ### allAdsCompleted
 
-Type: [boolean][372]
+Type: [boolean][386]
 
-Returns **[boolean][372]** Whether all ads completed.
+Returns **[boolean][386]** Whether all ads completed.
 
 ### isAdBreak
 
-Returns **[boolean][372]** Whether we're in an ad break.
+Returns **[boolean][386]** Whether we're in an ad break.
 
 ### getAdBreaksLayout
 
-Returns **[Array][370]&lt;([number][374] \| [string][371])>** The ad breaks layout (cue points).
+Returns **[Array][384]&lt;([number][388] \| [string][385])>** The ad breaks layout (cue points).
 
 ### getAdBreak
 
-Returns **[AdBreak][391]?** Gets the current ad break data.
+Returns **[AdBreak][405]?** Gets the current ad break data.
 
 ### getAd
 
-Returns **[Ad][392]?** Gets the current ad data.
+Returns **[Ad][406]?** Gets the current ad data.
 
 ### skipAd
 
 Skip on an ad.
 
-Returns **void** 
+Returns **void**
 
 ### playAdNow
 
@@ -1730,9 +1744,9 @@ Play an ad on demand.
 
 #### Parameters
 
--   `adPod` **[KPAdPod][375]** The ad pod play.
+- `adPod` **[KPAdPod][389]** The ad pod play.
 
-Returns **void** 
+Returns **void**
 
 ## ControllerProvider
 
@@ -1740,17 +1754,17 @@ Controller provider
 
 ### Parameters
 
--   `pluginManager` **[PluginManager][393]** the plugin manager
+- `pluginManager` **[PluginManager][407]** the plugin manager
 
 ### getAdsControllers
 
 Get the ads controller of the all ads plugins.
 
-Returns **[Array][370]&lt;IAdsPluginController>** the ads controllers.
+Returns **[Array][384]&lt;IAdsPluginController>** the ads controllers.
 
 ## PlaylistEventType
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### Examples
 
@@ -1772,8 +1786,8 @@ player.addEventListener(KalturaPlayer.playlist.PlaylistEventType.PLAYLIST_LOADED
 
 ### Parameters
 
--   `sources` **ProviderMediaConfigSourcesObject?** The item sources
--   `config` **[KPPlaylistItemConfigObject][394]?** The item config
+- `sources` **PKSourcesConfigObject?** The item sources
+- `config` **[KPPlaylistItemConfigObject][408]?** The item config
 
 ### updateSources
 
@@ -1781,36 +1795,54 @@ Update the playlist item sources
 
 #### Parameters
 
--   `sourcesObject` **ProviderMediaConfigSourcesObject** The sources
+- `sourcesObject` **PKSourcesConfigObject** The sources
 
-Returns **void** 
+Returns **void**
+
+### updatePlugins
+
+Update the playlist item plugins (e.g. bumper from BE)
+
+#### Parameters
+
+- `pluginsObject` **[KPPluginsConfigObject][409]** The plugins
+
+Returns **void**
 
 ### sources
 
 Playlist item sources
 
-Type: ProviderMediaConfigSourcesObject?
+Type: PKSourcesConfigObject?
 
-Returns **ProviderMediaConfigSourcesObject?** 
+Returns **PKSourcesConfigObject?**
 
 ### config
 
 Playlist item config
 
-Type: [KPPlaylistItemConfigObject][394]?
+Type: [KPPlaylistItemConfigObject][408]?
 
-Returns **[KPPlaylistItemConfigObject][394]?** 
+Returns **[KPPlaylistItemConfigObject][408]?**
+
+### plugins
+
+Playlist item plugins
+
+Type: [KPPluginsConfigObject][409]
+
+Returns **[KPPluginsConfigObject][409]**
 
 ### isPlayable
 
-Returns **[boolean][372]** = Whether the playlist item has sources to play
+Returns **[boolean][386]** = Whether the playlist item has sources to play
 
 ## PlaylistManager
 
 ### Parameters
 
--   `player` **KalturaPlayer** The player instance
--   `options` **KPOptionsObject** The player config object
+- `player` **KalturaPlayer** The player instance
+- `options` **KPOptionsObject** The player config object
 
 ### configure
 
@@ -1818,10 +1850,10 @@ Config the playlist
 
 #### Parameters
 
--   `config` **[KPPlaylistObject][395]?** The playlist config
--   `entryList` **ProviderEntryListObject?** Entry list
+- `config` **[KPPlaylistObject][410]?** The playlist config
+- `entryList` **ProviderEntryListObject?** Entry list
 
-Returns **void** 
+Returns **void**
 
 ### load
 
@@ -1829,29 +1861,29 @@ Load a playlist
 
 #### Parameters
 
--   `playlistData` **[KPPlaylistObject][395]** The playlist data
--   `playlistConfig` **[KPPlaylistConfigObject][396]?** The playlist config
--   `entryList` **ProviderEntryListObject?** Entry list
+- `playlistData` **[KPPlaylistObject][410]** The playlist data
+- `playlistConfig` **[KPPlaylistConfigObject][411]?** The playlist config
+- `entryList` **ProviderEntryListObject?** Entry list
 
-Returns **void** 
+Returns **void**
 
 ### reset
 
 Reset the playlist
 
-Returns **void** 
+Returns **void**
 
 ### playNext
 
 Play the next item
 
-Returns **void** 
+Returns **void**
 
 ### playPrev
 
 Play the previous item
 
-Returns **void** 
+Returns **void**
 
 ### playItem
 
@@ -1859,41 +1891,41 @@ Play a specific item
 
 #### Parameters
 
--   `index` **[number][374]** The index of the item to play
+- `index` **[number][388]** The index of the item to play
 
-Returns **void** 
+Returns **void**
 
 ### items
 
 Playlist items
 
-Type: [Array][370]&lt;[PlaylistItem][380]>
+Type: [Array][384]&lt;[PlaylistItem][394]>
 
-Returns **[Array][370]&lt;[PlaylistItem][380]>** 
+Returns **[Array][384]&lt;[PlaylistItem][394]>**
 
 ### next
 
 Next item
 
-Type: [PlaylistItem][380]?
+Type: [PlaylistItem][394]?
 
-Returns **[PlaylistItem][380]?** 
+Returns **[PlaylistItem][394]?**
 
 ### prev
 
 Previous item
 
-Type: [PlaylistItem][380]?
+Type: [PlaylistItem][394]?
 
-Returns **[PlaylistItem][380]?** 
+Returns **[PlaylistItem][394]?**
 
 ### id
 
 Playlist id
 
-Type: [string][371]
+Type: [string][385]
 
-Returns **[string][371]** 
+Returns **[string][385]**
 
 ### metadata
 
@@ -1901,31 +1933,31 @@ Playlist metadata
 
 Type: ProviderPlaylistMetadataObject
 
-Returns **ProviderPlaylistMetadataObject** 
+Returns **ProviderPlaylistMetadataObject**
 
 ### poster
 
 Playlist poster
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]?** 
+Returns **[string][385]?**
 
 ### countdown
 
 Playlist countdown
 
-Type: [KPPlaylistCountdownOptions][379]
+Type: [KPPlaylistCountdownOptions][393]
 
-Returns **[KPPlaylistCountdownOptions][379]** 
+Returns **[KPPlaylistCountdownOptions][393]**
 
 ### options
 
 Playlist options
 
-Type: [KPPlaylistOptions][378]
+Type: [KPPlaylistOptions][392]
 
-Returns **[KPPlaylistOptions][378]** 
+Returns **[KPPlaylistOptions][392]**
 
 ## BasePlugin
 
@@ -1935,33 +1967,33 @@ Other plugins should extend this class.
 
 ### Parameters
 
--   `name` **[string][371]** The plugin name
--   `player` **[Object][369]** The player reference
--   `config` **[Object][369]** The plugin configuration
+- `name` **[string][385]** The plugin name
+- `player` **[Object][383]** The player reference
+- `config` **[Object][383]** The plugin configuration
 
 ### config
 
 The runtime configuration of the plugin.
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### name
 
 The name of the plugin.
 
-Type: [string][371]
+Type: [string][385]
 
 ### player
 
 The logger of the plugin.
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### player
 
 Reference to the actual player.
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### eventManager
 
@@ -1975,7 +2007,7 @@ Getter for the configuration of the plugin.
 
 #### Parameters
 
--   `attr` **[string][371]** The key in the plugin configuration (optional).
+- `attr` **[string][385]** The key in the plugin configuration (optional).
 
 Returns **any** If attribute is provided, returns its value. Else, Returns the config of the plugin.
 
@@ -1983,9 +2015,9 @@ Returns **any** If attribute is provided, returns its value. Else, Returns the c
 
 Getter for the ready promise of the plugin.
 
-Type: [Promise][382]&lt;any>
+Type: [Promise][396]&lt;any>
 
-Returns **[Promise][382]&lt;any>** returns a resolved promise unless the plugin overrides this ready getter.
+Returns **[Promise][396]&lt;any>** returns a resolved promise unless the plugin overrides this ready getter.
 
 ### updateConfig
 
@@ -1993,36 +2025,36 @@ Updates the config of the plugin.
 
 #### Parameters
 
--   `update` **[Object][369]** The updated configuration.
+- `update` **[Object][383]** The updated configuration.
 
-Returns **void** 
+Returns **void**
 
 ### loadMedia
 
 Runs the loadMedia logic of the plugin.
 plugin must implement this method.
 
-Returns **void** 
+Returns **void**
 
 ### destroy
 
 Runs the destroy logic of the plugin.
 plugin must implement this method.
 
-Returns **void** 
+Returns **void**
 
 ### reset
 
 Runs the reset logic of the plugin.
 plugin must implement this method.
 
-Returns **void** 
+Returns **void**
 
 ### getName
 
 Getter for the plugin's name.
 
-Returns **[string][371]** The name of the plugin.
+Returns **[string][385]** The name of the plugin.
 
 ### dispatchEvent
 
@@ -2030,17 +2062,17 @@ Dispatch an event via the plugin.
 
 #### Parameters
 
--   `name` **[string][371]** The event name.
--   `payload` **any** The event payload.
+- `name` **[string][385]** The event name.
+- `payload` **any** The event payload.
 
-Returns **void** 
+Returns **void**
 
 ### defaultConfig
 
 The default configuration of the plugin.
 Inherited plugins should override this property.
 
-Type: [Object][369]
+Type: [Object][383]
 
 ### createPlugin
 
@@ -2048,18 +2080,18 @@ Factory method to create the actual plugin.
 
 #### Parameters
 
--   `name` **[string][371]** The plugin name
--   `player` **[Object][369]** The player reference
--   `config` **[Object][369]** The plugin configuration (optional, default `{}`)
+- `name` **[string][385]** The plugin name
+- `player` **[Object][383]** The player reference
+- `config` **[Object][383]** The plugin configuration (optional, default `{}`)
 
-Returns **[BasePlugin][397]** New runtime plugin instance
+Returns **[BasePlugin][412]** New runtime plugin instance
 
 ### isValid
 
 Returns under what conditions the plugin is valid.
 Plugin must implement this method.
 
-Returns **[boolean][372]** Whether the plugin is valid and can be initiated. Default implementation is true
+Returns **[boolean][386]** Whether the plugin is valid and can be initiated. Default implementation is true
 
 ## PluginManager
 
@@ -2071,29 +2103,29 @@ Creates and store new instance of the plugin in case isValid() of the plugin ret
 
 #### Parameters
 
--   `name` **[string][371]** The plugin name
--   `player` **[Object][369]** The player reference
--   `config` **[Object][369]** The plugin configuration (optional, default `{}`)
+- `name` **[string][385]** The plugin name
+- `player` **[Object][383]** The player reference
+- `config` **[Object][383]** The plugin configuration (optional, default `{}`)
 
-Returns **[boolean][372]** Whether the plugin load was successful
+Returns **[boolean][386]** Whether the plugin load was successful
 
 ### loadMedia
 
 Iterates over all the plugins and calls loadMedia().
 
-Returns **void** 
+Returns **void**
 
 ### destroy
 
 Iterates over all the plugins and calls destroy().
 
-Returns **void** 
+Returns **void**
 
 ### reset
 
 Iterates over all the plugins and calls reset() method of the plugin's impl.
 
-Returns **void** 
+Returns **void**
 
 ### get
 
@@ -2101,15 +2133,15 @@ Returns the plugin's instance.
 
 #### Parameters
 
--   `name` **[string][371]** The plugin name.
+- `name` **[string][385]** The plugin name.
 
-Returns **[BasePlugin][397]** The plugin instance.
+Returns **[BasePlugin][412]** The plugin instance.
 
 ### getAll
 
 Returns all plugins.
 
-Returns **[Object][369]** All plugins.
+Returns **[Object][383]** All plugins.
 
 ### register
 
@@ -2118,10 +2150,10 @@ Maps: plugin name -> plugin class.
 
 #### Parameters
 
--   `name` **[string][371]** The plugin name
--   `handler` **[Function][384]** The plugin class
+- `name` **[string][385]** The plugin name
+- `handler` **[Function][398]** The plugin class
 
-Returns **[boolean][372]** If the registration request succeeded
+Returns **[boolean][386]** If the registration request succeeded
 
 ### unRegister
 
@@ -2129,15 +2161,15 @@ Removes the plugin from the registry.
 
 #### Parameters
 
--   `name` **[string][371]** The plugin name
+- `name` **[string][385]** The plugin name
 
-Returns **void** 
+Returns **void**
 
 ## registerPlugin
 
 Export the register method.
 
-Type: [function][384]
+Type: [function][398]
 
 ## load
 
@@ -2145,9 +2177,9 @@ Load middleware handler.
 
 ### Parameters
 
--   `next` **[Function][384]** The load handler in the middleware chain.
+- `next` **[Function][398]** The load handler in the middleware chain.
 
-Returns **void** 
+Returns **void**
 
 ## play
 
@@ -2155,9 +2187,9 @@ Play middleware handler.
 
 ### Parameters
 
--   `next` **[Function][384]** The play handler in the middleware chain.
+- `next` **[Function][398]** The play handler in the middleware chain.
 
-Returns **void** 
+Returns **void**
 
 ## constructor
 
@@ -2176,15 +2208,15 @@ an existing token needs to be removed then remove it
 
 ### Parameters
 
--   `pluginsConfig` **dataStoreType?** the new config object
+- `pluginsConfig` **dataStoreType?** the new config object
 
-Returns **void** 
+Returns **void**
 
 ## reset
 
 reset the config store to its initial state
 
-Returns **void** 
+Returns **void**
 
 ## constructor
 
@@ -2194,19 +2226,19 @@ constructor
 
 ### Parameters
 
--   `options` **[KPPluginsConfigObject][398]** plugins options
--   `config` **KPOptionsObject** player config
+- `options` **[KPPluginsConfigObject][409]** plugins options
+- `config` **KPOptionsObject** player config
 
-Returns **void** 
+Returns **void**
 
 ## evaluateUIConfig
 
 ### Parameters
 
--   `options` **KPUIOptionsObject** UI options
--   `config` **KPOptionsObject** player config
+- `options` **KPUIOptionsObject** UI options
+- `config` **KPOptionsObject** player config
 
-Returns **void** 
+Returns **void**
 
 ## maybeSetStreamPriority
 
@@ -2214,10 +2246,10 @@ set stream priority according to playerConfig
 
 ### Parameters
 
--   `player` **Player** player
--   `playerConfig` **PartialKPOptionsObject** player config
+- `player` **Player** player
+- `playerConfig` **PartialKPOptionsObject** player config
 
-Returns **void** 
+Returns **void**
 
 ## hasYoutubeSource
 
@@ -2225,9 +2257,53 @@ returns true if sources contain youtube video source
 
 ### Parameters
 
--   `sources` **PKSourcesConfigObject** thr sources object
+- `sources` **PKSourcesConfigObject** thr sources object
 
-Returns **[boolean][372]** true if sources contain youtube source
+Returns **[boolean][386]** true if sources contain youtube source
+
+## mergeProviderPluginsConfig
+
+Merge the provider plugins config (e.g. bumper) into the app config and returns it and the respective app config to restore in change media
+
+### Parameters
+
+- `providerPluginsConfig` **[KPPluginsConfigObject][409]** the provider plugins config
+- `appPluginsConfig` **KPOptionsObject** the entire app plugins config
+
+Returns **[Array][384]&lt;[KPPluginsConfigObject][409]>** the merged plugins config and the partial respective app plugins config
+
+## ViewabilityManager
+
+A service class to observe viewability of elements in the view port.
+
+### Parameters
+
+- `viewabilityConfig` **[number][388]** the configuration needed to create the manager (optional, default `{}`)
+
+### observe
+
+#### Parameters
+
+- `target` **[HTMLElement][413]** the targeted element to check its visibility
+- `listener` **[Function][398]** the callback to be invoked when visibility is changed (and when starting to observe). The callback is called with a boolean param representing the visibility state
+- `optionalThreshold` **[number][388]?** a number between 0 to 100 that represents the minimum visible percentage considered as visible
+
+Returns **void**
+
+### unObserve
+
+Remove the listener from the target
+
+#### Parameters
+
+- `target` **[HTMLElement][413]** the targeted element to remove the listener
+- `listener` **[Function][398]** the callback function to be removed
+
+Returns **void**
+
+### destroy
+
+cleans all memory allocations.
 
 ## loadMedia
 
@@ -2235,8 +2311,8 @@ Loads a media.
 
 ### Parameters
 
--   `mediaInfo` **ProviderMediaInfoObject** The media info.
--   `mediaOptions` **KPLoadMediaOptions?** The media options.
+- `mediaInfo` **ProviderMediaInfoObject** The media info.
+- `mediaOptions` **KPLoadMediaOptions?** The media options.
 
 ### Examples
 
@@ -2244,7 +2320,7 @@ Loads a media.
 kalturaPlayer.loadMedia({entryId: 'entry123'}, {startTime: 5, poster: 'my/poster/url'});
 ```
 
-Returns **[Promise][382]&lt;any>** Promise which resolves when the media is loaded, or rejected if error occurs.
+Returns **[Promise][396]&lt;any>** Promise which resolves when the media is loaded, or rejected if error occurs.
 
 ## loadPlaylist
 
@@ -2252,8 +2328,8 @@ Loads a playlist by id.
 
 ### Parameters
 
--   `playlistInfo` **ProviderPlaylistInfoObject** The playlist info.
--   `playlistConfig` **[KPPlaylistConfigObject][396]?** The playlist config.
+- `playlistInfo` **ProviderPlaylistInfoObject** The playlist info.
+- `playlistConfig` **[KPPlaylistConfigObject][411]?** The playlist config.
 
 ### Examples
 
@@ -2261,7 +2337,7 @@ Loads a playlist by id.
 kalturaPlayer.loadPlaylist({playlistId: '123456'}, {options: {autoContinue: false}});
 ```
 
-Returns **[Promise][382]&lt;ProviderPlaylistObject>** The playlist data from the provider.
+Returns **[Promise][396]&lt;ProviderPlaylistObject>** The playlist data from the provider.
 
 ## loadPlaylistByEntryList
 
@@ -2269,8 +2345,8 @@ Loads a playlist by entry list.
 
 ### Parameters
 
--   `entryList` **ProviderEntryListObject** The playlist info.
--   `playlistConfig` **[KPPlaylistConfigObject][396]?** The playlist config.
+- `entryList` **ProviderEntryListObject** The playlist info.
+- `playlistConfig` **[KPPlaylistConfigObject][411]?** The playlist config.
 
 ### Examples
 
@@ -2278,7 +2354,7 @@ Loads a playlist by entry list.
 kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {options: {autoContinue: false}});
 ```
 
-Returns **[Promise][382]&lt;ProviderPlaylistObject>** The playlist data from the provider.
+Returns **[Promise][396]&lt;ProviderPlaylistObject>** The playlist data from the provider.
 
 ## configure
 
@@ -2286,7 +2362,7 @@ Config the player.
 
 ### Parameters
 
--   `config` **[Object][369]** The player config. (optional, default `{}`)
+- `config` **[Object][383]** The player config. (optional, default `{}`)
 
 ### Examples
 
@@ -2294,13 +2370,13 @@ Config the player.
 kalturaPlayer.configure({playback: {autoplay: true}});
 ```
 
-Returns **void** 
+Returns **void**
 
 ## playlist
 
 The playlist controller.
 
-Type: [PlaylistManager][399]
+Type: [PlaylistManager][414]
 
 ### Examples
 
@@ -2308,35 +2384,51 @@ Type: [PlaylistManager][399]
 KalturaPlayer.playlist.playNext();
 ```
 
-Returns **[PlaylistManager][399]** 
+Returns **[PlaylistManager][414]**
 
 ## crossOrigin
 
 Set crossOrigin attribute.
 
-Type: [string][371]?
+Type: [string][385]?
 
 ### Parameters
 
--   `crossOrigin` **[string][371]?** 'anonymous', 'use-credentials' or null to remove attribute
-    anonymous: CORS requests for this element will not have the credentials flag set.
-    use-credentials: CORS requests for this element will have the credentials flag set; this means the request will provide credentials.
+- `crossOrigin` **[string][385]?** 'anonymous', 'use-credentials' or null to remove attribute
+  anonymous: CORS requests for this element will not have the credentials flag set.
+  use-credentials: CORS requests for this element will have the credentials flag set; this means the request will provide credentials.
 
-Returns **void** 
+Returns **void**
 
 ## crossOrigin
 
 Get crossOrigin attribute.
 
-Type: [string][371]?
+Type: [string][385]?
 
-Returns **[string][371]?** 'anonymous' or 'use-credentials'
+Returns **[string][385]?** 'anonymous' or 'use-credentials'
+
+## isVisible
+
+Gets the player visibility state
+
+Type: [boolean][386]
+
+Returns **[boolean][386]** whether the player is in the active browser tab and visible in the view port
+
+## viewabilityManager
+
+Gets the player viewability manager service
+
+Type: [ViewabilityManager][415]
+
+Returns **[ViewabilityManager][415]** player viewability manager
 
 ## getDefaultRedirectOptions
 
 get the default config for forcing external stream redirect.
 
-Returns **[Object][369]** config object
+Returns **[Object][383]** config object
 
 ## getDefaultRedirectOptions
 
@@ -2344,16 +2436,16 @@ get the default config for forcing external stream redirect.
 
 ### Parameters
 
--   `playerOptions` **KPOptionsObject** The player config.
--   `mediaOptions` **KPOptionsObject** The media config. (optional, default `{}`)
+- `playerOptions` **KPOptionsObject** The player config.
+- `mediaOptions` **KPOptionsObject** The media config. (optional, default `{}`)
 
-Returns **[Object][369]** config object
+Returns **[Object][383]** config object
 
 ## getPlayers
 
 get all instantiated players
 
-Returns **[KalturaPlayers][400]** map of player ids and their respective instantiated player
+Returns **[KalturaPlayers][416]** map of player ids and their respective instantiated player
 
 ## getPlayer
 
@@ -2361,806 +2453,423 @@ get a player instance by id
 
 ### Parameters
 
--   `id` **[string][371]** the player ID
+- `id` **[string][385]** the player ID
 
 Returns **(KalturaPlayer | null)** the player if found by the supplied ID or null if key doesn't exist
 
 [1]: #kpadobject
-
 [2]: #properties
-
 [3]: #kpadpod
-
 [4]: #kpadbreakobject
-
 [5]: #properties-1
-
 [6]: #kpadvertisingconfigobject
-
 [7]: #properties-2
-
 [8]: #kalturaplayers
-
 [9]: #kpplaylistoptions
-
 [10]: #properties-3
-
 [11]: #kpplaylistcountdownoptions
-
 [12]: #properties-4
-
 [13]: #kpplaylistconfigobject
-
 [14]: #properties-5
-
 [15]: #kpplaylistobject
-
 [16]: #properties-6
-
 [17]: #kpplaylistitemconfigobject
-
 [18]: #properties-7
-
 [19]: #kppluginsconfigobject
-
 [20]: #adbreak
-
 [21]: #parameters
-
 [22]: #type
-
 [23]: #position
-
 [24]: #numads
-
 [25]: #ad
-
 [26]: #parameters-1
-
 [27]: #id
-
 [28]: #system
-
 [29]: #contenttype
-
 [30]: #url
-
 [31]: #title
-
 [32]: #position-1
-
 [33]: #duration
-
 [34]: #clickthroughurl
-
 [35]: #posterurl
-
 [36]: #skipoffset
-
 [37]: #linear
-
 [38]: #width
-
 [39]: #height
-
 [40]: #bitrate
-
 [41]: #bumper
-
 [42]: #skippable
-
 [43]: #baseremoteplayer
-
 [44]: #parameters-2
-
 [45]: #loadmedia
-
 [46]: #parameters-3
-
 [47]: #setmedia
-
 [48]: #parameters-4
-
 [49]: #getmediainfo
-
 [50]: #getmediaconfig
-
 [51]: #configure
-
 [52]: #parameters-5
-
 [53]: #ready
-
 [54]: #load
-
 [55]: #play
-
 [56]: #pause
-
 [57]: #reset
-
 [58]: #destroy
-
 [59]: #islive
-
 [60]: #examples
-
 [61]: #isdvr
-
 [62]: #examples-1
-
 [63]: #seektoliveedge
-
 [64]: #getstarttimeofdvrwindow
-
 [65]: #examples-2
-
 [66]: #gettracks
-
 [67]: #parameters-6
-
 [68]: #examples-3
-
 [69]: #getactivetracks
-
 [70]: #examples-4
-
 [71]: #selecttrack
-
 [72]: #parameters-7
-
 [73]: #hidetexttrack
-
 [74]: #enableadaptivebitrate
-
 [75]: #isadaptivebitrateenabled
-
 [76]: #examples-5
-
 [77]: #settextdisplaysettings
-
 [78]: #parameters-8
-
 [79]: #startcasting
-
 [80]: #stopcasting
-
 [81]: #iscasting
-
 [82]: #examples-6
-
 [83]: #iscastavailable
-
 [84]: #examples-7
-
 [85]: #getcastsession
-
 [86]: #examples-8
-
 [87]: #isvr
-
 [88]: #examples-9
-
 [89]: #togglevrstereomode
-
 [90]: #isinvrstereomode
-
 [91]: #examples-10
-
 [92]: #ads
-
 [93]: #examples-11
-
 [94]: #textstyle
-
 [95]: #parameters-9
-
 [96]: #textstyle-1
-
 [97]: #examples-12
-
 [98]: #buffered
-
 [99]: #examples-13
-
 [100]: #currenttime
-
 [101]: #parameters-10
-
 [102]: #currenttime-1
-
 [103]: #examples-14
-
 [104]: #duration-1
-
 [105]: #examples-15
-
 [106]: #volume
-
 [107]: #parameters-11
-
 [108]: #volume-1
-
 [109]: #examples-16
-
 [110]: #paused
-
 [111]: #examples-17
-
 [112]: #ended
-
 [113]: #examples-18
-
 [114]: #seeking
-
 [115]: #examples-19
-
 [116]: #muted
-
 [117]: #parameters-12
-
 [118]: #muted-1
-
 [119]: #examples-20
-
 [120]: #src
-
 [121]: #examples-21
-
 [122]: #poster
-
 [123]: #examples-22
-
 [124]: #playbackrate
-
 [125]: #parameters-13
-
 [126]: #playbackrate-1
-
 [127]: #examples-23
-
 [128]: #enginetype
-
 [129]: #examples-24
-
 [130]: #streamtype
-
 [131]: #examples-25
-
 [132]: #type-1
-
 [133]: #examples-26
-
 [134]: #config
-
 [135]: #defaultconfig
-
 [136]: #examples-27
-
 [137]: #type-2
-
 [138]: #examples-28
-
 [139]: #issupported
-
 [140]: #examples-29
-
 [141]: #casteventtype
-
 [142]: #examples-30
-
 [143]: #playersnapshot
-
 [144]: #parameters-14
-
 [145]: #textstyle-2
-
 [146]: #advertising
-
 [147]: #config-1
-
 [148]: #remotecontrol
-
 [149]: #parameters-15
-
 [150]: #getplayersnapshot
-
 [151]: #getuiwrapper
-
 [152]: #onremotedevicedisconnected
-
 [153]: #parameters-16
-
 [154]: #onremotedeviceconnected
-
 [155]: #parameters-17
-
 [156]: #onremotedeviceavailable
-
 [157]: #parameters-18
-
 [158]: #onremotedeviceconnecting
-
 [159]: #onremotedevicedisconnecting
-
 [160]: #onremotedeviceconnectfailed
-
 [161]: #remotepayload
-
 [162]: #parameters-19
-
 [163]: #player
-
 [164]: #remoteconnectedpayload
-
 [165]: #parameters-20
-
 [166]: #ui
-
 [167]: #session
-
 [168]: #remotedisconnectedpayload
-
 [169]: #parameters-21
-
 [170]: #snapshot
-
 [171]: #remoteavailablepayload
-
 [172]: #parameters-22
-
 [173]: #available
-
 [174]: #remoteplayerui
-
 [175]: #playbackui
-
 [176]: #parameters-23
-
 [177]: #idleui
-
 [178]: #parameters-24
-
 [179]: #adsui
-
 [180]: #parameters-25
-
 [181]: #liveui
-
 [182]: #parameters-26
-
 [183]: #errorui
-
 [184]: #parameters-27
-
 [185]: #uis
-
 [186]: #iremoteplayer
-
 [187]: #textstyle-3
-
 [188]: #muted-2
-
 [189]: #playbackrate-2
-
 [190]: #volume-2
-
 [191]: #currenttime-2
-
 [192]: #buffered-1
-
 [193]: #duration-2
-
 [194]: #paused-1
-
 [195]: #ended-1
-
 [196]: #seeking-1
-
 [197]: #src-1
-
 [198]: #poster-1
-
 [199]: #enginetype-1
-
 [200]: #streamtype-1
-
 [201]: #type-3
-
 [202]: #ads-1
-
 [203]: #config-2
-
 [204]: #addeventlistener
-
 [205]: #parameters-28
-
 [206]: #removeeventlistener
-
 [207]: #parameters-29
-
 [208]: #dispatchevent
-
 [209]: #parameters-30
-
 [210]: #loadmedia-1
-
 [211]: #parameters-31
-
 [212]: #setmedia-1
-
 [213]: #parameters-32
-
 [214]: #getmediainfo-1
-
 [215]: #getmediaconfig-1
-
 [216]: #configure-1
-
 [217]: #parameters-33
-
 [218]: #ready-1
-
 [219]: #load-1
-
 [220]: #play-1
-
 [221]: #pause-1
-
 [222]: #reset-1
-
 [223]: #destroy-1
-
 [224]: #islive-1
-
 [225]: #isdvr-1
-
 [226]: #seektoliveedge-1
-
 [227]: #getstarttimeofdvrwindow-1
-
 [228]: #gettracks-1
-
 [229]: #parameters-34
-
 [230]: #getactivetracks-1
-
 [231]: #selecttrack-1
-
 [232]: #parameters-35
-
 [233]: #hidetexttrack-1
-
 [234]: #enableadaptivebitrate-1
-
 [235]: #isadaptivebitrateenabled-1
-
 [236]: #settextdisplaysettings-1
-
 [237]: #parameters-36
-
 [238]: #startcasting-1
-
 [239]: #stopcasting-1
-
 [240]: #iscasting-1
-
 [241]: #iscastavailable-1
-
 [242]: #getcastsession-1
-
 [243]: #isvr-1
-
 [244]: #togglevrstereomode-1
-
 [245]: #isinvrstereomode-1
-
 [246]: #remotesession
-
 [247]: #parameters-37
-
 [248]: #devicefriendlyname
-
 [249]: #id-1
-
 [250]: #resuming
-
 [251]: #adscontroller
-
 [252]: #parameters-38
-
 [253]: #alladscompleted
-
 [254]: #isadbreak
-
 [255]: #getadbreakslayout
-
 [256]: #getadbreak
-
 [257]: #getad
-
 [258]: #skipad
-
 [259]: #playadnow
-
 [260]: #parameters-39
-
 [261]: #controllerprovider
-
 [262]: #parameters-40
-
 [263]: #getadscontrollers
-
 [264]: #playlisteventtype
-
 [265]: #examples-31
-
 [266]: #playlistitem
-
 [267]: #parameters-41
-
 [268]: #updatesources
-
 [269]: #parameters-42
-
-[270]: #sources
-
-[271]: #config-3
-
-[272]: #isplayable
-
-[273]: #playlistmanager
-
-[274]: #parameters-43
-
-[275]: #configure-2
-
-[276]: #parameters-44
-
-[277]: #load-2
-
-[278]: #parameters-45
-
-[279]: #reset-2
-
-[280]: #playnext
-
-[281]: #playprev
-
-[282]: #playitem
-
-[283]: #parameters-46
-
-[284]: #items
-
-[285]: #next
-
-[286]: #prev
-
-[287]: #id-2
-
-[288]: #metadata
-
-[289]: #poster-2
-
-[290]: #countdown
-
-[291]: #options
-
-[292]: #baseplugin
-
-[293]: #parameters-47
-
-[294]: #config-4
-
-[295]: #name
-
-[296]: #player-1
-
-[297]: #player-2
-
-[298]: #eventmanager
-
-[299]: #getconfig
-
-[300]: #parameters-48
-
-[301]: #ready-2
-
-[302]: #updateconfig
-
+[270]: #updateplugins
+[271]: #parameters-43
+[272]: #sources
+[273]: #config-3
+[274]: #plugins
+[275]: #isplayable
+[276]: #playlistmanager
+[277]: #parameters-44
+[278]: #configure-2
+[279]: #parameters-45
+[280]: #load-2
+[281]: #parameters-46
+[282]: #reset-2
+[283]: #playnext
+[284]: #playprev
+[285]: #playitem
+[286]: #parameters-47
+[287]: #items
+[288]: #next
+[289]: #prev
+[290]: #id-2
+[291]: #metadata
+[292]: #poster-2
+[293]: #countdown
+[294]: #options
+[295]: #baseplugin
+[296]: #parameters-48
+[297]: #config-4
+[298]: #name
+[299]: #player-1
+[300]: #player-2
+[301]: #eventmanager
+[302]: #getconfig
 [303]: #parameters-49
-
-[304]: #loadmedia-2
-
-[305]: #destroy-2
-
-[306]: #reset-3
-
-[307]: #getname
-
-[308]: #dispatchevent-1
-
-[309]: #parameters-50
-
-[310]: #defaultconfig-1
-
-[311]: #createplugin
-
+[304]: #ready-2
+[305]: #updateconfig
+[306]: #parameters-50
+[307]: #loadmedia-2
+[308]: #destroy-2
+[309]: #reset-3
+[310]: #getname
+[311]: #dispatchevent-1
 [312]: #parameters-51
-
-[313]: #isvalid
-
-[314]: #pluginmanager
-
-[315]: #load-3
-
-[316]: #parameters-52
-
-[317]: #loadmedia-3
-
-[318]: #destroy-3
-
-[319]: #reset-4
-
-[320]: #get
-
-[321]: #parameters-53
-
-[322]: #getall
-
-[323]: #register
-
+[313]: #defaultconfig-1
+[314]: #createplugin
+[315]: #parameters-52
+[316]: #isvalid
+[317]: #pluginmanager
+[318]: #load-3
+[319]: #parameters-53
+[320]: #loadmedia-3
+[321]: #destroy-3
+[322]: #reset-4
+[323]: #get
 [324]: #parameters-54
-
-[325]: #unregister
-
-[326]: #parameters-55
-
-[327]: #registerplugin
-
-[328]: #load-4
-
+[325]: #getall
+[326]: #register
+[327]: #parameters-55
+[328]: #unregister
 [329]: #parameters-56
-
-[330]: #play-2
-
-[331]: #parameters-57
-
-[332]: #constructor
-
-[333]: #get-1
-
-[334]: #set
-
-[335]: #parameters-58
-
-[336]: #reset-5
-
-[337]: #constructor-1
-
-[338]: #evaluatepluginsconfig
-
-[339]: #parameters-59
-
-[340]: #evaluateuiconfig
-
-[341]: #parameters-60
-
-[342]: #maybesetstreampriority
-
-[343]: #parameters-61
-
-[344]: #hasyoutubesource
-
-[345]: #parameters-62
-
-[346]: #loadmedia-4
-
-[347]: #parameters-63
-
-[348]: #examples-32
-
-[349]: #loadplaylist
-
+[330]: #registerplugin
+[331]: #load-4
+[332]: #parameters-57
+[333]: #play-2
+[334]: #parameters-58
+[335]: #constructor
+[336]: #get-1
+[337]: #set
+[338]: #parameters-59
+[339]: #reset-5
+[340]: #constructor-1
+[341]: #evaluatepluginsconfig
+[342]: #parameters-60
+[343]: #evaluateuiconfig
+[344]: #parameters-61
+[345]: #maybesetstreampriority
+[346]: #parameters-62
+[347]: #hasyoutubesource
+[348]: #parameters-63
+[349]: #mergeproviderpluginsconfig
 [350]: #parameters-64
-
-[351]: #examples-33
-
-[352]: #loadplaylistbyentrylist
-
-[353]: #parameters-65
-
-[354]: #examples-34
-
-[355]: #configure-3
-
-[356]: #parameters-66
-
-[357]: #examples-35
-
-[358]: #playlist
-
-[359]: #examples-36
-
-[360]: #crossorigin
-
-[361]: #parameters-67
-
-[362]: #crossorigin-1
-
-[363]: #getdefaultredirectoptions
-
-[364]: #getdefaultredirectoptions-1
-
-[365]: #parameters-68
-
-[366]: #getplayers
-
-[367]: #getplayer
-
-[368]: #parameters-69
-
-[369]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
-[370]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
-[371]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[372]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-
-[373]: #kpadobject
-
-[374]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[375]: #kpadpod
-
-[376]: #kpadbreakobject
-
-[377]: https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject
-
-[378]: #kpplaylistoptions
-
-[379]: #kpplaylistcountdownoptions
-
-[380]: #playlistitem
-
-[381]: #remotecontrol
-
-[382]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
-[383]: #remotesession
-
-[384]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
-
-[385]: #playersnapshot
-
-[386]: #remotedisconnectedpayload
-
-[387]: #remoteconnectedpayload
-
-[388]: #remoteavailablepayload
-
-[389]: #baseremoteplayer
-
-[390]: #remoteplayerui
-
-[391]: #adbreak
-
-[392]: #ad
-
-[393]: #pluginmanager
-
-[394]: #kpplaylistitemconfigobject
-
-[395]: #kpplaylistobject
-
-[396]: #kpplaylistconfigobject
-
-[397]: #baseplugin
-
-[398]: #kppluginsconfigobject
-
-[399]: #playlistmanager
-
-[400]: #kalturaplayers
+[351]: #viewabilitymanager
+[352]: #parameters-65
+[353]: #observe
+[354]: #parameters-66
+[355]: #unobserve
+[356]: #parameters-67
+[357]: #destroy-4
+[358]: #loadmedia-4
+[359]: #parameters-68
+[360]: #examples-32
+[361]: #loadplaylist
+[362]: #parameters-69
+[363]: #examples-33
+[364]: #loadplaylistbyentrylist
+[365]: #parameters-70
+[366]: #examples-34
+[367]: #configure-3
+[368]: #parameters-71
+[369]: #examples-35
+[370]: #playlist
+[371]: #examples-36
+[372]: #crossorigin
+[373]: #parameters-72
+[374]: #crossorigin-1
+[375]: #isvisible
+[376]: #viewabilitymanager-1
+[377]: #getdefaultredirectoptions
+[378]: #getdefaultredirectoptions-1
+[379]: #parameters-73
+[380]: #getplayers
+[381]: #getplayer
+[382]: #parameters-74
+[383]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[384]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[385]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[386]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[387]: #kpadobject
+[388]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[389]: #kpadpod
+[390]: #kpadbreakobject
+[391]: https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject
+[392]: #kpplaylistoptions
+[393]: #kpplaylistcountdownoptions
+[394]: #playlistitem
+[395]: #remotecontrol
+[396]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[397]: #remotesession
+[398]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[399]: #playersnapshot
+[400]: #remotedisconnectedpayload
+[401]: #remoteconnectedpayload
+[402]: #remoteavailablepayload
+[403]: #baseremoteplayer
+[404]: #remoteplayerui
+[405]: #adbreak
+[406]: #ad
+[407]: #pluginmanager
+[408]: #kpplaylistitemconfigobject
+[409]: #kppluginsconfigobject
+[410]: #kpplaylistobject
+[411]: #kpplaylistconfigobject
+[412]: #baseplugin
+[413]: https://developer.mozilla.org/docs/Web/HTML/Element
+[414]: #playlistmanager
+[415]: #viewabilitymanager
+[416]: #kalturaplayers
