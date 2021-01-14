@@ -2,6 +2,7 @@ body {
   background-color: #212121;
   padding: 0;
   margin: 0;
+  height: 300vh;
 }
 
 #player-placeholder {
@@ -13,4 +14,10 @@ body {
   left: 0;
   width: 640px;
   height: 360px;
+}
+
+#player-placeholder.out-of-view {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  top: 95vh;
 }

@@ -20,13 +20,14 @@ The configuration uses the following structure:
   disableUserCache: boolean,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
-  playlist: KPPlaylisyObject,
+  playlist: KPPlaylistObject,
   plugins: KPPluginsConfigObject,
   advertising: PKAdvertisingConfigObject,
   session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   ui: UIOptionsObject,
-  cast: CastConfigObject
+  cast: CastConfigObject,
+  viewability: KPViewabilityConfigObject
 }
 ```
 
@@ -362,6 +363,21 @@ The configuration uses the following structure:
 >
 > ##### Description: Defines the cast configuration.
 
+##
+
+> ### config.viewability
+>
+> ##### Type: `KPViewabilityConfigObject`
+>
+> ##### Description: Defines the viewability configuration.
+>
+> > #### KPViewabilityConfigObject
+> >
+> > ##### Properties
+> >
+> > - `observedThresholds` **[Array][1]&lt;[number][2]>** An array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed.
+> > - `playerThreshold` **[number][2]** The minimal viewable percentage of the player to consider as visible.
+
 ## Configuration Priority
 
 In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determines whether the source has a greater or lesser impact on how the player is configured.
@@ -436,3 +452,6 @@ Default Player Configuration
 	autoplay: true
 }
 ```
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
