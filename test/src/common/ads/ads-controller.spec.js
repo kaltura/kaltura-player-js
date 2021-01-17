@@ -37,6 +37,7 @@ describe('AdsController', () => {
         }
       });
       player.configure({
+        sources: SourcesConfig.Mp4,
         advertising: {
           adBreaks: [
             {percentage: 0, ads: [{}]},

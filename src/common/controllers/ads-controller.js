@@ -114,7 +114,6 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _init(): void {
     this._initMembers();
     this._addBindings();
-    this._handleConfiguredAdBreaks();
   }
 
   _initMembers(): void {
@@ -128,6 +127,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _addBindings(): void {
+    this._eventManager.listen(this._player, CustomEventType.SOURCE_SELECTED, () => this._handleConfiguredAdBreaks());
     this._eventManager.listen(this._player, AdEventType.AD_MANIFEST_LOADED, event => this._onAdManifestLoaded(event));
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_START, event => this._onAdBreakStart(event));
     this._eventManager.listen(this._player, AdEventType.AD_LOADED, () => this._onAdLoaded());
