@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const packageData = require('./package.json');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const playerType = process.env.PLAYER_TYPE || 'ovp';
 const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
@@ -67,6 +68,17 @@ function createConfig(env, argv, target) {
       library: 'KalturaPlayer',
       libraryTarget: target,
       devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
+    },
+    optimization: {
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              reduce_vars: false
+            }
+          }
+        })
+      ]
     },
     devtool: 'source-map',
     module: {
