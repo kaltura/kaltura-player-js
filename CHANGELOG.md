@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/kaltura/kaltura-player-js/compare/v1.3.1...v1.3.2) (2021-01-17)
+
+
+### Bug Fixes
+
+* update Shaka to fix the memory leak ([#396](https://github.com/kaltura/kaltura-player-js/issues/396)) ([d62e638](https://github.com/kaltura/kaltura-player-js/commit/d62e638))
+
+
+
 ### [1.3.1](https://github.com/kaltura/kaltura-player-js/compare/v1.3.0...v1.3.1) (2021-01-17)
 
 
