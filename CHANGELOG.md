@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/kaltura/kaltura-player-js/compare/v1.3.0...v1.3.1) (2021-01-17)
+
+
+### Build System
+
+* add flag to webpack to avoid leaking in shaka ([b8e92ef](https://github.com/kaltura/kaltura-player-js/commit/b8e92ef))
+
+
+
 ## [1.3.0](https://github.com/kaltura/kaltura-player-js/compare/v1.2.0...v1.3.0) (2021-01-07)
 
 
