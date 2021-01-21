@@ -1,15 +1,25 @@
 // @flow
 import {setDefaultAnalyticsPlugin} from 'player-defaults';
-import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme} from '@playkit-js/playkit-js';
+import {
+  Env,
+  TextStyle,
+  Utils,
+  setCapabilities,
+  EngineType,
+  DrmScheme,
+  getLogger,
+  LogLevel,
+  setLogHandler,
+  setLogLevel as _setLogLevel,
+  type LogLevelObject
+} from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
-import type {LogLevelObject} from './logger';
-import getLogger, {LogLevel, setLogHandler, setLogLevel as _setLogLevel} from './logger';
-import {configureExternalStreamRedirect} from './external-stream-redirect-helper';
 import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
+import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewability-manager';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -149,7 +159,7 @@ function setStorageTextStyle(player: KalturaPlayer): void {
  * @returns {void}
  */
 function attachToFirstClick(player: Player): void {
-  if (isIos() || Env.isIPadOS) {
+  if (Env.isIOS || Env.isIPadOS) {
     const onUIClicked = () => {
       player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
       setCapabilities(EngineType.HTML5, {autoplay: true});
@@ -223,7 +233,7 @@ function setLogOptions(options: KPOptionsObject): void {
  * @returns {string} - value of the query string param
  */
 function getUrlParameter(name: string) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   const results = regex.exec(location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
@@ -270,6 +280,14 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     },
     ui: {
       targetId: targetId
+    },
+    plugins: {},
+    advertising: {
+      adBreaks: []
+    },
+    viewability: {
+      observedThresholds: DEFAULT_OBSERVED_THRESHOLDS,
+      playerThreshold: DEFAULT_PLAYER_THRESHOLD
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
@@ -285,7 +303,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   configureIMADefaultOptions(defaultOptions);
   configureDAIDefaultOptions(defaultOptions);
   configureBumperDefaultOptions(defaultOptions);
-  configureExternalStreamRedirect(defaultOptions);
   maybeSetFullScreenConfig(defaultOptions);
   maybeSetCapabilitiesForIos(defaultOptions);
   return defaultOptions;
@@ -298,7 +315,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
  * @returns {void}
  */
 function checkNativeHlsSupport(options: KPOptionsObject): void {
-  if ((isMacOS() && isSafari()) || isIos()) {
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
     const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -319,11 +336,11 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if ((isMacOS() && isSafari()) || isIos()) {
-    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
+    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
-        playback: {
+        text: {
           useNativeTextTrack: true
         }
       });
@@ -357,6 +374,7 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
     options = Utils.Object.createPropertyPath(options, 'plugins.bumper.disableMediaPreload', true);
   }
 }
+
 /**
  * Sets config option for LG TV SDK 2 live which has problem with long duration buffer
  * @private
@@ -366,10 +384,11 @@ function _configureAdsWithMSE(options: KPOptionsObject): void {
 function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
   const hlsLiveConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount');
   //webos SDK 2 and less detect as safari browser greater version is chrome
-  if (typeof hlsLiveConfig !== 'boolean' && isSafari()) {
+  if (typeof hlsLiveConfig !== 'boolean' && Env.isSafari) {
     options = Utils.Object.createPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount', 2);
   }
 }
+
 /**
  * Sets config option for LG TV
  * @private
@@ -414,6 +433,7 @@ function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
     }
   }
 }
+
 /**
  * Sets default config option for ima plugin
  * @private
@@ -421,7 +441,7 @@ function configureEdgeDRMDefaultOptions(options: KPOptionsObject): void {
  * @returns {void}
  */
 function configureIMADefaultOptions(options: KPOptionsObject): void {
-  if (isIos() && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
+  if (Env.isIOS && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
     const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
     const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
     if (playsinline === false && typeof disableMediaPreloadIma !== 'boolean') {
@@ -468,7 +488,7 @@ function configureBumperDefaultOptions(options: KPOptionsObject): void {
     const newBumperConfig: Object = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
-      (Env.isSmartTV || (isIos() && options.playback && options.playback.playsinline === false))
+      (Env.isSmartTV || (Env.isIOS && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
@@ -546,7 +566,16 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
-    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
+    ['playback.enableCEA708Captions', 'text.enableCEA708Captions'],
+    ['playback.useNativeTextTrack', 'text.useNativeTextTrack'],
+    ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
+    ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
+    ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
+    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode'],
+    ['plugins.visibility.threshold', 'viewability.playerThreshold'],
+    ['plugins.visibility.floating', 'plugins.floating'],
+    ['playback.startTime', 'sources.startTime']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
@@ -560,33 +589,6 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
  */
 function printSetupMessages(): void {
   setupMessages.forEach(msgObj => getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg));
-}
-
-/**
- * Returns true if user agent indicate that browser is Safari
- * @private
- * @returns {boolean} - if browser is Safari
- */
-function isSafari(): boolean {
-  return Utils.Object.hasPropertyPath(Env, 'browser.name') && Env.browser.name.includes('Safari');
-}
-
-/**
- * Returns true if user agent indicate that os is mac
- * @private
- * @returns {boolean} - if browser is Safari
- */
-function isMacOS(): boolean {
-  return Env.os.name === 'Mac OS';
-}
-
-/**
- * Returns true if user agent indicate that browser is Chrome on iOS
- * @private
- * @returns {boolean} - if browser is Chrome on iOS
- */
-function isIos(): boolean {
-  return Env.os.name === 'iOS';
 }
 
 /**
@@ -653,9 +655,34 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
  */
 function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
   const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-  if (playsinline === false) {
+  if (Env.device.model === 'iPhone' && playsinline === false) {
     setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
   }
+}
+
+/**
+ * Merge the provider plugins config (e.g. bumper) into the app config and returns it and the respective app config to restore in change media
+ * @param {KPPluginsConfigObject} providerPluginsConfig - the provider plugins config
+ * @param {KPOptionsObject} appPluginsConfig - the entire app plugins config
+ * @returns {Array<KPPluginsConfigObject>} - the merged plugins config and the partial respective app plugins config
+ */
+function mergeProviderPluginsConfig(
+  providerPluginsConfig: KPPluginsConfigObject,
+  appPluginsConfig: KPPluginsConfigObject
+): Array<KPPluginsConfigObject> {
+  const mergePluginConfig: KPPluginsConfigObject = {};
+  const respectiveAppPluginsConfig: KPPluginsConfigObject = {};
+  Utils.Object.isObject(providerPluginsConfig) &&
+    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
+      mergePluginConfig[pluginName] = {};
+      respectiveAppPluginsConfig[pluginName] = {};
+      Object.entries(pluginConfig).forEach(([key, providerValue]) => {
+        const appValue = Utils.Object.getPropertyPath(appPluginsConfig[pluginName], key);
+        mergePluginConfig[pluginName][key] = appValue || providerValue;
+        respectiveAppPluginsConfig[pluginName][key] = appValue;
+      });
+    });
+  return [mergePluginConfig, respectiveAppPluginsConfig];
 }
 
 export {
@@ -672,8 +699,7 @@ export {
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
-  isSafari,
-  isIos,
   maybeSetStreamPriority,
-  hasYoutubeSource
+  hasYoutubeSource,
+  mergeProviderPluginsConfig
 };

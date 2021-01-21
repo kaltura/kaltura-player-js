@@ -3,18 +3,16 @@
 import {KalturaPlayer} from '../../kaltura-player';
 import {PlayerSnapshot} from './player-snapshot';
 import {CastEventType} from './cast-event-type';
-import {EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils} from '@playkit-js/playkit-js';
+import {EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils, getLogger} from '@playkit-js/playkit-js';
 import {RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload} from './remote-payload';
 import {UIWrapper} from '../ui-wrapper';
-import getLogger from '../utils/logger';
-
-const logger: any = getLogger('RemoteControl');
 
 /**
  * @class RemoteControl
  * @param {KalturaPlayer} player - The Kaltura player.
  */
 class RemoteControl {
+  static _logger: any = getLogger('RemoteControl');
   /**
    * Gets the player snapshot.
    * @returns {PlayerSnapshot} - player snapshot.
@@ -89,12 +87,12 @@ class RemoteControl {
 }
 
 function onRemoteDeviceConnecting(): void {
-  logger.debug('onRemoteDeviceConnecting');
+  RemoteControl._logger.debug('onRemoteDeviceConnecting');
   this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_STARTING));
 }
 
 function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
-  logger.debug('onRemoteDeviceConnected', payload);
+  RemoteControl._logger.debug('onRemoteDeviceConnected', payload);
   const {player, ui, session} = payload;
   // After remote player is connected, clean all listeners and bounce the remote player events forward
   this._eventManager.removeAll();
@@ -124,12 +122,12 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
 }
 
 function onRemoteDeviceDisconnecting(): void {
-  logger.debug('onRemoteDeviceDisconnecting');
+  RemoteControl._logger.debug('onRemoteDeviceDisconnecting');
   this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDING));
 }
 
 function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
-  logger.debug('onRemoteDeviceDisconnected', payload);
+  RemoteControl._logger.debug('onRemoteDeviceDisconnected', payload);
   const {player, snapshot} = payload;
   if (this._remotePlayer && this._remotePlayer === player) {
     // After remote player is disconnected, clean all listeners and bounce the remote player events forward
@@ -137,12 +135,15 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
     reconstructPlayerComponents.call(this, snapshot);
     if (snapshot) {
       this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_ENDED));
-      const originPlaybackConfig = this.config.playback;
+      const originConfig = this.config;
       const shouldPause = !snapshot.config.playback.autoplay;
       const mediaInfo = snapshot.mediaInfo;
       const mediaConfig = snapshot.mediaConfig;
       snapshot.config.playback.autoplay = true;
-      configurePlayback.call(this, snapshot.config.playback);
+      configurePlayback.call(this, snapshot.config);
+      this._eventManager.listenOnce(this, this.Event.Core.CHANGE_SOURCE_ENDED, () => {
+        configureTracks.call(this, snapshot.config.sources);
+      });
       let mediaPromise;
       if (mediaInfo) {
         mediaPromise = this.loadMedia(mediaInfo);
@@ -154,8 +155,8 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
         mediaPromise.then(() => {
           this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
             this.textStyle = snapshot.textStyle;
-            configurePlayback.call(this, originPlaybackConfig);
-            setInitialTracks.call(this, snapshot);
+            configurePlayback.call(this, originConfig);
+            setInitialTracks.call(this, snapshot.config.playback);
             if (shouldPause) {
               this.pause();
             }
@@ -166,7 +167,7 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
 }
 
 function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
-  logger.debug('onRemoteDeviceAvailable', payload);
+  RemoteControl._logger.debug('onRemoteDeviceAvailable', payload);
   const {player, available} = payload;
   this.dispatchEvent(
     new FakeEvent(CastEventType.CAST_AVAILABLE, {
@@ -177,18 +178,18 @@ function onRemoteDeviceAvailable(payload: RemoteAvailablePayload): void {
 }
 
 function onRemoteDeviceConnectFailed(): void {
-  logger.debug('onRemoteDeviceConnectFailed');
+  RemoteControl._logger.debug('onRemoteDeviceConnectFailed');
   this.dispatchEvent(new FakeEvent(CastEventType.CAST_SESSION_START_FAILED));
 }
 
 function getPlayerSnapshot(): PlayerSnapshot {
   const snapshot = new PlayerSnapshot(this);
-  logger.debug('getPlayerSnapshot', snapshot);
+  RemoteControl._logger.debug('getPlayerSnapshot', snapshot);
   return snapshot;
 }
 
 function getUIWrapper(): UIWrapper {
-  logger.debug('getUIWrapper');
+  RemoteControl._logger.debug('getUIWrapper');
   return this._uiWrapper;
 }
 
@@ -201,7 +202,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
     let imaConfig = {};
     // If it's a VAST ad we are empty the ad tag so ads won't play and configure it later
     if (playerConfig.cast.advertising && playerConfig.cast.advertising.vast) {
-      if (snapshot.config.playback.startTime > 0) {
+      if (snapshot.config.sources.startTime > 0) {
         const adTagUrl = playerConfig.plugins.ima.adTagUrl;
         imaConfig = {
           adTagUrl: ''
@@ -229,14 +230,28 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
   this._uiWrapper.setConfig({isCastAvailable: this.isCastAvailable()}, 'engine');
 }
 
-function configurePlayback(playbackConfig: Object): void {
-  const {autoplay, startTime} = playbackConfig;
+function configurePlayback(config: Object): void {
+  const {startTime} = config.sources;
+  const {autoplay} = config.playback;
   this.configure({
+    sources: {
+      startTime
+    },
     playback: {
-      startTime,
       autoplay
     }
   });
+}
+
+function configureTracks(sourcesConfig: Object): void {
+  if (sourcesConfig.captions.length) {
+    const {captions} = sourcesConfig;
+    this.configure({
+      sources: {
+        captions
+      }
+    });
+  }
 }
 
 function setInitialTracks(playbackConfig: Object): void {

@@ -40,7 +40,8 @@ const defaultConfig: dataStoreType = {
     ks: '{{ks}}',
     uiConfId: '{{uiConfId}}',
     referrer: '{{referrer}}',
-    encodedReferrer: '{{encodedReferrer}}'
+    encodedReferrer: '{{encodedReferrer}}',
+    serviceUrl: '{{analyticsServiceUrl}}'
   },
   comscore: {
     playerVersion: '{{pVersion}}'
@@ -50,7 +51,6 @@ const defaultConfig: dataStoreType = {
   }
 };
 
-let config = Utils.Object.copyDeep(defaultConfig);
 const templateRegex = new RegExp('{{.*}}');
 
 /**
@@ -59,7 +59,7 @@ const templateRegex = new RegExp('{{.*}}');
  * @param {Object} obj - the config object
  * @returns {dataStoreType} - the new object with new tokens
  */
-const resolveNewConfig = (obj = {}): Object =>
+const resolveNewConfig = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (Utils.Object.isObject(value)) {
       product[key] = resolveNewConfig(value);
@@ -77,7 +77,7 @@ const resolveNewConfig = (obj = {}): Object =>
  * @param {Object} obj - the config object
  * @returns {dataStoreType} - the new object with valid evaluate tokens
  */
-const removeUndefineds = (obj = {}): Object =>
+const removeUndefineds = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
     if (Utils.Object.isObject(value)) {
       product[key] = removeUndefineds(value);
@@ -87,36 +87,43 @@ const removeUndefineds = (obj = {}): Object =>
     return product;
   }, {});
 
-const pluginConfig = {
+class PluginConfigStore {
+  _config: dataStoreType;
+
+  /**
+   * constructor
+   * @constructor
+   */
+  constructor() {
+    this._config = Utils.Object.copyDeep(defaultConfig);
+  }
+
   /**
    * return the token store object
-   * @private
    * @returns {*|any} - token store object
    */
-  get: (): dataStoreType => {
-    return config;
-  },
+  get(): dataStoreType {
+    return this._config;
+  }
   /**
    * recalculate the token store data, if new config with token is passed then add it to the data store, and if
    * an existing token needs to be removed then remove it
-   * @private
    * @param {?dataStoreType} pluginsConfig - the new config object
    * @returns {void}
    */
-  set: (pluginsConfig: ?dataStoreType): void => {
+  set(pluginsConfig: ?dataStoreType): void {
     if (pluginsConfig) {
       const newConfig = resolveNewConfig(pluginsConfig);
-      config = removeUndefineds(Utils.Object.mergeDeep(config, newConfig));
+      this._config = removeUndefineds(Utils.Object.mergeDeep(this._config, newConfig));
     }
-  },
+  }
   /**
    * reset the config store to its initial state
-   * @private
    * @returns {void}
    */
-  reset: (): void => {
-    config = Utils.Object.copyDeep(defaultConfig);
+  reset(): void {
+    this._config = Utils.Object.copyDeep(defaultConfig);
   }
-};
+}
 
-export {pluginConfig, templateRegex};
+export {PluginConfigStore, templateRegex};

@@ -1,26 +1,22 @@
 {
-  "presets": [
-    "es2015"
-  ],
-  "ignore": [
-    "node_modules/**/*"
-  ],
-  "plugins": [
-    "transform-flow-strip-types",
-    "transform-class-properties",
-    ["babel-plugin-transform-es2015-classes",
-      {
-        "loose": true
-      }
-    ],
-    "babel-plugin-transform-es5-property-mutators",
-    "transform-object-rest-spread"
-  ],
   "env": {
     "test": {
-      "plugins": [
-        "istanbul"
-      ]
+      "plugins": ["istanbul"]
     }
-  }
+  },
+  "ignore": ["node_modules/**/*"],
+  "plugins": ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-proposal-class-properties"],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true,
+        "bugfixes": true,
+        "targets": {
+          "browsers": ["chrome >= 47", "firefox >= 51", "ie >= 11", "safari >= 8", "ios >= 8", "android >= 4"]
+        }
+      }
+    ],
+    "@babel/preset-flow"
+  ]
 }

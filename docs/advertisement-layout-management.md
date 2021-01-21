@@ -1,7 +1,9 @@
 # Advertisement layout management
 
 With ad layout config you can create your own ad break timeline using your vast tags.  
-Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a [Waterfall](#waterfalling)
+Ad break can be set as pre, mid and post rolls and each ad break can contain a single vast tag or multiple tags, either as a pod, but also as a [Waterfall](#waterfalling).
+
+> **Important:** [IMA plugin](https://github.com/kaltura/playkit-js-ima) must be active to enable this feature.
 
 ## Table of Contents
 
@@ -13,14 +15,18 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 - [Play Ads After Time](#play-ads-after-time)
 - [Events](#events)
 - [Play Ad Now](#play-ad-now)
+- [Seekbar Cue Points](#seekbar-cue-points)
 
 ### Single Ad
 
 Here's a simple scheme sample which contains 4 ad breaks: 1 pre-roll, 2 mid-rolls and 1 post-roll:
 
-```ecmascript 6
+```js
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     adBreaks: [{
       position: 0,
@@ -61,9 +67,12 @@ An ad break may contain a list of ads, also referred to as ad pod.
 
 Ad pod sample:
 
-```ecmascript 6
+```js
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     adBreaks: [{
       position: 0,
@@ -101,9 +110,12 @@ An application may want to set a fallback vast url, so in case the primary ad re
 This mechanism called _Waterfalling_, is configurable easily using the ad layout config.  
 Here's a sample of a mid-roll with waterfalling:
 
-```ecmascript 6
+```js
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     adBreaks: [{
       position: 15,
@@ -148,11 +160,14 @@ Each ad in the `ads` list gets the following options:
 All the options above work together, that means the application may use and mix them in the same `advertising` object.
 Here's a sample:
 
-```ecmascript 6
+```js
 const config = {
- ...
- advertising: {
-   adBreaks: [{
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    adBreaks: [{
      position: 0,
      ads: [{
          url: [PRE_ROLL_VAST_URL_1, PRE_ROLL_VAST_URL_2, ...]
@@ -183,8 +198,8 @@ const config = {
          url: [POST_ROLL_VAST_URL_1, POST_ROLL_VAST_URL_2, POST_ROLL_VAST_URL_3, ...]
        }]
      }
-   ]
- }
+    ]
+  }
  ...
 }
 const kalturaPlayer = KalturaPlayer.setup(config);
@@ -195,9 +210,12 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 An application may want to configure the player to play ads only from a specific time.  
 This can be achieved by `playAdsAfterTime` parameter. For example:
 
-```ecmascript 6
+```js
 const config = {
   ...
+  plugins: {
+    ima: {}
+  },
   advertising: {
     playAdsAfterTime: 10,
     adBreaks: [{
@@ -225,11 +243,14 @@ In this sample, the player will skip the pre-roll, and will play the mid-roll on
 This option can be used also when `playback.startTime` is set, which by default causes the player to skip the ads scheduled before the start time.
 Although, An application may want to force the player to play these ads. This can be achieved also by `playAdsAfterTime` parameter. For example:
 
-```ecmascript 6
+```js
 const config = {
   ...
   playback: {
     startTime: 60
+  },
+  plugins: {
+    ima: {}
   },
   advertising: {
     playAdsAfterTime: -1,
@@ -262,7 +283,13 @@ In addition to the current [ad events](./ads.md#ad-events) (`adbreakstart, adbre
 All the above features are supported not only by `advertising` config, but also by `playAdNow` api which gets an ad pod as a parameter.  
 The app may call it whenever it wants to play an ad pod.
 
-```ecmascript 6
+```js
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  }
+}
 const kalturaPlayer = KalturaPlayer.setup(config);
 kalturaPlayer.play();
 ... // playback
@@ -275,3 +302,57 @@ kalturaPlayer.ads.playAdNow(
     },
   ]);
 ```
+
+### Seekbar Cue Points
+
+To display cue points on the seekbar to indicates the ad break positions use `showAdBreakCuePoint` option, as following:
+
+```js
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    showAdBreakCuePoint: true,
+    adBreaks: [{
+      position: 60,
+      ads: [{
+          url: [MID_ROLL_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+```
+
+To customize the cue points style use `adBreakCuePointStyle` option. for example:
+
+```js
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    showAdBreakCuePoint: true,
+    adBreakCuePointStyle: {
+     marker: {
+       width: 10,
+       color: 'rgb(255, 0, 0)'
+      }
+    },
+    adBreaks: [{
+      position: 60,
+      ads: [{
+          url: [MID_ROLL_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+```
+
+All style options are listed [here](https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject).

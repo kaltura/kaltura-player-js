@@ -1,8 +1,9 @@
+conditions: v1
 sudo: required
 dist: xenial
 language: node_js
 node_js:
-  - "node"
+  - 'node'
 
 addons:
   chrome: stable
@@ -15,9 +16,65 @@ cache:
     - node_modules
 
 before_install:
- - export DISPLAY=:99.0
+  - export DISPLAY=:99.0
 
 script:
-- npm run eslint
-- npm run flow
-- npm run test
+  - set -ev
+  - yarn install
+
+stages:
+  - Tests
+  - Release canary
+  - Release
+
+jobs:
+  fast_finish: true
+  include:
+    # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
+    # publish canary package if on master
+    - stage: Release
+      if: (tag IS present)
+      name: 'Release'
+      script:
+        - conventional-github-releaser -p angular -t $GH_TOKEN
+        - currentVersion=$(npx -c 'echo "$npm_package_version"')
+        - chmod +x ./scripts/after_deploy.sh
+        - ./scripts/after_deploy.sh "$currentVersion" "$JENKINS_TAG_TOKEN"
+    # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
+    # publish canary package if on master
+    - stage: Release canary
+      if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
+      name: 'Release canary'
+      script:
+        - git checkout master
+        - echo "Run standard-version"
+        - sha=$(git rev-parse --verify --short HEAD)
+        - commitNumberAfterTag=$(git rev-list  `git rev-list --tags --no-walk --max-count=1`..HEAD --count)
+        - yarn run release --prerelease canary-${commitNumberAfterTag}-${sha} --skip.commit=true --skip.tag=true
+        - yarn upgrade @playkit-js/playkit-js@canary
+        - yarn upgrade @playkit-js/playkit-js-dash@canary
+        - yarn upgrade @playkit-js/playkit-js-hls@canary
+        - yarn upgrade @playkit-js/playkit-js-ui@canary
+        - yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
+        - yarn install
+        - yarn run build:ovp && yarn run build:ott && npm run commit:dist
+        - git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
+        - currentVersion=$(npx -c 'echo "$npm_package_version"')
+        - chmod +x ./scripts/after_deploy.sh
+        - ./scripts/after_deploy.sh "${currentVersion}" "$JENKINS_CANARY_TOKEN"
+    # Required tests
+    - stage: Tests
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: 'Running lint'
+      script:
+        - yarn run eslint
+    - stage: Tests
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: 'Running Flow type check'
+      script:
+        - yarn run flow
+    - stage: Tests
+      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      name: 'Running unit tests'
+      script:
+        - yarn run test

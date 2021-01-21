@@ -1,0 +1,67 @@
+{
+  "Hls": {
+    "hls": [
+      {
+        "mimetype": "application/x-mpegurl",
+        "url": "http://cdnbakmi.kaltura.com/p/243342/sp/24334200/playManifest/entryId/0_uka1msg4/flavorIds/1_vqhfu6uy,1_80sohj7p/format/applehttp/protocol/http/a.m3u8"
+      }
+    ]
+  },
+  "Mp4": {
+    "progressive": [
+      {
+        "mimetype": "video/mp4",
+        "url": "/base/test/assets/audios.mp4",
+        "id": "1_rsrdfext_10081,url"
+      }
+    ]
+  },
+  "MultipleSources": {
+    "progressive": [
+      {
+        "mimetype": "video/mp4",
+        "url": "/base/test/assets/audios.mp4",
+        "id": "id1",
+        "width": 200,
+        "height": 100,
+        "bandwidth": 100000,
+        "label": "label1"
+      },
+      {
+        "mimetype": "video/mp4",
+        "url": "/base/test/assets/mov_bbb.mp4",
+        "id": "id2",
+        "width": 100,
+        "height": 50,
+        "bandwidth": 200000,
+        "label": "label2"
+      }
+    ]
+  },
+  "UnknownMimetype": {
+    "progressive": [
+      {
+        "mimetype": "someMimeType",
+        "url": "some/url",
+        "id": "someId"
+      }
+    ]
+  },
+  "CorruptedUrl": {
+    "progressive": [
+      {
+        "mimetype": "video/mp4",
+        "url": "some/corrupted/url",
+        "id": "1_rsrdfext_10081,url"
+      }
+    ]
+  },
+  "Live": {
+    "hls": [
+      {
+        "mimetype": "application/x-mpegurl",
+        "url": "http://wms.shared.streamshow.it/carinatv/carinatv/playlist.m3u8"
+      }
+    ]
+  }
+}

@@ -1,5 +1,4 @@
 // @flow
-import {Utils} from '@playkit-js/playkit-js';
 
 /**
  * JSONP handler function, returns the direct manifest uri.
@@ -36,26 +35,4 @@ function getDirectManifestUri(data: Object, uri: string): string {
   }
   return uri;
 }
-
-/**
- * Add external stream redirect configuration to the general config.
- * @private
- * @param {KPOptionsObject} options - kaltura player options.
- * @returns {void}
- */
-function configureExternalStreamRedirect(options: KPOptionsObject): void {
-  let sourceOptions = Utils.Object.getPropertyPath(options, 'sources.options');
-  if (!sourceOptions) {
-    Utils.Object.mergeDeep(options, {
-      sources: {
-        options: {}
-      }
-    });
-    sourceOptions = options.sources && options.sources.options;
-  }
-  if (sourceOptions && typeof sourceOptions.redirectExternalStreamsHandler !== 'function') {
-    sourceOptions.redirectExternalStreamsHandler = getDirectManifestUri;
-  }
-}
-
-export {configureExternalStreamRedirect};
+export {getDirectManifestUri};

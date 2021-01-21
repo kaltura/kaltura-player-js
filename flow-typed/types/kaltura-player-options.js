@@ -5,14 +5,19 @@ declare type KPOptionsObject = {
   targetId: string,
   log?: KPLogConfigObject,
   disableUserCache?: boolean,
+  text?: PKTextConfigObject,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
-  plugins?: PKPluginsConfigObject,
+  plugins: KPPluginsConfigObject,
+  advertising: KPAdvertisingConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   playlist?: KPPlaylistObject,
-  ui: UIOptionsObject,
-  cast?: { [key: string]: any }
+  dimensions?: PKDimensionsConfig,
+  ui: KPUIOptionsObject,
+  cast?: {[key: string]: any},
+  productVersion?: string,
+  viewability?: KPViewabilityConfigObject
 };
 
 declare type PartialKPOptionsObject = {
@@ -21,11 +26,14 @@ declare type PartialKPOptionsObject = {
   disableUserCache?: boolean,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
-  plugins?: PKPluginsConfigObject,
+  plugins: KPPluginsConfigObject,
+  advertising: KPAdvertisingConfigObject,
   session?: PKSessionConfigObject,
   provider: ProviderOptionsObject,
-  ui?: UIOptionsObject,
-  cast?: { [key: string]: any }
+  playlist?: KPPlaylistObject,
+  dimensions?: PKDimensionsConfig,
+  ui?: KPUIOptionsObject,
+  cast?: {[key: string]: any}
 };
 
 declare type LegacyPartialKPOptionsObject = {
@@ -34,5 +42,5 @@ declare type LegacyPartialKPOptionsObject = {
   disableUserCache?: boolean,
   player?: PKPlayerOptionsObject,
   provider: ProviderOptionsObject,
-  ui?: UIOptionsObject
+  ui?: KPUIOptionsObject
 };

@@ -33,10 +33,7 @@ class TextStyleConverter {
       let digit = rgb[3];
       digit = Math.round(digit * 100) / 100;
       const alpha = Math.round(digit * 255);
-      hex += (alpha + 0x10000)
-        .toString(16)
-        .substr(-2)
-        .toUpperCase();
+      hex += (alpha + 0x10000).toString(16).substr(-2).toUpperCase();
     } else {
       hex += 'FF';
     }

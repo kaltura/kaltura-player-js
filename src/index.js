@@ -10,10 +10,6 @@ import * as providers from 'playkit-js-providers';
 // Import media source adapters
 import '@playkit-js/playkit-js-hls';
 import '@playkit-js/playkit-js-dash';
-// Import analytics plugin
-import 'playkit-js-analytics';
-// Import shaka-player
-import * as shaka from 'shaka-player';
 // Import setup method
 import {setup} from './setup';
 import {getPlayers, getPlayer} from './proxy';
@@ -22,12 +18,26 @@ import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
 
+// Import plugin framework
+import {Ad, AdBreak} from './common/ads';
+import {BasePlugin, registerPlugin} from './common/plugins';
+
 declare var __VERSION__: string;
 declare var __NAME__: string;
 declare var __PACKAGE_URL__: string;
 declare var __PLAYER_TYPE__: string;
 
+const PLAYER_NAME = __NAME__;
+const PLAYER_TYPE = __PLAYER_TYPE__;
+const VERSION = __VERSION__;
+
 PolyfillManager.installAll();
+
+/* eslint-disable no-import-assign */
+core.Ad = Ad;
+core.AdBreak = AdBreak;
+core.BasePlugin = BasePlugin;
+core.registerPlugin = registerPlugin;
 
 export {
   getPlayers,
@@ -36,10 +46,13 @@ export {
   ui,
   providers,
   setup,
-  shaka,
   cast,
   playlist,
-  __PLAYER_TYPE__ as PLAYER_TYPE,
-  __VERSION__ as VERSION,
-  __NAME__ as PLAYER_NAME
+  Ad,
+  AdBreak,
+  BasePlugin,
+  registerPlugin,
+  PLAYER_TYPE,
+  VERSION,
+  PLAYER_NAME
 };

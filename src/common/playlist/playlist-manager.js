@@ -1,11 +1,11 @@
 // @flow
 import {KalturaPlayer} from '../../kaltura-player';
-import {FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
+import {FakeEvent, Utils, EventManager, getLogger} from '@playkit-js/playkit-js';
 import {PlaylistEventType} from './playlist-event-type';
-import getLogger from '../utils/logger';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
 import {addKalturaPoster} from 'poster';
+import {mergeProviderPluginsConfig} from '../utils/setup-helpers';
 
 /**
  * @class PlaylistManager
@@ -13,7 +13,7 @@ import {addKalturaPoster} from 'poster';
  * @param {KPOptionsObject} options - The player config object
  */
 class PlaylistManager {
-  _logger: any = getLogger('PlaylistManager');
+  static _logger: any = getLogger('PlaylistManager');
   _player: KalturaPlayer;
   _eventManager: EventManager;
   _playlist: Playlist;
@@ -21,6 +21,7 @@ class PlaylistManager {
   _countdown: KPPlaylistCountdownOptions;
   _playerOptions: KPOptionsObject;
   _mediaInfoList: Array<ProviderMediaInfoObject>;
+  _appPluginConfig: KPPluginsConfigObject;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
     this._player = player;
@@ -30,6 +31,7 @@ class PlaylistManager {
     this._countdown = {duration: 10, showing: true};
     this._mediaInfoList = [];
     this._playerOptions = options;
+    this._appPluginConfig = {};
   }
 
   /**
@@ -42,7 +44,7 @@ class PlaylistManager {
    */
   configure(config: ?KPPlaylistObject, entryList: ?ProviderEntryListObject) {
     if (config) {
-      this._playlist.configure(config);
+      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.config, 'sources.options'));
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
@@ -91,7 +93,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   playNext(): void {
-    this._logger.debug('playNext');
+    PlaylistManager._logger.debug('playNext');
     const next = this._playlist.getNext(true);
     if (next.item) {
       this._setItem(next.item, next.index);
@@ -105,7 +107,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   playPrev(): void {
-    this._logger.debug('playPrev');
+    PlaylistManager._logger.debug('playPrev');
     const prev = this._playlist.prev;
     if (prev.item) {
       this._setItem(prev.item, prev.index);
@@ -120,7 +122,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   playItem(index: number): void {
-    this._logger.debug(`playItem(${index})`);
+    PlaylistManager._logger.debug(`playItem(${index})`);
     const item = this._playlist.items[index];
     if (item) {
       this._setItem(item, index);
@@ -254,7 +256,7 @@ class PlaylistManager {
   }
 
   _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
-    this._logger.debug(`Playing item number ${index}`, activeItem);
+    PlaylistManager._logger.debug(`Playing item number ${index}`, activeItem);
     const playback: Object = {loop: false};
     if (this._playlist.current.item) {
       // from the second item onwards
@@ -263,24 +265,40 @@ class PlaylistManager {
     this._player.configure({playback});
     this._playlist.activeItemIndex = index;
     if (activeItem.isPlayable()) {
+      this._resetProviderPluginsConfig();
       this._player.reset();
+      const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
+      const providerPlugins = mergedPluginsConfigAndFromApp[0];
+      this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
+      const media = {session: this._player.config.session, plugins: providerPlugins, sources: activeItem.sources};
       // $FlowFixMe
-      this._player.setMedia({session: this._player.config.session, plugins: {}, sources: activeItem.sources});
+      this._player.setMedia(media);
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
     } else {
       if (this._mediaInfoList[index]) {
+        this._resetProviderPluginsConfig();
         this._player.reset();
         this._player.configure({
           sources: activeItem.sources
         });
-        return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
-          this._playlist.updateItemSources(index, mediaConfig.sources);
+        return this._player.loadMedia(this._mediaInfoList[index]).then(() => {
+          this._playlist.updateItemSources(index, this._player.config.sources);
+          this._playlist.updateItemPlugins(index, this._player.config.plugins);
           this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
         });
       }
     }
     return Promise.reject();
+  }
+
+  _resetProviderPluginsConfig(): void {
+    this._player.configure({plugins: this._appPluginConfig});
+    this._appPluginConfig = {};
+  }
+
+  destroy(): void {
+    this._eventManager.destroy();
   }
 }
 

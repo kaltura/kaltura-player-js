@@ -1,7 +1,7 @@
 // @flow
 import {RemoteControl} from './remote-control';
 import {BaseRemotePlayer} from './base-remote-player';
-import getLogger from '../utils/logger';
+import {getLogger} from '@playkit-js/playkit-js';
 
 class RemotePlayerManager {
   static _logger: any = getLogger('RemotePlayerManager');
