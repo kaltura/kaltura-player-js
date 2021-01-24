@@ -10,18 +10,18 @@ const TEMPLATE: string = '{{thumbnailUrl}}/width/{{width}}/vid_slices/{{slices}}
 /**
  * Builds thumbnail slices url for the ui.
  * @private
- * @param {ProviderMediaConfigObject} mediaConfig - The prover media config.
+ * @param {KPMediaConfig} mediaConfig - The player media config.
  * @param {SeekbarConfig?} seekbarConfig - The seek bar config.
  * @returns {string} - The thumbnail slices url.
  */
-export function getThumbSlicesUrl(mediaConfig: ProviderMediaConfigObject, seekbarConfig?: SeekbarConfig): string {
+export function getThumbSlicesUrl(mediaConfig: KPMediaConfig, seekbarConfig?: SeekbarConfig): string {
   const mediaConfigPoster = mediaConfig.sources && mediaConfig.sources.poster;
   if (typeof mediaConfigPoster === 'string') {
     if (THUMBNAIL_REGEX.test(mediaConfigPoster)) {
       try {
         const model: Object = {
           thumbnailUrl: mediaConfigPoster,
-          ks: mediaConfig.session.ks,
+          ks: mediaConfig.session && mediaConfig.session.ks,
           width: (seekbarConfig && seekbarConfig.thumbsWidth) || DEFAULT_THUMBS_WIDTH,
           slices: (seekbarConfig && seekbarConfig.thumbsSlices) || DEFAULT_THUMBS_SLICES
         };
