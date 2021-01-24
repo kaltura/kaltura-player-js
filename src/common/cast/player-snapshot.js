@@ -35,8 +35,10 @@ class PlayerSnapshot {
     this.mediaConfig = player.getMediaConfig();
     this.advertising = player.config.plugins && player.config.plugins.ima;
     this.config = Utils.Object.mergeDeep({}, player.config, {
+      sources: {
+        startTime: getStartTime(player)
+      },
       playback: {
-        startTime: getStartTime(player),
         autoplay: player.currentTime === 0 ? true : !player.paused,
         audioLanguage: getLanguage(TrackType.AUDIO, player),
         textLanguage: getLanguage(TrackType.TEXT, player)
@@ -62,8 +64,8 @@ function getStartTime(player: KalturaPlayer): number {
     } else {
       return -1;
     }
-  } else if (!player.isCasting() && !player.currentTime && player.config.playback.startTime > -1) {
-    return player.config.playback.startTime;
+  } else if (!player.isCasting() && !player.currentTime && player.config.sources.startTime > -1) {
+    return player.config.sources.startTime;
   }
   return player.currentTime;
 }

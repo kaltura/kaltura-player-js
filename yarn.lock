@@ -1135,10 +1135,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.21.0.tgz#3c59d70576b9ffc6a9550faaeaae65c4673a4495"
   integrity sha512-C2m0OW4c1eXZ+maTFXlttUaV4gy91CXG5SgBUz/D5r26gx1tbcrHP74PZatUG2zpDYpPkcERE0PKpJsYfE31ng==
 
-"@playkit-js/playkit-js-hls@1.22.0":
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.22.0.tgz#e587bd1c5424a0b2109ed9ddb7af0a9417a1a4af"
-  integrity sha512-dooEp75sqamcY1CBq1nKp0iVCyz0n763+7HKfeIoSpApzBvg9lyYQRyjy61mlIwY5k/GBAvk6GGf1gzvNUPTAQ==
+"@playkit-js/playkit-js-hls@1.23.0-canary.b24f0fd":
+  version "1.23.0-canary.b24f0fd"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.23.0-canary.b24f0fd.tgz#00bfb1efe36b4ae311ef977434ad2e1771fec408"
+  integrity sha512-AMDnh7C6VKD5qMKkZetat5B0v1gfMwKeJd0ZtU32GS9S5ZVqIXXdZYLigAynSm1hePuZm+2GwCATFWA1aAcocg==
 
 "@playkit-js/playkit-js-ui@0.62.0":
   version "0.62.0"
@@ -1150,10 +1150,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.66.0":
-  version "0.66.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.66.0.tgz#70f8ccec7b3bf1eecaf9595eeeb8eab4a0c24f16"
-  integrity sha512-vcuh5D0WobHUQd1qwori+j6Es1AbniaazMOV72Te+hcn1xc5al/61k6GJ15J6eW3nY/7DwUw2twy3azhQWcqhA==
+"@playkit-js/playkit-js@0.67.0-canary.895f16b":
+  version "0.67.0-canary.895f16b"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.67.0-canary.895f16b.tgz#b326063f496ceb408d2bbf932ceb133c10d1df7a"
+  integrity sha512-OhzgtJyXAaDLZYXn4QMqAzxtAKNdjma+YBNMcQpFEnjRbcMLf8BMv5X584Qh1SBmfFG1sviZ/xgA+a+LQsc9HQ==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^0.7.21"
@@ -5302,6 +5302,11 @@ interpret@^1.0.0, interpret@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
+
+intersection-observer@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.12.0.tgz#6c84628f67ce8698e5f9ccf857d97718745837aa"
+  integrity sha512-2Vkz8z46Dv401zTWudDGwO7KiGHNDkMv417T5ItcNYfmvHR/1qCTVBO9vwH8zZmQ0WkA/1ARwpysR9bsnop4NQ==
 
 into-stream@^3.1.0:
   version "3.1.0"
