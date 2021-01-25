@@ -18,6 +18,7 @@ The configuration uses the following structure:
   targetId: string,
   log: PKLogConfigObject,
   disableUserCache: boolean,
+  text: PKTextConfigObject,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
   playlist: KPPlaylistObject,
@@ -63,6 +64,14 @@ The configuration uses the following structure:
 
 ##
 
+> ### config.text
+>
+> ##### Type: [PKTextConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configtext)
+>
+> ##### Description: Defines the text configuration.
+>
+> ##
+>
 > ### config.playback
 >
 > ##### Type: [PKPlaybackConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configplayback)
