@@ -49,6 +49,15 @@ class AdsController extends FakeEventTarget implements IAdsController {
   /**
    * @instance
    * @memberof AdsController
+   * @returns {boolean} - Whether an ad is playing.
+   */
+  isAdPlaying(): boolean {
+    return this.isAdBreak && this._isAdPlaying;
+  }
+
+  /**
+   * @instance
+   * @memberof AdsController
    * @returns {boolean} - Whether we're in an ad break.
    */
   isAdBreak(): boolean {
@@ -315,10 +324,6 @@ class AdsController extends FakeEventTarget implements IAdsController {
       AdsController._logger.debug(AdEventType.ALL_ADS_COMPLETED);
       this.dispatchEvent(new FakeEvent(AdEventType.ALL_ADS_COMPLETED));
     }
-  }
-
-  get isAdPlaying(): boolean {
-    return this.isAdBreak && this._isAdPlaying;
   }
 
   _onAdError(event: FakeEvent): void {
