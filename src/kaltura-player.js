@@ -57,6 +57,7 @@ class KalturaPlayer extends FakeEventTarget {
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
+  _adIsPlaying: boolean = false;
 
   /**
    * Whether the player browser tab is active and in the scroll view
@@ -302,6 +303,7 @@ class KalturaPlayer extends FakeEventTarget {
     const targetId = this.config.ui.targetId;
     this._reset = true;
     this._playbackStart = false;
+    this._adIsPlaying = false;
     this._firstPlay = true;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
@@ -667,6 +669,12 @@ class KalturaPlayer extends FakeEventTarget {
       this._playbackStart = true;
     });
     this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
+    this._eventManager.listen(this, AdEventType.AD_RESUMED, () => {
+      this._adIsPlaying = true;
+    });
+    this._eventManager.listen(this, AdEventType.AD_PAUSED, () => {
+      this._adIsPlaying = false;
+    });
     this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
       this._eventManager.listen(this, AdEventType.AD_LOADED, (event: FakeEvent) => {
@@ -692,6 +700,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   _onPlayerReset(): void {
     this._playbackStart = false;
+    this._adIsPlaying = false;
     if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
       this._viewabilityManager.unObserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
     }
@@ -730,6 +739,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._localPlayer.posterManager.hide();
       this._localPlayer.hideBlackCover();
     }
+    this._adIsPlaying = true;
   }
 
   _onAdAutoplayFailed(event: FakeEvent): void {
@@ -878,7 +888,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   _handleAutoPause(visible: boolean) {
     if (!visible) {
-      if (!this.isInPictureInPicture() && this._playbackStart && !this.paused) {
+      if (!this.isInPictureInPicture() && this._playbackStart && (!this.paused || this._adIsPlaying)) {
         this.pause();
         this._autoPaused = true;
       }
