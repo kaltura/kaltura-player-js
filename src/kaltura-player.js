@@ -878,7 +878,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   _handleAutoPause(visible: boolean) {
     if (!visible) {
-      if (!this.isInPictureInPicture() && this._playbackStart && (!this.paused || this._adsController.isAdPlaying())) {
+      if (!this.isInPictureInPicture() && this._playbackStart && (!this.paused || (this._adsController && this._adsController.isAdPlaying()))) {
         this.pause();
         this._autoPaused = true;
       }
