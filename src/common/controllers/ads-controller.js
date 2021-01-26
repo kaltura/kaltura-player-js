@@ -319,6 +319,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _onAdsCompleted(): void {
+    this._isAdPlaying = false;
     if (this._adsPluginControllers.every(controller => controller.done) && this._configAdBreaks.every(adBreak => adBreak.played)) {
       this._allAdsCompleted = true;
       AdsController._logger.debug(AdEventType.ALL_ADS_COMPLETED);
