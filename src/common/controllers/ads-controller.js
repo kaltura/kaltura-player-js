@@ -143,6 +143,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_START, event => this._onAdBreakStart(event));
     this._eventManager.listen(this._player, AdEventType.AD_LOADED, () => this._onAdLoaded());
     this._eventManager.listen(this._player, AdEventType.AD_STARTED, event => this._onAdStarted(event));
+    this._eventManager.listen(this._player, AdEventType.AD_COMPLETED, () => this._onAdCompleted());
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_END, () => this._onAdBreakEnd());
     this._eventManager.listen(this._player, AdEventType.ADS_COMPLETED, () => this._onAdsCompleted());
     this._eventManager.listen(this._player, AdEventType.AD_ERROR, event => this._onAdError(event));
@@ -318,8 +319,11 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._ad = null;
   }
 
-  _onAdsCompleted(): void {
+  _onAdCompleted(): void {
     this._isAdPlaying = false;
+  }
+
+  _onAdsCompleted(): void {
     if (this._adsPluginControllers.every(controller => controller.done) && this._configAdBreaks.every(adBreak => adBreak.played)) {
       this._allAdsCompleted = true;
       AdsController._logger.debug(AdEventType.ALL_ADS_COMPLETED);
