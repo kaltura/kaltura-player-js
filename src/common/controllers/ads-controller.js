@@ -27,6 +27,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _snapback: number;
   _configAdBreaks: Array<RunTimeAdBreakObject>;
   _adIsLoading: boolean;
+  _isAdPlaying: boolean;
 
   constructor(player: Player, adsPluginControllers: Array<IAdsPluginController>) {
     super();
@@ -43,6 +44,15 @@ class AdsController extends FakeEventTarget implements IAdsController {
    */
   get allAdsCompleted(): boolean {
     return this._allAdsCompleted;
+  }
+
+  /**
+   * @instance
+   * @memberof AdsController
+   * @returns {boolean} - Whether an ad is playing.
+   */
+  isAdPlaying(): boolean {
+    return this.isAdBreak() && this._isAdPlaying;
   }
 
   /**
@@ -124,6 +134,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._adPlayed = false;
     this._snapback = 0;
     this._adIsLoading = false;
+    this._isAdPlaying = false;
   }
 
   _addBindings(): void {
@@ -132,6 +143,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_START, event => this._onAdBreakStart(event));
     this._eventManager.listen(this._player, AdEventType.AD_LOADED, () => this._onAdLoaded());
     this._eventManager.listen(this._player, AdEventType.AD_STARTED, event => this._onAdStarted(event));
+    this._eventManager.listen(this._player, AdEventType.AD_COMPLETED, () => (this._isAdPlaying = false));
     this._eventManager.listen(this._player, AdEventType.AD_BREAK_END, () => this._onAdBreakEnd());
     this._eventManager.listen(this._player, AdEventType.ADS_COMPLETED, () => this._onAdsCompleted());
     this._eventManager.listen(this._player, AdEventType.AD_ERROR, event => this._onAdError(event));
@@ -139,6 +151,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._eventManager.listen(this._player, CustomEventType.PLAYER_DESTROY, () => this._destroy());
     this._eventManager.listenOnce(this._player, Html5EventType.ENDED, () => this._onEnded());
     this._eventManager.listenOnce(this._player, CustomEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
+    this._eventManager.listen(this._player, AdEventType.AD_RESUMED, () => (this._isAdPlaying = true));
+    this._eventManager.listen(this._player, AdEventType.AD_PAUSED, () => (this._isAdPlaying = false));
   }
 
   _handleConfiguredAdBreaks(): void {
@@ -293,6 +307,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _onAdStarted(event: FakeEvent): void {
     this._ad = event.payload.ad;
     this._adPlayed = true;
+    this._isAdPlaying = true;
   }
 
   _onAdBreakEnd(): void {
@@ -310,15 +325,14 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   _onAdError(event: FakeEvent): void {
     this._adIsLoading = false;
-    if (
-      event.payload.severity === Error.Severity.CRITICAL &&
-      this._adsPluginControllers.every(controller => controller.done) &&
-      this._configAdBreaks.every(adBreak => adBreak.played)
-    ) {
-      this._allAdsCompleted = true;
-      if (this._adPlayed) {
-        AdsController._logger.debug(AdEventType.ALL_ADS_COMPLETED);
-        this.dispatchEvent(new FakeEvent(AdEventType.ALL_ADS_COMPLETED));
+    if (event.payload.severity === Error.Severity.CRITICAL) {
+      this._isAdPlaying = false;
+      if (this._adsPluginControllers.every(controller => controller.done) && this._configAdBreaks.every(adBreak => adBreak.played)) {
+        this._allAdsCompleted = true;
+        if (this._adPlayed) {
+          AdsController._logger.debug(AdEventType.ALL_ADS_COMPLETED);
+          this.dispatchEvent(new FakeEvent(AdEventType.ALL_ADS_COMPLETED));
+        }
       }
     }
   }
