@@ -119,28 +119,32 @@ class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getMediaConfig(mediaInfo);
-    providerResult
-      .then(
-        (providerMediaConfig: ProviderMediaConfigObject) => {
-          const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
-          if (mediaOptions) {
-            mediaConfig.sources = mediaConfig.sources || {};
-            mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
+    return new Promise((resolve, reject) => {
+      this._provider
+        .getMediaConfig(mediaInfo)
+        .then(
+          (providerMediaConfig: ProviderMediaConfigObject) => {
+            const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+            if (mediaOptions) {
+              mediaConfig.sources = mediaConfig.sources || {};
+              mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
+            }
+            const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+            mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+            this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
+            this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
+            this.setMedia(mediaConfig);
+            resolve(mediaConfig);
+          },
+          e => {
+            this._localPlayer.dispatchEvent(
+              new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
+            );
+            reject(e);
           }
-          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
-          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
-          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-          this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
-          this.setMedia(mediaConfig);
-        },
-        e =>
-          this._localPlayer.dispatchEvent(
-            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-          )
-      )
-      .then(() => this._maybeSetEmbedConfig());
-    return providerResult;
+        )
+        .then(() => this._maybeSetEmbedConfig());
+    });
   }
 
   setMedia(mediaConfig: KPMediaConfig): void {
