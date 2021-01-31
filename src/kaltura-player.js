@@ -137,10 +137,9 @@ class KalturaPlayer extends FakeEventTarget {
             return mediaConfig;
           },
           e => {
-            this._localPlayer.dispatchEvent(
-              new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-            );
-            reject(e);
+            const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+            this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+            reject(error);
           }
         )
         .then(mediaConfig => {
