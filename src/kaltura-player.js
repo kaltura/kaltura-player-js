@@ -134,7 +134,7 @@ class KalturaPlayer extends FakeEventTarget {
             this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
             this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
             this.setMedia(mediaConfig);
-            resolve(mediaConfig);
+            return mediaConfig;
           },
           e => {
             this._localPlayer.dispatchEvent(
@@ -143,7 +143,10 @@ class KalturaPlayer extends FakeEventTarget {
             reject(e);
           }
         )
-        .then(() => this._maybeSetEmbedConfig());
+        .then(mediaConfig => {
+          this._maybeSetEmbedConfig();
+          resolve(mediaConfig);
+        });
     });
   }
 
@@ -619,6 +622,7 @@ class KalturaPlayer extends FakeEventTarget {
   get TextStyle(): typeof TextStyle {
     return this._localPlayer.TextStyle;
   }
+
   get ViewabilityType(): {[type: string]: string} {
     return ViewabilityType;
   }
