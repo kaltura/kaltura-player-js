@@ -181,15 +181,19 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     KalturaPlayer._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getPlaylistConfig(playlistInfo);
-    providerResult.then(
-      playlistData => this.setPlaylist(playlistData, playlistConfig),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
-    return providerResult;
+    return new Promise((resolve, reject) => {
+      this._provider.getPlaylistConfig(playlistInfo).then(
+        playlistData => {
+          this.setPlaylist(playlistData, playlistConfig);
+          resolve(playlistData);
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(error);
+        }
+      );
+    });
   }
 
   /**
@@ -205,16 +209,19 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     KalturaPlayer._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getEntryListConfig(entryList);
-
-    providerResult.then(
-      playlistData => this.setPlaylist(playlistData, playlistConfig, entryList),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
-    return providerResult;
+    return new Promise((resolve, reject) => {
+      this._provider.getEntryListConfig(entryList).then(
+        playlistData => {
+          this.setPlaylist(playlistData, playlistConfig, entryList);
+          resolve(playlistData);
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(error);
+        }
+      );
+    });
   }
 
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {

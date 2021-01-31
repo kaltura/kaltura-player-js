@@ -89,8 +89,8 @@ describe('kaltura player api', function () {
           errorEventTriggered = true;
         });
         kalturaPlayer.loadMedia({}).catch(error => {
-          error.data.should.equal('Missing mandatory parameter');
-          error.success.should.be.false;
+          error.data.data.should.equal('Missing mandatory parameter');
+          error.data.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
         });
@@ -221,8 +221,8 @@ describe('kaltura player api', function () {
           errorEventTriggered = true;
         });
         kalturaPlayer.loadPlaylist({}).catch(error => {
-          error.data.should.equal('Missing mandatory parameter');
-          error.success.should.be.false;
+          error.data.data.should.equal('Missing mandatory parameter');
+          error.data.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
         });
@@ -266,8 +266,8 @@ describe('kaltura player api', function () {
           errorEventTriggered = true;
         });
         kalturaPlayer.loadPlaylistByEntryList({}).catch(error => {
-          error.data.should.equal('Missing mandatory parameter');
-          error.success.should.be.false;
+          error.data.data.should.equal('Missing mandatory parameter');
+          error.data.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
         });
