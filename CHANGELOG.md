@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/kaltura/kaltura-player-js/compare/v1.3.0...v1.4.0) (2021-01-28)
+
+
+### Bug Fixes
+
+* **ads-controller:** sources.startTime isn't always exists and can change from source to source ([#399](https://github.com/kaltura/kaltura-player-js/issues/399)) ([3965295](https://github.com/kaltura/kaltura-player-js/commit/3965295))
+* **FEC-10687:** Allow partial config in setMedia API ([#394](https://github.com/kaltura/kaltura-player-js/issues/394)) ([aab1eab](https://github.com/kaltura/kaltura-player-js/commit/aab1eab))
+* **FEC-10945:** ad / bumper isn't paused with autoPause ([#404](https://github.com/kaltura/kaltura-player-js/issues/404)) ([6495047](https://github.com/kaltura/kaltura-player-js/commit/6495047))
+* update Shaka to fix the memory leak ([#396](https://github.com/kaltura/kaltura-player-js/issues/396)) ([f6cc4dd](https://github.com/kaltura/kaltura-player-js/commit/f6cc4dd))
+
+
+### Features
+
+* **FEC-10686:** move startTime config from playback to sources ([#398](https://github.com/kaltura/kaltura-player-js/issues/398)) ([bf909e0](https://github.com/kaltura/kaltura-player-js/commit/bf909e0))
+* **FEC-10709, FEC-10712:** player visibility - Auto-pause when player is out of view, Autoplay only when player is in view ([#395](https://github.com/kaltura/kaltura-player-js/issues/395)) ([d1d3feb](https://github.com/kaltura/kaltura-player-js/commit/d1d3feb))
+
+
+
 ## [1.3.0](https://github.com/kaltura/kaltura-player-js/compare/v1.2.0...v1.3.0) (2021-01-07)
 
 
