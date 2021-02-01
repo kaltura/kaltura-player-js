@@ -282,9 +282,9 @@ class PlaylistManager {
         this._player.configure({
           sources: activeItem.sources
         });
-        return this._player.loadMedia(this._mediaInfoList[index]).then(() => {
-          this._playlist.updateItemSources(index, this._player.config.sources);
-          this._playlist.updateItemPlugins(index, this._player.config.plugins);
+        return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
+          this._playlist.updateItemSources(index, mediaConfig.sources);
+          this._playlist.updateItemPlugins(index, mediaConfig.plugins);
           this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
         });
       }
