@@ -674,11 +674,23 @@ class KalturaPlayer extends FakeEventTarget {
           payload: {ad}
         } = event;
         if (ad && ad.linear && ad.position === 1) {
-          this._eventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this._detachMediaSource());
+          this._eventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => {
+            if (!this._adsController.isImaDAIActive()) {
+              this._detachMediaSource();
+            }
+          });
         }
       });
-      this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
-      this._eventManager.listen(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
+      this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => {
+        if (!this._adsController.isImaDAIActive()) {
+          this._attachMediaSource();
+        }
+      });
+      this._eventManager.listen(this, AdEventType.AD_ERROR, () => {
+        if (!this._adsController.isImaDAIActive()) {
+          this._attachMediaSource();
+        }
+      });
     }
   }
 

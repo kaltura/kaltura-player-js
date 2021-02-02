@@ -121,6 +121,11 @@ class AdsController extends FakeEventTarget implements IAdsController {
     }
   }
 
+  isImaDAIActive(): void {
+    const activeController = this._adsPluginControllers.find(controller => controller.active);
+    return activeController.name === 'imadai';
+  }
+
   _init(): void {
     this._initMembers();
     this._addBindings();
