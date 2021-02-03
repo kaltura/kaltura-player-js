@@ -1,9 +1,11 @@
 import {getThumbSlicesUrl} from '../../../../src/common/utils/thumbs';
+import {MediaType} from '@playkit-js/playkit-js';
 
 describe('getThumbSlicesUrl', function () {
   const fakeData = {
     sources: {
-      poster: '//my-thumb-service.com/p/1/thumbnail/entry_id/2/version/3'
+      poster: '//my-thumb-service.com/p/1/thumbnail/entry_id/2/version/3',
+      type: MediaType.VOD
     },
     session: {
       ks: 'my-ks'
@@ -30,6 +32,11 @@ describe('getThumbSlicesUrl', function () {
 
   it('should get empty thumbnail slices url for non valid string given', function () {
     fakeData.sources.poster = '//my-thumb-service.com/p/1/entry_id/2/version/3';
+    getThumbSlicesUrl(fakeData, fakeUIConfig).should.equals(``);
+  });
+
+  it('should get empty thumbnail slices url for live content', function () {
+    fakeData.sources.type = MediaType.LIVE;
     getThumbSlicesUrl(fakeData, fakeUIConfig).should.equals(``);
   });
 });
