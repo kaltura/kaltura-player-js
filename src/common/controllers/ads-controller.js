@@ -341,22 +341,36 @@ class AdsController extends FakeEventTarget implements IAdsController {
     return controller.name === 'bumper';
   }
 
+  _isIMA(controller: IAdsPluginController): boolean {
+    return controller.name === 'ima';
+  }
+
+  _isIMADAI(controller: IAdsPluginController): boolean {
+    return controller.name === 'imadai';
+  }
+
   _onEnded(): void {
     if (this._adIsLoading) {
       return;
     }
     const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
-    const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
+    const imaCtrl = this._adsPluginControllers.find(controller => this._isIMA(controller));
+    const imaDaiCtrl = this._adsPluginControllers.find(controller => this._isIMADAI(controller));
     const bumperCompleted =
       bumperCtrl && typeof bumperCtrl.onPlaybackEnded === 'function' ? () => bumperCtrl.onPlaybackEnded() : () => Promise.resolve();
-    const adCompleted = adCtrl && typeof adCtrl.onPlaybackEnded === 'function' ? () => adCtrl.onPlaybackEnded() : () => Promise.resolve();
+    const imaCompleted = imaCtrl && typeof imaCtrl.onPlaybackEnded === 'function' ? () => imaCtrl.onPlaybackEnded() : () => Promise.resolve();
+    const imaDaiCompleted =
+      imaDaiCtrl && typeof imaDaiCtrl.onPlaybackEnded === 'function' ? () => imaDaiCtrl.onPlaybackEnded() : () => Promise.resolve();
     if (!(this._adBreaksLayout.includes(-1) || this._adBreaksLayout.includes('100%'))) {
       this._allAdsCompleted = true;
     }
     // $FlowFixMe
-    bumperCompleted().finally(() => {
+    imaDaiCompleted().finally(() => {
       // $FlowFixMe
-      adCompleted().finally(() => this._handleConfiguredPostroll());
+      bumperCompleted().finally(() => {
+        // $FlowFixMe
+        imaCompleted().finally(() => this._handleConfiguredPostroll());
+      });
     });
   }
 
