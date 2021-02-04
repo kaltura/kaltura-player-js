@@ -45,6 +45,7 @@ class KalturaPlayer extends FakeEventTarget {
   _controllerProvider: ControllerProvider;
   _adsController: ?AdsController;
   _eventManager: EventManager = new EventManager();
+  _attachEventManager: EventManager;
   _mediaInfo: ?ProviderMediaInfoObject = null;
   _remotePlayer: ?BaseRemotePlayer = null;
   _pluginManager: PluginManager = new PluginManager();
@@ -291,6 +292,9 @@ class KalturaPlayer extends FakeEventTarget {
     if (!this._reset) {
       this._reset = true;
       this._firstPlay = true;
+      if (this._attachEventManager) {
+        this._attachEventManager.removeAll();
+      }
       this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
@@ -669,16 +673,19 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
     this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
+      this._attachEventManager = new EventManager();
       this._eventManager.listen(this, AdEventType.AD_LOADED, (event: FakeEvent) => {
         const {
           payload: {ad}
         } = event;
-        if (ad && ad.linear && ad.position === 1) {
-          this._eventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this._detachMediaSource());
+        if (ad && ad.linear && ad.position === 1 && !ad.inStream) {
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this._detachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
+        } else {
+          this._attachEventManager.removeAll();
         }
       });
-      this._eventManager.listen(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
-      this._eventManager.listen(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
     }
   }
 

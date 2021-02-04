@@ -21,6 +21,7 @@ class Ad {
   _height: number;
   _bitrate: number;
   _bumper: boolean;
+  _inStream: boolean;
   _vpaid: boolean;
 
   constructor(id: string, options: PKAdOptions) {
@@ -39,6 +40,7 @@ class Ad {
     this._height = options.height || 0;
     this._bitrate = options.bitrate || 0;
     this._bumper = options.bumper;
+    this._inStream = options.inStream || false;
     this._vpaid = options.vpaid || false;
   }
 
@@ -180,6 +182,15 @@ class Ad {
   /**
    * @instance
    * @memberof Ad
+   * @return {boolean} - Whether the ad is imadai.
+   */
+  get inStream(): boolean {
+    return this._inStream;
+  }
+
+  /**
+   * @instance
+   * @memberof Ad
    * @return {string} - Whether the ad is skippable or not.
    */
   get skippable(): boolean {
@@ -213,6 +224,7 @@ class Ad {
       height: this.height,
       bitrate: this.bitrate,
       bumper: this.bumper,
+      inStream: this.inStream,
       vpaid: this.vpaid
     };
   }
