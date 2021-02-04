@@ -356,13 +356,8 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  */
 function _configureAdsWithMSE(options: KPOptionsObject): void {
   const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
-  //dai should play without playAdsWithMSE config
   if (typeof playAdsWithMSE !== 'boolean') {
-    if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
-      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', false);
-    } else {
-      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
-    }
+    options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
   }
   const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
   const disableMediaPreloadBumper = Utils.Object.getPropertyPath(options, 'plugins.bumper.disableMediaPreload');
