@@ -200,7 +200,7 @@ class Ad {
   /**
    * @instance
    * @memberof Ad
-   * @return {string} - Whether the ad is vpaid or not.
+   * @return {boolean} - Whether the ad is vpaid or not.
    */
   get vpaid(): boolean {
     return this._vpaid;
