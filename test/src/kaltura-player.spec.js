@@ -90,7 +90,7 @@ describe('kaltura player api', function () {
         });
         kalturaPlayer.loadMedia({}).catch(error => {
           error.data.should.equal('Missing mandatory parameter');
-          error.data.success.should.be.false;
+          error.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
         });
@@ -222,7 +222,7 @@ describe('kaltura player api', function () {
         });
         kalturaPlayer.loadPlaylist({}).catch(error => {
           error.data.should.equal('Missing mandatory parameter');
-          error.data.success.should.be.false;
+          error.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
         });
@@ -267,7 +267,7 @@ describe('kaltura player api', function () {
         });
         kalturaPlayer.loadPlaylistByEntryList({}).catch(error => {
           error.data.should.equal('Missing mandatory parameter');
-          error.data.success.should.be.false;
+          error.success.should.be.false;
           errorEventTriggered.should.be.true;
           done();
         });
