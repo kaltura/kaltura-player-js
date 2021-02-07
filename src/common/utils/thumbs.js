@@ -1,5 +1,6 @@
 // @flow
 import evaluate from './evaluate';
+import {MediaType} from '@playkit-js/playkit-js';
 
 export const DEFAULT_THUMBS_WIDTH: number = 164;
 export const DEFAULT_THUMBS_SLICES: number = 100;
@@ -16,7 +17,8 @@ const TEMPLATE: string = '{{thumbnailUrl}}/width/{{width}}/vid_slices/{{slices}}
  */
 export function getThumbSlicesUrl(mediaConfig: KPMediaConfig, seekbarConfig?: SeekbarConfig): string {
   const mediaConfigPoster = mediaConfig.sources && mediaConfig.sources.poster;
-  if (typeof mediaConfigPoster === 'string') {
+  const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;
+  if (typeof mediaConfigPoster === 'string' && isVod) {
     if (THUMBNAIL_REGEX.test(mediaConfigPoster)) {
       try {
         const model: Object = {
