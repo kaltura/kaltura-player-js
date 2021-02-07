@@ -139,7 +139,7 @@ class KalturaPlayer extends FakeEventTarget {
           e => {
             const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
             this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
-            reject(error);
+            reject(e);
           }
         )
         .then(mediaConfig => {
@@ -190,7 +190,7 @@ class KalturaPlayer extends FakeEventTarget {
         e => {
           const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
           this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
-          reject(error);
+          reject(e);
         }
       );
     });
@@ -218,7 +218,7 @@ class KalturaPlayer extends FakeEventTarget {
         e => {
           const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
           this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
-          reject(error);
+          reject(e);
         }
       );
     });
