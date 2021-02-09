@@ -1130,15 +1130,15 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@1.21.2":
-  version "1.21.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.21.2.tgz#0c6b20352aae16827b0afb2b8634fc2decb3f151"
-  integrity sha512-D5R3fU4vlX9S1HOz87hmFn140qUrYHW5Y2gEKz9s9EkZiOJLFPR9IKGGjcSZCUVsdSAh0E2VC2+TQb+36TbzBw==
+"@playkit-js/playkit-js-dash@1.21.3-canary.98282f5":
+  version "1.21.3-canary.98282f5"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.21.3-canary.98282f5.tgz#a3e63723c9e0a984fb6a0a4dd15fb6a9976ec527"
+  integrity sha512-2echmiDoTd8eEtjt4dP8SvQNMjoPfHlY6V2v0BgwWK4bCiBpRelWO5+AauAxBLzco7DmLArSjb2L6jQSsJiLYA==
 
-"@playkit-js/playkit-js-hls@1.23.0":
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.23.0.tgz#6a4847f38d8dc0659f24828ca29726f922e61322"
-  integrity sha512-vn45UmQKo1TPhCftoSjUnYPzSXZzZHIU5WsSNIwCz7wy2DUEvKGATnRxk7wuGvQjido2vRmoRb9dw/pzBoTPUw==
+"@playkit-js/playkit-js-hls@1.23.1-canary.cb04819":
+  version "1.23.1-canary.cb04819"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.23.1-canary.cb04819.tgz#a757d64b396b4a230bf673adc2bd569fc86950cd"
+  integrity sha512-Mss7LVxDO/k0oRca/OCfhgQJMit1uSWXjwEpCcGI76midxuu8hJuqXzSrPJK8pftPUp8WCwmqVcyf5192B8nVQ==
 
 "@playkit-js/playkit-js-ui@0.63.0":
   version "0.63.0"
