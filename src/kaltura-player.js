@@ -35,6 +35,7 @@ import {
   AutoPlayType
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
+import {PrebidManager} from './common/ads/prebid';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -54,6 +55,7 @@ class KalturaPlayer extends FakeEventTarget {
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
+  _prebidManager: PrebidManager;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
@@ -707,9 +709,16 @@ class KalturaPlayer extends FakeEventTarget {
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
     this._maybeCreateAdsController();
-    this.reset();
-    this._pluginManager.loadMedia();
-    this._reset = false;
+    const loadMediaPlugin = () => {
+      this.reset();
+      this._pluginManager.loadMedia();
+      this._reset = false;
+    };
+    if (this._prebidManager) {
+      this._prebidManager.bidPromise.finally(() => loadMediaPlugin());
+    } else {
+      loadMediaPlugin();
+    }
   }
 
   _onEnded(): void {
@@ -750,6 +759,9 @@ class KalturaPlayer extends FakeEventTarget {
     const middlewares = [];
     const uiComponents = [];
     const plugins = [];
+    if (!this._prebidManager && pluginsConfig.ima && !pluginsConfig.ima.disable) {
+      this._prebidManager = new PrebidManager(this);
+    }
     Object.keys(pluginsConfig).forEach(name => {
       // If the plugin is already exists in the registry we are updating his config
       const plugin = this._pluginManager.get(name);
