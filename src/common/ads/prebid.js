@@ -124,18 +124,20 @@ class PrebidManager {
     this._prebid.que.push(() => {
       this._prebid.addAdUnits(config.adUnit);
 
-      this._prebid.setConfig(config.options);
+      if (config.options) {
+        this._prebid.setConfig(config.options);
+      }
 
       const timer = setTimeout(() => this._bidPromise.reject(), config.timeout);
       this._prebid.requestBids({
         bidsBackHandler: bids => {
           KalturaPlayer._logger.debug('returned bids', bids);
-          const VASTUrl = this._prebid.adServers.dfp.buildVideoUrl({
-            adUnit: config.adUnit,
-            params: config.params
-          });
+          let requestParams = {adUnit: config.adUnit};
+          if (config.params) {
+            requestParams.params = config.params;
+          }
+          const VASTUrl = this._prebid.adServers.dfp.buildVideoUrl(requestParams);
           this._player._configureOrLoadPlugins({ima: {adTagUrl: VASTUrl}});
-          console.error(this._player.config.plugins.ima);
           this._bidPromise.resolve();
           clearTimeout(timer);
         }
