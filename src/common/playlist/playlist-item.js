@@ -76,8 +76,8 @@ class PlaylistItem {
   }
 
   /**
-   * Playlist item plugins
-   * @type {KPPluginsConfigObject}
+   * Playlist item index
+   * @type {number}
    * @instance
    * @memberof PlaylistItem
    */
