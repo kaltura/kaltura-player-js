@@ -69,11 +69,11 @@ class PrebidManager {
   /**
    * load the prebid
    * @private
-   * @param {Object} config - The prebid config.
+   * @param {KPPrebidConfig} config - The prebid config.
    * @returns {void}
    * @memberof PrebidManager
    */
-  _load(config: Object): void {
+  _load(config: KPPrebidConfig): void {
     this._prebid.que.push(() => {
       this._prebid.addAdUnits(config.adUnit);
 
@@ -85,7 +85,10 @@ class PrebidManager {
       this._prebid.requestBids({
         bidsBackHandler: bids => {
           KalturaPlayer._logger.debug('returned bids', bids);
-          let requestParams = {adUnit: config.adUnit};
+          let requestParams = {};
+          if (config.adUnit) {
+            requestParams.adUnit = config.adUnit;
+          }
           if (config.params) {
             requestParams.params = config.params;
           }

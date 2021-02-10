@@ -56,7 +56,7 @@ class KalturaPlayer extends FakeEventTarget {
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
-  _prebidMiddleware: PrebidMiddleware;
+  _prebidMiddleware: ?PrebidMiddleware;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
