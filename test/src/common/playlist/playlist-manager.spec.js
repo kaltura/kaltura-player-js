@@ -511,6 +511,80 @@ describe('PlaylistManager', function () {
     });
   });
 
+  describe('playPrev', function () {
+    before(function () {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
+        return Promise.resolve(MediaMockData.MediaConfig[entryId]);
+      });
+    });
+
+    beforeEach(function () {
+      playlistManager.load(PlaylistMockData.playlistByEntryList);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
+    });
+
+    it('should call playPrev programmatically', function (done) {
+      let eventCounter = -1;
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        eventCounter++;
+        switch (eventCounter) {
+          case 0: {
+            playlistManager.playNext();
+            break;
+          }
+          case 1: {
+            playlistManager.playPrev();
+            break;
+          }
+          case 2: {
+            done();
+          }
+        }
+      });
+    });
+  });
+
+  describe('playItem', function () {
+    before(function () {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
+        return Promise.resolve(MediaMockData.MediaConfig[entryId]);
+      });
+    });
+
+    beforeEach(function () {
+      playlistManager.load(PlaylistMockData.playlistByEntryList);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
+    });
+
+    it('should call playItem programmatically', function (done) {
+      let eventCounter = -1;
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        eventCounter++;
+        switch (eventCounter) {
+          case 0: {
+            playlistManager.playItem(1);
+            break;
+          }
+          case 1: {
+            playlistManager.playItem(0);
+            break;
+          }
+          case 2: {
+            done();
+          }
+        }
+      });
+    });
+  });
+
   describe('provider plugins', function () {
     before(function () {
       PluginManager.register('colors', ColorsPlugin);
