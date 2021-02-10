@@ -344,6 +344,7 @@ describe('PlaylistManager', function () {
         ]
       });
       playlistManager.next.sources.id.should.equal('id2');
+      playlistManager.next.index.should.equal(1);
     });
 
     it('should get null when in the last item and loop is false', function () {
@@ -387,6 +388,92 @@ describe('PlaylistManager', function () {
       });
       playlistManager.playNext();
       playlistManager.next.sources.id.should.equal('id1');
+      playlistManager.next.index.should.equal(0);
+    });
+  });
+
+  describe('get prev', function () {
+    it('should get the first item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.playNext();
+      playlistManager.prev.sources.id.should.equal('id1');
+      playlistManager.prev.index.should.equal(0);
+    });
+
+    it('should get null when in the first item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      (playlistManager.prev === null).should.be.true;
+    });
+  });
+
+  describe('get current', function () {
+    it('should get the first item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.current.sources.id.should.equal('id1');
+      playlistManager.current.index.should.equal(0);
+    });
+
+    it('should get the second item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.playNext();
+      playlistManager.current.sources.id.should.equal('id2');
+      playlistManager.current.index.should.equal(1);
     });
   });
 

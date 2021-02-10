@@ -23,13 +23,13 @@ class Playlist {
     this._metadata = config.metadata ? config.metadata : this._metadata;
     if (config.items) {
       this._items = [];
-      config.items.forEach(item => {
+      config.items.forEach((item, index) => {
         if (item.sources) {
           const configSourcesOptions = Utils.Object.mergeDeep({}, sourcesOptions);
           const itemSourcesOptions = item.sources.options || {};
           item.sources.options = Utils.Object.mergeDeep(configSourcesOptions, itemSourcesOptions);
         }
-        this._items.push(new PlaylistItem(item.sources, item.config));
+        this._items.push(new PlaylistItem(item.sources, item.config, index));
       });
     }
   }
@@ -58,17 +58,17 @@ class Playlist {
     return this._poster;
   }
 
-  get current(): {item: ?PlaylistItem, index: number} {
-    return {item: this._items[this._activeItemIndex] || null, index: this._activeItemIndex};
+  get current(): ?PlaylistItem {
+    return this._items[this._activeItemIndex] || null;
   }
 
-  getNext(loop: boolean): {item: ?PlaylistItem, index: number} {
+  getNext(loop: boolean): ?PlaylistItem {
     const nextIndex = loop ? (this._activeItemIndex + 1) % this._items.length : this._activeItemIndex + 1;
-    return {item: this._items[nextIndex] || null, index: nextIndex};
+    return this._items[nextIndex] || null;
   }
 
-  get prev(): {item: ?PlaylistItem, index: number} {
-    return {item: this._items[this._activeItemIndex - 1] || null, index: this._activeItemIndex - 1};
+  get prev(): ?PlaylistItem {
+    return this._items[this._activeItemIndex - 1] || null;
   }
 
   set activeItemIndex(index: number): void {
