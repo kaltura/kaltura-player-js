@@ -4,27 +4,40 @@ import {KalturaPlayer} from '../../kaltura-player';
 
 const TIMEOUT_LOAD_PREBID = 2000;
 /**
- * Controller for ima plugin.
- * @class ImaAdsController
- * @param {Ima} context - The ima plugin context.
+ * Manager for prebid lib.
+ * @class PrebidManager
+ * @param {PrebidManager} context - The prebid lib context.
  */
 class PrebidManager {
-  _prebid: any = null;
-  _bidPromise: DeferredPromise;
-
   /**
    * @member
    * @private
-   * @memberof prebidController
+   * @memberof PrebidManager
    */
   _player: KalturaPlayer;
+  /**
+   * @member
+   * @private
+   * @memberof PrebidManager
+   */
+  _prebid: any = null;
+  /**
+   * @member
+   * @private
+   * @memberof PrebidManager
+   */
+  _bidPromise: DeferredPromise;
 
   constructor(player: KalturaPlayer) {
     this._bidPromise = Utils.Object.defer();
     this._player = player;
 
     const prebidConfig = this._player.config.prebid;
-    if (prebidConfig && prebidConfig.adUnit) {
+    this._bidPromise.catch(() => {
+      this._player.configure({plugins: {ima: {adTagUrl: prebidConfig.fallbackAd}}});
+    });
+
+    if (prebidConfig && !prebidConfig.disable && prebidConfig.adUnit) {
       if (window.pbjs && window.pbjs.que) {
         this._prebid = window.pbjs;
         this._prebid.que = window.pbjs.que;
@@ -44,10 +57,12 @@ class PrebidManager {
 
         // timeout to handle reject for prebid which didn't load to page after timeout
         const rejectPackageTimer = setTimeout(() => {
-          this._bidPromise.reject();
+          this._bidPromise.reject(`prebid  didn't load to page after ${TIMEOUT_LOAD_PREBID}`);
           clearInterval(prebidLoadedCheck);
         }, TIMEOUT_LOAD_PREBID);
       }
+    } else {
+      this._bidPromise.reject(`prebid incorrect config`);
     }
   }
 
@@ -56,7 +71,7 @@ class PrebidManager {
    * @private
    * @param {Object} config - The prebid config.
    * @returns {void}
-   * @memberof prebidController
+   * @memberof PrebidManager
    */
   _load(config: Object): void {
     this._prebid.que.push(() => {
@@ -66,7 +81,7 @@ class PrebidManager {
         this._prebid.setConfig(config.options);
       }
 
-      const loadAdTagTimer = setTimeout(() => this._bidPromise.reject(), config.timeout);
+      const loadAdTagTimer = setTimeout(() => this._bidPromise.reject(`prebid  didn't load the ad in ${config.timeout}`), config.timeout);
       this._prebid.requestBids({
         bidsBackHandler: bids => {
           KalturaPlayer._logger.debug('returned bids', bids);
@@ -75,7 +90,7 @@ class PrebidManager {
             requestParams.params = config.params;
           }
           const VASTUrl = this._prebid.adServers.dfp.buildVideoUrl(requestParams);
-          this._player._configureOrLoadPlugins({ima: {adTagUrl: VASTUrl}});
+          this._player.configure({plugins: {ima: {adTagUrl: VASTUrl}}});
           this._bidPromise.resolve();
           clearTimeout(loadAdTagTimer);
         }

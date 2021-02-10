@@ -36,6 +36,7 @@ import {
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {PrebidManager} from './common/ads/prebid';
+import {PrebidMiddleware} from './common/ads/prebid-middleware';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -55,7 +56,7 @@ class KalturaPlayer extends FakeEventTarget {
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
-  _prebidManager: PrebidManager;
+  _prebidMiddleware: PrebidMiddleware;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
@@ -299,7 +300,7 @@ class KalturaPlayer extends FakeEventTarget {
       }
       this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
-      this._prebidManager = null;
+      this._prebidMiddleware = null;
       this._pluginManager.reset();
       this._localPlayer.reset();
     }
@@ -710,16 +711,9 @@ class KalturaPlayer extends FakeEventTarget {
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
     this._maybeCreateAdsController();
-    const loadMediaPlugin = () => {
-      this.reset();
-      this._pluginManager.loadMedia();
-      this._reset = false;
-    };
-    if (this._prebidManager) {
-      this._prebidManager.bidPromise.finally(() => loadMediaPlugin());
-    } else {
-      loadMediaPlugin();
-    }
+    this.reset();
+    this._pluginManager.loadMedia();
+    this._reset = false;
   }
 
   _onEnded(): void {
@@ -760,9 +754,6 @@ class KalturaPlayer extends FakeEventTarget {
     const middlewares = [];
     const uiComponents = [];
     const plugins = [];
-    if (!this._prebidManager && pluginsConfig.ima && !pluginsConfig.ima.disable) {
-      this._prebidManager = new PrebidManager(this);
-    }
     Object.keys(pluginsConfig).forEach(name => {
       // If the plugin is already exists in the registry we are updating his config
       const plugin = this._pluginManager.get(name);
@@ -805,6 +796,10 @@ class KalturaPlayer extends FakeEventTarget {
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
       this._localPlayer.playbackMiddleware.use(this._pluginReadinessMiddleware);
+    }
+    if (!this._prebidMiddleware && pluginsConfig.ima && !pluginsConfig.ima.disable) {
+      this._prebidMiddleware = new PrebidMiddleware(new PrebidManager(this));
+      middlewares.unshift(this._prebidMiddleware);
     }
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
