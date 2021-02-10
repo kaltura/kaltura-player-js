@@ -797,7 +797,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
       this._localPlayer.playbackMiddleware.use(this._pluginReadinessMiddleware);
     }
-    if (!this._prebidMiddleware && pluginsConfig.ima && !pluginsConfig.ima.disable) {
+    if (!this._prebidMiddleware && !this.config.prebid.disable && pluginsConfig.ima && !pluginsConfig.ima.disable) {
       this._prebidMiddleware = new PrebidMiddleware(new PrebidManager(this));
       middlewares.unshift(this._prebidMiddleware);
     }

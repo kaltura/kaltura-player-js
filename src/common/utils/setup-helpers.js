@@ -288,6 +288,10 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     viewability: {
       observedThresholds: DEFAULT_OBSERVED_THRESHOLDS,
       playerThreshold: DEFAULT_PLAYER_THRESHOLD
+    },
+    prebid: {
+      disable: true,
+      timeout: 5000
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
