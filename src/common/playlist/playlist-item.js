@@ -9,11 +9,13 @@ const formats = ['hls', 'dash', 'progressive'];
 class PlaylistItem {
   _sources: ?PKSourcesConfigObject;
   _config: ?KPPlaylistItemConfigObject;
-  _plugins: KPPluginsConfigObject;
+  _plugins: ?KPPluginsConfigObject;
+  _index: number;
 
-  constructor(sources: ?PKSourcesConfigObject, config: ?KPPlaylistItemConfigObject) {
+  constructor(sources: ?PKSourcesConfigObject, config: ?KPPlaylistItemConfigObject, index: number) {
     this._sources = sources;
     this._config = config;
+    this._index = index;
   }
 
   /**
@@ -70,7 +72,17 @@ class PlaylistItem {
    * @memberof PlaylistItem
    */
   get plugins(): KPPluginsConfigObject {
-    return this._plugins;
+    return this._plugins || {};
+  }
+
+  /**
+   * Playlist item index
+   * @type {number}
+   * @instance
+   * @memberof PlaylistItem
+   */
+  get index(): number {
+    return this._index;
   }
 
   /**
