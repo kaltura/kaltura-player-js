@@ -95,8 +95,8 @@ class PlaylistManager {
   playNext(): void {
     PlaylistManager._logger.debug('playNext');
     const next = this._playlist.getNext(true);
-    if (next.item) {
-      this._setItem(next.item, next.index);
+    if (next) {
+      this._setItem(next);
     }
   }
 
@@ -109,8 +109,8 @@ class PlaylistManager {
   playPrev(): void {
     PlaylistManager._logger.debug('playPrev');
     const prev = this._playlist.prev;
-    if (prev.item) {
-      this._setItem(prev.item, prev.index);
+    if (prev) {
+      this._setItem(prev);
     }
   }
 
@@ -125,7 +125,7 @@ class PlaylistManager {
     PlaylistManager._logger.debug(`playItem(${index})`);
     const item = this._playlist.items[index];
     if (item) {
-      this._setItem(item, index);
+      this._setItem(item);
     }
   }
 
@@ -140,13 +140,23 @@ class PlaylistManager {
   }
 
   /**
+   * Current item
+   * @type {?PlaylistItem}
+   * @instance
+   * @memberof PlaylistManager
+   */
+  get current(): ?PlaylistItem {
+    return this._playlist.current;
+  }
+
+  /**
    * Next item
    * @type {?PlaylistItem}
    * @instance
    * @memberof PlaylistManager
    */
   get next(): ?PlaylistItem {
-    return this._playlist.getNext(this._options.loop).item;
+    return this._playlist.getNext(this._options.loop);
   }
 
   /**
@@ -156,7 +166,7 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   get prev(): ?PlaylistItem {
-    return this._playlist.prev.item;
+    return this._playlist.prev;
   }
 
   /**
@@ -196,9 +206,9 @@ class PlaylistManager {
    * @memberof PlaylistManager
    */
   get countdown(): KPPlaylistCountdownOptions {
-    if (this._playlist.current.item && this._playlist.current.item.config) {
+    if (this._playlist.current && this._playlist.current.config) {
       const mergedConfig: KPPlaylistCountdownOptions = {duration: 10, showing: true};
-      Utils.Object.mergeDeep(mergedConfig, this._countdown, this._playlist.current.item.config.countdown);
+      Utils.Object.mergeDeep(mergedConfig, this._countdown, this._playlist.current.config.countdown);
       return mergedConfig;
     }
     return this._countdown;
@@ -244,7 +254,7 @@ class PlaylistManager {
   }
 
   _onPlaybackEnded(): void {
-    const nextItem = this._playlist.getNext(false).item;
+    const nextItem = this._playlist.getNext(false);
     if (!nextItem) {
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
     }
@@ -255,10 +265,11 @@ class PlaylistManager {
     }
   }
 
-  _setItem(activeItem: PlaylistItem, index: number): Promise<*> {
+  _setItem(activeItem: PlaylistItem): Promise<*> {
+    const {index} = activeItem;
     PlaylistManager._logger.debug(`Playing item number ${index}`, activeItem);
     const playback: Object = {loop: false};
-    if (this._playlist.current.item) {
+    if (this._playlist.current) {
       // from the second item onwards
       playback['autoplay'] = true;
     }
@@ -282,9 +293,9 @@ class PlaylistManager {
         this._player.configure({
           sources: activeItem.sources
         });
-        return this._player.loadMedia(this._mediaInfoList[index]).then(() => {
-          this._playlist.updateItemSources(index, this._player.config.sources);
-          this._playlist.updateItemPlugins(index, this._player.config.plugins);
+        return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
+          this._playlist.updateItemSources(index, mediaConfig.sources);
+          this._playlist.updateItemPlugins(index, mediaConfig.plugins);
           this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
         });
       }
