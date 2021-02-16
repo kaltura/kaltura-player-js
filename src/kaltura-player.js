@@ -1,10 +1,10 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource, mergeProviderPluginsConfig} from './common/utils/setup-helpers';
+import {hasYoutubeSource, maybeSetStreamPriority, mergeProviderPluginsConfig, supportLegacyOptions} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE} from './common/utils/viewability-manager';
-import {ConfigEvaluator} from './common/plugins';
+import {BasePlugin, ConfigEvaluator, PluginManager} from './common/plugins';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -14,27 +14,27 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
-import {ControllerProvider, AdsController} from './common/controllers';
-import {BasePlugin} from './common/plugins';
-import {PluginManager} from './common/plugins';
+import {AdsController, ControllerProvider} from './common/controllers';
 import {getDefaultRedirectOptions} from 'player-defaults';
 import {
+  AdEventType,
+  AutoPlayType,
   Error,
   EventManager,
   EventType as CoreEventType,
-  AdEventType,
   FakeEvent,
   FakeEventTarget,
-  loadPlayer,
-  TextStyle,
-  Track,
-  Utils,
-  registerEngineDecoratorProvider,
   getLogger,
+  loadPlayer,
   LogLevel,
-  AutoPlayType
+  registerEngineDecoratorProvider,
+  TextStyle,
+  ThumbnailInfo,
+  Track,
+  Utils
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
+import {ThumbnailManager} from './thumbnail-manager';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -157,7 +157,8 @@ class KalturaPlayer extends FakeEventTarget {
     addKalturaParams(this, playerConfig);
     maybeSetStreamPriority(this, playerConfig);
     if (!hasYoutubeSource(playerConfig.sources)) {
-      this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
+      this._thumbnailManager = new ThumbnailManager(mediaConfig, this._localPlayer);
+      this._uiWrapper.setSeekbarConfig(this._localPlayer.config.ui, this._thumbnailManager.getThumbnailConfig());
     }
     this.configure(playerConfig);
   }
@@ -452,6 +453,21 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setLogLevel(level, name);
   }
 
+  getThumbnail(time?: number): ?ThumbnailInfo {
+    if (this._thumbnailManager) {
+      if (!time) {
+        // If time isn't supplied, return thumbnail for player's current time
+        if (!isNaN(this.currentTime)) {
+          time = this.currentTime;
+        } else {
+          return null;
+        }
+      }
+      time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
+      return this._thumbnailManager.getThumbnail(time);
+    }
+  }
+
   set textStyle(style: TextStyle): void {
     this._localPlayer.textStyle = style;
   }
@@ -615,6 +631,7 @@ class KalturaPlayer extends FakeEventTarget {
   get TextStyle(): typeof TextStyle {
     return this._localPlayer.TextStyle;
   }
+
   get ViewabilityType(): {[type: string]: string} {
     return ViewabilityType;
   }
