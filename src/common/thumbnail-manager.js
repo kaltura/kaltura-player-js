@@ -17,25 +17,25 @@ class ThumbnailManager {
 
   constructor(mediaConfig: KPMediaConfig, player: Player) {
     this._player = player;
-    this._thumbnailConfig = this._buildThumbnailConfig(mediaConfig);
+    this._thumbnailConfig = this._buildKalturaThumbnailConfig(mediaConfig);
   }
 
   getThumbnail(time: number): ?ThumbnailInfo {
-    if (this._isValidThumbnailConfig()) {
-      return this._getThumbnailFromConfig(time);
+    if (this._isUsingKalturaThumbnail()) {
+      return this._convertKalturaThumbnailToThumbnailInfo(time);
     }
     return this._player.getThumbnail(time);
   }
 
-  getThumbnailConfig(): ?SeekbarConfig {
+  getKalturaThumbnailConfig(): ?SeekbarConfig {
     return this._thumbnailConfig;
   }
 
-  _isValidThumbnailConfig = (): boolean => {
+  _isUsingKalturaThumbnail = (): boolean => {
     return !!(this._thumbnailConfig && this._thumbnailConfig.thumbsSprite);
   };
 
-  _getThumbnailFromConfig = (time: number): ?ThumbnailInfo => {
+  _convertKalturaThumbnailToThumbnailInfo = (time: number): ?ThumbnailInfo => {
     if (this._thumbnailConfig) {
       const {thumbsSprite, thumbsWidth, thumbsHeight, thumbsSlices} = this._thumbnailConfig;
       const thumbnailInfo = new ThumbnailInfo();
@@ -49,7 +49,7 @@ class ThumbnailManager {
     }
   };
 
-  _buildThumbnailConfig = (mediaConfig: KPMediaConfig): ?SeekbarConfig => {
+  _buildKalturaThumbnailConfig = (mediaConfig: KPMediaConfig): ?SeekbarConfig => {
     const seekbarConfig = Utils.Object.getPropertyPath(this._player.config.ui, 'components.seekbar');
     const posterUrl = mediaConfig.sources && mediaConfig.sources.poster;
     const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;

@@ -165,7 +165,7 @@ class KalturaPlayer extends FakeEventTarget {
     maybeSetStreamPriority(this, playerConfig);
     if (!hasYoutubeSource(playerConfig.sources)) {
       this._thumbnailManager = new ThumbnailManager(mediaConfig, this._localPlayer);
-      this._uiWrapper.setSeekbarConfig(this._localPlayer.config.ui, this._thumbnailManager.getThumbnailConfig());
+      this._uiWrapper.setSeekbarConfig(this._localPlayer.config.ui, this._thumbnailManager.getKalturaThumbnailConfig());
     }
     this.configure(playerConfig);
   }

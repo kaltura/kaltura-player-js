@@ -25,7 +25,7 @@ describe('ThumbnailManager', () => {
     it('should get thumbnail slices url with default params', () => {
       thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
       thumbnailManager
-        .getThumbnailConfig()
+        .getKalturaThumbnailConfig()
         .thumbsSprite.should.equals(
           `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/height/${DefaultThumbnailConfig.thumbsHeight}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
         );
@@ -41,7 +41,7 @@ describe('ThumbnailManager', () => {
       };
       thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
       thumbnailManager
-        .getThumbnailConfig()
+        .getKalturaThumbnailConfig()
         .thumbsSprite.should.equals(
           `${fakeMediaConfig.sources.poster}/width/${fakeSeekbarConfig.thumbsWidth}/height/${DefaultThumbnailConfig.thumbsHeight}/vid_slices/${fakeSeekbarConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
         );
@@ -50,19 +50,19 @@ describe('ThumbnailManager', () => {
     it('should get empty thumbnail slices url for non string given', () => {
       fakeMediaConfig.sources.poster = null;
       thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
-      thumbnailManager.getThumbnailConfig().thumbsSprite.should.equals(``);
+      thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
     });
 
     it('should get empty thumbnail slices url for non valid string given', () => {
       fakeMediaConfig.sources.poster = '//my-thumb-service.com/p/1/entry_id/2/version/3';
       thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
-      thumbnailManager.getThumbnailConfig().thumbsSprite.should.equals(``);
+      thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
     });
 
     it('should get empty thumbnail slices url for live content', () => {
       fakeMediaConfig.sources.type = MediaType.LIVE;
       thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
-      thumbnailManager.getThumbnailConfig().thumbsSprite.should.equals(``);
+      thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
     });
   });
 });
