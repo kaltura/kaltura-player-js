@@ -1,5 +1,5 @@
 // @flow
-import {Utils, ThumbnailInfo} from '@playkit-js/playkit-js';
+import {Utils, ThumbnailInfo, MediaType} from '@playkit-js/playkit-js';
 import evaluate from './utils/evaluate';
 
 const DefaultThumbnailConfig: Object = {
@@ -21,7 +21,7 @@ class ThumbnailManager {
   }
 
   getThumbnail(time: number): ?ThumbnailInfo {
-    if (this._thumbnailConfig) {
+    if (this._isValidThumbnailConfig()) {
       return this._getThumbnailFromConfig(time);
     }
     return this._player.getThumbnail(time);
@@ -30,6 +30,10 @@ class ThumbnailManager {
   getThumbnailConfig(): ?SeekbarConfig {
     return this._thumbnailConfig;
   }
+
+  _isValidThumbnailConfig = (): boolean => {
+    return !!(this._thumbnailConfig && this._thumbnailConfig.thumbsSprite);
+  };
 
   _getThumbnailFromConfig = (time: number): ?ThumbnailInfo => {
     if (this._thumbnailConfig) {
@@ -48,15 +52,14 @@ class ThumbnailManager {
   _buildThumbnailConfig = (mediaConfig: KPMediaConfig): ?SeekbarConfig => {
     const seekbarConfig = Utils.Object.getPropertyPath(this._player.config.ui, 'components.seekbar');
     const posterUrl = mediaConfig.sources && mediaConfig.sources.poster;
+    const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;
     const ks = mediaConfig.session && mediaConfig.session.ks;
     const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
-    const thumbsSprite = this._getThumbSlicesUrl(posterUrl, ks, thumbnailConfig);
-    if (thumbsSprite) {
-      return {
-        thumbsSprite,
-        ...thumbnailConfig
-      };
-    }
+    const thumbsSprite = isVod ? this._getThumbSlicesUrl(posterUrl, ks, thumbnailConfig) : '';
+    return {
+      thumbsSprite,
+      ...thumbnailConfig
+    };
   };
 
   _getThumbSlicesUrl = (posterUrl: string | Array<Object>, ks: ?string, thumbnailConfig: Object): string => {
@@ -78,4 +81,4 @@ class ThumbnailManager {
   };
 }
 
-export {ThumbnailManager, THUMBNAIL_REGEX};
+export {ThumbnailManager, THUMBNAIL_REGEX, DefaultThumbnailConfig};
