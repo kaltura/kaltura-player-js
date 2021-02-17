@@ -1,6 +1,6 @@
 // @flow
 import {Utils, ThumbnailInfo} from '@playkit-js/playkit-js';
-import evaluate from './common/utils/evaluate';
+import evaluate from './utils/evaluate';
 
 const DefaultThumbnailConfig: Object = {
   thumbsWidth: 164,

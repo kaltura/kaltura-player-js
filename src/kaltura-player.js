@@ -34,7 +34,7 @@ import {
   Utils
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
-import {ThumbnailManager} from './thumbnail-manager';
+import {ThumbnailManager} from './common/thumbnail-manager';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
