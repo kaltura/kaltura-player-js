@@ -1,28 +1,33 @@
 import {getDefaultRedirectOptions} from './../../../src/ott/player-defaults';
 
-describe('getDefaultRedirectOptions', function () {
-  let sandbox;
-  beforeEach(function () {
-    sandbox = sinon.createSandbox();
+describe('redirectExternalStreamsHandler', function () {
+  it('should return the default', function () {
+    const defaultConfig = getDefaultRedirectOptions({});
+    (typeof defaultConfig.sources.options.redirectExternalStreamsHandler === 'function').should.be.true;
   });
 
-  afterEach(function () {
-    sandbox.restore();
+  it('should return void if already configured on player config', function () {
+    const defaultConfig = getDefaultRedirectOptions({
+      sources: {
+        options: {
+          redirectExternalStreamsHandler: () => {}
+        }
+      }
+    });
+    (defaultConfig.sources === undefined).should.be.true;
   });
-  describe('redirectExternalStreamsHandler', function () {
-    it('should return the default', function () {
-      const defaultConfig = getDefaultRedirectOptions({});
-      (typeof defaultConfig.sources.options.redirectExternalStreamsHandler === 'function').should.be.true;
-    });
 
-    it('should return void if already configured on player config', function () {
-      const defaultConfig = getDefaultRedirectOptions({sources: {options: {redirectExternalStreamsHandler: () => {}}}});
-      (defaultConfig.sources === undefined).should.be.true;
-    });
-
-    it('should return void if already configured on media config', function () {
-      const defaultConfig = getDefaultRedirectOptions({}, {sources: {options: {redirectExternalStreamsHandler: () => {}}}});
-      (defaultConfig.sources === undefined).should.be.true;
-    });
+  it('should return void if already configured on media config', function () {
+    const defaultConfig = getDefaultRedirectOptions(
+      {},
+      {
+        sources: {
+          options: {
+            redirectExternalStreamsHandler: () => {}
+          }
+        }
+      }
+    );
+    (defaultConfig.sources === undefined).should.be.true;
   });
 });
