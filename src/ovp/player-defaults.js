@@ -1,6 +1,6 @@
 // @flow
 import {Env, Utils, MediaType} from '@playkit-js/playkit-js';
-import {getDirectManifestUri} from '../common/utils/external-stream-redirect-helper';
+import {getRedirectExternalStreamsHandler} from '../common/utils/external-stream-redirect-helper';
 
 /**
  * Sets the default analytics plugin for the ovp player.
@@ -41,16 +41,5 @@ export function getDefaultRedirectOptions(playerOptions: KPOptionsObject, mediaO
       });
     }
   }
-  const playerRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(playerOptions, 'sources.options.redirectExternalStreamsHandler');
-  const mediaRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(mediaOptions, 'sources.options.redirectExternalStreamsHandler');
-  if (typeof playerRedirectExternalStreamsHandler !== 'function' && typeof mediaRedirectExternalStreamsHandler !== 'function') {
-    Utils.Object.mergeDeep(configObj, {
-      sources: {
-        options: {
-          redirectExternalStreamsHandler: getDirectManifestUri
-        }
-      }
-    });
-  }
-  return configObj;
+  return Utils.Object.mergeDeep(configObj, getRedirectExternalStreamsHandler(playerOptions, mediaOptions));
 }
