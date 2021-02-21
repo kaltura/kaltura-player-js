@@ -120,28 +120,34 @@ class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getMediaConfig(mediaInfo);
-    providerResult
-      .then(
-        (providerMediaConfig: ProviderMediaConfigObject) => {
-          const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
-          if (mediaOptions) {
-            mediaConfig.sources = mediaConfig.sources || {};
-            mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
+    return new Promise((resolve, reject) => {
+      this._provider
+        .getMediaConfig(mediaInfo)
+        .then(
+          (providerMediaConfig: ProviderMediaConfigObject) => {
+            const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+            if (mediaOptions) {
+              mediaConfig.sources = mediaConfig.sources || {};
+              mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
+            }
+            const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+            mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+            this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
+            this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
+            this.setMedia(mediaConfig);
+            return mediaConfig;
+          },
+          e => {
+            const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+            this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+            reject(e);
           }
-          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
-          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
-          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-          this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
-          this.setMedia(mediaConfig);
-        },
-        e =>
-          this._localPlayer.dispatchEvent(
-            new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-          )
-      )
-      .then(() => this._maybeSetEmbedConfig());
-    return providerResult;
+        )
+        .then(mediaConfig => {
+          this._maybeSetEmbedConfig();
+          resolve(mediaConfig);
+        });
+    });
   }
 
   setMedia(mediaConfig: KPMediaConfig): void {
@@ -176,15 +182,19 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     KalturaPlayer._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getPlaylistConfig(playlistInfo);
-    providerResult.then(
-      playlistData => this.setPlaylist(playlistData, playlistConfig),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
-    return providerResult;
+    return new Promise((resolve, reject) => {
+      this._provider.getPlaylistConfig(playlistInfo).then(
+        playlistData => {
+          this.setPlaylist(playlistData, playlistConfig);
+          resolve(playlistData);
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(e);
+        }
+      );
+    });
   }
 
   /**
@@ -200,16 +210,19 @@ class KalturaPlayer extends FakeEventTarget {
   loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: ?KPPlaylistConfigObject): Promise<ProviderPlaylistObject> {
     KalturaPlayer._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
-    const providerResult = this._provider.getEntryListConfig(entryList);
-
-    providerResult.then(
-      playlistData => this.setPlaylist(playlistData, playlistConfig, entryList),
-      e =>
-        this._localPlayer.dispatchEvent(
-          new FakeEvent(CoreEventType.ERROR, new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e))
-        )
-    );
-    return providerResult;
+    return new Promise((resolve, reject) => {
+      this._provider.getEntryListConfig(entryList).then(
+        playlistData => {
+          this.setPlaylist(playlistData, playlistConfig, entryList);
+          resolve(playlistData);
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(e);
+        }
+      );
+    });
   }
 
   setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: ?KPPlaylistConfigObject, entryList: ?ProviderEntryListObject): void {
@@ -617,6 +630,7 @@ class KalturaPlayer extends FakeEventTarget {
   get TextStyle(): typeof TextStyle {
     return this._localPlayer.TextStyle;
   }
+
   get ViewabilityType(): {[type: string]: string} {
     return ViewabilityType;
   }
