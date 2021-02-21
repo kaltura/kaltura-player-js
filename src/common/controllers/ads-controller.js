@@ -269,16 +269,13 @@ class AdsController extends FakeEventTarget implements IAdsController {
       return new Promise(resolve => {
         const prebidConfig = Utils.Object.mergeDeep({}, ad.prebid, this._player.config.advertising.prebid);
         const promiseLoad = this._prebidManager.load(prebidConfig);
-        console.error('12');
         promiseLoad
           .then(bids => {
-            console.error('22');
             const vastUrls = bids.map(bid => bid && bid.vastUrl);
             ad.url = vastUrls.concat(ad.url);
             resolve(ad);
           })
           .catch(() => {
-            console.error('33');
             resolve(ad);
           });
       });
