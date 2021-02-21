@@ -258,12 +258,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
         this._configAdBreaks
           .filter(adBreak => !adBreak.played)
           .map(adBreak => {
-            adBreak.ads.map(ad => {
-              const adPromiseResult = this._getPrebidAds(ad);
-              if (adPromiseResult) {
-                adPromiseResult.then(() => {});
-              }
-            });
+            const loadPrebidAd = Promise.all(adBreak.ads.map(ad => this._getPrebidAds(ad)));
+            loadPrebidAd.then(ads => (adBreak.ads = ads));
           });
       });
   }
@@ -287,21 +283,24 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _handleConfiguredPreroll(): void {
-    this.prerollReady = new Promise((resolve, reject) => {
-      const prerolls = this._configAdBreaks.filter(adBreak => adBreak.position === 0 && !adBreak.played);
-      const mergedPreroll = this._mergeAdBreaks(prerolls);
-      if (mergedPreroll) {
-        const loadPrebidAd = Promise.all(mergedPreroll.ads.map(ad => this._getPrebidAds(ad)));
-        loadPrebidAd
-          .then(() => {
-            this._playAdBreak(mergedPreroll);
-            resolve();
-          })
-          .catch(reject);
-      } else {
-        reject();
-      }
-    });
+    if (!this.prerollReady) {
+      this.prerollReady = new Promise(resolve => {
+        const prerolls = this._configAdBreaks.filter(adBreak => adBreak.position === 0 && !adBreak.played);
+        const mergedPreroll = this._mergeAdBreaks(prerolls);
+        if (mergedPreroll) {
+          const loadPrebidAd = Promise.all(mergedPreroll.ads.map(ad => this._getPrebidAds(ad)));
+          loadPrebidAd
+            .then(ads => {
+              mergedPreroll.ads = ads;
+              this._playAdBreak(mergedPreroll);
+              resolve();
+            })
+            .catch(resolve);
+        } else {
+          resolve();
+        }
+      });
+    }
   }
 
   _handleEveryAndPercentage(): void {

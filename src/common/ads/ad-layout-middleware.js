@@ -36,7 +36,7 @@ class AdLayoutMiddleware extends BaseMiddleware {
    * @memberof AdLayoutMiddleware
    */
   load(next: Function): void {
-    this._context.prerollReady.finally(() => this.callNext(next));
+    this._context.prerollReady.then(() => this.callNext(next));
   }
 
   /**
@@ -46,7 +46,7 @@ class AdLayoutMiddleware extends BaseMiddleware {
    * @memberof AdLayoutMiddleware
    */
   play(next: Function): void {
-    this._context.prerollReady.finally(() => this.callNext(next));
+    this._context.prerollReady.then(() => this.callNext(next));
   }
 }
 
