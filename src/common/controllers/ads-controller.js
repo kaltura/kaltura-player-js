@@ -2,7 +2,20 @@
 import {KalturaPlayer as Player} from '../../kaltura-player';
 import {Ad} from '../ads';
 import {AdBreak} from '../ads';
-import {Error, EventManager, AdEventType, FakeEvent, FakeEventTarget, Html5EventType, CustomEventType, getLogger} from '@playkit-js/playkit-js';
+import {
+  Error,
+  EventManager,
+  AdEventType,
+  FakeEvent,
+  FakeEventTarget,
+  Html5EventType,
+  CustomEventType,
+  getLogger,
+  BaseMiddleware,
+  Utils
+} from '@playkit-js/playkit-js';
+import {PrebidManager} from '../ads/prebid';
+import {AdLayoutMiddleware} from '../ads/ad-layout-middleware';
 
 declare type RunTimeAdBreakObject = KPAdBreakObject & {
   played: boolean
@@ -28,12 +41,16 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _configAdBreaks: Array<RunTimeAdBreakObject>;
   _adIsLoading: boolean;
   _isAdPlaying: boolean;
+  _middleware: AdLayoutMiddleware;
+  _prebidManager: PrebidManager;
+  prerollReady: Promise<*>;
 
   constructor(player: Player, adsPluginControllers: Array<IAdsPluginController>) {
     super();
     this._player = player;
     this._eventManager = new EventManager();
     this._adsPluginControllers = adsPluginControllers;
+    this._prebidManager = new PrebidManager(player);
     this._init();
   }
 
@@ -121,6 +138,10 @@ class AdsController extends FakeEventTarget implements IAdsController {
     }
   }
 
+  getMiddleware(): BaseMiddleware {
+    return this._middleware ? this._middleware : (this._middleware = new AdLayoutMiddleware(this));
+  }
+
   _init(): void {
     this._initMembers();
     this._addBindings();
@@ -179,6 +200,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this._configAdBreaks.length) {
       this._dispatchAdManifestLoaded();
       this._handleConfiguredPreroll();
+      this._handlePrebidAdConfig();
       this._eventManager.listenOnce(this._player, Html5EventType.DURATION_CHANGE, () => {
         this._handleEveryAndPercentage();
         this._configAdBreaks.sort((a, b) => a.position - b.position);
@@ -228,10 +250,57 @@ class AdsController extends FakeEventTarget implements IAdsController {
     }
   }
 
+  _handlePrebidAdConfig(): void {
+    this._prebidManager &&
+      this._prebidManager.ready.then(() => {
+        this._configAdBreaks
+          .filter(adBreak => !adBreak.played)
+          .map(adBreak => {
+            adBreak.ads.map(ad => {
+              const adPromiseResult = this._getPrebidAds(ad);
+              adPromiseResult.then(() => {});
+            });
+          });
+      });
+  }
+
+  _getPrebidAds(ad: KPAdObject): ?Promise<*> {
+    if (ad.prebid && this._prebidManager) {
+      return new Promise(resolve => {
+        const prebidConfig = Utils.Object.mergeDeep({}, ad.prebid, this._player.config.advertising.prebid);
+        const promiseLoad = this._prebidManager.load(prebidConfig);
+        console.error('12');
+        promiseLoad
+          .then(bids => {
+            console.error('22');
+            const vastUrls = bids.map(bid => bid && bid.vastUrl);
+            ad.url = vastUrls.concat(ad.url);
+            resolve(ad);
+          })
+          .catch(() => {
+            console.error('33');
+            resolve(ad);
+          });
+      });
+    }
+  }
+
   _handleConfiguredPreroll(): void {
-    const prerolls = this._configAdBreaks.filter(adBreak => adBreak.position === 0 && !adBreak.played);
-    const mergedPreroll = this._mergeAdBreaks(prerolls);
-    mergedPreroll && this._playAdBreak(mergedPreroll);
+    this.prerollReady = new Promise((resolve, reject) => {
+      const prerolls = this._configAdBreaks.filter(adBreak => adBreak.position === 0 && !adBreak.played);
+      const mergedPreroll = this._mergeAdBreaks(prerolls);
+      if (mergedPreroll) {
+        const loadPrebidAd = Promise.all(mergedPreroll.ads.map(ad => this._getPrebidAds(ad)));
+        loadPrebidAd
+          .then(() => {
+            this._playAdBreak(mergedPreroll);
+            resolve();
+          })
+          .catch(reject);
+      } else {
+        reject();
+      }
+    });
   }
 
   _handleEveryAndPercentage(): void {

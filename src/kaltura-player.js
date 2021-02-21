@@ -35,8 +35,6 @@ import {
   AutoPlayType
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
-import {PrebidManager} from './common/ads/prebid';
-import {PrebidMiddleware} from './common/ads/prebid-middleware';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -56,7 +54,6 @@ class KalturaPlayer extends FakeEventTarget {
   _firstPlay: boolean = true;
   _sourceSelected: boolean = false;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
-  _prebidMiddleware: ?PrebidMiddleware;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
@@ -223,7 +220,6 @@ class KalturaPlayer extends FakeEventTarget {
     });
     this._configEvaluator.evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
-    this._maybeCreateAdsController();
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
@@ -256,7 +252,6 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     this._localPlayer.configure(localPlayerConfig);
-    this._maybeCreateAdsController();
     const uiConfig = config.ui;
     if (uiConfig) {
       this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
@@ -300,7 +295,6 @@ class KalturaPlayer extends FakeEventTarget {
       }
       this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
-      this._prebidMiddleware = null;
       this._pluginManager.reset();
       this._localPlayer.reset();
     }
@@ -710,7 +704,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
-    this._maybeCreateAdsController();
     this.reset();
     this._pluginManager.loadMedia();
     this._reset = false;
@@ -797,10 +790,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
       this._localPlayer.playbackMiddleware.use(this._pluginReadinessMiddleware);
     }
-    if (!this._prebidMiddleware && !this.config.prebid.disable && pluginsConfig.ima && !pluginsConfig.ima.disable) {
-      this._prebidMiddleware = new PrebidMiddleware(new PrebidManager(this));
-      middlewares.unshift(this._prebidMiddleware);
-    }
+    this._maybeCreateAdsController();
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
   }
@@ -810,6 +800,7 @@ class KalturaPlayer extends FakeEventTarget {
       const adsPluginControllers = this._controllerProvider.getAdsControllers();
       if (adsPluginControllers.length) {
         this._adsController = new AdsController(this, adsPluginControllers);
+        this._localPlayer.playbackMiddleware.use(this._adsController.getMiddleware());
         this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, event => {
           this.dispatchEvent(event);
         });

@@ -9,7 +9,8 @@
 type _KPAdObject = {
   url?: Array<string>,
   response?: Array<string>,
-  bumper?: boolean
+  bumper?: boolean,
+  prebid?: KPPrebidConfig
 };
 declare type KPAdObject = _KPAdObject;
 

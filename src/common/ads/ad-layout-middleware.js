@@ -1,30 +1,30 @@
 // @flow
 import {BaseMiddleware} from '@playkit-js/playkit-js';
-import {PrebidManager} from './prebid';
+import {AdsController} from '../controllers';
 
 /**
  * Middleware implementation for ima plugin.
- * @class PrebidMiddleware
+ * @class AdLayoutMiddleware
  * @param {Ima} context - The ima plugin context.
  * @private
  */
-class PrebidMiddleware extends BaseMiddleware {
+class AdLayoutMiddleware extends BaseMiddleware {
   /**
    * The id of the ima middleware.
    * @type {string}
    * @public
-   * @memberof PrebidMiddleware
+   * @memberof AdLayoutMiddleware
    */
-  id: string = 'PrebidMiddleware';
+  id: string = 'AdLayoutMiddleware';
   /**
    * The plugin context.
    * @member
    * @private
-   * @memberof PrebidMiddleware
+   * @memberof AdLayoutMiddleware
    */
-  _context: PrebidManager;
+  _context: AdsController;
 
-  constructor(context: PrebidManager) {
+  constructor(context: AdsController) {
     super();
     this._context = context;
   }
@@ -33,21 +33,27 @@ class PrebidMiddleware extends BaseMiddleware {
    * Load middleware handler.
    * @param {Function} next - The load play handler in the middleware chain.
    * @returns {void}
-   * @memberof PrebidMiddleware
+   * @memberof AdLayoutMiddleware
    */
   load(next: Function): void {
-    this._context.bidPromise.finally(() => this.callNext(next));
+    this._context.prerollReady.finally(() => {
+      console.error('44');
+      this.callNext(next);
+    });
   }
 
   /**
    * Play middleware handler.
    * @param {Function} next - The next play handler in the middleware chain.
    * @returns {void}
-   * @memberof PrebidMiddleware
+   * @memberof AdLayoutMiddleware
    */
   play(next: Function): void {
-    this._context.bidPromise.finally(() => this.callNext(next));
+    this._context.prerollReady.finally(() => {
+      console.error('45');
+      this.callNext(next);
+    });
   }
 }
 
-export {PrebidMiddleware};
+export {AdLayoutMiddleware};
