@@ -264,9 +264,9 @@ class AdsController extends FakeEventTarget implements IAdsController {
       });
   }
 
-  _getPrebidAds(ad: KPAdObject): ?Promise<*> {
-    if (ad.prebid && this._prebidManager) {
-      return new Promise(resolve => {
+  _getPrebidAds(ad: KPAdObject): Promise<*> {
+    return new Promise(resolve => {
+      if (ad.prebid && this._prebidManager) {
         const prebidConfig = Utils.Object.mergeDeep({}, ad.prebid, this._player.config.advertising.prebid);
         const promiseLoad = this._prebidManager.load(prebidConfig);
         promiseLoad
@@ -278,8 +278,10 @@ class AdsController extends FakeEventTarget implements IAdsController {
           .catch(() => {
             resolve(ad);
           });
-      });
-    }
+      } else {
+        resolve(ad);
+      }
+    });
   }
 
   _handleConfiguredPreroll(): void {
