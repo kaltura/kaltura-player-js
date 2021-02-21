@@ -22,6 +22,7 @@ class Ad {
   _bitrate: number;
   _bumper: boolean;
   _inStream: boolean;
+  _vpaid: boolean;
 
   constructor(id: string, options: PKAdOptions) {
     this._id = id;
@@ -40,6 +41,7 @@ class Ad {
     this._bitrate = options.bitrate || 0;
     this._bumper = options.bumper;
     this._inStream = options.inStream || false;
+    this._vpaid = options.vpaid || false;
   }
 
   /**
@@ -195,6 +197,15 @@ class Ad {
     return !!(this.skipOffset && this.skipOffset > 0);
   }
 
+  /**
+   * @instance
+   * @memberof Ad
+   * @return {boolean} - Whether the ad is vpaid or not.
+   */
+  get vpaid(): boolean {
+    return this._vpaid;
+  }
+
   toJSON(): Object {
     return {
       id: this.id,
@@ -213,7 +224,8 @@ class Ad {
       height: this.height,
       bitrate: this.bitrate,
       bumper: this.bumper,
-      inStream: this.inStream
+      inStream: this.inStream,
+      vpaid: this.vpaid
     };
   }
 }

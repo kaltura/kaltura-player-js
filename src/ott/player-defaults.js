@@ -1,5 +1,6 @@
 // @flow
 import {Utils} from '@playkit-js/playkit-js';
+import {getRedirectExternalStreamsHandler} from '../common/utils/external-stream-redirect-helper';
 
 /**
  * Sets the default analytics plugin for the ott player.
@@ -31,8 +32,10 @@ export function setDefaultAnalyticsPlugin(options: KPOptionsObject): void {
 /**
  * get the default config for forcing external stream redirect.
  * @public
+ * @param {KPOptionsObject} playerOptions - The player config.
+ * @param {KPOptionsObject} mediaOptions - The media config.
  * @returns {Object} - config object
  */
-export function getDefaultRedirectOptions(): Object {
-  return {};
+export function getDefaultRedirectOptions(playerOptions: KPOptionsObject, mediaOptions: KPOptionsObject = {}): Object {
+  return Utils.Object.mergeDeep({}, getRedirectExternalStreamsHandler(playerOptions, mediaOptions));
 }
