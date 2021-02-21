@@ -283,15 +283,15 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     },
     plugins: {},
     advertising: {
-      adBreaks: []
+      adBreaks: [],
+      prebid: {
+        disable: true,
+        timeout: 4000
+      }
     },
     viewability: {
       observedThresholds: DEFAULT_OBSERVED_THRESHOLDS,
       playerThreshold: DEFAULT_PLAYER_THRESHOLD
-    },
-    prebid: {
-      disable: true,
-      timeout: 5000
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);

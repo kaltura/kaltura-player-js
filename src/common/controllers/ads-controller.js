@@ -14,7 +14,7 @@ import {
   BaseMiddleware,
   Utils
 } from '@playkit-js/playkit-js';
-import {PrebidManager} from '../ads/prebid';
+import {PrebidManager} from '../ads/prebid-manager';
 import {AdLayoutMiddleware} from '../ads/ad-layout-middleware';
 
 declare type RunTimeAdBreakObject = KPAdBreakObject & {
@@ -208,6 +208,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
           this._handleConfiguredMidrolls();
         }
       });
+    } else {
+      this.prerollReady = Promise.resolve();
     }
   }
 
@@ -258,7 +260,9 @@ class AdsController extends FakeEventTarget implements IAdsController {
           .map(adBreak => {
             adBreak.ads.map(ad => {
               const adPromiseResult = this._getPrebidAds(ad);
-              adPromiseResult.then(() => {});
+              if (adPromiseResult) {
+                adPromiseResult.then(() => {});
+              }
             });
           });
       });
