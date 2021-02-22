@@ -134,7 +134,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
       this._playAdBreak({
         position: this._player.currentTime || 0,
         ads: adPod,
-        played: false
+        played: false,
+        loadedPromise: Promise.resolve()
       });
     }
   }
@@ -299,7 +300,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
           this._configAdBreaks.push({
             position: currentPosition,
             ads: adBreak.ads,
-            played: false
+            played: false,
+            loadedPromise: Promise.resolve()
           });
           currentPosition += adBreak.every;
         }
