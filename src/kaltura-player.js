@@ -326,6 +326,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.destroy();
     this._eventManager.destroy();
     this._viewabilityManager.destroy();
+    RemotePlayerManager.destroy();
     this._pluginsConfig = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
