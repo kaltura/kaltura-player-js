@@ -51,7 +51,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._player = player;
     this._eventManager = new EventManager();
     this._adsPluginControllers = adsPluginControllers;
-    this._prebidManager = new PrebidManager(player);
+    this._prebidManager = new PrebidManager(this._player.config.advertising && this._player.config.advertising.prebid);
     this._init();
   }
 

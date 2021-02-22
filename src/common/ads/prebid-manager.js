@@ -13,12 +13,6 @@ class PrebidManager {
    * @private
    * @memberof PrebidManager
    */
-  _player: KalturaPlayer;
-  /**
-   * @member
-   * @private
-   * @memberof PrebidManager
-   */
   _config: KPPrebidConfig;
   /**
    * @member
@@ -33,11 +27,10 @@ class PrebidManager {
    */
   _loadPromise: DeferredPromise;
 
-  constructor(player: KalturaPlayer) {
+  constructor(config: KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
-    this._player = player;
+    this._config = config;
 
-    this._config = this._player.config.advertising.prebid;
     if (this._config && !this._config.disable) {
       this._loadPrebidSDKLib(this._config.libUrl)
         .then(() => {
