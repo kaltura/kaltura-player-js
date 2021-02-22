@@ -27,7 +27,7 @@ class PrebidManager {
    */
   _loadPromise: DeferredPromise;
 
-  constructor(config: KPPrebidConfig) {
+  constructor(config?: KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
     this._config = config;
 

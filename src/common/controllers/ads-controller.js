@@ -323,8 +323,6 @@ class AdsController extends FakeEventTarget implements IAdsController {
           this._snapback = maxPosition;
           AdsController._logger.debug(`Set snapback value ${this._snapback}`);
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
-          console.error(adBreaks);
-          console.error(mergedAdBreak);
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
       }
