@@ -115,10 +115,6 @@ class PrebidManager {
   load(config: KPPrebidConfig): Promise<*> {
     return this._load(config || this._config);
   }
-
-  get ready(): Promise<*> {
-    return this._loadPromise;
-  }
 }
 
 export {PrebidManager};

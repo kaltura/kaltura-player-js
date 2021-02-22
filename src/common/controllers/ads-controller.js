@@ -18,7 +18,8 @@ import {PrebidManager} from '../ads/prebid-manager';
 import {AdLayoutMiddleware} from '../ads/ad-layout-middleware';
 
 declare type RunTimeAdBreakObject = KPAdBreakObject & {
-  played: boolean
+  played: boolean,
+  loadedPromise: Promise<*>
 };
 
 /**
@@ -199,8 +200,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
       });
     if (this._configAdBreaks.length) {
       this._dispatchAdManifestLoaded();
-      this._handleConfiguredPreroll();
       this._handlePrebidAdConfig();
+      this._handleConfiguredPreroll();
       this._eventManager.listenOnce(this._player, Html5EventType.DURATION_CHANGE, () => {
         this._handleEveryAndPercentage();
         this._configAdBreaks.sort((a, b) => a.position - b.position);
@@ -254,14 +255,13 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   _handlePrebidAdConfig(): void {
     this._prebidManager &&
-      this._prebidManager.ready.then(() => {
-        this._configAdBreaks
-          .filter(adBreak => !adBreak.played)
-          .map(adBreak => {
-            const loadPrebidAd = Promise.all(adBreak.ads.map(ad => this._getPrebidAds(ad)));
-            loadPrebidAd.then(ads => (adBreak.ads = ads));
-          });
-      });
+      this._configAdBreaks
+        .filter(adBreak => !adBreak.played)
+        .map(adBreak => {
+          const loadPrebidAd = Promise.all(adBreak.ads.map(ad => this._getPrebidAds(ad)));
+          adBreak.loadedPromise = loadPrebidAd;
+          loadPrebidAd.then(ads => (adBreak.ads = ads));
+        });
   }
 
   _getPrebidAds(ad: KPAdObject): Promise<*> {
@@ -285,24 +285,10 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _handleConfiguredPreroll(): void {
-    if (!this.prerollReady) {
-      this.prerollReady = new Promise(resolve => {
-        const prerolls = this._configAdBreaks.filter(adBreak => adBreak.position === 0 && !adBreak.played);
-        const mergedPreroll = this._mergeAdBreaks(prerolls);
-        if (mergedPreroll) {
-          const loadPrebidAd = Promise.all(mergedPreroll.ads.map(ad => this._getPrebidAds(ad)));
-          loadPrebidAd
-            .then(ads => {
-              mergedPreroll.ads = ads;
-              this._playAdBreak(mergedPreroll);
-              resolve();
-            })
-            .catch(resolve);
-        } else {
-          resolve();
-        }
-      });
-    }
+    const prerolls = this._configAdBreaks.filter(adBreak => adBreak.position === 0 && !adBreak.played);
+    const mergedPreroll = this._mergeAdBreaks(prerolls);
+    this.prerollReady = mergedPreroll && mergedPreroll.loadedPromise ? mergedPreroll.loadedPromise : Promise.resolve();
+    mergedPreroll && this._playAdBreak(mergedPreroll);
   }
 
   _handleEveryAndPercentage(): void {
@@ -335,6 +321,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
           this._snapback = maxPosition;
           AdsController._logger.debug(`Set snapback value ${this._snapback}`);
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
+          console.error(adBreaks);
+          console.error(mergedAdBreak);
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
       }
@@ -356,7 +344,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
       adBreak.played = true;
       this._adIsLoading = true;
       AdsController._logger.debug(`Playing ad break positioned in ${adBreak.position}`);
-      adController.playAdNow(adBreak.ads);
+      adBreak.loadedPromise.then(() => adController.playAdNow(adBreak.ads));
     } else {
       AdsController._logger.warn('No ads plugin registered');
     }
@@ -460,7 +448,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
       return {
         position: adBreaks[0].position,
         ads: adBreaks.reduce((result, adBreak) => result.concat(adBreak.ads), []),
-        played: false
+        played: false,
+        loadedPromise: Promise.all(adBreaks.map(adBreak => adBreak.loadedPromise))
       };
     }
   }
