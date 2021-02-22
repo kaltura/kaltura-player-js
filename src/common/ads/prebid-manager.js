@@ -27,11 +27,11 @@ class PrebidManager {
    */
   _loadPromise: DeferredPromise;
 
-  constructor(config?: KPPrebidConfig) {
+  constructor(config: ?KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
-    this._config = config;
 
-    if (this._config && !this._config.disable) {
+    if (config && !config.disable) {
+      this._config = config;
       this._loadPrebidSDKLib(this._config.libUrl)
         .then(() => {
           if (this._isPrebidSDKLibLoaded()) {
