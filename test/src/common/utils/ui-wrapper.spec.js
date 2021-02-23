@@ -1,13 +1,13 @@
 import {UIWrapper} from '../../../../src/common/ui-wrapper';
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH} from '../../../../src/common/utils/thumbs';
 import * as TestUtils from '../../utils/test-utils';
 import {getPlayerProxy} from '../../../../src/proxy';
 import {getDefaultOptions} from '../../../../src/common/utils/setup-helpers';
+import {DefaultThumbnailConfig} from '../../../../src/common/thumbnail-manager';
 
 const targetId = 'player-placeholder_ui-wrapper.spec';
 
 describe('UIWrapper', function () {
-  let uiWrapper, uiConfig, mediaConfig, player, sandbox;
+  let uiWrapper, uiConfig, player, sandbox;
   const thumbsSprite = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
 
   before(function () {
@@ -26,24 +26,6 @@ describe('UIWrapper', function () {
     beforeEach(function () {
       sandbox = sinon.createSandbox();
       player = getPlayerProxy(getDefaultOptions({targetId: 'player', provider: {partnerId: 123}}));
-      mediaConfig = {
-        session: {
-          ks: 'ks'
-        },
-        sources: {
-          id: '0_wifqaipd',
-          duration: 741,
-          type: 'Vod',
-          poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
-          dvr: false,
-          metadata: {
-            name: 'MPEG Dash with MultiAudio New Transcoding',
-            description: '',
-            MediaType: 'Movie',
-            WatchPermissionRule: 'Parrent Allowed'
-          }
-        }
-      };
       uiConfig = {
         targetId: targetId,
         components: {
@@ -65,13 +47,12 @@ describe('UIWrapper', function () {
       uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
         config.should.deep.equal({
-          thumbsSlices: DEFAULT_THUMBS_SLICES,
           thumbsSprite: thumbsSprite,
-          thumbsWidth: DEFAULT_THUMBS_WIDTH
+          ...DefaultThumbnailConfig
         });
         done();
       });
-      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
+      uiWrapper.setSeekbarConfig(uiConfig, DefaultThumbnailConfig);
     });
 
     it('should set the configured thumbs sprite with configured sizes', function (done) {
@@ -83,25 +64,25 @@ describe('UIWrapper', function () {
       uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
         config.should.deep.equal({
+          ...DefaultThumbnailConfig,
           thumbsSlices: 200,
           thumbsSprite: thumbsSprite,
           thumbsWidth: 300
         });
         done();
       });
-      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
+      uiWrapper.setSeekbarConfig(uiConfig, DefaultThumbnailConfig);
     });
 
     it('should set the backend thumbs sprite with default sizes', function (done) {
       uiConfig.components.seekbar = {};
       uiWrapper = new UIWrapper(player, {ui: uiConfig});
       sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
-        config.thumbsSlices.should.equal(DEFAULT_THUMBS_SLICES);
-        config.thumbsWidth.should.equal(DEFAULT_THUMBS_WIDTH);
-        config.thumbsSprite.startsWith(mediaConfig.sources.poster).should.be.true;
+        config.thumbsSlices.should.equal(DefaultThumbnailConfig.thumbsSlices);
+        config.thumbsWidth.should.equal(DefaultThumbnailConfig.thumbsWidth);
         done();
       });
-      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
+      uiWrapper.setSeekbarConfig(uiConfig, DefaultThumbnailConfig);
     });
 
     it('should set the backend thumbs sprite with configured sizes', function (done) {
@@ -113,10 +94,9 @@ describe('UIWrapper', function () {
       sandbox.stub(uiWrapper, 'setConfig').callsFake(config => {
         config.thumbsSlices.should.equal(200);
         config.thumbsWidth.should.equal(300);
-        config.thumbsSprite.startsWith(mediaConfig.sources.poster).should.be.true;
         done();
       });
-      uiWrapper.setSeekbarConfig(mediaConfig, uiConfig);
+      uiWrapper.setSeekbarConfig(uiConfig, DefaultThumbnailConfig);
     });
   });
 });

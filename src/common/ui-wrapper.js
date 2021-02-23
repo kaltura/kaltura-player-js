@@ -1,7 +1,6 @@
 // @flow
 import {UIManager} from '@playkit-js/playkit-js-ui';
-import {Env, Utils, getLogger} from '@playkit-js/playkit-js';
-import {DEFAULT_THUMBS_SLICES, DEFAULT_THUMBS_WIDTH, getThumbSlicesUrl} from './utils/thumbs';
+import {Env, getLogger, Utils} from '@playkit-js/playkit-js';
 import {KalturaPlayer} from '../kaltura-player';
 
 /**
@@ -91,10 +90,9 @@ class UIWrapper {
     this.setConfig({hasError: false}, 'engine');
   }
 
-  setSeekbarConfig(mediaConfig: KPMediaConfig, uiConfig: KPUIOptionsObject): void {
+  setSeekbarConfig(uiConfig: KPUIOptionsObject, thumbnailConfig: ?SeekbarConfig): void {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
-    const previewThumbnailConfig = getPreviewThumbnailConfig(mediaConfig, seekbarConfig);
-    this.setConfig(Utils.Object.mergeDeep({}, previewThumbnailConfig, seekbarConfig), 'seekbar');
+    this.setConfig(Utils.Object.mergeDeep({}, thumbnailConfig, seekbarConfig), 'seekbar');
   }
 
   setLoadingSpinnerState(show: boolean): void {
@@ -140,22 +138,6 @@ function appendPlayerViewToTargetContainer(targetId: string, view: HTMLElement):
   if (targetContainer) {
     targetContainer.appendChild(view);
   }
-}
-
-/**
- * Gets the preview thumbnail config for the ui seekbar component.
- * @private
- * @param {KPMediaConfig} mediaConfig - The player media config.
- * @param {SeekbarConfig} seekbarConfig - The seek bar config.
- * @returns {SeekbarConfig} - The seekbar component config.
- */
-function getPreviewThumbnailConfig(mediaConfig: KPMediaConfig, seekbarConfig: SeekbarConfig): SeekbarConfig {
-  const previewThumbnailConfig: SeekbarConfig = {
-    thumbsSprite: getThumbSlicesUrl(mediaConfig, seekbarConfig),
-    thumbsWidth: DEFAULT_THUMBS_WIDTH,
-    thumbsSlices: DEFAULT_THUMBS_SLICES
-  };
-  return previewThumbnailConfig;
 }
 
 export {UIWrapper};

@@ -57,10 +57,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.68.0-canary.791b3c4",
-    "@playkit-js/playkit-js-dash": "1.21.3-canary.98282f5",
+    "@playkit-js/playkit-js": "0.68.0-canary.3b1d78e",
+    "@playkit-js/playkit-js-dash": "1.22.0-canary.03b577c",
     "@playkit-js/playkit-js-hls": "1.23.1-canary.cb04819",
-    "@playkit-js/playkit-js-ui": "0.63.0",
+    "@playkit-js/playkit-js-ui": "0.64.0-canary.482e1c2",
     "hls.js": "^0.14.17",
     "intersection-observer": "^0.12.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.28.0",
