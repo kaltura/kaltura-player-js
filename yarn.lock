@@ -1140,10 +1140,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.23.1-canary.cb04819.tgz#a757d64b396b4a230bf673adc2bd569fc86950cd"
   integrity sha512-Mss7LVxDO/k0oRca/OCfhgQJMit1uSWXjwEpCcGI76midxuu8hJuqXzSrPJK8pftPUp8WCwmqVcyf5192B8nVQ==
 
-"@playkit-js/playkit-js-ui@0.63.0":
-  version "0.63.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.63.0.tgz#991db395a794e014248a0d20547b6fce0569690b"
-  integrity sha512-llOUZgNVtAGd2RsLY5cmku9OCiC81UIcBLzZr/YnLPkTiBOOgH3KXRcs4r2QFuN8IhBi3WsxEEvgUmA5hgcv3A==
+"@playkit-js/playkit-js-ui@0.64.0-canary.482e1c2":
+  version "0.64.0-canary.482e1c2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.64.0-canary.482e1c2.tgz#c73061a0ae3dedd058076f53095db864ee618d1f"
+  integrity sha512-IJgRE2u6YN9Wo4RdY9CCT5peOrNWuO/B/YCb+IWYLkbm+VXUQAYZ2mu3+IM+9wyEdkE31bert/o+3hulmATe2w==
   dependencies:
     preact "^10.3.4"
     preact-i18n "^2.0.0-preactx.2"
