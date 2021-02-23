@@ -47,11 +47,9 @@ class RemotePlayerManager {
     return false;
   }
 
-  static destroy(type?: string): void {
-    const remotePlayer = RemotePlayerManager._getRemotePlayer(type);
-    if (remotePlayer) {
-      remotePlayer.destroy();
-    }
+  static destroy(): void {
+    const remotePlayers = RemotePlayerManager._remotePlayers;
+    Array.from(remotePlayers.values()).forEach(remotePlayer => remotePlayer.destroy());
   }
 
   static _getRemotePlayer(type?: string): ?Object {
