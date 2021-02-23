@@ -1130,10 +1130,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@1.21.3-canary.98282f5":
-  version "1.21.3-canary.98282f5"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.21.3-canary.98282f5.tgz#a3e63723c9e0a984fb6a0a4dd15fb6a9976ec527"
-  integrity sha512-2echmiDoTd8eEtjt4dP8SvQNMjoPfHlY6V2v0BgwWK4bCiBpRelWO5+AauAxBLzco7DmLArSjb2L6jQSsJiLYA==
+"@playkit-js/playkit-js-dash@1.22.0-canary.03b577c":
+  version "1.22.0-canary.03b577c"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.22.0-canary.03b577c.tgz#83f367e0b464e2142c71856d5f5eae44575ea845"
+  integrity sha512-NEJt+XoSXtZFs0ztJKer+a3xVHYUDTkY2CO0JVrGrvqDntHnUjHduABDO/LM8mgYr5SCtqsfluIPUHSkqoLZNg==
 
 "@playkit-js/playkit-js-hls@1.23.1-canary.cb04819":
   version "1.23.1-canary.cb04819"
@@ -1150,10 +1150,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.68.0-canary.791b3c4":
-  version "0.68.0-canary.791b3c4"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.68.0-canary.791b3c4.tgz#103510688e01eed666398b6ef9e30772d30f0239"
-  integrity sha512-ISwkEnOFnUTDvVjYpNy3V3jW7j8Em10du5+pJ0MgeXE/6FL9/QPwugX0LUZ2pZTGK4ZmozrLKifeWWGsBgNmkw==
+"@playkit-js/playkit-js@0.68.0-canary.3b1d78e":
+  version "0.68.0-canary.3b1d78e"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.68.0-canary.3b1d78e.tgz#1a28e435742e3f2aeca40a724b69cec0b9d015cb"
+  integrity sha512-u5rkeodIhhNWw145BTyppydEiMAl3rVDF4GUMV7z2eGKwwUNqM11bgVfB6gkam5RwvMUyoA5Hsy71mWOt1wuIA==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^0.7.21"
