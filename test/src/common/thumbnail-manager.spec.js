@@ -30,7 +30,7 @@ describe('ThumbnailManager', () => {
   });
 
   it('should get thumbnail slices url with default params', () => {
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager
       .getKalturaThumbnailConfig()
       .thumbsSprite.should.equals(
@@ -46,7 +46,7 @@ describe('ThumbnailManager', () => {
         }
       }
     };
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager
       .getKalturaThumbnailConfig()
       .thumbsSprite.should.equals(
@@ -56,30 +56,30 @@ describe('ThumbnailManager', () => {
 
   it('should get empty thumbnail slices url for non string given', () => {
     fakeMediaConfig.sources.poster = null;
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
   });
 
   it('should get empty thumbnail slices url for non valid string given', () => {
     fakeMediaConfig.sources.poster = '//my-thumb-service.com/p/1/entry_id/2/version/3';
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
   });
 
   it('should get empty thumbnail slices url for live content', () => {
     fakeMediaConfig.sources.type = MediaType.LIVE;
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
   });
 
   it('should get empty thumbnail slices url for live content', () => {
     fakeMediaConfig.sources.type = MediaType.LIVE;
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
   });
 
   it('should return kaltura thumbnail', () => {
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     const spy = sandbox.spy(thumbnailManager, '_convertKalturaThumbnailToThumbnailInfo');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
@@ -87,7 +87,7 @@ describe('ThumbnailManager', () => {
 
   it('should return thumbnail from core player', () => {
     fakeMediaConfig.sources.poster = null;
-    thumbnailManager = new ThumbnailManager(fakeMediaConfig, fakePlayer);
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     const spy = sandbox.spy(fakePlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
