@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/kaltura/kaltura-player-js/compare/v1.4.0...v1.5.0) (2021-02-24)
+
+
+### Bug Fixes
+
+* **FEC-10872:** loadMedia returns the provider response instead of the updated one ([#405](https://github.com/kaltura/kaltura-player-js/issues/405)) ([d26013d](https://github.com/kaltura/kaltura-player-js/commit/d26013d))
+* **FEC-10968:** OTT doesn't have default external-stream-redirect-helper ([#416](https://github.com/kaltura/kaltura-player-js/issues/416)) ([f13a81d](https://github.com/kaltura/kaltura-player-js/commit/f13a81d))
+* **FEC-10995:** update Shaka to 3.0.8 ([#411](https://github.com/kaltura/kaltura-player-js/issues/411)) ([e40bc1e](https://github.com/kaltura/kaltura-player-js/commit/e40bc1e))
+
+
+### Features
+
+* **FEC-10041:** playAdsWithMSE with DAI detach the playback and ad ([#408](https://github.com/kaltura/kaltura-player-js/issues/408)) ([d7b5e09](https://github.com/kaltura/kaltura-player-js/commit/d7b5e09))
+* **FEC-10640:** add api to get the playlist current working item index ([#413](https://github.com/kaltura/kaltura-player-js/issues/413)) ([7e59c37](https://github.com/kaltura/kaltura-player-js/commit/7e59c37))
+* **FEC-10768:** expose in-stream DASH thumbnails ([#415](https://github.com/kaltura/kaltura-player-js/issues/415)) ([9581fa1](https://github.com/kaltura/kaltura-player-js/commit/9581fa1))
+* **FEC-10961:** show the thumbnail preview in live ([#407](https://github.com/kaltura/kaltura-player-js/issues/407)) ([c1ac3fe](https://github.com/kaltura/kaltura-player-js/commit/c1ac3fe))
+* **FEC-10970:** expose vpaid field on ad object ([#410](https://github.com/kaltura/kaltura-player-js/issues/410)) ([2db9ce8](https://github.com/kaltura/kaltura-player-js/commit/2db9ce8))
+* **FEC-11013:** upgrade to hlsjs latest (0.14.17) ([#414](https://github.com/kaltura/kaltura-player-js/issues/414)) ([863b18d](https://github.com/kaltura/kaltura-player-js/commit/863b18d))
+
+
+
 ## [1.4.0](https://github.com/kaltura/kaltura-player-js/compare/v1.3.0...v1.4.0) (2021-01-28)
 
 
