@@ -30,11 +30,11 @@ import {
   TextStyle,
   ThumbnailInfo,
   Track,
-  Utils
+  Utils,
+  EngineDecoratorProvider
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
-import EngineDecoratorProvider from './engine-decorator-provider';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
