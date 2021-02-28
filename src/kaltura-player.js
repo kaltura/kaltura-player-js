@@ -58,7 +58,7 @@ class KalturaPlayer extends FakeEventTarget {
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
-  _thumbnailManager: ThumbnailManager = null;
+  _thumbnailManager: ?ThumbnailManager = null;
 
   /**
    * Whether the player browser tab is active and in the scroll view
@@ -472,16 +472,16 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   getThumbnail(time?: number): ?ThumbnailInfo {
-    if (this._thumbnailManager) {
-      if (!time) {
-        // If time isn't supplied, return thumbnail for player's current time
-        if (!isNaN(this.currentTime)) {
-          time = this.currentTime;
-        } else {
-          return null;
-        }
+    if (!time) {
+      // If time isn't supplied, return thumbnail for player's current time
+      if (!isNaN(this.currentTime)) {
+        time = this.currentTime;
+      } else {
+        return null;
       }
-      time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
+    }
+    time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
+    if (this._thumbnailManager) {
       return this._thumbnailManager.getThumbnail(time);
     }
   }
