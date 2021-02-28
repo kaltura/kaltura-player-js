@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.1](https://github.com/kaltura/kaltura-player-js/compare/v1.5.0...v1.5.1) (2021-02-28)
+
+
+### Bug Fixes
+
+* **FEC-11041:** player fails in IE11 ([#419](https://github.com/kaltura/kaltura-player-js/issues/419)) ([84a37bd](https://github.com/kaltura/kaltura-player-js/commit/84a37bd))
+
+
+
 ## [1.5.0](https://github.com/kaltura/kaltura-player-js/compare/v1.4.0...v1.5.0) (2021-02-24)
 
 
