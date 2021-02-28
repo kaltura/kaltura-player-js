@@ -34,6 +34,7 @@ import {
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
+import EngineDecoratorProvider from './engine-decorator-provider';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -808,7 +809,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
 
             if (typeof plugin.getEngineDecorator === 'function') {
-              this._localPlayer.registerEngineDecoratorProvider(name, {getEngineDecorator: plugin.getEngineDecorator.bind(plugin)});
+              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin));
             }
           }
         } else {
