@@ -27,11 +27,11 @@ import {
   getLogger,
   loadPlayer,
   LogLevel,
-  registerEngineDecoratorProvider,
   TextStyle,
   ThumbnailInfo,
   Track,
-  Utils
+  Utils,
+  EngineDecoratorProvider
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
@@ -809,7 +809,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
 
             if (typeof plugin.getEngineDecorator === 'function') {
-              registerEngineDecoratorProvider(plugin);
+              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin));
             }
           }
         } else {
