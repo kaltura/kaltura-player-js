@@ -27,7 +27,6 @@ import {
   getLogger,
   loadPlayer,
   LogLevel,
-  registerEngineDecoratorProvider,
   TextStyle,
   ThumbnailInfo,
   Track,
@@ -809,7 +808,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
 
             if (typeof plugin.getEngineDecorator === 'function') {
-              registerEngineDecoratorProvider(plugin);
+              this._localPlayer.registerEngineDecoratorProvider(name, {getEngineDecorator: plugin.getEngineDecorator.bind(plugin)});
             }
           }
         } else {
