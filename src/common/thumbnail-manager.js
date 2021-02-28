@@ -15,9 +15,8 @@ class ThumbnailManager {
   _player: Player;
   _thumbnailConfig: ?SeekbarConfig;
 
-  constructor(player: Player, uiConfig: KPUIOptionsObject, mediaConfig: KPMediaConfig) {
+  constructor(player: Player) {
     this._player = player;
-    this._thumbnailConfig = this._buildKalturaThumbnailConfig(uiConfig, mediaConfig);
   }
 
   getThumbnail(time: number): ?ThumbnailInfo {
@@ -27,7 +26,8 @@ class ThumbnailManager {
     return this._player.getThumbnail(time);
   }
 
-  getKalturaThumbnailConfig(): ?SeekbarConfig {
+  getKalturaThumbnailConfig(uiConfig: KPUIOptionsObject, mediaConfig: KPMediaConfig): ?SeekbarConfig {
+    this._thumbnailConfig = this._buildKalturaThumbnailConfig(uiConfig, mediaConfig);
     return this._thumbnailConfig;
   }
 
@@ -55,7 +55,7 @@ class ThumbnailManager {
     const posterUrl = mediaConfig.sources && mediaConfig.sources.poster;
     const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;
     const ks = mediaConfig.session && mediaConfig.session.ks;
-    const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
+    const thumbnailConfig = Utils.Object.mergeDeep({}, DefaultThumbnailConfig, seekbarConfig);
     const thumbsSprite = isVod ? this._getThumbSlicesUrl(posterUrl, ks, thumbnailConfig) : '';
     return {
       thumbsSprite,

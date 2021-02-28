@@ -58,6 +58,7 @@ class KalturaPlayer extends FakeEventTarget {
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
+  _thumbnailManager: ThumbnailManager;
 
   /**
    * Whether the player browser tab is active and in the scroll view
@@ -85,6 +86,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
+    this._thumbnailManager = new ThumbnailManager(this._localPlayer);
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: {
@@ -164,8 +166,8 @@ class KalturaPlayer extends FakeEventTarget {
     addKalturaParams(this, playerConfig);
     maybeSetStreamPriority(this, playerConfig);
     if (!hasYoutubeSource(playerConfig.sources)) {
-      this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
-      this._uiWrapper.setSeekbarConfig(this.config.ui, this._thumbnailManager.getKalturaThumbnailConfig());
+      const thumbnailConfig = this._thumbnailManager.getKalturaThumbnailConfig(this.config.ui, mediaConfig);
+      this._uiWrapper.setSeekbarConfig(this.config.ui, thumbnailConfig);
     }
     this.configure(playerConfig);
   }
@@ -471,18 +473,16 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   getThumbnail(time?: number): ?ThumbnailInfo {
-    if (this._thumbnailManager) {
-      if (!time) {
-        // If time isn't supplied, return thumbnail for player's current time
-        if (!isNaN(this.currentTime)) {
-          time = this.currentTime;
-        } else {
-          return null;
-        }
+    if (!time) {
+      // If time isn't supplied, return thumbnail for player's current time
+      if (!isNaN(this.currentTime)) {
+        time = this.currentTime;
+      } else {
+        return null;
       }
-      time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
-      return this._thumbnailManager.getThumbnail(time);
     }
+    time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
+    return this._thumbnailManager.getThumbnail(time);
   }
 
   set textStyle(style: TextStyle): void {
