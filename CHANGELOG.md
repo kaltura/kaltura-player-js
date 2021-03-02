@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.3](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.3) (2021-03-02)
+
+
+### Bug Fixes
+
+* **FEC-11037:** multiple decorator exist after destroy plugin with decorator ([#418](https://github.com/kaltura/kaltura-player-js/issues/418)) ([9e9685c](https://github.com/kaltura/kaltura-player-js/commit/9e9685c))
+
+
 ### [1.5.2](https://github.com/kaltura/kaltura-player-js/compare/v1.5.0...v1.5.2) (2021-02-28)
 
 
