@@ -9,7 +9,7 @@ const DefaultThumbnailConfig: Object = {
 };
 
 const THUMBNAIL_REGEX = /.*\/p\/\d+\/(?:[a-zA-Z]+\/\d+\/)*thumbnail\/entry_id\/\w+\/.*\d+/;
-const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/height/{{thumbsHeight}}/vid_slices/{{thumbsSlices}}/ks/{{ks}}';
+const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/vid_slices/{{thumbsSlices}}/ks/{{ks}}';
 
 class ThumbnailManager {
   _player: Player;
