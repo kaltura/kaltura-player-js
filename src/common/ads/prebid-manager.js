@@ -29,7 +29,7 @@ class PrebidManager {
 
   constructor(config: ?KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
-
+    this._loadPromise.catch(() => console.warn(`Prebid doesn't loaded`));
     if (config && !config.disable) {
       this._config = config;
       this._loadPrebidSDKLib(this._config.libUrl)
