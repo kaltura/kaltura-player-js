@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.4](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.4) (2021-03-03)
+
+
+### Bug Fixes
+
+* remove thumbnail height from thumbnail service call ([#421](https://github.com/kaltura/kaltura-player-js/issues/421)) ([9611685](https://github.com/kaltura/kaltura-player-js/commit/9611685))
+* **FEC-11037:** multiple decorator exist after destroy plugin with decorator ([#418](https://github.com/kaltura/kaltura-player-js/issues/418)) ([9e9685c](https://github.com/kaltura/kaltura-player-js/commit/9e9685c))
+* **FEC-11041:** player fails in IE11 ([#419](https://github.com/kaltura/kaltura-player-js/issues/419)) ([3f16f12](https://github.com/kaltura/kaltura-player-js/commit/3f16f12))
+
+
+
 ### [1.5.3](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.3) (2021-03-02)
 
 
