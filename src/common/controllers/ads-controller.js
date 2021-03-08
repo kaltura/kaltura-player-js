@@ -280,11 +280,12 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _playAdBreak(adBreak: RunTimeAdBreakObject): void {
-    const adController = this._adsPluginControllers.find(controller => !this._isBumper(controller));
+    const adController = this._adsPluginControllers.find(controller => typeof controller.playAdNow === 'function');
     if (adController) {
       adBreak.played = true;
       this._adIsLoading = true;
       AdsController._logger.debug(`Playing ad break positioned in ${adBreak.position}`);
+      // $FlowFixMe
       adController.playAdNow(adBreak.ads);
     } else {
       AdsController._logger.warn('No ads plugin registered');
