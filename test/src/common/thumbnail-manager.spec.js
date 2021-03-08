@@ -3,6 +3,7 @@ import {DefaultThumbnailConfig, ThumbnailManager} from '../../../src/common/thum
 
 describe('ThumbnailManager', () => {
   let thumbnailManager, fakePlayer, fakeMediaConfig, sandbox;
+  const thumbsSprite = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
   const fakeSeekbarConfig = {
     thumbsSlices: 200,
     thumbsWidth: 100
@@ -11,7 +12,13 @@ describe('ThumbnailManager', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     fakePlayer = {
-      config: {ui: {}},
+      config: {
+        ui: {
+          components: {
+            seekbar: {}
+          }
+        }
+      },
       getThumbnail: () => {}
     };
     fakeMediaConfig = {
@@ -91,5 +98,43 @@ describe('ThumbnailManager', () => {
     const spy = sandbox.spy(fakePlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
+  });
+
+  it('should set the configured thumbs sprite with default sizes', () => {
+    fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager.getKalturaThumbnailConfig().should.deep.equal({
+      thumbsSprite,
+      ...DefaultThumbnailConfig
+    });
+  });
+
+  it('should set the configured thumbs sprite with configured sizes', () => {
+    const seekbarConfig = {
+      thumbsSlices: 200,
+      thumbsSprite,
+      thumbsWidth: 300
+    };
+    fakePlayer.config.ui.components.seekbar = seekbarConfig;
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager.getKalturaThumbnailConfig().should.deep.equal({...seekbarConfig, ...DefaultThumbnailConfig});
+  });
+
+  it('should set the backend thumbs sprite with default sizes', () => {
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    const config = thumbnailManager.getKalturaThumbnailConfig();
+    config.thumbsSlices.should.equal(DefaultThumbnailConfig.thumbsSlices);
+    config.thumbsWidth.should.equal(DefaultThumbnailConfig.thumbsWidth);
+  });
+
+  it('should set the backend thumbs sprite with configured sizes', () => {
+    fakePlayer.config.ui.components.seekbar = {
+      thumbsSlices: 200,
+      thumbsWidth: 300
+    };
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    const config = thumbnailManager.getKalturaThumbnailConfig();
+    config.thumbsSlices.should.equal(200);
+    config.thumbsWidth.should.equal(300);
   });
 });
