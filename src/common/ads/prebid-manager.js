@@ -76,9 +76,7 @@ class PrebidManager {
                   if (config.adUnit) {
                     requestParams.adUnit = config.adUnit;
                   }
-                  if (config.params) {
-                    requestParams.params = config.params;
-                  }
+                  requestParams.params = config.params;
                   const VASTUrl = this._prebid.adServers.dfp.buildVideoUrl(requestParams);
                   resolve([{vastUrl: VASTUrl}]);
                 } else {
