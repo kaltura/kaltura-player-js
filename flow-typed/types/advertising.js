@@ -43,6 +43,7 @@ declare type KPAdBreakObject = _KPAdBreakObject;
  * @property {Object} [adBreakCuePointStyle] - Style options for the ad breaks cue points - See the options {@link https://github.com/kaltura/playkit-js-timeline/blob/main/docs/types.md#cuepointoptionsobject|Here}.
  */
 type _KPAdvertisingConfigObject = {
+  prebid?: KPPrebidConfig,
   adBreaks: Array<KPAdBreakObject>,
   playAdsAfterTime?: number,
   showAdBreakCuePoint?: boolean,
