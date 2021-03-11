@@ -1,9 +1,12 @@
 // @flow
-declare type KPPrebidConfig = {
-  libUrl: string,
-  disable: boolean,
+
+declare type KPAdPrebidConfig = {
   adUnit: Object,
-  timeout: number,
   params?: Object,
   options?: Object
+}
+declare type KPPrebidConfig = KPAdPrebidConfig & {
+  libUrl: string,
+  disable: boolean,
+  timeout: number
 };
