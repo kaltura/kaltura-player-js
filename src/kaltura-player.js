@@ -710,9 +710,9 @@ class KalturaPlayer extends FakeEventTarget {
           payload: {ad}
         } = event;
         if (ad && ad.linear && ad.position === 1 && !ad.inStream) {
-          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this._detachMediaSource());
-          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
-          this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this.detachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this.attachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this.attachMediaSource());
         } else {
           this._attachEventManager.removeAll();
         }
@@ -853,11 +853,11 @@ class KalturaPlayer extends FakeEventTarget {
     }
   }
 
-  _attachMediaSource(): void {
+  attachMediaSource(): void {
     this._localPlayer.attachMediaSource();
   }
 
-  _detachMediaSource(): void {
+  detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
   }
 
