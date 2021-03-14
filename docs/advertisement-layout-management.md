@@ -401,8 +401,8 @@ const config = {
 
 For prebid configuration there are two places to config:
 
-1. top level config - set the configuration for prebid- libUrl/timeout
-2. ad level config - configuration for adUnit/params/options and timeout can configure per an ad or for all ads
+1. top level config - set the general configuration for prebid - libUrl/timeout, also configure adUnit/params/options could be relevant for all prebid ads like same cache url for or same mediaTypes setting.
+2. ad level config - adUnit/params/options for ad configuration, timeout could be set different value per an ad.
 
 Prebid can use as pre-roll/mid-roll/post-roll return list of ads and use as waterfall
 Here is sample for midroll position 60 and url provided will be the fallback for prebid configuration.
