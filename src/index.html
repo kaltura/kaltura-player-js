@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="./style.css"/>
 
   <!--  <script src="https://cdnapisec.kaltura.com/p/2654801/sp/265480100/embedPlaykitJs/uiconf_id/45029341/partner_id/2654801/"></script>-->
-<!--  <script src="https://acdn.adnxs.com/prebid/not-for-prod/3/prebid.js"></script>-->
+  <script src="https://acdn.adnxs.com/prebid/not-for-prod/3/prebid.js"></script>
   <!--  <script src="./kaltura-tv-player.js" type="text/javascript"></script>-->
   <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
   <script src="http://localhost:8082/playkit-ima.js" type="text/javascript"></script>
@@ -16,6 +16,10 @@
 </head>
 <body>
 <div id="player-placeholder"></div>
+<button onclick="debugger;kalturaPlayer.ads.playAdNow([{
+          url: ['http://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=xml_vmap1&unviewed_position_start=1&cust_params=sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=[timestamp]'],
+          // prebid:{}
+        }]);">play ad now</button>
 <script>
   var config = {
     logLevel:'DEBUG',
@@ -78,13 +82,13 @@
         // }
       },
       adBreaks: [
-        {
-        position: 15,
-        ads: [{
-          url: ['http://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=xml_vmap1&unviewed_position_start=1&cust_params=sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=[timestamp]'],
-          prebid:{}
-        }]
-      }
+      //   {
+      //   position: 0,
+      //   ads: [{
+      //     url: ['http://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=xml_vmap1&unviewed_position_start=1&cust_params=sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=[timestamp]'],
+      //     prebid:{}
+      //   }]
+      // }
       // {
       //   position: 15,
       //   ads: [{

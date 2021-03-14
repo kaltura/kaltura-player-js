@@ -340,11 +340,12 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _playAdBreak(adBreak: RunTimeAdBreakObject): void {
-    const adController = this._adsPluginControllers.find(controller => !this._isBumper(controller));
+    const adController = this._adsPluginControllers.find(controller => typeof controller.playAdNow === 'function');
     if (adController) {
       adBreak.played = true;
       this._adIsLoading = true;
       AdsController._logger.debug(`Playing ad break positioned in ${adBreak.position}`);
+      // $FlowFixMe
       adBreak.loadedPromise.then(() => adController.playAdNow(adBreak.ads));
     } else {
       AdsController._logger.warn('No ads plugin registered');
@@ -406,7 +407,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
       return;
     }
     const bumperCtrl = this._adsPluginControllers.find(controller => this._isBumper(controller));
-    const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller));
+    const adCtrl = this._adsPluginControllers.find(controller => !this._isBumper(controller) && !controller.done);
     const bumperCompleted =
       bumperCtrl && typeof bumperCtrl.onPlaybackEnded === 'function' ? () => bumperCtrl.onPlaybackEnded() : () => Promise.resolve();
     const adCompleted = adCtrl && typeof adCtrl.onPlaybackEnded === 'function' ? () => adCtrl.onPlaybackEnded() : () => Promise.resolve();

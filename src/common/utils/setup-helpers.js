@@ -649,9 +649,15 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
  * @returns {void}
  */
 function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
-  const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-  if (Env.device.model === 'iPhone' && playsinline === false) {
-    setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
+  if (Env.isIOS) {
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const isAirPlayConfigured = Utils.Object.hasPropertyPath(options, 'plugins.airplay');
+    const isPlaysinline = playsinline !== false;
+    if (isAirPlayConfigured) {
+      setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: isPlaysinline});
+    } else if (Env.device.model === 'iPhone' && !isPlaysinline) {
+      setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
+    }
   }
 }
 

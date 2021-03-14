@@ -1,10 +1,10 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {supportLegacyOptions, maybeSetStreamPriority, hasYoutubeSource, mergeProviderPluginsConfig} from './common/utils/setup-helpers';
+import {hasYoutubeSource, maybeSetStreamPriority, mergeProviderPluginsConfig, supportLegacyOptions} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE} from './common/utils/viewability-manager';
-import {ConfigEvaluator} from './common/plugins';
+import {BasePlugin, ConfigEvaluator, PluginManager} from './common/plugins';
 import {addKalturaPoster} from 'poster';
 import './assets/style.css';
 import {UIWrapper} from './common/ui-wrapper';
@@ -14,27 +14,27 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
-import {ControllerProvider, AdsController} from './common/controllers';
-import {BasePlugin} from './common/plugins';
-import {PluginManager} from './common/plugins';
+import {AdsController, ControllerProvider} from './common/controllers';
 import {getDefaultRedirectOptions} from 'player-defaults';
 import {
+  AdEventType,
+  AutoPlayType,
   Error,
   EventManager,
   EventType as CoreEventType,
-  AdEventType,
   FakeEvent,
   FakeEventTarget,
+  getLogger,
   loadPlayer,
+  LogLevel,
   TextStyle,
+  ThumbnailInfo,
   Track,
   Utils,
-  registerEngineDecoratorProvider,
-  getLogger,
-  LogLevel,
-  AutoPlayType
+  EngineDecoratorProvider
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
+import {ThumbnailManager} from './common/thumbnail-manager';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -58,6 +58,7 @@ class KalturaPlayer extends FakeEventTarget {
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
+  _thumbnailManager: ?ThumbnailManager = null;
 
   /**
    * Whether the player browser tab is active and in the scroll view
@@ -164,7 +165,7 @@ class KalturaPlayer extends FakeEventTarget {
     addKalturaParams(this, playerConfig);
     maybeSetStreamPriority(this, playerConfig);
     if (!hasYoutubeSource(playerConfig.sources)) {
-      this._uiWrapper.setSeekbarConfig(mediaConfig, this._localPlayer.config.ui);
+      this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
     this.configure(playerConfig);
   }
@@ -467,6 +468,21 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setLogLevel(level, name);
   }
 
+  getThumbnail(time?: number): ?ThumbnailInfo {
+    if (!time) {
+      // If time isn't supplied, return thumbnail for player's current time
+      if (!isNaN(this.currentTime)) {
+        time = this.currentTime;
+      } else {
+        return null;
+      }
+    }
+    time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
+    if (this._thumbnailManager) {
+      return this._thumbnailManager.getThumbnail(time);
+    }
+  }
+
   set textStyle(style: TextStyle): void {
     this._localPlayer.textStyle = style;
   }
@@ -691,9 +707,9 @@ class KalturaPlayer extends FakeEventTarget {
           payload: {ad}
         } = event;
         if (ad && ad.linear && ad.position === 1 && !ad.inStream) {
-          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this._detachMediaSource());
-          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this._attachMediaSource());
-          this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this._attachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this.detachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this.attachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this.attachMediaSource());
         } else {
           this._attachEventManager.removeAll();
         }
@@ -790,7 +806,7 @@ class KalturaPlayer extends FakeEventTarget {
             }
 
             if (typeof plugin.getEngineDecorator === 'function') {
-              registerEngineDecoratorProvider(plugin);
+              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin));
             }
           }
         } else {
@@ -835,11 +851,11 @@ class KalturaPlayer extends FakeEventTarget {
     }
   }
 
-  _attachMediaSource(): void {
+  attachMediaSource(): void {
     this._localPlayer.attachMediaSource();
   }
 
-  _detachMediaSource(): void {
+  detachMediaSource(): void {
     this._localPlayer.detachMediaSource();
   }
 

@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.5](https://github.com/kaltura/kaltura-player-js/compare/v1.5.4...v1.5.5) (2021-03-07)
+
+
+
+### [1.5.4](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.4) (2021-03-03)
+
+
+### Bug Fixes
+
+* remove thumbnail height from thumbnail service call ([#421](https://github.com/kaltura/kaltura-player-js/issues/421)) ([9611685](https://github.com/kaltura/kaltura-player-js/commit/9611685))
+* **FEC-11037:** multiple decorator exist after destroy plugin with decorator ([#418](https://github.com/kaltura/kaltura-player-js/issues/418)) ([9e9685c](https://github.com/kaltura/kaltura-player-js/commit/9e9685c))
+* **FEC-11041:** player fails in IE11 ([#419](https://github.com/kaltura/kaltura-player-js/issues/419)) ([3f16f12](https://github.com/kaltura/kaltura-player-js/commit/3f16f12))
+
+
+
+### [1.5.3](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.3) (2021-03-02)
+
+
+### Bug Fixes
+
+* **FEC-11037:** multiple decorator exist after destroy plugin with decorator ([#418](https://github.com/kaltura/kaltura-player-js/issues/418)) ([9e9685c](https://github.com/kaltura/kaltura-player-js/commit/9e9685c))
+
+
+### [1.5.2](https://github.com/kaltura/kaltura-player-js/compare/v1.5.0...v1.5.2) (2021-02-28)
+
+
+### Bug Fixes
+
+* **FEC-11041:** player fails in IE11 ([#419](https://github.com/kaltura/kaltura-player-js/issues/419)) ([52f9bc1](https://github.com/kaltura/kaltura-player-js/commit/52f9bc1))
+
+
+
+## [1.5.0](https://github.com/kaltura/kaltura-player-js/compare/v1.4.0...v1.5.0) (2021-02-24)
+
+
+### Bug Fixes
+
+* **FEC-10872:** loadMedia returns the provider response instead of the updated one ([#405](https://github.com/kaltura/kaltura-player-js/issues/405)) ([d26013d](https://github.com/kaltura/kaltura-player-js/commit/d26013d))
+* **FEC-10968:** OTT doesn't have default external-stream-redirect-helper ([#416](https://github.com/kaltura/kaltura-player-js/issues/416)) ([f13a81d](https://github.com/kaltura/kaltura-player-js/commit/f13a81d))
+* **FEC-10995:** update Shaka to 3.0.8 ([#411](https://github.com/kaltura/kaltura-player-js/issues/411)) ([e40bc1e](https://github.com/kaltura/kaltura-player-js/commit/e40bc1e))
+
+
+### Features
+
+* **FEC-10041:** playAdsWithMSE with DAI detach the playback and ad ([#408](https://github.com/kaltura/kaltura-player-js/issues/408)) ([d7b5e09](https://github.com/kaltura/kaltura-player-js/commit/d7b5e09))
+* **FEC-10640:** add api to get the playlist current working item index ([#413](https://github.com/kaltura/kaltura-player-js/issues/413)) ([7e59c37](https://github.com/kaltura/kaltura-player-js/commit/7e59c37))
+* **FEC-10768:** expose in-stream DASH thumbnails ([#415](https://github.com/kaltura/kaltura-player-js/issues/415)) ([9581fa1](https://github.com/kaltura/kaltura-player-js/commit/9581fa1))
+* **FEC-10961:** show the thumbnail preview in live ([#407](https://github.com/kaltura/kaltura-player-js/issues/407)) ([c1ac3fe](https://github.com/kaltura/kaltura-player-js/commit/c1ac3fe))
+* **FEC-10970:** expose vpaid field on ad object ([#410](https://github.com/kaltura/kaltura-player-js/issues/410)) ([2db9ce8](https://github.com/kaltura/kaltura-player-js/commit/2db9ce8))
+* **FEC-11013:** upgrade to hlsjs latest (0.14.17) ([#414](https://github.com/kaltura/kaltura-player-js/issues/414)) ([863b18d](https://github.com/kaltura/kaltura-player-js/commit/863b18d))
+
+
+
 ## [1.4.0](https://github.com/kaltura/kaltura-player-js/compare/v1.3.0...v1.4.0) (2021-01-28)
 
 
