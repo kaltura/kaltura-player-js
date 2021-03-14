@@ -364,6 +364,7 @@ For prebid configuration there are two places to config:
 2. ad level config - configuration for adUnit/params/options and timeout can configure per an ad or for all ads
 
 Prebid can use as pre-roll/mid-roll/post-roll return list of ads and use as waterfall
+Here is sample for midroll position 60 and url provided will be the fallback for prebid configuration.
 
 ```js
 const config = {
