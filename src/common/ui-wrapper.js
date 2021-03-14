@@ -17,7 +17,10 @@ class UIWrapper {
     const config: KPUIOptionsObject = options.ui;
     if (config.disable) {
       this._disabled = true;
-      appendPlayerViewToTargetContainer(config.targetId, player.getView());
+      const targetContainer = document.getElementById(config.targetId);
+      if (targetContainer) {
+        targetContainer.appendChild(player.getView());
+      }
     } else {
       this._uiManager = new UIManager(player, config);
       if (config.customPreset) {
@@ -86,17 +89,12 @@ class UIWrapper {
     return this._uiManager.hasManager(name);
   }
 
-  _resetErrorState(): void {
-    this.setConfig({hasError: false}, 'engine');
-  }
-
-  setSeekbarConfig(uiConfig: KPUIOptionsObject, thumbnailConfig: ?SeekbarConfig): void {
-    const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
-    this.setConfig(Utils.Object.mergeDeep({}, thumbnailConfig, seekbarConfig), 'seekbar');
-  }
-
   setLoadingSpinnerState(show: boolean): void {
     this.setConfig({show: show}, 'loading');
+  }
+
+  _resetErrorState(): void {
+    this.setConfig({hasError: false}, 'engine');
   }
 
   _handleExternalCSS(config: KPUIOptionsObject): void {
@@ -123,20 +121,6 @@ class UIWrapper {
       // enable stereo mode by default for mobile device
       this.setConfig(Utils.Object.mergeDeep({}, {vrStereoMode: !!vrConfig.startInStereo}), 'vrStereo');
     }
-  }
-}
-
-/**
- * Appends the player view to the target element in the dom.
- * @private
- * @param {string} targetId - The target id.
- * @param {HTMLElement} view - The player div element.
- * @returns {void}
- */
-function appendPlayerViewToTargetContainer(targetId: string, view: HTMLElement): void {
-  const targetContainer = document.getElementById(targetId);
-  if (targetContainer) {
-    targetContainer.appendChild(view);
   }
 }
 
