@@ -131,11 +131,12 @@ class AdsController extends FakeEventTarget implements IAdsController {
     if (this.isAdBreak()) {
       AdsController._logger.warn('Tried to call playAdNow during an ad break');
     } else {
+      const loadPrebidAd = Promise.all(adPod.map(ad => this._getPrebidAds(ad)));
       this._playAdBreak({
         position: this._player.currentTime || 0,
         ads: adPod,
         played: false,
-        loadedPromise: Promise.resolve()
+        loadedPromise: loadPrebidAd
       });
     }
   }

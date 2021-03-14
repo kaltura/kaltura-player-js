@@ -826,7 +826,7 @@ describe('AdsController', () => {
     before(() => {
       config = Utils.Object.mergeDeep({}, getConfigStructure(), {
         advertising: {
-          prebid: {libUrl: 'dummyUrl', disable: false}
+          prebid: {libUrl: 'dummyUrl'}
         },
         plugins: {
           ima: {}

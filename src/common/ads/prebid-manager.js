@@ -2,6 +2,8 @@
 import {Utils} from '@playkit-js/playkit-js';
 import {KalturaPlayer} from '../../kaltura-player';
 
+const AD_REQUEST_TIMEOUT = 4000;
+
 /**
  * Manager for prebid lib.
  * @class PrebidManager
@@ -30,7 +32,7 @@ class PrebidManager {
   constructor(config: ?KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
     this._loadPromise.catch(() => console.warn(`Prebid doesn't loaded`));
-    if (config && !config.disable) {
+    if (config) {
       this._config = config;
       this._loadPrebidSDKLib(this._config.libUrl)
         .then(() => {
@@ -61,7 +63,7 @@ class PrebidManager {
     return new Promise((resolve, reject) => {
       this._loadPromise
         .then(() => {
-          const loadAdTagTimer = setTimeout(reject, config.timeout);
+          const loadAdTagTimer = setTimeout(reject, config.timeout || AD_REQUEST_TIMEOUT);
           this._prebid.que.push(() => {
             this._prebid.addAdUnits(config.adUnit);
             if (config.options) {

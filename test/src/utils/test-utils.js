@@ -8,11 +8,7 @@ function getConfigStructure() {
     ui: {},
     plugins: {},
     advertising: {
-      adBreaks: [],
-      prebid: {
-        disable: true,
-        timeout: 4000
-      }
+      adBreaks: []
     },
     sources: {},
     text: {

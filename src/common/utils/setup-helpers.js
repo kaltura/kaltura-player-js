@@ -283,11 +283,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     },
     plugins: {},
     advertising: {
-      adBreaks: [],
-      prebid: {
-        disable: true,
-        timeout: 4000
-      }
+      adBreaks: []
     },
     viewability: {
       observedThresholds: DEFAULT_OBSERVED_THRESHOLDS,

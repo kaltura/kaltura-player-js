@@ -8,6 +8,5 @@ declare type KPAdPrebidConfig = {
 };
 
 declare type KPPrebidConfig = KPAdPrebidConfig & {
-  libUrl: string,
-  disable: boolean
+  libUrl: string
 };
