@@ -15,6 +15,7 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 - [Play Ads After Time](#play-ads-after-time)
 - [Events](#events)
 - [Play Ad Now](#play-ad-now)
+- [Play Ad Now with Prebid](#play-ad-now-with-prebid)
 - [Seekbar Cue Points](#seekbar-cue-points)
 - [Prebid](#prebid)
 
@@ -304,6 +305,45 @@ kalturaPlayer.ads.playAdNow(
   ]);
 ```
 
+### Play Ad Now with Prebid
+
+All the above features are supported not only by `advertising` config, but also by `playAdNow` api which gets an ad pod as a parameter.
+The app may call it whenever it wants to play an ad pod with prebid.
+
+```js
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    prebid:{
+      libUrl: 'https://acdn.adnxs.com/prebid/not-for-prod/3/prebid.js',
+    }
+  }
+}
+const kalturaPlayer = KalturaPlayer.setup(config);
+kalturaPlayer.play();
+... // playback
+kalturaPlayer.ads.playAdNow(
+  [
+    {
+      url: [MID_ROLL_1_VAST_URL_1, MID_ROLL_1_VAST_URL_2, ...],
+      prebid: {
+        adUnit: {
+          //configuration for bidders
+        },
+        params: {
+          //params for dfp in prebid
+        },
+        options: {
+          //configuration for prebid cache url and etc.
+        }
+      }
+    }
+  ]);
+```
+
 ### Seekbar Cue Points
 
 To display cue points on the seekbar to indicates the ad break positions use `showAdBreakCuePoint` option, as following:
@@ -374,7 +414,7 @@ const config = {
   },
   advertising: {
     prebid:{
-      libUrl: 'http://prebid.com'
+      libUrl: 'https://acdn.adnxs.com/prebid/not-for-prod/3/prebid.js',
     }
     adBreaks: [{
       position: 60,
