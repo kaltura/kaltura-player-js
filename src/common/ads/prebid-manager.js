@@ -84,7 +84,7 @@ class PrebidManager {
                 } else {
                   try {
                     const code = config.adUnit.code || Object.keys(bids)[0];
-                    const adBids = bids[code].bids || [bids[0]];
+                    const adBids = bids[code].bids;
                     resolve(adBids);
                   } catch (e) {
                     reject();
