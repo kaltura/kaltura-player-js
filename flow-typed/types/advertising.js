@@ -37,6 +37,7 @@ declare type KPAdBreakObject = _KPAdBreakObject;
 
 /**
  * @typedef {Object} KPAdvertisingConfigObject
+ * @property {KPPrebidConfig} prebid - The prebid config.
  * @property {Array<KPAdBreakObject>} adBreaks - The ad breaks scheme.
  * @property {number} [playAdsAfterTime] - Only play ad breaks scheduled after this time (in seconds). This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
  * @property {boolean} [showAdBreakCuePoint] - Whether to show the ad breaks cue points.

@@ -57,7 +57,7 @@ class PrebidManager {
     return this._isPrebidSDKLibLoaded() ? Promise.resolve() : Utils.Dom.loadScriptAsync(libUrl);
   }
 
-  _load(config: KPPrebidConfig): Promise<*> {
+  _load(config: KPAdPrebidConfig): Promise<*> {
     return new Promise((resolve, reject) => {
       this._loadPromise
         .then(() => {
@@ -99,11 +99,11 @@ class PrebidManager {
   /**
    * load the prebid
    * @public
-   * @param {KPPrebidConfig} config - The prebid config.
+   * @param {KPAdPrebidConfig} config - The prebid config.
    * @returns {void}
    * @memberof PrebidManager
    */
-  load(config: KPPrebidConfig): Promise<*> {
+  load(config: KPAdPrebidConfig): Promise<*> {
     return this._load(config || this._config);
   }
 }

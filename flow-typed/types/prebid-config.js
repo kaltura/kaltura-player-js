@@ -3,10 +3,11 @@
 declare type KPAdPrebidConfig = {
   adUnit: Object,
   params?: Object,
-  options?: Object
-}
+  options?: Object,
+  timeout: number
+};
+
 declare type KPPrebidConfig = KPAdPrebidConfig & {
   libUrl: string,
-  disable: boolean,
-  timeout: number
+  disable: boolean
 };
