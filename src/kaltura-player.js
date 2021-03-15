@@ -234,7 +234,6 @@ class KalturaPlayer extends FakeEventTarget {
     });
     this._configEvaluator.evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
-    this._maybeCreateAdsController();
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
@@ -267,7 +266,6 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     this._localPlayer.configure(localPlayerConfig);
-    this._maybeCreateAdsController();
     const uiConfig = config.ui;
     if (uiConfig) {
       this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
@@ -737,7 +735,6 @@ class KalturaPlayer extends FakeEventTarget {
 
   _onChangeSourceStarted(): void {
     this._configureOrLoadPlugins(this._pluginsConfig);
-    this._maybeCreateAdsController();
     this.reset();
     this._pluginManager.loadMedia();
     this._reset = false;
@@ -824,6 +821,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
       this._localPlayer.playbackMiddleware.use(this._pluginReadinessMiddleware);
     }
+    this._maybeCreateAdsController();
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
   }
@@ -833,6 +831,7 @@ class KalturaPlayer extends FakeEventTarget {
       const adsPluginControllers = this._controllerProvider.getAdsControllers();
       if (adsPluginControllers.length) {
         this._adsController = new AdsController(this, adsPluginControllers);
+        this._localPlayer.playbackMiddleware.use(this._adsController.getMiddleware());
         this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, event => {
           this.dispatchEvent(event);
         });
