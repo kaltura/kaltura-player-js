@@ -707,7 +707,8 @@ class KalturaPlayer extends FakeEventTarget {
         const {
           payload: {ad}
         } = event;
-        if (ad && ad.linear && ad.position === 1 && !ad.inStream) {
+        // source set only after media loaded
+        if (ad && ad.linear && ad.position === 1 && !ad.inStream && this.src) {
           this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this.detachMediaSource());
           this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this.attachMediaSource());
           this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this.attachMediaSource());
