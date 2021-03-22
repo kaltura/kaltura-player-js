@@ -82,6 +82,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._playbackStart = false;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
     delete noSourcesOptions.plugins;
+    delete noSourcesOptions.sources;
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
@@ -98,11 +99,12 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
+    //configure sources after configure finished for all components - making sure all we'll set up correctly
+    this.setPlaylist({items: (options.playlist && options.playlist.items) || []});
+    this.setMedia({sources: sources || {}, plugins: plugins || {}});
+
     this._playlistManager.configure(Utils.Object.mergeDeep({}, options.playlist, {items: null}));
     this.configure({plugins});
-    //configure sources after configure finished for all components - making sure all we'll set up correctly
-    this._playlistManager.configure({items: (options.playlist && options.playlist.items) || []});
-    this._localPlayer.configure({sources: sources || {}});
   }
 
   /**
@@ -155,7 +157,7 @@ class KalturaPlayer extends FakeEventTarget {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
-    Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.config.sources);
+    Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.sources);
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     playerConfig.plugins = playerConfig.plugins || {};
     Object.keys(this._pluginsConfig).forEach(name => {
@@ -167,6 +169,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!hasYoutubeSource(playerConfig.sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
+    this._localPlayer.setSources(playerConfig.sources);
     this.configure(playerConfig);
   }
 
@@ -243,7 +246,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   getMediaConfig(): ?KPMediaConfig {
     const mediaConfig = {
-      sources: this._localPlayer.config.sources,
+      sources: this._localPlayer.sources,
       plugins: this._pluginsConfig
     };
     return Utils.Object.copyDeep(mediaConfig);
@@ -264,7 +267,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._configEvaluator.evaluatePluginsConfig(config.plugins, configDictionary);
     this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
+    const configSources = config.sources;
     delete localPlayerConfig.plugins;
+    delete localPlayerConfig.sources;
+    this._localPlayer.setSources(configSources);
     this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
