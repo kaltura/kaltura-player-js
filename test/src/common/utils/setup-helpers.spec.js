@@ -7,14 +7,6 @@ import {Env} from '@playkit-js/playkit-js';
 const targetId = 'player-placeholder_setup-helpers.spec';
 
 describe('error handling', function () {
-  beforeEach(function () {
-    sinon.spy(navigator, 'sendBeacon');
-  });
-
-  afterEach(function () {
-    navigator.sendBeacon.restore();
-  });
-
   it('should throw error because no config provided', function (done) {
     try {
       SetupHelpers.validateConfig();
@@ -42,34 +34,44 @@ describe('error handling', function () {
     }
   });
 
-  it('should emit a beacon when no partner id provided', function (done) {
-    const div = document.createElement('DIV');
-    div.id = 'test-id';
-    document.body.appendChild(div);
-    (navigator.sendBeacon.getCall(0) === null).should.be.true;
-    SetupHelpers.validateConfig({targetId: div.id, provider: {}});
-    document.body.removeChild(div);
-    navigator.sendBeacon
-      .getCall(0)
-      .args[0].should.include(
-        'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
-      );
-    done();
-  });
+  describe('send beacon', function () {
+    beforeEach(function () {
+      sinon.spy(navigator, 'sendBeacon');
+    });
 
-  it('should emit a beacon when the default partner id provided', function (done) {
-    const div = document.createElement('DIV');
-    div.id = 'test-id';
-    document.body.appendChild(div);
-    (navigator.sendBeacon.getCall(0) === null).should.be.true;
-    SetupHelpers.validateConfig({targetId: div.id, provider: {partnerId: 2504201}});
-    document.body.removeChild(div);
-    navigator.sendBeacon
-      .getCall(0)
-      .args[0].should.include(
-        'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
-      );
-    done();
+    afterEach(function () {
+      navigator.sendBeacon.restore();
+    });
+
+    it('should emit a beacon when no partner id provided', function (done) {
+      const div = document.createElement('DIV');
+      div.id = 'test-id';
+      document.body.appendChild(div);
+      (navigator.sendBeacon.getCall(0) === null).should.be.true;
+      SetupHelpers.validateConfig({targetId: div.id, provider: {}});
+      document.body.removeChild(div);
+      navigator.sendBeacon
+        .getCall(0)
+        .args[0].should.include(
+          'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
+        );
+      done();
+    });
+
+    it('should emit a beacon when the default partner id provided', function (done) {
+      const div = document.createElement('DIV');
+      div.id = 'test-id';
+      document.body.appendChild(div);
+      (navigator.sendBeacon.getCall(0) === null).should.be.true;
+      SetupHelpers.validateConfig({targetId: div.id, provider: {partnerId: 2504201}});
+      document.body.removeChild(div);
+      navigator.sendBeacon
+        .getCall(0)
+        .args[0].should.include(
+          'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
+        );
+      done();
+    });
   });
 });
 
