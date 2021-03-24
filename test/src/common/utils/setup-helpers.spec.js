@@ -7,6 +7,14 @@ import {Env} from '@playkit-js/playkit-js';
 const targetId = 'player-placeholder_setup-helpers.spec';
 
 describe('error handling', function () {
+  beforeEach(function () {
+    sinon.spy(navigator, 'sendBeacon');
+  });
+
+  afterEach(function () {
+    navigator.sendBeacon.restore();
+  });
+
   it('should throw error because no config provided', function (done) {
     try {
       SetupHelpers.validateConfig();
@@ -38,7 +46,6 @@ describe('error handling', function () {
     const div = document.createElement('DIV');
     div.id = 'test-id';
     document.body.appendChild(div);
-    sinon.spy(navigator, 'sendBeacon');
     (navigator.sendBeacon.getCall(0) === null).should.be.true;
     SetupHelpers.validateConfig({targetId: div.id, provider: {}});
     document.body.removeChild(div);
@@ -54,7 +61,6 @@ describe('error handling', function () {
     const div = document.createElement('DIV');
     div.id = 'test-id';
     document.body.appendChild(div);
-    sinon.spy(navigator, 'sendBeacon');
     (navigator.sendBeacon.getCall(0) === null).should.be.true;
     SetupHelpers.validateConfig({targetId: div.id, provider: {partnerId: 2504201}});
     document.body.removeChild(div);
