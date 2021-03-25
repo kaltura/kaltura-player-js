@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "keywords": [
     "kaltura",
     "player",
@@ -63,7 +63,7 @@
     "@playkit-js/playkit-js-ui": "0.64.0",
     "hls.js": "^0.14.17",
     "intersection-observer": "^0.12.0",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.28.0",
+    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.28.1",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "^3.0.8"
   },
