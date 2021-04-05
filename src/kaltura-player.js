@@ -484,6 +484,19 @@ class KalturaPlayer extends FakeEventTarget {
     }
   }
 
+  get liveTime(): number {
+    if (this.isLive()) {
+      return this._localPlayer.liveTime;
+    }
+    return -1;
+  }
+
+  set liveTime(time: number): void {
+    if (this.isLive()) {
+      this._localPlayer.liveTime = time;
+    }
+  }
+
   set textStyle(style: TextStyle): void {
     this._localPlayer.textStyle = style;
   }
