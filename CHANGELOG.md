@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/kaltura/kaltura-player-js/compare/v1.5.6...v1.6.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* **FEC-10281:** chromecast does not work after playing it once and trying it on another video ([#417](https://github.com/kaltura/kaltura-player-js/issues/417)) ([42e7939](https://github.com/kaltura/kaltura-player-js/commit/42e7939))
+* **FEC-10405:** set capabilities manually on iOS devices when airplay is configured ([#422](https://github.com/kaltura/kaltura-player-js/issues/422)) ([d16d4b1](https://github.com/kaltura/kaltura-player-js/commit/d16d4b1))
+* **FEC-11057:** ima postroll doesn't play when imadai configured before ([#424](https://github.com/kaltura/kaltura-player-js/issues/424)) ([a838ea5](https://github.com/kaltura/kaltura-player-js/commit/a838ea5))
+* **FEC-11062:** ad layout doesn't work when IMA DAI configured ([#425](https://github.com/kaltura/kaltura-player-js/issues/425)) ([2251d5f](https://github.com/kaltura/kaltura-player-js/commit/2251d5f))
+* **FEC-11089:** bumper preroll doesn't play after ima preroll ([#428](https://github.com/kaltura/kaltura-player-js/issues/428)) ([cd7a287](https://github.com/kaltura/kaltura-player-js/commit/cd7a287))
+
+
+### Features
+
+* **11077:** expose api for restart the media source ([#427](https://github.com/kaltura/kaltura-player-js/issues/427)) ([145f53c](https://github.com/kaltura/kaltura-player-js/commit/145f53c))
+* **FEC-10541:** add support on working with bidding, Prebid and IMA  ([#412](https://github.com/kaltura/kaltura-player-js/issues/412)) ([0f21b24](https://github.com/kaltura/kaltura-player-js/commit/0f21b24))
+* **FEC-10941:** Use In-Stream DASH thumbnails on the timeline ([#423](https://github.com/kaltura/kaltura-player-js/issues/423)) ([33bc80c](https://github.com/kaltura/kaltura-player-js/commit/33bc80c))
+
+
+
 ### [1.5.6](https://github.com/kaltura/kaltura-player-js/compare/v1.5.5...v1.5.6) (2021-03-24)
 
 
