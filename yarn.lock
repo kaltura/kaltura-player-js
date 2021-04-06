@@ -1130,30 +1130,30 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@1.22.0":
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.22.0.tgz#e9a03c5e42202c6cd74ccb8ff7876c8d7cb76a57"
-  integrity sha512-GeUUnfLqo9T64j3sK5V5RSHehhl4fEieUEhoS/yM1NACkg6fQDAwLmYg5+IneK+tm0XlimaGGLMr3heTYtUSeQ==
+"@playkit-js/playkit-js-dash@1.23.0":
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.23.0.tgz#5b33feaf29e92d8035dac5919ba2400b2a30de33"
+  integrity sha512-OG3awRTHWzbHmY2CpssDml9fDs+22kzauskeOmVxNPER4F7BsE52JpwTBh/YIfIhN0HLLwVOtwiZ1cPTo4R/Bw==
 
 "@playkit-js/playkit-js-hls@1.24.0":
   version "1.24.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.24.0.tgz#6b6ef7a4a6a7e03130520166ace3edfcf01b3177"
   integrity sha512-AWYnx0kSODiVmmX56h/x8BXDr3DgSdPf3ahehPRSS19VqsWSrMYO/X3jnS5Tw0fyc/jQD12PBOREUy/+fTVm2Q==
 
-"@playkit-js/playkit-js-ui@0.64.0":
-  version "0.64.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.64.0.tgz#6f985412a1085ba03e4379a31d5d0a76fc18ad59"
-  integrity sha512-u992uVgO14JVPEbEkEFDywNj0ywZX6yOZil72ZV51BZRrGgIQo2JJLUpPUZQ5+Vy3fF0VL2LTs+MMlJRGnjM1w==
+"@playkit-js/playkit-js-ui@0.65.0":
+  version "0.65.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.65.0.tgz#ff76b148f06a6845de30b198c5e512caff492b8e"
+  integrity sha512-7idrkMb87/vlNPbZ2JYuxIhjrI4sqXvAne5pUoFkQyW2KdyGFwndXPdiJsfhXFkJlAOUJ3ZocraZIHUpeIvIyQ==
   dependencies:
     preact "^10.3.4"
     preact-i18n "^2.0.0-preactx.2"
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.68.1":
-  version "0.68.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.68.1.tgz#31d47b417246ca1d89a01fbbe42542aa34a4e588"
-  integrity sha512-a1ZsUVD7G3TSU6MDaV/d1IPNLk+zAvY5jfY8t4d2XC/LHFJ1TQGrRc9OGl0U4q9S2mh2+f+Inkm393Ca5fu0uw==
+"@playkit-js/playkit-js@0.69.0":
+  version "0.69.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.69.0.tgz#21d53583350bc3804b8e2da7cd91ce9eb9507f9a"
+  integrity sha512-sWq/hZ3D2PGALOT2GTwJgKuKY1Kf5O9sjYjACeSissBN4VtPso/DzSOdlb3WDDMP3IF578zseHgQHn9mA9ABjg==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^0.7.21"
