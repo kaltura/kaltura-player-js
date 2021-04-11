@@ -564,6 +564,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
     ['playback.enableCEA708Captions', 'text.enableCEA708Captions'],
     ['playback.useNativeTextTrack', 'text.useNativeTextTrack'],
+    ['playback.options.html5.dash.useShakaTextTrackDisplay', 'text.useShakaTextTrackDisplay'],
     ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
     ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
     ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
