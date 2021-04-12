@@ -336,7 +336,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS || options.text.useShakaTextTrackDisplay) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
