@@ -394,6 +394,10 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
   if (Env.isSmartTV) {
     //relevant for LG SDK 4 and HISENSE which doesn't support our check for autoplay with base64 source
     setCapabilities(EngineType.HTML5, {autoplay: true});
+    const initializeUserGesture = Utils.Object.getPropertyPath(options, 'playback.initializeUserGesture');
+    if (typeof initializeUserGesture !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'playback.initializeUserGesture', false);
+    }
     _configureAdsWithMSE(options);
     _configureLGSDK2HlsLiveConfig(options);
     if (options.plugins && options.plugins.ima) {
