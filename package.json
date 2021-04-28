@@ -59,7 +59,7 @@
     "@babel/polyfill": "^7.0.0",
     "@playkit-js/playkit-js": "0.70.0",
     "@playkit-js/playkit-js-dash": "1.23.0",
-    "@playkit-js/playkit-js-hls": "1.24.0",
+    "@playkit-js/playkit-js-hls": "1.25.1",
     "@playkit-js/playkit-js-ui": "0.65.0",
     "hls.js": "^0.14.17",
     "intersection-observer": "^0.12.0",
