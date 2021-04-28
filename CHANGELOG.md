@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/kaltura/kaltura-player-js/compare/v1.6.1...v1.7.0) (2021-04-28)
+
+
+### Bug Fixes
+
+* **FEC-11126:** moved useShakaTextTrackDisplay from playback.options.playback.options.html5.dash to text ([#432](https://github.com/kaltura/kaltura-player-js/issues/432)) ([bd6022e](https://github.com/kaltura/kaltura-player-js/commit/bd6022e))
+
+
+### Features
+
+* update playkit.js to [0.70.0](https://github.com/kaltura/playkit-js/releases/tag/v0.70.0) ([2e8311f](https://github.com/kaltura/kaltura-player-js/commit/2e8311f))
+* update playkit.js-dash to [1.24.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.24.2) ([4974cf8](https://github.com/kaltura/kaltura-player-js/commit/4974cf8))
+* update playkit.js-hls to [1.25.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.25.1) ([59e35e2](https://github.com/kaltura/kaltura-player-js/commit/59e35e2))
+* update playkit.js-ui to [0.65.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.65.3) ([874f0be](https://github.com/kaltura/kaltura-player-js/commit/874f0be))
+* **FEC-11091:** add support for XMLHttpRequest.withCredentials in request filter ([#438](https://github.com/kaltura/kaltura-player-js/issues/438)) ([5ccdc1a](https://github.com/kaltura/kaltura-player-js/commit/5ccdc1a))
+* **FEC-11126:** upgrade Shaka to 3.0.10 ([#434](https://github.com/kaltura/kaltura-player-js/issues/434)) ([18bafd6](https://github.com/kaltura/kaltura-player-js/commit/18bafd6))
+
+
+
 ### [1.6.1](https://github.com/kaltura/kaltura-player-js/compare/v1.6.0...v1.6.1) (2021-04-06)
 
 
