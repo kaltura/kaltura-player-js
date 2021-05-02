@@ -23,6 +23,7 @@
   },
   "rules": {
     "prettier/prettier": "error",
+    "no-console": "off",
     "mocha-no-only/mocha-no-only": "off",
     "require-jsdoc": ["error"],
     "valid-jsdoc": ["error"]

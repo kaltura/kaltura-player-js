@@ -1,6 +1,5 @@
 // @flow
-import {Utils} from '@playkit-js/playkit-js';
-import {KalturaPlayer} from '../../kaltura-player';
+import {getLogger, Utils} from '@playkit-js/playkit-js';
 
 const AD_REQUEST_TIMEOUT = 4000;
 
@@ -10,6 +9,7 @@ const AD_REQUEST_TIMEOUT = 4000;
  * @param {PrebidManager} context - The prebid lib context.
  */
 class PrebidManager {
+  static _logger: any = getLogger('PrebidManager');
   /**
    * @member
    * @private
@@ -31,7 +31,7 @@ class PrebidManager {
 
   constructor(config: ?KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
-    this._loadPromise.catch(() => console.warn(`Prebid doesn't loaded`));
+    this._loadPromise.catch(() => PrebidManager._logger.warn(`Prebid SDK failed to load`));
     if (config) {
       this._config = config;
       this._loadPrebidSDKLib(this._config.libUrl)
@@ -71,7 +71,7 @@ class PrebidManager {
             }
             this._prebid.requestBids({
               bidsBackHandler: bids => {
-                KalturaPlayer._logger.debug('returned bids', bids);
+                PrebidManager._logger.debug('returned bids', bids);
                 clearTimeout(loadAdTagTimer);
                 if (config.params) {
                   let requestParams = {};
@@ -106,6 +106,7 @@ class PrebidManager {
    * @memberof PrebidManager
    */
   load(config: KPAdPrebidConfig): Promise<*> {
+    console.error('dddd');
     return this._load(config || this._config);
   }
 }
