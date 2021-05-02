@@ -106,7 +106,6 @@ class PrebidManager {
    * @memberof PrebidManager
    */
   load(config: KPAdPrebidConfig): Promise<*> {
-    console.error('dddd');
     return this._load(config || this._config);
   }
 }
