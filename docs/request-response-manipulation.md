@@ -1,6 +1,6 @@
 # Request and Response Manipulation
 
-An application may have to manipulate the player requests and responses to adjust them to its own specific environment (e.g. for DRM license wrapping).  
+An application may have to manipulate the player requests and responses to adjust them to its own specific environment (e.g. for DRM license wrapping).
 To achieve this ability Kaltura-player exposes a dedicated configuration which allows the application to pass a request filter to get the request object just before it is sent to the server, and a response filter to get the response object just after it returned from the server.
 
 There are 3 types of requests the application can manipulate: DRM license, manifest and segments fetching.
@@ -9,17 +9,18 @@ There are 3 types of requests the application can manipulate: DRM license, manif
 
 Each request object contains the followings:
 
-`url: string` - The request URL.  
-`body: string || ArrayBuffer` - The request body, the type depends on the request type.  
+`url: string` - The request URL.
+`body: string || ArrayBuffer` - The request body, the type depends on the request type.
 `headers: Object` - A mapping of headers of the request. e.g.: {'HEADER': 'VALUE'}.
+`withCredentials: boolean` - Make requests with credentials. This will allow cookies in cross-site requests.
 
 ## Response Params
 
 Each response object contains the followings:
 
-`url: string` - The URI which was loaded.  
-`originalUrl: string` - The original URI before any redirects.  
-`data: ArrayBuffer` - The body of the response.  
+`url: string` - The URI which was loaded.
+`originalUrl: string` - The original URI before any redirects.
+`data: ArrayBuffer` - The body of the response.
 `headers: Object` - A mapping of headers of the response. e.g.: {'HEADER': 'VALUE'}.
 
 ##

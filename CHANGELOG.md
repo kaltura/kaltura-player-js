@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/kaltura/kaltura-player-js/compare/v1.6.1...v1.7.0) (2021-04-28)
+
+
+### Bug Fixes
+
+* **FEC-11126:** moved useShakaTextTrackDisplay from playback.options.playback.options.html5.dash to text ([#432](https://github.com/kaltura/kaltura-player-js/issues/432)) ([bd6022e](https://github.com/kaltura/kaltura-player-js/commit/bd6022e))
+
+
+### Features
+
+* update playkit.js to [0.70.0](https://github.com/kaltura/playkit-js/releases/tag/v0.70.0) ([2e8311f](https://github.com/kaltura/kaltura-player-js/commit/2e8311f))
+* update playkit.js-dash to [1.24.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.24.2) ([4974cf8](https://github.com/kaltura/kaltura-player-js/commit/4974cf8))
+* update playkit.js-hls to [1.25.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.25.1) ([59e35e2](https://github.com/kaltura/kaltura-player-js/commit/59e35e2))
+* update playkit.js-ui to [0.65.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.65.3) ([874f0be](https://github.com/kaltura/kaltura-player-js/commit/874f0be))
+* **FEC-11091:** add support for XMLHttpRequest.withCredentials in request filter ([#438](https://github.com/kaltura/kaltura-player-js/issues/438)) ([5ccdc1a](https://github.com/kaltura/kaltura-player-js/commit/5ccdc1a))
+* **FEC-11126:** upgrade Shaka to 3.0.10 ([#434](https://github.com/kaltura/kaltura-player-js/issues/434)) ([18bafd6](https://github.com/kaltura/kaltura-player-js/commit/18bafd6))
+
+
+
+### [1.6.1](https://github.com/kaltura/kaltura-player-js/compare/v1.6.0...v1.6.1) (2021-04-06)
+
+
+
+## [1.6.0](https://github.com/kaltura/kaltura-player-js/compare/v1.5.6...v1.6.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* **FEC-10281:** chromecast does not work after playing it once and trying it on another video ([#417](https://github.com/kaltura/kaltura-player-js/issues/417)) ([42e7939](https://github.com/kaltura/kaltura-player-js/commit/42e7939))
+* **FEC-10405:** set capabilities manually on iOS devices when airplay is configured ([#422](https://github.com/kaltura/kaltura-player-js/issues/422)) ([d16d4b1](https://github.com/kaltura/kaltura-player-js/commit/d16d4b1))
+* **FEC-11057:** ima postroll doesn't play when imadai configured before ([#424](https://github.com/kaltura/kaltura-player-js/issues/424)) ([a838ea5](https://github.com/kaltura/kaltura-player-js/commit/a838ea5))
+* **FEC-11062:** ad layout doesn't work when IMA DAI configured ([#425](https://github.com/kaltura/kaltura-player-js/issues/425)) ([2251d5f](https://github.com/kaltura/kaltura-player-js/commit/2251d5f))
+* **FEC-11089:** bumper preroll doesn't play after ima preroll ([#428](https://github.com/kaltura/kaltura-player-js/issues/428)) ([cd7a287](https://github.com/kaltura/kaltura-player-js/commit/cd7a287))
+
+
+### Features
+
+* **11077:** expose api for restart the media source ([#427](https://github.com/kaltura/kaltura-player-js/issues/427)) ([145f53c](https://github.com/kaltura/kaltura-player-js/commit/145f53c))
+* **FEC-10541:** add support on working with bidding, Prebid and IMA  ([#412](https://github.com/kaltura/kaltura-player-js/issues/412)) ([0f21b24](https://github.com/kaltura/kaltura-player-js/commit/0f21b24))
+* **FEC-10941:** Use In-Stream DASH thumbnails on the timeline ([#423](https://github.com/kaltura/kaltura-player-js/issues/423)) ([33bc80c](https://github.com/kaltura/kaltura-player-js/commit/33bc80c))
+
+
+
+### [1.5.6](https://github.com/kaltura/kaltura-player-js/compare/v1.5.5...v1.5.6) (2021-03-24)
+
+
+
 ### [1.5.5](https://github.com/kaltura/kaltura-player-js/compare/v1.5.4...v1.5.5) (2021-03-07)
 
 

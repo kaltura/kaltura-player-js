@@ -24,8 +24,8 @@ import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewabili
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
-const KAVA_DEFAULT_IMPRESSION =
-  'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0';
+const KAVA_DEFAULT_PARTNER = 2504201;
+const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
 declare var __CONFIG_DOCS_URL__: string;
 
@@ -69,7 +69,7 @@ function validateTargetId(targetId: string): void {
  * @returns {void}
  */
 function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
-  if (!providerOptions.partnerId) {
+  if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
     const source = {
       url: KAVA_DEFAULT_IMPRESSION,
@@ -336,7 +336,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS || (options.text && options.text.useShakaTextTrackDisplay)) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -564,6 +564,7 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
     ['playback.enableCEA708Captions', 'text.enableCEA708Captions'],
     ['playback.useNativeTextTrack', 'text.useNativeTextTrack'],
+    ['playback.options.html5.dash.useShakaTextTrackDisplay', 'text.useShakaTextTrackDisplay'],
     ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
     ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
     ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
