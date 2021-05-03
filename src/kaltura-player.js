@@ -158,19 +158,20 @@ class KalturaPlayer extends FakeEventTarget {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
-    Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.sources);
+    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
+    delete playerConfig.sources;
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     playerConfig.plugins = playerConfig.plugins || {};
     Object.keys(this._pluginsConfig).forEach(name => {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
-    addKalturaPoster(playerConfig.sources, mediaConfig.sources, this._localPlayer.dimensions);
-    addKalturaParams(this, playerConfig);
-    maybeSetStreamPriority(this, playerConfig);
-    if (!hasYoutubeSource(playerConfig.sources)) {
+    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
+    addKalturaParams(this, {sources, session: playerConfig.session});
+    playerConfig.playback = maybeSetStreamPriority(this, sources);
+    if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
-    this._localPlayer.setSources(playerConfig.sources);
+    this._localPlayer.setSources(sources);
     this.configure(playerConfig);
   }
 
@@ -597,8 +598,12 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.env;
   }
 
+  get sources(): Object {
+    return {sources: this._localPlayer.sources};
+  }
+
   get config(): Object {
-    return {...this._localPlayer.config, plugins: this._pluginsConfig};
+    return {...this._localPlayer.config, plugins: this._pluginsConfig, sources: this._localPlayer.sources};
   }
 
   get hasUserInteracted(): boolean {
