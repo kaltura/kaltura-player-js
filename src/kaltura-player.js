@@ -99,12 +99,13 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
-    //configure sources after configure finished for all components - making sure all we'll set up correctly
-    this.setPlaylist({items: (options.playlist && options.playlist.items) || []});
-    this.setMedia({sources: sources || {}, plugins: plugins || {}});
-
     this._playlistManager.configure(Utils.Object.mergeDeep({}, options.playlist, {items: null}));
     this.configure({plugins});
+    //configure sources after configure finished for all components - making sure all we'll set up correctly
+    this.setPlaylist({items: (options.playlist && options.playlist.items) || []});
+    if (sources) {
+      this.setMedia({sources: sources || {}});
+    }
   }
 
   /**
@@ -267,10 +268,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._configEvaluator.evaluatePluginsConfig(config.plugins, configDictionary);
     this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
-    const configSources = config.sources;
     delete localPlayerConfig.plugins;
     delete localPlayerConfig.sources;
-    this._localPlayer.setSources(configSources);
     this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
