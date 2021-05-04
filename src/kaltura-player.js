@@ -99,12 +99,14 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach(coreEvent => this._eventManager.listen(this._localPlayer, coreEvent, e => this.dispatchEvent(e)));
     this._addBindings();
-    this._playlistManager.configure(Utils.Object.mergeDeep({}, options.playlist, {items: null}));
+    const playlistConfig = Utils.Object.mergeDeep({}, options.playlist, {items: null});
+    this._playlistManager.configure(playlistConfig);
     this.configure({plugins});
     //configure sources after configure finished for all components - making sure all we'll set up correctly
-    this.setPlaylist({items: (options.playlist && options.playlist.items) || []});
+    this.setPlaylist(Utils.Object.mergeDeep(playlistConfig, {items: (options.playlist && options.playlist.items) || []}));
     if (sources) {
-      this.setMedia({sources: sources || {}});
+      // $FlowFixMe
+      this.setMedia({sources});
     }
   }
 
@@ -166,8 +168,11 @@ class KalturaPlayer extends FakeEventTarget {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
-    addKalturaParams(this, {sources, session: playerConfig.session});
-    playerConfig.playback = maybeSetStreamPriority(this, sources);
+    addKalturaParams(this, {...playerConfig, sources});
+    const playback = maybeSetStreamPriority(this, sources);
+    if (playback) {
+      playerConfig.playback = playback;
+    }
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }

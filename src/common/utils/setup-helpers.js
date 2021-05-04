@@ -593,7 +593,7 @@ function printSetupMessages(): void {
  * @param {PKSourcesConfigObject} sources - sources
  * @return {void}
  */
-function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject): PKPlaybackConfigObject {
+function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject): ?PKPlaybackConfigObject {
   if (sources && hasYoutubeSource(sources)) {
     const playbackConfig = player.config.playback;
     let hasYoutube = false;
@@ -611,6 +611,7 @@ function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject):
 
     return playbackConfig;
   }
+  return null;
 }
 
 /**
