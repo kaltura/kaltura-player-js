@@ -560,13 +560,15 @@ describe('kaltura player api', function () {
         lastCellValue: 6
       });
       player.configure({
-        sources: SourcesConfig.Mp4,
         plugins: {
           numbers: {
             size: 2,
             firstCellValue: 3
           }
         }
+      });
+      player.setMedia({
+        sources: SourcesConfig.Mp4
       });
       player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
@@ -859,10 +861,12 @@ describe('kaltura player api', function () {
         done();
       });
       player.configure({
-        sources: SourcesConfig.Mp4,
         playback: {
           autoplay: true
         }
+      });
+      player.setMedia({
+        sources: SourcesConfig.Mp4
       });
     });
 

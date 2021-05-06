@@ -139,7 +139,7 @@ class KalturaPlayer extends FakeEventTarget {
             const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
             mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
             this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-            this.configure(getDefaultRedirectOptions(this.config, mediaConfig));
+            this.configure(getDefaultRedirectOptions({sources: this.sources}, mediaConfig));
             this.setMedia(mediaConfig);
             return mediaConfig;
           },
@@ -160,7 +160,7 @@ class KalturaPlayer extends FakeEventTarget {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
-    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
+    const sources = Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.sources);
     delete playerConfig.sources;
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     playerConfig.plugins = playerConfig.plugins || {};
@@ -275,7 +275,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
-    delete localPlayerConfig.sources;
+    if (localPlayerConfig.sources) {
+      this._localPlayer.setSources(localPlayerConfig.sources);
+      delete localPlayerConfig.sources;
+    }
     this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
@@ -603,8 +606,8 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.env;
   }
 
-  get sources(): Object {
-    return {sources: this._localPlayer.sources};
+  get sources(): PKSourcesConfigObject {
+    return {...this._localPlayer.sources};
   }
 
   get config(): Object {

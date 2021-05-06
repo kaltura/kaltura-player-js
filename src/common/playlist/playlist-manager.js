@@ -44,7 +44,7 @@ class PlaylistManager {
    */
   configure(config: ?KPPlaylistObject, entryList: ?ProviderEntryListObject) {
     if (config) {
-      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.config, 'sources.options'));
+      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.sources, 'options'));
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
@@ -290,7 +290,7 @@ class PlaylistManager {
       if (this._mediaInfoList[index]) {
         this._resetProviderPluginsConfig();
         this._player.reset();
-        this._player.configure({
+        this._player.setMedia({
           sources: activeItem.sources
         });
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
