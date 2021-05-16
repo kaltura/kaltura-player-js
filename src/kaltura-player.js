@@ -102,8 +102,10 @@ class KalturaPlayer extends FakeEventTarget {
     const playlistConfig = Utils.Object.mergeDeep({}, options.playlist, {items: null});
     this._playlistManager.configure(playlistConfig);
     this.configure({plugins});
-    //configure sources after configure finished for all components - making sure all we'll set up correctly
-    this.setPlaylist(Utils.Object.mergeDeep(playlistConfig, {items: (options.playlist && options.playlist.items) || []}));
+    if (options.playlist && options.playlist.items) {
+      //configure sources after configure finished for all components - making sure all we'll set up correctly
+      this.setPlaylist(Utils.Object.mergeDeep(playlistConfig, {items: (options.playlist && options.playlist.items) || []}));
+    }
     if (sources) {
       // $FlowFixMe
       this.setMedia({sources});
@@ -139,7 +141,7 @@ class KalturaPlayer extends FakeEventTarget {
             const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
             mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
             this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-            this.configure(getDefaultRedirectOptions({sources: this.sources}, mediaConfig));
+            this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
             this.setMedia(mediaConfig);
             return mediaConfig;
           },
