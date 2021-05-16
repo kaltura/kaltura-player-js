@@ -52,7 +52,7 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginsConfig: KPPluginsConfigObject = {};
   _reset: boolean = true;
   _firstPlay: boolean = true;
-  _sourceSelected: boolean = false;
+  _sourceSelected: ?PKMediaSourceObject = null;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
@@ -304,6 +304,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!this._reset) {
       this._reset = true;
       this._firstPlay = true;
+      this._sourceSelected = null;
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
@@ -592,6 +593,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.env;
   }
 
+  get selectedSource(): ?PKMediaSourceObject {
+    return this._sourceSelected;
+  }
+
   get config(): Object {
     return {...this._localPlayer.config, plugins: this._pluginsConfig};
   }
@@ -694,7 +699,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () => this._onPlayerReset());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
-    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, (selectedSource: PKMediaSourceObject) => (this._sourceSelected = selectedSource));
     this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
     this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => {
       this._playbackStart = true;
