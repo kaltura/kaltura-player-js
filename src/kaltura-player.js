@@ -699,7 +699,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () => this._onPlayerReset());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
-    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, (selectedSource: PKMediaSourceObject) => (this._sourceSelected = selectedSource));
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, (event: FakeEvent) => (this._sourceSelected = event.payload.selectedSource[0]));
     this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
     this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => {
       this._playbackStart = true;
