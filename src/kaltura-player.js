@@ -173,7 +173,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
-    this._localPlayer.setSources(sources);
+    this._localPlayer.setSources({sources: sources || {}});
     this.configure(playerConfig);
   }
 
@@ -273,7 +273,7 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     if (localPlayerConfig.sources) {
-      this._localPlayer.setSources(localPlayerConfig.sources);
+      this._localPlayer.setSources({sources: localPlayerConfig.sources || {}});
       delete localPlayerConfig.sources;
     }
     this._localPlayer.configure(localPlayerConfig);
