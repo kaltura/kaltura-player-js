@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "keywords": [
     "kaltura",
     "player",
@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.70.0",
+    "@playkit-js/playkit-js": "0.70.1",
     "@playkit-js/playkit-js-dash": "1.24.3",
     "@playkit-js/playkit-js-hls": "1.25.1",
     "@playkit-js/playkit-js-ui": "0.65.3",
