@@ -175,28 +175,6 @@ class ConfigEvaluator {
       _mergeConfig(options, evaluatedConfig);
     }
   }
-
-  /**
-   * @param {KPUIOptionsObject} options - UI options
-   * @param {KPOptionsObject} config - player config
-   * @return {void}
-   */
-  evaluateUIConfig(options: KPUIOptionsObject, config: KPOptionsObject): void {
-    if (options) {
-      const defaultUiConfig = {
-        components: {
-          share: {
-            shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
-            embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
-          }
-        }
-      };
-      const dataModel = getModel(config);
-      const mergedConfig = Utils.Object.mergeDeep({}, defaultUiConfig, options);
-      const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
-      _mergeConfig(options, evaluatedConfig);
-    }
-  }
 }
 
 export {ConfigEvaluator, getEncodedReferrer};

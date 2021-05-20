@@ -48,6 +48,10 @@ const defaultConfig: dataStoreType = {
   },
   vr: {
     rootElement: '{{domRootElementId}}'
+  },
+  share: {
+    shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
+    embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
   }
 };
 

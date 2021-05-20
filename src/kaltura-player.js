@@ -145,7 +145,6 @@ class KalturaPlayer extends FakeEventTarget {
           }
         )
         .then(mediaConfig => {
-          this._maybeSetEmbedConfig();
           resolve(mediaConfig);
         });
     });
@@ -266,11 +265,6 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     this._localPlayer.configure(localPlayerConfig);
-    const uiConfig = config.ui;
-    if (uiConfig) {
-      this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
-      this._uiWrapper.setConfig(uiConfig);
-    }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
     }
@@ -837,19 +831,6 @@ class KalturaPlayer extends FakeEventTarget {
           this.dispatchEvent(event);
         });
       }
-    }
-  }
-
-  /**
-   * set the share config
-   * @returns {void}
-   * @private
-   */
-  _maybeSetEmbedConfig(): void {
-    const ui = this.config.ui;
-    if (ui && ui.components && ui.components.share) {
-      this._configEvaluator.evaluateUIConfig(ui, this.config);
-      this._uiWrapper.setConfig(ui);
     }
   }
 
