@@ -80,7 +80,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._configEvaluator = new ConfigEvaluator();
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
     this._playbackStart = false;
-    const noSourcesOptions = Utils.Object.mergeDeep({}, options, {sources: null});
+    const noSourcesOptions = Utils.Object.mergeDeep({}, options);
     delete noSourcesOptions.plugins;
     delete noSourcesOptions.sources;
     this._localPlayer = loadPlayer(noSourcesOptions);
@@ -104,7 +104,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure({plugins});
     //configure sources after configure finished for all components - making sure all we'll set up correctly
     this._playlistManager.configure({items: (options.playlist && options.playlist.items) || []});
-    this._localPlayer.setSources({sources: sources || {}});
+    this._localPlayer.setSources(sources || {});
   }
 
   /**
@@ -157,7 +157,8 @@ class KalturaPlayer extends FakeEventTarget {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset();
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
-    const sources = Utils.Object.mergeDeep(playerConfig.sources, this._localPlayer.sources);
+    //merge the current sources from player to keep the sources passed from constructor earlier
+    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
     delete playerConfig.sources;
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     playerConfig.plugins = playerConfig.plugins || {};
@@ -173,7 +174,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
-    this._localPlayer.setSources({sources: sources || {}});
+    this._localPlayer.setSources(sources || {});
     this.configure(playerConfig);
   }
 
@@ -273,7 +274,7 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     if (localPlayerConfig.sources) {
-      this._localPlayer.setSources({sources: localPlayerConfig.sources || {}});
+      this._localPlayer.setSources(localPlayerConfig.sources || {});
       delete localPlayerConfig.sources;
     }
     this._localPlayer.configure(localPlayerConfig);
