@@ -73,7 +73,7 @@ describe('addKalturaPoster', function () {
       config.sources.poster = myCustomPosterUrl;
       kalturaPlayer = setup(config);
       kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-        kalturaPlayer.config.sources.poster.should.equal(myCustomPosterUrl);
+        kalturaPlayer.sources.poster.should.equal(myCustomPosterUrl);
         done();
       });
     });
@@ -82,7 +82,7 @@ describe('addKalturaPoster', function () {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({entryId: entryId}).then(mediaConfig => {
         kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-          kalturaPlayer.config.sources.poster.should.have.string(mediaConfig.sources.poster);
+          kalturaPlayer.sources.poster.should.have.string(mediaConfig.sources.poster);
           done();
         });
       });
@@ -95,7 +95,7 @@ describe('addKalturaPoster', function () {
           kalturaPlayer.config.sources.poster.should.have.string(mediaConfig.sources.poster);
           provider.getMediaConfig({entryId: alterEntryId}).then(alterMediaConfig => {
             kalturaPlayer.loadMedia({entryId: alterEntryId}).then(() => {
-              kalturaPlayer.config.sources.poster.should.have.string(alterMediaConfig.sources.poster);
+              kalturaPlayer.sources.poster.should.have.string(alterMediaConfig.sources.poster);
               done();
             });
           });
@@ -107,7 +107,7 @@ describe('addKalturaPoster', function () {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({entryId: entryId}).then(mediaConfig => {
         kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
-          kalturaPlayer.config.sources.poster.should.have.string(mediaConfig.sources.poster);
+          kalturaPlayer.sources.poster.should.have.string(mediaConfig.sources.poster);
           kalturaPlayer.reset();
           kalturaPlayer.configure({
             sources: {
@@ -115,7 +115,7 @@ describe('addKalturaPoster', function () {
             }
           });
           kalturaPlayer.loadMedia({entryId: alterEntryId}).then(() => {
-            kalturaPlayer.config.sources.poster.should.equal(myCustomPosterUrl);
+            kalturaPlayer.sources.poster.should.equal(myCustomPosterUrl);
             done();
           });
         });
