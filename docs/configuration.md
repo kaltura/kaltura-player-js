@@ -20,7 +20,6 @@ The configuration uses the following structure:
   disableUserCache: boolean,
   text: PKTextConfigObject,
   playback: PKPlaybackConfigObject,
-  sources: PKSourcesConfigObject,
   playlist: KPPlaylistObject,
   plugins: KPPluginsConfigObject,
   advertising: PKAdvertisingConfigObject,
@@ -89,14 +88,6 @@ The configuration uses the following structure:
 > > ##### Description: Indicates whether the video should play in loop.
 > >
 > > This is a Boolean attribute that indicates the default setting of the loop playback option. If set, the player will restart playback upon completion. The attribute's default value is false, which means that the video will pause when the video is finished playing.
-
-##
-
-> ### config.sources
->
-> ##### Type: [PKSourcesConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configsources)
->
-> ##### Description: Defines the sources configuration.
 
 ##
 
