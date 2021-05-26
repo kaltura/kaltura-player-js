@@ -407,6 +407,12 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
         options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
       }
     }
+    if (options.plugins && options.plugins.youbora) {
+      const playheadMonitorInterval = Utils.Object.getPropertyPath(options, 'plugins.youbora.playheadMonitorInterval');
+      if (typeof playheadMonitorInterval !== 'boolean') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
+      }
+    }
   }
 }
 
