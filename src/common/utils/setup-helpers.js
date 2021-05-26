@@ -409,7 +409,7 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
     }
     if (options.plugins && options.plugins.youbora) {
       const playheadMonitorInterval = Utils.Object.getPropertyPath(options, 'plugins.youbora.playheadMonitorInterval');
-      if (typeof playheadMonitorInterval !== 'boolean') {
+      if (typeof playheadMonitorInterval !== 'number') {
         options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
       }
     }
