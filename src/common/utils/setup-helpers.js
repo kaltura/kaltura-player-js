@@ -407,6 +407,12 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
         options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
       }
     }
+    if (options.plugins && options.plugins.youbora) {
+      const playheadMonitorInterval = Utils.Object.getPropertyPath(options, 'plugins.youbora.playheadMonitorInterval');
+      if (typeof playheadMonitorInterval !== 'number') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
+      }
+    }
   }
 }
 
@@ -590,11 +596,11 @@ function printSetupMessages(): void {
 /**
  * set stream priority according to playerConfig
  * @param {Player} player - player
- * @param {PartialKPOptionsObject} playerConfig - player config
+ * @param {PKSourcesConfigObject} sources - sources
  * @return {void}
  */
-function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsObject): void {
-  if (playerConfig.sources && hasYoutubeSource(playerConfig.sources)) {
+function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject): ?PKPlaybackConfigObject {
+  if (sources && hasYoutubeSource(sources)) {
     const playbackConfig = player.config.playback;
     let hasYoutube = false;
     playbackConfig.streamPriority.forEach(sp => {
@@ -609,8 +615,9 @@ function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsOb
       });
     }
 
-    playerConfig.playback = playbackConfig;
+    return playbackConfig;
   }
+  return null;
 }
 
 /**

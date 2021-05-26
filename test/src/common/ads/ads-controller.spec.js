@@ -37,7 +37,6 @@ describe('AdsController', () => {
         }
       });
       player.configure({
-        sources: SourcesConfig.Mp4,
         advertising: {
           adBreaks: [
             {percentage: 0, ads: [{}]},
@@ -53,6 +52,7 @@ describe('AdsController', () => {
           ]
         }
       });
+      player.setMedia({sources: SourcesConfig.Mp4});
     });
 
     it('Should not fire AD_MANIFEST_LOADED for empty list', done => {
@@ -109,7 +109,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -146,7 +146,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -183,7 +183,7 @@ describe('AdsController', () => {
           done(e);
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -229,7 +229,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -266,7 +266,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.currentTime = 2;
       });
@@ -304,7 +304,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         done();
       });
@@ -346,7 +346,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         done();
       });
@@ -383,7 +383,7 @@ describe('AdsController', () => {
         }
       });
       let firstPlay = true;
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         if (firstPlay) {
           player.play();
@@ -446,7 +446,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.currentTime = 3;
       });
@@ -489,7 +489,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -527,7 +527,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -568,7 +568,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -599,7 +599,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -630,7 +630,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -661,7 +661,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -687,7 +687,7 @@ describe('AdsController', () => {
           done(e);
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -752,7 +752,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
   });
@@ -773,7 +773,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
         return [fakeCtrl];
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.ads.playAdNow(preroll);
     });
 
@@ -792,7 +792,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
         return [fakeCtrl];
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.ads.playAdNow(midroll);
       });
@@ -809,7 +809,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
         return [fakeCtrl];
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player._adsController._adBreak = true;
         player.ads.playAdNow(midroll);
