@@ -240,12 +240,12 @@ function getUrlParameter(name: string) {
 }
 
 /**
- * Extracts the server UIConf
+ * get the server UIConf
  * @private
  * @returns {Object} - The server UIConf
  */
-function extractServerUIConf(): Object {
-  return Object.values(window.__kalturaplayerdata.UIConf)[0];
+function getServerUIConf(): Object {
+  return window.__kalturaplayerdata;
 }
 
 /**
@@ -274,10 +274,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
-  if (defaultOptions.provider.uiConfId) {
-    const uiConfOptions = supportLegacyOptions(extractServerUIConf());
-    defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
-  }
+  defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
