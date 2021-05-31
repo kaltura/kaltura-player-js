@@ -245,7 +245,7 @@ function getUrlParameter(name: string) {
  * @returns {Object} - The server UIConf
  */
 function getServerUIConf(): Object {
-  return window.__kalturaplayerdata;
+  return window.__kalturaplayerdata || {};
 }
 
 /**
