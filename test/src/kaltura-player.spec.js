@@ -1049,6 +1049,21 @@ describe('kaltura player api', function () {
         });
       });
 
+      it('should evaluate the plugin config on source selected', done => {
+        player.addEventListener(player.Event.SOURCE_SELECTED, () => {
+          try {
+            player.plugins.colors.config.entryId.should.equals(entryId);
+            player.plugins.colors.config.partnerId.should.equals(1091);
+            player.plugins.colors.config.entryName.should.equals('Vod');
+            player.plugins.colors.config.entryType.should.equals('custom');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+        player.loadMedia({entryId});
+      });
+
       it('should evaluate the configured plugin config - second media', done => {
         player.loadMedia({entryId}).then(() => {
           player.configure({
