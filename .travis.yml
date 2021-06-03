@@ -56,7 +56,6 @@ jobs:
       deploy:
         - provider: script
           on:
-            tags: true
             all_branches: true
           script: bash ./scripts/after_deploy.sh "$JENKINS_CANARY_TOKEN"
     # Required tests
