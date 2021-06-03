@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.5](https://github.com/kaltura/kaltura-player-js/compare/v1.7.3...v1.7.5) (2021-06-03)
+
+
+### Bug Fixes
+
+* **FEC-11304:** missing entryId on plugins ([#453](https://github.com/kaltura/kaltura-player-js/issues/453)) ([db567aa](https://github.com/kaltura/kaltura-player-js/commit/db567aa))
+
+
+
 ### [1.7.3](https://github.com/kaltura/kaltura-player-js/compare/v1.7.2...v1.7.3) (2021-06-02)
 
 
