@@ -1051,17 +1051,15 @@ describe('kaltura player api', function () {
 
       it('should plugin from setMedia be available after sources selected', done => {
         PluginManager.register('numbers', NumbersPlugin);
-        player.addEventListener(player.Event.SOURCE_SELECTED, () => {
-          try {
-            (player.plugins.numbers !== undefined).should.be.true;
-            (player.plugins.numbers !== null).should.be.true;
-            player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
-            done();
-          } catch (e) {
-            done(e);
-          }
-        });
         player.setMedia({sources: SourcesConfig.Mp4, plugins: {numbers: {}}});
+        try {
+          (player.plugins.numbers !== undefined).should.be.true;
+          (player.plugins.numbers !== null).should.be.true;
+          player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
+          done();
+        } catch (e) {
+          done(e);
+        }
         PluginManager.unRegister('numbers', NumbersPlugin);
       });
 
