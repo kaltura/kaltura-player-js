@@ -2,15 +2,15 @@
 # https://docs.travis-ci.com/user/customizing-the-build/#Implementing-Complex-Build-Steps
 set -ev
 yarn install
-if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^(chore).*(update dist)$ ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^chore\(release\) ]]; then
+
+if [ "${TRAVIS_MODE}" = "prepareCanary" ]; then
   echo "Prepare Canary"
   yarn upgrade @playkit-js/playkit-js@canary
   yarn upgrade @playkit-js/playkit-js-dash@canary
   yarn upgrade @playkit-js/playkit-js-hls@canary
   yarn upgrade @playkit-js/playkit-js-ui@canary
   yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
-fi
-if [ "${TRAVIS_MODE}" = "lint" ]; then
+elif [ "${TRAVIS_MODE}" = "lint" ]; then
   yarn run eslint
 elif [ "${TRAVIS_MODE}" = "flow" ]; then
   yarn run flow
@@ -26,26 +26,22 @@ elif [ "${TRAVIS_MODE}" = "release" ] || [ "${TRAVIS_MODE}" = "releaseCanary" ];
     echo "Number of commit from last tag ${commitNumberAfterTag}"
     currentVersion=$(npx -c 'echo "$npm_package_version"')
     echo "Current version ${currentVersion}"
-    newVersion=$(echo "$currentVersion" | sed -e "s/canary\.[[:digit:]]/canary.${commitNumberAfterTag}-${sha}/g")
+    newVersion=$(echo $currentVersion | sed -e "s/canary\.[[:digit:]]/canary.${commitNumberAfterTag}-${sha}/g")
     echo "New version ${newVersion}"
     sed -iE "s/$currentVersion/$newVersion/g" package.json
     sed -iE "s/$currentVersion/$newVersion/g" CHANGELOG.md
     rm package.jsonE
     rm CHANGELOG.mdE
-    echo "Create dists..."
+    echo "Building..."
     yarn run build:ovp && yarn run build:ott && npm run commit:dist
+    echo "Finish building"
     git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
-    chmod +x ./scripts/after_deploy.sh
-    echo "Deploying..."
-    bash ./scripts/after_deploy.sh "${currentVersion}" "$JENKINS_CANARY_TOKEN"
+    echo "Push Build to origin"
   else
-    conventional-github-releaser -p angular -t $GH_TOKEN
-    currentVersion=$(npx -c 'echo "$npm_package_version"')
-    chmod +x ./scripts/after_deploy.sh
-    echo "Deploying..."
-    bash ./scripts/after_deploy.sh "$currentVersion" "$JENKINS_TAG_TOKEN"
+    echo "Run conventional-github-releaser"
+    #ignore error to make sure release won't get stuck
+    conventional-github-releaser -p angular -t $GH_TOKEN || true
   fi
-  echo "Finish Deploying"
 else
 	echo "Unknown travis mode: ${TRAVIS_MODE}" 1>&2
 	exit 1

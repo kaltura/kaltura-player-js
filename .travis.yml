@@ -18,10 +18,12 @@ cache:
 before_install:
   - export DISPLAY=:99.0
   - chmod +x ./scripts/travis.sh
+  - chmod +x ./scripts/after_deploy.sh
 
 script: bash ./scripts/travis.sh
 
 stages:
+  - Prepare canary
   - Tests
   - Release canary
   - Release
@@ -30,17 +32,33 @@ jobs:
   fast_finish: true
   include:
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
+    - stage: Prepare canary
+      if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
+      name: 'Prepare canary'
+      env: TRAVIS_MODE=prepareCanary
     # publish canary package if on master
     - stage: Release
       if: (tag IS present)
       name: 'Release'
       env: TRAVIS_MODE=release
+      deploy:
+        - provider: script
+          on:
+            tags: true
+            all_branches: true
+          script: bash ./scripts/after_deploy.sh "$JENKINS_TAG_TOKEN"
     # https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     # publish canary package if on master
     - stage: Release canary
       if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: 'Release canary'
       env: TRAVIS_MODE=releaseCanary
+      deploy:
+        - provider: script
+          on:
+            tags: true
+            all_branches: true
+          script: bash ./scripts/after_deploy.sh "$JENKINS_CANARY_TOKEN"
     # Required tests
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
