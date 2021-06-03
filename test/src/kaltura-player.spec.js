@@ -1049,17 +1049,12 @@ describe('kaltura player api', function () {
         });
       });
 
-      it('should plugin from setMedia be available after sources selected', done => {
+      it('should plugin from setMedia be available after sources selected', () => {
         PluginManager.register('numbers', NumbersPlugin);
         player.setMedia({sources: SourcesConfig.Mp4, plugins: {numbers: {}}});
-        try {
-          (player.plugins.numbers !== undefined).should.be.true;
-          (player.plugins.numbers !== null).should.be.true;
-          player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
-          done();
-        } catch (e) {
-          done(e);
-        }
+        (player.plugins.numbers !== undefined).should.be.true;
+        (player.plugins.numbers !== null).should.be.true;
+        player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
         PluginManager.unRegister('numbers', NumbersPlugin);
       });
 
