@@ -19,12 +19,13 @@ import {RemotePlayerManager} from '../cast/remote-player-manager';
 import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
+import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewability-manager';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
-const KAVA_DEFAULT_IMPRESSION =
-  'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0';
+const KAVA_DEFAULT_PARTNER = 2504201;
+const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
 declare var __CONFIG_DOCS_URL__: string;
 
@@ -68,7 +69,7 @@ function validateTargetId(targetId: string): void {
  * @returns {void}
  */
 function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
-  if (!providerOptions.partnerId) {
+  if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
     const source = {
       url: KAVA_DEFAULT_IMPRESSION,
@@ -283,6 +284,10 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     plugins: {},
     advertising: {
       adBreaks: []
+    },
+    viewability: {
+      observedThresholds: DEFAULT_OBSERVED_THRESHOLDS,
+      playerThreshold: DEFAULT_PLAYER_THRESHOLD
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
@@ -331,11 +336,11 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
-    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'playback.useNativeTextTrack');
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS || (options.text && options.text.useShakaTextTrackDisplay)) {
+    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
-        playback: {
+        text: {
           useNativeTextTrack: true
         }
       });
@@ -351,13 +356,8 @@ function checkNativeTextTracksSupport(options: KPOptionsObject): void {
  */
 function _configureAdsWithMSE(options: KPOptionsObject): void {
   const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
-  //dai should play without playAdsWithMSE config
   if (typeof playAdsWithMSE !== 'boolean') {
-    if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
-      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', false);
-    } else {
-      options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
-    }
+    options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
   }
   const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
   const disableMediaPreloadBumper = Utils.Object.getPropertyPath(options, 'plugins.bumper.disableMediaPreload');
@@ -405,6 +405,12 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
       }
       if (typeof delayUntilSourceSelected !== 'boolean') {
         options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
+      }
+    }
+    if (options.plugins && options.plugins.youbora) {
+      const playheadMonitorInterval = Utils.Object.getPropertyPath(options, 'plugins.youbora.playheadMonitorInterval');
+      if (typeof playheadMonitorInterval !== 'number') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
       }
     }
   }
@@ -561,7 +567,17 @@ function supportLegacyOptions(options: Object): PartialKPOptionsObject {
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
-    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen']
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
+    ['playback.enableCEA708Captions', 'text.enableCEA708Captions'],
+    ['playback.useNativeTextTrack', 'text.useNativeTextTrack'],
+    ['playback.options.html5.dash.useShakaTextTrackDisplay', 'text.useShakaTextTrackDisplay'],
+    ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
+    ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
+    ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
+    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode'],
+    ['plugins.visibility.threshold', 'viewability.playerThreshold'],
+    ['plugins.visibility.floating', 'plugins.floating'],
+    ['playback.startTime', 'sources.startTime']
   ];
   removePlayerEntry();
   moves.forEach(move => moveProp(move[0], move[1]));
@@ -580,11 +596,11 @@ function printSetupMessages(): void {
 /**
  * set stream priority according to playerConfig
  * @param {Player} player - player
- * @param {PartialKPOptionsObject} playerConfig - player config
+ * @param {PKSourcesConfigObject} sources - sources
  * @return {void}
  */
-function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsObject): void {
-  if (playerConfig.sources && hasYoutubeSource(playerConfig.sources)) {
+function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject): ?PKPlaybackConfigObject {
+  if (sources && hasYoutubeSource(sources)) {
     const playbackConfig = player.config.playback;
     let hasYoutube = false;
     playbackConfig.streamPriority.forEach(sp => {
@@ -599,8 +615,9 @@ function maybeSetStreamPriority(player: Player, playerConfig: PartialKPOptionsOb
       });
     }
 
-    playerConfig.playback = playbackConfig;
+    return playbackConfig;
   }
+  return null;
 }
 
 /**
@@ -640,10 +657,41 @@ function maybeSetFullScreenConfig(options: KPOptionsObject): void {
  * @returns {void}
  */
 function maybeSetCapabilitiesForIos(options: KPOptionsObject): void {
-  const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
-  if (Env.device.model === 'iPhone' && playsinline === false) {
-    setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
+  if (Env.isIOS) {
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const isAirPlayConfigured = Utils.Object.hasPropertyPath(options, 'plugins.airplay');
+    const isPlaysinline = playsinline !== false;
+    if (isAirPlayConfigured) {
+      setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: isPlaysinline});
+    } else if (Env.device.model === 'iPhone' && !isPlaysinline) {
+      setCapabilities(EngineType.HTML5, {autoplay: false, mutedAutoPlay: false});
+    }
   }
+}
+
+/**
+ * Merge the provider plugins config (e.g. bumper) into the app config and returns it and the respective app config to restore in change media
+ * @param {KPPluginsConfigObject} providerPluginsConfig - the provider plugins config
+ * @param {KPOptionsObject} appPluginsConfig - the entire app plugins config
+ * @returns {Array<KPPluginsConfigObject>} - the merged plugins config and the partial respective app plugins config
+ */
+function mergeProviderPluginsConfig(
+  providerPluginsConfig: KPPluginsConfigObject,
+  appPluginsConfig: KPPluginsConfigObject
+): Array<KPPluginsConfigObject> {
+  const mergePluginConfig: KPPluginsConfigObject = {};
+  const respectiveAppPluginsConfig: KPPluginsConfigObject = {};
+  Utils.Object.isObject(providerPluginsConfig) &&
+    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, Object]) => {
+      mergePluginConfig[pluginName] = {};
+      respectiveAppPluginsConfig[pluginName] = {};
+      Object.entries(pluginConfig).forEach(([key, providerValue]) => {
+        const appValue = Utils.Object.getPropertyPath(appPluginsConfig[pluginName], key);
+        mergePluginConfig[pluginName][key] = appValue || providerValue;
+        respectiveAppPluginsConfig[pluginName][key] = appValue;
+      });
+    });
+  return [mergePluginConfig, respectiveAppPluginsConfig];
 }
 
 export {
@@ -661,5 +709,6 @@ export {
   checkNativeHlsSupport,
   getDefaultOptions,
   maybeSetStreamPriority,
-  hasYoutubeSource
+  hasYoutubeSource,
+  mergeProviderPluginsConfig
 };

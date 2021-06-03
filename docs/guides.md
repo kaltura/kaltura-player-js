@@ -18,4 +18,5 @@
 - [How to Build a Plugin](./how-to-build-a-plugin.md)
 - [Customizing the Player UI](./ui.md)
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
+- [Localization](./localization.md)
 - [Coding Guidelines](./coding-guidlines.md)

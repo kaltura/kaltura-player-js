@@ -200,6 +200,71 @@ const playlistByEntryList = {
   ]
 };
 
+const playlistByEntryListWithPlugins = {
+  id: 'a1234',
+  metadata: {
+    name: '',
+    description: ''
+  },
+  poster: '',
+  items: [
+    {
+      sources: {
+        hls: [],
+        dash: [],
+        progressive: [],
+        id: '0_nwkp7jtx',
+        duration: 86406,
+        type: 'Live',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
+        dvr: true,
+        vr: null,
+        metadata: {
+          name: 'Kaltura Live with DVR new - 08.17',
+          description: '',
+          tags: ''
+        }
+      }
+    },
+    {
+      sources: {
+        hls: [],
+        dash: [],
+        progressive: [],
+        id: '0_nwkpghdf',
+        duration: 741,
+        type: 'Vod',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+        dvr: false,
+        vr: null,
+        metadata: {
+          name: 'MPEG Dash with MultiAudio New Transcoding',
+          description: '',
+          tags: ''
+        }
+      }
+    },
+    {
+      sources: {
+        hls: [],
+        dash: [],
+        progressive: [],
+        id: '0_wifqaipd',
+        duration: 741,
+        type: 'Vod',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+        dvr: false,
+        vr: null,
+        metadata: {
+          name: 'MPEG Dash with MultiAudio New Transcoding',
+          description: '',
+          tags: ''
+        }
+      }
+    }
+  ]
+};
+
 const playlistByConfig = {
   id: 'b1234',
   metadata: {
@@ -257,4 +322,4 @@ const playlistByConfig = {
   }
 };
 
-export {playlistByID, playlistByEntryList, playlistByConfig};
+export {playlistByID, playlistByEntryList, playlistByEntryListWithPlugins, playlistByConfig};

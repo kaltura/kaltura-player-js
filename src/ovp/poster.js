@@ -1,5 +1,5 @@
 // @flow
-import {THUMBNAIL_REGEX} from '../common/utils/thumbs';
+import {THUMBNAIL_REGEX} from '../common/thumbnail-manager';
 
 /**
  * Add poster with player dimensions to thumbnail API call

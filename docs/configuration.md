@@ -18,15 +18,17 @@ The configuration uses the following structure:
   targetId: string,
   log: PKLogConfigObject,
   disableUserCache: boolean,
+  text: PKTextConfigObject,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
-  playlist: KPPlaylisyObject,
+  playlist: KPPlaylistObject,
   plugins: KPPluginsConfigObject,
   advertising: PKAdvertisingConfigObject,
   session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   ui: UIOptionsObject,
-  cast: CastConfigObject
+  cast: CastConfigObject,
+  viewability: KPViewabilityConfigObject
 }
 ```
 
@@ -62,6 +64,14 @@ The configuration uses the following structure:
 
 ##
 
+> ### config.text
+>
+> ##### Type: [PKTextConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configtext)
+>
+> ##### Description: Defines the text configuration.
+>
+> ##
+>
 > ### config.playback
 >
 > ##### Type: [PKPlaybackConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configplayback)
@@ -171,24 +181,24 @@ The configuration uses the following structure:
 > > ##### Description: Only play ad breaks scheduled after this time (in seconds). This setting is strictly after - e.g. setting playAdsAfterTime to 15 will cause the player to ignore an ad break scheduled to play at 15s.
 > >
 > > ##
-> > 
+> >
 > > ### config.advertising.showAdBreakCuePoint
 > >
 > > ##### Type: `boolean`
 > >
 > > ##### Default: `false`
 > >
-> > ##### Description: Whether to show the ad breaks cue points.  
+> > ##### Description: Whether to show the ad breaks cue points.
 > >
 > > ##
-> > 
+> >
 > > ### config.advertising.adBreakCuePointStyle
 > >
 > > ##### Type: `Object`
 > >
 > > ##### Default: `null`
 > >
-> > ##### Description: Style options for the ad breaks cue points.  
+> > ##### Description: Style options for the ad breaks cue points.
 > >
 > > ##
 > >
@@ -362,6 +372,21 @@ The configuration uses the following structure:
 >
 > ##### Description: Defines the cast configuration.
 
+##
+
+> ### config.viewability
+>
+> ##### Type: `KPViewabilityConfigObject`
+>
+> ##### Description: Defines the viewability configuration.
+>
+> > #### KPViewabilityConfigObject
+> >
+> > ##### Properties
+> >
+> > - `observedThresholds` **[Array][1]&lt;[number][2]>** An array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed.
+> > - `playerThreshold` **[number][2]** The minimal viewable percentage of the player to consider as visible.
+
 ## Configuration Priority
 
 In the player setup flow, the configuration described above (partially or in full) can be provided by a number of different sources. Each source has a priority, which determines whether the source has a greater or lesser impact on how the player is configured.
@@ -436,3 +461,6 @@ Default Player Configuration
 	autoplay: true
 }
 ```
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number

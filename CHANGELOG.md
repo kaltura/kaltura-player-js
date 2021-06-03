@@ -2,6 +2,191 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.3](https://github.com/kaltura/kaltura-player-js/compare/v1.7.2...v1.7.3) (2021-06-02)
+
+
+### Bug Fixes
+
+* update playkit.js to [0.71.0](https://github.com/kaltura/playkit-js/releases/tag/v0.71.0) ([b148b26](https://github.com/kaltura/kaltura-player-js/commit/b148b26))
+* update playkit.js-dash to [1.25.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.25.0) ([155d5f3](https://github.com/kaltura/kaltura-player-js/commit/155d5f3))
+* update playkit.js-hls to [1.26.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.26.0) ([8305089](https://github.com/kaltura/kaltura-player-js/commit/8305089))
+* update playkit.js-ui to [0.66.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.66.2) ([994ae63](https://github.com/kaltura/kaltura-player-js/commit/994ae63))
+* **FEC-10381:** sources config need to be passed via setMedia api ([#440](https://github.com/kaltura/kaltura-player-js/issues/440)) ([2e91c65](https://github.com/kaltura/kaltura-player-js/commit/2e91c65))
+* **FEC-11281:** youbora reporting buffering during playback ([#450](https://github.com/kaltura/kaltura-player-js/issues/450)) ([fcc7234](https://github.com/kaltura/kaltura-player-js/commit/fcc7234))
+
+
+
+### [1.7.2](https://github.com/kaltura/kaltura-player-js/compare/v1.7.1...v1.7.2) (2021-05-11)
+
+
+### Bug Fixes
+
+* update playkit.js to [0.70.1](https://github.com/kaltura/playkit-js/releases/tag/v0.70.1) ([5a2e8ac](https://github.com/kaltura/kaltura-player-js/commit/5a2e8ac))
+
+
+### Build System
+
+* update Jenkins trigger ([#441](https://github.com/kaltura/kaltura-player-js/issues/441)) ([7709ff5](https://github.com/kaltura/kaltura-player-js/commit/7709ff5))
+
+
+
+### [1.7.1](https://github.com/kaltura/kaltura-player-js/compare/v1.7.0...v1.7.1) (2021-05-04)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.24.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.24.3) ([856d217](https://github.com/kaltura/kaltura-player-js/commit/856d217))
+
+
+
+## [1.7.0](https://github.com/kaltura/kaltura-player-js/compare/v1.6.1...v1.7.0) (2021-04-28)
+
+
+### Bug Fixes
+
+* **FEC-11126:** moved useShakaTextTrackDisplay from playback.options.playback.options.html5.dash to text ([#432](https://github.com/kaltura/kaltura-player-js/issues/432)) ([bd6022e](https://github.com/kaltura/kaltura-player-js/commit/bd6022e))
+
+
+### Features
+
+* update playkit.js to [0.70.0](https://github.com/kaltura/playkit-js/releases/tag/v0.70.0) ([2e8311f](https://github.com/kaltura/kaltura-player-js/commit/2e8311f))
+* update playkit.js-dash to [1.24.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.24.2) ([4974cf8](https://github.com/kaltura/kaltura-player-js/commit/4974cf8))
+* update playkit.js-hls to [1.25.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.25.1) ([59e35e2](https://github.com/kaltura/kaltura-player-js/commit/59e35e2))
+* update playkit.js-ui to [0.65.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.65.3) ([874f0be](https://github.com/kaltura/kaltura-player-js/commit/874f0be))
+* **FEC-11091:** add support for XMLHttpRequest.withCredentials in request filter ([#438](https://github.com/kaltura/kaltura-player-js/issues/438)) ([5ccdc1a](https://github.com/kaltura/kaltura-player-js/commit/5ccdc1a))
+* **FEC-11126:** upgrade Shaka to 3.0.10 ([#434](https://github.com/kaltura/kaltura-player-js/issues/434)) ([18bafd6](https://github.com/kaltura/kaltura-player-js/commit/18bafd6))
+
+
+
+### [1.6.1](https://github.com/kaltura/kaltura-player-js/compare/v1.6.0...v1.6.1) (2021-04-06)
+
+
+
+## [1.6.0](https://github.com/kaltura/kaltura-player-js/compare/v1.5.6...v1.6.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* **FEC-10281:** chromecast does not work after playing it once and trying it on another video ([#417](https://github.com/kaltura/kaltura-player-js/issues/417)) ([42e7939](https://github.com/kaltura/kaltura-player-js/commit/42e7939))
+* **FEC-10405:** set capabilities manually on iOS devices when airplay is configured ([#422](https://github.com/kaltura/kaltura-player-js/issues/422)) ([d16d4b1](https://github.com/kaltura/kaltura-player-js/commit/d16d4b1))
+* **FEC-11057:** ima postroll doesn't play when imadai configured before ([#424](https://github.com/kaltura/kaltura-player-js/issues/424)) ([a838ea5](https://github.com/kaltura/kaltura-player-js/commit/a838ea5))
+* **FEC-11062:** ad layout doesn't work when IMA DAI configured ([#425](https://github.com/kaltura/kaltura-player-js/issues/425)) ([2251d5f](https://github.com/kaltura/kaltura-player-js/commit/2251d5f))
+* **FEC-11089:** bumper preroll doesn't play after ima preroll ([#428](https://github.com/kaltura/kaltura-player-js/issues/428)) ([cd7a287](https://github.com/kaltura/kaltura-player-js/commit/cd7a287))
+
+
+### Features
+
+* **11077:** expose api for restart the media source ([#427](https://github.com/kaltura/kaltura-player-js/issues/427)) ([145f53c](https://github.com/kaltura/kaltura-player-js/commit/145f53c))
+* **FEC-10541:** add support on working with bidding, Prebid and IMA  ([#412](https://github.com/kaltura/kaltura-player-js/issues/412)) ([0f21b24](https://github.com/kaltura/kaltura-player-js/commit/0f21b24))
+* **FEC-10941:** Use In-Stream DASH thumbnails on the timeline ([#423](https://github.com/kaltura/kaltura-player-js/issues/423)) ([33bc80c](https://github.com/kaltura/kaltura-player-js/commit/33bc80c))
+
+
+
+### [1.5.6](https://github.com/kaltura/kaltura-player-js/compare/v1.5.5...v1.5.6) (2021-03-24)
+
+
+
+### [1.5.5](https://github.com/kaltura/kaltura-player-js/compare/v1.5.4...v1.5.5) (2021-03-07)
+
+
+
+### [1.5.4](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.4) (2021-03-03)
+
+
+### Bug Fixes
+
+* remove thumbnail height from thumbnail service call ([#421](https://github.com/kaltura/kaltura-player-js/issues/421)) ([9611685](https://github.com/kaltura/kaltura-player-js/commit/9611685))
+* **FEC-11037:** multiple decorator exist after destroy plugin with decorator ([#418](https://github.com/kaltura/kaltura-player-js/issues/418)) ([9e9685c](https://github.com/kaltura/kaltura-player-js/commit/9e9685c))
+* **FEC-11041:** player fails in IE11 ([#419](https://github.com/kaltura/kaltura-player-js/issues/419)) ([3f16f12](https://github.com/kaltura/kaltura-player-js/commit/3f16f12))
+
+
+
+### [1.5.3](https://github.com/kaltura/kaltura-player-js/compare/v1.5.2...v1.5.3) (2021-03-02)
+
+
+### Bug Fixes
+
+* **FEC-11037:** multiple decorator exist after destroy plugin with decorator ([#418](https://github.com/kaltura/kaltura-player-js/issues/418)) ([9e9685c](https://github.com/kaltura/kaltura-player-js/commit/9e9685c))
+
+
+### [1.5.2](https://github.com/kaltura/kaltura-player-js/compare/v1.5.0...v1.5.2) (2021-02-28)
+
+
+### Bug Fixes
+
+* **FEC-11041:** player fails in IE11 ([#419](https://github.com/kaltura/kaltura-player-js/issues/419)) ([52f9bc1](https://github.com/kaltura/kaltura-player-js/commit/52f9bc1))
+
+
+
+## [1.5.0](https://github.com/kaltura/kaltura-player-js/compare/v1.4.0...v1.5.0) (2021-02-24)
+
+
+### Bug Fixes
+
+* **FEC-10872:** loadMedia returns the provider response instead of the updated one ([#405](https://github.com/kaltura/kaltura-player-js/issues/405)) ([d26013d](https://github.com/kaltura/kaltura-player-js/commit/d26013d))
+* **FEC-10968:** OTT doesn't have default external-stream-redirect-helper ([#416](https://github.com/kaltura/kaltura-player-js/issues/416)) ([f13a81d](https://github.com/kaltura/kaltura-player-js/commit/f13a81d))
+* **FEC-10995:** update Shaka to 3.0.8 ([#411](https://github.com/kaltura/kaltura-player-js/issues/411)) ([e40bc1e](https://github.com/kaltura/kaltura-player-js/commit/e40bc1e))
+
+
+### Features
+
+* **FEC-10041:** playAdsWithMSE with DAI detach the playback and ad ([#408](https://github.com/kaltura/kaltura-player-js/issues/408)) ([d7b5e09](https://github.com/kaltura/kaltura-player-js/commit/d7b5e09))
+* **FEC-10640:** add api to get the playlist current working item index ([#413](https://github.com/kaltura/kaltura-player-js/issues/413)) ([7e59c37](https://github.com/kaltura/kaltura-player-js/commit/7e59c37))
+* **FEC-10768:** expose in-stream DASH thumbnails ([#415](https://github.com/kaltura/kaltura-player-js/issues/415)) ([9581fa1](https://github.com/kaltura/kaltura-player-js/commit/9581fa1))
+* **FEC-10961:** show the thumbnail preview in live ([#407](https://github.com/kaltura/kaltura-player-js/issues/407)) ([c1ac3fe](https://github.com/kaltura/kaltura-player-js/commit/c1ac3fe))
+* **FEC-10970:** expose vpaid field on ad object ([#410](https://github.com/kaltura/kaltura-player-js/issues/410)) ([2db9ce8](https://github.com/kaltura/kaltura-player-js/commit/2db9ce8))
+* **FEC-11013:** upgrade to hlsjs latest (0.14.17) ([#414](https://github.com/kaltura/kaltura-player-js/issues/414)) ([863b18d](https://github.com/kaltura/kaltura-player-js/commit/863b18d))
+
+
+
+## [1.4.0](https://github.com/kaltura/kaltura-player-js/compare/v1.3.0...v1.4.0) (2021-01-28)
+
+
+### Bug Fixes
+
+* **ads-controller:** sources.startTime isn't always exists and can change from source to source ([#399](https://github.com/kaltura/kaltura-player-js/issues/399)) ([3965295](https://github.com/kaltura/kaltura-player-js/commit/3965295))
+* **FEC-10687:** Allow partial config in setMedia API ([#394](https://github.com/kaltura/kaltura-player-js/issues/394)) ([aab1eab](https://github.com/kaltura/kaltura-player-js/commit/aab1eab))
+* **FEC-10945:** ad / bumper isn't paused with autoPause ([#404](https://github.com/kaltura/kaltura-player-js/issues/404)) ([6495047](https://github.com/kaltura/kaltura-player-js/commit/6495047))
+* update Shaka to fix the memory leak ([#396](https://github.com/kaltura/kaltura-player-js/issues/396)) ([f6cc4dd](https://github.com/kaltura/kaltura-player-js/commit/f6cc4dd))
+
+
+### Features
+
+* **FEC-10686:** move startTime config from playback to sources ([#398](https://github.com/kaltura/kaltura-player-js/issues/398)) ([bf909e0](https://github.com/kaltura/kaltura-player-js/commit/bf909e0))
+* **FEC-10709, FEC-10712:** player visibility - Auto-pause when player is out of view, Autoplay only when player is in view ([#395](https://github.com/kaltura/kaltura-player-js/issues/395)) ([d1d3feb](https://github.com/kaltura/kaltura-player-js/commit/d1d3feb))
+
+
+
+## [1.3.0](https://github.com/kaltura/kaltura-player-js/compare/v1.2.0...v1.3.0) (2021-01-07)
+
+
+### Bug Fixes
+
+* **FEC-10680:** back-end bumper: the app should decide what bumper will be displayed when also set user bumper ([#392](https://github.com/kaltura/kaltura-player-js/issues/392)) ([a062427](https://github.com/kaltura/kaltura-player-js/commit/a062427))
+* **FEC-10729:** forceRedirectExternalStreams is reset in playlist ([#381](https://github.com/kaltura/kaltura-player-js/issues/381)) ([77e86ec](https://github.com/kaltura/kaltura-player-js/commit/77e86ec)), closes [#370](https://github.com/kaltura/kaltura-player-js/issues/370)
+* **FEC-10732, FEC-10759:** player params are not injected to additional instances config ([#385](https://github.com/kaltura/kaltura-player-js/issues/385)) ([8c5a6c7](https://github.com/kaltura/kaltura-player-js/commit/8c5a6c7))
+* **FEC-10776:** set the plugins event registration after kaltura player internal events ([#383](https://github.com/kaltura/kaltura-player-js/issues/383)) ([4233d9f](https://github.com/kaltura/kaltura-player-js/commit/4233d9f))
+* **FEC-10797:** back-end bumper config is left from previous media played ([#393](https://github.com/kaltura/kaltura-player-js/issues/393)) ([f3905e7](https://github.com/kaltura/kaltura-player-js/commit/f3905e7))
+* **FEC-10806:** playlist has limitation which configure cause setMedia ([#390](https://github.com/kaltura/kaltura-player-js/issues/390)) ([c5caeda](https://github.com/kaltura/kaltura-player-js/commit/c5caeda))
+
+
+### Build System
+
+* remove webpack warnings ([#384](https://github.com/kaltura/kaltura-player-js/issues/384)) ([8926752](https://github.com/kaltura/kaltura-player-js/commit/8926752))
+
+
+### Features
+
+* **FEC-10015:** support smart scrubber preview and timeline marker ([#359](https://github.com/kaltura/kaltura-player-js/issues/359)) ([ed9606a](https://github.com/kaltura/kaltura-player-js/commit/ed9606a))
+* **FEC-10766:** create text config section and option for styling ([#387](https://github.com/kaltura/kaltura-player-js/issues/387)) ([dac194d](https://github.com/kaltura/kaltura-player-js/commit/dac194d))
+
+
+### Tests
+
+* fix tests ([#391](https://github.com/kaltura/kaltura-player-js/issues/391)) ([4731ea1](https://github.com/kaltura/kaltura-player-js/commit/4731ea1))
+
+
+
 ### [1.2.1](https://github.com/kaltura/kaltura-player-js/compare/v1.2.0...v1.2.1) (2020-12-10)
 
 

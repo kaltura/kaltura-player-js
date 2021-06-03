@@ -7,7 +7,7 @@ import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import {KalturaPlayer as Player} from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources';
-import {FakeEvent, Utils} from '@playkit-js/playkit-js';
+import {EventType as CoreEventType, FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 import {Provider} from 'playkit-js-providers';
@@ -560,13 +560,15 @@ describe('kaltura player api', function () {
         lastCellValue: 6
       });
       player.configure({
-        sources: SourcesConfig.Mp4,
         plugins: {
           numbers: {
             size: 2,
             firstCellValue: 3
           }
         }
+      });
+      player.setMedia({
+        sources: SourcesConfig.Mp4
       });
       player._pluginManager.get('numbers').should.exist;
       Object.keys(player._pluginManager._plugins).length.should.equals(1);
@@ -594,6 +596,86 @@ describe('kaltura player api', function () {
         ui: {},
         provider: {},
         sources: SourcesConfig.Mp4,
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
+          }
+        }
+      });
+      player._pluginManager.get('numbers').should.exist;
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
+      });
+      player.configure({
+        plugins: {
+          colors: {
+            size: 200
+          }
+        }
+      });
+      Object.keys(player._pluginManager._plugins).length.should.equals(1);
+      player.config.plugins.should.deep.equals({
+        numbers: {
+          size: 2,
+          firstCellValue: 3,
+          lastCellValue: 6
+        }
+      });
+    });
+
+    it('should create the plugin before playlist source selected', function () {
+      const eventManager = new EventManager();
+      player = new Player({
+        ui: {},
+        provider: {},
+        playlist: {
+          id: '1234',
+          metdata: {},
+          items: [
+            {
+              sources: SourcesConfig.Mp4
+            }
+          ]
+        },
+        plugins: {
+          numbers: {
+            size: 2,
+            firstCellValue: 3
+          }
+        }
+      });
+      eventManager.listen(player, CoreEventType.SOURCE_SELECTED, () => {
+        player._pluginManager.get('numbers').should.exist;
+        Object.keys(player._pluginManager._plugins).length.should.equals(1);
+        player.config.plugins.should.deep.equals({
+          numbers: {
+            size: 2,
+            firstCellValue: 3,
+            lastCellValue: 6
+          }
+        });
+      });
+    });
+
+    it('should create player with plugin and fail to configure other plugin after playlist source selected', function () {
+      player = new Player({
+        ui: {},
+        provider: {},
+        playlist: {
+          id: '1234',
+          metdata: {},
+          items: [
+            {
+              sources: SourcesConfig.Mp4
+            }
+          ]
+        },
         plugins: {
           numbers: {
             size: 2,
@@ -779,10 +861,12 @@ describe('kaltura player api', function () {
         done();
       });
       player.configure({
-        sources: SourcesConfig.Mp4,
         playback: {
           autoplay: true
         }
+      });
+      player.setMedia({
+        sources: SourcesConfig.Mp4
       });
     });
 
@@ -963,6 +1047,30 @@ describe('kaltura player api', function () {
             }
           });
         });
+      });
+
+      it('should plugin from setMedia be available after sources selected', () => {
+        PluginManager.register('numbers', NumbersPlugin);
+        player.setMedia({sources: SourcesConfig.Mp4, plugins: {numbers: {}}});
+        (player.plugins.numbers !== undefined).should.be.true;
+        (player.plugins.numbers !== null).should.be.true;
+        player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
+        PluginManager.unRegister('numbers', NumbersPlugin);
+      });
+
+      it('should evaluate the plugin config on source selected', done => {
+        player.addEventListener(player.Event.SOURCE_SELECTED, () => {
+          try {
+            player.plugins.colors.config.entryId.should.equals(entryId);
+            player.plugins.colors.config.partnerId.should.equals(1091);
+            player.plugins.colors.config.entryName.should.equals('Vod');
+            player.plugins.colors.config.entryType.should.equals('custom');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+        player.loadMedia({entryId});
       });
 
       it('should evaluate the configured plugin config - second media', done => {

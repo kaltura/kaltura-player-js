@@ -1,4 +1,5 @@
 // @flow
+import {Utils} from '@playkit-js/playkit-js';
 
 /**
  * JSONP handler function, returns the direct manifest uri.
@@ -35,4 +36,28 @@ function getDirectManifestUri(data: Object, uri: string): string {
   }
   return uri;
 }
-export {getDirectManifestUri};
+
+/**
+ * Get the redirect external stream handler.
+ * @public
+ * @param {KPOptionsObject} playerOptions - The player config.
+ * @param {KPOptionsObject} mediaOptions - The media config.
+ * @returns {void}
+ */
+function getRedirectExternalStreamsHandler(playerOptions: KPOptionsObject, mediaOptions: KPOptionsObject = {}): Object {
+  const configObj = {};
+  const playerRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(playerOptions, 'sources.options.redirectExternalStreamsHandler');
+  const mediaRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(mediaOptions, 'sources.options.redirectExternalStreamsHandler');
+  if (typeof playerRedirectExternalStreamsHandler !== 'function' && typeof mediaRedirectExternalStreamsHandler !== 'function') {
+    Utils.Object.mergeDeep(configObj, {
+      sources: {
+        options: {
+          redirectExternalStreamsHandler: getDirectManifestUri
+        }
+      }
+    });
+  }
+  return configObj;
+}
+
+export {getRedirectExternalStreamsHandler};

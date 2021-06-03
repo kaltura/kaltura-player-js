@@ -1,7 +1,7 @@
 import SourcesConfig from '../../configs/sources';
 import {getConfigStructure} from '../../utils/test-utils';
 import {KalturaPlayer as Player} from '../../../../src/kaltura-player';
-import {CustomEventType, AdEventType, Error, FakeEvent} from '@playkit-js/playkit-js';
+import {CustomEventType, AdEventType, Error, FakeEvent, Utils} from '@playkit-js/playkit-js';
 
 describe('AdsController', () => {
   let config, player, sandbox;
@@ -52,6 +52,7 @@ describe('AdsController', () => {
           ]
         }
       });
+      player.setMedia({sources: SourcesConfig.Mp4});
     });
 
     it('Should not fire AD_MANIFEST_LOADED for empty list', done => {
@@ -108,7 +109,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -145,7 +146,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -182,7 +183,7 @@ describe('AdsController', () => {
           done(e);
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -228,7 +229,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -265,7 +266,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.currentTime = 2;
       });
@@ -303,7 +304,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         done();
       });
@@ -345,7 +346,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         done();
       });
@@ -382,7 +383,7 @@ describe('AdsController', () => {
         }
       });
       let firstPlay = true;
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         if (firstPlay) {
           player.play();
@@ -445,7 +446,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.currentTime = 3;
       });
@@ -488,7 +489,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -526,7 +527,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -567,7 +568,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -598,7 +599,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -629,7 +630,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -660,7 +661,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -686,7 +687,7 @@ describe('AdsController', () => {
           done(e);
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
 
@@ -751,7 +752,7 @@ describe('AdsController', () => {
           ]
         }
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.play();
     });
   });
@@ -772,7 +773,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
         return [fakeCtrl];
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.ads.playAdNow(preroll);
     });
 
@@ -791,7 +792,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
         return [fakeCtrl];
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.ads.playAdNow(midroll);
       });
@@ -808,12 +809,193 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
         return [fakeCtrl];
       });
-      player.configure({sources: SourcesConfig.Mp4});
+      player.setMedia({sources: SourcesConfig.Mp4});
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player._adsController._adBreak = true;
         player.ads.playAdNow(midroll);
         setTimeout(done);
       });
+      player.play();
+    });
+  });
+
+  describe('Prebid', () => {
+    const preroll = [{url: ['PREBID_PRE_ROLL', 'PRE_ROLL'], prebid: {}}];
+    const midroll = [{url: ['PREBID_MID_ROLL', 'MID_ROLL'], prebid: {}}];
+
+    before(() => {
+      config = Utils.Object.mergeDeep({}, getConfigStructure(), {
+        advertising: {
+          prebid: {libUrl: 'dummyUrl'}
+        },
+        plugins: {
+          ima: {}
+        }
+      });
+    });
+
+    it('Should play Prebid as pre-roll', done => {
+      const fakeCtrl = {
+        playAdNow: ads => {
+          try {
+            (player.currentTime === 0).should.be.true;
+            ads.should.deep.equal(preroll);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        }
+      };
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+        return [fakeCtrl];
+      });
+      player.configure({
+        advertising: {
+          adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
+        }
+      });
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+        return true;
+      });
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+        return Promise.resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+      });
+      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.play();
+    });
+
+    it('Should Prebid delay pre-roll until Prebid loaded', done => {
+      const fakeCtrl = {
+        playAdNow: ads => {
+          try {
+            (player.currentTime === 0).should.be.true;
+            ads.should.deep.equal(preroll);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        }
+      };
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+        return [fakeCtrl];
+      });
+      player.configure({
+        advertising: {
+          adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
+        }
+      });
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+        return true;
+      });
+      sandbox.stub(player._adsController._prebidManager, '_loadPrebidSDKLib').callsFake(function () {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+          }, 3000);
+        });
+      });
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+        return Promise.resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+      });
+      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.play();
+    });
+
+    it('Should Prebid delay pre-roll until Prebid ad loaded', done => {
+      const fakeCtrl = {
+        playAdNow: ads => {
+          try {
+            (player.currentTime === 0).should.be.true;
+            ads.should.deep.equal(preroll);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        }
+      };
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+        return [fakeCtrl];
+      });
+      player.configure({
+        advertising: {
+          adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
+        }
+      });
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+        return true;
+      });
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+          }, 3000);
+        });
+      });
+      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.play();
+    });
+
+    it('Should play Prebid as mid-roll', done => {
+      const fakeCtrl = {
+        playAdNow: ads => {
+          try {
+            (Math.floor(player.currentTime) === 2).should.be.true;
+            ads.should.deep.equal(midroll);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        }
+      };
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+        return [fakeCtrl];
+      });
+      player.configure({
+        advertising: {
+          adBreaks: [{position: 2, ads: [{url: ['MID_ROLL'], prebid: {}}]}]
+        }
+      });
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+        return true;
+      });
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+        return Promise.resolve([{vastUrl: 'PREBID_MID_ROLL'}]);
+      });
+      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.play();
+    });
+
+    it('Should delay play Prebid mid-roll until it loaded', done => {
+      const fakeCtrl = {
+        playAdNow: ads => {
+          try {
+            (Math.floor(player.currentTime) > 2).should.be.true;
+            ads.should.deep.equal(midroll);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        }
+      };
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+        return [fakeCtrl];
+      });
+      player.configure({
+        advertising: {
+          adBreaks: [{position: 2, ads: [{url: ['MID_ROLL'], prebid: {}}]}]
+        }
+      });
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+        return true;
+      });
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve([{vastUrl: 'PREBID_MID_ROLL'}]);
+          }, 5000);
+        });
+      });
+      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
       player.play();
     });
   });

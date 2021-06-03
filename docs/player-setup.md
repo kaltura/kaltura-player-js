@@ -19,15 +19,14 @@ Player setup requires the following steps to create a player instance:
 ```js
 var config = {
   targetId: "player-container",
-  playback: { ... }, // playback configuration
-  sources: { ... }, // sources configuration
-  plugins: { ... }, // plugins configuration
-  session: { ... }, // session configuration
   provider: { // provider configuration
     ...
-    partnerId: YOUR_PARTNER_ID
+    partnerId: 'YOUR_PARTNER_ID',
+    uiConfId: 'YOUR_UICONF_ID'
     ...
   },
+  playback: { ... }, // playback configuration
+  plugins: { ... }, // plugins configuration
   ui: { ... } // ui configuration
 };
 ```
@@ -43,7 +42,7 @@ var config = {
   ...
   provider: {
     ...
-    partnerId: YOUR_PARTNER_ID,
+    partnerId: 'YOUR_PARTNER_ID',
     ks: 'YOUR_KS'
     ...
   }
@@ -62,8 +61,8 @@ var config = {
   ...
   provider: {
     ...
-    partnerId: YOUR_PARTNER_ID,
-    uiConfId: YOUR_UI_CONF_ID
+    partnerId: 'YOUR_PARTNER_ID',
+    uiConfId: 'YOUR_UI_CONF_ID'
     ...
   }
   ...
@@ -79,7 +78,7 @@ var config = {
   ...
   provider: {
     ...
-    partnerId: YOUR_PARTNER_ID,
+    partnerId: 'YOUR_PARTNER_ID',
     env: {
         serviceUrl: 'YOUR_SERVICE_URL'
       }

@@ -5,6 +5,7 @@ declare type KPOptionsObject = {
   targetId: string,
   log?: KPLogConfigObject,
   disableUserCache?: boolean,
+  text?: PKTextConfigObject,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
   plugins: KPPluginsConfigObject,
@@ -15,13 +16,15 @@ declare type KPOptionsObject = {
   dimensions?: PKDimensionsConfig,
   ui: KPUIOptionsObject,
   cast?: {[key: string]: any},
-  productVersion?: string
+  productVersion?: string,
+  viewability?: KPViewabilityConfigObject
 };
 
 declare type PartialKPOptionsObject = {
   targetId: string,
   log?: KPLogConfigObject,
   disableUserCache?: boolean,
+  text?: PKTextConfigObject,
   playback?: PKPlaybackConfigObject,
   sources?: PKSourcesConfigObject,
   plugins: KPPluginsConfigObject,
