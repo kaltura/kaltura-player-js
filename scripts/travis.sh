@@ -3,14 +3,16 @@
 set -ev
 yarn install
 
-if [ "${TRAVIS_MODE}" = "prepareCanary" ]; then
+if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^(chore).*(update dist)$ ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^chore\(release\) ]]; then
   echo "Prepare Canary"
   yarn upgrade @playkit-js/playkit-js@canary
   yarn upgrade @playkit-js/playkit-js-dash@canary
   yarn upgrade @playkit-js/playkit-js-hls@canary
   yarn upgrade @playkit-js/playkit-js-ui@canary
   yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
-elif [ "${TRAVIS_MODE}" = "lint" ]; then
+fi
+
+if [ "${TRAVIS_MODE}" = "lint" ]; then
   yarn run eslint
 elif [ "${TRAVIS_MODE}" = "flow" ]; then
   yarn run flow
