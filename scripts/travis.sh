@@ -1,10 +1,10 @@
 #!/bin/bash
 # https://docs.travis-ci.com/user/customizing-the-build/#Implementing-Complex-Build-Steps
 set -ev
-git checkout master
 
 if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^(chore).*(update dist)$ ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^chore\(release\) ]]; then
   echo "Prepare Canary"
+  git checkout master
   yarn upgrade @playkit-js/playkit-js@canary
   yarn upgrade @playkit-js/playkit-js-dash@canary
   yarn upgrade @playkit-js/playkit-js-hls@canary
