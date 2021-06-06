@@ -13,7 +13,6 @@ if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request
 fi
 
 yarn install
-pwd
 
 if [ "${TRAVIS_MODE}" = "lint" ]; then
   yarn run eslint
