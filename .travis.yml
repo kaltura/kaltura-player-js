@@ -46,11 +46,6 @@ jobs:
       if: (branch = master) AND (type != pull_request) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: 'Release canary'
       env: TRAVIS_MODE=releaseCanary
-      deploy:
-        - provider: script
-          on:
-            all_branches: true
-          script: bash ./scripts/after_deploy.sh "$JENKINS_CANARY_TOKEN"
     # Required tests
     - stage: Tests
       if: (branch = master) OR (tag IS present) OR (type = pull_request)
