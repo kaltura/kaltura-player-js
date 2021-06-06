@@ -13,6 +13,7 @@ if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request
 fi
 
 yarn install
+pwd
 
 if [ "${TRAVIS_MODE}" = "lint" ]; then
   yarn run eslint
@@ -41,7 +42,7 @@ elif [ "${TRAVIS_MODE}" = "release" ] || [ "${TRAVIS_MODE}" = "releaseCanary" ];
     echo "Finish building"
     git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
     echo "Push Build to origin"
-    bash ./after_deploy.sh "$JENKINS_CANARY_TOKEN"
+    bash ./scripts/after_deploy.sh "$JENKINS_CANARY_TOKEN"
   else
     echo "Run conventional-github-releaser"
     #ignore error to make sure release won't get stuck
