@@ -1,7 +1,6 @@
 #!/bin/bash
 # https://docs.travis-ci.com/user/customizing-the-build/#Implementing-Complex-Build-Steps
 set -ev
-yarn install
 
 if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^(chore).*(update dist)$ ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^chore\(release\) ]]; then
   echo "Prepare Canary"
@@ -12,6 +11,8 @@ if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request
   yarn upgrade playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#master
 fi
 
+yarn install
+
 if [ "${TRAVIS_MODE}" = "lint" ]; then
   yarn run eslint
 elif [ "${TRAVIS_MODE}" = "flow" ]; then
@@ -20,6 +21,7 @@ elif [ "${TRAVIS_MODE}" = "unitTests" ]; then
 	yarn run test
 elif [ "${TRAVIS_MODE}" = "release" ] || [ "${TRAVIS_MODE}" = "releaseCanary" ]; then
   if [ "${TRAVIS_MODE}" = "releaseCanary" ]; then
+    git checkout master
     echo "Run standard-version"
     yarn run release --prerelease canary --skip.commit=true --skip.tag=true
     sha=$(git rev-parse --verify --short HEAD)
