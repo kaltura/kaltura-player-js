@@ -1,10 +1,10 @@
 #!/bin/bash
 # https://docs.travis-ci.com/user/customizing-the-build/#Implementing-Complex-Build-Steps
 set -ev
-git checkout master
 
 if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^(chore).*(update dist)$ ]] && [[ ! "$TRAVIS_COMMIT_MESSAGE" =~ ^chore\(release\) ]]; then
   echo "Prepare Canary"
+  git checkout master
   yarn upgrade @playkit-js/playkit-js@canary
   yarn upgrade @playkit-js/playkit-js-dash@canary
   yarn upgrade @playkit-js/playkit-js-hls@canary
@@ -41,7 +41,7 @@ elif [ "${TRAVIS_MODE}" = "release" ] || [ "${TRAVIS_MODE}" = "releaseCanary" ];
     echo "Finish building"
     git push https://$GH_TOKEN@github.com/kaltura/kaltura-player-js "master" > /dev/null 2>&1
     echo "Push Build to origin"
-    bash ./after_deploy.sh "$JENKINS_CANARY_TOKEN"
+    bash ./scripts/after_deploy.sh "$JENKINS_CANARY_TOKEN"
   else
     echo "Run conventional-github-releaser"
     #ignore error to make sure release won't get stuck
