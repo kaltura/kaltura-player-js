@@ -43,42 +43,42 @@ kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '
 
 #### By Configuration
 
-You can load a playlist by configuring the playlist data and items explicitly using the [`configure`](./api.md#configure-3) method.
+You can load a playlist by configuring the playlist data and items explicitly using the [`setPlaylist`](./api.md#setPlaylist) method.
 
 ```javascript
-kalturaPlayer.configure({
-  playlist: {
-    metadata: {
-      name: 'my playlist name',
-      description: 'my playlist desc'
-    },
-    items: [
-      {
-        sources: {
-          poster: 'poster_1_url',
-          hls: [
-            {
-              id: 'id1',
-              mimetype: 'application/x-mpegURL',
-              url: 'source_1_url'
-            }
-          ]
-        }
-      },
-      {
-        sources: {
-          poster: 'poster_2_url',
-          hls: [
-            {
-              id: 'id2',
-              mimetype: 'application/x-mpegURL',
-              url: 'source_2_url'
-            }
-          ]
-        }
+kalturaPlayer.setPlaylist({
+  id: 'my playlist id',
+  metadata: {
+    name: 'my playlist name',
+    description: 'my playlist desc'
+  },
+  poster: 'poster for playlist',
+  items: [
+    {
+      sources: {
+        poster: 'poster_1_url',
+        hls: [
+          {
+            id: 'id1',
+            mimetype: 'application/x-mpegURL',
+            url: 'source_1_url'
+          }
+        ]
       }
-    ]
-  }
+    },
+    {
+      sources: {
+        poster: 'poster_2_url',
+        hls: [
+          {
+            id: 'id2',
+            mimetype: 'application/x-mpegURL',
+            url: 'source_2_url'
+          }
+        ]
+      }
+    }
+  ]
 });
 ```
 
