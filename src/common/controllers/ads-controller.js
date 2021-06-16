@@ -205,7 +205,9 @@ class AdsController extends FakeEventTarget implements IAdsController {
       this._handlePrebidAdConfig();
       this._handleConfiguredPreroll();
       this._eventManager.listenOnce(this._player, Html5EventType.DURATION_CHANGE, () => {
-        this._handleEveryAndPercentage();
+        this._player.isLive()
+          ? this._eventManager.listenOnce(this._player, Html5EventType.SEEKING, () => this._handleLiveEvery())
+          : this._handleEveryAndPercentage();
         this._configAdBreaks.sort((a, b) => a.position - b.position);
         if (this._configAdBreaks.some(adBreak => adBreak.position > 0)) {
           this._handleConfiguredMidrolls();
@@ -312,6 +314,26 @@ class AdsController extends FakeEventTarget implements IAdsController {
     });
   }
 
+  _handleLiveEvery(): void {
+    const liveConfigAdBreaks = [];
+    this._configAdBreaks.forEach(adBreak => {
+      const {every, ads} = adBreak;
+      if (this._player.duration && every) {
+        const position = this._player.currentTime + every;
+        liveConfigAdBreaks.push({
+          every,
+          position,
+          ads,
+          played: false,
+          loadedPromise: Promise.resolve()
+        });
+      }
+    });
+    if (liveConfigAdBreaks.length) {
+      this._configAdBreaks = liveConfigAdBreaks;
+    }
+  }
+
   _handleConfiguredMidrolls(): void {
     this._eventManager.listen(this._player, Html5EventType.TIME_UPDATE, () => {
       if (!this._player.paused) {
@@ -323,6 +345,9 @@ class AdsController extends FakeEventTarget implements IAdsController {
           const lastAdBreaks = adBreaks.filter(adBreak => adBreak.position === maxPosition);
           this._snapback = maxPosition;
           AdsController._logger.debug(`Set snapback value ${this._snapback}`);
+          if (this._player.isLive()) {
+            this._pushNextAdsForLive(adBreaks);
+          }
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
@@ -336,6 +361,20 @@ class AdsController extends FakeEventTarget implements IAdsController {
         this._snapback = 0;
         AdsController._logger.debug('Reset snapback value');
       }
+    });
+  }
+
+  _pushNextAdsForLive(adBreaks: Array<RunTimeAdBreakObject>) {
+    adBreaks.forEach(adBreak => {
+      const {every, ads} = adBreak;
+      const position = adBreak.position + every;
+      this._configAdBreaks.push({
+        every,
+        position,
+        ads,
+        played: false,
+        loadedPromise: Promise.resolve()
+      });
     });
   }
 
