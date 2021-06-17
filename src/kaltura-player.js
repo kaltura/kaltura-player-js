@@ -523,6 +523,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.duration;
   }
 
+  get liveDuration(): number {
+    return this._localPlayer.liveDuration;
+  }
+
   set volume(vol: number): void {
     this._localPlayer.volume = vol;
   }
