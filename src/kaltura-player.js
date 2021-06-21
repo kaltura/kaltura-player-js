@@ -272,9 +272,9 @@ class KalturaPlayer extends FakeEventTarget {
       delete localPlayerConfig.sources;
     }
     this._localPlayer.configure(localPlayerConfig);
-    const uiConfig = configDictionary.ui;
+    const uiConfig = config.ui;
     if (uiConfig) {
-      this._uiWrapper.setConfig(uiConfig);
+      this._uiWrapper.setConfig(configDictionary.ui);
     }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);

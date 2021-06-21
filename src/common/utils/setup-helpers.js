@@ -24,6 +24,7 @@ import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewabili
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
+const KALTURA_PLAYER_START_TIME_QS: string = 'kalturaStartTime';
 const KAVA_DEFAULT_PARTNER = 2504201;
 const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
@@ -188,6 +189,26 @@ function isDebugMode(): boolean {
     isDebugMode = !!getUrlParameter(KALTURA_PLAYER_DEBUG_QS);
   }
   return isDebugMode;
+}
+
+/**
+ * get the parameter for start time
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeApplyStartTimeQueryParam(options: KPOptionsObject): void {
+  let startTime;
+  if (window.URLSearchParams) {
+    const urlParams = new URLSearchParams(window.location.search);
+    startTime = urlParams.get(KALTURA_PLAYER_START_TIME_QS);
+  } else {
+    startTime = getUrlParameter(KALTURA_PLAYER_START_TIME_QS);
+  }
+  startTime = parseFloat(startTime);
+  if (!isNaN(startTime)) {
+    Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
+  }
 }
 
 /**
@@ -705,6 +726,7 @@ export {
   attachToFirstClick,
   validateConfig,
   setLogOptions,
+  maybeApplyStartTimeQueryParam,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,

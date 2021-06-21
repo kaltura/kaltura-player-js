@@ -48,6 +48,12 @@ const defaultConfig: dataStoreType = {
   },
   vr: {
     rootElement: '{{domRootElementId}}'
+  },
+  share: {
+    partnerId: '{{partnerId}}',
+    uiConfId: '{{uiConfId}}',
+    entryId: '{{entryId}}',
+    embedBaseUrl: '{{embedBaseUrl}}'
   }
 };
 
