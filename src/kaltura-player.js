@@ -835,7 +835,13 @@ class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    uiComponents.forEach(component => this._uiWrapper.addComponent(component));
+    uiComponents.forEach((component: KPUIComponent) => {
+      if (component.removeComponent) {
+        this._uiWrapper.removeComponent(component);
+      } else if (component.get) {
+        this._uiWrapper.addComponent(component);
+      }
+    });
     // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);

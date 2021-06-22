@@ -58,7 +58,17 @@ class UIWrapper {
    * @param {KPUIComponent} component - The component to add
    * @returns {Function} - Removal function
    */
-  addComponent(component: KPUIComponent): Function {
+  addComponent(component: KPUIAddComponent): Function {
+    return this._uiManager.addComponent(component);
+  }
+
+  /**
+   * Remove a component dynamically
+   *
+   * @param {KPUIComponent} component - The component to remove
+   * @returns {Function} - Undo removal function
+   */
+  removeComponent(component: KPUIRemoveComponent): Function {
     return this._uiManager.addComponent(component);
   }
 
