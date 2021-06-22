@@ -34,6 +34,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _adsPluginControllers: Array<IAdsPluginController>;
   _allAdsCompleted: boolean;
   _eventManager: EventManager;
+  _liveEventManager: EventManager;
   _adBreaksLayout: Array<number | string>;
   _adBreak: ?AdBreak;
   _ad: ?Ad;
@@ -50,6 +51,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     super();
     this._player = player;
     this._eventManager = new EventManager();
+    this._liveEventManager = new EventManager();
     this._adsPluginControllers = adsPluginControllers;
     this._prebidManager = new PrebidManager(this._player.config.advertising && this._player.config.advertising.prebid);
     this._init();
@@ -345,10 +347,15 @@ class AdsController extends FakeEventTarget implements IAdsController {
           const lastAdBreaks = adBreaks.filter(adBreak => adBreak.position === maxPosition);
           this._snapback = maxPosition;
           AdsController._logger.debug(`Set snapback value ${this._snapback}`);
-          if (this._player.isLive()) {
-            this._pushNextAdsForLive(adBreaks);
-          }
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
+          if (this._player.isLive()) {
+            const returnToLiveAfterAd = !this._player.isDvr() || (this._player.isOnLiveEdge() && this._player.config.advertising.returnToLiveAfterAd);
+            if (returnToLiveAfterAd) {
+              this._handleReturnToLiveAfterAd(lastAdBreaks);
+            } else {
+              this._pushNextAdsForLive(lastAdBreaks);
+            }
+          }
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
       }
@@ -364,18 +371,37 @@ class AdsController extends FakeEventTarget implements IAdsController {
     });
   }
 
+  _handleReturnToLiveAfterAd(adBreaks: Array<RunTimeAdBreakObject>) {
+    this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, () => {
+      this._pushNextAdsForLive(adBreaks);
+      this._liveEventManager.removeAll();
+    });
+    this._liveEventManager.listenOnce(this._player, AdEventType.AD_BREAK_END, () => {
+      this._liveEventManager.listenOnce(this._player, Html5EventType.SEEKED, () => {
+        this._pushNextAdsForLive(adBreaks);
+        this._liveEventManager.removeAll();
+      });
+      this._player.seekToLiveEdge();
+    });
+  }
+
   _pushNextAdsForLive(adBreaks: Array<RunTimeAdBreakObject>) {
+    AdsController._logger.debug('Pushing next ads for live', adBreaks);
+    const liveConfigAdBreaks = [];
     adBreaks.forEach(adBreak => {
       const {every, ads} = adBreak;
-      const position = adBreak.position + every;
-      this._configAdBreaks.push({
+      const position = (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + every;
+      const nextAdBreak = {
         every,
         position,
         ads,
         played: false,
         loadedPromise: Promise.resolve()
-      });
+      };
+      AdsController._logger.debug('Pushing next ad for live', nextAdBreak);
+      liveConfigAdBreaks.push(nextAdBreak);
     });
+    this._configAdBreaks = liveConfigAdBreaks;
   }
 
   _playAdBreak(adBreak: RunTimeAdBreakObject): void {
@@ -475,12 +501,14 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   _reset(): void {
     this._eventManager.removeAll();
+    this._liveEventManager.removeAll();
     this._init();
   }
 
   _destroy(): void {
     this._adsPluginControllers = [];
     this._eventManager.destroy();
+    this._liveEventManager.destroy();
   }
 
   _mergeAdBreaks(adBreaks: Array<RunTimeAdBreakObject>): ?RunTimeAdBreakObject {
