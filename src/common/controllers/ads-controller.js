@@ -349,12 +349,8 @@ class AdsController extends FakeEventTarget implements IAdsController {
           AdsController._logger.debug(`Set snapback value ${this._snapback}`);
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
           if (this._player.isLive()) {
-            const returnToLiveAfterAd = !this._player.isDvr() || (this._player.isOnLiveEdge() && this._player.config.advertising.returnToLiveAfterAd);
-            if (returnToLiveAfterAd) {
-              this._handleReturnToLiveAfterAd(lastAdBreaks);
-            } else {
-              this._pushNextAdsForLive(lastAdBreaks);
-            }
+            const returnToLive = !this._player.isDvr() || (this._player.isOnLiveEdge() && this._player.config.advertising.returnToLive);
+            returnToLive ? this._handleReturnToLive(lastAdBreaks) : this._pushNextAdsForLive(lastAdBreaks);
           }
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
@@ -371,7 +367,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     });
   }
 
-  _handleReturnToLiveAfterAd(adBreaks: Array<RunTimeAdBreakObject>) {
+  _handleReturnToLive(adBreaks: Array<RunTimeAdBreakObject>) {
     this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, () => {
       this._pushNextAdsForLive(adBreaks);
       this._liveEventManager.removeAll();
