@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.5](https://github.com/kaltura/kaltura-player-js/compare/v1.7.3...v1.7.5) (2021-06-03)
+
+
+### Bug Fixes
+
+* **FEC-11304:** missing entryId on plugins ([#453](https://github.com/kaltura/kaltura-player-js/issues/453)) ([db567aa](https://github.com/kaltura/kaltura-player-js/commit/db567aa))
+
+
+
+### [1.7.3](https://github.com/kaltura/kaltura-player-js/compare/v1.7.2...v1.7.3) (2021-06-02)
+
+
+### Bug Fixes
+
+* update playkit.js to [0.71.0](https://github.com/kaltura/playkit-js/releases/tag/v0.71.0) ([b148b26](https://github.com/kaltura/kaltura-player-js/commit/b148b26))
+* update playkit.js-dash to [1.25.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.25.0) ([155d5f3](https://github.com/kaltura/kaltura-player-js/commit/155d5f3))
+* update playkit.js-hls to [1.26.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.26.0) ([8305089](https://github.com/kaltura/kaltura-player-js/commit/8305089))
+* update playkit.js-ui to [0.66.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.66.2) ([994ae63](https://github.com/kaltura/kaltura-player-js/commit/994ae63))
+* **FEC-10381:** sources config need to be passed via setMedia api ([#440](https://github.com/kaltura/kaltura-player-js/issues/440)) ([2e91c65](https://github.com/kaltura/kaltura-player-js/commit/2e91c65))
+* **FEC-11281:** youbora reporting buffering during playback ([#450](https://github.com/kaltura/kaltura-player-js/issues/450)) ([fcc7234](https://github.com/kaltura/kaltura-player-js/commit/fcc7234))
+
+
+
 ### [1.7.2](https://github.com/kaltura/kaltura-player-js/compare/v1.7.1...v1.7.2) (2021-05-11)
 
 

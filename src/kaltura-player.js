@@ -168,8 +168,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
-    this._localPlayer.setSources(sources || {});
-    this.configure(playerConfig);
+    this.configure({...playerConfig, sources});
   }
 
   /**
@@ -515,6 +514,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   get duration(): number {
     return this._localPlayer.duration;
+  }
+
+  get liveDuration(): number {
+    return this._localPlayer.liveDuration;
   }
 
   set volume(vol: number): void {
