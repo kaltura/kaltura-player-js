@@ -72,7 +72,7 @@ class UIWrapper {
     let replaceComponent: KPUIAddComponent = {
       label: `Remove_${component.removeComponent}`,
       get: Components.Remove,
-      presets: component.presets.concat(),
+      presets: component.presets,
       area: component.area || component.container,
       replaceComponent: component.removeComponent
     };
