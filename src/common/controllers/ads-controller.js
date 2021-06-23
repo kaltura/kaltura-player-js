@@ -320,7 +320,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     const liveConfigAdBreaks = [];
     this._configAdBreaks.forEach(adBreak => {
       const {every, ads} = adBreak;
-      if (this._player.duration && every) {
+      if (every && this._player.duration) {
         const position = this._player.currentTime + every;
         liveConfigAdBreaks.push({
           every,
