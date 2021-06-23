@@ -2322,7 +2322,7 @@ set stream priority according to playerConfig
 ### Parameters
 
 - `player` **Player** player
-- `playerConfig` **PartialKPOptionsObject** player config
+- `sources` **PKSourcesConfigObject** sources
 
 Returns **void**
 

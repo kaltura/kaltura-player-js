@@ -272,6 +272,38 @@ const kalturaPlayer = KalturaPlayer.setup(config);
 
 In this sample, the player will play the pre-roll, and only after that will start the playback from the 60's second.
 
+### Return To Live After Ad (Only for Live Streams)
+
+When we are playing on the live edge and an ad break starts, we have two options:
+
+1. Playback should be paused when ad break starts, and should resume from the same point it was paused when ad break ends.
+
+2. Playback should be paused when ad break starts, and should seek to live edge when ad break ends.
+
+If an application wants to achieve the behaviour described in the _second_ option, it should use the `returnToLive`
+parameter. For example:
+
+```js
+const config = {
+  ...
+  plugins: {
+    ima: {}
+  },
+  advertising: {
+    returnToLive: true,
+    adBreaks: [{
+      every: 10,
+      ads: [{
+          url: [PRE_ROLL_VAST_URL]
+        }]
+      }
+    ]
+  }
+  ...
+}
+const kalturaPlayer = KalturaPlayer.setup(config);
+```
+
 ### Events
 
 In addition to the current [ad events](./ads.md#ad-events) (`adbreakstart, adbreakend, adloaded` etc.) we have added 2 new events:
