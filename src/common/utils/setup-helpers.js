@@ -182,11 +182,8 @@ function isDebugMode(): boolean {
   let isDebugMode = false;
   if (window.DEBUG_KALTURA_PLAYER === true) {
     isDebugMode = true;
-  } else if (window.URLSearchParams) {
-    const urlParams = new URLSearchParams(window.location.search);
-    isDebugMode = urlParams.has(KALTURA_PLAYER_DEBUG_QS);
   } else {
-    isDebugMode = !!getUrlParameter(KALTURA_PLAYER_DEBUG_QS);
+    isDebugMode = getUrlParameter(KALTURA_PLAYER_DEBUG_QS) === '';
   }
   return isDebugMode;
 }
@@ -198,14 +195,7 @@ function isDebugMode(): boolean {
  * @returns {void}
  */
 function maybeApplyStartTimeQueryParam(options: KPOptionsObject): void {
-  let startTime;
-  if (window.URLSearchParams) {
-    const urlParams = new URLSearchParams(window.location.search);
-    startTime = urlParams.get(KALTURA_PLAYER_START_TIME_QS);
-  } else {
-    startTime = getUrlParameter(KALTURA_PLAYER_START_TIME_QS);
-  }
-  startTime = parseFloat(startTime);
+  let startTime = parseFloat(getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
   if (!isNaN(startTime)) {
     Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
   }
@@ -254,10 +244,21 @@ function setLogOptions(options: KPOptionsObject): void {
  * @returns {string} - value of the query string param
  */
 function getUrlParameter(name: string) {
-  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-  const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  const results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  const getUrlParamPolyfill = () => {
+    name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    const isExist = location.search.indexOf(name) > -1;
+    return results === null ? (isExist ? '' : results) : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+  let value;
+  if (window.URLSearchParams) {
+    const urlParams = new URLSearchParams(window.location.search);
+    value = urlParams.get(name);
+  } else {
+    value = getUrlParamPolyfill(name);
+  }
+  return value;
 }
 
 /**
