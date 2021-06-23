@@ -368,15 +368,14 @@ class AdsController extends FakeEventTarget implements IAdsController {
   }
 
   _handleReturnToLive(adBreaks: Array<RunTimeAdBreakObject>) {
-    this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, () => {
+    const pushAdsAndRemoveListeners = () => {
       this._pushNextAdsForLive(adBreaks);
       this._liveEventManager.removeAll();
-    });
+    };
+
+    this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, pushAdsAndRemoveListeners);
     this._liveEventManager.listenOnce(this._player, AdEventType.AD_BREAK_END, () => {
-      this._liveEventManager.listenOnce(this._player, Html5EventType.SEEKED, () => {
-        this._pushNextAdsForLive(adBreaks);
-        this._liveEventManager.removeAll();
-      });
+      this._liveEventManager.listenOnce(this._player, Html5EventType.SEEKED, pushAdsAndRemoveListeners);
       this._player.seekToLiveEdge();
     });
   }
