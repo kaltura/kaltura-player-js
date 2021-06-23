@@ -1,17 +1,17 @@
 // @flow
 declare type KPUIAddComponent = {|
   label: string,
-  get: Function,
+  presets: Array<string>,
+  area: string,
+  get: Function | string,
   props?: {},
   beforeComponent?: string,
   afterComponent?: string,
-  replaceComponent?: string,
-  presets: Array<string>,
-  area: string
+  replaceComponent?: string
 |};
 
 declare type KPUIRemoveComponent = {|
-  removeComponent?: string,
+  removeComponent: string,
   presets: Array<string>,
   area: string
 |};
