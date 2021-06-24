@@ -244,7 +244,7 @@ function setLogOptions(options: KPOptionsObject): void {
  * @returns {?string} - value of the query string param or null if doesn't exist
  */
 function getUrlParameter(name: string): ?string {
-  const getUrlParamPolyfill = () => {
+  const getUrlParamPolyfill = (name: string) => {
     name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
     const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     const results = regex.exec(location.search);
