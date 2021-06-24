@@ -241,15 +241,15 @@ function setLogOptions(options: KPOptionsObject): void {
  * gets the url query string parameter
  * @private
  * @param {string} name - name of query string param
- * @returns {string} - value of the query string param
+ * @returns {?string} - value of the query string param or null if doesn't exist
  */
-function getUrlParameter(name: string) {
+function getUrlParameter(name: string): ?string {
   const getUrlParamPolyfill = () => {
     name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
     const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     const results = regex.exec(location.search);
     const isExist = location.search.indexOf(name) > -1;
-    return results === null ? (isExist ? '' : results) : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    return results === null ? (isExist ? '' : null) : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
   let value;
   if (window.URLSearchParams) {
