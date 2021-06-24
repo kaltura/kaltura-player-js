@@ -6,4 +6,3 @@ declare type KPUIComponentOptions = {
   afterComponent?: string,
   replaceComponent?: string
 };
-export {KPUIComponentOptions};
