@@ -1,4 +1,4 @@
-declare type KPPluginUIComponent = {
+declare type KPUIComponentOptions = {
   label: string,
   presets: Array<string>,
   area: string,
@@ -6,4 +6,4 @@ declare type KPPluginUIComponent = {
   afterComponent?: string,
   replaceComponent?: string
 };
-export {KPPluginUIComponent};
+export {KPUIComponentOptions};

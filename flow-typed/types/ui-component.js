@@ -1,5 +1,5 @@
 // @flow
-declare type KPUIComponent = KPPluginUIComponent & {
+declare type KPUIComponent = KPUIComponentOptions & {
   get: Function,
   props?: {}
 };
