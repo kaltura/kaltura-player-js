@@ -73,7 +73,7 @@ class UIWrapper {
       label: `Remove_${component.removeComponent}`,
       get: Components.Remove,
       presets: component.presets,
-      area: component.area || component.container,
+      area: component.area || (component: any).container, // supporting also "container" prop for backward compatibility
       replaceComponent: component.removeComponent
     };
     return this._uiManager.addComponent(replaceComponent);
