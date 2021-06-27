@@ -124,32 +124,26 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     return new Promise((resolve, reject) => {
-      this._provider
-        .getMediaConfig(mediaInfo)
-        .then(
-          (providerMediaConfig: ProviderMediaConfigObject) => {
-            const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
-            if (mediaOptions) {
-              mediaConfig.sources = mediaConfig.sources || {};
-              mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
-            }
-            const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
-            mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
-            this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-            this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
-            this.setMedia(mediaConfig);
-            return mediaConfig;
-          },
-          e => {
-            const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
-            this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
-            reject(e);
+      this._provider.getMediaConfig(mediaInfo).then(
+        (providerMediaConfig: ProviderMediaConfigObject) => {
+          const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+          if (mediaOptions) {
+            mediaConfig.sources = mediaConfig.sources || {};
+            mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
-        )
-        .then(mediaConfig => {
-          this._maybeSetEmbedConfig();
+          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
+          this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
+          this.setMedia(mediaConfig);
           resolve(mediaConfig);
-        });
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(e);
+        }
+      );
     });
   }
 
@@ -279,8 +273,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
-      this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
-      this._uiWrapper.setConfig(uiConfig);
+      this._uiWrapper.setConfig(configDictionary.ui);
     }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
@@ -856,19 +849,6 @@ class KalturaPlayer extends FakeEventTarget {
           this.dispatchEvent(event);
         });
       }
-    }
-  }
-
-  /**
-   * set the share config
-   * @returns {void}
-   * @private
-   */
-  _maybeSetEmbedConfig(): void {
-    const ui = this.config.ui;
-    if (ui && ui.components && ui.components.share) {
-      this._configEvaluator.evaluateUIConfig(ui, this.config);
-      this._uiWrapper.setConfig(ui);
     }
   }
 

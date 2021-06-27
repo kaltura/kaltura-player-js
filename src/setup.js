@@ -6,6 +6,7 @@ import {
   applyStorageSupport,
   attachToFirstClick,
   getDefaultOptions,
+  maybeApplyStartTimeQueryParam,
   printKalturaPlayerVersionToLog,
   printSetupMessages,
   setLogOptions,
@@ -27,6 +28,7 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
   setLogOptions(defaultOptions);
+  maybeApplyStartTimeQueryParam(defaultOptions);
   printSetupMessages();
   setStorageConfig(defaultOptions);
   const player = getPlayerProxy(defaultOptions);
