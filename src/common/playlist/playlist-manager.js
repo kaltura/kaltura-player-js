@@ -44,7 +44,7 @@ class PlaylistManager {
    */
   configure(config: ?KPPlaylistObject, entryList: ?ProviderEntryListObject) {
     if (config) {
-      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.config, 'sources.options'));
+      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.sources, 'options'));
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find(item => !!item.sources)) {
@@ -281,8 +281,7 @@ class PlaylistManager {
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
       const providerPlugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-      const media = {session: this._player.config.session, plugins: providerPlugins, sources: activeItem.sources};
-      // $FlowFixMe
+      const media = ({session: this._player.config.session, plugins: providerPlugins, sources: activeItem.sources}: any);
       this._player.setMedia(media);
       this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
       return Promise.resolve();
@@ -290,9 +289,8 @@ class PlaylistManager {
       if (this._mediaInfoList[index]) {
         this._resetProviderPluginsConfig();
         this._player.reset();
-        this._player.configure({
-          sources: activeItem.sources
-        });
+        const media = ({sources: activeItem.sources}: any);
+        this._player.setMedia(media);
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
           this._playlist.updateItemSources(index, mediaConfig.sources);
           this._playlist.updateItemPlugins(index, mediaConfig.plugins);
