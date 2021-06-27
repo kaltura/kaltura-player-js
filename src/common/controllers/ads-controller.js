@@ -194,12 +194,13 @@ class AdsController extends FakeEventTarget implements IAdsController {
         adBreak.percentage === 0 && (position = 0);
         adBreak.percentage === 100 && (position = -1);
         adBreak.every && (position = adBreak.every);
+        const played = this._player.isLive() ? position < playAdsAfterTime : position <= playAdsAfterTime;
         return {
           position,
           percentage: adBreak.percentage,
           every: adBreak.every,
           ads: adBreak.ads.slice(),
-          played: -1 < position && this._player.isLive() ? position < playAdsAfterTime : position <= playAdsAfterTime
+          played: -1 < position && played
         };
       });
     if (this._configAdBreaks.length) {
