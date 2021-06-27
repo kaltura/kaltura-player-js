@@ -1,5 +1,5 @@
 // @flow
-import {UIManager} from '@playkit-js/playkit-js-ui';
+import {UIManager, Components} from '@playkit-js/playkit-js-ui';
 import {Env, getLogger, Utils} from '@playkit-js/playkit-js';
 import {KalturaPlayer} from '../kaltura-player';
 
@@ -55,11 +55,28 @@ class UIWrapper {
   /**
    * Add a component dynamically
    *
-   * @param {KPUIComponent} component - The component to add
+   * @param {KPUIAddComponent} component - The component to add
    * @returns {Function} - Removal function
    */
-  addComponent(component: KPUIComponent): Function {
+  addComponent(component: KPUIAddComponent): Function {
     return this._uiManager.addComponent(component);
+  }
+
+  /**
+   * Remove a component dynamically
+   *
+   * @param {KPUIRemoveComponent} component - The component to remove
+   * @returns {Function} - Undo removal function
+   */
+  removeComponent(component: KPUIRemoveComponent): Function {
+    let replaceComponent: KPUIAddComponent = {
+      label: `Remove_${component.removeComponent}`,
+      get: Components.Remove,
+      presets: component.presets,
+      area: component.area || (component: any).container, // supporting also "container" prop for backward compatibility
+      replaceComponent: component.removeComponent
+    };
+    return this._uiManager.addComponent(replaceComponent);
   }
 
   /**
