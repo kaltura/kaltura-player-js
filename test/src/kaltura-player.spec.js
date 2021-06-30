@@ -179,6 +179,24 @@ describe('kaltura player api', function () {
         });
       });
     });
+    describe('selectedSource', function () {
+      beforeEach(function () {
+        kalturaPlayer = setup(config);
+      });
+
+      afterEach(function () {
+        kalturaPlayer.destroy();
+      });
+
+      it('should get the selectedSource', function (done) {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, event => {
+          kalturaPlayer.selectedSource.should.equal(event.payload.selectedSource[0]);
+          done();
+        });
+        kalturaPlayer.setMedia({sources: SourcesConfig.Mp4});
+        kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
+      });
+    });
   });
 
   describe('playlist api', function () {
@@ -317,7 +335,7 @@ describe('kaltura player api', function () {
         kalturaPlayer.playlist.items.length.should.equal(3);
         kalturaPlayer.playlist.countdown.duration.should.equal(20);
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
-        kalturaPlayer._sourceSelected.should.be.true;
+        (kalturaPlayer.selectedSource === null).should.be.false;
       });
     });
 
@@ -1047,6 +1065,30 @@ describe('kaltura player api', function () {
             }
           });
         });
+      });
+
+      it('should plugin from setMedia be available after sources selected', () => {
+        PluginManager.register('numbers', NumbersPlugin);
+        player.setMedia({sources: SourcesConfig.Mp4, plugins: {numbers: {}}});
+        (player.plugins.numbers !== undefined).should.be.true;
+        (player.plugins.numbers !== null).should.be.true;
+        player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
+        PluginManager.unRegister('numbers', NumbersPlugin);
+      });
+
+      it('should evaluate the plugin config on source selected', done => {
+        player.addEventListener(player.Event.SOURCE_SELECTED, () => {
+          try {
+            player.plugins.colors.config.entryId.should.equals(entryId);
+            player.plugins.colors.config.partnerId.should.equals(1091);
+            player.plugins.colors.config.entryName.should.equals('Vod');
+            player.plugins.colors.config.entryType.should.equals('custom');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+        player.loadMedia({entryId});
       });
 
       it('should evaluate the configured plugin config - second media', done => {

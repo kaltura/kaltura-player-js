@@ -24,6 +24,7 @@ import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewabili
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
+const KALTURA_PLAYER_START_TIME_QS: string = 'kalturaStartTime';
 const KAVA_DEFAULT_PARTNER = 2504201;
 const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
@@ -181,13 +182,23 @@ function isDebugMode(): boolean {
   let isDebugMode = false;
   if (window.DEBUG_KALTURA_PLAYER === true) {
     isDebugMode = true;
-  } else if (window.URLSearchParams) {
-    const urlParams = new URLSearchParams(window.location.search);
-    isDebugMode = urlParams.has(KALTURA_PLAYER_DEBUG_QS);
   } else {
-    isDebugMode = !!getUrlParameter(KALTURA_PLAYER_DEBUG_QS);
+    isDebugMode = getUrlParameter(KALTURA_PLAYER_DEBUG_QS) === '';
   }
   return isDebugMode;
+}
+
+/**
+ * get the parameter for start time
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeApplyStartTimeQueryParam(options: KPOptionsObject): void {
+  let startTime = parseFloat(getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
+  if (!isNaN(startTime)) {
+    Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
+  }
 }
 
 /**
@@ -230,13 +241,24 @@ function setLogOptions(options: KPOptionsObject): void {
  * gets the url query string parameter
  * @private
  * @param {string} name - name of query string param
- * @returns {string} - value of the query string param
+ * @returns {?string} - value of the query string param or null if doesn't exist
  */
-function getUrlParameter(name: string) {
-  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-  const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  const results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+function getUrlParameter(name: string): ?string {
+  const getUrlParamPolyfill = (name: string) => {
+    name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    const isExist = location.search.indexOf(name) > -1;
+    return results === null ? (isExist ? '' : null) : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+  let value;
+  if (window.URLSearchParams) {
+    const urlParams = new URLSearchParams(window.location.search);
+    value = urlParams.get(name);
+  } else {
+    value = getUrlParamPolyfill(name);
+  }
+  return value;
 }
 
 /**
@@ -685,6 +707,7 @@ export {
   attachToFirstClick,
   validateConfig,
   setLogOptions,
+  maybeApplyStartTimeQueryParam,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,

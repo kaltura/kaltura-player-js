@@ -52,7 +52,7 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginsConfig: KPPluginsConfigObject = {};
   _reset: boolean = true;
   _firstPlay: boolean = true;
-  _sourceSelected: boolean = false;
+  _sourceSelected: ?PKMediaSourceObject = null;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
@@ -124,32 +124,26 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     return new Promise((resolve, reject) => {
-      this._provider
-        .getMediaConfig(mediaInfo)
-        .then(
-          (providerMediaConfig: ProviderMediaConfigObject) => {
-            const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
-            if (mediaOptions) {
-              mediaConfig.sources = mediaConfig.sources || {};
-              mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
-            }
-            const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
-            mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
-            this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-            this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
-            this.setMedia(mediaConfig);
-            return mediaConfig;
-          },
-          e => {
-            const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
-            this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
-            reject(e);
+      this._provider.getMediaConfig(mediaInfo).then(
+        (providerMediaConfig: ProviderMediaConfigObject) => {
+          const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+          if (mediaOptions) {
+            mediaConfig.sources = mediaConfig.sources || {};
+            mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
-        )
-        .then(mediaConfig => {
-          this._maybeSetEmbedConfig();
+          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
+          this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
+          this.setMedia(mediaConfig);
           resolve(mediaConfig);
-        });
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(e);
+        }
+      );
     });
   }
 
@@ -174,8 +168,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
     }
-    this._localPlayer.setSources(sources || {});
-    this.configure(playerConfig);
+    this.configure({...playerConfig, sources});
   }
 
   /**
@@ -280,8 +273,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
-      this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
-      this._uiWrapper.setConfig(uiConfig);
+      this._uiWrapper.setConfig(configDictionary.ui);
     }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
@@ -316,6 +308,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!this._reset) {
       this._reset = true;
       this._firstPlay = true;
+      this._sourceSelected = null;
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
@@ -524,6 +517,10 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.duration;
   }
 
+  get liveDuration(): number {
+    return this._localPlayer.liveDuration;
+  }
+
   set volume(vol: number): void {
     this._localPlayer.volume = vol;
   }
@@ -602,6 +599,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   get env(): Object {
     return this._localPlayer.env;
+  }
+
+  get selectedSource(): ?PKMediaSourceObject {
+    return this._sourceSelected;
   }
 
   get sources(): PKSourcesConfigObject {
@@ -710,7 +711,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () => this._onPlayerReset());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
-    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, (event: FakeEvent) => (this._sourceSelected = event.payload.selectedSource[0]));
     this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
     this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => {
       this._playbackStart = true;
@@ -853,19 +854,6 @@ class KalturaPlayer extends FakeEventTarget {
           this.dispatchEvent(event);
         });
       }
-    }
-  }
-
-  /**
-   * set the share config
-   * @returns {void}
-   * @private
-   */
-  _maybeSetEmbedConfig(): void {
-    const ui = this.config.ui;
-    if (ui && ui.components && ui.components.share) {
-      this._configEvaluator.evaluateUIConfig(ui, this.config);
-      this._uiWrapper.setConfig(ui);
     }
   }
 

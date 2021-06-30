@@ -1,11 +1,13 @@
 // @flow
-declare type KPUIComponent = {
-  label: string,
-  presets: Array<string>,
-  area: string,
+declare type KPUIAddComponent = KPUIComponentOptions & {
   get: Function,
-  props?: {},
-  beforeComponent?: string,
-  afterComponent?: string,
-  replaceComponent?: string
+  props?: {}
 };
+
+declare type KPUIRemoveComponent = {
+  removeComponent: string,
+  presets: Array<string>,
+  area: string
+};
+
+declare type KPUIComponent = KPUIAddComponent | KPUIRemoveComponent;
