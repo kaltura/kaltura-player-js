@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/kaltura/kaltura-player-js/compare/v1.7.5...v1.9.0) (2021-07-01)
+
+
+### Bug Fixes
+
+* **FEC-11125:** expose selected source ([#461](https://github.com/kaltura/kaltura-player-js/issues/461)) ([79d7c0d](https://github.com/kaltura/kaltura-player-js/commit/79d7c0d))
+
+
+### Build System
+
+* fix CI/CD canary process ([d2c55d8](https://github.com/kaltura/kaltura-player-js/commit/d2c55d8))
+* resolve the correct patch for deployment ([#455](https://github.com/kaltura/kaltura-player-js/issues/455)) ([f15f16d](https://github.com/kaltura/kaltura-player-js/commit/f15f16d))
+* trigger jenkins with correct canary version ([8da55b0](https://github.com/kaltura/kaltura-player-js/commit/8da55b0))
+* **FEC-10700:** Improvement for CI/CD ([#389](https://github.com/kaltura/kaltura-player-js/issues/389)) ([8937aea](https://github.com/kaltura/kaltura-player-js/commit/8937aea))
+
+
+### Features
+
+* **FEC-10785:** add support to remove ui element ([#460](https://github.com/kaltura/kaltura-player-js/issues/460)) ([fd2172c](https://github.com/kaltura/kaltura-player-js/commit/fd2172c))
+* **FEC-10817:** expose the current time of the video element in live streams ([#431](https://github.com/kaltura/kaltura-player-js/issues/431)) ([c62a54a](https://github.com/kaltura/kaltura-player-js/commit/c62a54a))
+* **FEC-10835:** expose share to plugin ([#447](https://github.com/kaltura/kaltura-player-js/issues/447)) ([45dd205](https://github.com/kaltura/kaltura-player-js/commit/45dd205))
+* **FEC-11337:** Upgrade hls.js to 1.0  ([#456](https://github.com/kaltura/kaltura-player-js/issues/456)) ([cdedeaa](https://github.com/kaltura/kaltura-player-js/commit/cdedeaa))
+
+
+
 ### [1.7.5](https://github.com/kaltura/kaltura-player-js/compare/v1.7.3...v1.7.5) (2021-06-03)
 
 
