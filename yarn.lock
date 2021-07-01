@@ -1130,10 +1130,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@1.25.0":
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.25.0.tgz#f9333eeb93a1f3e923d8710c7b8fe88eb58835a0"
-  integrity sha512-kfBIzQHdG80IzqS1Oi0GoBQxFLgNnNA8+O97IIhlQ63Y+ZYpQ5+eY3kkjr4YnrvsxLAprvzP7u58wepGzGxn/Q==
+"@playkit-js/playkit-js-dash@1.26.0":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.26.0.tgz#9c2da92e0a234019c10421dfa60c5b5ef0015446"
+  integrity sha512-rnZfCXtFE1JIK51whfCXPgo7xAoLycA1ucTtqC9+mb5k1dIW0+OwIhEUsniVWsAmXZR7QOfDF0AxAkfT3tRTfg==
 
 "@playkit-js/playkit-js-hls@1.27.0":
   version "1.27.0"
