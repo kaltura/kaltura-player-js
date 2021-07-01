@@ -53,6 +53,13 @@ export interface IRemotePlayer {
   +duration: number;
   /**
    * @readonly
+   * @type {number}
+   * @instance
+   * @memberof IRemotePlayer
+   */
+  +liveDuration: number;
+  /**
+   * @readonly
    * @type {boolean}
    * @instance
    * @memberof IRemotePlayer
