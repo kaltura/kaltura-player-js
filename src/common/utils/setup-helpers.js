@@ -262,29 +262,12 @@ function getUrlParameter(name: string): ?string {
 }
 
 /**
- * Checks if the server UIConf exist
+ * get the server UIConf
  * @private
- * @param {number} uiConfId - The server UIConf
- * @returns {boolean} - server UIConf exist
- */
-function serverUIConfExist(uiConfId: ?number): boolean {
-  const UIConf = Utils.Object.getPropertyPath(window, '__kalturaplayerdata.UIConf');
-  const hasUiConfId = uiConfId !== null && uiConfId !== undefined;
-  return hasUiConfId && ((UIConf !== undefined && UIConf[uiConfId] !== undefined) || false);
-}
-
-/**
- * Extracts the server UIConf
- * @private
- * @param {number} uiConfId - The server UIConf
  * @returns {Object} - The server UIConf
  */
-function extractServerUIConf(uiConfId: number): Object {
-  let config = {};
-  if (serverUIConfExist(uiConfId)) {
-    config = window.__kalturaplayerdata.UIConf[uiConfId];
-  }
-  return config;
+function getServerUIConf(): Object {
+  return window.__kalturaplayerdata || {};
 }
 
 /**
@@ -313,10 +296,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
-  if (defaultOptions.provider.uiConfId) {
-    const uiConfOptions = supportLegacyOptions(extractServerUIConf(defaultOptions.provider.uiConfId));
-    defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
-  }
+  defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
