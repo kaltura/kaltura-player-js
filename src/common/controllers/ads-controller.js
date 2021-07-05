@@ -209,9 +209,10 @@ class AdsController extends FakeEventTarget implements IAdsController {
       this._handleConfiguredPreroll();
       this._eventManager.listenOnce(this._player, Html5EventType.DURATION_CHANGE, () => {
         this._player.isLive()
-          ? this._eventManager.listenOnce(this._player, Html5EventType.SEEKING, () =>
-              this._pushNextAdsForLive(this._configAdBreaks, adBreak => this._player.currentTime + adBreak.every)
-            )
+          ? this._eventManager.listenOnce(this._player, Html5EventType.SEEKING, () => {
+              this._pushNextAdsForLive(this._configAdBreaks, adBreak => this._player.currentTime + adBreak.every);
+              this._attachLiveSeekedHandler();
+            })
           : this._handleEveryAndPercentage();
         this._configAdBreaks.sort((a, b) => a.position - b.position);
         if (this._configAdBreaks.some(adBreak => adBreak.position > 0)) {
@@ -316,6 +317,14 @@ class AdsController extends FakeEventTarget implements IAdsController {
       } else if (this._player.duration && adBreak.percentage && !adBreak.position) {
         adBreak.position = Math.floor((this._player.duration * adBreak.percentage) / 100);
       }
+    });
+  }
+
+  _attachLiveSeekedHandler() {
+    this._eventManager.listenOnce(this._player, CustomEventType.FIRST_PLAYING, () => {
+      this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
+        this._pushNextAdsForLive(this._configAdBreaks, adBreak => this._player.currentTime + adBreak.every);
+      });
     });
   }
 
