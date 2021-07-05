@@ -430,6 +430,17 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   }
 
   /**
+   * @returns {number} - The live duration in seconds.
+   * @instance
+   * @memberof BaseRemotePlayer
+   * @example
+   * BaseRemotePlayer.prototype.liveDuration // NaN
+   */
+  get liveDuration(): number {
+    return NaN;
+  }
+
+  /**
    * Setter.
    * @param {number} vol - The volume to set in the range of 0-1.
    * @returns {void}

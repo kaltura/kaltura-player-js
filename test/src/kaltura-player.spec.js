@@ -179,6 +179,24 @@ describe('kaltura player api', function () {
         });
       });
     });
+    describe('selectedSource', function () {
+      beforeEach(function () {
+        kalturaPlayer = setup(config);
+      });
+
+      afterEach(function () {
+        kalturaPlayer.destroy();
+      });
+
+      it('should get the selectedSource', function (done) {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, event => {
+          kalturaPlayer.selectedSource.should.equal(event.payload.selectedSource[0]);
+          done();
+        });
+        kalturaPlayer.setMedia({sources: SourcesConfig.Mp4});
+        kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
+      });
+    });
   });
 
   describe('playlist api', function () {
@@ -317,7 +335,7 @@ describe('kaltura player api', function () {
         kalturaPlayer.playlist.items.length.should.equal(3);
         kalturaPlayer.playlist.countdown.duration.should.equal(20);
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
-        kalturaPlayer._sourceSelected.should.be.true;
+        (kalturaPlayer.selectedSource === null).should.be.false;
       });
     });
 
