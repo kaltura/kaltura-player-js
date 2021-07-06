@@ -48,14 +48,14 @@ jobs:
       env: TRAVIS_MODE=releaseCanary
     # Required tests
     - stage: Tests
-      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      if: ((branch = master) OR (tag IS present) OR (type = pull_request)) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: 'Running lint'
       env: TRAVIS_MODE=lint
     - stage: Tests
-      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      if: ((branch = master) OR (tag IS present) OR (type = pull_request)) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: 'Running Flow type check'
       env: TRAVIS_MODE=flow
     - stage: Tests
-      if: (branch = master) OR (tag IS present) OR (type = pull_request)
+      if: ((branch = master) OR (tag IS present) OR (type = pull_request)) AND commit_message !~ /^chore\(release\)/ AND commit_message !~ /^(chore).*(update dist)$/
       name: 'Running unit tests'
       env: TRAVIS_MODE=unitTests
