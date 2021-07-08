@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.2](https://github.com/kaltura/kaltura-player-js/compare/v1.10.1...v1.10.2) (2021-07-08)
+
+
+### Bug Fixes
+
+* update playkit.js-ui to [0.67.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.67.1) ([7e1f329](https://github.com/kaltura/kaltura-player-js/commit/7e1f329))
+
+
+### Build System
+
+* **FEC-11389:** reduce builds from travis ([0e6eedb](https://github.com/kaltura/kaltura-player-js/commit/0e6eedb))
+
+
+
 ### [1.10.1](https://github.com/kaltura/kaltura-player-js/compare/v1.10.0...v1.10.1) (2021-07-01)
 
 
