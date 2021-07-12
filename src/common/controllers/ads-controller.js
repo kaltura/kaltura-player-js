@@ -45,6 +45,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _isAdPlaying: boolean;
   _middleware: AdLayoutMiddleware;
   _prebidManager: PrebidManager;
+  _liveSeeking: boolean;
   prerollReady: Promise<*>;
 
   constructor(player: Player, adsPluginControllers: Array<IAdsPluginController>) {
@@ -161,6 +162,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._snapback = 0;
     this._adIsLoading = false;
     this._isAdPlaying = false;
+    this._liveSeeking = false;
   }
 
   _addBindings(): void {
@@ -322,14 +324,18 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   _attachLiveSeekedHandler() {
     this._eventManager.listenOnce(this._player, CustomEventType.FIRST_PLAYING, () => {
+      this._eventManager.listen(this._player, Html5EventType.SEEKING, () => {
+        this._liveSeeking = true;
+      });
       this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
+        this._liveSeeking = false;
         this._pushNextAdsForLive(this._configAdBreaks, adBreak => this._player.currentTime + adBreak.every);
       });
     });
   }
 
   _pushNextAdsForLive(iterator: Array<RunTimeAdBreakObject>, calcPositionCallback: Function) {
-    AdsController._logger.debug('Pushing next ads for live', iterator);
+    this._liveEventManager.removeAll();
     const liveConfigAdBreaks = [];
     iterator.forEach(adBreak => {
       if (![-1, 0].includes(adBreak.position)) {
@@ -353,15 +359,13 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   _handleConfiguredMidrolls(): void {
     this._eventManager.listen(this._player, Html5EventType.TIME_UPDATE, () => {
-      if (!this._player.paused) {
+      if (!this._player.paused && !this._liveSeeking) {
         const adBreaks = this._configAdBreaks.filter(
           adBreak => !adBreak.played && this._player.currentTime && adBreak.position <= this._player.currentTime && adBreak.position > this._snapback
         );
         if (adBreaks.length) {
           const maxPosition = adBreaks[adBreaks.length - 1].position;
           const lastAdBreaks = adBreaks.filter(adBreak => adBreak.position === maxPosition);
-          this._snapback = maxPosition;
-          AdsController._logger.debug(`Set snapback value ${this._snapback}`);
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
           if (this._player.isLive()) {
             const returnToLive = !this._player.isDvr() || (this._player.isOnLiveEdge() && this._player.config.advertising.returnToLive);
@@ -371,31 +375,30 @@ class AdsController extends FakeEventTarget implements IAdsController {
                   lastAdBreaks,
                   adBreak => (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + adBreak.every
                 );
+          } else {
+            this._snapback = maxPosition;
+            AdsController._logger.debug(`Set snapback value ${this._snapback}`);
+            this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
+              const nextPlayedAdBreakIndex = this._configAdBreaks.findIndex(
+                adBreak => adBreak.played && typeof this._player.currentTime === 'number' && this._player.currentTime < adBreak.position
+              );
+              if (nextPlayedAdBreakIndex > 0 && !this._configAdBreaks[nextPlayedAdBreakIndex - 1].played) {
+                this._snapback = 0;
+                AdsController._logger.debug('Reset snapback value');
+              }
+            });
           }
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
       }
     });
-    this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
-      const nextPlayedAdBreakIndex = this._configAdBreaks.findIndex(
-        adBreak => adBreak.played && typeof this._player.currentTime === 'number' && this._player.currentTime < adBreak.position
-      );
-      if (nextPlayedAdBreakIndex > 0 && !this._configAdBreaks[nextPlayedAdBreakIndex - 1].played) {
-        this._snapback = 0;
-        AdsController._logger.debug('Reset snapback value');
-      }
-    });
   }
 
   _handleReturnToLive(adBreaks: Array<RunTimeAdBreakObject>) {
-    const pushAdsAndRemoveListeners = () => {
+    this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, () => {
       this._pushNextAdsForLive(adBreaks, adBreak => (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + adBreak.every);
-      this._liveEventManager.removeAll();
-    };
-
-    this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, pushAdsAndRemoveListeners);
+    });
     this._liveEventManager.listenOnce(this._player, AdEventType.AD_BREAK_END, () => {
-      this._liveEventManager.listenOnce(this._player, Html5EventType.SEEKED, pushAdsAndRemoveListeners);
       this._player.seekToLiveEdge();
     });
   }

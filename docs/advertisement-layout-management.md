@@ -13,6 +13,7 @@ Ad break can be set as pre, mid and post rolls and each ad break can contain a s
 - [Ad Break Options](#ad-break-options)
 - [Ad Options](#ad-options)
 - [Play Ads After Time](#play-ads-after-time)
+- [Return To Live After Ad](#return-to-live-after-ad-only-for-live-streams)
 - [Events](#events)
 - [Play Ad Now](#play-ad-now)
 - [Play Ad Now with Prebid](#play-ad-now-with-prebid)
