@@ -499,7 +499,7 @@ describe('PlaylistManager', function () {
       });
     });
 
-    it.skip('should call playNext programmatically', function (done) {
+    it('should call playNext programmatically', function (done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         if (eventCounter === 2) {
