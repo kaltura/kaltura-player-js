@@ -366,7 +366,6 @@ class AdsController extends FakeEventTarget implements IAdsController {
         if (adBreaks.length) {
           const maxPosition = adBreaks[adBreaks.length - 1].position;
           const lastAdBreaks = adBreaks.filter(adBreak => adBreak.position === maxPosition);
-          const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
           if (this._player.isLive()) {
             const returnToLive = !this._player.isDvr() || (this._player.isOnLiveEdge() && this._player.config.advertising.returnToLive);
             returnToLive
@@ -388,6 +387,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
               }
             });
           }
+          const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
       }
