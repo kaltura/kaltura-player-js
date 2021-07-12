@@ -477,7 +477,7 @@ describe('PlaylistManager', function () {
     });
   });
 
-  describe('playNext', function () {
+  describe.skip('playNext', function () {
     before(function () {
       sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
         return Promise.resolve(MediaMockData.MediaConfig[entryId]);
