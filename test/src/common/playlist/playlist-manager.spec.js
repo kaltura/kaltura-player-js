@@ -477,7 +477,7 @@ describe('PlaylistManager', function () {
     });
   });
 
-  describe.skip('playNext', function () {
+  describe('playNext', function () {
     before(function () {
       sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
         return Promise.resolve(MediaMockData.MediaConfig[entryId]);
@@ -499,7 +499,7 @@ describe('PlaylistManager', function () {
       });
     });
 
-    it('should call playNext programmatically', function (done) {
+    it.skip('should call playNext programmatically', function (done) {
       let eventCounter = 0;
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         if (eventCounter === 2) {
