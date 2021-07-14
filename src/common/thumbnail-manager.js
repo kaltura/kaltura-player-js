@@ -38,7 +38,7 @@ class ThumbnailManager {
   _convertKalturaThumbnailToThumbnailInfo = (time: number): ?ThumbnailInfo => {
     if (this._thumbnailConfig) {
       const {thumbsSprite, thumbsWidth, thumbsSlices} = this._thumbnailConfig;
-      const {thumbsHeight} = DefaultThumbnailConfig;
+      const thumbsHeight = Math.floor((thumbsWidth * this._player.videoHeight) / this._player.videoWidth);
       const duration = this._player.duration / thumbsSlices;
       const thumbnailInfo = {
         x: Math.floor(time / duration) * thumbsWidth,
