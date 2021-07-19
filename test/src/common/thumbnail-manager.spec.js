@@ -100,6 +100,17 @@ describe('ThumbnailManager', () => {
     spy.should.calledOnce;
   });
 
+  it('should return thumbnail height from core player with video ratio 4:3', () => {
+    fakeMediaConfig.sources.poster = null;
+    fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    fakePlayer.duration = 1000;
+    fakePlayer.videoHeight = 480;
+    fakePlayer.videoWidth = 640;
+    const thumbInfo = thumbnailManager.getThumbnail(100);
+    thumbInfo.height.should.equal(thumbInfo.width * (fakePlayer.videoHeight / fakePlayer.videoWidth));
+  });
+
   it('should set the configured thumbs sprite with default sizes', () => {
     fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
