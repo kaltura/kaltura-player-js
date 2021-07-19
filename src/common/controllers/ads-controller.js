@@ -34,6 +34,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _adsPluginControllers: Array<IAdsPluginController>;
   _allAdsCompleted: boolean;
   _eventManager: EventManager;
+  _liveEventManager: EventManager;
   _adBreaksLayout: Array<number | string>;
   _adBreak: ?AdBreak;
   _ad: ?Ad;
@@ -44,12 +45,14 @@ class AdsController extends FakeEventTarget implements IAdsController {
   _isAdPlaying: boolean;
   _middleware: AdLayoutMiddleware;
   _prebidManager: PrebidManager;
+  _liveSeeking: boolean;
   prerollReady: Promise<*>;
 
   constructor(player: Player, adsPluginControllers: Array<IAdsPluginController>) {
     super();
     this._player = player;
     this._eventManager = new EventManager();
+    this._liveEventManager = new EventManager();
     this._adsPluginControllers = adsPluginControllers;
     this._prebidManager = new PrebidManager(this._player.config.advertising && this._player.config.advertising.prebid);
     this._init();
@@ -159,6 +162,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
     this._snapback = 0;
     this._adIsLoading = false;
     this._isAdPlaying = false;
+    this._liveSeeking = false;
   }
 
   _addBindings(): void {
@@ -192,12 +196,13 @@ class AdsController extends FakeEventTarget implements IAdsController {
         adBreak.percentage === 0 && (position = 0);
         adBreak.percentage === 100 && (position = -1);
         adBreak.every && (position = adBreak.every);
+        const played = this._player.isLive() ? position < playAdsAfterTime : position <= playAdsAfterTime;
         return {
           position,
           percentage: adBreak.percentage,
           every: adBreak.every,
           ads: adBreak.ads.slice(),
-          played: -1 < position && position <= playAdsAfterTime
+          played: -1 < position && played
         };
       });
     if (this._configAdBreaks.length) {
@@ -205,7 +210,12 @@ class AdsController extends FakeEventTarget implements IAdsController {
       this._handlePrebidAdConfig();
       this._handleConfiguredPreroll();
       this._eventManager.listenOnce(this._player, Html5EventType.DURATION_CHANGE, () => {
-        this._handleEveryAndPercentage();
+        this._player.isLive()
+          ? this._eventManager.listenOnce(this._player, Html5EventType.SEEKING, () => {
+              this._pushNextAdsForLive(this._configAdBreaks, adBreak => this._player.currentTime + adBreak.every);
+              this._attachLiveSeekedHandler();
+            })
+          : this._handleEveryAndPercentage();
         this._configAdBreaks.sort((a, b) => a.position - b.position);
         if (this._configAdBreaks.some(adBreak => adBreak.position > 0)) {
           this._handleConfiguredMidrolls();
@@ -312,30 +322,84 @@ class AdsController extends FakeEventTarget implements IAdsController {
     });
   }
 
+  _attachLiveSeekedHandler() {
+    this._eventManager.listenOnce(this._player, CustomEventType.FIRST_PLAYING, () => {
+      this._eventManager.listen(this._player, Html5EventType.SEEKING, () => {
+        this._liveSeeking = true;
+      });
+      this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
+        this._liveSeeking = false;
+        this._pushNextAdsForLive(this._configAdBreaks, adBreak => this._player.currentTime + adBreak.every);
+      });
+    });
+  }
+
+  _pushNextAdsForLive(iterator: Array<RunTimeAdBreakObject>, calcPositionCallback: Function) {
+    this._liveEventManager.removeAll();
+    const liveConfigAdBreaks = [];
+    iterator.forEach(adBreak => {
+      if (![-1, 0].includes(adBreak.position)) {
+        const {every, ads} = adBreak;
+        const position = calcPositionCallback(adBreak);
+        const nextAdBreak = {
+          every,
+          position,
+          ads,
+          played: false,
+          loadedPromise: Promise.resolve()
+        };
+        AdsController._logger.debug('Pushing next ad for live', nextAdBreak);
+        liveConfigAdBreaks.push(nextAdBreak);
+      }
+    });
+    if (liveConfigAdBreaks.length) {
+      this._configAdBreaks = [...liveConfigAdBreaks, ...this._configAdBreaks.filter(adBreak => adBreak.position === -1)];
+    }
+  }
+
   _handleConfiguredMidrolls(): void {
     this._eventManager.listen(this._player, Html5EventType.TIME_UPDATE, () => {
-      if (!this._player.paused) {
+      if (!this._player.paused && !this._liveSeeking) {
         const adBreaks = this._configAdBreaks.filter(
           adBreak => !adBreak.played && this._player.currentTime && adBreak.position <= this._player.currentTime && adBreak.position > this._snapback
         );
         if (adBreaks.length) {
           const maxPosition = adBreaks[adBreaks.length - 1].position;
           const lastAdBreaks = adBreaks.filter(adBreak => adBreak.position === maxPosition);
-          this._snapback = maxPosition;
-          AdsController._logger.debug(`Set snapback value ${this._snapback}`);
+          if (this._player.isLive()) {
+            const returnToLive = !this._player.isDvr() || (this._player.isOnLiveEdge() && this._player.config.advertising.returnToLive);
+            returnToLive
+              ? this._handleReturnToLive(lastAdBreaks)
+              : this._pushNextAdsForLive(
+                  lastAdBreaks,
+                  adBreak => (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + adBreak.every
+                );
+          } else {
+            this._snapback = maxPosition;
+            AdsController._logger.debug(`Set snapback value ${this._snapback}`);
+            this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
+              const nextPlayedAdBreakIndex = this._configAdBreaks.findIndex(
+                adBreak => adBreak.played && typeof this._player.currentTime === 'number' && this._player.currentTime < adBreak.position
+              );
+              if (nextPlayedAdBreakIndex > 0 && !this._configAdBreaks[nextPlayedAdBreakIndex - 1].played) {
+                this._snapback = 0;
+                AdsController._logger.debug('Reset snapback value');
+              }
+            });
+          }
           const mergedAdBreak = this._mergeAdBreaks(lastAdBreaks);
           mergedAdBreak && this._playAdBreak(mergedAdBreak);
         }
       }
     });
-    this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
-      const nextPlayedAdBreakIndex = this._configAdBreaks.findIndex(
-        adBreak => adBreak.played && typeof this._player.currentTime === 'number' && this._player.currentTime < adBreak.position
-      );
-      if (nextPlayedAdBreakIndex > 0 && !this._configAdBreaks[nextPlayedAdBreakIndex - 1].played) {
-        this._snapback = 0;
-        AdsController._logger.debug('Reset snapback value');
-      }
+  }
+
+  _handleReturnToLive(adBreaks: Array<RunTimeAdBreakObject>) {
+    this._liveEventManager.listenOnce(this._player, AdEventType.AD_ERROR, () => {
+      this._pushNextAdsForLive(adBreaks, adBreak => (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + adBreak.every);
+    });
+    this._liveEventManager.listenOnce(this._player, AdEventType.AD_BREAK_END, () => {
+      this._player.seekToLiveEdge();
     });
   }
 
@@ -436,12 +500,14 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
   _reset(): void {
     this._eventManager.removeAll();
+    this._liveEventManager.removeAll();
     this._init();
   }
 
   _destroy(): void {
     this._adsPluginControllers = [];
     this._eventManager.destroy();
+    this._liveEventManager.destroy();
   }
 
   _mergeAdBreaks(adBreaks: Array<RunTimeAdBreakObject>): ?RunTimeAdBreakObject {
