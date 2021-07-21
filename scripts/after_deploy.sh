@@ -8,9 +8,9 @@ HTTP_SUCCESS=false
 currentVersion=$(npx -c 'echo "$npm_package_version"')
 echo "$currentVersion"
 
-TAGGED_BRANCH=$(git ls-remote origin | sed -n "\|$TRAVIS_COMMIT\s\+refs/heads/|{s///p}")
+TAGGED_BRANCH=$(git branch --contains "$TRAVIS_COMMIT" --list "master")
 UPDATE_SCHEMA=true
-if [ "$TAGGED_BRANCH" != "master" ]; then
+if [ "${TAGGED_BRANCH//[[:blank:]]/}" != "master" ]; then
   UPDATE_SCHEMA=false
 fi
 
