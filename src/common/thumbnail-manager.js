@@ -42,7 +42,7 @@ class ThumbnailManager {
       const duration = this._player.duration / thumbsSlices;
       const thumbnailInfo = {
         x: Math.floor(time / duration) * thumbsWidth,
-        y: thumbsHeight,
+        y: 0,
         url: thumbsSprite,
         height: thumbsHeight,
         width: thumbsWidth
