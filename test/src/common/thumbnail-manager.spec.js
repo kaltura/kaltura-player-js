@@ -19,7 +19,9 @@ describe('ThumbnailManager', () => {
           }
         }
       },
-      getThumbnail: () => {}
+      getThumbnail: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {}
     };
     fakeMediaConfig = {
       sources: {
