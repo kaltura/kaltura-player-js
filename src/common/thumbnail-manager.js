@@ -1,5 +1,5 @@
 // @flow
-import {Utils, ThumbnailInfo, MediaType} from '@playkit-js/playkit-js';
+import {Utils, ThumbnailInfo, MediaType, EventManager, Html5EventType} from '@playkit-js/playkit-js';
 import evaluate from './utils/evaluate';
 
 const DefaultThumbnailConfig: Object = {
@@ -14,10 +14,25 @@ const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth
 class ThumbnailManager {
   _player: Player;
   _thumbnailConfig: ?KPThumbnailConfig;
+  _eventManager: EventManager;
+  _origVideoHeight: number;
+  _origVideoWidth: number;
+  _origDuration: number;
 
   constructor(player: Player, uiConfig: KPUIOptionsObject, mediaConfig: KPMediaConfig) {
     this._player = player;
     this._thumbnailConfig = this._buildKalturaThumbnailConfig(uiConfig, mediaConfig);
+    this._eventManager = new EventManager();
+
+    this._eventManager.listenOnce(this._player, Html5EventType.LOADED_METADATA, () => {
+      this._origVideoHeight = this._player.videoHeight;
+      this._origVideoWidth = this._player.videoWidth;
+      this._origDuration = this._player.duration;
+    });
+  }
+
+  destroy() {
+    this._eventManager.destroy();
   }
 
   getThumbnail(time: number): ?ThumbnailInfo {
@@ -38,8 +53,10 @@ class ThumbnailManager {
   _convertKalturaThumbnailToThumbnailInfo = (time: number): ?ThumbnailInfo => {
     if (this._thumbnailConfig) {
       const {thumbsSprite, thumbsWidth, thumbsSlices} = this._thumbnailConfig;
-      const thumbsHeight = Math.floor(thumbsWidth * (this._player.videoHeight / this._player.videoWidth));
-      const duration = this._player.duration / thumbsSlices;
+      const videoHeight = this._player.videoHeight || this._origVideoHeight;
+      const videoWidth = this._player.videoWidth || this._origVideoWidth;
+      const thumbsHeight = Math.floor(thumbsWidth * (videoHeight / videoWidth));
+      const duration = (this._player.duration || this._origDuration) / thumbsSlices;
       const thumbnailInfo = {
         x: Math.floor(time / duration) * thumbsWidth,
         y: 0,

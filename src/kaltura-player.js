@@ -316,6 +316,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
       this._localPlayer.reset();
+      this._thumbnailManager?.destroy();
     }
   }
 
@@ -329,6 +330,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._playlistManager.destroy();
     this._localPlayer.destroy();
     this._eventManager.destroy();
+    this._thumbnailManager?.destroy();
     this._viewabilityManager.destroy();
     RemotePlayerManager.destroy();
     this._pluginsConfig = {};
