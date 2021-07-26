@@ -1,7 +1,6 @@
 // @flow
-import {Utils, ThumbnailInfo, MediaType, EventManager} from '@playkit-js/playkit-js';
+import {Utils, ThumbnailInfo, MediaType, EventManager, Html5EventType} from '@playkit-js/playkit-js';
 import evaluate from './utils/evaluate';
-import {Html5EventType} from '@playkit-js/playkit-js/dist/playkit';
 
 const DefaultThumbnailConfig: Object = {
   thumbsWidth: 164,
