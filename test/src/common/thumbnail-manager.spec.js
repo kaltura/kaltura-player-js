@@ -20,8 +20,9 @@ describe('ThumbnailManager', () => {
         }
       },
       getThumbnail: () => {},
-      addEventListener: () => {},
-      removeEventListener: () => {}
+      _localPlayer: {
+        getThumbnail: () => {}
+      }
     };
     fakeMediaConfig = {
       sources: {
@@ -97,20 +98,18 @@ describe('ThumbnailManager', () => {
   it('should return thumbnail from core player', () => {
     fakeMediaConfig.sources.poster = null;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    const spy = sandbox.spy(fakePlayer, 'getThumbnail');
+    const spy = sandbox.spy(fakePlayer._localPlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
   });
 
-  it('should return thumbnail height from core player with video ratio 4:3', () => {
+  it('should return thumbnail height from image sprite', () => {
     fakeMediaConfig.sources.poster = null;
     fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    fakePlayer.duration = 1000;
-    fakePlayer.videoHeight = 480;
-    fakePlayer.videoWidth = 640;
+    thumbnailManager._thumbsHeight = 999;
     const thumbInfo = thumbnailManager.getThumbnail(100);
-    thumbInfo.height.should.equal(thumbInfo.width * (fakePlayer.videoHeight / fakePlayer.videoWidth));
+    thumbInfo.height.should.equal(999);
   });
 
   it('should set the configured thumbs sprite with default sizes', () => {
