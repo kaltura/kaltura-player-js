@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/kaltura/kaltura-player-js/compare/v1.10.3...v1.11.0) (2021-07-27)
+
+
+### Bug Fixes
+
+* update playkit-js-hls to [1.27.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.1) ([b11f3bc](https://github.com/kaltura/kaltura-player-js/commit/b11f3bc))
+* **FEC-11402:** preview does not work - fix y position ([#471](https://github.com/kaltura/kaltura-player-js/issues/471)) ([2d79e57](https://github.com/kaltura/kaltura-player-js/commit/2d79e57))
+* **FEC-11402:** preview doesn't work in video ratio different than 16:9 ([#466](https://github.com/kaltura/kaltura-player-js/issues/466)) ([26dc475](https://github.com/kaltura/kaltura-player-js/commit/26dc475))
+* **FEC-11431:** no preview thumbnails shown when casting on chromecast - regression ([#472](https://github.com/kaltura/kaltura-player-js/issues/472)) ([830f828](https://github.com/kaltura/kaltura-player-js/commit/830f828))
+* **FEC-11431:** refactor preview thumb height from real image sprite height ([#473](https://github.com/kaltura/kaltura-player-js/issues/473)) ([fe5ad62](https://github.com/kaltura/kaltura-player-js/commit/fe5ad62)), closes [#466](https://github.com/kaltura/kaltura-player-js/issues/466) [#471](https://github.com/kaltura/kaltura-player-js/issues/471) [#472](https://github.com/kaltura/kaltura-player-js/issues/472)
+
+
+### Features
+
+* update playkit-js to [0.73.0](https://github.com/kaltura/playkit-js/releases/tag/v0.73.0) ([290e191](https://github.com/kaltura/kaltura-player-js/commit/290e191))
+* update playkit-js-dash to [1.27.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.0) ([ed268af](https://github.com/kaltura/kaltura-player-js/commit/ed268af))
+* update playkit.js-ui to [0.68.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.68.0) ([ab1fb88](https://github.com/kaltura/kaltura-player-js/commit/ab1fb88))
+* **FEC-10791:** Ad-Layout for live streams  ([#459](https://github.com/kaltura/kaltura-player-js/issues/459)) ([ba693c1](https://github.com/kaltura/kaltura-player-js/commit/ba693c1))
+* **FEC-11423:** upgrade shaka to 3.0.13 ([#468](https://github.com/kaltura/kaltura-player-js/issues/468)) ([54da73d](https://github.com/kaltura/kaltura-player-js/commit/54da73d))
+* **FEC-11423:** upgrade shaka to 3.0.13 ([#470](https://github.com/kaltura/kaltura-player-js/issues/470)) ([0b6f853](https://github.com/kaltura/kaltura-player-js/commit/0b6f853))
+
+
+
 ### [1.10.3](https://github.com/kaltura/kaltura-player-js/compare/v1.10.2...v1.10.3) (2021-07-15)
 
 
