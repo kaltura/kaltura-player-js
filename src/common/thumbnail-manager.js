@@ -1,5 +1,5 @@
 // @flow
-import {Utils, ThumbnailInfo, MediaType, EventManager, Html5EventType} from '@playkit-js/playkit-js';
+import {Utils, ThumbnailInfo, MediaType, EventManager} from '@playkit-js/playkit-js';
 import evaluate from './utils/evaluate';
 
 const DefaultThumbnailConfig: Object = {
@@ -12,23 +12,22 @@ const THUMBNAIL_REGEX = /.*\/p\/\d+\/(?:[a-zA-Z]+\/\d+\/)*thumbnail\/entry_id\/\
 const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/vid_slices/{{thumbsSlices}}/ks/{{ks}}';
 
 class ThumbnailManager {
-  _player: Player;
+  _player: KalturaPlayer;
   _thumbnailConfig: ?KPThumbnailConfig;
   _eventManager: EventManager;
-  _origVideoHeight: number;
-  _origVideoWidth: number;
-  _origDuration: number;
+  _thumbsHeight: number;
 
-  constructor(player: Player, uiConfig: KPUIOptionsObject, mediaConfig: KPMediaConfig) {
+  constructor(player: KalturaPlayer, uiConfig: KPUIOptionsObject, mediaConfig: KPMediaConfig) {
     this._player = player;
     this._thumbnailConfig = this._buildKalturaThumbnailConfig(uiConfig, mediaConfig);
     this._eventManager = new EventManager();
-
-    this._eventManager.listenOnce(this._player, Html5EventType.LOADED_METADATA, () => {
-      this._origVideoHeight = this._player.videoHeight;
-      this._origVideoWidth = this._player.videoWidth;
-      this._origDuration = this._player.duration;
-    });
+    if (this._isUsingKalturaThumbnail()) {
+      const img = new Image();
+      this._eventManager.listenOnce(img, 'load', () => {
+        this._thumbsHeight = img.naturalHeight;
+      });
+      img.src = this._thumbnailConfig?.thumbsSprite || '';
+    }
   }
 
   destroy() {
@@ -39,7 +38,7 @@ class ThumbnailManager {
     if (this._isUsingKalturaThumbnail()) {
       return this._convertKalturaThumbnailToThumbnailInfo(time);
     }
-    return this._player.getThumbnail(time);
+    return this._player._localPlayer.getThumbnail(time);
   }
 
   getKalturaThumbnailConfig(): ?KPThumbnailConfig {
@@ -53,15 +52,12 @@ class ThumbnailManager {
   _convertKalturaThumbnailToThumbnailInfo = (time: number): ?ThumbnailInfo => {
     if (this._thumbnailConfig) {
       const {thumbsSprite, thumbsWidth, thumbsSlices} = this._thumbnailConfig;
-      const videoHeight = this._player.videoHeight || this._origVideoHeight;
-      const videoWidth = this._player.videoWidth || this._origVideoWidth;
-      const thumbsHeight = Math.floor(thumbsWidth * (videoHeight / videoWidth));
-      const duration = (this._player.duration || this._origDuration) / thumbsSlices;
+      const duration = this._player.duration / thumbsSlices;
       const thumbnailInfo = {
         x: Math.floor(time / duration) * thumbsWidth,
         y: 0,
         url: thumbsSprite,
-        height: thumbsHeight,
+        height: this._thumbsHeight,
         width: thumbsWidth
       };
       return new ThumbnailInfo(thumbnailInfo);
