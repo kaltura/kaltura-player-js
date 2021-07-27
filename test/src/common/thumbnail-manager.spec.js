@@ -98,7 +98,7 @@ describe('ThumbnailManager', () => {
   it('should return thumbnail from core player', () => {
     fakeMediaConfig.sources.poster = null;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    const spy = sandbox.spy(fakePlayer, 'getThumbnail');
+    const spy = sandbox.spy(fakePlayer._localPlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
   });
