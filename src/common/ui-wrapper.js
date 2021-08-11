@@ -78,7 +78,7 @@ class UIWrapper {
     };
     return this._uiManager.addComponent(replaceComponent);
   }
-  
+
   setLoadingSpinnerState(show: boolean): void {
     this.setConfig({show: show}, 'loading');
   }
