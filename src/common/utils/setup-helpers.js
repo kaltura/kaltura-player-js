@@ -89,9 +89,9 @@ function validateProviderConfig(options: KPOptionsObject): void {
       url: KAVA_DEFAULT_IMPRESSION,
       mimetype: ''
     };
+    source.url = addProductVersion(source.url, productVersion);
     source.url = addReferrer(source.url);
     source.url = addClientTag(source.url, productVersion);
-    source.url = addProductVersion(source.url, productVersion);
     source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
