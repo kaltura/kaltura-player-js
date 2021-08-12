@@ -13,7 +13,8 @@ import {
   setStorageConfig,
   setStorageTextStyle,
   supportLegacyOptions,
-  validateConfig
+  validateConfig,
+  validateProviderConfig
 } from './common/utils/setup-helpers';
 
 /**
@@ -27,6 +28,7 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   options = supportLegacyOptions(options);
   validateConfig(options);
   const defaultOptions = getDefaultOptions(options);
+  validateProviderConfig(defaultOptions);
   setLogOptions(defaultOptions);
   maybeApplyStartTimeQueryParam(defaultOptions);
   printSetupMessages();
