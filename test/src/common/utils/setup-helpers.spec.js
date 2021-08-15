@@ -374,3 +374,48 @@ describe('plugins config', function () {
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.false;
   });
 });
+
+describe('ignoreServerConfig', function () {
+  it('should use server config if ignoreServerConfig flag is not true', function () {
+    const serverConfig = {
+      playback: {
+        mute: true
+      }
+    };
+    TestUtils.setServerConfig(serverConfig);
+
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        autoplay: true
+      }
+    };
+
+    const defaultOptions = SetupHelpers.getDefaultOptions(options);
+    defaultOptions.playback.mute.should.be.true;
+  });
+
+  it('should not use server config if ignoreServerConfig flag is true', function () {
+    const serverConfig = {
+      playback: {
+        mute: true
+      }
+    };
+    TestUtils.setServerConfig(serverConfig);
+
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        autoplay: true
+      },
+      ignoreServerConfig: true
+    };
+
+    const defaultOptions = SetupHelpers.getDefaultOptions(options);
+    defaultOptions.playback.should.not.have.property('mute');
+  });
+});

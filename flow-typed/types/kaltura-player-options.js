@@ -34,7 +34,8 @@ declare type PartialKPOptionsObject = {
   playlist?: KPPlaylistObject,
   dimensions?: PKDimensionsConfig,
   ui?: KPUIOptionsObject,
-  cast?: {[key: string]: any}
+  cast?: {[key: string]: any},
+  ignoreServerConfig?: boolean
 };
 
 declare type LegacyPartialKPOptionsObject = {
