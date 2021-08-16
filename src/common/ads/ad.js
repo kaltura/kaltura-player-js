@@ -23,6 +23,7 @@ class Ad {
   _bumper: boolean;
   _inStream: boolean;
   _vpaid: boolean;
+  _streamId: ?number;
 
   constructor(id: string, options: PKAdOptions) {
     this._id = id;
@@ -42,6 +43,7 @@ class Ad {
     this._bumper = options.bumper;
     this._inStream = options.inStream || false;
     this._vpaid = options.vpaid || false;
+    this._streamId = options.streamId;
   }
 
   /**
