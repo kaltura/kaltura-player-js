@@ -23,7 +23,7 @@ class Ad {
   _bumper: boolean;
   _inStream: boolean;
   _vpaid: boolean;
-  _streamId: ?string;
+  _streamId: string;
 
   constructor(id: string, options: PKAdOptions) {
     this._id = id;
@@ -43,7 +43,7 @@ class Ad {
     this._bumper = options.bumper;
     this._inStream = options.inStream || false;
     this._vpaid = options.vpaid || false;
-    this._streamId = options.streamId;
+    this._streamId = options.streamId || '';
   }
 
   /**
@@ -206,6 +206,15 @@ class Ad {
    */
   get vpaid(): boolean {
     return this._vpaid;
+  }
+
+  /**
+   * @instance
+   * @memberof Ad
+   * @return {string} - The ad streamId.
+   */
+  get streamId(): string {
+    return this._streamId;
   }
 
   toJSON(): Object {
