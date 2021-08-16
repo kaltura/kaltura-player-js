@@ -23,7 +23,7 @@ class Ad {
   _bumper: boolean;
   _inStream: boolean;
   _vpaid: boolean;
-  _streamId: ?number;
+  _streamId: ?string;
 
   constructor(id: string, options: PKAdOptions) {
     this._id = id;
