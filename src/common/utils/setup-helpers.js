@@ -297,7 +297,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   };
   Utils.Object.mergeDeep(defaultOptions, options);
 
-  if (!options.ignoreServerConfig) {
+  if (!options.provider.ignoreServerConfig) {
     defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
   }
 

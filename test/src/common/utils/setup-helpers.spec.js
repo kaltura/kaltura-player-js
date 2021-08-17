@@ -407,12 +407,12 @@ describe('ignoreServerConfig', function () {
 
     const options = {
       provider: {
-        partnerId: 1091
+        partnerId: 1091,
+        ignoreServerConfig: true
       },
       playback: {
         autoplay: true
-      },
-      ignoreServerConfig: true
+      }
     };
 
     const defaultOptions = SetupHelpers.getDefaultOptions(options);
