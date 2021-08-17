@@ -24,7 +24,6 @@ class Ad {
   _inStream: boolean;
   _vpaid: boolean;
   _streamId: string;
-
   constructor(id: string, options: PKAdOptions) {
     this._id = id;
     this._system = options.system;
