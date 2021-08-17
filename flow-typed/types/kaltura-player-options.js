@@ -17,7 +17,7 @@ declare type KPOptionsObject = {
   ui: KPUIOptionsObject,
   cast?: {[key: string]: any},
   productVersion?: string,
-  viewability?: KPViewabilityConfigObject
+  viewability: KPViewabilityConfigObject
 };
 
 declare type PartialKPOptionsObject = {
@@ -34,7 +34,8 @@ declare type PartialKPOptionsObject = {
   playlist?: KPPlaylistObject,
   dimensions?: PKDimensionsConfig,
   ui?: KPUIOptionsObject,
-  cast?: {[key: string]: any}
+  cast?: {[key: string]: any},
+  viewability?: KPViewabilityConfigObject
 };
 
 declare type LegacyPartialKPOptionsObject = {
