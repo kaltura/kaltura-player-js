@@ -296,7 +296,11 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
-  defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
+
+  if (!options.provider.ignoreServerConfig) {
+    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
+  }
+
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
