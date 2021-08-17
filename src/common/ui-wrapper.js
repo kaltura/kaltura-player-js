@@ -79,33 +79,6 @@ class UIWrapper {
     return this._uiManager.addComponent(replaceComponent);
   }
 
-  /**
-   * @param {string} name - the manager name
-   * @param {Object} manager - the manager object
-   * @returns {void}
-   */
-  registerManager(name: string, manager: Object): void {
-    this._uiManager.registerManager(name, manager);
-  }
-
-  /**
-   *
-   * @param {string} name - the manager name
-   * @returns {Object} - the manager object
-   */
-  getManager(name: string): Object | void {
-    return this._uiManager.getManager(name);
-  }
-
-  /**
-   *
-   * @param {string} name - the manager name
-   * @returns {boolean} - if the manager exist
-   */
-  hasManager(name: string): boolean {
-    return this._uiManager.hasManager(name);
-  }
-
   setLoadingSpinnerState(show: boolean): void {
     this.setConfig({show: show}, 'loading');
   }
