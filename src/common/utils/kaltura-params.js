@@ -137,12 +137,13 @@ function getQueryStringParamDelimiter(url: string): string {
 
 /**
  * @param {string} url - url
+ * @param {string} productVersion - product version
  * @return {string} - the url with the client tag appended in the query params
  * @private
  */
-function addClientTag(url: string): string {
+function addClientTag(url: string, productVersion: ?string): string {
   if (url.indexOf(CLIENT_TAG) === -1) {
-    url += getQueryStringParamDelimiter(url) + CLIENT_TAG + __VERSION__;
+    url += getQueryStringParamDelimiter(url) + CLIENT_TAG + (productVersion || __VERSION__);
   }
   return url;
 }
@@ -158,6 +159,7 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
   const sessionId = playerConfig.session && playerConfig.session.id;
+  const productVersion = player.config.productVersion;
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
@@ -165,13 +167,13 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
         if (typeof source.url === 'string' && source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 && !source.localSource) {
           source.url = updateSessionIdInUrl(source.url, sessionId);
           source.url = addReferrer(source.url);
-          source.url = addClientTag(source.url);
+          source.url = addClientTag(source.url, productVersion);
         }
         if (source.drmData && source.drmData.length) {
           source.drmData.forEach(drmData => {
             if (typeof drmData.licenseUrl === 'string' && [UDRM_DOMAIN, CUSTOM_DATA, SIGNATURE].every(t => drmData.licenseUrl.includes(t))) {
               drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, sessionId, DRM_SESSION_ID);
-              drmData.licenseUrl = addClientTag(drmData.licenseUrl);
+              drmData.licenseUrl = addClientTag(drmData.licenseUrl, productVersion);
               drmData.licenseUrl = addReferrer(drmData.licenseUrl);
               drmData.licenseUrl = addUIConfId(drmData.licenseUrl, playerConfig);
             }
