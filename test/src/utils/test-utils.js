@@ -81,4 +81,11 @@ function removeVideoElementsFromTestPage() {
   }
 }
 
-export {createElement, removeElement, removeVideoElementsFromTestPage, getConfigStructure};
+/**
+ * Sets value of server config
+ */
+function setServerConfig(value) {
+  window.__kalturaplayerdata = value;
+}
+
+export {createElement, removeElement, removeVideoElementsFromTestPage, getConfigStructure, setServerConfig};
