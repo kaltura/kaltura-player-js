@@ -12,8 +12,10 @@ class UIWrapper {
   static _logger = getLogger('UIWrapper');
   _uiManager: UIManager;
   _disabled: boolean = false;
+  _player: KalturaPlayer;
 
   constructor(player: KalturaPlayer, options: KPOptionsObject) {
+    this._player = player;
     const config: KPUIOptionsObject = options.ui;
     if (config.disable) {
       this._disabled = true;
@@ -77,6 +79,34 @@ class UIWrapper {
       replaceComponent: component.removeComponent
     };
     return this._uiManager.addComponent(replaceComponent);
+  }
+
+  /**
+   * Deprecated - left for backward compatibility - use instead registerService in KalturaPlayer
+   * @param {string} name - the manager name
+   * @param {Object} manager - the manager object
+   * @returns {void}
+   */
+  registerManager(name: string, manager: Object): void {
+    this._player.registerService(name, manager);
+  }
+
+  /**
+   * Deprecated - left for backward compatibility - use instead getService in KalturaPlayer
+   * @param {string} name - the manager name
+   * @returns {Object} - the manager object
+   */
+  getManager(name: string): Object | void {
+    return this._player.getService(name);
+  }
+
+  /**
+   * Deprecated - left for backward compatibility - use instead hasService in KalturaPlayer
+   * @param {string} name - the manager name
+   * @returns {boolean} - if the manager exist
+   */
+  hasManager(name: string): boolean {
+    return this._player.hasService(name);
   }
 
   setLoadingSpinnerState(show: boolean): void {
