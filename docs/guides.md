@@ -21,3 +21,4 @@
 - [Localization](./localization.md)
 - [Coding Guidelines](./coding-guidlines.md)
 - [Service Provider](./service-provider.md)
+- [how to add vtt thumbnails preview](./adding-vtt-thumbnails.md)
