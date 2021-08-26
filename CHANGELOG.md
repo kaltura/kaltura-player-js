@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/kaltura/kaltura-player-js/compare/v1.11.1...v1.12.0) (2021-08-26)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.27.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.2) ([478e0af](https://github.com/kaltura/kaltura-player-js/commit/478e0af))
+* update playkit-js-providers to [2.30.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.30.0 ([4823de7](https://github.com/kaltura/kaltura-player-js/commit/4823de7))
+* **FEC-10598:** add streamId to ad object ([#481](https://github.com/kaltura/kaltura-player-js/issues/481)) ([e70c741](https://github.com/kaltura/kaltura-player-js/commit/e70c741))
+* **FEC-11441:** Default kava details are reported with wrong (unknown) player version ([#478](https://github.com/kaltura/kaltura-player-js/issues/478)) ([d918029](https://github.com/kaltura/kaltura-player-js/commit/d918029))
+* **FEC-11475:** revert api in uiWrapper of Manager for backward compatibility ([#483](https://github.com/kaltura/kaltura-player-js/issues/483)) ([1f5d4a7](https://github.com/kaltura/kaltura-player-js/commit/1f5d4a7))
+
+
+### Features
+
+* update playkit-js-ui to [0.69.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.0) ([5e2c275](https://github.com/kaltura/kaltura-player-js/commit/5e2c275))
+* **FEC-11399:** allow ignoring server config ([#480](https://github.com/kaltura/kaltura-player-js/issues/480)) ([707d519](https://github.com/kaltura/kaltura-player-js/commit/707d519)), closes [playkit-js-providers#153](https://github.com/kaltura/kaltura-player-js/issues/153) [playkit-js-dual-screen#29](https://github.com/kaltura/kaltura-player-js/issues/29)
+* **FEC-11475:** create service manager that allows registration and accessing of services ([#477](https://github.com/kaltura/kaltura-player-js/issues/477)) ([437f7b6](https://github.com/kaltura/kaltura-player-js/commit/437f7b6)), closes [kaltura/playkit-js-ui#630](https://github.com/kaltura/kaltura-player-js/issues/630) [kaltura/playkit-js-timeline#4](https://github.com/kaltura/kaltura-player-js/issues/4) [kaltura/playkit-js-ima#205](https://github.com/kaltura/kaltura-player-js/issues/205) [kaltura/playkit-js-ima-dai#76](https://github.com/kaltura/kaltura-player-js/issues/76)
+
+
+
 ### [1.11.1](https://github.com/kaltura/kaltura-player-js/compare/v1.11.0...v1.11.1) (2021-07-27)
 
 
