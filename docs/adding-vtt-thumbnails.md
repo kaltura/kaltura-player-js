@@ -42,7 +42,7 @@ kalturaPlayer.setMedia({
 
 ### The supported formats
 
-####a Sprite Image file
+#### Sprite Image file
 
 ```js
 00:05.000 --> 00:10.000
