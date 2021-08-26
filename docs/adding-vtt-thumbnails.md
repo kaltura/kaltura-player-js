@@ -42,7 +42,7 @@ kalturaPlayer.setMedia({
 
 ### The supported formats
 
-####a Sprite Image file
+#### Sprite Image file
 
 ```js
 00:05.000 --> 00:10.000
@@ -51,7 +51,7 @@ kalturaPlayer.setMedia({
 
 The Player will render the thumbnails in the tooltip using their original dimensions. Thumbnails of 100-150 pixels wide tend to work well. Smaller thumbnails are hard to decipher and larger thumbnails are too much of a distraction to the main content.
 
-####Single Image files
+#### Single Image files
 
 ```js
 00:00:00.000 --> 00:00:10.000
