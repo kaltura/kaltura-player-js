@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "canary",
+    "@playkit-js/playkit-js": "0.73.1",
     "@playkit-js/playkit-js-dash": "1.27.0",
     "@playkit-js/playkit-js-hls": "1.27.1",
     "@playkit-js/playkit-js-ui": "0.68.0",
