@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 ### Bug Fixes
-
+* update playkit-js to [0.73.1](https://github.com/kaltura/playkit-js/releases/tag/v0.73.1)
 * update playkit-js-dash to [1.27.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.2) ([478e0af](https://github.com/kaltura/kaltura-player-js/commit/478e0af))
 * update playkit-js-providers to [2.30.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.30.0 ([4823de7](https://github.com/kaltura/kaltura-player-js/commit/4823de7))
 * **FEC-10598:** add streamId to ad object ([#481](https://github.com/kaltura/kaltura-player-js/issues/481)) ([e70c741](https://github.com/kaltura/kaltura-player-js/commit/e70c741))
@@ -26,8 +26,8 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * update playkit-js-ui to [0.69.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.0) ([5e2c275](https://github.com/kaltura/kaltura-player-js/commit/5e2c275))
-* **FEC-11399:** allow ignoring server config ([#480](https://github.com/kaltura/kaltura-player-js/issues/480)) ([707d519](https://github.com/kaltura/kaltura-player-js/commit/707d519)), closes [playkit-js-providers#153](https://github.com/kaltura/kaltura-player-js/issues/153) [playkit-js-dual-screen#29](https://github.com/kaltura/kaltura-player-js/issues/29)
-* **FEC-11475:** create service manager that allows registration and accessing of services ([#477](https://github.com/kaltura/kaltura-player-js/issues/477)) ([437f7b6](https://github.com/kaltura/kaltura-player-js/commit/437f7b6)), closes [kaltura/playkit-js-ui#630](https://github.com/kaltura/kaltura-player-js/issues/630) [kaltura/playkit-js-timeline#4](https://github.com/kaltura/kaltura-player-js/issues/4) [kaltura/playkit-js-ima#205](https://github.com/kaltura/kaltura-player-js/issues/205) [kaltura/playkit-js-ima-dai#76](https://github.com/kaltura/kaltura-player-js/issues/76)
+* **FEC-11399:** allow ignoring server config ([#480](https://github.com/kaltura/kaltura-player-js/issues/480)) ([707d519](https://github.com/kaltura/kaltura-player-js/commit/707d519))
+* **FEC-11475:** create service manager that allows registration and accessing of services ([#477](https://github.com/kaltura/kaltura-player-js/issues/477)) ([437f7b6](https://github.com/kaltura/kaltura-player-js/commit/437f7b6))
 
 
 
