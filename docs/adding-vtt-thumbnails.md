@@ -2,7 +2,7 @@
 
 Kaltura player supports the loading of preview thumbnails using VTT files,
 
-#### In the next examples, a configuration for the VTT file is provided as a part of the mediaOptions or mediaConfig objects parameters As seen in the examples, we include:
+#### A configuration for the VTT file is provided as a part of the mediaOptions or mediaConfig objects parameters As seen in the examples, we include:
 
 - vttUrl: URL to the WebVTT file that refers to the thumbnails.
 - imgBaseUrl (optional): the base image url where the images / sprite image are served from.
