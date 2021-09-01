@@ -108,6 +108,9 @@ class KalturaPlayer extends FakeEventTarget {
     //configure sources after configure finished for all components - making sure all we'll set up correctly
     this._playlistManager.configure({items: (options.playlist && options.playlist.items) || []});
     this._localPlayer.setSources(sources || {});
+    this._eventManager.listen(this, CoreEventType.ERROR, () => {
+      this._reset = false;
+    });
   }
 
   /**
@@ -121,7 +124,6 @@ class KalturaPlayer extends FakeEventTarget {
    * kalturaPlayer.loadMedia({entryId: 'entry123'}, {startTime: 5, poster: 'my/poster/url'});
    */
   loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: PKSourcesConfigObject): Promise<*> {
-    this._reset = false;
     KalturaPlayer._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
