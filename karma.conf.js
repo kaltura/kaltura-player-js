@@ -25,6 +25,7 @@ module.exports = config => {
     colors: true,
     frameworks: ['mocha'],
     files: [
+      'node_modules/regenerator-runtime/runtime.js',
       'test/setup/karma.js',
       {
         pattern: 'test/assets/mov_bbb.mp4',
