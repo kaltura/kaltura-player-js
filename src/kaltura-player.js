@@ -739,6 +739,11 @@ class KalturaPlayer extends FakeEventTarget {
         }
       });
     }
+    this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
+      if (event.payload.severity === Error.Severity.CRITICAL) {
+        this._reset = false;
+      }
+    });
   }
 
   _onChangeSourceEnded(): void {

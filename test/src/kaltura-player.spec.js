@@ -113,6 +113,14 @@ describe('kaltura player api', function () {
         kalturaPlayer.loadMedia({entryId}, {poster});
       });
 
+      it('the reset stat should be false whenever an error occurs', function (done) {
+        kalturaPlayer._reset.should.be.true;
+        kalturaPlayer.loadMedia({}).catch(() => {
+          kalturaPlayer._reset.should.be.false;
+          done();
+        });
+      });
+
       describe('maybeSetStreamPriority', function () {
         describe('media source mime type is video/youtube', function () {
           it('should add youtube to stream priority if not already set', function (done) {
