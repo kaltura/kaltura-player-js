@@ -37,7 +37,7 @@ export class CuePointManager {
   };
 
   getAllCuePoints = () => {
-    return this._textTrack?.cues;
+    return this._textTrack?.cues || [];
   };
 
   getCuePointById = (id: string) => {
