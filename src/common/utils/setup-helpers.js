@@ -276,15 +276,6 @@ function getUrlParameter(name: string): ?string {
 }
 
 /**
- * get the server UIConf
- * @private
- * @returns {Object} - The server UIConf
- */
-function getServerUIConf(): Object {
-  return window.__kalturaplayerdata || {};
-}
-
-/**
  * Gets the default options after merging the user options with the uiConf options and the default internal options.
  * @private
  * @param {PartialKPOptionsObject} options - partial user kaltura player options.
@@ -310,10 +301,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
-
-  if (!options.provider.ignoreServerConfig) {
-    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
-  }
 
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
