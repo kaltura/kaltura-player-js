@@ -9,24 +9,28 @@ There are 3 types of requests the application can manipulate: DRM license, manif
 
 Each request object contains the followings:
 
-`url: string` - The request URL.
-`body: string || ArrayBuffer` - The request body, the type depends on the request type.
-`headers: Object` - A mapping of headers of the request. e.g.: {'HEADER': 'VALUE'}.
+`url: string` - The request URL.  
+`body: string || ArrayBuffer` - The request body, the type depends on the request type.  
+`headers: Object` - A mapping of headers of the request. e.g.: {'HEADER': 'VALUE'}.  
 `withCredentials: boolean` - Make requests with credentials. This will allow cookies in cross-site requests.
 
 ## Response Params
 
 Each response object contains the followings:
 
-`url: string` - The URI which was loaded.
-`originalUrl: string` - The original URI before any redirects.
-`data: ArrayBuffer` - The body of the response.
+`url: string` - The URI which was loaded.  
+`originalUrl: string` - The original URI before any redirects.  
+`data: ArrayBuffer` - The body of the response.  
 `headers: Object` - A mapping of headers of the response. e.g.: {'HEADER': 'VALUE'}.
 
 ##
 
 > The request/response filter can run both **synchronously** by returning void and **asynchronously** by returning a promise.
 > More details about filters can be found in the [player documentation](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#confignetwork).
+
+## Known limitations
+
+Browser that do not support MSE and EME are only capable of defining a request filter and tamper with the URL. 
 
 ## Examples
 
