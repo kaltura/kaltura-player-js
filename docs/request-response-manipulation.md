@@ -30,7 +30,7 @@ Each response object contains the followings:
 
 ## Known limitations
 
-Browsers that do not support MSE and EME are only capable of defining a request filter and tamper with the URL. 
+Browsers that do not support MSE and EME, or that prefer using native video element(like Safari on MAC and iPad) are only capable of defining a request filter and tamper with the URL, but they cannot tamper with request headers or body and cannot define a response filter.
 
 ## Examples
 
