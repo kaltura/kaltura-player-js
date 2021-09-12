@@ -12,15 +12,6 @@ const CUSTOM_DATA = 'custom_data=';
 const SIGNATURE = 'signature=';
 
 /**
- * get the server UIConf
- * @private
- * @returns {Object} - The server UIConf
- */
-function getServerUIConf(): Object {
-  return window.__kalturaplayerdata || {};
-}
-
-/**
  * @param {Player} player - player
  * @param {PartialKPOptionsObject} playerConfig - player config
  * @return {void}
@@ -168,7 +159,7 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
   const sessionId = playerConfig.session && playerConfig.session.id;
-  const productVersion = getServerUIConf();
+  const productVersion = window.__kalturaplayerdata.productVersion;
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
@@ -193,4 +184,4 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   });
 }
 
-export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId, getServerUIConf};
+export {addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId};
