@@ -159,7 +159,7 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
   const sessionId = playerConfig.session && playerConfig.session.id;
-  const productVersion = window.__kalturaplayerdata.productVersion;
+  const productVersion = window.__kalturaplayerdata?.productVersion;
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
