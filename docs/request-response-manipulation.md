@@ -30,7 +30,7 @@ Each response object contains the followings:
 
 ## Known limitations
 
-Browser that do not support MSE and EME are only capable of defining a request filter and tamper with the URL. 
+Browsers that do not support MSE and EME are only capable of defining a request filter and tamper with the URL. 
 
 ## Examples
 
