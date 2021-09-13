@@ -732,5 +732,6 @@ export {
   getDefaultOptions,
   maybeSetStreamPriority,
   hasYoutubeSource,
-  mergeProviderPluginsConfig
+  mergeProviderPluginsConfig,
+  getServerUIConf
 };

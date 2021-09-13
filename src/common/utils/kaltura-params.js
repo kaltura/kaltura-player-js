@@ -1,6 +1,6 @@
 //@flow
 import {StreamType, Utils} from '@playkit-js/playkit-js';
-
+import {getServerUIConf} from './setup-helpers';
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
 const DRM_SESSION_ID = 'sessionId=';
@@ -159,7 +159,7 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
   handleSessionId(player, playerConfig);
   const sources = playerConfig.sources;
   const sessionId = playerConfig.session && playerConfig.session.id;
-  const productVersion = window.__kalturaplayerdata?.productVersion;
+  const productVersion = getServerUIConf()?.productVersion;
   Object.values(StreamType).forEach(key => {
     // $FlowFixMe
     if (sources[key]) {
