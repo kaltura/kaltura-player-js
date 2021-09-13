@@ -218,8 +218,8 @@ describe('addClientTag', function () {
   it('should add client tag as first param', function () {
     let source = {url: 'a/b/c/playmanifest/source'};
     let productVersion = '7.37';
-    player.config = {session: {}, productVersion};
-    source.url = addClientTag(source.url, player.config.productVersion);
+    player.config = {session: {}};
+    source.url = addClientTag(source.url, productVersion);
     source.url.should.be.equal('a/b/c/playmanifest/source?clientTag=html5:v' + productVersion);
   });
 
