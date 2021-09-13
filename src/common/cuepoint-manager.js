@@ -9,8 +9,8 @@ interface CuePoint {
 
 export class CuePointManager {
   TIMED_METADATA_ADDED = 'timedmetadataadded';
-  KalturaCuePointsTextTrack = 'KalturaCuePoints';
-  KalturaCuePointKey = 'KalturaCuePoint';
+  CuePointsTextTrack = 'CuePoints';
+  CuePointKey = 'CuePoint';
   _player: KalturaPlayer;
   _textTrack: TextTrack | null = null;
 
@@ -19,7 +19,7 @@ export class CuePointManager {
   }
 
   _addTextTrack = () => {
-    this._textTrack = this._player.getVideoElement().addTextTrack('metadata', this.KalturaCuePointsTextTrack);
+    this._textTrack = this._player.addTextTrack('metadata', this.CuePointsTextTrack);
   };
 
   _createTextTrackCue = (data: CuePoint): window.VTTCue | typeof Cue => {
@@ -30,7 +30,7 @@ export class CuePointManager {
       // IE11 support
       cue = new Cue(data.startTime, data.endTime, '');
     }
-    const cueValue = {key: this.KalturaCuePointKey, data};
+    const cueValue = {key: this.CuePointKey, data};
     cue.id = data.id;
     cue.value = cueValue;
     return cue;

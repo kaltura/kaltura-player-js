@@ -977,6 +977,18 @@ class KalturaPlayer extends FakeEventTarget {
   get cuePointManager(): CuePointManager {
     return this._cuepointManager;
   }
+
+  /**
+   * Add text track
+   * @function addTextTrack
+   * @param {string} kind - Specifies the kind of text track.
+   * @param {?string} label - A string specifying the label for the text track.
+   * @returns {?TextTrack} - A TextTrack Object, which represents the new text track.
+   * @public
+   */
+  addTextTrack(kind: string, label?: string): ?TextTrack {
+    return this._localPlayer.addTextTrack(kind, label);
+  }
 }
 
 export {KalturaPlayer};
