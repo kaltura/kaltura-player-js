@@ -312,7 +312,9 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
   Utils.Object.mergeDeep(defaultOptions, options);
 
   if (!options.provider.ignoreServerConfig) {
-    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
+    const serverUIConf = Utils.Object.copyDeep(getServerUIConf());
+    delete serverUIConf.productVersion;
+    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(serverUIConf), defaultOptions);
   }
 
   checkNativeHlsSupport(defaultOptions);
