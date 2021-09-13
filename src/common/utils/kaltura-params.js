@@ -1,6 +1,7 @@
 //@flow
 import {StreamType, Utils} from '@playkit-js/playkit-js';
 import {getServerUIConf} from './setup-helpers';
+
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
 const DRM_SESSION_ID = 'sessionId=';
