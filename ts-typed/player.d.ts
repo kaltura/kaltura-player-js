@@ -22,11 +22,11 @@ declare namespace KalturaPlayerTypes {
     paused: boolean;
     seeking: boolean;
     isOnLiveEdge: () => boolean;
-    loadMedia: (options: {entryId: string, ks?: string}) => void;
+    loadMedia: (options: {entryId: string; ks?: string}) => void;
     getVideoElement(): HTMLVideoElement;
     addEventListener(type: string, listener: CoreEventListener): void;
     removeEventListener: (type: string, listener: CoreEventListener) => void;
-    Event: Record<string, string>;
+    Event: Record<string, any>;
     currentTime: number;
     playbackRate: number;
     duration: number;
@@ -35,6 +35,8 @@ declare namespace KalturaPlayerTypes {
     configure: Function;
     ui: any;
     config: KalturaPlayerTypes.PlayerConfig;
+    cuepoint: any;
     provider: any;
+    cuePointManager: any;
   }
 }
