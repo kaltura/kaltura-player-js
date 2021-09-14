@@ -1,6 +1,4 @@
 // @flow
-const namespace = 'kaltura-player';
-
 /**
  * @const {Object} CuePointEventType
  *
@@ -16,7 +14,13 @@ const CuePointEventType: {[event: string]: string} = {
    * @event TIMED_METADATA_ADDED
    * @memberof CuePointEventType
    */
-  TIMED_METADATA_ADDED: `${namespace}-timedmetadataadded`
+  TIMED_METADATA_ADDED: 'timedmetadataadded',
+  /**
+   * Fired when the timed metadata triggered
+   * @event TIMED_METADATA
+   * @memberof CuePointEventType
+   */
+  TIMED_METADATA: 'timedmetadata'
 };
 
 export {CuePointEventType};

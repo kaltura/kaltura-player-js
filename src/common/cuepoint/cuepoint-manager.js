@@ -1,5 +1,5 @@
 //@flow
-import {Cue, FakeEvent, TextTrack, EventManager} from '@playkit-js/playkit-js';
+import {Cue, FakeEvent, TextTrack} from '@playkit-js/playkit-js';
 import {CUE_POINTS_TEXT_TRACK, CUE_POINT_KEY} from './cuepoint-type';
 import {CuePointEventType} from './cuepoint-event-type';
 
@@ -11,13 +11,10 @@ interface CuePoint {
 
 export class CuePointManager {
   _player: KalturaPlayer;
-  _eventManager: EventManager;
   _textTrack: TextTrack | null = null;
 
   constructor(player: KalturaPlayer) {
     this._player = player;
-    this._eventManager = new EventManager();
-    this._eventManager.listen(player, player.Event.Core.PLAYER_RESET, () => this.reset());
   }
 
   _addTextTrack = () => {
@@ -82,6 +79,5 @@ export class CuePointManager {
 
   destroy = () => {
     this.reset();
-    this._eventManager.removeAll();
   };
 }
