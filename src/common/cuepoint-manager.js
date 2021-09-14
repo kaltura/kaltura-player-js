@@ -8,9 +8,13 @@ interface CuePoint {
 }
 
 export class CuePointManager {
-  TIMED_METADATA_ADDED = 'timedmetadataadded';
-  CuePointsTextTrack = 'CuePoints';
-  CuePointKey = 'CuePoint';
+  Event = {
+    TIMED_METADATA_ADDED: 'timedmetadataadded'
+  };
+  Type = {
+    CuePointsTextTrack: 'CuePoints',
+    CuePointKey: 'CuePoint'
+  };
   _player: KalturaPlayer;
   _textTrack: TextTrack | null = null;
 
@@ -19,7 +23,7 @@ export class CuePointManager {
   }
 
   _addTextTrack = () => {
-    this._textTrack = this._player.addTextTrack('metadata', this.CuePointsTextTrack);
+    this._textTrack = this._player.addTextTrack('metadata', this.Type.CuePointsTextTrack);
   };
 
   _createTextTrackCue = (data: CuePoint): window.VTTCue | typeof Cue => {
@@ -30,7 +34,7 @@ export class CuePointManager {
       // IE11 support
       cue = new Cue(data.startTime, data.endTime, '');
     }
-    const cueValue = {key: this.CuePointKey, data};
+    const cueValue = {key: this.Type.CuePointKey, data};
     cue.id = data.id;
     cue.value = cueValue;
     return cue;
@@ -63,6 +67,6 @@ export class CuePointManager {
       this._textTrack?.addCue(textTrackCue);
       newCuePoints.push(textTrackCue);
     });
-    this._player.dispatchEvent(new FakeEvent(this.TIMED_METADATA_ADDED, {cues: newCuePoints}));
+    this._player.dispatchEvent(new FakeEvent(this.Event.TIMED_METADATA_ADDED, {cues: newCuePoints}));
   };
 }
