@@ -1,5 +1,7 @@
 //@flow
-import {Cue, FakeEvent} from '@playkit-js/playkit-js';
+import {Cue, FakeEvent, TextTrack, EventManager} from '@playkit-js/playkit-js';
+import {CUE_POINTS_TEXT_TRACK, CUE_POINT_KEY} from './cuepoint-type';
+import {CuePointEventType} from './cuepoint-event-type';
 
 interface CuePoint {
   id: string;
@@ -8,22 +10,18 @@ interface CuePoint {
 }
 
 export class CuePointManager {
-  Event = {
-    TIMED_METADATA_ADDED: 'timedmetadataadded'
-  };
-  Type = {
-    CuePointsTextTrack: 'CuePoints',
-    CuePointKey: 'CuePoint'
-  };
   _player: KalturaPlayer;
+  _eventManager: EventManager;
   _textTrack: TextTrack | null = null;
 
   constructor(player: KalturaPlayer) {
     this._player = player;
+    this._eventManager = new EventManager();
+    this._eventManager.listen(player, player.Event.Core.PLAYER_RESET, () => this.reset());
   }
 
   _addTextTrack = () => {
-    this._textTrack = this._player.addTextTrack('metadata', this.Type.CuePointsTextTrack);
+    this._textTrack = this._player.addTextTrack(TextTrack.KIND.METADATA, CUE_POINTS_TEXT_TRACK);
   };
 
   _createTextTrackCue = (data: CuePoint): window.VTTCue | typeof Cue => {
@@ -34,7 +32,7 @@ export class CuePointManager {
       // IE11 support
       cue = new Cue(data.startTime, data.endTime, '');
     }
-    const cueValue = {key: this.Type.CuePointKey, data};
+    const cueValue = {key: CUE_POINT_KEY, data};
     cue.id = data.id;
     cue.value = cueValue;
     return cue;
@@ -67,6 +65,23 @@ export class CuePointManager {
       this._textTrack?.addCue(textTrackCue);
       newCuePoints.push(textTrackCue);
     });
-    this._player.dispatchEvent(new FakeEvent(this.Event.TIMED_METADATA_ADDED, {cues: newCuePoints}));
+    this._player.dispatchEvent(new FakeEvent(CuePointEventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
+  };
+
+  clearAllCuePoints = () => {
+    if (this._textTrack && this._textTrack.cues.length) {
+      while (this._textTrack.cues.length) {
+        this.removeCuePoint(this._textTrack.cues[0]);
+      }
+    }
+  };
+
+  reset = () => {
+    this.clearAllCuePoints();
+  };
+
+  destroy = () => {
+    this.reset();
+    this._eventManager.removeAll();
   };
 }

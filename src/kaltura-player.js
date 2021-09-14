@@ -35,7 +35,8 @@ import {
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
-import {CuePointManager} from './common/cuepoint-manager';
+import {CuePointManager} from './common/cuepoint/cuepoint-manager';
+import {CuePointEventType} from './common/cuepoint/cuepoint-event-type';
 import {ServiceProvider} from './common/service-provider';
 
 class KalturaPlayer extends FakeEventTarget {
@@ -662,6 +663,7 @@ class KalturaPlayer extends FakeEventTarget {
       Cast: CastEventType,
       Core: CoreEventType,
       Playlist: PlaylistEventType,
+      CuePoint: CuePointEventType,
       UI: UIEventType,
       // For backward compatibility
       ...CoreEventType,
