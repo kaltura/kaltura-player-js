@@ -3,6 +3,7 @@ import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
 import * as TestUtils from '../../utils/test-utils';
 import {setup} from '../../../../src';
 import {FakeEvent} from '@playkit-js/playkit-js';
+import {setStorageTextStyle} from '../../../../src/common/utils/setup-helpers';
 
 const targetId = 'player-placeholder_storage-manager.spec';
 
@@ -91,5 +92,35 @@ describe('StorageManager', function () {
       StorageManager.getStorageConfig().playback.muted.should.be.true;
       StorageManager.getStorageConfig().playback.volume.should.equals(0);
     });
+  });
+
+  it('should set textStyle of player with textStyle from local storage', function () {
+    let player = {
+      config: {
+        disableUserCache: false
+      },
+      textStyle: {
+        fontFamily: 'Verdana'
+      }
+    };
+    sandbox.stub(StorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable').returns(true);
+    setStorageTextStyle(player);
+    player.textStyle.fontFamily.should.equal('Arial');
+  });
+
+  it('should not change textStyle of player', function () {
+    let player = {
+      config: {
+        disableUserCache: true
+      },
+      textStyle: {
+        fontFamily: 'Verdana'
+      }
+    };
+    sandbox.stub(StorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
+    sandbox.stub(StorageManager, 'isLocalStorageAvailable').returns(true);
+    setStorageTextStyle(player);
+    player.textStyle.fontFamily.should.equal('Verdana');
   });
 });
