@@ -1,5 +1,3 @@
-import { Cuepoints} from "../../cuepoints";
-
 declare global {
   const KalturaPlayer: {
     providers:{
