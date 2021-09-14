@@ -1,7 +1,6 @@
 //@flow
-import {Cue, FakeEvent, TextTrack} from '@playkit-js/playkit-js';
+import {Cue, FakeEvent, TextTrack, EventType} from '@playkit-js/playkit-js';
 import {CUE_POINTS_TEXT_TRACK, CUE_POINT_KEY} from './cuepoint-type';
-import {CuePointEventType} from './cuepoint-event-type';
 
 interface CuePoint {
   id: string;
@@ -17,11 +16,11 @@ export class CuePointManager {
     this._player = player;
   }
 
-  _addTextTrack = () => {
+  _addTextTrack() {
     this._textTrack = this._player.addTextTrack(TextTrack.KIND.METADATA, CUE_POINTS_TEXT_TRACK);
-  };
+  }
 
-  _createTextTrackCue = (data: CuePoint): window.VTTCue | typeof Cue => {
+  _createTextTrackCue(data: CuePoint): window.VTTCue | typeof Cue {
     let cue = {};
     if (window.VTTCue) {
       cue = new window.VTTCue(data.startTime, data.endTime, '');
@@ -33,21 +32,21 @@ export class CuePointManager {
     cue.id = data.id;
     cue.value = cueValue;
     return cue;
-  };
+  }
 
-  getAllCuePoints = () => {
+  getAllCuePoints() {
     return this._textTrack?.cues || [];
-  };
+  }
 
-  getCuePointById = (id: string) => {
+  getCuePointById(id: string) {
     return this._textTrack?.cues?.getCueById(id);
-  };
+  }
 
-  removeCuePoint = (cuePoint: window.VTTCue | typeof Cue) => {
+  removeCuePoint(cuePoint: window.VTTCue | typeof Cue) {
     this._textTrack?.removeCue(cuePoint);
-  };
+  }
 
-  addCuePoints = (data: CuePoint[]) => {
+  addCuePoints(data: CuePoint[]) {
     if (!this._textTrack) {
       this._addTextTrack();
     }
@@ -62,22 +61,22 @@ export class CuePointManager {
       this._textTrack?.addCue(textTrackCue);
       newCuePoints.push(textTrackCue);
     });
-    this._player.dispatchEvent(new FakeEvent(CuePointEventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
-  };
+    this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
+  }
 
-  clearAllCuePoints = () => {
+  clearAllCuePoints() {
     if (this._textTrack && this._textTrack.cues.length) {
       while (this._textTrack.cues.length) {
         this.removeCuePoint(this._textTrack.cues[0]);
       }
     }
-  };
+  }
 
-  reset = () => {
+  reset() {
     this.clearAllCuePoints();
-  };
+  }
 
-  destroy = () => {
+  destroy() {
     this.reset();
-  };
+  }
 }
