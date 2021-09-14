@@ -34,7 +34,7 @@ declare namespace KalturaPlayerTypes {
     env: KalturaPlayerTypes.Env;
     configure: Function;
     ui: any;
-    config: KalturaPlayerTypes.PlayerConfig & DeepPartial<KalturaPlayerContribTypes.ContribConfig>;
+    config: KalturaPlayerTypes.PlayerConfig;
     provider: any;
   }
 }
