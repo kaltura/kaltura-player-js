@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import SourcesConfig from '../../configs/sources';
 import {getConfigStructure} from '../../utils/test-utils';
 import {KalturaPlayer as Player} from '../../../../src/kaltura-player';
-import {CuePointManager} from '../../../../src/common/cuepoints/cuepoint-manager';
+import {CuePointManager} from '../../../../src/common/cuepoint/cuepoint-manager';
 
 describe('CuePointManager', () => {
   let config, player, sandbox;
