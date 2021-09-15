@@ -35,6 +35,7 @@ import {
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
+import {CuePointManager} from './common/cuepoint/cuepoint-manager';
 import {ServiceProvider} from './common/service-provider';
 
 class KalturaPlayer extends FakeEventTarget {
@@ -60,6 +61,7 @@ class KalturaPlayer extends FakeEventTarget {
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
   _thumbnailManager: ?ThumbnailManager = null;
+  _cuepointManager: CuePointManager;
   _serviceProvider: ServiceProvider;
 
   /**
@@ -90,6 +92,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
     this._serviceProvider = new ServiceProvider(this);
+    this._cuepointManager = new CuePointManager(this);
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: {
@@ -318,6 +321,7 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
+      this._cuepointManager.reset();
       this._localPlayer.reset();
       this._thumbnailManager?.destroy();
     }
@@ -330,6 +334,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._firstPlay = true;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
+    this._cuepointManager.destroy();
     this._playlistManager.destroy();
     this._localPlayer.destroy();
     this._eventManager.destroy();
@@ -969,6 +974,22 @@ class KalturaPlayer extends FakeEventTarget {
    */
   registerService(name: string, service: Object): void {
     this._serviceProvider.register(name, service);
+  }
+
+  get cuePointManager(): CuePointManager {
+    return this._cuepointManager;
+  }
+
+  /**
+   * Add text track
+   * @function addTextTrack
+   * @param {string} kind - Specifies the kind of text track.
+   * @param {?string} label - A string specifying the label for the text track.
+   * @returns {?TextTrack} - A TextTrack Object, which represents the new text track.
+   * @public
+   */
+  addTextTrack(kind: string, label?: string): ?TextTrack {
+    return this._localPlayer.addTextTrack(kind, label);
   }
 }
 
