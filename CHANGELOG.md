@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/kaltura/kaltura-player-js/compare/v1.12.1...v1.13.0) (2021-09-15)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.74.0](https://github.com/kaltura/playkit-js/releases/tag/v0.74.0) ([a643057](https://github.com/kaltura/kaltura-player-js/commit/a643057))
+* **FEC-11498:** Remove product version from player config ([#492](https://github.com/kaltura/kaltura-player-js/issues/492)) ([900ad75](https://github.com/kaltura/kaltura-player-js/commit/900ad75))
+* **FEC-11510:** fix cvaa default font size ([#491](https://github.com/kaltura/kaltura-player-js/issues/491)) ([99f2959](https://github.com/kaltura/kaltura-player-js/commit/99f2959)), closes [kaltura/playkit-js#603](https://github.com/kaltura/kaltura-player-js/issues/603) [kaltura/playkit-js-ui#639](https://github.com/kaltura/kaltura-player-js/issues/639)
+* **FEC-11513:** Need to click the Retry button twice after error ([#485](https://github.com/kaltura/kaltura-player-js/issues/485)) ([84406e9](https://github.com/kaltura/kaltura-player-js/commit/84406e9))
+* **FEC-11525:** disableUserCache is not working properly for text style ([#487](https://github.com/kaltura/kaltura-player-js/issues/487)) ([a44e060](https://github.com/kaltura/kaltura-player-js/commit/a44e060))
+
+
+### Features
+
+* **FEC-11540:** CuePoint Manager ([#488](https://github.com/kaltura/kaltura-player-js/issues/488)) ([025059a](https://github.com/kaltura/kaltura-player-js/commit/025059a))
+
+
+
 ### [1.12.1](https://github.com/kaltura/kaltura-player-js/compare/v1.12.0...v1.12.1) (2021-08-30)
 
 
