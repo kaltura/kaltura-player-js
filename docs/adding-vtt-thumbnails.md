@@ -5,9 +5,8 @@ Kaltura player supports the loading of preview thumbnails using VTT files,
 #### A configuration for the VTT file is provided as a part of the mediaOptions or mediaConfig objects parameters As seen in the examples, we include:
 
 - vttUrl: URL to the WebVTT file that refers to the thumbnails.
-- imgBaseUrl (optional): the base image url where the images / sprite image are served from.
 
-NOTE: The URL is relative to the application domain by default
+NOTE: The urls specified in the WebVTT file are relative to the vtt file address.
 
 ### exemple 1 - provided as a part of the mediaOptions
 
@@ -17,8 +16,7 @@ kalturaPlayer.loadMedia(
   {entryId: '0_wifqaipd'},
   {
     thumbnails: {
-      vttUrl: 'https://www.radiantmediaplayer.com/media/vtt/thumbnails/bbb-thumbnails.vtt',
-      imgBaseUrl: 'https://www.radiantmediaplayer.com/media/vtt/thumbnails'
+      vttUrl: 'https://www.radiantmediaplayer.com/media/vtt/thumbnails/bbb-thumbnails.vtt'
     }
   }
 );
@@ -34,7 +32,6 @@ kalturaPlayer.setMedia({
     options: {},
     thumbnails : {
       vttUrl: 'https://www.radiantmediaplayer.com/media/vtt/thumbnails/bbb-thumbnails.vtt',
-      imgBaseUrl:'https://www.radiantmediaplayer.com/media/vtt/thumbnails'
     }
   }
 });
