@@ -2,11 +2,14 @@
 import {RemoteControl} from './remote-control';
 import {BaseRemotePlayer} from './base-remote-player';
 import {getLogger} from '@playkit-js/playkit-js';
+import {KalturaPlayer} from '../../kaltura-player';
 
 class RemotePlayerManager {
-  static _logger: any = getLogger('RemotePlayerManager');
   static _registry: Map<string, Function> = new Map();
-  static _remotePlayers: Map<string, BaseRemotePlayer> = new Map();
+  static _localPlayerIds = new Set<string>();
+  static _logger: any = getLogger('RemotePlayerManager');
+
+  _remotePlayers: Map<string, BaseRemotePlayer> = new Map();
 
   static register(type: string, remotePlayer: Function): void {
     if (typeof remotePlayer === 'function') {
@@ -21,25 +24,28 @@ class RemotePlayerManager {
     }
   }
 
-  static load(castConfig: Object, remoteControl: RemoteControl): void {
+  load(castConfig: Object, player: KalturaPlayer): void {
+    RemotePlayerManager._localPlayerIds.add(player._localPlayer._playerId);
     const registry = RemotePlayerManager._registry;
     registry.forEach((RemotePlayer: Function, type: string) => {
       RemotePlayerManager._logger.debug(`Load remote player of type ${type}`);
-      RemotePlayerManager._remotePlayers.set(type, new RemotePlayer(castConfig, remoteControl));
+      const remotePlayer = new RemotePlayer(castConfig, new RemoteControl(player));
+      remotePlayer.isCastInitiator = () => remotePlayer._isCastInitiator || RemotePlayerManager._localPlayerIds.size === 1;
+      this._remotePlayers.set(type, remotePlayer);
     });
   }
 
-  static startCasting(type?: string): Promise<*> {
+  startCasting(type?: string): Promise<*> {
     RemotePlayerManager._logger.debug(`Start casting`);
-    const remotePlayer = RemotePlayerManager._getRemotePlayer(type);
+    const remotePlayer = this._getRemotePlayer(type);
     if (remotePlayer) {
       return remotePlayer.startCasting();
     }
     return Promise.reject();
   }
 
-  static isCastAvailable(type?: string): boolean {
-    const remotePlayer = RemotePlayerManager._getRemotePlayer(type);
+  isCastAvailable(type?: string): boolean {
+    const remotePlayer = this._getRemotePlayer(type);
     if (remotePlayer) {
       RemotePlayerManager._logger.debug(`isCastAvailable: ${remotePlayer.isCastAvailable()}`);
       return remotePlayer.isCastAvailable();
@@ -47,13 +53,20 @@ class RemotePlayerManager {
     return false;
   }
 
-  static destroy(): void {
-    const remotePlayers = RemotePlayerManager._remotePlayers;
+  destroy(): void {
+    const remotePlayers = this._remotePlayers;
     Array.from(remotePlayers.values()).forEach(remotePlayer => remotePlayer.destroy());
   }
 
-  static _getRemotePlayer(type?: string): ?Object {
-    const remotePlayers = RemotePlayerManager._remotePlayers;
+  setIsCastInitiator(type?: string, isCastInitiator: boolean) {
+    const remotePlayer = this._getRemotePlayer(type);
+    if (remotePlayer) {
+      remotePlayer._isCastInitiator = isCastInitiator;
+    }
+  }
+
+  _getRemotePlayer(type?: string): ?Object {
+    const remotePlayers = this._remotePlayers;
     if (type && remotePlayers.get(type)) {
       return remotePlayers.get(type);
     } else if (remotePlayers.size > 0) {

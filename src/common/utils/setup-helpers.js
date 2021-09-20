@@ -15,8 +15,6 @@ import {
 } from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
-import {RemotePlayerManager} from '../cast/remote-player-manager';
-import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
 import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewability-manager';
@@ -148,7 +146,7 @@ function applyStorageSupport(player: KalturaPlayer): void {
  */
 function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer): void {
   if (defaultOptions.cast) {
-    RemotePlayerManager.load(defaultOptions.cast, new RemoteControl(player));
+    player._remotePlayerManager.load(defaultOptions.cast, player);
   }
 }
 

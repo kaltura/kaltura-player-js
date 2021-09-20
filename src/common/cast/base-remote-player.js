@@ -53,6 +53,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   _playerConfig: Object;
   _castConfig: Object;
   _eventManager: EventManager;
+  _isCastInitiator: boolean = false;
 
   constructor(name: string, castConfig: Object, remoteControl: RemoteControl) {
     super();
@@ -307,6 +308,10 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
    */
   isCastAvailable(): boolean {
     return true;
+  }
+
+  isCastInitiator(): boolean {
+    return this._isCastInitiator;
   }
 
   /**
