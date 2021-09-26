@@ -16,7 +16,7 @@ kalturaPlayer.loadMedia(
   {entryId: '0_wifqaipd'},
   {
     thumbnails: {
-      vttUrl: 'https://www.radiantmediaplayer.com/media/vtt/thumbnails/bbb-thumbnails.vtt'
+      vttUrl: 'https://somedomain/media/thumbnails/thumbnails.vtt'
     }
   }
 );
@@ -31,7 +31,7 @@ kalturaPlayer.setMedia({
   sources: {
     options: {},
     thumbnails : {
-      vttUrl: 'https://www.radiantmediaplayer.com/media/vtt/thumbnails/bbb-thumbnails.vtt',
+      vttUrl: 'https://somedomain/media/thumbnails/thumbnails.vtt',
     }
   }
 });
