@@ -284,16 +284,18 @@ You can observe the following timeline diagram that simulates these events' exac
   - [height][19]
   - [bitrate][20]
   - [skippable][21]
-- [AdsController][22]
-  - [Parameters][23]
-  - [allAdsCompleted][24]
-  - [isAdBreak][25]
-  - [getAdBreaksLayout][26]
-  - [getAdBreak][27]
-  - [getAd][28]
-  - [skipAd][29]
-  - [playAdNow][30]
-    - [Parameters][31]
+  - [vpaid][22]
+  - [streamId][23]
+- [AdsController][24]
+  - [Parameters][25]
+  - [allAdsCompleted][26]
+  - [isAdBreak][27]
+  - [getAdBreaksLayout][28]
+  - [getAdBreak][29]
+  - [getAd][30]
+  - [skipAd][31]
+  - [playAdNow][32]
+    - [Parameters][33]
 
 ## <a name="AdBreak"></a>AdBreak
 
@@ -374,7 +376,15 @@ Returns **[string][32]** - The ad bitrate.
 
 ### skippable
 
-Returns **[string][32]** - Whether the ad is skippable or not.
+Returns **[boolean][33]** - Whether the ad is skippable or not.
+
+### vpaid
+
+Returns **[boolean][33]** - Whether the ad is vpaid or not.
+
+### streamId
+
+Returns **[string][32]** - The ad streamId.
 
 ## <a name="AdsController"></a>AdsController
 
@@ -440,19 +450,21 @@ Returns **void**
 [19]: #height
 [20]: #bitrate
 [21]: #skippable
-[22]: #adscontroller
-[23]: #parameters-2
-[24]: #alladscompleted
-[25]: #isadbreak
-[26]: #getadbreakslayout
-[27]: #getadbreak
-[28]: #getad
-[29]: #skipad
-[30]: #playadnow
-[31]: #parameters-3
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-[36]: #adbreak
-[37]: #ad
+[22]: #vpaid
+[23]: #streamid
+[24]: #adscontroller
+[25]: #parameters-2
+[26]: #alladscompleted
+[27]: #isadbreak
+[28]: #getadbreakslayout
+[29]: #getadbreak
+[30]: #getad
+[31]: #skipad
+[32]: #playadnow
+[33]: #parameters-3
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[37]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[38]: #adbreak
+[39]: #ad

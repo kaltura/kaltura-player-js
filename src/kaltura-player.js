@@ -35,6 +35,8 @@ import {
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
+import {CuePointManager} from './common/cuepoint/cuepoint-manager';
+import {ServiceProvider} from './common/service-provider';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -59,6 +61,8 @@ class KalturaPlayer extends FakeEventTarget {
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
   _thumbnailManager: ?ThumbnailManager = null;
+  _cuepointManager: CuePointManager;
+  _serviceProvider: ServiceProvider;
 
   /**
    * Whether the player browser tab is active and in the scroll view
@@ -87,6 +91,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
+    this._serviceProvider = new ServiceProvider(this);
+    this._cuepointManager = new CuePointManager(this);
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: {
@@ -166,7 +172,7 @@ class KalturaPlayer extends FakeEventTarget {
       playerConfig.playback = playback;
     }
     if (!hasYoutubeSource(sources)) {
-      this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
+      this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     }
     this.configure({...playerConfig, sources});
   }
@@ -315,7 +321,9 @@ class KalturaPlayer extends FakeEventTarget {
       this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
+      this._cuepointManager.reset();
       this._localPlayer.reset();
+      this._thumbnailManager?.destroy();
     }
   }
 
@@ -326,9 +334,11 @@ class KalturaPlayer extends FakeEventTarget {
     this._firstPlay = true;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
+    this._cuepointManager.destroy();
     this._playlistManager.destroy();
     this._localPlayer.destroy();
     this._eventManager.destroy();
+    this._thumbnailManager?.destroy();
     this._viewabilityManager.destroy();
     RemotePlayerManager.destroy();
     this._pluginsConfig = {};
@@ -734,6 +744,11 @@ class KalturaPlayer extends FakeEventTarget {
         }
       });
     }
+    this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
+      if (event.payload.severity === Error.Severity.CRITICAL) {
+        this._reset = false;
+      }
+    });
   }
 
   _onChangeSourceEnded(): void {
@@ -932,6 +947,49 @@ class KalturaPlayer extends FakeEventTarget {
       }
       this._autoPaused = false;
     }
+  }
+  /**
+   * Gets a registered service of that name
+   * @param {string} name - the service name
+   * @returns {Object} - the service object
+   */
+  getService(name: string): Object | void {
+    return this._serviceProvider.get(name);
+  }
+
+  /**
+   * Checks if a service of that name has been registered
+   * @param {string} name - the service name
+   * @returns {boolean} - if the service exist
+   */
+  hasService(name: string): boolean {
+    return this._serviceProvider.has(name);
+  }
+
+  /**
+   * Registers a service to be used across the player
+   * @param {string} name - the service name
+   * @param {Object} service - the service object
+   * @returns {void}
+   */
+  registerService(name: string, service: Object): void {
+    this._serviceProvider.register(name, service);
+  }
+
+  get cuePointManager(): CuePointManager {
+    return this._cuepointManager;
+  }
+
+  /**
+   * Add text track
+   * @function addTextTrack
+   * @param {string} kind - Specifies the kind of text track.
+   * @param {?string} label - A string specifying the label for the text track.
+   * @returns {?TextTrack} - A TextTrack Object, which represents the new text track.
+   * @public
+   */
+  addTextTrack(kind: string, label?: string): ?TextTrack {
+    return this._localPlayer.addTextTrack(kind, label);
   }
 }
 

@@ -20,3 +20,5 @@
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
 - [Localization](./localization.md)
 - [Coding Guidelines](./coding-guidlines.md)
+- [Service Provider](./service-provider.md)
+- [VTT thumbnails](./adding-vtt-thumbnails.md)

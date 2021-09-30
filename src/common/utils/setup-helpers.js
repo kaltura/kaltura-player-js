@@ -41,7 +41,6 @@ function validateConfig(options: PartialKPOptionsObject): void {
     throw new Error(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
   }
   validateTargetId(options.targetId);
-  validateProviderConfig(options.provider);
 }
 
 /**
@@ -64,20 +63,35 @@ function validateTargetId(targetId: string): void {
 }
 
 /**
+ * @param {string} url - url
+ * @param {string} productVersion - product version
+ * @return {string} - the url with the product version appended in the query params
+ * @private
+ */
+function addProductVersion(url: string, productVersion: ?string): string {
+  if (productVersion) {
+    url += `&clientVer=${productVersion}`;
+  }
+  return url;
+}
+
+/**
  * Validate the initial user input for the provider options.
  * @private
- * @param {ProviderOptionsObject} providerOptions - provider options.
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
+function validateProviderConfig(options: KPOptionsObject): void {
+  const {provider: providerOptions, productVersion}: {provider: ProviderOptionsObject, productVersion?: string} = options;
   if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
     const source = {
       url: KAVA_DEFAULT_IMPRESSION,
       mimetype: ''
     };
+    source.url = addProductVersion(source.url, productVersion);
     source.url = addReferrer(source.url);
-    source.url = addClientTag(source.url);
+    source.url = addClientTag(source.url, productVersion);
     source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
@@ -145,7 +159,7 @@ function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer
  * @returns {void}
  */
 function setStorageTextStyle(player: KalturaPlayer): void {
-  if (StorageManager.isLocalStorageAvailable()) {
+  if (!player.config.disableUserCache && StorageManager.isLocalStorageAvailable()) {
     const textStyleObj = StorageManager.getPlayerTextStyle();
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
@@ -296,7 +310,13 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
-  defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(getServerUIConf()), defaultOptions);
+
+  if (!options.provider.ignoreServerConfig) {
+    const serverUIConf = Utils.Object.copyDeep(getServerUIConf());
+    delete serverUIConf.productVersion;
+    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(serverUIConf), defaultOptions);
+  }
+
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
@@ -706,6 +726,7 @@ export {
   setStorageTextStyle,
   attachToFirstClick,
   validateConfig,
+  validateProviderConfig,
   setLogOptions,
   maybeApplyStartTimeQueryParam,
   createKalturaPlayerContainer,
@@ -713,5 +734,6 @@ export {
   getDefaultOptions,
   maybeSetStreamPriority,
   hasYoutubeSource,
-  mergeProviderPluginsConfig
+  mergeProviderPluginsConfig,
+  getServerUIConf
 };

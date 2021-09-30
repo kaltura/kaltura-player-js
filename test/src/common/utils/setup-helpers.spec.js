@@ -48,7 +48,7 @@ describe('error handling', function () {
       div.id = 'test-id';
       document.body.appendChild(div);
       (navigator.sendBeacon.getCall(0) === null).should.be.true;
-      SetupHelpers.validateConfig({targetId: div.id, provider: {}});
+      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {}});
       document.body.removeChild(div);
       navigator.sendBeacon
         .getCall(0)
@@ -63,12 +63,12 @@ describe('error handling', function () {
       div.id = 'test-id';
       document.body.appendChild(div);
       (navigator.sendBeacon.getCall(0) === null).should.be.true;
-      SetupHelpers.validateConfig({targetId: div.id, provider: {partnerId: 2504201}});
+      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {partnerId: 2504201}, productVersion: '7.37'});
       document.body.removeChild(div);
       navigator.sendBeacon
         .getCall(0)
         .args[0].should.include(
-          'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
+          'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&clientVer=7.37&referrer'
         );
       done();
     });
@@ -372,5 +372,50 @@ describe('plugins config', function () {
     defaultOptions.plugins.bumper.position.should.deep.equal([0, -1]);
     defaultOptions.plugins.bumper.disableMediaPreload.should.be.false;
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.false;
+  });
+});
+
+describe('ignoreServerConfig', function () {
+  it('should use server config if ignoreServerConfig flag is not true', function () {
+    const serverConfig = {
+      playback: {
+        mute: true
+      }
+    };
+    TestUtils.setServerConfig(serverConfig);
+
+    const options = {
+      provider: {
+        partnerId: 1091
+      },
+      playback: {
+        autoplay: true
+      }
+    };
+
+    const defaultOptions = SetupHelpers.getDefaultOptions(options);
+    defaultOptions.playback.mute.should.be.true;
+  });
+
+  it('should not use server config if ignoreServerConfig flag is true', function () {
+    const serverConfig = {
+      playback: {
+        mute: true
+      }
+    };
+    TestUtils.setServerConfig(serverConfig);
+
+    const options = {
+      provider: {
+        partnerId: 1091,
+        ignoreServerConfig: true
+      },
+      playback: {
+        autoplay: true
+      }
+    };
+
+    const defaultOptions = SetupHelpers.getDefaultOptions(options);
+    defaultOptions.playback.should.not.have.property('mute');
   });
 });
