@@ -38,6 +38,10 @@ export class CuePointManager {
     return this._textTrack?.cues || [];
   }
 
+  getActiveCuePoints() {
+    return this._textTrack?.activeCues || [];
+  }
+
   getCuePointById(id: string) {
     return this._textTrack?.cues?.getCueById(id);
   }
@@ -47,21 +51,23 @@ export class CuePointManager {
   }
 
   addCuePoints(data: CuePoint[]) {
-    if (!this._textTrack) {
-      this._addTextTrack();
-    }
-    const newCuePoints: window.VTTCue | typeof Cue = [];
-
-    data.forEach((cuePoint: CuePoint) => {
-      const textTrackCue = this._createTextTrackCue(cuePoint);
-      const exisedCue = this.getCuePointById(textTrackCue.id);
-      if (exisedCue) {
-        this.removeCuePoint(exisedCue);
+    this._player.ready().then(() => {
+      if (!this._textTrack) {
+        this._addTextTrack();
       }
-      this._textTrack?.addCue(textTrackCue);
-      newCuePoints.push(textTrackCue);
+      const newCuePoints: window.VTTCue | typeof Cue = [];
+
+      data.forEach((cuePoint: CuePoint) => {
+        const textTrackCue = this._createTextTrackCue(cuePoint);
+        const exisedCue = this.getCuePointById(textTrackCue.id);
+        if (exisedCue) {
+          this.removeCuePoint(exisedCue);
+        }
+        this._textTrack?.addCue(textTrackCue);
+        newCuePoints.push(textTrackCue);
+      });
+      this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
     });
-    this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
   }
 
   clearAllCuePoints() {
