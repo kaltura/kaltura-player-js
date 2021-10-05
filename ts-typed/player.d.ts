@@ -35,8 +35,7 @@ declare namespace KalturaPlayerTypes {
     configure: Function;
     ui: any;
     config: KalturaPlayerTypes.PlayerConfig;
-    cuepoint: any;
     provider: any;
-    cuePointManager: any;
+    cuePointManager: KalturaPlayerTypes.CuePointManager;
   }
 }

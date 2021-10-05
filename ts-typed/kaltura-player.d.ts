@@ -48,6 +48,7 @@ declare module 'global' {
           };
         };
       };
+      cuepoint: {[key: string]: string};
       getPlayer(targetId?: string): any;
       setup(options: any): KalturaPlayer;
     };
