@@ -37,6 +37,7 @@ declare namespace KalturaPlayerTypes {
     config: KalturaPlayerTypes.PlayerConfig;
     provider: any;
     cuePointManager: KalturaPlayerTypes.CuePointManager;
-    ready: () => Promise<*>;
+    ready: () => Promise<any>;
+    sources: KalturaPlayerTypes.Sources;
   }
 }
