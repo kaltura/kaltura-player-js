@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/kaltura/kaltura-player-js/compare/v1.13.2...v1.14.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* **FEV-1011:** add TS-types for cue-point manager and cues ([#499](https://github.com/kaltura/kaltura-player-js/issues/499)) ([5abb342](https://github.com/kaltura/kaltura-player-js/commit/5abb342))
+* **FEV-1011:** add TS-types for player ([#500](https://github.com/kaltura/kaltura-player-js/issues/500)) ([6823193](https://github.com/kaltura/kaltura-player-js/commit/6823193))
+
+
+### Features
+
+* **FEC-11554:** delay addCuePoints after media loaded in video ([#498](https://github.com/kaltura/kaltura-player-js/issues/498)) ([10f80e0](https://github.com/kaltura/kaltura-player-js/commit/10f80e0))
+
+
+
 ### [1.13.2](https://github.com/kaltura/kaltura-player-js/compare/v1.13.1...v1.13.2) (2021-09-30)
 
 
