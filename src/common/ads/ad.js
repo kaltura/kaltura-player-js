@@ -46,9 +46,9 @@ class Ad {
     this._inStream = options.inStream || false;
     this._vpaid = options.vpaid || false;
     this._streamId = options.streamId || '';
-    this._wrapperAdIds = options.getWrapperAdIds();
-    this._wrapperCreativeIds = options.getWrapperCreativeIds();
-    this._wrapperAdSystems = options.getWrapperAdSystems();
+    this._wrapperAdIds = options.wrapperAdIds;
+    this._wrapperCreativeIds = options.wrapperCreativeIds;
+    this._wrapperAdSystems = options.wrapperAdSystems;
   }
 
   /**
