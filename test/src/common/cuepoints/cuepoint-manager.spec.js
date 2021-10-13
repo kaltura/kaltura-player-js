@@ -29,7 +29,9 @@ describe('CuePointManager', () => {
     player.setMedia({sources: SourcesConfig.Mp4});
     expect(player.cuePointManager._textTrack).to.eql(null);
     player.cuePointManager.addCuePoints([]);
-    expect(player.cuePointManager._textTrack).instanceOf(TextTrack);
+    player.ready().then(() => {
+      expect(player.cuePointManager._textTrack).instanceOf(TextTrack);
+    });
   });
 
   it('should add/get/remove/clear-all cue points', function () {
@@ -51,14 +53,16 @@ describe('CuePointManager', () => {
       }
     ];
     player.setMedia({sources: SourcesConfig.Mp4});
-    expect(player.cuePointManager.getAllCuePoints().length).eql(0);
-    player.cuePointManager.addCuePoints(cuePoints);
-    expect(player.cuePointManager.getAllCuePoints().length).eql(3);
-    const cuePoint = player.cuePointManager.getCuePointById('test-id-1');
-    expect(cuePoint.id).to.eql('test-id-1');
-    player.cuePointManager.removeCuePoint(cuePoint);
-    expect(player.cuePointManager.getAllCuePoints().length).eql(2);
-    player.cuePointManager.clearAllCuePoints();
-    expect(player.cuePointManager.getAllCuePoints().length).eql(0);
+    player.ready().then(() => {
+      expect(player.cuePointManager.getAllCuePoints().length).eql(0);
+      player.cuePointManager.addCuePoints(cuePoints);
+      expect(player.cuePointManager.getAllCuePoints().length).eql(3);
+      const cuePoint = player.cuePointManager.getCuePointById('test-id-1');
+      expect(cuePoint.id).to.eql('test-id-1');
+      player.cuePointManager.removeCuePoint(cuePoint);
+      expect(player.cuePointManager.getAllCuePoints().length).eql(2);
+      player.cuePointManager.clearAllCuePoints();
+      expect(player.cuePointManager.getAllCuePoints().length).eql(0);
+    });
   });
 });
