@@ -1,13 +1,13 @@
 declare namespace KalturaPlayerTypes {
   export interface Logger {
-    debug(message: string): void;
+    debug(message: any, ...optionalParams: any[]): void;
 
-    info(message: string): void;
+    info(message: any, ...optionalParams: any[]): void;
 
-    trace(message: string): void;
+    trace(message: any, ...optionalParams: any[]): void;
 
-    warn(message: string): void;
+    warn(message: any, ...optionalParams: any[]): void;
 
-    error(message: string): void;
+    error(message: any, ...optionalParams: any[]): void;
   }
 }
