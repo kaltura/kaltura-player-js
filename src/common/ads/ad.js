@@ -24,6 +24,9 @@ class Ad {
   _inStream: boolean;
   _vpaid: boolean;
   _streamId: string;
+  _wrapperAdIds: Array<string>;
+  _wrapperCreativeIds: Array<string>;
+  _wrapperAdSystems: Array<string>;
   constructor(id: string, options: PKAdOptions) {
     this._id = id;
     this._system = options.system;
@@ -43,6 +46,9 @@ class Ad {
     this._inStream = options.inStream || false;
     this._vpaid = options.vpaid || false;
     this._streamId = options.streamId || '';
+    this._wrapperAdIds = options.wrapperAdIds;
+    this._wrapperCreativeIds = options.wrapperCreativeIds;
+    this._wrapperAdSystems = options.wrapperAdSystems;
   }
 
   /**
@@ -214,6 +220,33 @@ class Ad {
    */
   get streamId(): string {
     return this._streamId;
+  }
+
+  /**
+   * @instance
+   * @memberof Ad
+   * @return {string} - The ad wrapperAdIds.
+   */
+  get wrapperAdIds(): Array<string> {
+    return this._wrapperAdIds;
+  }
+
+  /**
+   * @instance
+   * @memberof Ad
+   * @return {string} - The ad wrapperCreativeIds.
+   */
+  get wrapperCreativeIds(): Array<string> {
+    return this._wrapperCreativeIds;
+  }
+
+  /**
+   * @instance
+   * @memberof Ad
+   * @return {string} - The ad wrapperAdSystems.
+   */
+  get wrapperAdSystems(): Array<string> {
+    return this._wrapperAdSystems;
   }
 
   toJSON(): Object {
