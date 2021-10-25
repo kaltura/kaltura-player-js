@@ -531,6 +531,18 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.liveDuration;
   }
 
+  set actualCurrentTime(to: number): void {
+    this.isLive() ? (this.currentTime = to + this.getStartTimeOfDvrWindow()) : (this.currentTime = to);
+  }
+
+  get actualCurrentTime(): number {
+    return this.isLive() ? this.currentTime - this.getStartTimeOfDvrWindow() : this.currentTime;
+  }
+
+  get actualDuration(): number {
+    return this.isLive() ? this.liveDuration - this.getStartTimeOfDvrWindow() : this.duration;
+  }
+
   set volume(vol: number): void {
     this._localPlayer.volume = vol;
   }
