@@ -16,7 +16,7 @@ PACKAGE_VERSION=$(cat package.json |
 
 build() {
   echo "${reset}${blue}Building player..."
-  PLAYER_TYPE=$PLAYER_TYPE webpack --config webpack.config.js --mode production --openssl-legacy-provider
+  PLAYER_TYPE=$PLAYER_TYPE webpack --config webpack.config.js --mode production
 }
 
 watch() {
