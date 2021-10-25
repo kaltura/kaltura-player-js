@@ -521,6 +521,34 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.liveDuration;
   }
 
+  /**
+   * In VOD playback this setter is like the regular `currentTime` setter.
+   * In live playback this setter normalizes the seek point to be relative to the start of the DVR window.
+   * This setter is useful to display a seekbar presents the available seek range only.
+   * @param {Number} to - The number to set in seconds (from 0 to the normalized duration).
+   */
+  set normalizedCurrentTime(to: number): void {
+    this.isLive() ? (this.currentTime = to + this.getStartTimeOfDvrWindow()) : (this.currentTime = to);
+  }
+
+  /**
+   * In VOD playback this getter is like the regular `currentTime` getter.
+   * In live playback this getter normalizes the current time to be relative to the start of the DVR window.
+   * This getter is useful to display a seekbar presents the available seek range only.
+   */
+  get normalizedCurrentTime(): number {
+    return this.isLive() ? this.currentTime - this.getStartTimeOfDvrWindow() : this.currentTime;
+  }
+
+  /**
+   * In VOD playback this getter is like the regular `duration` getter.
+   * In live playback this getter normalizes the duration to be relative to the start of the DVR window.
+   * This getter is useful to display a seekbar presents the available seek range only.
+   */
+  get normalizedDuration(): number {
+    return this.isLive() ? this.liveDuration - this.getStartTimeOfDvrWindow() : this.duration;
+  }
+
   set volume(vol: number): void {
     this._localPlayer.volume = vol;
   }
