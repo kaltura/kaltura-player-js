@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/kaltura/kaltura-player-js/compare/v1.10.1...v1.11.0) (2021-10-26)
+
+
+### Features
+
+* **FEC-11649:** live duration APIs ([#501](https://github.com/kaltura/kaltura-player-js/issues/501)) ([c5ebd4a](https://github.com/kaltura/kaltura-player-js/commit/c5ebd4a))
+
+
+
 ### [1.10.1](https://github.com/kaltura/kaltura-player-js/compare/v1.10.0...v1.10.1) (2021-07-01)
 
 
