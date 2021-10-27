@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0](https://github.com/kaltura/kaltura-player-js/compare/v1.14.1...v1.15.0) (2021-10-27)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.74.4](https://github.com/kaltura/playkit-js/releases/tag/v0.74.4 ([a1a0223](https://github.com/kaltura/kaltura-player-js/commit/a1a0223))
+* update playkit-js-hls to [1.27.3](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.3) ([8bb7efd](https://github.com/kaltura/kaltura-player-js/commit/8bb7efd))
+* update playkit-js-ui to [0.69.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.3) ([6c08e93](https://github.com/kaltura/kaltura-player-js/commit/6c08e93))
+
+
+### Features
+
+* **FEC-11649:** live duration APIs ([#501](https://github.com/kaltura/kaltura-player-js/issues/501)) ([ab8a715](https://github.com/kaltura/kaltura-player-js/commit/ab8a715))
+
+
+
 ### [1.14.1](https://github.com/kaltura/kaltura-player-js/compare/v1.14.0...v1.14.1) (2021-10-12)
 
 
