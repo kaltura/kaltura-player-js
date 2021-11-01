@@ -1135,25 +1135,25 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.27.2.tgz#96d084d43bfcd463be2540fd135a64b6b5f5b0a5"
   integrity sha512-c+MNxlDrNKVix+6kydPR1sobJA0iRmruG9svGuSeORlfO8pmG3vzBF7sHzTQc8DRJ5s1s5zkSzPnpA7GuVONSQ==
 
-"@playkit-js/playkit-js-hls@1.27.1":
-  version "1.27.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.27.1.tgz#635a3741f6569f629f0f1b7ef2479b4d3f82ff91"
-  integrity sha512-jtOEakeETMjZnvHmMPhWMwS4CysK45XYVEAyNpD+PvGIkMoooF31Hcoqv1bGSQYv2ohOuTvKNpCyZ73xI3Cc2Q==
+"@playkit-js/playkit-js-hls@1.27.3":
+  version "1.27.3"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.27.3.tgz#4992f79f9ed857fae588d7083ce0253028241516"
+  integrity sha512-gcYF50OiFv8e3G+uEE8WNVcnOhGFwiyMbftCYDS18olkGwfl6O0yIxk+BwmjGMAuhuIv+Flst9GG177VvpmJpg==
 
-"@playkit-js/playkit-js-ui@0.69.2":
-  version "0.69.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.69.2.tgz#a2a442c7db11eb2593514664d1bb8f760ba5cbe4"
-  integrity sha512-UppsHMiV9IrZxHH82zAc0e1hNFe/VYRuSAzSK2S61KbXG8bus+oHT8bWq0HnOr75VlxtF+b79CY3kWhgv92zYg==
+"@playkit-js/playkit-js-ui@0.69.3":
+  version "0.69.3"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.69.3.tgz#597ec90dee3a1d602c7db61493c6aa9c3718830e"
+  integrity sha512-MFqO6geJ9lO85AFzkcxylVYbXrofkI8H1EqIP8caWdH72Szo50dIu1NKL3s/P6DHi/bdoNAwAUZtoZBQHnsFoA==
   dependencies:
     preact "^10.3.4"
     preact-i18n "^2.0.0-preactx.2"
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.74.2":
-  version "0.74.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.74.2.tgz#7b48bd329b1571c97391d45d1de77a0dffb463ef"
-  integrity sha512-eYM6dAOPF26fPoqTzVRhkFEATyDgFEU0q+c9FhK7UDw4+Tdli4Vy/O7iz+tRdIbM3cgmojKz6FzSotq8ld95pw==
+"@playkit-js/playkit-js@0.74.4":
+  version "0.74.4"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.74.4.tgz#037254d37c6f88de6bd37b4f92d8963eef681a4a"
+  integrity sha512-NnCvSiGGJiEZ7KngKhja96X1CW72uOSdqnl/jJWgvjC2bXDka1EDU5o0/WsrWJ/2Y05It7qPtOM7PiyyaaNIfw==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^0.7.21"
