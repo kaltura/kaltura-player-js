@@ -17,6 +17,7 @@ function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: Pr
   if (typeof playerPoster === 'string' && THUMBNAIL_REGEX.test(playerPoster) && playerPoster === mediaConfigPoster) {
     playerSources.poster = `${playerPoster}/height/${playerHeight}/width/${playerWidth}`;
   }
+  mediaSources.poster = playerSources.poster;
 }
 
 export {addKalturaPoster};
