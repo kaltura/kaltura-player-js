@@ -10,7 +10,7 @@ describe('addKalturaPoster', function () {
     };
     const playerSources = {poster: 'https//my/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
-    mediaSources.poster.should.equal(playerSources.poster);
+    mediaSources.poster.should.have.string(playerSources.poster);
   });
 
   it('should align poster of mediaSources with poster of playerSources', function () {
