@@ -22,7 +22,7 @@ function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: Pr
   } else if (Array.isArray(playerPoster)) {
     playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
   }
-  mediaSources.poster = playerSources.poster;
+  mediaSources.poster = playerSources.poster || '';
 }
 
 /**
