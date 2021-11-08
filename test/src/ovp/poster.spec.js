@@ -11,6 +11,7 @@ describe('addKalturaPoster', function () {
     const playerSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640');
+    mediaSources.poster.should.equal(playerSources.poster);
   });
 
   it('should not append width and height to non kaltura poster', function () {
@@ -18,6 +19,7 @@ describe('addKalturaPoster', function () {
     const playerSources = {poster: 'https//my/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('https//my/kaltura/poster');
+    mediaSources.poster.should.equal(playerSources.poster);
   });
 
   it('should not append width and height to configured kaltura poster', function () {
@@ -25,6 +27,19 @@ describe('addKalturaPoster', function () {
     const playerSources = {poster: 'https//my/non/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('https//my/non/kaltura/poster');
+    mediaSources.poster.should.equal(playerSources.poster);
+  });
+
+  it('should change poster of mediaSources to string', function () {
+    const mediaSources = {
+      poster: [
+        {url: 'https//my/kaltura/poster', width: 0, height: 0},
+        {url: 'https//my/kaltura/poster', width: 0, height: 0}
+      ]
+    };
+    const playerSources = {poster: 'https//my/kaltura/poster'};
+    addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
+    mediaSources.poster.should.equal(playerSources.poster);
   });
 
   describe('Poster Integration', function () {
