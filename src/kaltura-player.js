@@ -258,17 +258,15 @@ class KalturaPlayer extends FakeEventTarget {
 
   /**
    * Config the player.
-   * @param {ProviderMediaConfigMetadataObject} sourceMetadata - The player sources metadata config.
+   * @param {ProviderMediaConfigMetadataObject} sourcesMetadata - The player sources metadata config.
    * @returns {void}
    * @instance
    * @memberof KalturaPlayer
    * @example
    * kalturaPlayer.setSourcesMetaData({epgId: 1234});
    */
-  setSourcesMetadata(sourceMetadata: ProviderMediaConfigMetadataObject): void {
-    if (this?.sources?.metadata) {
-      this._localPlayer.setSourcesMetaData(sourceMetadata);
-    }
+  setSourcesMetadata(sourcesMetadata: ProviderMediaConfigMetadataObject): void {
+    this._localPlayer.setSourcesMetaData(sourcesMetadata);
   }
 
   /**
