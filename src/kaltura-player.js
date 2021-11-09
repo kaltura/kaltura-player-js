@@ -263,7 +263,7 @@ class KalturaPlayer extends FakeEventTarget {
    * @instance
    * @memberof KalturaPlayer
    * @example
-   * kalturaPlayer.setSourcesMetadata({epgId: 1234});
+   * kalturaPlayer.setSourcesMetadata({epgId: '1234'});
    */
   setSourcesMetadata(sourcesMetadata: PKMetadataConfigObject): void {
     this._localPlayer.setSourcesMetadata(sourcesMetadata);
