@@ -242,430 +242,430 @@ describe('PlaylistManager', function () {
     });
   });
 
-  // describe('load', function () {
-  //   it('should merge the playlist data and config', function () {
-  //     const playlistConfig = {
-  //       options: {
-  //         autoContinue: false
-  //       },
-  //       countdown: {
-  //         timeToShow: 30,
-  //         duration: 20,
-  //         showing: false
-  //       },
-  //       items: [
-  //         {
-  //           config: {
-  //             countdown: {
-  //               timeToShow: 40,
-  //               duration: 5,
-  //               showing: true
-  //             }
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             hls: [{url: 'source_url'}],
-  //             poster: 'poster_url',
-  //             dvr: true
-  //           }
-  //         }
-  //       ]
-  //     };
-  //     playlistManager.load(PlaylistMockData.playlistByID, playlistConfig, {entries: [{entryId: '123'}]});
-  //     playlistManager._playlist.id.should.equal('0_wckoqjnn');
-  //     playlistManager._playlist.metadata.name.should.equal('Playlist_VOD_Only');
-  //     playlistManager._playlist.poster.should.equal('http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162');
-  //     playlistManager._playlist.items[0]._sources.id.should.equal('0_fu4ifhie');
-  //     playlistManager._playlist.items[0]._config.countdown.timeToShow.should.be.equal(40);
-  //     playlistManager._playlist.items[0]._config.countdown.duration.should.be.equal(5);
-  //     playlistManager._playlist.items[0]._config.countdown.showing.should.be.true;
-  //     playlistManager._playlist.items[1]._sources.id.should.equal('0_15xrxwvo');
-  //     playlistManager._playlist.items[1]._sources.hls[0].url.should.equal('source_url');
-  //     playlistManager._playlist.items[1]._sources.poster.should.equal('poster_url');
-  //     playlistManager._playlist.items[1]._sources.dvr.should.be.true;
-  //     (playlistManager._playlist.items[1]._config === undefined).should.be.true;
-  //     playlistManager._options.autoContinue.should.be.false;
-  //     playlistManager._countdown.timeToShow.should.be.equal(30);
-  //     playlistManager._countdown.duration.should.be.equal(20);
-  //     playlistManager._countdown.showing.should.be.false;
-  //     playlistManager._mediaInfoList[0].entryId.should.equal('123');
-  //   });
-  // });
-  //
-  // describe('reset', function () {
-  //   it('should reset but keep the previous config', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             hls: [{url: 'source_url'}],
-  //             poster: 'poster_url',
-  //             dvr: true
-  //           }
-  //         }
-  //       ],
-  //       options: {autoContinue: false},
-  //       countdown: {duration: 20, showing: false, timeToShow: 50}
-  //     });
-  //     playlistManager._playlist.id.should.equal('1234');
-  //     playlistManager._playlist.items.length.should.equal(1);
-  //     playlistManager._mediaInfoList.length.should.equal(1);
-  //     playlistManager._options.autoContinue.should.be.false;
-  //     playlistManager._countdown.duration.should.equal(20);
-  //     playlistManager._countdown.showing.should.be.false;
-  //     playlistManager._countdown.timeToShow.should.equal(50);
-  //     playlistManager.reset();
-  //     playlistManager._playlist.id.should.equal('');
-  //     playlistManager._playlist.items.length.should.equal(0);
-  //     playlistManager._mediaInfoList.length.should.equal(0);
-  //     playlistManager._options.autoContinue.should.be.false;
-  //     playlistManager._countdown.duration.should.equal(20);
-  //     playlistManager._countdown.showing.should.be.false;
-  //   });
-  // });
-  //
-  // describe('get next', function () {
-  //   it('should get the second item', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ]
-  //     });
-  //     playlistManager.next.sources.id.should.equal('id2');
-  //     playlistManager.next.index.should.equal(1);
-  //   });
-  //
-  //   it('should get null when in the last item and loop is false', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ]
-  //     });
-  //     playlistManager.playNext();
-  //     (playlistManager.next === null).should.be.true;
-  //   });
-  //
-  //   it('should get the first item when in the last item and loop is true', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ],
-  //       options: {
-  //         loop: true
-  //       }
-  //     });
-  //     playlistManager.playNext();
-  //     playlistManager.next.sources.id.should.equal('id1');
-  //     playlistManager.next.index.should.equal(0);
-  //   });
-  // });
-  //
-  // describe('get prev', function () {
-  //   it('should get the first item', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ]
-  //     });
-  //     playlistManager.playNext();
-  //     playlistManager.prev.sources.id.should.equal('id1');
-  //     playlistManager.prev.index.should.equal(0);
-  //   });
-  //
-  //   it('should get null when in the first item', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ]
-  //     });
-  //     (playlistManager.prev === null).should.be.true;
-  //   });
-  // });
-  //
-  // describe('get current', function () {
-  //   it('should get the first item', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ]
-  //     });
-  //     playlistManager.current.sources.id.should.equal('id1');
-  //     playlistManager.current.index.should.equal(0);
-  //   });
-  //
-  //   it('should get the second item', function () {
-  //     playlistManager.configure({
-  //       id: '1234',
-  //       items: [
-  //         {
-  //           sources: {
-  //             id: 'id1'
-  //           }
-  //         },
-  //         {
-  //           sources: {
-  //             id: 'id2'
-  //           }
-  //         }
-  //       ]
-  //     });
-  //     playlistManager.playNext();
-  //     playlistManager.current.sources.id.should.equal('id2');
-  //     playlistManager.current.index.should.equal(1);
-  //   });
-  // });
-  //
-  // describe('playNext', function () {
-  //   before(function () {
-  //     sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
-  //       return Promise.resolve(MediaMockData.MediaConfig[entryId]);
-  //     });
-  //   });
-  //
-  //   beforeEach(function () {
-  //     playlistManager.load(PlaylistMockData.playlistByEntryList);
-  //   });
-  //
-  //   after(function () {
-  //     sandbox.restore();
-  //     kalturaPlayer.loadMedia.restore();
-  //   });
-  //
-  //   it('should call playNext automatically once the playlist loaded', function (done) {
-  //     kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //       done();
-  //     });
-  //   });
-  //
-  //   it.skip('should call playNext programmatically', function (done) {
-  //     let eventCounter = 0;
-  //     kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //       if (eventCounter === 2) {
-  //         done();
-  //       }
-  //       eventCounter++;
-  //       playlistManager.playNext();
-  //     });
-  //   });
-  // });
-  //
-  // describe('playPrev', function () {
-  //   before(function () {
-  //     sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
-  //       return Promise.resolve(MediaMockData.MediaConfig[entryId]);
-  //     });
-  //   });
-  //
-  //   beforeEach(function () {
-  //     playlistManager.load(PlaylistMockData.playlistByEntryList);
-  //   });
-  //
-  //   after(function () {
-  //     sandbox.restore();
-  //     kalturaPlayer.loadMedia.restore();
-  //   });
-  //
-  //   it('should call playPrev programmatically', function (done) {
-  //     let eventCounter = -1;
-  //     kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //       eventCounter++;
-  //       switch (eventCounter) {
-  //         case 0: {
-  //           playlistManager.playNext();
-  //           break;
-  //         }
-  //         case 1: {
-  //           playlistManager.playPrev();
-  //           break;
-  //         }
-  //         case 2: {
-  //           done();
-  //         }
-  //       }
-  //     });
-  //   });
-  // });
-  //
-  // describe('playItem', function () {
-  //   before(function () {
-  //     sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
-  //       return Promise.resolve(MediaMockData.MediaConfig[entryId]);
-  //     });
-  //   });
-  //
-  //   beforeEach(function () {
-  //     playlistManager.load(PlaylistMockData.playlistByEntryList);
-  //   });
-  //
-  //   after(function () {
-  //     sandbox.restore();
-  //     kalturaPlayer.loadMedia.restore();
-  //   });
-  //
-  //   it('should call playItem programmatically', function (done) {
-  //     let eventCounter = -1;
-  //     kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //       eventCounter++;
-  //       switch (eventCounter) {
-  //         case 0: {
-  //           playlistManager.playItem(1);
-  //           break;
-  //         }
-  //         case 1: {
-  //           playlistManager.playItem(0);
-  //           break;
-  //         }
-  //         case 2: {
-  //           done();
-  //         }
-  //       }
-  //     });
-  //   });
-  // });
-  //
-  // describe('provider plugins', function () {
-  //   before(function () {
-  //     PluginManager.register('colors', ColorsPlugin);
-  //     sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
-  //       const mediaConfig = MediaMockData.MediaConfig[info.entryId];
-  //       return Promise.resolve(mediaConfig);
-  //     });
-  //   });
-  //
-  //   beforeEach(function () {
-  //     kalturaPlayer.configure({
-  //       plugins: {
-  //         colors: {
-  //           someProp1: 'app_prop1',
-  //           someProp2: ''
-  //         }
-  //       }
-  //     });
-  //     playlistManager.load(PlaylistMockData.playlistByEntryListWithPlugins);
-  //   });
-  //
-  //   after(function () {
-  //     sandbox.restore();
-  //     kalturaPlayer._provider.getMediaConfig.restore();
-  //   });
-  //
-  //   it("should apply the app's plugin config before the provider's and reset the provider's on change media", function (done) {
-  //     kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //       try {
-  //         kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
-  //         kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
-  //         kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
-  //         kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //           try {
-  //             kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
-  //             kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
-  //             kalturaPlayer.config.plugins.colors.someProp2.should.equals('prop2');
-  //             kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //               try {
-  //                 kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
-  //                 kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
-  //                 kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
-  //                 kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //                   try {
-  //                     kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
-  //                     kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
-  //                     kalturaPlayer.config.plugins.colors.someProp2.should.equals('prop2');
-  //                     kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-  //                       try {
-  //                         kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
-  //                         kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
-  //                         kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
-  //                         done();
-  //                       } catch (e) {
-  //                         done(e);
-  //                       }
-  //                     });
-  //                     kalturaPlayer._reset = false;
-  //                     playlistManager.playPrev();
-  //                   } catch (e) {
-  //                     done(e);
-  //                   }
-  //                 });
-  //                 kalturaPlayer._reset = false;
-  //                 playlistManager.playPrev();
-  //               } catch (e) {
-  //                 done(e);
-  //               }
-  //             });
-  //             kalturaPlayer._reset = false;
-  //             playlistManager.playNext();
-  //           } catch (e) {
-  //             done(e);
-  //           }
-  //         });
-  //         kalturaPlayer._reset = false;
-  //         playlistManager.playNext();
-  //       } catch (e) {
-  //         done(e);
-  //       }
-  //     });
-  //   });
-  // });
+  describe('load', function () {
+    it('should merge the playlist data and config', function () {
+      const playlistConfig = {
+        options: {
+          autoContinue: false
+        },
+        countdown: {
+          timeToShow: 30,
+          duration: 20,
+          showing: false
+        },
+        items: [
+          {
+            config: {
+              countdown: {
+                timeToShow: 40,
+                duration: 5,
+                showing: true
+              }
+            }
+          },
+          {
+            sources: {
+              hls: [{url: 'source_url'}],
+              poster: 'poster_url',
+              dvr: true
+            }
+          }
+        ]
+      };
+      playlistManager.load(PlaylistMockData.playlistByID, playlistConfig, {entries: [{entryId: '123'}]});
+      playlistManager._playlist.id.should.equal('0_wckoqjnn');
+      playlistManager._playlist.metadata.name.should.equal('Playlist_VOD_Only');
+      playlistManager._playlist.poster.should.equal('http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162');
+      playlistManager._playlist.items[0]._sources.id.should.equal('0_fu4ifhie');
+      playlistManager._playlist.items[0]._config.countdown.timeToShow.should.be.equal(40);
+      playlistManager._playlist.items[0]._config.countdown.duration.should.be.equal(5);
+      playlistManager._playlist.items[0]._config.countdown.showing.should.be.true;
+      playlistManager._playlist.items[1]._sources.id.should.equal('0_15xrxwvo');
+      playlistManager._playlist.items[1]._sources.hls[0].url.should.equal('source_url');
+      playlistManager._playlist.items[1]._sources.poster.should.equal('poster_url');
+      playlistManager._playlist.items[1]._sources.dvr.should.be.true;
+      (playlistManager._playlist.items[1]._config === undefined).should.be.true;
+      playlistManager._options.autoContinue.should.be.false;
+      playlistManager._countdown.timeToShow.should.be.equal(30);
+      playlistManager._countdown.duration.should.be.equal(20);
+      playlistManager._countdown.showing.should.be.false;
+      playlistManager._mediaInfoList[0].entryId.should.equal('123');
+    });
+  });
+
+  describe('reset', function () {
+    it('should reset but keep the previous config', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              hls: [{url: 'source_url'}],
+              poster: 'poster_url',
+              dvr: true
+            }
+          }
+        ],
+        options: {autoContinue: false},
+        countdown: {duration: 20, showing: false, timeToShow: 50}
+      });
+      playlistManager._playlist.id.should.equal('1234');
+      playlistManager._playlist.items.length.should.equal(1);
+      playlistManager._mediaInfoList.length.should.equal(1);
+      playlistManager._options.autoContinue.should.be.false;
+      playlistManager._countdown.duration.should.equal(20);
+      playlistManager._countdown.showing.should.be.false;
+      playlistManager._countdown.timeToShow.should.equal(50);
+      playlistManager.reset();
+      playlistManager._playlist.id.should.equal('');
+      playlistManager._playlist.items.length.should.equal(0);
+      playlistManager._mediaInfoList.length.should.equal(0);
+      playlistManager._options.autoContinue.should.be.false;
+      playlistManager._countdown.duration.should.equal(20);
+      playlistManager._countdown.showing.should.be.false;
+    });
+  });
+
+  describe('get next', function () {
+    it('should get the second item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.next.sources.id.should.equal('id2');
+      playlistManager.next.index.should.equal(1);
+    });
+
+    it('should get null when in the last item and loop is false', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.playNext();
+      (playlistManager.next === null).should.be.true;
+    });
+
+    it('should get the first item when in the last item and loop is true', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ],
+        options: {
+          loop: true
+        }
+      });
+      playlistManager.playNext();
+      playlistManager.next.sources.id.should.equal('id1');
+      playlistManager.next.index.should.equal(0);
+    });
+  });
+
+  describe('get prev', function () {
+    it('should get the first item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.playNext();
+      playlistManager.prev.sources.id.should.equal('id1');
+      playlistManager.prev.index.should.equal(0);
+    });
+
+    it('should get null when in the first item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      (playlistManager.prev === null).should.be.true;
+    });
+  });
+
+  describe('get current', function () {
+    it('should get the first item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.current.sources.id.should.equal('id1');
+      playlistManager.current.index.should.equal(0);
+    });
+
+    it('should get the second item', function () {
+      playlistManager.configure({
+        id: '1234',
+        items: [
+          {
+            sources: {
+              id: 'id1'
+            }
+          },
+          {
+            sources: {
+              id: 'id2'
+            }
+          }
+        ]
+      });
+      playlistManager.playNext();
+      playlistManager.current.sources.id.should.equal('id2');
+      playlistManager.current.index.should.equal(1);
+    });
+  });
+
+  describe('playNext', function () {
+    before(function () {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
+        return Promise.resolve(MediaMockData.MediaConfig[entryId]);
+      });
+    });
+
+    beforeEach(function () {
+      playlistManager.load(PlaylistMockData.playlistByEntryList);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
+    });
+
+    it('should call playNext automatically once the playlist loaded', function (done) {
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        done();
+      });
+    });
+
+    it.skip('should call playNext programmatically', function (done) {
+      let eventCounter = 0;
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        if (eventCounter === 2) {
+          done();
+        }
+        eventCounter++;
+        playlistManager.playNext();
+      });
+    });
+  });
+
+  describe('playPrev', function () {
+    before(function () {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
+        return Promise.resolve(MediaMockData.MediaConfig[entryId]);
+      });
+    });
+
+    beforeEach(function () {
+      playlistManager.load(PlaylistMockData.playlistByEntryList);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
+    });
+
+    it('should call playPrev programmatically', function (done) {
+      let eventCounter = -1;
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        eventCounter++;
+        switch (eventCounter) {
+          case 0: {
+            playlistManager.playNext();
+            break;
+          }
+          case 1: {
+            playlistManager.playPrev();
+            break;
+          }
+          case 2: {
+            done();
+          }
+        }
+      });
+    });
+  });
+
+  describe('playItem', function () {
+    before(function () {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(function ({entryId}) {
+        return Promise.resolve(MediaMockData.MediaConfig[entryId]);
+      });
+    });
+
+    beforeEach(function () {
+      playlistManager.load(PlaylistMockData.playlistByEntryList);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer.loadMedia.restore();
+    });
+
+    it('should call playItem programmatically', function (done) {
+      let eventCounter = -1;
+      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        eventCounter++;
+        switch (eventCounter) {
+          case 0: {
+            playlistManager.playItem(1);
+            break;
+          }
+          case 1: {
+            playlistManager.playItem(0);
+            break;
+          }
+          case 2: {
+            done();
+          }
+        }
+      });
+    });
+  });
+
+  describe('provider plugins', function () {
+    before(function () {
+      PluginManager.register('colors', ColorsPlugin);
+      sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+        const mediaConfig = MediaMockData.MediaConfig[info.entryId];
+        return Promise.resolve(mediaConfig);
+      });
+    });
+
+    beforeEach(function () {
+      kalturaPlayer.configure({
+        plugins: {
+          colors: {
+            someProp1: 'app_prop1',
+            someProp2: ''
+          }
+        }
+      });
+      playlistManager.load(PlaylistMockData.playlistByEntryListWithPlugins);
+    });
+
+    after(function () {
+      sandbox.restore();
+      kalturaPlayer._provider.getMediaConfig.restore();
+    });
+
+    it("should apply the app's plugin config before the provider's and reset the provider's on change media", function (done) {
+      kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+        try {
+          kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+          kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+          kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
+          kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+            try {
+              kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+              kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+              kalturaPlayer.config.plugins.colors.someProp2.should.equals('prop2');
+              kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+                try {
+                  kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+                  kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+                  kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
+                  kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+                    try {
+                      kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+                      kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+                      kalturaPlayer.config.plugins.colors.someProp2.should.equals('prop2');
+                      kalturaPlayer._eventManager.listenOnce(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
+                        try {
+                          kalturaPlayer.config.plugins.colors.favouriteColor.should.equals('green');
+                          kalturaPlayer.config.plugins.colors.someProp1.should.equals('app_prop1');
+                          kalturaPlayer.config.plugins.colors.someProp2.should.equals('');
+                          done();
+                        } catch (e) {
+                          done(e);
+                        }
+                      });
+                      kalturaPlayer._reset = false;
+                      playlistManager.playPrev();
+                    } catch (e) {
+                      done(e);
+                    }
+                  });
+                  kalturaPlayer._reset = false;
+                  playlistManager.playPrev();
+                } catch (e) {
+                  done(e);
+                }
+              });
+              kalturaPlayer._reset = false;
+              playlistManager.playNext();
+            } catch (e) {
+              done(e);
+            }
+          });
+          kalturaPlayer._reset = false;
+          playlistManager.playNext();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
 });
