@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/kaltura/kaltura-player-js/compare/v1.15.0...v1.16.0) (2021-11-10)
+
+
+### Bug Fixes
+
+* **FEC-11611:** Pass the program ID when sending a bookmark ([#503](https://github.com/kaltura/kaltura-player-js/issues/503)) ([5355bcc](https://github.com/kaltura/kaltura-player-js/commit/5355bcc))
+* **FEC-11611:** Pass the program ID when sending a bookmark ([#504](https://github.com/kaltura/kaltura-player-js/issues/504)) ([953c3a9](https://github.com/kaltura/kaltura-player-js/commit/953c3a9))
+* **FEC-11668:** thumbnails not shown when hovering over Previous / Next playlist controls ([#502](https://github.com/kaltura/kaltura-player-js/issues/502)) ([d5ec72e](https://github.com/kaltura/kaltura-player-js/commit/d5ec72e))
+
+
+### Features
+
+* update playkit-js to [0.75.0](https://github.com/kaltura/playkit-js/releases/tag/v0.75.0) ([15eb60a](https://github.com/kaltura/kaltura-player-js/commit/15eb60a))
+
+
+
 ## [1.15.0](https://github.com/kaltura/kaltura-player-js/compare/v1.14.1...v1.15.0) (2021-10-27)
 
 
