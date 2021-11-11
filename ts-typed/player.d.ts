@@ -29,6 +29,7 @@ declare namespace KalturaPlayerTypes {
     addEventListener(type: string, listener: CoreEventListener): void;
     removeEventListener: (type: string, listener: CoreEventListener) => void;
     Event: Record<string, any>;
+    Error: Record<string, any>;
     currentTime: number;
     playbackRate: number;
     duration: number;
