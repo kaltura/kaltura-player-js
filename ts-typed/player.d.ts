@@ -5,6 +5,8 @@ type CoreEventListener = (event: FakeEvent) => boolean | void;
 declare namespace KalturaPlayerTypes {
   export interface Player {
     dimensions: {width: number; height: number};
+    attachMediaSource(): void;
+    detachMediaSource(): void;
     getActiveTracks(): {video: {width: number; height: number}};
     pause(): void;
     play(): void;
