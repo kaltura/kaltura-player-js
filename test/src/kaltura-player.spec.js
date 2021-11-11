@@ -205,6 +205,39 @@ describe('kaltura player api', function () {
         kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
       });
     });
+    describe('setSourcesMetadata', function () {
+      const entryId = '0_wifqaipd';
+      beforeEach(function () {
+        kalturaPlayer = setup(config);
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+          const id = info.playlistId || info.entryId;
+          return id
+            ? Promise.resolve(MediaMockData.MediaConfig[id])
+            : Promise.reject({
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
+        });
+      });
+
+      afterEach(function () {
+        kalturaPlayer.destroy();
+      });
+
+      it('should set the sources metadata with the provided epgId', done => {
+        kalturaPlayer.loadMedia({entryId}).then(() => {
+          kalturaPlayer.configure({sources: {metadata: {epgId: '54321'}}});
+          kalturaPlayer.setSourcesMetadata({epgId: '12345'});
+          try {
+            kalturaPlayer.config.sources.metadata.epgId.should.equals('12345');
+            kalturaPlayer.sources.metadata.epgId.should.equals('12345');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+      });
+    });
   });
 
   describe('playlist api', function () {
