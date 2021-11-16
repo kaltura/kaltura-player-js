@@ -1150,10 +1150,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.74.4":
-  version "0.74.4"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.74.4.tgz#037254d37c6f88de6bd37b4f92d8963eef681a4a"
-  integrity sha512-NnCvSiGGJiEZ7KngKhja96X1CW72uOSdqnl/jJWgvjC2bXDka1EDU5o0/WsrWJ/2Y05It7qPtOM7PiyyaaNIfw==
+"@playkit-js/playkit-js@0.75.0":
+  version "0.75.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.75.0.tgz#b0985e14bde4da3e5955b283be38386430c2f1cd"
+  integrity sha512-eXJljn2M4b7p5uTZtC5JNqvca9t3fwUsu+b3kRIRBsO9enXcjyEt8Smx2IUjXy8TCf9YQBdGcBX7MnArBlQMKA==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^0.7.21"
@@ -7707,9 +7707,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers#v2.30.0":
-  version "2.30.0"
-  resolved "https://github.com/kaltura/playkit-js-providers#d1aadd54a59fd2a6377653730fc1a83b9dfdb1b2"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.31.0":
+  version "2.31.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#4ae3214262d2da305056639392d00bffce6a72f9"
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"

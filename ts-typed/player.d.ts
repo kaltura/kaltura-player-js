@@ -5,6 +5,8 @@ type CoreEventListener = (event: FakeEvent) => boolean | void;
 declare namespace KalturaPlayerTypes {
   export interface Player {
     dimensions: {width: number; height: number};
+    attachMediaSource(): void;
+    detachMediaSource(): void;
     getActiveTracks(): {video: {width: number; height: number}};
     pause(): void;
     play(): void;
@@ -27,6 +29,7 @@ declare namespace KalturaPlayerTypes {
     addEventListener(type: string, listener: CoreEventListener): void;
     removeEventListener: (type: string, listener: CoreEventListener) => void;
     Event: Record<string, any>;
+    Error: Record<string, any>;
     currentTime: number;
     playbackRate: number;
     duration: number;
@@ -39,5 +42,6 @@ declare namespace KalturaPlayerTypes {
     cuePointManager: KalturaPlayerTypes.CuePointManager;
     ready: () => Promise<any>;
     sources: KalturaPlayerTypes.Sources;
+    src?: string;
   }
 }
