@@ -146,7 +146,7 @@ function applyStorageSupport(player: KalturaPlayer): void {
  */
 function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer): void {
   if (defaultOptions.cast) {
-    player._remotePlayerManager.load(defaultOptions.cast, player);
+    player.remotePlayerManager.load(defaultOptions.cast, player);
   }
 }
 

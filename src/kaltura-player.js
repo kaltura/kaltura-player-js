@@ -443,7 +443,16 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   startCasting(type?: string): Promise<*> {
-    return this._remotePlayerManager.startCasting(type);
+    this.setIsCastInitiator(true);
+    return new Promise((resolve, reject) => {
+      this.remotePlayerManager
+        .startCasting(type)
+        .then(resolve)
+        .catch(() => {
+          this.setIsCastInitiator(false);
+          reject();
+        });
+    });
   }
 
   setIsCastInitiator(isCastInitiator: boolean) {
@@ -1023,6 +1032,10 @@ class KalturaPlayer extends FakeEventTarget {
    */
   addTextTrack(kind: string, label?: string): ?TextTrack {
     return this._localPlayer.addTextTrack(kind, label);
+  }
+
+  get remotePlayerManager() {
+    return this._remotePlayerManager;
   }
 }
 
