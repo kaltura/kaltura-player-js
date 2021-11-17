@@ -14,6 +14,7 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
+import {RemotePlayerType} from './common/cast/remote-player-type';
 import {AdsController, ControllerProvider} from './common/controllers';
 import {getDefaultRedirectOptions} from 'player-defaults';
 import {
@@ -77,6 +78,8 @@ class KalturaPlayer extends FakeEventTarget {
    * @private
    */
   _autoPaused: boolean = false;
+
+  RemotePlayerType: Object = RemotePlayerType;
 
   constructor(options: KPOptionsObject) {
     super();
@@ -442,21 +445,21 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getLogLevel(name);
   }
 
-  startCasting(type?: string): Promise<*> {
-    this.setIsCastInitiator(true);
+  startCasting(type: string): Promise<*> {
+    this.setIsCastInitiator(type, true);
     return new Promise((resolve, reject) => {
       this.remotePlayerManager
         .startCasting(type)
         .then(resolve)
         .catch(() => {
-          this.setIsCastInitiator(false);
+          this.setIsCastInitiator(type, false);
           reject();
         });
     });
   }
 
-  setIsCastInitiator(isCastInitiator: boolean) {
-    this._remotePlayerManager.setIsCastInitiator(undefined, isCastInitiator);
+  setIsCastInitiator(type: string, isCastInitiator: boolean) {
+    this._remotePlayerManager.setIsCastInitiator(type, isCastInitiator);
   }
 
   isCastAvailable(type?: string): boolean {

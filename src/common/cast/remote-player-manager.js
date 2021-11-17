@@ -6,7 +6,6 @@ import {KalturaPlayer} from '../../kaltura-player';
 
 class RemotePlayerManager {
   static _registry: Map<string, Function> = new Map();
-  static _loadedPlayerCount = 0;
   static _logger: any = getLogger('RemotePlayerManager');
 
   _remotePlayers: Map<string, BaseRemotePlayer> = new Map();
@@ -25,12 +24,10 @@ class RemotePlayerManager {
   }
 
   load(castConfig: Object, player: KalturaPlayer): void {
-    ++RemotePlayerManager._loadedPlayerCount;
     const registry = RemotePlayerManager._registry;
     registry.forEach((RemotePlayer: Function, type: string) => {
       RemotePlayerManager._logger.debug(`Load remote player of type ${type}`);
       const remotePlayer = new RemotePlayer(castConfig, new RemoteControl(player), player.config.targetId);
-      remotePlayer.isCastInitiator = () => remotePlayer._isCastInitiator || RemotePlayerManager._loadedPlayerCount === 1;
       this._remotePlayers.set(type, remotePlayer);
     });
   }

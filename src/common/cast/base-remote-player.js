@@ -310,10 +310,6 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     return true;
   }
 
-  isCastInitiator(): boolean {
-    return this._isCastInitiator;
-  }
-
   /**
    * Gets the current remote session.
    * @returns {RemoteSession} - The remote session.
