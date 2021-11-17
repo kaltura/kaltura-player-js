@@ -79,7 +79,7 @@ class ThumbnailManager {
   };
 
   _getPosterUrl(mediaConfig: KPMediaConfig): ?string {
-    if (mediaConfig.sources && typeof mediaConfig.sources.poster === 'string') {
+    if (mediaConfig.sources && mediaConfig.sources.poster) {
       let posterUrl = mediaConfig.sources.poster;
       if (DIMENSIONS_REGEX.test(posterUrl)) {
         posterUrl = posterUrl.replace(DIMENSIONS_REGEX, '');
@@ -88,7 +88,7 @@ class ThumbnailManager {
     }
   }
 
-  _getThumbSlicesUrl = (posterUrl: ?string | Array<Object>, ks: ?string, thumbnailConfig: Object): string => {
+  _getThumbSlicesUrl = (posterUrl: string | Array<Object>, ks: ?string, thumbnailConfig: Object): string => {
     if (typeof posterUrl === 'string') {
       if (THUMBNAIL_REGEX.test(posterUrl)) {
         try {
