@@ -1,5 +1,5 @@
 import {MediaType} from '@playkit-js/playkit-js';
-import {DefaultThumbnailConfig, ThumbnailManager, DIMENSIONS_REGEX} from '../../../src/common/thumbnail-manager';
+import {DefaultThumbnailConfig, ThumbnailManager} from '../../../src/common/thumbnail-manager';
 
 describe('ThumbnailManager', () => {
   let thumbnailManager, fakePlayer, fakeMediaConfig, sandbox;
@@ -26,7 +26,7 @@ describe('ThumbnailManager', () => {
     };
     fakeMediaConfig = {
       sources: {
-        poster: '//my-thumb-service.com/p/1/thumbnail/entry_id/2/version/3/height/300/width/600',
+        poster: '//my-thumb-service.com/p/1/thumbnail/entry_id/2/version/3',
         type: MediaType.VOD
       },
       session: {
@@ -44,9 +44,7 @@ describe('ThumbnailManager', () => {
     thumbnailManager
       .getKalturaThumbnailConfig()
       .thumbsSprite.should.equals(
-        `${fakeMediaConfig.sources.poster.replace(DIMENSIONS_REGEX, '')}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${
-          DefaultThumbnailConfig.thumbsSlices
-        }/ks/${fakeMediaConfig.session.ks}`
+        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
       );
   });
 
@@ -62,9 +60,7 @@ describe('ThumbnailManager', () => {
     thumbnailManager
       .getKalturaThumbnailConfig()
       .thumbsSprite.should.equals(
-        `${fakeMediaConfig.sources.poster.replace(DIMENSIONS_REGEX, '')}/width/${fakeSeekbarConfig.thumbsWidth}/vid_slices/${
-          fakeSeekbarConfig.thumbsSlices
-        }/ks/${fakeMediaConfig.session.ks}`
+        `${fakeMediaConfig.sources.poster}/width/${fakeSeekbarConfig.thumbsWidth}/vid_slices/${fakeSeekbarConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
       );
   });
 

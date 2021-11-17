@@ -9,7 +9,6 @@ const DefaultThumbnailConfig: Object = {
 };
 
 const THUMBNAIL_REGEX = /.*\/p\/\d+\/(?:[a-zA-Z]+\/\d+\/)*thumbnail\/entry_id\/\w+\/.*\d+/;
-const DIMENSIONS_REGEX = /\/height\/[0-9]+\/width\/[0-9]+$/;
 const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/vid_slices/{{thumbsSlices}}/ks/{{ks}}';
 
 class ThumbnailManager {
@@ -67,7 +66,7 @@ class ThumbnailManager {
 
   _buildKalturaThumbnailConfig = (uiConfig: KPUIOptionsObject, mediaConfig: KPMediaConfig): ?KPThumbnailConfig => {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
-    const posterUrl = this._getPosterUrl(mediaConfig);
+    const posterUrl = mediaConfig.sources && mediaConfig.sources.poster;
     const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;
     const ks = mediaConfig.session && mediaConfig.session.ks;
     const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
@@ -77,16 +76,6 @@ class ThumbnailManager {
       ...thumbnailConfig
     };
   };
-
-  _getPosterUrl(mediaConfig: KPMediaConfig): ?string {
-    if (mediaConfig.sources && mediaConfig.sources.poster) {
-      let posterUrl = mediaConfig.sources.poster;
-      if (DIMENSIONS_REGEX.test(posterUrl)) {
-        posterUrl = posterUrl.replace(DIMENSIONS_REGEX, '');
-      }
-      return posterUrl;
-    }
-  }
 
   _getThumbSlicesUrl = (posterUrl: string | Array<Object>, ks: ?string, thumbnailConfig: Object): string => {
     if (typeof posterUrl === 'string') {
@@ -107,4 +96,4 @@ class ThumbnailManager {
   };
 }
 
-export {ThumbnailManager, THUMBNAIL_REGEX, DIMENSIONS_REGEX, DefaultThumbnailConfig};
+export {ThumbnailManager, THUMBNAIL_REGEX, DefaultThumbnailConfig};
