@@ -111,6 +111,7 @@ class KalturaPlayer extends FakeEventTarget {
     //configure sources after configure finished for all components - making sure all we'll set up correctly
     this._playlistManager.configure({items: (options.playlist && options.playlist.items) || []});
     this._localPlayer.setSources(sources || {});
+    this._remotePlayerManager = new RemotePlayerManager();
   }
 
   /**
@@ -353,7 +354,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.destroy();
     this._thumbnailManager?.destroy();
     this._viewabilityManager.destroy();
-    RemotePlayerManager.destroy();
+    this._remotePlayerManager.destroy();
     this._pluginsConfig = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
@@ -454,12 +455,25 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getLogLevel(name);
   }
 
-  startCasting(type?: string): Promise<*> {
-    return RemotePlayerManager.startCasting(type);
+  startCasting(type: string): Promise<*> {
+    this.setIsCastInitiator(type, true);
+    return new Promise((resolve, reject) => {
+      this.remotePlayerManager
+        .startCasting(type)
+        .then(resolve)
+        .catch(() => {
+          this.setIsCastInitiator(type, false);
+          reject();
+        });
+    });
+  }
+
+  setIsCastInitiator(type: string, isCastInitiator: boolean) {
+    this._remotePlayerManager.setIsCastInitiator(type, isCastInitiator);
   }
 
   isCastAvailable(type?: string): boolean {
-    return RemotePlayerManager.isCastAvailable(type);
+    return this._remotePlayerManager.isCastAvailable(type);
   }
 
   getCastSession(): ?RemoteSession {
@@ -1031,6 +1045,10 @@ class KalturaPlayer extends FakeEventTarget {
    */
   addTextTrack(kind: string, label?: string): ?TextTrack {
     return this._localPlayer.addTextTrack(kind, label);
+  }
+
+  get remotePlayerManager() {
+    return this._remotePlayerManager;
   }
 }
 
