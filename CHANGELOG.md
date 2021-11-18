@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.16.2](https://github.com/kaltura/kaltura-player-js/compare/v1.16.1...v1.16.2) (2021-11-17)
+
+
+### Bug Fixes
+
+* **FEC-11695,FEC-11698:** player thumbnail stripe URL changes according to player size ([#507](https://github.com/kaltura/kaltura-player-js/issues/507)) ([50a02b0](https://github.com/kaltura/kaltura-player-js/commit/50a02b0))
+
+
+### Tests
+
+* **FEC-11611:** Pass the program ID when sending a bookmark ([#506](https://github.com/kaltura/kaltura-player-js/issues/506)) ([dc62c36](https://github.com/kaltura/kaltura-player-js/commit/dc62c36))
+
+
+
 ### [1.16.1](https://github.com/kaltura/kaltura-player-js/compare/v1.16.0...v1.16.1) (2021-11-10)
 
 

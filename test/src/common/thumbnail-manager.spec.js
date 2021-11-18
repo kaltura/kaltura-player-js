@@ -1,5 +1,7 @@
 import {MediaType} from '@playkit-js/playkit-js';
 import {DefaultThumbnailConfig, ThumbnailManager} from '../../../src/common/thumbnail-manager';
+import * as TestUtils from '../utils/test-utils';
+import {setup} from '../../../src';
 
 describe('ThumbnailManager', () => {
   let thumbnailManager, fakePlayer, fakeMediaConfig, sandbox;
@@ -148,5 +150,55 @@ describe('ThumbnailManager', () => {
     const config = thumbnailManager.getKalturaThumbnailConfig();
     config.thumbsSlices.should.equal(200);
     config.thumbsWidth.should.equal(300);
+  });
+
+  describe('Poster Integration', function () {
+    const targetId = 'player-placeholder_ovp/thumbnail.spec';
+
+    let config, kalturaPlayer;
+    const myCustomPosterUrl = 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg';
+    const entryId = '0_wifqaipd';
+    const partnerId = 1091;
+    const env = {
+      cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
+      serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
+    };
+
+    before(function () {
+      TestUtils.createElement('DIV', targetId);
+    });
+
+    beforeEach(function () {
+      config = {
+        targetId: targetId,
+        provider: {
+          partnerId: partnerId,
+          env: env
+        },
+        sources: {}
+      };
+    });
+
+    afterEach(function () {
+      kalturaPlayer.destroy();
+      TestUtils.removeVideoElementsFromTestPage();
+    });
+
+    after(function () {
+      TestUtils.removeElement(targetId);
+    });
+
+    it('should create thumbnail url from provider poster not from configured poster', function (done) {
+      config.sources.poster = myCustomPosterUrl;
+      kalturaPlayer = setup(config);
+      kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+        try {
+          kalturaPlayer.getThumbnail().should.be.exist;
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
   });
 });
