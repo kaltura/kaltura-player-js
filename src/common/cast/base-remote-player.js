@@ -598,6 +598,14 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   get config(): Object {
     return this._playerConfig;
   }
+
+  set isCastInitiator(isCastInitiator: boolean) {
+    this._isCastInitiator = isCastInitiator;
+  }
+
+  get isCastInitiator() {
+    return this._isCastInitiator;
+  }
 }
 
 export {BaseRemotePlayer};

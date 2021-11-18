@@ -58,7 +58,7 @@ class RemotePlayerManager {
   setIsCastInitiator(type?: string, isCastInitiator: boolean) {
     const remotePlayer = this._getRemotePlayer(type);
     if (remotePlayer) {
-      remotePlayer._isCastInitiator = isCastInitiator;
+      remotePlayer.isCastInitiator = isCastInitiator;
     }
   }
 

@@ -14,7 +14,6 @@ import {CastEventType} from './common/cast/cast-event-type';
 import {RemotePlayerManager} from './common/cast/remote-player-manager';
 import {BaseRemotePlayer} from './common/cast/base-remote-player';
 import {RemoteSession} from './common/cast/remote-session';
-import {RemotePlayerType} from './common/cast/remote-player-type';
 import {AdsController, ControllerProvider} from './common/controllers';
 import {getDefaultRedirectOptions} from 'player-defaults';
 import {
@@ -78,8 +77,6 @@ class KalturaPlayer extends FakeEventTarget {
    * @private
    */
   _autoPaused: boolean = false;
-
-  RemotePlayerType: Object = RemotePlayerType;
 
   constructor(options: KPOptionsObject) {
     super();
