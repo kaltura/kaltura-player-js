@@ -15,6 +15,7 @@ declare module 'global' {
         utils: {
           getLogger: (name: string) => KalturaPlayerTypes.Logger;
           bindActions(actions: Record<string, unknown>[]): (...args: any) => void;
+          KeyMap: Record<string, number>;
         };
         components: {
           withPlayer: any;
