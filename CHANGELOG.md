@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.16.3](https://github.com/kaltura/kaltura-player-js/compare/v1.16.2...v1.16.3) (2021-11-24)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.27.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.3) ([5da47f8](https://github.com/kaltura/kaltura-player-js/commit/5da47f8))
+* update playkit-js-ui to [0.69.4](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.4) ([9a4fb0e](https://github.com/kaltura/kaltura-player-js/commit/9a4fb0e))
+* **FEC-11156:** cast button appears for one player only when multiple players configured on the page and casting failed ([#495](https://github.com/kaltura/kaltura-player-js/issues/495)) ([5a46f84](https://github.com/kaltura/kaltura-player-js/commit/5a46f84))
+
+
+
 ### [1.16.2](https://github.com/kaltura/kaltura-player-js/compare/v1.16.1...v1.16.2) (2021-11-17)
 
 
