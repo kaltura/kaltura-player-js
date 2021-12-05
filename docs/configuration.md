@@ -23,7 +23,7 @@ The configuration uses the following structure:
   sources: PKSourcesConfigObject,
   playlist: KPPlaylistObject,
   plugins: KPPluginsConfigObject,
-  advertising: PKAdvertisingConfigObject,
+  advertising: KPAdvertisingConfigObject,
   session: PKSessionConfigObject,
   provider: ProviderOptionsObject,
   ui: UIOptionsObject,
