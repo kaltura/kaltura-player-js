@@ -287,10 +287,13 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     if (localPlayerConfig.sources) {
-      this._localPlayer.setSources(localPlayerConfig.sources || {});
+      const {sources} = localPlayerConfig;
       delete localPlayerConfig.sources;
+      this._localPlayer.configure(localPlayerConfig);
+      this._localPlayer.setSources(sources || {});
+    } else {
+      this._localPlayer.configure(localPlayerConfig);
     }
-    this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
       this._uiWrapper.setConfig(configDictionary.ui);
