@@ -1050,6 +1050,16 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.addTextTrack(kind, label);
   }
 
+  /**
+   * get text tracks
+   * @function getTextTracks
+   * @returns {Array<TextTrack>} - The TextTracks array.
+   * @public
+   */
+  getTextTracks(): Array<TextTrack> {
+    return this._localPlayer.getTextTracks();
+  }
+
   get remotePlayerManager() {
     return this._remotePlayerManager;
   }
