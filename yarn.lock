@@ -1150,13 +1150,13 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.75.0":
-  version "0.75.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.75.0.tgz#b0985e14bde4da3e5955b283be38386430c2f1cd"
-  integrity sha512-eXJljn2M4b7p5uTZtC5JNqvca9t3fwUsu+b3kRIRBsO9enXcjyEt8Smx2IUjXy8TCf9YQBdGcBX7MnArBlQMKA==
+"@playkit-js/playkit-js@canary":
+  version "0.76.0-canary.f841b7e"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.76.0-canary.f841b7e.tgz#9c5442e894cc028c689fdfc9399264ae87b9ed08"
+  integrity sha512-S3JO9ymJfcRU/IzgQxLr7MnHNPnLSHbE9VKQz2S8jAlc985bFuhQnlj1D8Z/osJ5YhTDgJDrtvk2+WUJ7HD+Uw==
   dependencies:
     js-logger "^1.6.0"
-    ua-parser-js "^0.7.21"
+    ua-parser-js "1.0.2"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -9880,10 +9880,10 @@ ua-parser-js@0.7.21:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
   integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
 
-ua-parser-js@^0.7.21:
-  version "0.7.28"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
-  integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
+ua-parser-js@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.2.tgz#e2976c34dbfb30b15d2c300b2a53eac87c57a775"
+  integrity sha512-00y/AXhx0/SsnI51fTc0rLRmafiGOM4/O+ny10Ps7f+j/b8p/ZY11ytMgznXkOVo4GQ+KwQG5UQLkLGirsACRg==
 
 uglify-js@^3.1.4, uglify-js@^3.6.0:
   version "3.10.0"
