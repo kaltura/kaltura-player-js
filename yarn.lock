@@ -1135,10 +1135,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.28.0.tgz#a6f5b0030ffbdf61791c91373a70a24f4e41806b"
   integrity sha512-c3HLn09eTQlYjO3FgNoT8rssL7eXM8B2yabliG6VY5IpqpujFvRSI6v/XX+QFFuPIgFR5b5ab2isxPKp9HibjQ==
 
-"@playkit-js/playkit-js-hls@1.27.3":
-  version "1.27.3"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.27.3.tgz#4992f79f9ed857fae588d7083ce0253028241516"
-  integrity sha512-gcYF50OiFv8e3G+uEE8WNVcnOhGFwiyMbftCYDS18olkGwfl6O0yIxk+BwmjGMAuhuIv+Flst9GG177VvpmJpg==
+"@playkit-js/playkit-js-hls@1.27.5":
+  version "1.27.5"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.27.5.tgz#c4d3cfc27c1df5103a675f7016c4dc7a60894b3f"
+  integrity sha512-HjOKHqONx+Yu56pP1BUIDrt0HL62284oQ/1SNowDQpoQRzqHiaXdFwt0sZK55FkGAcZMLfdS8IESC2daW+eXWQ==
 
 "@playkit-js/playkit-js-ui@0.69.4":
   version "0.69.4"
