@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/kaltura/kaltura-player-js/compare/v1.16.3...v1.17.0) (2021-12-21)
+
+
+### Bug Fixes
+
+* update playkit-js-hls to [1.27.5](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.5) ([064e3a1](https://github.com/kaltura/kaltura-player-js/commit/064e3a1))
+* update playkit-js-ui to [0.69.5](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.5) ([e18a2b4](https://github.com/kaltura/kaltura-player-js/commit/e18a2b4))
+* **FEC-11711:** loadMedia is triggered before configuration is set from getMediaConfig ([#508](https://github.com/kaltura/kaltura-player-js/issues/508)) ([15b90e9](https://github.com/kaltura/kaltura-player-js/commit/15b90e9))
+
+
+### Features
+
+* update playkit-js to [0.76.0](https://github.com/kaltura/playkit-js/releases/tag/v0.76.0) ([beaac5f](https://github.com/kaltura/kaltura-player-js/commit/beaac5f))
+* update playkit-js-dash to [1.28.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.28.0) ([110e03b](https://github.com/kaltura/kaltura-player-js/commit/110e03b))
+* update playkit-js-providers to [2.32.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.32.0) ([a8c7123](https://github.com/kaltura/kaltura-player-js/commit/a8c7123))
+* **FEC-11632:** expose stream timed metadata ([#509](https://github.com/kaltura/kaltura-player-js/issues/509)) ([9610316](https://github.com/kaltura/kaltura-player-js/commit/9610316))
+
+
+
 ### [1.16.3](https://github.com/kaltura/kaltura-player-js/compare/v1.16.2...v1.16.3) (2021-11-24)
 
 
