@@ -37,6 +37,7 @@ import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middl
 import {ThumbnailManager} from './common/thumbnail-manager';
 import {CuePointManager} from './common/cuepoint/cuepoint-manager';
 import {ServiceProvider} from './common/service-provider';
+import {RelatedEventType} from './common/related/related-event-type';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -722,6 +723,7 @@ class KalturaPlayer extends FakeEventTarget {
       Cast: CastEventType,
       Core: CoreEventType,
       Playlist: PlaylistEventType,
+      Related: RelatedEventType,
       UI: UIEventType,
       // For backward compatibility
       ...CoreEventType,
