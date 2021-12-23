@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.17.2](https://github.com/kaltura/kaltura-player-js/compare/v1.17.1...v1.17.2) (2021-12-23)
+
+
+### Bug Fixes
+
+* **FEC-11792:** slides does not appear in dual video ([#510](https://github.com/kaltura/kaltura-player-js/issues/510)) ([a2f69fa](https://github.com/kaltura/kaltura-player-js/commit/a2f69fa))
+
+
+
 ### [1.17.1](https://github.com/kaltura/kaltura-player-js/compare/v1.17.0...v1.17.1) (2021-12-21)
 
 
