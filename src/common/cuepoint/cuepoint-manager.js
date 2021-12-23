@@ -44,13 +44,16 @@ export class CuePointManager {
   }
 
   getCuePointById(id: string): ?TextTrackCue {
+    let cuePointById = null;
     const metadataTracks = this._getMetadataTracks();
-    metadataTracks.forEach(track => {
+    metadataTracks.every(track => {
       const cuePoint = track.cues.getCueById(id);
       if (cuePoint) {
-        return cuePoint;
+        cuePointById = cuePoint;
       }
+      return !cuePointById;
     });
+    return cuePointById;
   }
 
   removeCuePoint(cuePoint: TextTrackCue) {
