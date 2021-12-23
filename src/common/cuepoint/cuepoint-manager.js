@@ -51,7 +51,7 @@ export class CuePointManager {
       if (cuePoint) {
         cuePointById = cuePoint;
       }
-      return !cuePointById;
+      return !cuePoint;
     });
     return cuePointById;
   }
