@@ -27,6 +27,8 @@ declare module 'global' {
           Settings: {
             displayName: string;
           };
+          PrevNext: any;
+          PrePlaybackPlayOverlay: any;
         };
         preactHooks: any;
         preacti18n: any;
