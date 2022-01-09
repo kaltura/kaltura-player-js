@@ -1,12 +1,6 @@
 //@flow
-import {FakeEvent, TextTrack, EventType, createTextTrackCue} from '@playkit-js/playkit-js';
+import {FakeEvent, TextTrack, EventType, CuePoint, createTextTrackCue, createCuePoint} from '@playkit-js/playkit-js';
 import {CUE_POINTS_TEXT_TRACK, CUE_POINT_KEY} from './cuepoint-type';
-
-interface CuePoint {
-  id: string;
-  startTime: number;
-  endTime: number;
-}
 
 export class CuePointManager {
   _player: KalturaPlayer;
@@ -25,25 +19,27 @@ export class CuePointManager {
   }
 
   _createTextTrackCue(data: CuePoint): TextTrackCue {
-    const {startTime, endTime, id} = data;
-    return createTextTrackCue({startTime, endTime, id, type: CUE_POINT_KEY, metadata: data});
+    const {startTime, endTime, id, ...metadata} = data;
+    return createTextTrackCue({startTime, endTime, id, type: CUE_POINT_KEY, metadata});
   }
 
-  _cuesSorter(a: TextTrackCue, b: TextTrackCue): number {
+  _cuesSorter(a: CuePoint, b: CuePoint): number {
     return a.startTime - b.startTime;
   }
 
-  getAllCuePoints(): Array<TextTrackCue> {
+  getAllCuePoints(): Array<CuePoint> {
     const metadataTracks = this._getMetadataTracks();
-    return metadataTracks.reduce((cues, track) => cues.concat(...track.cues), []).sort(this._cuesSorter);
+    return metadataTracks.reduce((cues, track) => cues.concat(Array.from(track.cues).map(cue => createCuePoint(cue))), []).sort(this._cuesSorter);
   }
 
-  getActiveCuePoints(): Array<TextTrackCue> {
+  getActiveCuePoints(): Array<CuePoint> {
     const metadataTracks = this._getMetadataTracks();
-    return metadataTracks.reduce((cues, track) => cues.concat(...track.activeCues), []).sort(this._cuesSorter);
+    return metadataTracks
+      .reduce((cues, track) => cues.concat(Array.from(track.activeCues).map(cue => createCuePoint(cue))), [])
+      .sort(this._cuesSorter);
   }
 
-  getCuePointById(id: string): ?TextTrackCue {
+  _getTextTrackCueById(id: string): ?TextTrackCue {
     let cuePoint = null;
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.some(track => {
@@ -53,12 +49,12 @@ export class CuePointManager {
     return cuePoint;
   }
 
-  removeCuePoint(cuePoint: TextTrackCue) {
+  _removeTextTrackCue(cuePoint: TextTrackCue) {
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.forEach(track => {
       try {
         track.removeCue(cuePoint);
-      } catch (e) {
+      } catch {
         // do nothing
       }
     });
@@ -72,28 +68,28 @@ export class CuePointManager {
       const newCuePoints: Array<TextTrackCue> = [];
       data.forEach((cuePoint: CuePoint) => {
         const textTrackCue = this._createTextTrackCue(cuePoint);
-        const exisedCue = this.getCuePointById(textTrackCue.id);
+        const exisedCue = this._getTextTrackCueById(cuePoint.id);
         if (exisedCue) {
-          this.removeCuePoint(exisedCue);
+          this._removeTextTrackCue(exisedCue);
         }
         this._textTrack?.addCue(textTrackCue);
-        newCuePoints.push(textTrackCue);
+        newCuePoints.push(createCuePoint(textTrackCue));
       });
       this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
     });
   }
 
-  clearAllCuePoints() {
+  _clearAllTextTrackCues() {
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.forEach(track => {
       while (track.cues.length) {
-        this.removeCuePoint(track.cues[0]);
+        this._removeTextTrackCue(track.cues[0]);
       }
     });
   }
 
   reset() {
-    this.clearAllCuePoints();
+    this._clearAllTextTrackCues();
   }
 
   destroy() {
