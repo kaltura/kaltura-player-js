@@ -1,6 +1,6 @@
 //@flow
 import {FakeEvent, TextTrack, EventType, CuePoint, createTextTrackCue, createCuePoint} from '@playkit-js/playkit-js';
-import {CUE_POINTS_TEXT_TRACK} from './cuepoint-type';
+const CUE_POINTS_TEXT_TRACK = 'CuePoints';
 
 export class CuePointManager {
   _player: KalturaPlayer;
