@@ -1,6 +1,6 @@
 //@flow
 import {FakeEvent, TextTrack, EventType, CuePoint, createTextTrackCue, createCuePoint} from '@playkit-js/playkit-js';
-import {CUE_POINTS_TEXT_TRACK, CUE_POINT_KEY} from './cuepoint-type';
+import {CUE_POINTS_TEXT_TRACK} from './cuepoint-type';
 
 export class CuePointManager {
   _player: KalturaPlayer;
@@ -19,8 +19,8 @@ export class CuePointManager {
   }
 
   _createTextTrackCue(data: CuePoint): TextTrackCue {
-    const {startTime, endTime, id, ...metadata} = data;
-    return createTextTrackCue({startTime, endTime, id, type: CUE_POINT_KEY, metadata});
+    const {startTime, endTime, id, metadata} = data;
+    return createTextTrackCue({startTime, endTime, id, type: CuePoint.TYPE.CUE_POINT, metadata});
   }
 
   _cuesSorter(a: CuePoint, b: CuePoint): number {
