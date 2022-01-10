@@ -22,6 +22,7 @@ declare module 'global' {
           Tooltip: any;
           Icon: any;
           IconType: any;
+          IconState: any;
           PLAYER_SIZE: Record<string, string>;
           Remove: string;
           Settings: {
