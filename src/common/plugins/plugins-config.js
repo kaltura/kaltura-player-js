@@ -3,6 +3,7 @@ import {PluginConfigStore, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
 import {Utils} from '@playkit-js/playkit-js';
+import {getServerUIConf} from '../utils/setup-helpers';
 
 /**
  * returns whether value is evaluated
@@ -44,7 +45,7 @@ const removeUnevaluatedExpression = (obj: Object = {}): Object =>
  */
 const getModel = (options: KPOptionsObject): Object => {
   const dataModel: Object = {
-    pVersion: options.productVersion ? options.productVersion : __VERSION__,
+    pVersion: getServerUIConf()?.productVersion || __VERSION__,
     pName: __NAME__
   };
   if (options.targetId) {
