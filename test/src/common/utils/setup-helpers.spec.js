@@ -63,7 +63,23 @@ describe('error handling', function () {
       div.id = 'test-id';
       document.body.appendChild(div);
       (navigator.sendBeacon.getCall(0) === null).should.be.true;
-      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {partnerId: 2504201}, productVersion: '7.37'});
+      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {partnerId: 2504201}});
+      document.body.removeChild(div);
+      navigator.sendBeacon
+        .getCall(0)
+        .args[0].should.include(
+          'https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=2504201&entryId=1_3bwzbc9o&&eventIndex=1&position=0&referrer'
+        );
+      done();
+    });
+
+    it('should the beacon include clientVer', function (done) {
+      const div = document.createElement('DIV');
+      window.__kalturaplayerdata = {productVersion: '7.37'};
+      div.id = 'test-id';
+      document.body.appendChild(div);
+      (navigator.sendBeacon.getCall(0) === null).should.be.true;
+      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {partnerId: 2504201}});
       document.body.removeChild(div);
       navigator.sendBeacon
         .getCall(0)
