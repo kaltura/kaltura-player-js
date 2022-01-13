@@ -1,12 +1,6 @@
 //@flow
-import {FakeEvent, TextTrack, EventType, createTextTrackCue} from '@playkit-js/playkit-js';
-import {CUE_POINTS_TEXT_TRACK, CUE_POINT_KEY} from './cuepoint-type';
-
-interface CuePoint {
-  id: string;
-  startTime: number;
-  endTime: number;
-}
+import {FakeEvent, TextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata} from '@playkit-js/playkit-js';
+const CUE_POINTS_TEXT_TRACK = 'CuePoints';
 
 export class CuePointManager {
   _player: KalturaPlayer;
@@ -25,40 +19,44 @@ export class CuePointManager {
   }
 
   _createTextTrackCue(data: CuePoint): TextTrackCue {
-    const {startTime, endTime, id} = data;
-    return createTextTrackCue({startTime, endTime, id, type: CUE_POINT_KEY, metadata: data});
+    const {startTime, endTime, id, metadata} = data;
+    return createTextTrackCue({startTime, endTime, id, type: TimedMetadata.TYPE.CUE_POINT, metadata});
   }
 
-  _cuesSorter(a: TextTrackCue, b: TextTrackCue): number {
+  _cuesSorter(a: CuePoint, b: CuePoint): number {
     return a.startTime - b.startTime;
   }
 
-  getAllCuePoints(): Array<TextTrackCue> {
+  getAllCuePoints(): Array<TimedMetadata> {
     const metadataTracks = this._getMetadataTracks();
-    return metadataTracks.reduce((cues, track) => cues.concat(...track.cues), []).sort(this._cuesSorter);
+    return metadataTracks
+      .reduce((cues, track) => cues.concat(Array.from(track.cues).map(cue => createTimedMetadata(cue))), [])
+      .sort(this._cuesSorter);
   }
 
-  getActiveCuePoints(): Array<TextTrackCue> {
+  getActiveCuePoints(): Array<TimedMetadata> {
     const metadataTracks = this._getMetadataTracks();
-    return metadataTracks.reduce((cues, track) => cues.concat(...track.activeCues), []).sort(this._cuesSorter);
+    return metadataTracks
+      .reduce((cues, track) => cues.concat(Array.from(track.activeCues).map(cue => createTimedMetadata(cue))), [])
+      .sort(this._cuesSorter);
   }
 
-  getCuePointById(id: string): ?TextTrackCue {
-    let cuePoint = null;
+  _getTextTrackCueById(id: string): ?TextTrackCue {
+    let cue = null;
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.some(track => {
-      cuePoint = track.cues.getCueById(id);
-      return cuePoint;
+      cue = track.cues.getCueById(id);
+      return cue;
     });
-    return cuePoint;
+    return cue;
   }
 
-  removeCuePoint(cuePoint: TextTrackCue) {
+  _removeTextTrackCue(cue: TextTrackCue) {
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.forEach(track => {
       try {
-        track.removeCue(cuePoint);
-      } catch (e) {
+        track.removeCue(cue);
+      } catch {
         // do nothing
       }
     });
@@ -69,31 +67,31 @@ export class CuePointManager {
       if (!this._textTrack) {
         this._addTextTrack();
       }
-      const newCuePoints: Array<TextTrackCue> = [];
+      const timedMetadataArr: Array<TimedMetadata> = [];
       data.forEach((cuePoint: CuePoint) => {
         const textTrackCue = this._createTextTrackCue(cuePoint);
-        const exisedCue = this.getCuePointById(textTrackCue.id);
+        const exisedCue = this._getTextTrackCueById(cuePoint.id);
         if (exisedCue) {
-          this.removeCuePoint(exisedCue);
+          this._removeTextTrackCue(exisedCue);
         }
         this._textTrack?.addCue(textTrackCue);
-        newCuePoints.push(textTrackCue);
+        timedMetadataArr.push(createTimedMetadata(textTrackCue));
       });
-      this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, {cues: newCuePoints}));
+      this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, {cues: timedMetadataArr}));
     });
   }
 
-  clearAllCuePoints() {
+  _clearAllTextTrackCues() {
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.forEach(track => {
       while (track.cues.length) {
-        this.removeCuePoint(track.cues[0]);
+        this._removeTextTrackCue(track.cues[0]);
       }
     });
   }
 
   reset() {
-    this.clearAllCuePoints();
+    this._clearAllTextTrackCues();
   }
 
   destroy() {

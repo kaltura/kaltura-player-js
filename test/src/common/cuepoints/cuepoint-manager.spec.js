@@ -57,11 +57,11 @@ describe('CuePointManager', () => {
       expect(player.cuePointManager.getAllCuePoints().length).eql(0);
       player.cuePointManager.addCuePoints(cuePoints);
       expect(player.cuePointManager.getAllCuePoints().length).eql(3);
-      const cuePoint = player.cuePointManager.getCuePointById('test-id-1');
+      const cuePoint = player.cuePointManager._getTextTrackCueById('test-id-1');
       expect(cuePoint.id).to.eql('test-id-1');
-      player.cuePointManager.removeCuePoint(cuePoint);
+      player.cuePointManager._removeTextTrackCue(cuePoint);
       expect(player.cuePointManager.getAllCuePoints().length).eql(2);
-      player.cuePointManager.clearAllCuePoints();
+      player.cuePointManager._clearAllTextTrackCues();
       expect(player.cuePointManager.getAllCuePoints().length).eql(0);
     });
   });

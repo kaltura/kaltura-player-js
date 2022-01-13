@@ -3,21 +3,24 @@ import {ConfigEvaluator, getEncodedReferrer} from '../../../../src/common/plugin
 let sandbox = sinon.createSandbox();
 
 describe('evaluatePluginsConfig', function () {
-  const playerConfig = {
-    targetId: 'myTargetId',
-    provider: {
-      partnerId: '1234'
-    }
-  };
-  const pluginsConfig = {
-    kava: {
-      myHandler: function () {},
-      myUnevaluatedConfig: '{{abc}}',
-      myArray: [1, 'value', 0, true, '{{value}}', false]
-    }
-  };
+  let playerConfig, pluginsConfig, configEvaluator;
+  beforeEach(function () {
+    playerConfig = {
+      targetId: 'myTargetId',
+      provider: {
+        partnerId: '1234'
+      }
+    };
+    pluginsConfig = {
+      kava: {
+        myHandler: function () {},
+        myUnevaluatedConfig: '{{abc}}',
+        myArray: [1, 'value', 0, true, '{{value}}', false]
+      }
+    };
 
-  const configEvaluator = new ConfigEvaluator();
+    configEvaluator = new ConfigEvaluator();
+  });
 
   it('should save the function after evaluatePluginsConfig called', function () {
     configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
@@ -39,6 +42,20 @@ describe('evaluatePluginsConfig', function () {
   it('should remove unevaluated plugins config from array', function () {
     configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.myArray.should.deep.equal([1, 'value', 0, true, false]);
+  });
+
+  it('should set playerVersion as productVersion from server', function () {
+    window.__kalturaplayerdata = {productVersion: '7.43.1'};
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
+    pluginsConfig.kava.should.have.property('playerVersion');
+    pluginsConfig.kava.playerVersion.should.equal('7.43.1');
+  });
+
+  it('should set playerVersion as playerVersion', function () {
+    window.__kalturaplayerdata = {};
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
+    pluginsConfig.kava.should.have.property('playerVersion');
+    pluginsConfig.kava.playerVersion.should.equal(__VERSION__);
   });
 });
 

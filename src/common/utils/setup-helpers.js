@@ -80,7 +80,8 @@ function addProductVersion(url: string, productVersion: ?string): string {
  * @returns {void}
  */
 function validateProviderConfig(options: KPOptionsObject): void {
-  const {provider: providerOptions, productVersion}: {provider: ProviderOptionsObject, productVersion?: string} = options;
+  const {provider: providerOptions}: {provider: ProviderOptionsObject} = options;
+  const productVersion: string = getServerUIConf()?.productVersion;
   if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
     const source = {

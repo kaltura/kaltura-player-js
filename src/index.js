@@ -17,8 +17,6 @@ import {getPlayers, getPlayer} from './proxy';
 import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
-// Import cue-points
-import {cuepoint} from './common/cuepoint';
 
 // Import plugin framework
 import {Ad, AdBreak} from './common/ads';
@@ -50,7 +48,6 @@ export {
   setup,
   cast,
   playlist,
-  cuepoint,
   Ad,
   AdBreak,
   BasePlugin,
