@@ -32,6 +32,7 @@ declare module 'global' {
           PrevNext: any;
           PrePlaybackPlayOverlay: any;
         };
+        style: any;
         preactHooks: any;
         preacti18n: any;
       };
