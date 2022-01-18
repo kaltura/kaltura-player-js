@@ -250,7 +250,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   getDrmInfo(): ?PKDrmDataObject {
-    this._localPlayer.getDrmInfo();
+    return this._localPlayer.getDrmInfo();
   }
 
   getMediaConfig(): ?KPMediaConfig {
