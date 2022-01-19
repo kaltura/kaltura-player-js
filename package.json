@@ -60,7 +60,7 @@
     "@playkit-js/playkit-js": "0.77.0",
     "@playkit-js/playkit-js-dash": "1.29.0",
     "@playkit-js/playkit-js-hls": "1.28.0",
-    "@playkit-js/playkit-js-ui": "0.69.5",
+    "@playkit-js/playkit-js-ui": "0.70.0",
     "hls.js": "^1.0.7",
     "intersection-observer": "^0.12.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.32.0",
