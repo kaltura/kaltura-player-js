@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/kaltura/kaltura-player-js/compare/v1.17.3...v2.0.0) (2022-01-19)
+
+
+### Bug Fixes
+
+* **FEC-11863:** default kava details are reported with no player version ([#513](https://github.com/kaltura/kaltura-player-js/issues/513)) ([42425b8](https://github.com/kaltura/kaltura-player-js/commit/42425b8))
+* **FEC-11864:** kava reports player version instead of product version ([#514](https://github.com/kaltura/kaltura-player-js/issues/514)) ([b81f88b](https://github.com/kaltura/kaltura-player-js/commit/b81f88b))
+
+
+### Features
+
+* update playkit-js to [0.77.0](https://github.com/kaltura/playkit-js/releases/tag/v0.77.0) ([5dbbda4](https://github.com/kaltura/kaltura-player-js/commit/5dbbda4))
+* update playkit-js-dash to [1.29.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.29.0) ([2054f7c](https://github.com/kaltura/kaltura-player-js/commit/2054f7c))
+* update playkit-js-hls to [1.28.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.28.0) ([7c83f29](https://github.com/kaltura/kaltura-player-js/commit/7c83f29))
+* update playkit-js-ui to [0.70.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.70.0) ([363cc8f](https://github.com/kaltura/kaltura-player-js/commit/363cc8f))
+* **FEC-11738:** Related Entries - Phase 1 ([#511](https://github.com/kaltura/kaltura-player-js/issues/511)) ([13163a8](https://github.com/kaltura/kaltura-player-js/commit/13163a8))
+* **FEC-11761:** expose stream timed metadata - phase 2 ([#512](https://github.com/kaltura/kaltura-player-js/issues/512)) ([dea6cbb](https://github.com/kaltura/kaltura-player-js/commit/dea6cbb))
+
+
+### BREAKING CHANGES
+
+* **FEC-11761:** for - 
+https://github.com/kaltura/playkit-js-dual-screen/pull/52
+https://github.com/kaltura/playkit-js-kaltura-cuepoints/pull/15
+
+
+
 ### [1.17.3](https://github.com/kaltura/kaltura-player-js/compare/v1.17.1...v1.17.3) (2022-01-02)
 
 
