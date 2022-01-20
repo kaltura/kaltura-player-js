@@ -16,18 +16,23 @@ declare module 'global' {
           getLogger: (name: string) => KalturaPlayerTypes.Logger;
           bindActions(actions: Record<string, unknown>[]): (...args: any) => void;
           KeyMap: Record<string, number>;
+          toHHMMSS: (seconds: number) => string;
         };
         components: {
           withPlayer: any;
           Tooltip: any;
           Icon: any;
           IconType: any;
+          IconState: any;
           PLAYER_SIZE: Record<string, string>;
           Remove: string;
           Settings: {
             displayName: string;
           };
+          PrevNext: any;
+          PrePlaybackPlayOverlay: any;
         };
+        style: any;
         preactHooks: any;
         preacti18n: any;
       };
