@@ -19,6 +19,8 @@ declare module 'global' {
           toHHMMSS: (seconds: number) => string;
         };
         components: {
+          SeekBarPlaybackContainer: any;
+          Overlay: any;
           withPlayer: any;
           Tooltip: any;
           Icon: any;
