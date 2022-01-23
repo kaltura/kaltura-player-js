@@ -249,6 +249,12 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
+  /**
+   * returns the media drm info.
+   * @returns {PKDrmDataObject} - the drm info
+   * @instance
+   * @memberof KalturaPlayer
+   */
   getDrmInfo(): ?PKDrmDataObject {
     return this._localPlayer.getDrmInfo();
   }
