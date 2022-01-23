@@ -1130,9 +1130,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#master":
+"@playkit-js/playkit-js-dash@1.29.0":
   version "1.29.0"
-  resolved "https://github.com/kaltura/playkit-js-dash.git#092363431ce57dfa63669d2ac175147adc91c05b"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.29.0.tgz#366f905984ef60722a9ca0074782d791d8412371"
+  integrity sha512-bABolH0n2WsCjmV3qD24xP9R6M4qetEoYQICN7tx2myxqMj0P+gg4EvSqTKb4riV/D+vRqGNOueVh4wQLfyQhA==
 
 "@playkit-js/playkit-js-hls@1.28.0":
   version "1.28.0"
@@ -1149,9 +1150,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js.git#master":
+"@playkit-js/playkit-js@0.77.0":
   version "0.77.0"
-  resolved "https://github.com/kaltura/playkit-js.git#8e0d03225420f2d876202ab25f821804046be6d2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.77.0.tgz#28bcbfdfb534f9d9c0173aaf21e407e7d98565e6"
+  integrity sha512-S6CHY1jr+Z9kTprL4HbzPo1JGbI6kMt4vscT04HImVdf6c8hJ7/lbV42eqfaAJCat9q9oOIm61KYpId147pO8w==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
