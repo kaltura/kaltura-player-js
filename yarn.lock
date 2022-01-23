@@ -1130,9 +1130,9 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@kaltura/playkit-js-dash#master":
+"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash.git#master":
   version "1.29.0"
-  resolved "https://codeload.github.com/kaltura/playkit-js-dash/tar.gz/092363431ce57dfa63669d2ac175147adc91c05b"
+  resolved "https://github.com/kaltura/playkit-js-dash.git#092363431ce57dfa63669d2ac175147adc91c05b"
 
 "@playkit-js/playkit-js-hls@1.28.0":
   version "1.28.0"
@@ -1149,9 +1149,9 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@kaltura/playkit-js#master":
+"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js.git#master":
   version "0.77.0"
-  resolved "https://codeload.github.com/kaltura/playkit-js/tar.gz/8e0d03225420f2d876202ab25f821804046be6d2"
+  resolved "https://github.com/kaltura/playkit-js.git#8e0d03225420f2d876202ab25f821804046be6d2"
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
