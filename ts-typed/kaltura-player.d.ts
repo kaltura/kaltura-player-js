@@ -4,7 +4,6 @@ declare module 'global' {
       providers: {
         RequestBuilder: any;
         ResponseTypes: any;
-        ServiceResult: any;
       };
       ui: {
         EventType: Record<string, string>;
