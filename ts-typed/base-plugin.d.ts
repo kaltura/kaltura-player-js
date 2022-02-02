@@ -5,7 +5,7 @@ declare namespace KalturaPlayerTypes {
     config: any;
     logger: KalturaPlayerTypes.Logger;
     getName(): string;
-    destroy();
-    dispatchEvent(name: string, payload: any);
+    destroy(): void;
+    dispatchEvent(name: string, payload: any): void;
   }
 }
