@@ -24,7 +24,7 @@ declare namespace KalturaPlayerTypes {
     paused: boolean;
     seeking: boolean;
     isOnLiveEdge: () => boolean;
-    loadMedia: (options: {entryId: string; ks?: string}) => void;
+    loadMedia: (options: {entryId: string; ks?: string}) => Promise<any>;
     setMedia: (options: any) => void;
     getVideoElement(): HTMLVideoElement;
     addEventListener(type: string, listener: CoreEventListener): void;
