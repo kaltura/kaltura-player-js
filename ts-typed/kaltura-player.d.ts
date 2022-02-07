@@ -9,6 +9,7 @@ declare module 'global' {
         EventType: Record<string, string>;
         redux: {
           connect: (...args: any) => any;
+          useSelector: (...args: any) => any;
         };
         reducers: Record<string, {actions: Record<string, unknown>[]}>;
         createPortal: (children: any, domElement: HTMLElement) => void;
