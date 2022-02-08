@@ -20,6 +20,35 @@ const isValueEvaluated = (value: any): boolean =>
   !templateRegex.test(value.toString());
 
 /**
+ * returns whether the value is a simple object (not a function or class instance)
+ * @private
+ * @param {*} value - the value to be checked
+ * @returns {boolean} - whether the value is a simple object or not
+ */
+const isSimpleObject = (value: any): boolean => Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value);
+
+/**
+ * filters out unevaluated expressions in an array
+ * @private
+ * @param {Array} value - the array to be checked
+ * @returns {Array} - the array with unevaluated expressions filtered out
+ */
+const filterUnevaluatedExpressions = (value: $ReadOnlyArray<any>): $ReadOnlyArray<any> => {
+  return value
+    .map(item => {
+      if (isSimpleObject(item)) {
+        const updatedItem = removeUnevaluatedExpression(item);
+        return Utils.Object.isEmptyObject(updatedItem) ? null : updatedItem;
+      } else if (isValueEvaluated(item)) {
+        return item;
+      } else {
+        return null;
+      }
+    })
+    .filter(item => item !== null);
+};
+
+/**
  * remove unevaluated expressions form object
  * @private
  * @param {Object} obj - the object examine
@@ -27,21 +56,10 @@ const isValueEvaluated = (value: any): boolean =>
  */
 const removeUnevaluatedExpression = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
-    if (Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value)) {
+    if (isSimpleObject(value)) {
       product[key] = removeUnevaluatedExpression(value);
     } else if (Array.isArray(value)) {
-      product[key] = value
-        .map(item => {
-          if (Utils.Object.isObject(item) && typeof item !== 'function' && !Utils.Object.isClassInstance(item)) {
-            const updatedItem = removeUnevaluatedExpression(item);
-            return Utils.Object.isEmptyObject(updatedItem) ? null : updatedItem;
-          } else if (isValueEvaluated(item)) {
-            return item;
-          } else {
-            return null;
-          }
-        })
-        .filter(item => item !== null);
+      product[key] = filterUnevaluatedExpressions(value);
     } else if (isValueEvaluated(value)) {
       product[key] = value;
     }
