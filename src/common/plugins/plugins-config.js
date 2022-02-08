@@ -30,7 +30,18 @@ const removeUnevaluatedExpression = (obj: Object = {}): Object =>
     if (Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value)) {
       product[key] = removeUnevaluatedExpression(value);
     } else if (Array.isArray(value)) {
-      product[key] = value.filter(index => isValueEvaluated(index));
+      product[key] = value
+        .map(item => {
+          if (Utils.Object.isObject(item) && typeof item !== 'function' && !Utils.Object.isClassInstance(item)) {
+            const updatedItem = removeUnevaluatedExpression(item);
+            return Utils.Object.isEmptyObject(updatedItem) ? null : updatedItem;
+          } else if (isValueEvaluated(item)) {
+            return item;
+          } else {
+            return null;
+          }
+        })
+        .filter(item => item !== null);
     } else if (isValueEvaluated(value)) {
       product[key] = value;
     }
