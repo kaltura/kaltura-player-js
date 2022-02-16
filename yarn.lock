@@ -7707,9 +7707,9 @@ pkginfo@0.x.x:
     prompt "^1.0.0"
     shelljs "^0.7.8"
 
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.32.0":
-  version "2.32.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#3e7f6e0c6495cdf44d640d6fdecac6f8579e0f34"
+"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.33.0":
+  version "2.33.0"
+  resolved "https://github.com/kaltura/playkit-js-providers.git#9601657a0f68d78c56f1a70a70b1121a21798166"
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"
