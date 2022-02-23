@@ -187,13 +187,15 @@ declare namespace KalturaPlayerTypes {
     log?: Log;
   }
 
-  export interface OVPMediaInfo {
+  export interface MediaInfo {
     entryId?: string;
     referenceId?: string;
     ks?: string;
   }
 
-  export interface OTTMediaInfo extends OVPMediaInfo {
+  export interface OVPMediaInfo extends MediaInfo {}
+
+  export interface OTTMediaInfo extends MediaInfo {
     mediaType: string;
     contextType: string;
     protocol?: string;

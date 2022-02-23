@@ -24,7 +24,7 @@ declare namespace KalturaPlayerTypes {
     paused: boolean;
     seeking: boolean;
     isOnLiveEdge: () => boolean;
-    loadMedia: (options: {entryId: string; ks?: string}) => Promise<any>;
+    loadMedia: (mediaInfo: KalturaPlayerTypes.MediaInfo, mediaOptions: KalturaPlayerTypes.Sources) => Promise<any>;
     setMedia: (options: any) => void;
     getVideoElement(): HTMLVideoElement;
     addEventListener(type: string, listener: CoreEventListener): void;
@@ -44,12 +44,14 @@ declare namespace KalturaPlayerTypes {
     ready: () => Promise<any>;
     sources: KalturaPlayerTypes.Sources;
     src?: string;
-    getThumbnail: (time: number) => {
+    getThumbnail: (
+      time: number
+    ) => {
       height: number;
       url: string;
       width: number;
       x: number;
       y: number;
-    }
+    };
   }
 }
