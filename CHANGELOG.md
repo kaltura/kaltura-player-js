@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/kaltura/kaltura-player-js/compare/v2.0.0...v3.0.0) (2022-02-16)
+
+
+### Bug Fixes
+
+* update playkit-js-ui to [0.70.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.70.1) ([11ea80f](https://github.com/kaltura/kaltura-player-js/commit/11ea80f))
+* **FEC-9716:** An array doesn't merged into plugin config ([#524](https://github.com/kaltura/kaltura-player-js/issues/524)) ([773171d](https://github.com/kaltura/kaltura-player-js/commit/773171d))
+
+
+### Features
+
+* update playkit-js to [0.78.0](https://github.com/kaltura/playkit-js/releases/tag/v0.78.0) ([81c7f8f](https://github.com/kaltura/kaltura-player-js/commit/81c7f8f))
+* update playkit-js-dash to [1.30.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.0) ([a4d3b9a](https://github.com/kaltura/kaltura-player-js/commit/a4d3b9a))
+* update playkit-js-hls to [1.29.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.29.0) ([ad6997f](https://github.com/kaltura/kaltura-player-js/commit/ad6997f))
+* update playkit-js-providers to [2.33.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.33.0) ([112a412](https://github.com/kaltura/kaltura-player-js/commit/112a412))
+* **FEC-11214:** upgrade shaka to 3.3 ([#518](https://github.com/kaltura/kaltura-player-js/issues/518)) ([05cdfe0](https://github.com/kaltura/kaltura-player-js/commit/05cdfe0))
+* **FEC-11785:** [Youbora] - update youbora options for drm system that is used by the player ([#515](https://github.com/kaltura/kaltura-player-js/issues/515)) ([fbd6ab2](https://github.com/kaltura/kaltura-player-js/commit/fbd6ab2)), closes [kaltura/playkit-js-youbora#82](https://github.com/kaltura/kaltura-player-js/issues/82) [kaltura/playkit-js-dash#175](https://github.com/kaltura/kaltura-player-js/issues/175) [kaltura/playkit-js#624](https://github.com/kaltura/kaltura-player-js/issues/624)
+
+
+### BREAKING CHANGES
+
+* **FEC-11214:** - dash not supported on IE11
+
+
+
 ## [2.0.0](https://github.com/kaltura/kaltura-player-js/compare/v1.17.3...v2.0.0) (2022-01-19)
 
 
