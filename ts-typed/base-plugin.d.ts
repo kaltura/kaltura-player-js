@@ -7,5 +7,6 @@ declare namespace KalturaPlayerTypes {
     getName(): string;
     destroy(): void;
     dispatchEvent(name: string, payload: any): void;
+    loadMedia(): void;
   }
 }
