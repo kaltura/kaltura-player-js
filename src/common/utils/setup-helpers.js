@@ -406,7 +406,7 @@ function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
 }
 
 /**
- * Sets config option for LG TV
+ * Sets config option for smart TV
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
@@ -433,6 +433,10 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
       if (typeof playheadMonitorInterval !== 'number') {
         options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
       }
+    }
+    const lowLatencyMode = Utils.Object.getPropertyPath(options, 'streaming.lowLatencyMode');
+    if (typeof lowLatencyMode !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'streaming.lowLatencyMode', false);
     }
   }
 }
