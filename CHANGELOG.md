@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/kaltura/kaltura-player-js/compare/v3.0.0...v3.0.1) (2022-03-02)
+
+
+### Bug Fixes
+
+* **FEC-12000:** [smart tv][dash]dash video not working ([7c45812](https://github.com/kaltura/kaltura-player-js/commit/7c45812))
+
+
+
 ## [3.0.0](https://github.com/kaltura/kaltura-player-js/compare/v2.0.0...v3.0.0) (2022-02-16)
 
 
