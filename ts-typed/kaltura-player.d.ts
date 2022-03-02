@@ -4,6 +4,7 @@ declare module 'global' {
       providers: {
         RequestBuilder: any;
         ResponseTypes: any;
+        ProviderParser: any;
       };
       ui: {
         EventType: Record<string, string>;
@@ -44,6 +45,7 @@ declare module 'global' {
         FakeEvent: any;
         Error: any;
         StateType: Record<string, string>;
+        MediaType: Record<string, string>;
         registerPlugin(name: string, component: any): void;
         BasePlugin: {
           new (...args: any[]): KalturaPlayerTypes.BasePlugin;

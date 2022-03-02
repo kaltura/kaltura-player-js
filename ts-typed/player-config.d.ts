@@ -28,7 +28,7 @@ declare namespace KalturaPlayerTypes {
 
   export enum EntryTypes {
     Vod = 'Vod',
-    Live = 'Live',
+    Live = 'Live'
   }
 
   export interface ABR {
@@ -186,5 +186,25 @@ declare namespace KalturaPlayerTypes {
     stargetId?: string;
     debug?: boolean;
     log?: Log;
+  }
+
+  export interface MediaInfo {
+    entryId?: string;
+    referenceId?: string;
+    ks?: string;
+  }
+
+  export interface OVPMediaInfo extends MediaInfo {}
+
+  export interface OTTMediaInfo extends MediaInfo {
+    mediaType: string;
+    contextType: string;
+    protocol?: string;
+    fileIds?: string;
+    streamerType?: string;
+    urlType?: string;
+    adapterData?: any;
+    assetReferenceType?: string;
+    formats?: Array<string>;
   }
 }
