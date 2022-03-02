@@ -27,7 +27,8 @@ declare namespace KalturaPlayerTypes {
   }
 
   export enum EntryTypes {
-    Vod = 'Vod'
+    Vod = 'Vod',
+    Live = 'Live'
   }
 
   export interface ABR {
