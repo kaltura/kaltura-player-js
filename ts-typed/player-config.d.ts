@@ -207,4 +207,12 @@ declare namespace KalturaPlayerTypes {
     assetReferenceType?: string;
     formats?: Array<string>;
   }
+  export interface Logger {
+    trace(...x: any[]): void;
+    debug(...x: any[]): void;
+    info(...x: any[]): void;
+    log(...x: any[]): void;
+    warn(...x: any[]): void;
+    error(...x: any[]): void;
+  }
 }
