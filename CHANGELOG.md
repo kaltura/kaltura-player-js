@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/kaltura/kaltura-player-js/compare/v3.0.0...v3.1.0) (2022-03-23)
+
+
+### Bug Fixes
+
+* **FEC-12000:** smart tv - dash video not working ([#530](https://github.com/kaltura/kaltura-player-js/issues/530)) ([4edac6f](https://github.com/kaltura/kaltura-player-js/commit/4edac6f))
+* **FEC-12059:** [Youbora] Rendition values have a high number of "Undefined data" records ([#533](https://github.com/kaltura/kaltura-player-js/issues/533)) ([43e023e](https://github.com/kaltura/kaltura-player-js/commit/43e023e))
+
+
+### Features
+
+* update playkit-js to [0.79.0](https://github.com/kaltura/playkit-js/releases/tag/v0.79.0) ([66e3572](https://github.com/kaltura/kaltura-player-js/commit/66e3572))
+* update playkit-js-hls to [1.30.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.30.1) ([7d6ffef](https://github.com/kaltura/kaltura-player-js/commit/7d6ffef))
+* update playkit-js-providers to [2.34.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.34.0) ([b55539d](https://github.com/kaltura/kaltura-player-js/commit/b55539d))
+* **FEC-11875:** Related Entries - by context ([#523](https://github.com/kaltura/kaltura-player-js/issues/523)) ([86fe909](https://github.com/kaltura/kaltura-player-js/commit/86fe909))
+* **FEC-11889:** Upgrade to hlsjs 1.1.5 ([#528](https://github.com/kaltura/kaltura-player-js/issues/528)) ([6990f08](https://github.com/kaltura/kaltura-player-js/commit/6990f08))
+
+
+
 ## [3.0.0](https://github.com/kaltura/kaltura-player-js/compare/v2.0.0...v3.0.0) (2022-02-16)
 
 
