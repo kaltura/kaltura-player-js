@@ -1,4 +1,4 @@
-type Target = KalturaPlayerTypes.Player | HTMLElement | Document;
+type Target = KalturaPlayerTypes.Player | KalturaPlayerTypes.FakeEventTarget | HTMLElement | Document;
 type CallbackFunction = (...args: any) => void;
 
 declare namespace KalturaPlayerTypes {

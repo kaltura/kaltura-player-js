@@ -43,6 +43,9 @@ declare module 'global' {
       core: {
         EventType: Record<string, string>;
         FakeEvent: any;
+        FakeEventTarget: {
+          new (...args: any[]): KalturaPlayerTypes.FakeEventTarget;
+        }
         Error: any;
         StateType: Record<string, string>;
         MediaType: Record<string, string>;
