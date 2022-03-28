@@ -53,6 +53,9 @@ declare module 'global' {
         BaseMiddleware: {
           new (): KalturaPlayerTypes.BaseMiddleware;
         };
+        FakeEventTarget: {
+          new (): KalturaPlayerTypes.FakeEventTarget;
+        };
         utils: {
           Object: {
             mergeDeep(target: Record<string, any>, ...sources: Record<string, any>[]);
