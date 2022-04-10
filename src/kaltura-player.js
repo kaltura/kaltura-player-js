@@ -411,6 +411,10 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.hideTextTrack();
   }
 
+  showTextTrack(): void {
+    this._localPlayer.showTextTrack();
+  }
+
   enableAdaptiveBitrate(): void {
     this._localPlayer.enableAdaptiveBitrate();
   }

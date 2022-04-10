@@ -1,6 +1,7 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
 import {EventManager, Utils, getLogger} from '@playkit-js/playkit-js';
+import {components} from '@playkit-js/playkit-js-ui';
 
 export default class StorageManager {
   static StorageKeys: {[key: string]: string} = {
@@ -62,6 +63,19 @@ export default class StorageManager {
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
       const textTrack = event.payload.captionTrack;
       StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
+    });
+
+    eventManager.listen(player, player.Event.UI.UI_ELEMENT_CLICKED, event => {
+      const {element} = event.payload;
+      const {
+        ClosedCaptions: {displayName}
+      } = components;
+      if (element === displayName) {
+        eventManager.listenOnce(player, player.Event.TEXT_TRACK_CHANGED, event => {
+          const {selectedTextTrack} = event.payload;
+          StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+        });
+      }
     });
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
