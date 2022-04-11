@@ -11,17 +11,19 @@ describe('StorageManager', function () {
   let config, player, sandbox;
   const partnerId = 1091;
   const entryId = '0_wifqaipd';
-
-  before(function () {
-    TestUtils.createElement('DIV', targetId);
-  });
+  const env = {
+    cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
+    serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
+  };
 
   beforeEach(function () {
+    TestUtils.createElement('DIV', targetId);
     sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
       provider: {
-        partnerId: partnerId
+        partnerId: partnerId,
+        env
       }
     };
   });
@@ -29,11 +31,8 @@ describe('StorageManager', function () {
   afterEach(function () {
     sandbox.restore();
     TestUtils.removeVideoElementsFromTestPage();
-    window.localStorage.clear();
-  });
-
-  after(function () {
     TestUtils.removeElement(targetId);
+    window.localStorage.clear();
   });
 
   it('should return it has no storage', function () {
@@ -76,21 +75,26 @@ describe('StorageManager', function () {
     });
   });
 
-  it('should set muted to true/false depends on changed volume', function () {
+  it('should set muted to true/false depends on changed volume', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({entryId: entryId}).then(() => {
-      player.muted = true;
-      player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
-      StorageManager.getStorageConfig().playback.muted.should.be.true;
-      player.volume = 0.5;
-      player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-      StorageManager.getStorageConfig().playback.muted.should.be.false;
-      StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
-      player.volume = 0;
-      player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-      StorageManager.getStorageConfig().playback.muted.should.be.true;
-      StorageManager.getStorageConfig().playback.volume.should.equals(0);
+      try {
+        player.muted = true;
+        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
+        StorageManager.getStorageConfig().playback.muted.should.be.true;
+        player.volume = 0.5;
+        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+        StorageManager.getStorageConfig().playback.muted.should.be.false;
+        StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
+        player.volume = 0;
+        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+        StorageManager.getStorageConfig().playback.muted.should.be.true;
+        StorageManager.getStorageConfig().playback.volume.should.equals(0);
+        done();
+      } catch (err) {
+        done(err);
+      }
     });
   });
 
@@ -122,5 +126,37 @@ describe('StorageManager', function () {
     sandbox.stub(StorageManager, 'isLocalStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Verdana');
+  });
+
+  it('should set textLanguage depends on CC toggle', function (done) {
+    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
+    player = setup(config);
+    player.loadMedia({entryId: entryId}).then(() => {
+      player.load();
+      player.ready().then(() => {
+        try {
+          player.dispatchEvent(new FakeEvent(player.Event.UI.UI_ELEMENT_CLICKED, {element: 'ClosedCaptions'}));
+          player.addEventListener(player.Event.TEXT_TRACK_CHANGED, event => {
+            const {selectedTextTrack} = event.payload;
+            setTimeout(() => {
+              try {
+                StorageManager.getStorageConfig().playback.textLanguage.should.be.equal(selectedTextTrack.language);
+                if (selectedTextTrack.language === 'off') {
+                  done();
+                  return;
+                }
+                player.dispatchEvent(new FakeEvent(player.Event.UI.UI_ELEMENT_CLICKED, {element: 'ClosedCaptions'}));
+                player.hideTextTrack();
+              } catch (err) {
+                done(err);
+              }
+            });
+          });
+          player.showTextTrack();
+        } catch (err) {
+          done(err);
+        }
+      });
+    });
   });
 });
