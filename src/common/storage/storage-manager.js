@@ -65,18 +65,15 @@ export default class StorageManager {
       StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
     });
 
-    eventManager.listen(player, player.Event.UI.UI_ELEMENT_CLICKED, event => {
-      const {element} = event.payload;
-      const {
-        ClosedCaptions: {displayName}
-      } = components;
-      if (element === displayName) {
-        eventManager.listenOnce(player, player.Event.TEXT_TRACK_CHANGED, event => {
-          const {selectedTextTrack} = event.payload;
-          StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
-        });
-      }
-    });
+    const onToggleCaptions = () => {
+      eventManager.listenOnce(player, player.Event.TEXT_TRACK_CHANGED, event => {
+        const {selectedTextTrack} = event.payload;
+        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+      });
+    };
+
+    eventManager.listen(player, player.Event.UI.USER_SHOW_CAPTIONS, onToggleCaptions);
+    eventManager.listen(player, player.Event.UI.USER_HIDE_CAPTIONS, onToggleCaptions);
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
