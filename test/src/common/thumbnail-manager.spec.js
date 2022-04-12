@@ -5,7 +5,7 @@ import {setup} from '../../../src';
 
 describe('ThumbnailManager', () => {
   let thumbnailManager, fakePlayer, fakeMediaConfig, sandbox;
-  const thumbsSprite = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
+  const thumbsSprite = 'thumbsSprite.jpg';
   const fakeSeekbarConfig = {
     thumbsSlices: 200,
     thumbsWidth: 100
@@ -156,7 +156,7 @@ describe('ThumbnailManager', () => {
     const targetId = 'player-placeholder_ovp/thumbnail.spec';
 
     let config, kalturaPlayer;
-    const myCustomPosterUrl = 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg';
+    const myCustomPosterUrl = 'poster.jpg';
     const entryId = '0_wifqaipd';
     const partnerId = 1091;
     const env = {
