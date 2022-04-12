@@ -64,6 +64,16 @@ export default class StorageManager {
       StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
     });
 
+    const onToggleCaptions = () => {
+      eventManager.listenOnce(player, player.Event.TEXT_TRACK_CHANGED, event => {
+        const {selectedTextTrack} = event.payload;
+        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+      });
+    };
+
+    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, onToggleCaptions);
+    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, onToggleCaptions);
+
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
