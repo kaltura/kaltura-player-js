@@ -239,7 +239,7 @@ describe('supportLegacyOptions', function () {
         autoplay: false
       },
       metadata: {
-        poster: 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg'
+        poster: 'poster.jpg'
       }
     },
     provider: {
@@ -248,7 +248,7 @@ describe('supportLegacyOptions', function () {
     ui: {
       components: {
         seekbar: {
-          thumbsSprite: 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg'
+          thumbsSprite: 'thumbsSprite.jpg'
         }
       }
     }
@@ -268,7 +268,7 @@ describe('supportLegacyOptions', function () {
         autoplay: false
       },
       metadata: {
-        poster: 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg'
+        poster: 'poster.jpg'
       }
     },
     provider: {
@@ -277,7 +277,7 @@ describe('supportLegacyOptions', function () {
     ui: {
       components: {
         seekbar: {
-          thumbsSprite: 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg'
+          thumbsSprite: 'thumbsSprite.jpg'
         }
       }
     }
@@ -289,7 +289,7 @@ describe('supportLegacyOptions', function () {
       dvr: false,
       type: 'Live',
       duration: 10000,
-      poster: 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg',
+      poster: 'poster.jpg',
       metadata: {
         name: 'name'
       }
@@ -303,7 +303,7 @@ describe('supportLegacyOptions', function () {
     ui: {
       components: {
         seekbar: {
-          thumbsSprite: 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg'
+          thumbsSprite: 'thumbsSprite.jpg'
         }
       }
     }
