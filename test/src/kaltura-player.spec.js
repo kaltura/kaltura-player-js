@@ -105,7 +105,7 @@ describe('kaltura player api', function () {
       });
 
       it('should use the configured poster from loadMedia options', function (done) {
-        const poster = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
+        const poster = 'poster.jpg';
         kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
           kalturaPlayer.poster.should.equal(poster);
           done();

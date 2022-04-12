@@ -44,7 +44,7 @@ describe('addKalturaPoster', function () {
 
   describe('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
-    const myCustomPosterUrl = 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg';
+    const myCustomPosterUrl = 'poster.jpg';
     const entryId = '0_wifqaipd';
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;
