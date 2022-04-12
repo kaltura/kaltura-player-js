@@ -135,7 +135,7 @@ describe('StorageManager', function () {
       player.load();
       player.ready().then(() => {
         try {
-          player.dispatchEvent(new FakeEvent(player.Event.UI.UI_ELEMENT_CLICKED, {element: 'ClosedCaptions'}));
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_SHOWED_CAPTIONS, {element: 'ClosedCaptions'}));
           player.addEventListener(player.Event.TEXT_TRACK_CHANGED, event => {
             const {selectedTextTrack} = event.payload;
             setTimeout(() => {
@@ -145,7 +145,7 @@ describe('StorageManager', function () {
                   done();
                   return;
                 }
-                player.dispatchEvent(new FakeEvent(player.Event.UI.UI_ELEMENT_CLICKED, {element: 'ClosedCaptions'}));
+                player.dispatchEvent(new FakeEvent(player.Event.UI.USER_HID_CAPTIONS, {element: 'ClosedCaptions'}));
                 player.hideTextTrack();
               } catch (err) {
                 done(err);

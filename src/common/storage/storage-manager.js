@@ -1,7 +1,6 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
 import {EventManager, Utils, getLogger} from '@playkit-js/playkit-js';
-import {components} from '@playkit-js/playkit-js-ui';
 
 export default class StorageManager {
   static StorageKeys: {[key: string]: string} = {
