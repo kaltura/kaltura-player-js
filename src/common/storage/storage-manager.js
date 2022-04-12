@@ -72,8 +72,8 @@ export default class StorageManager {
       });
     };
 
-    eventManager.listen(player, player.Event.UI.USER_SHOW_CAPTIONS, onToggleCaptions);
-    eventManager.listen(player, player.Event.UI.USER_HIDE_CAPTIONS, onToggleCaptions);
+    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, onToggleCaptions);
+    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, onToggleCaptions);
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
