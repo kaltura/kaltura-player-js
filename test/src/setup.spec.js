@@ -8,7 +8,7 @@ const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function () {
   let config, kalturaPlayer, sandbox;
-  const entryId = '0_wifqaipd';
+  const entryId = '0_hut6q26s';
   const partnerId = 1091;
   const env = {
     cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
