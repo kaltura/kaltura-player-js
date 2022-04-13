@@ -189,7 +189,7 @@ describe('ThumbnailManager', () => {
       TestUtils.removeElement(targetId);
     });
 
-    it('should create thumbnail url from provider poster not from configured poster', function (done) {
+    it.skip('should create thumbnail url from provider poster not from configured poster', function (done) {
       config.sources.poster = myCustomPosterUrl;
       kalturaPlayer = setup(config);
       kalturaPlayer.loadMedia({entryId: entryId}).then(() => {

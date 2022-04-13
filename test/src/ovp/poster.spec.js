@@ -43,10 +43,10 @@ describe('addKalturaPoster', function () {
     mediaSources.poster.should.equal(playerSources.poster);
   });
 
-  describe('Poster Integration', function () {
+  describe.skip('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
     const myCustomPosterUrl = Images.POSTER;
-    const entryId = '0_nwkp7jtx';
+    const entryId = '0_wifqaipd';
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;
     const env = {
@@ -121,36 +121,21 @@ describe('addKalturaPoster', function () {
 
     it('should choose configured poster on change media', function (done) {
       kalturaPlayer = setup(config);
-      provider
-        .getMediaConfig({entryId: entryId})
-        .then(mediaConfig => {
-          kalturaPlayer
-            .loadMedia({entryId: entryId})
-            .then(() => {
-              kalturaPlayer.sources.poster.should.have.string(mediaConfig.sources.poster);
-              kalturaPlayer.reset();
-              kalturaPlayer.configure({
-                sources: {
-                  poster: myCustomPosterUrl
-                }
-              });
-              kalturaPlayer
-                .loadMedia({entryId: alterEntryId})
-                .then(() => {
-                  kalturaPlayer.sources.poster.should.equal(myCustomPosterUrl);
-                  done();
-                })
-                .catch(err => {
-                  done(err);
-                });
-            })
-            .catch(err => {
-              done(err);
-            });
-        })
-        .catch(err => {
-          done(err);
+      provider.getMediaConfig({entryId: entryId}).then(mediaConfig => {
+        kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+          kalturaPlayer.sources.poster.should.have.string(mediaConfig.sources.poster);
+          kalturaPlayer.reset();
+          kalturaPlayer.configure({
+            sources: {
+              poster: myCustomPosterUrl
+            }
+          });
+          kalturaPlayer.loadMedia({entryId: alterEntryId}).then(() => {
+            kalturaPlayer.sources.poster.should.equal(myCustomPosterUrl);
+            done();
+          });
         });
+      });
     });
   });
 });
