@@ -158,7 +158,7 @@ describe('ThumbnailManager', () => {
 
     let config, kalturaPlayer;
     const myCustomPosterUrl = Images.POSTER;
-    const entryId = '0_wifqaipd';
+    const entryId = '0_hut6q26s';
     const partnerId = 1091;
     const env = {
       cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
