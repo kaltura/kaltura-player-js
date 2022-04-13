@@ -75,7 +75,7 @@ describe('StorageManager', function () {
     });
   });
 
-  it.only('should set muted to true/false depends on changed volume', function (done) {
+  it('should set muted to true/false depends on changed volume', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
 
