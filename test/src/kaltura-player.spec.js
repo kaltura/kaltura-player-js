@@ -11,6 +11,7 @@ import {EventType as CoreEventType, FakeEvent, Utils, EventManager} from '@playk
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 import {Provider} from 'playkit-js-providers';
+import {Images} from './mock-data/images';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -105,7 +106,7 @@ describe('kaltura player api', function () {
       });
 
       it('should use the configured poster from loadMedia options', function (done) {
-        const poster = 'poster.jpg';
+        const poster = Images.POSTER;
         kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
           kalturaPlayer.poster.should.equal(poster);
           done();
