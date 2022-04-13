@@ -46,12 +46,12 @@ describe('addKalturaPoster', function () {
   describe('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
     const myCustomPosterUrl = Images.POSTER;
-    const entryId = '0_hut6q26s';
+    const entryId = '0_nwkp7jtx';
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;
     const env = {
-      cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
-      serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
+      cdnUrl: 'http://qa-apache-php7.dev.kaltura.com',
+      serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
     };
 
     before(function () {
