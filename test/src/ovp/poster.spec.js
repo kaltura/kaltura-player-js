@@ -46,7 +46,7 @@ describe('addKalturaPoster', function () {
   describe('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
     const myCustomPosterUrl = Images.POSTER;
-    const entryId = '0_wifqaipd';
+    const entryId = '0_hut6q26s';
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;
     const env = {

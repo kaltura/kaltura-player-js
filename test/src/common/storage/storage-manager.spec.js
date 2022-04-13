@@ -10,7 +10,7 @@ const targetId = 'player-placeholder_storage-manager.spec';
 describe('StorageManager', function () {
   let config, player, sandbox;
   const partnerId = 1091;
-  const entryId = '0_wifqaipd';
+  const entryId = '0_hut6q26s';
   const env = {
     cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
     serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
