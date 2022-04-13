@@ -50,8 +50,8 @@ describe('addKalturaPoster', function () {
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;
     const env = {
-      cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
-      serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
+      cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
+      serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
     };
 
     before(function () {
