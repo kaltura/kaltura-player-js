@@ -78,24 +78,29 @@ describe('StorageManager', function () {
   it('should set muted to true/false depends on changed volume', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
-    player.loadMedia({entryId: entryId}).then(() => {
-      try {
-        player.muted = true;
-        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
-        StorageManager.getStorageConfig().playback.muted.should.be.true;
-        player.volume = 0.5;
-        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-        StorageManager.getStorageConfig().playback.muted.should.be.false;
-        StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
-        player.volume = 0;
-        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-        StorageManager.getStorageConfig().playback.muted.should.be.true;
-        StorageManager.getStorageConfig().playback.volume.should.equals(0);
-        done();
-      } catch (err) {
+    player
+      .loadMedia({entryId: entryId})
+      .then(() => {
+        try {
+          player.muted = true;
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
+          StorageManager.getStorageConfig().playback.muted.should.be.true;
+          player.volume = 0.5;
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+          StorageManager.getStorageConfig().playback.muted.should.be.false;
+          StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
+          player.volume = 0;
+          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+          StorageManager.getStorageConfig().playback.muted.should.be.true;
+          StorageManager.getStorageConfig().playback.volume.should.equals(0);
+          done();
+        } catch (err) {
+          done(err);
+        }
+      })
+      .catch(err => {
         done(err);
-      }
-    });
+      });
   });
 
   it('should set textStyle of player with textStyle from local storage', function () {
