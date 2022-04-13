@@ -8,7 +8,7 @@ const targetId = 'player-placeholder_setup.spec';
 
 describe('setup', function () {
   let config, kalturaPlayer, sandbox;
-  const entryId = '0_hut6q26s';
+  const entryId = '0_wifqaipd';
   const partnerId = 1091;
   const env = {
     cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
@@ -41,7 +41,7 @@ describe('setup', function () {
     TestUtils.removeElement(targetId);
   });
 
-  it('should create a full player', function (done) {
+  it.skip('should create a full player', function (done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -56,7 +56,7 @@ describe('setup', function () {
     (!kalturaPlayer.config.id).should.be.true;
   });
 
-  it('should decorate the selected source by session id', function (done) {
+  it.skip('should decorate the selected source by session id', function (done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {

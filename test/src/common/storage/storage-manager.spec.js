@@ -10,7 +10,7 @@ const targetId = 'player-placeholder_storage-manager.spec';
 describe('StorageManager', function () {
   let config, player, sandbox;
   const partnerId = 1091;
-  const entryId = '0_hut6q26s';
+  const entryId = '0_wifqaipd';
   const env = {
     cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
     serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
@@ -75,32 +75,27 @@ describe('StorageManager', function () {
     });
   });
 
-  it('should set muted to true/false depends on changed volume', function (done) {
+  it.skip('should set muted to true/false depends on changed volume', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
-    player
-      .loadMedia({entryId: entryId})
-      .then(() => {
-        try {
-          player.muted = true;
-          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
-          StorageManager.getStorageConfig().playback.muted.should.be.true;
-          player.volume = 0.5;
-          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-          StorageManager.getStorageConfig().playback.muted.should.be.false;
-          StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
-          player.volume = 0;
-          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-          StorageManager.getStorageConfig().playback.muted.should.be.true;
-          StorageManager.getStorageConfig().playback.volume.should.equals(0);
-          done();
-        } catch (err) {
-          done(err);
-        }
-      })
-      .catch(err => {
+    player.loadMedia({entryId: entryId}).then(() => {
+      try {
+        player.muted = true;
+        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
+        StorageManager.getStorageConfig().playback.muted.should.be.true;
+        player.volume = 0.5;
+        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+        StorageManager.getStorageConfig().playback.muted.should.be.false;
+        StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
+        player.volume = 0;
+        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+        StorageManager.getStorageConfig().playback.muted.should.be.true;
+        StorageManager.getStorageConfig().playback.volume.should.equals(0);
+        done();
+      } catch (err) {
         done(err);
-      });
+      }
+    });
   });
 
   it('should set textStyle of player with textStyle from local storage', function () {
@@ -133,7 +128,7 @@ describe('StorageManager', function () {
     player.textStyle.fontFamily.should.equal('Verdana');
   });
 
-  it('should set textLanguage depends on CC toggle', function (done) {
+  it.skip('should set textLanguage depends on CC toggle', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({entryId: entryId}).then(() => {
