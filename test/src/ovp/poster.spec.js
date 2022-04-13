@@ -2,6 +2,7 @@ import {addKalturaPoster} from '../../../src/ovp/poster';
 import * as TestUtils from '../utils/test-utils';
 import {setup} from '../../../src/setup';
 import {Provider} from 'playkit-js-providers';
+import {Images} from '../mock-data/images';
 
 const targetId = 'player-placeholder_ovp/poster.spec';
 
@@ -44,7 +45,7 @@ describe('addKalturaPoster', function () {
 
   describe('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
-    const myCustomPosterUrl = 'poster.jpg';
+    const myCustomPosterUrl = Images.POSTER;
     const entryId = '0_wifqaipd';
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;

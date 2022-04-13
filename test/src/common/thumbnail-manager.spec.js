@@ -2,10 +2,11 @@ import {MediaType} from '@playkit-js/playkit-js';
 import {DefaultThumbnailConfig, ThumbnailManager} from '../../../src/common/thumbnail-manager';
 import * as TestUtils from '../utils/test-utils';
 import {setup} from '../../../src';
+import {Images} from '../mock-data/images';
 
 describe('ThumbnailManager', () => {
   let thumbnailManager, fakePlayer, fakeMediaConfig, sandbox;
-  const thumbsSprite = 'thumbsSprite.jpg';
+  const thumbsSprite = Images.THUMBNAILS_SPRITE;
   const fakeSeekbarConfig = {
     thumbsSlices: 200,
     thumbsWidth: 100
@@ -156,7 +157,7 @@ describe('ThumbnailManager', () => {
     const targetId = 'player-placeholder_ovp/thumbnail.spec';
 
     let config, kalturaPlayer;
-    const myCustomPosterUrl = 'poster.jpg';
+    const myCustomPosterUrl = Images.POSTER;
     const entryId = '0_wifqaipd';
     const partnerId = 1091;
     const env = {
