@@ -41,7 +41,7 @@ describe('setup', function () {
     TestUtils.removeElement(targetId);
   });
 
-  it('should create a full player', function (done) {
+  it.skip('should create a full player', function (done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -56,7 +56,7 @@ describe('setup', function () {
     (!kalturaPlayer.config.id).should.be.true;
   });
 
-  it('should decorate the selected source by session id', function (done) {
+  it.skip('should decorate the selected source by session id', function (done) {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {

@@ -3,6 +3,7 @@ import {ValidationErrorType} from '../../../../src/common/utils/validation-error
 import StorageManager from '../../../../src/common/storage/storage-manager';
 import * as SetupHelpers from '../../../../src/common/utils/setup-helpers';
 import {Env} from '@playkit-js/playkit-js';
+import {Images} from '../../mock-data/images';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 
@@ -239,7 +240,7 @@ describe('supportLegacyOptions', function () {
         autoplay: false
       },
       metadata: {
-        poster: 'poster.jpg'
+        poster: Images.POSTER
       }
     },
     provider: {
@@ -248,7 +249,7 @@ describe('supportLegacyOptions', function () {
     ui: {
       components: {
         seekbar: {
-          thumbsSprite: 'thumbsSprite.jpg'
+          thumbsSprite: Images.THUMBNAILS_SPRITE
         }
       }
     }
@@ -268,7 +269,7 @@ describe('supportLegacyOptions', function () {
         autoplay: false
       },
       metadata: {
-        poster: 'poster.jpg'
+        poster: Images.POSTER
       }
     },
     provider: {
@@ -277,7 +278,7 @@ describe('supportLegacyOptions', function () {
     ui: {
       components: {
         seekbar: {
-          thumbsSprite: 'thumbsSprite.jpg'
+          thumbsSprite: Images.THUMBNAILS_SPRITE
         }
       }
     }
@@ -289,7 +290,7 @@ describe('supportLegacyOptions', function () {
       dvr: false,
       type: 'Live',
       duration: 10000,
-      poster: 'poster.jpg',
+      poster: Images.POSTER,
       metadata: {
         name: 'name'
       }
@@ -303,7 +304,7 @@ describe('supportLegacyOptions', function () {
     ui: {
       components: {
         seekbar: {
-          thumbsSprite: 'thumbsSprite.jpg'
+          thumbsSprite: Images.THUMBNAILS_SPRITE
         }
       }
     }

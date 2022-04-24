@@ -75,7 +75,7 @@ describe('StorageManager', function () {
     });
   });
 
-  it('should set muted to true/false depends on changed volume', function (done) {
+  it.skip('should set muted to true/false depends on changed volume', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({entryId: entryId}).then(() => {
@@ -128,7 +128,7 @@ describe('StorageManager', function () {
     player.textStyle.fontFamily.should.equal('Verdana');
   });
 
-  it('should set textLanguage depends on CC toggle', function (done) {
+  it.skip('should set textLanguage depends on CC toggle', function (done) {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({entryId: entryId}).then(() => {
