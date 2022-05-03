@@ -1,7 +1,9 @@
 /flow-typed/**/*.js
+/ts-typed/**/*.d.ts
 /coverage
 /dist
 karma.conf.js
 webpack.config.js
 webpack.config.ovp.js
 webpack.config.ott.js
+types.d.ts
