@@ -47,7 +47,7 @@ describe('ThumbnailManager', () => {
     thumbnailManager
       .getKalturaThumbnailConfig()
       .thumbsSprite.should.equals(
-        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
+        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}`
       );
   });
 
@@ -63,7 +63,7 @@ describe('ThumbnailManager', () => {
     thumbnailManager
       .getKalturaThumbnailConfig()
       .thumbsSprite.should.equals(
-        `${fakeMediaConfig.sources.poster}/width/${fakeSeekbarConfig.thumbsWidth}/vid_slices/${fakeSeekbarConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
+        `${fakeMediaConfig.sources.poster}/width/${fakeSeekbarConfig.thumbsWidth}/vid_slices/${fakeSeekbarConfig.thumbsSlices}`
       );
   });
 

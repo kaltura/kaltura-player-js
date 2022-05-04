@@ -9,7 +9,7 @@ const DefaultThumbnailConfig: Object = {
 };
 
 const THUMBNAIL_REGEX = /.*\/p\/\d+\/(?:[a-zA-Z]+\/\d+\/)*thumbnail\/entry_id\/\w+\/.*\d+/;
-const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/vid_slices/{{thumbsSlices}}/ks/{{ks}}';
+const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/vid_slices/{{thumbsSlices}}';
 
 class ThumbnailManager {
   _player: KalturaPlayer;
@@ -68,22 +68,20 @@ class ThumbnailManager {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const posterUrl = mediaConfig.sources && mediaConfig.sources.poster;
     const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;
-    const ks = mediaConfig.session && mediaConfig.session.ks;
     const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
-    const thumbsSprite = isVod ? this._getThumbSlicesUrl(posterUrl, ks, thumbnailConfig) : '';
+    const thumbsSprite = isVod ? this._getThumbSlicesUrl(posterUrl, thumbnailConfig) : '';
     return {
       thumbsSprite,
       ...thumbnailConfig
     };
   };
 
-  _getThumbSlicesUrl = (posterUrl: string | Array<Object>, ks: ?string, thumbnailConfig: Object): string => {
+  _getThumbSlicesUrl = (posterUrl: string | Array<Object>, thumbnailConfig: Object): string => {
     if (typeof posterUrl === 'string') {
       if (THUMBNAIL_REGEX.test(posterUrl)) {
         try {
           const model: Object = {
             thumbnailUrl: posterUrl,
-            ks,
             ...thumbnailConfig
           };
           return evaluate(THUMBNAIL_SERVICE_TEMPLATE, model);
