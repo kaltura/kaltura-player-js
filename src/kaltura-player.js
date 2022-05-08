@@ -166,16 +166,21 @@ class KalturaPlayer extends FakeEventTarget {
     Object.keys(this._pluginsConfig).forEach(name => {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
+    this.configure({session: mediaConfig.session});
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     }
-    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
+    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions, this.shouldAddKs() ? mediaConfig.session.ks : '');
     addKalturaParams(this, {...playerConfig, sources});
     const playback = maybeSetStreamPriority(this, sources);
     if (playback) {
       playerConfig.playback = playback;
     }
     this.configure({...playerConfig, sources});
+  }
+
+  shouldAddKs(): boolean {
+    return this.config.provider.loadThumbnailWithKs && !this.config.session.isAnonymous;
   }
 
   /**

@@ -238,7 +238,7 @@ class PlaylistManager {
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
         );
         if (Array.isArray(itemData.sources.poster)) {
-          addKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+          addKalturaPoster(itemData.sources, item.sources, this._player.dimensions, this._player.shouldAddKs() ? item.session.ks : '');
         }
         return {
           sources: itemData.sources,
