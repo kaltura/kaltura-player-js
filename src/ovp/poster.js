@@ -6,7 +6,7 @@ import {THUMBNAIL_REGEX} from '../common/thumbnail-manager';
  * @param {PKSourcesConfigObject} playerSources - player sources container
  * @param {ProviderMediaConfigSourcesObject} mediaSources - media config sources container
  * @param {Object} dimensions - player dimensions object
- * @param {string} ks - shouldAddKs flag
+ * @param {string} ks - ks
  * @private
  * @returns {void}
  */
