@@ -170,7 +170,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     }
-    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions, this.shouldAddKs() ? mediaConfig.session.ks : '');
+    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions, this.shouldAddKs() ? mediaConfig.session?.ks : '');
     addKalturaParams(this, {...playerConfig, sources});
     const playback = maybeSetStreamPriority(this, sources);
     if (playback) {
