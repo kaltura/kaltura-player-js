@@ -137,7 +137,6 @@ declare namespace KalturaPlayerTypes {
   }
 
   export interface Session {
-    userId?: string;
     isAnonymous?: boolean;
     partnerId?: string;
     uiConfId?: string;
