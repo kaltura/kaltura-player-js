@@ -53,5 +53,6 @@ declare namespace KalturaPlayerTypes {
       x: number;
       y: number;
     };
+    shouldAddKs: () => boolean;
   }
 }
