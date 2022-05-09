@@ -1,16 +1,24 @@
 import {Store} from 'redux';
+import * as preact from 'preact';
+import {BasePlugin} from "kaltura-player-js";
 
 declare module 'kaltura-player-js' {
   export const ui: PlaykitUI
   export class BasePlugin {
-    static defaultConfig: {};
-    constructor(name: string, player: KalturaPlayer);
-    logger: Logger;
-    reset(): void;
-    destroy(): void;
-    static isValid(): boolean;
+    protected static defaultConfig: {};
+    protected constructor(name: string, player: KalturaPlayer);
+    protected logger: Logger;
+    protected loadMedia(): void;
+    public player: KalturaPlayer;
+    public reset(): void;
+    public destroy(): void;
+    public static isValid(): boolean;
   }
-  export function registerPlugin(pluginName: string, plugin: new(name: string, player: KalturaPlayer) => BasePlugin): void
+  export function registerPlugin(pluginName: string, plugin: IBasePlugin): void
+}
+
+export interface IBasePlugin {
+  new(name: string, player: KalturaPlayer): BasePlugin;
 }
 
 export class KalturaPlayer {
@@ -25,7 +33,7 @@ export class UIWrapper {
 }
 
 export class UIManager {
-  store: Store;
+  public store: Store;
 }
 
 export interface Logger {
@@ -58,6 +66,9 @@ export interface PlaykitUI {
   ReservedPresetNames: {
     Playback: 'Playback',
     Live: 'Live'
+    Idle: 'Idle'
+    Ads: 'Ads'
+    Error: 'Error'
   };
 
   ReservedPresetAreas: {
@@ -86,5 +97,7 @@ export interface PlaykitUI {
         }),
       }
     }
-  }
+  },
+  h: typeof preact.h,
+  preact: typeof preact
 }
