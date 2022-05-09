@@ -43,6 +43,15 @@ describe('addKalturaPoster', function () {
     mediaSources.poster.should.equal(playerSources.poster);
   });
 
+  it('should append ks to kaltura poster', function () {
+    const mediaSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
+    const playerSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
+    const ks = '123';
+    addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360}, ks);
+    playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640/ks/123');
+    mediaSources.poster.should.equal(playerSources.poster);
+  });
+
   describe.skip('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
     const myCustomPosterUrl = Images.POSTER;
