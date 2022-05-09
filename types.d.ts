@@ -22,14 +22,15 @@ export interface IBasePlugin {
 }
 
 export class KalturaPlayer {
-  registerService(name: string, service: Object): void;
-  get ui(): UIWrapper
+  public registerService(pluginName: string, service: Object): void;
+  public getService<T>(serviceName: string): T;
+  public get ui(): UIWrapper
 }
 
 export class UIWrapper {
-  addComponent(component: any): () => void;
-  removeComponent(component: any): () => void;
-  _uiManager: UIManager;
+  public addComponent(component: any): () => void;
+  public removeComponent(component: any): () => void;
+  public _uiManager: UIManager;
 }
 
 export class UIManager {
