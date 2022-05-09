@@ -180,7 +180,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   shouldAddKs(): boolean {
-    return this.config.provider.loadThumbnailWithKs && !this.config.session.isAnonymous;
+    return !!(this.config.provider.loadThumbnailWithKs && !this.config.session.isAnonymous);
   }
 
   /**
