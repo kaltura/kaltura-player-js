@@ -1,9 +1,9 @@
 import {Store} from 'redux';
-import * as preact from 'preact';
+import * as preactLib from 'preact';
 import {BasePlugin} from "kaltura-player-js";
 
 declare module 'kaltura-player-js' {
-  export const ui: PlaykitUI
+  export const ui: typeof PlaykitUI
   export class BasePlugin {
     protected static defaultConfig: {};
     protected constructor(name: string, player: KalturaPlayer);
@@ -30,7 +30,7 @@ export class KalturaPlayer {
 export class UIWrapper {
   public addComponent(component: any): () => void;
   public removeComponent(component: any): () => void;
-  public _uiManager: UIManager;
+  public get store(): Store;
 }
 
 export class UIManager {
@@ -45,26 +45,26 @@ export interface Logger {
   error(message: any, ...optionalParams: any[]): void;
 }
 
-export interface PlaykitUI {
-  SidePanelOrientation: {
+declare module PlaykitUI {
+  export  const SidePanelOrientation: {
     VERTICAL: 'vertical',
     HORIZONTAL: 'horizontal'
   };
 
-  SidePanelPositions: {
-    LEFT: 'left',
-    TOP: 'top',
-    BOTTOM: 'bottom',
-    RIGHT: 'right'
+  export const SidePanelPositions: {
+    LEFT: 'SidePanelTop',
+    TOP: 'SidePanelLeft',
+    BOTTOM: 'SidePanelRight',
+    RIGHT: 'SidePanelBottom'
   };
 
-  SidePanelModes: {
+  export const SidePanelModes: {
     ALONGSIDE: 'alongside',
     HIDDEN: 'hidden',
     OVER: 'over'
   };
 
-  ReservedPresetNames: {
+  export const ReservedPresetNames: {
     Playback: 'Playback',
     Live: 'Live'
     Idle: 'Idle'
@@ -72,7 +72,7 @@ export interface PlaykitUI {
     Error: 'Error'
   };
 
-  ReservedPresetAreas: {
+  export const ReservedPresetAreas: {
     PresetFloating: 'PresetFloating',
     BottomBarLeftControls: 'BottomBarLeftControls',
     BottomBarRightControls: 'BottomBarRightControls',
@@ -88,7 +88,7 @@ export interface PlaykitUI {
     VideoArea: 'VideoArea'
   };
 
-  reducers: {
+  export const reducers: {
     shell: {
       actions: {
         updateSidePanelMode: (position: string, sidePanelMode: string) => ({
@@ -98,7 +98,7 @@ export interface PlaykitUI {
         }),
       }
     }
-  },
-  h: typeof preact.h,
-  preact: typeof preact
+  };
+  export const h: typeof preact.h;
+  export const preact: typeof preactLib
 }
