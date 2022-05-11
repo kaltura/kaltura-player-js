@@ -46,16 +46,19 @@ export interface Logger {
 }
 
 declare module PlaykitUI {
+  export type SidePanelPosition = 'top' | 'bottom' | 'right' | 'left';
+  export type SidePanelMode = 'alongside' | 'hidden' | 'over';
+  export type ReservedPresetName = 'Playback' | 'Live' | 'Idle' | 'Ads' | 'Error';
   export  const SidePanelOrientation: {
     VERTICAL: 'vertical',
     HORIZONTAL: 'horizontal'
   };
 
   export const SidePanelPositions: {
-    LEFT: 'SidePanelTop',
-    TOP: 'SidePanelLeft',
-    BOTTOM: 'SidePanelRight',
-    RIGHT: 'SidePanelBottom'
+    LEFT: 'left',
+    TOP: 'top',
+    BOTTOM: 'bottom',
+    RIGHT: 'right'
   };
 
   export const SidePanelModes: {
@@ -91,10 +94,10 @@ declare module PlaykitUI {
   export const reducers: {
     shell: {
       actions: {
-        updateSidePanelMode: (position: string, sidePanelMode: string) => ({
+        updateSidePanelMode: (position: SidePanelPosition, sidePanelMode: SidePanelMode) => ({
           type: string,
-          position: string,
-          sidePanelMode: string
+          position: SidePanelPosition,
+          sidePanelMode: SidePanelMode
         }),
       }
     }
