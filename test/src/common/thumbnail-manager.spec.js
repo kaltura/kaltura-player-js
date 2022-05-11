@@ -25,7 +25,8 @@ describe('ThumbnailManager', () => {
       getThumbnail: () => {},
       _localPlayer: {
         getThumbnail: () => {}
-      }
+      },
+      shouldAddKs: () => true
     };
     fakeMediaConfig = {
       sources: {
@@ -151,6 +152,17 @@ describe('ThumbnailManager', () => {
     const config = thumbnailManager.getKalturaThumbnailConfig();
     config.thumbsSlices.should.equal(200);
     config.thumbsWidth.should.equal(300);
+  });
+
+  it('should get thumbnail slices url without ks', () => {
+    sandbox.stub(fakePlayer, 'shouldAddKs').returns(false);
+    delete DefaultThumbnailConfig.thumbsSprite;
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager
+      .getKalturaThumbnailConfig()
+      .thumbsSprite.should.equals(
+        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}`
+      );
   });
 
   describe('Poster Integration', function () {
