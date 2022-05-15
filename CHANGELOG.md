@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/kaltura/kaltura-player-js/compare/v3.1.0...v3.2.0) (2022-05-12)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.30.1](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.1) ([40d6a06](https://github.com/kaltura/kaltura-player-js/commit/40d6a06))
+* **FEC-12161:** Need to replace static jpg files in player tests ([ae2798a](https://github.com/kaltura/kaltura-player-js/commit/ae2798a))
+* **FEC-12161:** Need to replace static jpg files in player tests ([d4c36b4](https://github.com/kaltura/kaltura-player-js/commit/d4c36b4))
+* add fake-event-target to ts types ([#534](https://github.com/kaltura/kaltura-player-js/issues/534)) ([e29204a](https://github.com/kaltura/kaltura-player-js/commit/e29204a))
+
+
+### Build System
+
+* use node_js 17 in travis ([04cb66a](https://github.com/kaltura/kaltura-player-js/commit/04cb66a))
+
+
+### Features
+
+* update playkit-js to [0.80.1](https://github.com/kaltura/playkit-js/releases/tag/v0.80.1) ([e61fe4e](https://github.com/kaltura/kaltura-player-js/commit/e61fe4e))
+* update playkit-js-providers to [2.35.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.35.0) ([0fabe44](https://github.com/kaltura/kaltura-player-js/commit/0fabe44))
+* update playkit-js-ui to [0.71.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.71.0) ([a65b7d5](https://github.com/kaltura/kaltura-player-js/commit/a65b7d5))
+* **FEC-11981:** Related Entries p3 ([#532](https://github.com/kaltura/kaltura-player-js/issues/532)) ([7b1596b](https://github.com/kaltura/kaltura-player-js/commit/7b1596b)), closes [kaltura/playkit-js-related#5](https://github.com/kaltura/kaltura-player-js/issues/5) [kaltura/playkit-js-ui#668](https://github.com/kaltura/kaltura-player-js/issues/668)
+* **FEC-12015:** CC button for on/off subtitles ([#536](https://github.com/kaltura/kaltura-player-js/issues/536)) ([8e3cc43](https://github.com/kaltura/kaltura-player-js/commit/8e3cc43))
+* **FEC-12113:** Add Side Panels Management to player UI ([#544](https://github.com/kaltura/kaltura-player-js/issues/544)) ([b3f599a](https://github.com/kaltura/kaltura-player-js/commit/b3f599a)), closes [kaltura/playkit-js-ui-managers#1](https://github.com/kaltura/kaltura-player-js/issues/1) [kaltura/playkit-js-ui#674](https://github.com/kaltura/kaltura-player-js/issues/674)
+* **FEC-12229:** append KS to thumbnail API ([#545](https://github.com/kaltura/kaltura-player-js/issues/545)) ([6e5a2e8](https://github.com/kaltura/kaltura-player-js/commit/6e5a2e8))
+
+
+### Tests
+
+* add catch block to muted test ([c63c5d7](https://github.com/kaltura/kaltura-player-js/commit/c63c5d7))
+* add catch to poster.spec.js getMediaConfig ([aa8e3b6](https://github.com/kaltura/kaltura-player-js/commit/aa8e3b6))
+* add catch to poster.spec.js loadMedia ([374d87d](https://github.com/kaltura/kaltura-player-js/commit/374d87d))
+* change entry id used in loadMedia in unit tests  ([e94aa2b](https://github.com/kaltura/kaltura-player-js/commit/e94aa2b))
+* check travis behavior when using https ([ab8f3be](https://github.com/kaltura/kaltura-player-js/commit/ab8f3be))
+* check travis behavior with a different entry id ([95b5d4c](https://github.com/kaltura/kaltura-player-js/commit/95b5d4c))
+* revert unit test changes and skip failed tests ([42f6ab4](https://github.com/kaltura/kaltura-player-js/commit/42f6ab4))
+
+
+
 ## [3.1.0](https://github.com/kaltura/kaltura-player-js/compare/v3.0.0...v3.1.0) (2022-03-23)
 
 
