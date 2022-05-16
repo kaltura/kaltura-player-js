@@ -81,6 +81,10 @@ class UIWrapper {
     return this._uiManager.addComponent(replaceComponent);
   }
 
+  get store(): Object {
+    return this._uiManager.store;
+  }
+
   /**
    * Deprecated - left for backward compatibility - use instead registerService in KalturaPlayer
    * @param {string} name - the manager name
