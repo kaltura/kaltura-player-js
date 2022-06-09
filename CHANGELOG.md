@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/kaltura/kaltura-player-js/compare/v3.2.0...v3.3.0) (2022-06-09)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.3](https://github.com/kaltura/playkit-js/releases/tag/v0.80.3) ([b1f86b8](https://github.com/kaltura/kaltura-player-js/commit/b1f86b8))
+* **FEC-12113:** Add Side Panels Management to player UI  ([#547](https://github.com/kaltura/kaltura-player-js/issues/547)) ([5ea1b5b](https://github.com/kaltura/kaltura-player-js/commit/5ea1b5b))
+* **FEC-12157:** update Creating New Kaltura Player MD file ([#543](https://github.com/kaltura/kaltura-player-js/issues/543)) ([389e386](https://github.com/kaltura/kaltura-player-js/commit/389e386))
+* **FEC-12252:** getTextTracks should be called getNativeTextTracks ([#548](https://github.com/kaltura/kaltura-player-js/issues/548)) ([fe28136](https://github.com/kaltura/kaltura-player-js/commit/fe28136))
+
+
+### Features
+
+* update playkit-js-providers to [2.35.1](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.35.1) ([8679358](https://github.com/kaltura/kaltura-player-js/commit/8679358))
+* update playkit-js-ui to [0.72.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.0) ([e311817](https://github.com/kaltura/kaltura-player-js/commit/e311817))
+
+
+
 ## [3.2.0](https://github.com/kaltura/kaltura-player-js/compare/v3.1.0...v3.2.0) (2022-05-12)
 
 
