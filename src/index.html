@@ -1,183 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
-	<title>Title</title>
-	<style>
-		#player-placeholder {
-			width: 1025px;
-			height: 1025px;
-		}
-	</style>
-	<!-- <script src="//qa-apache-php7.dev.kaltura.com/p/1091/embedPlaykitJs/uiconf_id/15214497" type="text/javascript"></script> -->
-	<script src="./kaltura-ovp-player.js" type="text/javascript"></script>
-	<!-- <script src="https://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/embedPlaykitJs/uiconf_id/15225670/partner_id/1091"></script> -->
-	<script src="./plugins/playkit-related.js"></script>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no'>
+  <title>Title</title>
+  <link rel='stylesheet' type='text/css' href='./style.css' />
+  <script src='./kaltura-ovp-player.js' type='text/javascript'></script>
 </head>
 <body>
-	<div id="player-placeholder"></div>
-	<script>
-		var config = {
-			targetId: 'player-placeholder',
-			provider: {
-				partnerId: 4229563,
-				//uiConfId: 15215933,
-				// partnerId: 1091,
-				// env: {
-				// 	cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
-				// 	serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
-				// }
-			},
-			plugins: {
-				related: {
-					showOnPlaybackPaused: true,
-					//autoContinue: false,
-					autoContinueTime: 10,
-					useContext: false,
-					entryList: [
-					"1_vxi4gvb4", "1_3a70ju1y", "1_zze5c32k", "1_imwpy1t8", "1_557zo73p", "1_d1mhlo99", "1_dcaed7ah", "1_sii5zgh5"
-					]
-					//playlistId: '0_168xyhx3'
-					//playlistId: '0_168xyhx3'
-					//entryList: ['0_xk51mg5l']
-					//entryList: ['0_wu32qrt3', '0_wu32qrt3', '0_wu32qrt3', '0_xk51mg5l', '0_xk51mg5l']
-					//entryList: ['0_h2m3oxcc', "0_nqltbyh7"]
-					/*
-					sourcesList: [
-					{
-						"hls": [
-						{
-							"id": "0_wifqaipd,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j,0_xcrwyk2n/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042/height/479/width/851",
-						"metadata": {
-							"name": "hd_video_1080p for Adaptive Bitrate"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_h8zxfrn1,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_h8zxfrn1/protocol/http/format/applehttp/flavorIds/0_67bvbv7q,0_gpxdgvg4/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_h8zxfrn1/version/100002/height/353/width/628",
-						"metadata": {
-							"name": "doomsday - VTT captions"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_bhxfnp9h,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_bhxfnp9h/protocol/http/format/applehttp/flavorIds/0_zh2p18w5,0_4kr9ddnq,0_ze2tmjdc,0_q4bcpuph,0_nrlu5hz2/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_bhxfnp9h/version/100022/height/353/width/628",
-						"metadata": {
-							"name": "Transformers_TheLastKnight"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_kdalp8lc,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_kdalp8lc/protocol/http/format/applehttp/flavorIds/0_9knjrp06,0_ns02pzld,0_68an1ou1,0_f7bwnkq6,0_ht16rqrz/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_kdalp8lc/version/100002/height/353/width/628",
-						"metadata": {
-							"name": "Mission_ Impossible - Fallout (2018) - Official Trailer - Paramount Pictures"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_hut6q26s,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_hut6q26s/protocol/http/format/applehttp/flavorIds/0_gmduxw3i,0_ubnjte1e,0_18n6pxzd,0_e4iwttia/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_hut6q26s/version/100002/height/353/width/628",
-						"metadata": {
-							"name": "Multi Captions Languages"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_1l9q18gy,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_1l9q18gy/protocol/http/format/applehttp/flavorIds/0_wc9ktf6n,0_16zm8dki,0_da8msh21,0_mgf2wvpt/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_1l9q18gy/version/100002/height/353/width/628",
-						"metadata": {
-							"name": "The Avengers 2012 no default cap - ger, rus"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_075c5ivc,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_075c5ivc/protocol/http/format/applehttp/flavorIds/0_yraneihf,0_28of8uw0,0_bp9aywdk,0_u8ybcnfd,0_aw8x5xk4/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_075c5ivc/version/100002/height/353/width/628",
-						"metadata": {
-							"name": "Transformers_5 with prod captions"
-						}
-					},
-					{
-						"hls": [
-						{
-							"id": "0_foz120u7,applehttp",
-							"url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_foz120u7/protocol/http/format/applehttp/flavorIds/0_arcljmuz,0_rjwaoww6,0_c8sarvvs,0_7ceeh0lt,0_9y0hzldj/a.m3u8",
-							"mimetype": "application/x-mpegURL"
-						}
-						],
-						"poster": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_foz120u7/version/100002/height/353/width/628",
-						"metadata": {
-							"name": "Star Wars_ The Last Jedi Trailer (Official)"
-						}
-					}
-					]
-					*/
-				}
-			},
-			ui: {
-				translations: {
-					en: {
-						related: {
-							upNextIn: 'Up Next In',
-							playNow: 'Play Now'
-						}
-					}
-				}
-			}
-		};
-		
-		try {
-			var kalturaPlayer = KalturaPlayer.setup(config);
-			// prod
-			//kalturaPlayer.loadMedia({entryId: '1_o3fj4yen'});
-			//kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '1_o3fj4yen'}, {entryId: '1_o3fj4yen'}, {entryId: '1_o3fj4yen'}]});
-			
-			// qa
-			kalturaPlayer.loadMedia({entryId: "1_j76xn0u0"});
-			
-			//kalturaPlayer.loadPlaylist({playlistId: '0_168xyhx3'});
-		} catch (e) {
-			console.error(e.message);
-		}
-	</script>
+<div id='player-placeholder'></div>
+<script>
+  var config = {
+    targetId: 'player-placeholder',
+    provider: {
+      partnerId: 1091,
+      env: {
+        cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
+        serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
+      }
+    }
+  };
+
+  try {
+    var kalturaPlayer = KalturaPlayer.setup(config);
+    kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
+  } catch (e) {
+    console.error(e.message);
+  }
+</script>
 </body>
 </html>

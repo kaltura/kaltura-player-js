@@ -12,27 +12,14 @@ const launchers = {
   Chrome_browser: {
     base: 'Chrome',
     flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
-  },
-  Firefox_browser: {
-    base: 'Firefox',
-    prefs: {
-      'media.autoplay.default': 0
-    }
   }
 };
-
-const timeout = 30 * 60 * 1000;
 
 module.exports = config => {
   const karmaConf = {
     logLevel: config.LOG_INFO,
     customLaunchers: launchers,
-    // browserNoActivityTimeout: timeout,
-    // browserDisconnectTimeout: timeout,
-    // captureTimeout: timeout,
-
-    //plugins: ['karma-safarinative-launcher'],
-    browsers: ['Chrome_browser', 'Firefox_browser'],
+    browsers: ['Chrome_browser', 'Firefox'],
     concurrency: 1,
     singleRun: true,
     colors: true,
@@ -65,14 +52,9 @@ module.exports = config => {
     },
     client: {
       mocha: {
-        timeout,
+        timeout: 10000,
         reporter: 'html'
       }
-    },
-    browserConsoleLogOptions: {
-      level: 'log',
-      format: '%b %T: %m',
-      terminal: true
     }
   };
 
@@ -86,10 +68,6 @@ module.exports = config => {
       karmaConf.browsers.push('Safari');
     }
   }
-
-  karmaConf.browsers = ['Chrome_browser'];
-  //karmaConf.browsers = ['Firefox_browser'];
-  //karmaConf.browsers = ['SafariNative'];
 
   config.set(karmaConf);
 };

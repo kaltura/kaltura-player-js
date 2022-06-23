@@ -327,7 +327,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   play(): void {
-    this._localPlayer.play();
+    // this._localPlayer.play();
   }
 
   pause(): void {

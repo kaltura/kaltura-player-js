@@ -40,9 +40,3 @@ jspm_packages
 
 /dist/
 .DS_Store
-
-/src/plugins
-/src/demo
-/src/indexes
-
-/cert/
