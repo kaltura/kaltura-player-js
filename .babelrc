@@ -5,15 +5,16 @@
     }
   },
   "ignore": ["node_modules/**/*"],
-  "plugins": ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-proposal-class-properties"],
+  "plugins": ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-proposal-class-properties", "@babel/transform-arrow-functions"],
   "presets": [
     [
       "@babel/preset-env",
       {
         "loose": true,
         "bugfixes": true,
+        "useBuiltIns": "entry",
         "targets": {
-          "browsers": ["chrome >= 47", "firefox >= 51", "ie >= 11", "safari >= 8", "ios >= 8", "android >= 4"]
+          "browsers": ["ie >= 11"]
         }
       }
     ],

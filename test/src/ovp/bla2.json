@@ -1,0 +1,202 @@
+{
+  "severity": 2,
+  "category": 1,
+  "code": 1006,
+  "data": {
+    "url": "http://qa-apache-php7.dev.kaltura.com/api_v3/service/multirequest",
+    "headers": [
+      "x-kaltura: cached-dispatcher,cache_v3-0edcf0161138534746e32fa9dc09f3ea,2.7894973754883E-5\r",
+      "x-me: qa-apache-php7, qa-apache-php7\r"
+    ],
+    "results": [
+      {
+        "hasError": false,
+        "data": {
+          "partnerId": 1091,
+          "ks": "OGM4MzgzMTAzYWVjOTU0NGViMTc3YjFjYTU2ZDQwMTJkMjM2NGU1Y3wxMDkxOzEwOTE7MTY0OTk0NzQ0ODswOzE2NDk4NjEwNDguNTk2MzswO3ZpZXc6Kix3aWRnZXQ6MTs7",
+          "userId": 0,
+          "objectType": "KalturaStartWidgetSessionResponse"
+        }
+      },
+      {
+        "hasError": false,
+        "data": {
+          "objects": [
+            {
+              "dvrStatus": 1,
+              "mediaType": 201,
+              "flavorParamsIds": "32,36,37",
+              "duration": 86429,
+              "msDuration": 86428844,
+              "id": "0_nwkp7jtx",
+              "name": "Kaltura Live with DVR - Smart pages",
+              "tags": "",
+              "status": 2,
+              "type": 7,
+              "thumbnailUrl": "http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0",
+              "objectType": "KalturaLiveStreamEntry"
+            }
+          ],
+          "totalCount": 1,
+          "objectType": "KalturaBaseEntryListResponse"
+        }
+      },
+      {
+        "hasError": false,
+        "data": {
+          "sources": [
+            {
+              "deliveryProfileId": 1095,
+              "format": "applehttp",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/1095/protocol/https/format/applehttp/a.m3u8",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 1033,
+              "format": "applehttp",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/1033/protocol/https/format/applehttp/a.m3u8",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 431,
+              "format": "hls",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/431/protocol/https/format/applehttp/a.m3u8",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 381,
+              "format": "hdnetworkmanifest",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/381/protocol/https/format/hdnetworkmanifest/manifest.f4m",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 301,
+              "format": "mpegdash",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/301/protocol/https/format/mpegdash/manifest.mpd",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 341,
+              "format": "rtmp",
+              "protocols": "rtmp",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "http://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/341/protocol/http/format/rtmp/a.f4m",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 351,
+              "format": "hds",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/351/protocol/https/format/hds/a.f4m",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            },
+            {
+              "deliveryProfileId": 901,
+              "format": "applehttp_to_mc",
+              "protocols": "http,https",
+              "flavorIds": "0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r",
+              "url": "https://qa-apache-php7.dev.kaltura.com/p/1091/sp/1091/playManifest/entryId/0_nwkp7jtx/flavorIds/0_8q8j0mza,0_gxtfd5ix,0_5hts3h5r/deliveryProfileId/901/protocol/https/format/applehttp_to_mc/a.m3u8",
+              "drm": [],
+              "objectType": "KalturaPlaybackSource"
+            }
+          ],
+          "playbackCaptions": [],
+          "flavorAssets": [
+            {
+              "flavorParamsId": 36,
+              "width": 480,
+              "height": 360,
+              "bitrate": 400,
+              "frameRate": 0,
+              "isOriginal": false,
+              "isWeb": [secure],
+              "containerFormat": "flv",
+              "videoCodecId": "",
+              "status": 2,
+              "isDefault": false,
+              "id": "0_8q8j0mza",
+              "entryId": "0_nwkp7jtx",
+              "partnerId": 1091,
+              "size": 0,
+              "tags": "mbr,ingest,web,mobile,ipad,ipadnew,recording_anchor",
+              "createdAt": 1632991307,
+              "updatedAt": 1649314447,
+              "description": "",
+              "sizeInBytes": 0,
+              "objectType": "KalturaLiveAsset"
+            },
+            {
+              "flavorParamsId": 37,
+              "width": 640,
+              "height": 480,
+              "bitrate": 600,
+              "frameRate": 0,
+              "isOriginal": false,
+              "isWeb": [secure],
+              "containerFormat": "flv",
+              "videoCodecId": "",
+              "status": 2,
+              "isDefault": false,
+              "id": "0_gxtfd5ix",
+              "entryId": "0_nwkp7jtx",
+              "partnerId": 1091,
+              "size": 0,
+              "tags": "mbr,ingest,web,mobile,ipad,ipadnew",
+              "createdAt": 1632991307,
+              "updatedAt": 1649314447,
+              "description": "",
+              "sizeInBytes": 0,
+              "objectType": "KalturaLiveAsset"
+            },
+            {
+              "flavorParamsId": 32,
+              "width": 640,
+              "height": 480,
+              "bitrate": 900,
+              "frameRate": 0,
+              "isOriginal": false,
+              "isWeb": [secure],
+              "containerFormat": "flv",
+              "videoCodecId": "",
+              "status": 2,
+              "isDefault": false,
+              "id": "0_5hts3h5r",
+              "entryId": "0_nwkp7jtx",
+              "partnerId": 1091,
+              "size": 0,
+              "tags": "source,ingest,web,mobile,ipad,ipadnew",
+              "createdAt": 1504700080,
+              "updatedAt": 1649314447,
+              "description": "",
+              "sizeInBytes": 0,
+              "objectType": "KalturaLiveAsset"
+            }
+          ],
+          "actions": [],
+          "messages": [],
+          "bumperData": [],
+          "objectType": "KalturaPlaybackContext"
+        }
+      },
+      {"hasError": false, "data": {"objects": [], "totalCount": 0, "objectType": "KalturaMetadataListResponse"}}
+    ]
+  }
+}
