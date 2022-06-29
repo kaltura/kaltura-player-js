@@ -54,5 +54,6 @@ declare namespace KalturaPlayerTypes {
       y: number;
     };
     shouldAddKs: () => boolean;
+    playlist: KalturaPlayerTypes.Playlist;
   }
 }
