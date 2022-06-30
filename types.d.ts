@@ -1,24 +1,53 @@
 import {Store} from 'redux';
 import * as preactLib from 'preact';
-import {BasePlugin} from 'kaltura-player-js';
 
 declare module 'kaltura-player-js' {
   export const ui: typeof PlaykitUI;
-  export class BasePlugin {
+  export class FakeEvent implements CustomEvent {
+    readonly payload: any
+    readonly AT_TARGET: number;
+    readonly BUBBLING_PHASE: number;
+    readonly CAPTURING_PHASE: number;
+    readonly NONE: number;
+    readonly bubbles: boolean;
+    cancelBubble: boolean;
+    readonly cancelable: boolean;
+    readonly composed: boolean;
+    readonly currentTarget: EventTarget | null;
+    readonly defaultPrevented: boolean;
+    readonly detail: any;
+    readonly eventPhase: number;
+    readonly isTrusted: boolean;
+    returnValue: boolean;
+    readonly srcElement: EventTarget | null;
+    readonly target: EventTarget | null;
+    readonly timeStamp: DOMHighResTimeStamp;
+    readonly type: string;
+    composedPath(): EventTarget[];
+    composedPath(): EventTarget[];
+    initCustomEvent(type: string, bubbles?: boolean, cancelable?: boolean, detail?: any): void;
+    initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void;
+    preventDefault(): void;
+    stopImmediatePropagation(): void;
+    stopPropagation(): void;
+  }
+  export class BasePlugin<ConfigType> {
+    protected config: ConfigType;
     protected static defaultConfig: {};
-    protected constructor(name: string, player: KalturaPlayer);
+    protected constructor(name: string, player: KalturaPlayer, config: ConfigType);
     protected logger: Logger;
     protected loadMedia(): void;
     public player: KalturaPlayer;
     public reset(): void;
     public destroy(): void;
     public static isValid(): boolean;
+    public eventManager: any;
   }
-  export function registerPlugin(pluginName: string, plugin: IBasePlugin): void;
+  export function registerPlugin<ConfigType>(pluginName: string, plugin: IBasePlugin<ConfigType>): void;
 }
 
-export interface IBasePlugin {
-  new (name: string, player: KalturaPlayer): BasePlugin;
+export interface IBasePlugin<ConfigType> {
+  new (name: string, player: KalturaPlayer, config: ConfigType): BasePlugin<ConfigType>;
 }
 
 export class KalturaPlayer {
