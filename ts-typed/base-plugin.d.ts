@@ -9,5 +9,6 @@ declare namespace KalturaPlayerTypes {
     dispatchEvent(name: string, payload?: any): void;
     loadMedia(): void;
     updateConfig(update: Object): void;
+    ready: Promise<void>;
   }
 }
