@@ -12,7 +12,7 @@ declare module 'global' {
           connect: (...args: any) => any;
           useSelector: (...args: any) => any;
         };
-        reducers: Record<string, {actions: Record<string, unknown>[]}>;
+        reducers: Record<string, {actions: Record<string, Function>, types:  Record<string, string>}>;
         createPortal: (children: any, domElement: HTMLElement) => void;
         utils: {
           getLogger: (name: string) => KalturaPlayerTypes.Logger;
