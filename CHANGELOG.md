@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/kaltura/kaltura-player-js/compare/v3.3.0...v3.4.0) (2022-07-06)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.30.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.2) ([b1e0ffb](https://github.com/kaltura/kaltura-player-js/commit/b1e0ffb))
+
+
+### Features
+
+* **FEC-12218:** [Google Tag Manager] - Add relevant TS types ([#552](https://github.com/kaltura/kaltura-player-js/issues/552)) ([dd706e6](https://github.com/kaltura/kaltura-player-js/commit/dd706e6))
+
+
+
 ## [3.3.0](https://github.com/kaltura/kaltura-player-js/compare/v3.2.0...v3.3.0) (2022-06-09)
 
 
