@@ -33,30 +33,33 @@ kWidget.embed({
 
 ##### V2 IFrame Embed
 
-```<iframe id="kaltura_player_1657529513" src="https://cdnapisec.kaltura.com/p/2068231/sp/206823100/embedIframeJs/uiconf_id/50380002/partner_id/2068231?iframeembed=true&playerId=kaltura_player_1657529513&entry_id=1_zdyx07u4" width="560" height="395" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>```
+```<iframe id="kaltura_player_1657529513" src="https://cdnapisec.kaltura.com/p/2068231/sp/206823100/embedIframeJs/uiconf_id/50380002/partner_id/2068231?iframeembed=true&playerId=kaltura_player_1657529513&entry_id=1_zdyx07u4" width="560" height="395" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+```
 
 ##### V7 Dynamic Embed
 
 ```<div id="kaltura_player_621319997" style="width: 560px;height: 395px"></div>
-                    <script type="text/javascript" src="https://cdnapisec.kaltura.com/p/2068231/embedPlaykitJs/uiconf_id/50575592"></script>
-                    <script type="text/javascript">
-                    try {
-                      var kalturaPlayer = KalturaPlayer.setup({
-                        targetId: "kaltura_player_621319997",
-                        provider: {
-                          partnerId: 2068231,
-                          uiConfId: 50575592
-                        }
-                      });
-                      kalturaPlayer.loadMedia({entryId: '1_zdyx07u4'});
-                    } catch (e) {
-                      console.error(e.message)
-                    }
-                  </script>```
+<script type="text/javascript" src="https://cdnapisec.kaltura.com/p/2068231/embedPlaykitJs/uiconf_id/50575592"></script>
+<script type="text/javascript">
+        try {
+              var kalturaPlayer = KalturaPlayer.setup({
+              targetId: "kaltura_player_621319997",
+              provider: {
+                  partnerId: 2068231,
+                  uiConfId: 50575592
+               }
+              });
+              kalturaPlayer.loadMedia({entryId: '1_zdyx07u4'});
+        } catch (e) {
+          console.error(e.message)
+        }
+        </script>
+```
 
 ##### V7 IFrame Embed
 
-```<iframe type="text/javascript" src='https://cdnapisec.kaltura.com/p/2068231/embedPlaykitJs/uiconf_id/50575592?iframeembed=true&entry_id=1_zdyx07u4' style="width: 560px; height: 395px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>```
+```<iframe type="text/javascript" src='https://cdnapisec.kaltura.com/p/2068231/embedPlaykitJs/uiconf_id/50575592?iframeembed=true&entry_id=1_zdyx07u4' style="width: 560px; height: 395px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+```
 
 ## Playback Engines
 
