@@ -3,6 +3,7 @@
 #### Player V7 Motivation
 
 * Player V2 used to mimic Flash APIs (sendNotificatiom like) V7 is using modern tecnology HTML% and preact
+* Player V2 is 
 * Player V7 is much light weight player, JS prarsing is more efficient and load time is much faster, player bundle contains only required code pieces for playback.
 * Player V7 out of the box UI is more efficient easy to write extra cose using react
 * Player V7 plugins are linked to the player life cycle and a result player memory leaks are less common
