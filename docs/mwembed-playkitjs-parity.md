@@ -1,5 +1,70 @@
 # [mwEmbed](https://github.com/kaltura/mwEmbed) vs. kaltura-player-js Parity 
 
+#### Player V7 Motivation
+
+* Player V2 used to mimic Flash APIs (sendNotificatiom like) V7 is using modern tecnology HTML% and preact
+* Player V7 is much light weight player, JS prarsing is more efficient and load time is much faster, player bundle contains only required code pieces for playback.
+* Player V7 out of the box UI is more efficient easy to write extra cose using react
+* Player V7 plugins are linked to the player life cycle and a result player memory leaks are less common
+* Player V7 custom plugin are easy to be integrated to the player
+* Player V7 exposes Playback Adapters or license Adapters.
+* Player V7 exposes ability to register to services wich saves code duplications
+* Player V7 comes with new plugins and capabilites like Ads Waterfalling, SamrtSwitch, Broadpeak
+
+
+#### Player V2 VS Player V7 Embed codes
+
+##### V2 Dynamic Embed
+
+```
+<script src="https://cdnapisec.kaltura.com/p/2068231/sp/206823100/embedIframeJs/uiconf_id/50380002/partner_id/2068231"></script>
+<div id="kaltura_player_1657529534" style="width: 560px; height: 395px;"></div>
+<script>
+kWidget.embed({
+  "targetId": "kaltura_player_1657529534",
+  "wid": "_2068231",
+  "uiconf_id": 50380002,
+  "flashvars": {},
+  "cache_st": 1657529534,
+  "entry_id": "1_zdyx07u4"
+});
+</script>
+```
+
+##### V2 IFrame Embed
+
+```
+<iframe id="kaltura_player_1657529513" src="https://cdnapisec.kaltura.com/p/2068231/sp/206823100/embedIframeJs/uiconf_id/50380002/partner_id/2068231?iframeembed=true&playerId=kaltura_player_1657529513&entry_id=1_zdyx07u4" width="560" height="395" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+
+```
+
+##### V7 Dynamic Embed
+
+```
+<div id="kaltura_player_621319997" style="width: 560px;height: 395px"></div>
+                    <script type="text/javascript" src="https://cdnapisec.kaltura.com/p/2068231/embedPlaykitJs/uiconf_id/50575592"></script>
+                    <script type="text/javascript">
+                    try {
+                      var kalturaPlayer = KalturaPlayer.setup({
+                        targetId: "kaltura_player_621319997",
+                        provider: {
+                          partnerId: 2068231,
+                          uiConfId: 50575592
+                        }
+                      });
+                      kalturaPlayer.loadMedia({entryId: '1_zdyx07u4'});
+                    } catch (e) {
+                      console.error(e.message)
+                    }
+                  </script>
+```
+
+##### V7 IFrame Embed
+
+```
+<iframe type="text/javascript" src='https://cdnapisec.kaltura.com/p/2068231/embedPlaykitJs/uiconf_id/50575592?iframeembed=true&entry_id=1_zdyx07u4' style="width: 560px; height: 395px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>                  
+```
+
 ## Playback Engines
 
 | Engine  				| mwEmbed 				| kaltura-player-js 			|
