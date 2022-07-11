@@ -54,7 +54,7 @@ kWidget.embed({
         } catch (e) {
           console.error(e.message)
         }
-        </script>
+</script>
 ```
 
 ##### V7 IFrame Embed
