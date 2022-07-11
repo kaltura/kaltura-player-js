@@ -27,7 +27,9 @@ kWidget.embed({
   "cache_st": 1657529534,
   "entry_id": "1_zdyx07u4"
 });
-</script>```
+</script>
+```
+
 
 ##### V2 IFrame Embed
 
