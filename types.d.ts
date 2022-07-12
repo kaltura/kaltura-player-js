@@ -54,6 +54,7 @@ export class KalturaPlayer {
   public registerService(pluginName: string, service: Object): void;
   public getService<T>(serviceName: string): T;
   public get ui(): UIWrapper;
+  public get Event(): EventTypes;
 }
 
 export class UIWrapper {
@@ -72,6 +73,13 @@ export interface Logger {
   trace(message: any, ...optionalParams: any[]): void;
   warn(message: any, ...optionalParams: any[]): void;
   error(message: any, ...optionalParams: any[]): void;
+}
+
+export interface EventTypes {
+  Core: {[event: string]: string},
+  UI: {[event: string]: string},
+  Cast: {[event: string]: string},
+  Playlist: {[event: string]: string}
 }
 
 declare module PlaykitUI {
