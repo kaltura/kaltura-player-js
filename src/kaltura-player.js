@@ -169,6 +169,8 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure({session: mediaConfig.session});
     if (!hasYoutubeSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
+    } else {
+      this._thumbnailManager = null;
     }
     addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions, this.shouldAddKs() ? mediaConfig.session?.ks : '');
     addKalturaParams(this, {...playerConfig, sources});
