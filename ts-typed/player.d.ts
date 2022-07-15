@@ -55,5 +55,7 @@ declare namespace KalturaPlayerTypes {
     };
     shouldAddKs: () => boolean;
     playlist: KalturaPlayerTypes.Playlist;
+    getTracks: (trackType: string) => Array<any>;
+    Track: Record<string, string>;
   }
 }
