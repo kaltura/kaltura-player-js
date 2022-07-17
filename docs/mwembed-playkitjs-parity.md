@@ -11,6 +11,7 @@
 * Player V7 exposes Playback Adapters or license Adapters.
 * Player V7 exposes ability to register to services wich saves code duplications
 * Player V7 comes with new plugins and capabilites like Ads Waterfalling, SamrtSwitch, Broadpeak
+* Player V7 is not using document.write api. V2 playar was using it and it  could cause page to stop rendering and could even stuck the plge load
 
 
 #### Player V2 VS Player V7 Embed codes
