@@ -29,7 +29,7 @@ And on the left of each of them you will see en **icon** indicating what player 
 
 4. Select the just newly created <span style="display: inline-flex;justify-content:center;align-items: center; background: #bb47b4; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V7</i></span> Player from the list.
 
-Now the Embed Code on the right would be replaced by v7 player Embed Code.
+Now the Embed Code on the right would be replaced by <span style="display: inline-flex;justify-content:center;align-items: center; background: #bb47b4; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V7</i></span> player Embed Code.
 
 5. Select your preferred **[Embed Type]()** or stick with the default Embed Type
 
