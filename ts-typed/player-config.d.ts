@@ -156,7 +156,7 @@ declare namespace KalturaPlayerTypes {
     dvr?: boolean;
     vr?: null;
     metadata?: Metadata;
-    captions?: any[];
+    captions?: KalturaCaptionSource[];
   }
 
   export interface Dash {
@@ -169,6 +169,14 @@ declare namespace KalturaPlayerTypes {
     name?: string;
     description?: string;
     tags?: string;
+  }
+
+  export interface KalturaCaptionSource {
+    default: boolean;
+    label: string;
+    language: string;
+    type: string;
+    url: string;
   }
 
   export interface Progressive {
