@@ -58,5 +58,6 @@ declare namespace KalturaPlayerTypes {
     playlist: KalturaPlayerTypes.Playlist;
     getTracks: (trackType: string) => Array<any>;
     Track: Record<string, string>;
+    MediaType: Record<string, string>;
   }
 }
