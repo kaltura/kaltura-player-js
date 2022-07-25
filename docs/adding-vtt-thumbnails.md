@@ -8,7 +8,7 @@ Kaltura player supports the loading of preview thumbnails using VTT files,
 
 NOTE: The urls specified in the WebVTT file are relative to the vtt file address.
 
-### exemple 1 - provided as a part of the mediaOptions
+### Example 1 - provided as a part of the mediaOptions
 
 ```js
 var kalturaPlayer = KalturaPlayer.setup(playerConfig);
@@ -22,7 +22,7 @@ kalturaPlayer.loadMedia(
 );
 ```
 
-### exemple 2 - provided as a part of the mediaConfig
+### Example 2 - provided as a part of the mediaConfig
 
 ```js
 var kalturaPlayer = KalturaPlayer.setup(playerConfig);
