@@ -26,7 +26,7 @@ While the V2 player provided several classes exposing different API functions, t
 ### 5. Playback Engines
 The V7 player supports most of the media formats supported by the V2 player, except for HDS, MSS, Multicast and P2P streaming. The V7 player also adds support for offline playback.
 
-###6. Platform support
+### 6. Platform support
 V7 Player supports playback on Smart TV devices, including support for native HTML5 video playback on supported platforms
 
 ### 9. UI
