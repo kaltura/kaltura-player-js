@@ -9,9 +9,6 @@ see [here](./getting-started-using-player-studio.md#creating-a-new-kaltura-playe
 
 Set your preferences and plugins as before
 
-You can do that manually, or you can use this [Automated Tool](gilad's script should be here) to automatically generate a new player
-with all your current settings using your uiconf id.
-
 ### Step 3 - Get the new embed code
 
 Open your [KMC](https://kmc.kaltura.com/index.php/kmcng/login) Dashboard and follow these steps:
