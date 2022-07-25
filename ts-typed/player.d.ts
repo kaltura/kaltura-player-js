@@ -40,6 +40,7 @@ declare namespace KalturaPlayerTypes {
     ui: any;
     config: KalturaPlayerTypes.PlayerConfig;
     provider: any;
+    engineType: string;
     cuePointManager: KalturaPlayerTypes.CuePointManager;
     ready: () => Promise<any>;
     sources: KalturaPlayerTypes.Sources;
@@ -57,5 +58,6 @@ declare namespace KalturaPlayerTypes {
     playlist: KalturaPlayerTypes.Playlist;
     getTracks: (trackType: string) => Array<any>;
     Track: Record<string, string>;
+    MediaType: Record<string, string>;
   }
 }
