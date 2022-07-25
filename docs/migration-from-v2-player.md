@@ -7,11 +7,9 @@ see [here](./getting-started-using-player-studio.md#creating-a-new-kaltura-playe
 
 ### Step 2 - Migrate your settings
 
-The **TV Platform Studio** (v7 studio) looks and behaves almost the same as
-the **Universal Studio** (v2 studio) except for a few small differences,
-you can find [here](would be here once it would be ready) an article about the differences between the two.
+Set your preferences and plugins as before
 
-In addition, you can use this [Automated Tool](gilad's script should be here) to automatically generate a new player
+You can do that manually, or you can use this [Automated Tool](gilad's script should be here) to automatically generate a new player
 with all your current settings using your uiconf id.
 
 ### Step 3 - Get the new embed code
@@ -24,7 +22,7 @@ Open your [KMC](https://kmc.kaltura.com/index.php/kmcng/login) Dashboard and fol
 
 Now you will see the Embed Code on the right, And a **Dropdown** contains a list of player names on the tap,
 The players are sorted by the update date,
-And on the left of each of them you will see en **icon** indicating what player it is <span style="display: inline-flex;justify-content:center;align-items: center; background: #04accd; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V2</i></span> or <span style="display: inline-flex;justify-content:center;align-items: center; background: #bb47b4; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V7</i></span>
+And on the left of each of them you will see an **icon** indicating what player it is <span style="display: inline-flex;justify-content:center;align-items: center; background: #04accd; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V2</i></span> or <span style="display: inline-flex;justify-content:center;align-items: center; background: #bb47b4; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V7</i></span>
 .
 
 4. Select the just newly created <span style="display: inline-flex;justify-content:center;align-items: center; background: #bb47b4; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V7</i></span> Player from the list.
