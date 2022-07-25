@@ -56,3 +56,28 @@ The Player will render the thumbnails in the tooltip using their original dimens
 ```
 
 NOTE: The Player only supports pixel-based fragments, not percentage-based ones.
+
+
+# Adding preview thumbnails using images file
+
+Kaltura player supports the loading of preview thumbnails using image file.
+
+### A configuration for the images file and more is provided as a part of the player ui objects config:
+
+#### Example:
+```js
+ ui: {
+          components: {
+            seekbar: {
+              thumbsSprite: "https://images_url",
+
+            }
+          }
+}
+```   
+
+### Referance:
+
+[Seekbar config](https://github.com/kaltura/playkit-js-ui/blob/master/docs/configuration.md#configcomponentsseekbar)
+
+    
