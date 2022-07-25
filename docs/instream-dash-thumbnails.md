@@ -35,6 +35,8 @@ DurationSec  = (10 * 60) + 34 = 634 sec
 X = Ceil(DurationSec / 100) = Ceil(6.34) = 7
 ```
 
+ ![dash-instream-thumbnail](./images/dash-instream-thumbnail.png)
+ 
  
 image urls 10 images in one line which represent 1 image on seekbar each 10 seconds.
 
