@@ -38,7 +38,7 @@ X = Ceil(DurationSec / 100) = Ceil(6.34) = 7
  ![dash-instream-thumbnail](./images/dash-instream-thumbnail.png)
  
  
-image urls 10 images in one line which represent 1 image on seekbar each 10 seconds.
+##### In the output image urls there are 10 images in each jpg file listed in one line which represent 1 image on seekbar each 10 seconds.
 
 [http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_1.jpg](http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_1.jpg)
 [http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_2.jpg](http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_2.jpg)
