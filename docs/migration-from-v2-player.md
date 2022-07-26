@@ -26,7 +26,7 @@ And on the left of each of them you will see an **icon** indicating what player 
 
 Now the Embed Code on the right would be replaced by <span style="display: inline-flex;justify-content:center;align-items: center; background: #bb47b4; color:white; width: 28px;height: 28px;font-weight: 600; font-size: 14px; border-radius: 3px"><i>V7</i></span> player Embed Code.
 
-5. Select your preferred **[Embed Type]()** or stick with the default Embed Type
+5. Select your preferred **[Embed Type](https://developer.kaltura.com/player/web/embed-types-web)** or stick with the default Embed Type
 
 That's all, now you can copy the Embed Code and embed it on you webpage as before
 
