@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.1-test-shaka-latest.0](https://github.com/kaltura/kaltura-player-js/compare/v3.4.0...v3.4.1-test-shaka-latest.0) (2022-08-01)
+
+
+### Bug Fixes
+
+* **FEC-12380:** update TS types declarations ([#553](https://github.com/kaltura/kaltura-player-js/issues/553)) ([352758a](https://github.com/kaltura/kaltura-player-js/commit/352758a))
+* **FEV-1291:** clear thumbnail manager for Youtube entries in playlist and export engineType to be used by plugins ([#555](https://github.com/kaltura/kaltura-player-js/issues/555)) ([d0071f4](https://github.com/kaltura/kaltura-player-js/commit/d0071f4))
+
+
+
 ## [3.4.0](https://github.com/kaltura/kaltura-player-js/compare/v3.3.0...v3.4.0) (2022-07-06)
 
 
