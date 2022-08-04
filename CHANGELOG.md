@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/kaltura/kaltura-player-js/compare/v3.4.0...v3.5.0) (2022-08-04)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.4](https://github.com/kaltura/playkit-js/releases/tag/v0.80.4) ([4419127](https://github.com/kaltura/kaltura-player-js/commit/4419127))
+* update playkit-js-dash to [1.30.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.3) ([5f87f31](https://github.com/kaltura/kaltura-player-js/commit/5f87f31))
+* update playkit-js-ui to [0.72.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.1) ([8d48a67](https://github.com/kaltura/kaltura-player-js/commit/8d48a67))
+* **FEC-12380:** update TS types declarations ([#553](https://github.com/kaltura/kaltura-player-js/issues/553)) ([352758a](https://github.com/kaltura/kaltura-player-js/commit/352758a))
+* **FEV-1291:** clear thumbnail manager for Youtube entries in playlist and export engineType to be used by plugins ([#555](https://github.com/kaltura/kaltura-player-js/issues/555)) ([d0071f4](https://github.com/kaltura/kaltura-player-js/commit/d0071f4))
+
+
+### Features
+
+* update playkit-js-providers to [2.36.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.36.0) ([82d0088](https://github.com/kaltura/kaltura-player-js/commit/82d0088))
+
+
+
 ## [3.4.0](https://github.com/kaltura/kaltura-player-js/compare/v3.3.0...v3.4.0) (2022-07-06)
 
 
