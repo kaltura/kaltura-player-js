@@ -16,7 +16,7 @@ declare module 'global' {
         createPortal: (children: any, domElement: HTMLElement) => void;
         utils: {
           getLogger: (name: string) => KalturaPlayerTypes.Logger;
-          bindActions(actions: Record<string, unknown>[]): (...args: any) => void;
+          bindActions(actions: Record<string, Function>): (...args: any) => void;
           KeyMap: Record<string, number>;
           toHHMMSS: (seconds: number) => string;
         };
