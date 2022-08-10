@@ -1131,9 +1131,9 @@
     mkdirp "^1.0.4"
 
 "@playkit-js/playkit-js-dash@canary":
-  version "1.30.3-canary.45bdb57"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.30.3-canary.45bdb57.tgz#2a69a33d4ba81bd87a20b4dfcaf09814e67e384f"
-  integrity sha512-g2hGcoErPc8z/S202HFnoIzz0azeCw2ggmCpMi9JUbDA+CFHvr3nO7qnz6vBDAZ31EakdpM2GGscokKTR2Be5A==
+  version "1.30.4-canary.05ea5c2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.30.4-canary.05ea5c2.tgz#534e1932bdfb56238abd23e202b07f4c8d786b37"
+  integrity sha512-X3qqaVD054/+pszw5wPKrOFeVlbRPfi4+V+uU4KUu8MU2DGTfKicPjcALydCiu8rbdCaeeK9zKHjLarNMkyMdA==
 
 "@playkit-js/playkit-js-hls@canary":
   version "1.30.2-canary.ec2ef4a"
