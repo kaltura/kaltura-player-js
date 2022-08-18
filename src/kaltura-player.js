@@ -156,7 +156,7 @@ class KalturaPlayer extends FakeEventTarget {
 
   setMedia(mediaConfig: KPMediaConfig): void {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
-    this.reset();
+    this.reset(true);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     //merge the current sources from player to keep the sources passed from constructor earlier
     const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
@@ -344,7 +344,7 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getVideoElement();
   }
 
-  reset(): void {
+  reset(isChangeMedia: boolean = false): void {
     if (!this._reset) {
       this._reset = true;
       this._firstPlay = true;
@@ -352,11 +352,11 @@ class KalturaPlayer extends FakeEventTarget {
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
-      this._uiWrapper.reset();
+      // this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
       this._cuepointManager.reset();
-      this._localPlayer.reset();
+      this._localPlayer.reset(isChangeMedia);
       this._thumbnailManager?.destroy();
     }
   }
