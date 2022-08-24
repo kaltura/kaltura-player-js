@@ -352,7 +352,7 @@ class KalturaPlayer extends FakeEventTarget {
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
-      // this._uiWrapper.reset();
+      this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
       this._cuepointManager.reset();
