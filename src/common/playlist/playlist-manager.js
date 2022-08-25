@@ -282,7 +282,6 @@ class PlaylistManager {
     this._playlist.activeItemIndex = index;
     if (activeItem.isPlayable()) {
       this._resetProviderPluginsConfig();
-      this._player.reset();
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
       const providerPlugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
@@ -293,7 +292,6 @@ class PlaylistManager {
     } else {
       if (this._mediaInfoList[index]) {
         this._resetProviderPluginsConfig();
-        this._player.reset();
         const media = ({sources: activeItem.sources}: any);
         this._player.setMedia(media);
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
