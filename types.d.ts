@@ -1,5 +1,7 @@
 import {Store} from 'redux';
 import * as preactLib from 'preact';
+import * as reduxLib from 'react-redux';
+import {BasePlugin} from 'kaltura-player-js';
 
 declare module 'kaltura-player-js' {
   export const ui: typeof PlaykitUI;
@@ -142,7 +144,25 @@ declare module PlaykitUI {
       };
     };
   };
+
+  enum IconState {
+    INACTIVE= 0,
+    ACTIVE= 1
+  }
+
+  export const Components: {
+    Icon : preactLib.ComponentClass<{id: string | number, path: string, state?: IconState, color?: string, activeColor?: string, width?: number, height?: number, viewBox?: string}>;
+    PLAYER_SIZE: {
+      TINY: 'tiny',
+      EXTRA_SMALL: 'extrasmall',
+      SMALL: 'small',
+      MEDIUM: 'medium',
+      LARGE: 'large',
+      EXTRA_LARGE: 'extralarge'
+    };
+  };
   export const style: {[cssClassName: string]: string};
   export const h: typeof preact.h;
   export const preact: typeof preactLib;
+  export const redux: typeof reduxLib;
 }
