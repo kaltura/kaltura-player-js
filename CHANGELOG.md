@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/kaltura/kaltura-player-js/compare/v3.5.0...v3.6.0) (2022-08-31)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.5](https://github.com/kaltura/playkit-js/releases/tag/v0.80.5) ([0e89918](https://github.com/kaltura/kaltura-player-js/commit/0e89918))
+* update playkit-js-hls to [1.30.2](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.30.2) ([1652d7a](https://github.com/kaltura/kaltura-player-js/commit/1652d7a))
+* update playkit-js-ui to [0.72.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.2) ([2a06bb2](https://github.com/kaltura/kaltura-player-js/commit/2a06bb2))
+* **FEC-12238:** [WEB][ShakaPlayer] - upgrade shaka player to v4.1.2 ([#561](https://github.com/kaltura/kaltura-player-js/issues/561)) ([8a26067](https://github.com/kaltura/kaltura-player-js/commit/8a26067))
+* **FEC-12335:** Side Panel Item gets refreshed in every 'change media' ([#562](https://github.com/kaltura/kaltura-player-js/issues/562)) ([1c452c0](https://github.com/kaltura/kaltura-player-js/commit/1c452c0)), closes [kaltura/playkit-js#659](https://github.com/kaltura/kaltura-player-js/issues/659) [kaltura/playkit-js-ui#687](https://github.com/kaltura/kaltura-player-js/issues/687)
+* **FEC-12460:** upgrade HLS.JS player to v1.2.0 ([#560](https://github.com/kaltura/kaltura-player-js/issues/560)) ([b4f1c08](https://github.com/kaltura/kaltura-player-js/commit/b4f1c08)), closes [kaltura/playkit-js-hls#175](https://github.com/kaltura/kaltura-player-js/issues/175)
+
+
+### Features
+
+* update playkit-js-dash to [1.31.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.0) ([3d5861f](https://github.com/kaltura/kaltura-player-js/commit/3d5861f))
+
+
+
 ## [3.5.0](https://github.com/kaltura/kaltura-player-js/compare/v3.4.0...v3.5.0) (2022-08-04)
 
 
