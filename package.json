@@ -60,7 +60,7 @@
     "@babel/polyfill": "^7.0.0",
     "@playkit-js/playkit-js": "0.80.5",
     "@playkit-js/playkit-js-dash": "1.31.0",
-    "@playkit-js/playkit-js-hls": "canary",
+    "@playkit-js/playkit-js-hls": "1.30.2",
     "@playkit-js/playkit-js-ui": "0.72.1",
     "hls.js": "^1.2.0",
     "intersection-observer": "^0.12.0",
