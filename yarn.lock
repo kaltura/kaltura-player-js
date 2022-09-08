@@ -1135,9 +1135,9 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.31.0.tgz#c85d1334a07c6acd57ab4c33e33c952640f99e06"
   integrity sha512-7PASOSdRYlxvv62LItKH0Y7+VZh602ubYoF/DsEcvby2JCKwqHOFF2R7CPx0F9Fa3NgQrYpg/GdSqCpzb+YUJQ==
 
-"@playkit-js/playkit-js-hls@kaltura/playkit-js-hls#test-hlsjs-bitrate-fix":
+"@playkit-js/playkit-js-hls@https://github.com/kaltura/playkit-js-hls.git#test-hlsjs-bitrate-fix":
   version "1.30.2"
-  resolved "https://codeload.github.com/kaltura/playkit-js-hls/tar.gz/9f7deddce85762bd9d62bf8ff30a3eff7b3c2334"
+  resolved "https://github.com/kaltura/playkit-js-hls.git#d0184d51bd52af5ede8677bb0c1d7b41aed5fc7b"
 
 "@playkit-js/playkit-js-ui@0.72.2":
   version "0.72.2"
@@ -5001,9 +5001,9 @@ highlight.js@^9.15.5:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
   integrity sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
 
-hls.js@SivanA-Kaltura/hls.js#test-hlsjs-bitrate-fix:
+"hls.js@https://github.com/SivanA-Kaltura/hls.js.git#test-hlsjs-bitrate-fix":
   version "0.0.1"
-  resolved "https://codeload.github.com/SivanA-Kaltura/hls.js/tar.gz/0d29bf2e199bffbaa20e912fbc475ddf9294e396"
+  resolved "https://github.com/SivanA-Kaltura/hls.js.git#dc3fd220cddb861d3973db1eae6faad6a46ff871"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
