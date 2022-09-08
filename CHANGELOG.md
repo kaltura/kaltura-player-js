@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.2-test-hlsjs-bitrate-fix.2](https://github.com/kaltura/kaltura-player-js/compare/v3.6.2-test-hlsjs-bitrate-fix.1...v3.6.2-test-hlsjs-bitrate-fix.2) (2022-09-08)
+
+
+
 ### [3.6.2-test-hlsjs-bitrate-fix.1](https://github.com/kaltura/kaltura-player-js/compare/v3.6.2-test-hlsjs-bitrate-fix.0...v3.6.2-test-hlsjs-bitrate-fix.1) (2022-09-08)
 
 
