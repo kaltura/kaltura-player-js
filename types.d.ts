@@ -55,6 +55,7 @@ export interface IBasePlugin<ConfigType> {
 }
 
 export class KalturaPlayer {
+  public setMedia(config: any): void;
   public registerService(pluginName: string, service: Object): void;
   public getService<T>(serviceName: string): T;
   public get ui(): UIWrapper;
@@ -169,4 +170,5 @@ declare module PlaykitUI {
   export const preact: typeof preactLib;
   export const redux: typeof reduxLib;
   export const preacti18n: typeof preacti18nLib;
+  export const Event: any;
 }
