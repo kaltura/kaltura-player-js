@@ -22,7 +22,6 @@ The configuration uses the following structure:
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
   streaming: PKStreamingConfigObject,
-  session: PKSessionConfigObject,
   network: PKNetworkConfigObject,
   customLabels: PKCustomLabelsConfigObject,
   dimensions: PKDimensionsConfig,
