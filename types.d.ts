@@ -1,9 +1,11 @@
 import {Store} from 'redux';
 import * as preactLib from 'preact';
+import * as preacti18nLib from 'preact-i18n';
 import * as reduxLib from 'react-redux';
 import {BasePlugin} from 'kaltura-player-js';
 
 declare module 'kaltura-player-js' {
+  export function setup(config: any): KalturaPlayer;
   export const ui: typeof PlaykitUI;
   export class FakeEvent implements CustomEvent {
     readonly payload: any
@@ -151,6 +153,7 @@ declare module PlaykitUI {
   }
 
   export const Components: {
+    Tooltip: preactLib.ComponentClass<{label: string}>;
     Icon : preactLib.ComponentClass<{id: string | number, path: string, state?: IconState, color?: string, activeColor?: string, width?: number, height?: number, viewBox?: string}>;
     PLAYER_SIZE: {
       TINY: 'tiny',
@@ -165,4 +168,5 @@ declare module PlaykitUI {
   export const h: typeof preact.h;
   export const preact: typeof preactLib;
   export const redux: typeof reduxLib;
+  export const preacti18n: typeof preacti18nLib;
 }
