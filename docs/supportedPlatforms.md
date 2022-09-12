@@ -5,7 +5,7 @@
 * Kaltura Player is being tested for playback & features on the stable and latest versions of the browsers below. 
 
 
-</br></br>
+</br>
 ### Desktop Web HLS
 [compatability](https://github.com/video-dev/hls.js/#compatibility)
 
@@ -21,7 +21,7 @@
 |Tizen TV 4+ Chromium | -        | -       | -       | -       | -        | -      |**Y**|
 |WebOS 4+   Chromium  | -        | -       | -       | -       | -        | -      |**Y**|
 
-
+</br></br>
 ### Desktop Web DASH
 [compatability](https://github.com/shaka-project/shaka-player#platform-and-browser-support-matrix)
 
@@ -44,7 +44,7 @@
 |Safari    |**Y**|**Y**|**AES-128**</br>**FAIRPLAY**  |-|
 |Firefox   |**Y**|**Y**|**AES-128**|-|
 
-
+</br></br>
 ### Mobile Web DASH
 
 |Browser - Last 3 major versions    |Android   |iOS / iPadOS|DRM|Other|
