@@ -38,11 +38,11 @@
 </br></br>
 ### Mobile Web HLS
 
-|Browser - Last 3 major versions   |Android   |iOS / iPadOS      |DRM|Other|
-|:---------:|:--------:|:-------:|:-------:|:-------:|:--------:|:------:|:---:|
-|Chrome    |**Y**     |**Y**    |  **AES-128** | -   |
-|Safari    |**Y**     |**Y**    |  **AES-128**</br>**FAIRPLAY**  | -   |
-|Firefox   |**Y**     |**Y**    |**AES-128** | -   |
+|Browser - Last 3 major versions   |Android   |iOS / iPadOS|DRM|Other|
+|:---------:|:--------:|:-------:|:-------:|:---:|
+|Chrome    |**Y**|**Y**|**AES-128**| -|
+|Safari    |**Y**|**Y**|**AES-128**</br>**FAIRPLAY**  |-|
+|Firefox   |**Y**|**Y**|**AES-128**|-|
 
 
 ### Mobile Web DASH
@@ -51,5 +51,5 @@
 |:---------:|:--------:|:-------:|:------:|:---:|
 |Chrome    |**Y**     |**N**    |**WIDEVINE**   |-|
 |Safari    |**N**     |**N**    |-|-|
-|Firefox   |**Y**     |**N**    |**WIDEVINE**  | -   |
+|Firefox   |**Y**     |**N**    |**WIDEVINE**  |-|
 
