@@ -8,7 +8,7 @@ declare module 'kaltura-player-js' {
   export function setup(config: any): KalturaPlayer;
   export const ui: typeof PlaykitUI;
   export class FakeEvent implements CustomEvent {
-    readonly payload: any
+    readonly payload: any;
     readonly AT_TARGET: number;
     readonly BUBBLING_PHASE: number;
     readonly CAPTURING_PHASE: number;
@@ -45,10 +45,13 @@ declare module 'kaltura-player-js' {
     public reset(): void;
     public destroy(): void;
     public static isValid(): boolean;
-    public eventManager: any;
+    public eventManager: PlaykitUI.EventManager;
   }
   export function registerPlugin<ConfigType>(pluginName: string, plugin: IBasePlugin<ConfigType>): void;
 }
+
+type Target = KalturaPlayer | HTMLElement | Document;
+type CallbackFunction = (...args: any) => void;
 
 export interface IBasePlugin<ConfigType> {
   new (name: string, player: KalturaPlayer, config: ConfigType): BasePlugin<ConfigType>;
@@ -81,13 +84,21 @@ export interface Logger {
 }
 
 export interface EventTypes {
-  Core: {[event: string]: string},
-  UI: {[event: string]: string},
-  Cast: {[event: string]: string},
-  Playlist: {[event: string]: string}
+  Core: {[event: string]: string};
+  UI: {[event: string]: string};
+  Cast: {[event: string]: string};
+  Playlist: {[event: string]: string};
 }
 
 declare module PlaykitUI {
+  export class EventManager {
+    listen: (target: Target, event: string, cb: CallbackFunction) => void;
+    listenOnce: (target: Target, event: string, cb: CallbackFunction) => void;
+    unlisten: (target: Target, event: string, cb?: CallbackFunction) => void;
+    destroy: () => void;
+    removeAll: () => void;
+  }
+
   export type SidePanelPosition = 'top' | 'bottom' | 'right' | 'left';
   export type SidePanelMode = 'alongside' | 'hidden' | 'over';
   export type ReservedPresetName = 'Playback' | 'Live' | 'Idle' | 'Ads' | 'Error';
@@ -149,20 +160,29 @@ declare module PlaykitUI {
   };
 
   enum IconState {
-    INACTIVE= 0,
-    ACTIVE= 1
+    INACTIVE = 0,
+    ACTIVE = 1
   }
 
   export const Components: {
     Tooltip: preactLib.ComponentClass<{label: string}>;
-    Icon : preactLib.ComponentClass<{id: string | number, path: string, state?: IconState, color?: string, activeColor?: string, width?: number, height?: number, viewBox?: string}>;
+    Icon: preactLib.ComponentClass<{
+      id: string | number;
+      path: string;
+      state?: IconState;
+      color?: string;
+      activeColor?: string;
+      width?: number;
+      height?: number;
+      viewBox?: string;
+    }>;
     PLAYER_SIZE: {
-      TINY: 'tiny',
-      EXTRA_SMALL: 'extrasmall',
-      SMALL: 'small',
-      MEDIUM: 'medium',
-      LARGE: 'large',
-      EXTRA_LARGE: 'extralarge'
+      TINY: 'tiny';
+      EXTRA_SMALL: 'extrasmall';
+      SMALL: 'small';
+      MEDIUM: 'medium';
+      LARGE: 'large';
+      EXTRA_LARGE: 'extralarge';
     };
   };
   export const style: {[cssClassName: string]: string};
