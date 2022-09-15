@@ -173,7 +173,29 @@ kalturaPlayer.playlist.playItem(lastItemIndex);
 
 For the complete `playlist` API, see [PlaylistManager](./api.md#playlistmanager).
 
+## Playlist Events
+
+Once a playlist load is requested async calls will be called until the playlist object is ready for use. Inorder to use the api correctly you must be aware that the playlist is ready for use after the playtist is loaded (witing for `PLAYLIST_LOADED` event).
+
+[Playlist Events](https://github.com/kaltura/kaltura-player-js/blob/master/src/common/playlist/playlist-event-type.js)
+
+
+ * `PLAYLIST_LOADED`
+ * `PLAYLIST_ITEM_CHANGED` (multiple)
+ * `PLAYLIST_ENDED`
+
+
+## Listening to Event before calling playlist API the first time
+
+```javascript
+kalturaPlayer.loadPlaylist({playlistId: '01234'});
+kalturaPlayer.addEventListener(KalturaPlayer.playlist.PlaylistEventType.PLAYLIST_LOADED, () => {
+   kalturaPlayer.playlist.playItem(kalturaPlayer.playlist.items.length);
+});
+```
+
 ## Change Playlist
+
 
 To clean the playlist data, you'll need to call the [`playlist.reset`](./api.md#reset-2) method.
 <br>Here is an example how to change the playlist using the [`playlist events`](./api.md#playlisteventtype) and [`playlist.reset`](./api.md#reset-2) method.
@@ -205,3 +227,7 @@ kalturaPlayer.loadPlaylist({playlistId: '56789'}, {options: {autoContinue: true}
   console.log(kalturaPlayer.playlist.options.autoContinue); // true
 });
 ```
+
+## Error Handling
+
+Error handling ise based on player errors which may result from BE requests or media issues 
