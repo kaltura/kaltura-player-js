@@ -898,7 +898,7 @@ class KalturaPlayer extends FakeEventTarget {
     const middlewares = [];
     const uiComponents = [];
     const plugins = [];
-    if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig) {
+    if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig && 'ks' in pluginsConfig.kava) {
       delete pluginsConfig.kava.ks;
     }
     Object.keys(pluginsConfig).forEach(name => {
