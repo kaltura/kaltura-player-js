@@ -898,6 +898,9 @@ class KalturaPlayer extends FakeEventTarget {
     const middlewares = [];
     const uiComponents = [];
     const plugins = [];
+    if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig) {
+      delete pluginsConfig.kava.ks;
+    }
     Object.keys(pluginsConfig).forEach(name => {
       // If the plugin is already exists in the registry we are updating his config
       const plugin = this._pluginManager.get(name);
