@@ -45,6 +45,7 @@ declare namespace KalturaPlayerTypes {
     ready: () => Promise<any>;
     sources: KalturaPlayerTypes.Sources;
     src?: string;
+    poster?: string;
     getThumbnail: (
       time: number
     ) => {
