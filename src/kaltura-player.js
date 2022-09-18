@@ -898,9 +898,7 @@ class KalturaPlayer extends FakeEventTarget {
     const middlewares = [];
     const uiComponents = [];
     const plugins = [];
-    if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig && 'ks' in pluginsConfig.kava) {
-      delete pluginsConfig.kava.ks;
-    }
+    this._removeKavaKSForOttPlayer(pluginsConfig);
     Object.keys(pluginsConfig).forEach(name => {
       // If the plugin is already exists in the registry we are updating his config
       const plugin = this._pluginManager.get(name);
@@ -947,6 +945,12 @@ class KalturaPlayer extends FakeEventTarget {
     this._maybeCreateAdsController();
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
+  }
+
+  _removeKavaKSForOttPlayer(pluginsConfig: Object = {}): void {
+    if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig && 'ks' in pluginsConfig.kava) {
+      delete pluginsConfig.kava.ks;
+    }
   }
 
   _maybeCreateAdsController(): void {
