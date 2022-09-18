@@ -948,6 +948,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   _removeKavaKSForOttPlayer(pluginsConfig: Object = {}): void {
+    // in case of ott player, the ott BE ks is not applicable in kava events as it expects ks in ovp structure
     if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig && 'ks' in pluginsConfig.kava) {
       delete pluginsConfig.kava.ks;
     }
