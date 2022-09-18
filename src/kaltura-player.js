@@ -172,7 +172,7 @@ class KalturaPlayer extends FakeEventTarget {
     } else {
       this._thumbnailManager = null;
     }
-    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions, this.shouldAddKs() ? mediaConfig.session?.ks : '');
+    this.updateKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, {...playerConfig, sources});
     const playback = maybeSetStreamPriority(this, sources);
     if (playback) {
@@ -181,8 +181,13 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure({...playerConfig, sources});
   }
 
-  shouldAddKs(): boolean {
-    return !!(this.config.provider.loadThumbnailWithKs && !this.config.session.isAnonymous);
+  updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object, ks?: string) {
+    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? ks || this.config?.session?.ks : '');
+  }
+
+  shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
+    // $FlowFixMe[prop-missing]
+    return !!(this.config.provider.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.isAnonymous === false);
   }
 
   /**
