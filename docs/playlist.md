@@ -185,7 +185,7 @@ Once a playlist load is requested async calls will be called until the playlist 
  * `PLAYLIST_ENDED`
 
 
-## Listening to Event before calling playlist API the first time
+## Listening to an Event before calling the playlist API the first time
 
 ```javascript
 kalturaPlayer.loadPlaylist({playlistId: '01234'});
