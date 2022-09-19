@@ -175,7 +175,7 @@ For the complete `playlist` API, see [PlaylistManager](./api.md#playlistmanager)
 
 ## Playlist Events
 
-Once a playlist load is requested async calls will be called until the playlist object is ready for use. Inorder to use the api correctly you must be aware that the playlist is ready for use after the playtist is loaded (witing for `PLAYLIST_LOADED` event).
+Once a playlist load is requested, async api calls are made. You can use the playlist api after the playlist data is loaded (`PLAYLIST_LOADED` event).
 
 [Playlist Events](https://github.com/kaltura/kaltura-player-js/blob/master/src/common/playlist/playlist-event-type.js)
 
