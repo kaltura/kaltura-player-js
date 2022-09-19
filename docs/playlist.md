@@ -230,4 +230,4 @@ kalturaPlayer.loadPlaylist({playlistId: '56789'}, {options: {autoContinue: true}
 
 ## Error Handling
 
-Error handling ise based on player errors which may result from BE requests or media issues 
+Error handling is based on player errors which may result from Kaltura api requests or media issues 
