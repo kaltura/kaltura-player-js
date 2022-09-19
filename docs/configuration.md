@@ -134,7 +134,7 @@ The configuration uses the following structure:
 >
 > ##### Type: [PKDimensionsConfig](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkdimensionsconfig)
 >
-> ##### Description: Defines the player dimentions configuration.
+> ##### Description: Defines the player dimensions configuration.
 
 ##
   
