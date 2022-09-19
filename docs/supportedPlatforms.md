@@ -2,7 +2,7 @@
 ## Kaltura Player Browsers Support 
 
 
-* Kaltura Player is being tested for playback & features on the stable and latest versions of the browsers below. 
+* Kaltura Player playback and features are tested on the stable and latest versions of the browsers below. 
 
 
 </br>
