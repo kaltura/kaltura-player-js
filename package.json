@@ -62,7 +62,7 @@
     "@playkit-js/playkit-js-dash": "1.31.0",
     "@playkit-js/playkit-js-hls": "1.30.2",
     "@playkit-js/playkit-js-ui": "0.72.2",
-    "hls.js": "^1.2.0",
+    "hls.js": "1.2.3",
     "intersection-observer": "^0.12.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.36.0",
     "proxy-polyfill": "^0.3.0",
