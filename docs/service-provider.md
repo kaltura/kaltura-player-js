@@ -12,15 +12,19 @@ We exposed three new API methods in Kaltura Player -
 - getService
 
 ## How to register as a service
+
 In this example plugin A will register `doSomethingInstance` as a service called 'pluginAService'
+
 ```js
 player.registerService('pluginAService', doSomethingInstance);
 ```
 
 ## How to use a registered service
+
 In this example plugin B will use some method `doSomething` from `doSomethingInstance` in plugin A
+
 ```js
-if (player.hasService('pluginAService')){
-  player.getService('pluginAService').doSomething()
+if (player.hasService('pluginAService')) {
+  player.getService('pluginAService').doSomething();
 }
 ```

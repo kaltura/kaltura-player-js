@@ -4,15 +4,12 @@ DASH spec allows thumbnails to be specified in the stream itself as an additiona
 
 Kaltura Player supports the loading of preview thumbnails (Single or Tiled) using In-Stream DASH thumbnailsautomatically once Klatura Player UI is being used.
 
-
 The Katura Player will automatically populate the image-based track and it will be available in the list of the image tracks as well.
-
 
 ### Event - trackschanged
 
 The application can register to a player event `trackschanged` this event payload will contain all the available tracks the player has identified in the manifest or given as external subtitles tracks.
-This event is fired once the player has completed the intitalization process and `medialoaded` event was fired.  
-
+This event is fired once the player has completed the intitalization process and `medialoaded` event was fired.
 
 ### Mainfest image track definition
 
@@ -35,9 +32,8 @@ DurationSec  = (10 * 60) + 34 = 634 sec
 X = Ceil(DurationSec / 100) = Ceil(6.34) = 7
 ```
 
- ![dash-instream-thumbnail](./images/dash-instream-thumbnail.png)
- 
- 
+![dash-instream-thumbnail](./images/dash-instream-thumbnail.png)
+
 ##### In the output image urls there are 10 images in each jpg file listed in one line which represent 1 image on seekbar each 10 seconds.
 
 [http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_1.jpg](http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_1.jpg)
@@ -47,8 +43,6 @@ X = Ceil(DurationSec / 100) = Ceil(6.34) = 7
 [http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_5.jpg](http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_5.jpg)
 [http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_6.jpg](http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_6.jpg)
 [http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_7.jpg](http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_7.jpg)
-
-
 
 ### The Player Tracks for this manifest:
 
@@ -188,41 +182,39 @@ Player image track will provide applications all available information that coul
 
 ```
 
-
-
 #### Get Image Tracks API
 
 ```js
-kalturaPlayer.getTracks('image')
+kalturaPlayer.getTracks('image');
 ```
 
 ```js
 [
   {
-    "_id": "thumbnails_320x180",
-    "_active": true,
-    "_index": 0,
-    "_available": true,
-    "_url": "http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_$Number$.jpg",
-    "_width": 3200,
-    "_height": 180,
-    "_duration": 100,
-    "_customData": {
-      "bitrate": 12288,
-      "startNumber": 1,
-      "timescale": 1,
-      "presentationTimeOffset": 0
+    _id: 'thumbnails_320x180',
+    _active: true,
+    _index: 0,
+    _available: true,
+    _url: 'http://dash.edgesuite.net/akamai/bbb_30fps/thumbnails_320x180/tile_$Number$.jpg',
+    _width: 3200,
+    _height: 180,
+    _duration: 100,
+    _customData: {
+      bitrate: 12288,
+      startNumber: 1,
+      timescale: 1,
+      presentationTimeOffset: 0
     },
-    "_rows": 10,
-    "_cols": 1
+    _rows: 10,
+    _cols: 1
   }
-]
+];
 ```
 
-#### Get The Theumbnail Corresponding ```ThumbnailInfo``` Object by given player Positon Seconds
+#### Get The Theumbnail Corresponding `ThumbnailInfo` Object by given player Positon Seconds
 
 ```js
-kalturaPlayer.getThumbnail(110)
+kalturaPlayer.getThumbnail(110);
 ```
 
 ```js
@@ -235,12 +227,10 @@ kalturaPlayer.getThumbnail(110)
 }
 ```
 
-
 #### Referance
 
 [ThumbnailManager](https://github.com/kaltura/kaltura-player-js/blob/master/src/common/thumbnail-manager.js)
 
 [ThumbnailInfo](https://github.com/kaltura/playkit-js/blob/master/src/thumbnail/thumbnail-info.js)
-
 
 NOTE: The Player only supports pixel-based fragments, not percentage-based ones.

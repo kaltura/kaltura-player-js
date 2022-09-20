@@ -12,7 +12,7 @@ declare module 'global' {
           connect: (...args: any) => any;
           useSelector: (...args: any) => any;
         };
-        reducers: Record<string, {actions: Record<string, Function>, types:  Record<string, string>}>;
+        reducers: Record<string, {actions: Record<string, Function>; types: Record<string, string>}>;
         createPortal: (children: any, domElement: HTMLElement) => void;
         utils: {
           getLogger: (name: string) => KalturaPlayerTypes.Logger;
@@ -45,7 +45,7 @@ declare module 'global' {
         FakeEvent: any;
         FakeEventTarget: {
           new (...args: any[]): KalturaPlayerTypes.FakeEventTarget;
-        }
+        };
         Error: any;
         StateType: Record<string, string>;
         MediaType: Record<string, string>;
