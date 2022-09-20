@@ -898,7 +898,6 @@ class KalturaPlayer extends FakeEventTarget {
     const middlewares = [];
     const uiComponents = [];
     const plugins = [];
-    this._removeKavaKSForOttPlayer(pluginsConfig);
     Object.keys(pluginsConfig).forEach(name => {
       // If the plugin is already exists in the registry we are updating his config
       const plugin = this._pluginManager.get(name);
@@ -945,13 +944,6 @@ class KalturaPlayer extends FakeEventTarget {
     this._maybeCreateAdsController();
     middlewares.forEach(middleware => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
-  }
-
-  _removeKavaKSForOttPlayer(pluginsConfig: Object = {}): void {
-    // in case of ott player, the ott BE ks is not applicable in kava events as it expects ks in ovp structure
-    if ('kava' in pluginsConfig && 'ottAnalytics' in pluginsConfig && 'ks' in pluginsConfig.kava) {
-      delete pluginsConfig.kava.ks;
-    }
   }
 
   _maybeCreateAdsController(): void {
