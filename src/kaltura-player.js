@@ -181,8 +181,8 @@ class KalturaPlayer extends FakeEventTarget {
     this.configure({...playerConfig, sources});
   }
 
-  updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object, ks?: string) {
-    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? ks || this.config?.session?.ks : '');
+  updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object) {
+    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.config?.session?.ks : '');
   }
 
   shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
