@@ -7,7 +7,9 @@
 
 </br>
 ### Desktop Web HLS
+
 [compatability](https://github.com/video-dev/hls.js/#compatibility)
+
 
 
 |Browser - Last 3 major versions   |Windows   |Mac      |Linux    |Android  |iOS >= 13 |DRM|Other|
