@@ -13,7 +13,6 @@ class PluginConfigStore extends BasePluginConfigStore {
     super();
 
     this._config = Utils.Object.mergeDeep({}, this._basePluginsConfig, this._ovpPluginsConfig);
-    //console.log(this._config);
   }
 }
 
