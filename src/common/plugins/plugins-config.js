@@ -2,8 +2,10 @@
 import {PluginConfigStore, templateRegex} from './plugins-config-store.js';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
-import {Utils} from '@playkit-js/playkit-js';
+import {Utils, getLogger} from '@playkit-js/playkit-js';
 import {getServerUIConf} from '../utils/setup-helpers';
+
+const logger = getLogger('PluginsConfig');
 
 /**
  * returns whether value is evaluated
@@ -142,6 +144,30 @@ function getEncodedReferrer(): string {
 }
 
 /**
+ * @private
+ * @param {string} text - the string to sanitize
+ * @returns {string} - the sanitized string
+ * @private
+ */
+function _sanitize(text: string): string {
+  if (!text) return;
+  return (
+    text
+      .replace(/\\n/g, '\\n')
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, '\\&')
+      .replace(/\\r/g, '\\r')
+      .replace(/\\t/g, '\\t')
+      .replace(/\\b/g, '\\b')
+      .replace(/\\f/g, '\\f')
+      // remove non-printable and other non-valid JSON chars
+      // eslint-disable-next-line no-control-regex
+      .replace(/[\u0000-\u0019]+/g, '')
+  );
+}
+
+/**
  *
  * @param {string} config - the config string
  * @returns {Object} - the config object
@@ -149,6 +175,7 @@ function getEncodedReferrer(): string {
  */
 function _formatConfigString(config: string): Object {
   let configObj;
+  config = _sanitize(config);
   try {
     configObj = JSON.parse(config, function (key) {
       try {
@@ -158,10 +185,12 @@ function _formatConfigString(config: string): Object {
       }
     });
   } catch (e) {
+    logger.error('An error occurred while formatting config string.', e);
     configObj = {};
   }
   return configObj;
 }
+
 /**
  * @param {Object} data - target config object
  * @param {Object} evaluatedConfig - the evaluated object

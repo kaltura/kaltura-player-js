@@ -132,6 +132,14 @@ describe('evaluatePluginsConfig', () => {
     pluginsConfig.kava.should.have.property('playerVersion');
     pluginsConfig.kava.playerVersion.should.equal(__VERSION__);
   });
+
+  it('should sanitize the entryName', () => {
+    playerConfig.sources = {metadata: {name: 'invalid\tname'}};
+    pluginsConfig.kava.entryName = '{{entryName}}';
+    configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
+    pluginsConfig.kava.should.have.property('entryName');
+    pluginsConfig.kava.entryName.should.equal('invalidname');
+  });
 });
 
 describe('getEncodedReferrer', () => {
