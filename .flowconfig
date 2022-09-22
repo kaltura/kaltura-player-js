@@ -15,4 +15,6 @@ module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ovp/player-defaults'
 module.name_mapper='player-defaults' -> '<PROJECT_ROOT>/src/ott/player-defaults'
 module.name_mapper='poster' -> '<PROJECT_ROOT>/src/ovp/poster'
 module.name_mapper='poster' -> '<PROJECT_ROOT>/src/ott/poster'
+module.name_mapper='plugins-config-store' -> '<PROJECT_ROOT>/src/ovp/plugins/plugins-config-store'
+module.name_mapper='plugins-config-store' -> '<PROJECT_ROOT>/src/ott/plugins/plugins-config-store'
 esproposal.optional_chaining=enable
