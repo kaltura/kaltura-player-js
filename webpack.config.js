@@ -102,7 +102,8 @@ function createConfig(env, argv, target) {
         'playkit-js-providers': path.resolve(`./node_modules/playkit-js-providers/dist/playkit-${playerType}-provider`),
         'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
         'hls.js': path.resolve('./node_modules/hls.js/dist/hls.min.js'),
-        poster: path.resolve(`./src/${playerType}/poster`)
+        poster: path.resolve(`./src/${playerType}/poster`),
+        'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`)
       },
       modules: [path.resolve(__dirname, 'src'), 'node_modules']
     }
