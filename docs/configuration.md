@@ -21,6 +21,12 @@ The configuration uses the following structure:
   text: PKTextConfigObject,
   playback: PKPlaybackConfigObject,
   sources: PKSourcesConfigObject,
+  streaming: PKStreamingConfigObject,
+  network: PKNetworkConfigObject,
+  customLabels: PKCustomLabelsConfigObject,
+  dimensions: PKDimensionsConfig,
+  abr: PKAbrConfigObject,
+  drm: PKDrmConfigObject,
   playlist: KPPlaylistObject,
   plugins: KPPluginsConfigObject,
   advertising: KPAdvertisingConfigObject,
@@ -99,6 +105,53 @@ The configuration uses the following structure:
 > ##### Description: Defines the sources configuration.
 
 ##
+
+> ### config.streaming
+>
+> ##### Type: [PKStreamingConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkstreamingconfigobject)
+>
+> ##### Description: Defines the sources streaming configuration.
+
+##
+
+> ### config.network
+>
+> ##### Type: [PKNetworkConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#confignetwork)
+>
+> ##### Description: Defines the player network configuration.
+
+##
+
+> ### config.customLabels
+>
+> ##### Type: [PKCustomLabelsConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configcustomlabels)
+>
+> ##### Description: Defines the tracks custom labels configuration.
+
+##
+
+> ### config.dimensions
+>
+> ##### Type: [PKDimensionsConfig](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkdimensionsconfig)
+>
+> ##### Description: Defines the player dimensions configuration.
+
+##
+  
+> ### config.abr
+>
+> ##### Type: [PKAbrConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkabrconfigobject)
+>
+> ##### Description: Defines the playback abr configuration.
+
+##
+
+> ### config.drm
+>
+> ##### Type: [PKDrmConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkdrmconfigobject)
+>
+> ##### Description: Defines the drm system configuration.
+
 
 > ### config.playlist
 >
