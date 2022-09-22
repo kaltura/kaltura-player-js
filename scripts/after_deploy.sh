@@ -8,7 +8,10 @@ HTTP_SUCCESS=false
 currentVersion=$(npx -c 'echo "$npm_package_version"')
 echo "$currentVersion"
 
+TAGGED_BRANCH_FIXED=$(git branch --contains "$TRAVIS_COMMIT" --list "master" | sed s/^\*//g | xargs)
+echo "TAGGED_BRANCH_FIXED - $TAGGED_BRANCH_FIXED"
 TAGGED_BRANCH=$(git branch --contains "$TRAVIS_COMMIT" --list "master")
+echo "TAGGED_BRANCH - $TAGGED_BRANCH"
 UPDATE_SCHEMA=true
 if [ "${TAGGED_BRANCH//[[:blank:]]/}" != "master" ]; then
   UPDATE_SCHEMA=false
