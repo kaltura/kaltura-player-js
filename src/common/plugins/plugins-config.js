@@ -1,5 +1,5 @@
 //@flow
-import {PluginConfigStore, templateRegex} from './plugins-config-store.js';
+import {PluginConfigStore, templateRegex} from 'plugins-config-store';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
 import {Utils, getLogger} from '@playkit-js/playkit-js';

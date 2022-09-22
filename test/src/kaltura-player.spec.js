@@ -188,6 +188,90 @@ describe('kaltura player api', function () {
         });
       });
     });
+    describe('setMedia', function () {
+      const mediaWithUserSession = {
+        sources: {
+          dash: [
+            {
+              id: '0_nwkp7jtx_301,mpegdash',
+              url:
+                'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
+              mimetype: 'application/dash+xml'
+            }
+          ]
+        },
+        session: {
+          isAnonymous: false,
+          ks: 'test-ks'
+        }
+      };
+      describe('shouldAddKs', () => {
+        describe('loadThumbnailWithKs is false', () => {
+          beforeEach(() => {
+            config.provider.loadThumbnailWithKs = false;
+            kalturaPlayer = setup(config);
+          });
+          afterEach(function () {
+            kalturaPlayer.destroy();
+          });
+          describe('session not set', () => {
+            it('should return false when session not set', () => {
+              kalturaPlayer.shouldAddKs().should.equals(false);
+            });
+          });
+          describe('anonymous session', () => {
+            it('should return false when loadThumbnailWithKs is false', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
+              kalturaPlayer.shouldAddKs().should.equals(false);
+              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(false);
+            });
+          });
+          describe('user session', () => {
+            it('should return false when loadThumbnailWithKs is false', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs().should.equals(false);
+              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(false);
+            });
+          });
+        });
+
+        describe('loadThumbnailWithKs is true', () => {
+          beforeEach(() => {
+            config.provider.loadThumbnailWithKs = true;
+            kalturaPlayer = setup(config);
+          });
+          afterEach(function () {
+            config.provider.loadThumbnailWithKs = false;
+            kalturaPlayer.destroy();
+          });
+          describe('session not set', () => {
+            it('should return false when session not set', () => {
+              kalturaPlayer.shouldAddKs().should.equals(false);
+            });
+          });
+          describe('anonymous session', () => {
+            it('should return false for anonymous session when called without mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
+              kalturaPlayer.shouldAddKs().should.equals(false);
+            });
+            it('should return false for anonymous session when called with mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs(MediaMockData.MediaConfig['0_wifqaipd']).should.equals(false);
+            });
+          });
+          describe('user session', () => {
+            it('should return true for user session when called without mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs().should.equals(true);
+            });
+            it('should return true for user session when called with mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
+              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(true);
+            });
+          });
+        });
+      });
+    });
     describe('selectedSource', function () {
       beforeEach(function () {
         kalturaPlayer = setup(config);
