@@ -4,7 +4,6 @@ import {FakeEvent, Utils, EventManager, getLogger} from '@playkit-js/playkit-js'
 import {PlaylistEventType} from './playlist-event-type';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
-import {addKalturaPoster} from 'poster';
 import {mergeProviderPluginsConfig} from '../utils/setup-helpers';
 
 /**
@@ -238,12 +237,7 @@ class PlaylistManager {
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
         );
         if (Array.isArray(itemData.sources.poster)) {
-          addKalturaPoster(
-            itemData.sources,
-            item.sources,
-            this._player.dimensions,
-            this._player.shouldAddKs() ? this._player.config.session?.ks : ''
-          );
+          this._player.updateKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
         }
         return {
           sources: itemData.sources,
