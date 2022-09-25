@@ -56,6 +56,7 @@ declare namespace KalturaPlayerTypes {
       y: number;
     };
     shouldAddKs: () => boolean;
+    updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object);
     playlist: KalturaPlayerTypes.Playlist;
     getTracks: (trackType: string) => Array<any>;
     Track: Record<string, string>;

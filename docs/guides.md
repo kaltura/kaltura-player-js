@@ -1,6 +1,7 @@
 # Guides
 
 - Getting Started
+  - [Supported Platforms](./supportedPlatforms.md)
   - [Create a Player Using the TV Platform Player Studio](./getting-started-using-player-studio.md)
   - [Player Setup](./player-setup.md)
   - [Playing Your Video](./playing-your-video.md)

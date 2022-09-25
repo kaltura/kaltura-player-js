@@ -4,7 +4,7 @@ import * as preactLib from 'preact';
 declare module 'kaltura-player-js' {
   export const ui: typeof PlaykitUI;
   export class FakeEvent implements CustomEvent {
-    readonly payload: any
+    readonly payload: any;
     readonly AT_TARGET: number;
     readonly BUBBLING_PHASE: number;
     readonly CAPTURING_PHASE: number;
@@ -76,10 +76,10 @@ export interface Logger {
 }
 
 export interface EventTypes {
-  Core: {[event: string]: string},
-  UI: {[event: string]: string},
-  Cast: {[event: string]: string},
-  Playlist: {[event: string]: string}
+  Core: {[event: string]: string};
+  UI: {[event: string]: string};
+  Cast: {[event: string]: string};
+  Playlist: {[event: string]: string};
 }
 
 declare module PlaykitUI {
