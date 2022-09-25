@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0-dash-emsg-patch.0](https://github.com/kaltura/kaltura-player-js/compare/v3.6.1...v3.7.0-dash-emsg-patch.0) (2022-09-25)
+
+
+### Bug Fixes
+
+* **FEC-12347:** sanitize before Json parse ([#576](https://github.com/kaltura/kaltura-player-js/issues/576)) ([5e558ba](https://github.com/kaltura/kaltura-player-js/commit/5e558ba))
+* **FEC-12526:** add debug to analyze player version not updated ([#564](https://github.com/kaltura/kaltura-player-js/issues/564)) ([09ef6a9](https://github.com/kaltura/kaltura-player-js/commit/09ef6a9))
+* **FEC-12562:** Ignore ks configuration on kava plugin incase of ottAnalytics exists on player ([#574](https://github.com/kaltura/kaltura-player-js/issues/574)) ([b01430b](https://github.com/kaltura/kaltura-player-js/commit/b01430b))
+* **FEC-12574:** loadThumbnailWithKs can break media load when used with playlist or setMedia ([#571](https://github.com/kaltura/kaltura-player-js/issues/571)) ([67ae49d](https://github.com/kaltura/kaltura-player-js/commit/67ae49d))
+
+
+### Features
+
+* **FEC-12492:** upgrade hls.js v1.2.3 ([#568](https://github.com/kaltura/kaltura-player-js/issues/568)) ([7d51efe](https://github.com/kaltura/kaltura-player-js/commit/7d51efe))
+
+
+
 ### [3.6.1](https://github.com/kaltura/kaltura-player-js/compare/v3.6.0...v3.6.1) (2022-09-01)
 
 
