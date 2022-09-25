@@ -1130,10 +1130,9 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@playkit-js/playkit-js-dash@1.31.0":
+"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash#cca704bb6af98c69e94151896e3d7ad1d7f91e46":
   version "1.31.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.31.0.tgz#c85d1334a07c6acd57ab4c33e33c952640f99e06"
-  integrity sha512-7PASOSdRYlxvv62LItKH0Y7+VZh602ubYoF/DsEcvby2JCKwqHOFF2R7CPx0F9Fa3NgQrYpg/GdSqCpzb+YUJQ==
+  resolved "https://github.com/kaltura/playkit-js-dash#cca704bb6af98c69e94151896e3d7ad1d7f91e46"
 
 "@playkit-js/playkit-js-hls@1.30.2":
   version "1.30.2"
