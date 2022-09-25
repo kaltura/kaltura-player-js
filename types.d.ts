@@ -38,7 +38,7 @@ declare module 'kaltura-player-js' {
   export class BasePlugin<ConfigType> {
     protected config: ConfigType;
     protected static defaultConfig: {};
-    protected constructor(name: string, player: KalturaPlayer, config: ConfigType);
+    protected constructor(name: string, player: KalturaPlayer, config?: ConfigType);
     protected logger: Logger;
     protected loadMedia(): void;
     public player: KalturaPlayer;
@@ -54,7 +54,7 @@ type Target = KalturaPlayer | HTMLElement | Document;
 type CallbackFunction = (...args: any) => void;
 
 export interface IBasePlugin<ConfigType> {
-  new (name: string, player: KalturaPlayer, config: ConfigType): BasePlugin<ConfigType>;
+  new (name: string, player: KalturaPlayer, config?: ConfigType): BasePlugin<ConfigType>;
 }
 
 export class KalturaPlayer {
@@ -63,6 +63,19 @@ export class KalturaPlayer {
   public getService<T>(serviceName: string): T;
   public get ui(): UIWrapper;
   public get Event(): EventTypes;
+  public get paused(): boolean;
+  public configure(config: Object): void;
+  public ready(): Promise<void>;
+  public load(): void;
+  public play(): void;
+  public pause(): void;
+  public getView(): HTMLElement;
+  public getVideoElement(): HTMLVideoElement;
+  public reset(isChangeMedia?: boolean): void;
+  public isLive(): boolean;
+  public isOnLiveEdge(): boolean;
+  public isDvr(): boolean;
+  public seekToLiveEdge(): void;
 }
 
 export class UIWrapper {
