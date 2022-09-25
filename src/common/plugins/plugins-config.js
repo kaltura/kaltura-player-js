@@ -150,7 +150,7 @@ function getEncodedReferrer(): string {
  * @private
  */
 function _sanitize(text: string): string {
-  if (!text) return;
+  if (!text) return '';
   return (
     text
       .replace(/\\n/g, '\\n')
