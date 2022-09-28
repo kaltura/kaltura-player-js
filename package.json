@@ -61,15 +61,15 @@
     "@playkit-js/playkit-js": "0.80.5",
     "@playkit-js/playkit-js-dash": "1.31.0",
     "@playkit-js/playkit-js-hls": "1.30.2",
-    "@playkit-js/playkit-js-ui": "0.72.2",
+    "@playkit-js/playkit-js-ui": "canary",
     "hls.js": "1.2.3",
     "intersection-observer": "^0.12.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.36.0",
     "proxy-polyfill": "^0.3.0",
-    "shaka-player": "4.2.1"
+    "shaka-player": "4.2.1",
+    "@types/preact-i18n": "^2.3.1"
   },
   "devDependencies": {
-    "@types/preact-i18n": "^2.3.1",
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
