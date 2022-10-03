@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/kaltura/kaltura-player-js/compare/v3.6.1...v3.7.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.6](https://github.com/kaltura/playkit-js/releases/tag/v0.80.6) ([2fc62dd](https://github.com/kaltura/kaltura-player-js/commit/2fc62dd))
+* update playkit-js-providers to [2.36.1](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.36.1) ([35d8752](https://github.com/kaltura/kaltura-player-js/commit/35d8752))
+* update playkit-js-ui to [0.72.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.3) ([87f2e44](https://github.com/kaltura/kaltura-player-js/commit/87f2e44))
+* **FEC-12097:** More plugins - Update relevant types ([#563](https://github.com/kaltura/kaltura-player-js/issues/563)) ([2fb7bd4](https://github.com/kaltura/kaltura-player-js/commit/2fb7bd4)), closes [kaltura/playkit-js-ui-managers#10](https://github.com/kaltura/kaltura-player-js/issues/10)
+* **FEC-12347:** sanitize before Json parse ([#576](https://github.com/kaltura/kaltura-player-js/issues/576)) ([5e558ba](https://github.com/kaltura/kaltura-player-js/commit/5e558ba))
+* **FEC-12526:** add debug to analyze player version not updated ([#564](https://github.com/kaltura/kaltura-player-js/issues/564)) ([09ef6a9](https://github.com/kaltura/kaltura-player-js/commit/09ef6a9))
+* **FEC-12562:** Ignore ks configuration on kava plugin incase of ottAnalytics exists on player ([#574](https://github.com/kaltura/kaltura-player-js/issues/574)) ([b01430b](https://github.com/kaltura/kaltura-player-js/commit/b01430b))
+* **FEC-12574:** loadThumbnailWithKs can break media load when used with playlist or setMedia ([#571](https://github.com/kaltura/kaltura-player-js/issues/571)) ([67ae49d](https://github.com/kaltura/kaltura-player-js/commit/67ae49d))
+
+
+### Features
+
+* update playkit-js-dash to [1.31.1](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.1) ([108deb4](https://github.com/kaltura/kaltura-player-js/commit/108deb4))
+* update playkit-js-hls to [1.31.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.31.0) ([ca9849c](https://github.com/kaltura/kaltura-player-js/commit/ca9849c))
+* **FEC-12492:** upgrade hls.js v1.2.3 ([#568](https://github.com/kaltura/kaltura-player-js/issues/568)) ([7d51efe](https://github.com/kaltura/kaltura-player-js/commit/7d51efe))
+
+
+
 ### [3.6.1](https://github.com/kaltura/kaltura-player-js/compare/v3.6.0...v3.6.1) (2022-09-01)
 
 
