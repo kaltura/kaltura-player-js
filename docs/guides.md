@@ -16,7 +16,7 @@
 - [User Preferences](./user-preferences.md)
 - [Controlling Errors](errors.md)
 - [Debugging & Troubleshooting](./debugging.md)
-- [Writing-a-Plugin](./writing-a-plugin.md)
+- [Writing a Plugin](./writing-a-plugin.md)
 - [Customizing the Player UI](./ui.md)
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
 - [Localization](./localization.md)
