@@ -449,9 +449,13 @@ player.loadMedia(mediaInfo).then(function () {
 
 # Plugin Boilerplate - and full working example
 
-Prepared and pre-configured and ready to use plugin template, full environment, written in [ECMAScript6] and [TypeScript],
-and transpiled in ECMAScript5 using [webpack] and the [TypeScript compiler], includes all scripts needed for the CI/CD cycle and version handling
-and includes ([Mocha] / [Karma]) based test environment and pre-configured with [ESLint] static code analysis.
+You can find [here](https://github.com/kaltura/playkit-js-plugin-example) a prepared and pre-configured plugin template
+
+The template includes full environment, written in [ECMAScript6] and [TypeScript],
+and transpiled in ECMAScript5 using [webpack] and the [TypeScript compiler], includes all scripts needed for the CI/CD cycle, bundling and version handling
+and includes ([Mocha] / [Karma]) based test environment and pre-configured [ESLint] static code analysis.
+
+For Detailed instructions for using the template - follow the steps [here](https://github.com/kaltura/playkit-js-plugin-example/blob/master/README.md)
 
 [ecmascript6]: https://github.com/ericdouglas/ES6-Learning#articles--tutorials
 [typescript]: https://www.typescriptlang.org/
