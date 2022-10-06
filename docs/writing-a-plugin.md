@@ -1,4 +1,4 @@
-# How to Build a Plugin
+# How to write a Plugin
 
 To build your own plugin, you'll need to go through a few simple steps:
 
