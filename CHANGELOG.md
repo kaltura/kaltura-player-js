@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.1](https://github.com/kaltura/kaltura-player-js/compare/v3.7.0...v3.7.1) (2022-10-06)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.7](https://github.com/kaltura/playkit-js/releases/tag/v0.80.7) ([8121e84](https://github.com/kaltura/kaltura-player-js/commit/8121e84))
+* update playkit-js-dash to [1.31.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.2) ([5b94b18](https://github.com/kaltura/kaltura-player-js/commit/5b94b18))
+
+
+
 ## [3.7.0](https://github.com/kaltura/kaltura-player-js/compare/v3.6.1...v3.7.0) (2022-10-03)
 
 
