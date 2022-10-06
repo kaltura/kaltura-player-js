@@ -3,7 +3,7 @@
 To build your own plugin, you'll need to go through a few simple steps:
 
 - Import the player library.
-- Write your plugin logic and implement the plugin API methods and properties.
+- Implement the plugin API methods and properties.
 - Register the plugin in the player framework.
 
 In this guide we'll go through these steps and elaborate with examples of both Plain JavaScript & ES6.
@@ -20,13 +20,15 @@ In this guide we'll go through these steps and elaborate with examples of both P
     - [`eventManager`](#eventmanager)
   * [Properties to Implement](#properties-to-implement)
     - [`(static) defaultConfig`](#static-defaultconfig)
-  * [Methods](#methods)
+  * [Building methods](#methods)
     - [`getConfig(attr)`](#getconfigattr)
     - [`updateConfig(update)`](#updateconfigupdate)
     - [`getName()`](#getname)
     - [`dispatchEvent(name, payload)`](#dispatcheventname-payload)
-  * [Methods to Implement](#methods-to-implement)
+  * [Methods to Implement / hooks](#methods-to-implement)
     - [`(static) isValid(player)`](#static-isvalidplayer)
+    - [`getUIComponents()`](#getUIComponents)
+    - [`loadMedia()`](#loadMedia)
     - [`destroy()`](#destroy)
     - [`reset()`](#reset)
 - [Register Plugin API](#register-plugin-api)
@@ -35,7 +37,7 @@ In this guide we'll go through these steps and elaborate with examples of both P
 * [Writing a Basic Plugin](#writing-a-basic-plugin)
   - [Step 1 - Import the Player Library](#step-1---import-the-player-library)
   - [Step 2 - Create Your Plugin Class](#step-2-------create-your-plugin-class)
-  - [Step 3 - Override the `BasePlugin` Methods](#step-3-------override-baseplugin-methods)
+  - [Step 3 - Implement the `BasePlugin` Methods](#step-3-------override-baseplugin-methods)
   - [Step 4 - Fill in a Simple Implementation](#step-4-------fill-simple-implementation)
   - [Step 5 - Register Your Plugin](#step-5-------register-your-plugin)
   - [Step 5 - Configure Your Plugin](#step-5-------configure-your-plugin)
@@ -148,20 +150,25 @@ Returns: `boolean` - Whether the plugin is valid or not.
 You can help the player instance API with your decision logic. For example, if you want to enable your plugin on a Chrome browser only, you can simply implement the following:
 
 ```js
-// Plain JavaScript
-MyPlugin.isValid = function () {
-  return player.env.browser.name === 'Chrome';
-};
-```
-
-```js
-// ES6
 class MyPlugin extends BasePlugin {
   static isValid(player) {
     return player.env.browser.name === 'Chrome';
   }
 }
 ```
+
+> #### `getUIComponents(uiCompoments:` [KPUIComponent[]](https://github.com/kaltura/kaltura-player-js/blob/master/flow-typed/types/ui-component.js)`)`
+>
+> Returns: `void` - merge the provided ui components array to the config.ui.uiComponents of the player configuration. see [here](https://github.com/kaltura/playkit-js-ui/blob/master/docs/ui-components.md) for more details.
+
+Equivalent to the `config.ui.uiComponents` of the [player configuration](https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md):
+
+> #### `loadMedia()`
+>
+> Returns: `void` - Runs on player media loaded.
+
+The player will call this method on [media loaded](https://github.com/kaltura/playkit-js/blob/master/src/event/event-type.js#L112) event.
+Useful in case of logic depends on the media data / metadata
 
 > #### `destroy()`
 >
@@ -203,9 +210,7 @@ Now, lets take a look at the `registerPlugin` API.
 
 In this section, we'll learn how to write a simple plugin, one that doesn't require any installation or setup steps except for a player script in hand (remotely or locally).
 
-We'll use both Vanilla JavaScript & ES6 examples.
-
-> Note: If you're using ES6 already, you can use that syntax with your transpiler/language of choice (`Babel`, `TypeScript`, `Flow`, etc).
+In the examples we'll use the ES6 syntax.
 
 ## Step 1 - Import the Player Library
 
@@ -231,7 +236,7 @@ We'll use both Vanilla JavaScript & ES6 examples.
     <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
-    <script src="PATH/TO/FILE/my-plugin.js"></script>
+    <script type="module" src="PATH/TO/FILE/my-plugin.js"></script>
   </head>
   <body></body>
 </html>
@@ -241,72 +246,32 @@ We'll use both Vanilla JavaScript & ES6 examples.
 
 1 . In **_my-plugin.js_**, define the plugin class:
 
-### _Plain JavaScript_
-
-```js
-var MyPlugin = function (name, player, config) {};
-```
-
-### _ES6_
-
 ```typescript
 class MyPlugin {
   constructor(name, player, config) {}
 }
 ```
 
-2 . Next, and add the code that will inherit from `BasePlugin`:
-
-### _Plain JavaScript_
-
-```js
-var MyPlugin = function (name, player, config) {
-  KalturaPlayer.core.BasePlugin.call(this, name, player, config);
-};
-
-MyPlugin.createPlugin = KalturaPlayer.core.BasePlugin.createPlugin;
-
-MyPlugin.prototype = new KalturaPlayer.core.BasePlugin();
-```
-
-### _ES6_
+2 . Extends the `BasePlugin` base class:
 
 ```typescript
-class MyPlugin extends KalturaPlayer.core.BasePlugin {
+import {BasePlugin} from 'kaltura-player-js';
+
+class MyPlugin extends BasePlugin {
   constructor(name, player, config) {
     super(name, player, config);
   }
 }
 ```
 
-## Step 3 - Override the `BasePlugin` Methods
+## Step 3 - Implement the `BasePlugin` Methods
 
 In **_my-plugin.js_**, add the necessary methods and properties to override as explained above:
 
-### _Plain JavaScript_
-
-```js
-var MyPlugin = function (name, player, config) {
-  KalturaPlayer.core.BasePlugin.call(this, name, player, config);
-};
-
-MyPlugin.createPlugin = KalturaPlayer.core.BasePlugin.createPlugin;
-
-MyPlugin.prototype = new KalturaPlayer.core.BasePlugin();
-
-MyPlugin.defaultConfig = {};
-
-MyPlugin.isValid = function (player) {};
-
-MyPlugin.prototype.destroy = function () {};
-
-MyPlugin.prototype.reset = function () {};
-```
-
-### _ES6_
-
 ```typescript
-class MyPlugin extends KalturaPlayer.core.BasePlugin {
+import {BasePlugin} from 'kaltura-player-js';
+
+class MyPlugin extends BasePlugin {
   static defaultConfig = {};
 
   static isValid(player) {}
@@ -325,55 +290,10 @@ class MyPlugin extends KalturaPlayer.core.BasePlugin {
 
 To see the plugin in action, lets fill in some simple implementations:
 
-### _Plain JavaScript_
-
-```js
-var MyPlugin = function (name, player, config) {
-  KalturaPlayer.core.BasePlugin.call(this, name, player, config);
-  this.logger.debug('Hello from ' + this.getName() + ' plugin constructor!');
-  this._myCollection = [this.config.myValue];
-  this._addBindings();
-};
-
-MyPlugin.createPlugin = KalturaPlayer.core.BasePlugin.createPlugin;
-
-MyPlugin.prototype = new KalturaPlayer.core.BasePlugin();
-
-MyPlugin.defaultConfig = {
-  myValue: 1
-};
-
-MyPlugin.isValid = function (player) {
-  return true;
-};
-
-MyPlugin.prototype.destroy = function () {
-  this.logger.debug('Empty collection');
-  this._myCollection = [];
-};
-
-MyPlugin.prototype.reset = function () {
-  this.logger.debug('Reset collection');
-  this._myCollection = [this.config.myValue];
-};
-
-MyPlugin.prototype._addBindings = function () {
-  this.eventManager.listen(
-    this.player,
-    this.player.Event.SEEKED,
-    function () {
-      this.logger.debug(this.player.currentTime + ' Added to my collection');
-      this._myCollection.push(this.player.currentTime);
-      this.dispatchEvent('collectionUpdate', {collection: this._myCollection});
-    }.bind(this)
-  );
-};
-```
-
-### _ES6_
-
 ```typescript
-class MyPlugin extends KalturaPlayer.core.BasePlugin {
+import {BasePlugin} from 'kaltura-player-js';
+
+class MyPlugin extends BasePlugin {
   _myCollection;
 
   static defaultConfig = {
@@ -422,7 +342,7 @@ Use the factory `registerPlugin` method to register your plugin in the player fr
     <meta charset="UTF-8" />
     <title>MyPlugin</title>
     <script src="PATH/TO/PLAYER/LIB/FILENAME.js"></script>
-    <script src="PATH/TO/FILE/my-plugin.js"></script>
+    <script type="module" src="PATH/TO/FILE/my-plugin.js"></script>
   </head>
   <body>
     <script>
@@ -527,8 +447,16 @@ player.loadMedia(mediaInfo).then(function () {
 
 **That's it! the player starts to play and your plugin is activated.**
 
-# Writing an Advanced Plugin
+# Plugin Boilerplate - and full working example
 
-An advanced plugin is one that is built as a self project and handles a version, tests, documentation, dev scripts and so on.
-All of the options described above can be achieved by using the `PlayKit JS Plugin Generator` tool.
-<br>Read [here](https://github.com/kaltura/playkit-js-plugin-generator) to learn more.
+Prepared and pre-configured and ready to use plugin template, full environment, written in [ECMAScript6] and [TypeScript],
+and transpiled in ECMAScript5 using [webpack] and the [TypeScript compiler], includes all scripts needed for the CI/CD cycle and version handling
+and includes ([Mocha] / [Karma]) based test environment and pre-configured with [ESLint] static code analysis.
+
+[ecmascript6]: https://github.com/ericdouglas/ES6-Learning#articles--tutorials
+[typescript]: https://www.typescriptlang.org/
+[typescript compiler]: https://www.typescriptlang.org/docs/handbook/compiler-options.html
+[webpack]: https://webpack.js.org/
+[mocha]: https://mochajs.org/
+[karma]: https://karma-runner.github.io/latest/index.html/
+[eslint]: https://eslint.org/
