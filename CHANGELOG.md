@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.2-dynamic-static-patch.3](https://github.com/kaltura/kaltura-player-js/compare/v3.7.2-dynamic-static-patch.2...v3.7.2-dynamic-static-patch.3) (2022-10-13)
+
+
+
 ### [3.7.2-dynamic-static-patch.2](https://github.com/kaltura/kaltura-player-js/compare/v3.7.2-dynamic-static-patch.1...v3.7.2-dynamic-static-patch.2) (2022-10-11)
 
 
