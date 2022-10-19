@@ -38,7 +38,7 @@ declare module 'kaltura-player-js' {
   export class BasePlugin<ConfigType> {
     protected config: ConfigType;
     protected static defaultConfig: {};
-    protected constructor(name: string, player: KalturaPlayer, config?: ConfigType);
+    public constructor(name: string, player: KalturaPlayer, config?: ConfigType);
     protected logger: Logger;
     protected loadMedia(): void;
     public player: KalturaPlayer;
