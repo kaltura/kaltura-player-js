@@ -1,7 +1,7 @@
 # Change Media
 
 The Player enables you to play several different media in the same instance of the player,
-All you have to do is to call the [player.setMeida()](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#loadmedia-4) or [player.loadMeida()](<(https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#loadmedia-4)>) API with the new `entryId / source`
+All you have to do is to call the [player.setMeida()](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#setmedia-2) or [player.loadMeida()](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#loadmedia-4)) API with the new `entryId / source`
 
 For example:
 
