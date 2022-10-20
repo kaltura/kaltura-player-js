@@ -8,7 +8,7 @@ and how to control the language that actually will be served to the player.
 ## Uploading translation dictionaries via Kaltura platform
 
 Plugin which served by Kaltura platform (via the bundle builder) can upload its translation dictionaries also by Kaltura platform.
-To get this ability, The plugin needs to add the translation json file/s (`*.i18n.json`) under a `translations` folder in the location of the plugin source code and source map.
+To get this ability, The plugin needs to add the translation json file/s (`*.i18n.json`) under a `translations` folder in the location of the plugin source code and source map.  
 For example: Plugin called _playkit-ui-plugin_, which contains, in the dist folder, 2 files - `playkit-ui-plugin.js` and `playkit-ui-plugin.js.map`,
 Will add a `translations` folder with the translation file/s:
 ![](images/translation-tree.png)
