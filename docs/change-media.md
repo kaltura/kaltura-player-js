@@ -38,7 +38,7 @@ The reset only includes data related to the source / source metadata, **but keep
 
 ### Update config
 
-If you want to change any settings or plugins configuration between different media, you can do this by using `player.configure()` API
+If you want to change any settings or plugins configuration between different media, you can do this by using [player.configure() API](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#configure-1)
 
 _**Example:**_
 
@@ -59,7 +59,7 @@ setTimeout(() => {
 
 ### Update plugin config
 
-Another common usage is changing the plugin config, this is also can be done using player.configure() API
+Another common usage is changing the plugin config, this is also can be done using [player.configure()](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#configure-1) API
 
 _**Example:**_
 
@@ -101,4 +101,4 @@ _**Example:**_
 </script>
 ```
 
-In this example we use [Ima Plugin](https://github.com/kaltura/playkit-js-ima), and changing from _preroll_ AD TAG to postroll AD TAG
+In this example we use [Ima Plugin](https://github.com/kaltura/playkit-js-ima), and changing from _preroll_ ad tag to _postroll_ ad tag.
