@@ -15,17 +15,16 @@ Will add a `translations` folder with the translation file/s:
 Each json file contains the translation dictionary under the language code key.
 For example `en.i18n.json` looks like:
 
-```json`
+```json
 {
-"en": {
-"buttons": {
-"btn1": "Button1",
-"btn2": "Button2"
+  "en": {
+    "buttons": {
+      "btn1": "Button1",
+      "btn2": "Button2"
+    }
+  }
 }
-}
-}
-
-````
+```
 
 `fr.i18n.json` looks like:
 
@@ -38,7 +37,7 @@ For example `en.i18n.json` looks like:
     }
   }
 }
-````
+```
 
 Actually, the plugin could supply only one json contains multi language dictionaries. For example `langs.i18n.json` looks like:
 
