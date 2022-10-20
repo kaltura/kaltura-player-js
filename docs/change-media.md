@@ -1,9 +1,9 @@
 # Change Media
 
 The Player enables you to play several different media in the same instance of the player,
-All you have to do is to call the `setMeida()` or `loadMeida()` API with the new `entryId / source`
+All you have to do is to call the [player.setMeida()](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#loadmedia-4) or [player.loadMeida()](<(https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#loadmedia-4)>) API with the new `entryId / source`
 
-for example:
+For example:
 
 ```html
 <div id="{TARGET_ID}" style="width: 640px;height: 360px"></div>
@@ -39,6 +39,8 @@ The reset only includes data related to the source / source metadata, **but keep
 ### Update config
 
 If you want to change any settings or plugins configuration between different media, you can do this by using [player.configure() API](https://github.com/kaltura/kaltura-player-js/blob/master/docs/api.md#configure-1)
+
+> **note:** `player.configure()` gets the same parameter as the `player.setup()`, see [here](./configuration.md#configuration-structure) the full configuration options.
 
 _**Example:**_
 
