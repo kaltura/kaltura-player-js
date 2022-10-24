@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.2-buffering-timeout-patch.5](https://github.com/kaltura/kaltura-player-js/compare/v3.7.1...v3.7.2-buffering-timeout-patch.5) (2022-10-24)
+
+
+### Bug Fixes
+
+* **FEC-12097:** Update TS types - constructor should be public ([#584](https://github.com/kaltura/kaltura-player-js/issues/584)) ([1e2b5ff](https://github.com/kaltura/kaltura-player-js/commit/1e2b5ff))
+
+
+
+### [3.7.2-buffering-timeout-patch.4](https://github.com/kaltura/kaltura-player-js/compare/v3.7.1...v3.7.2-buffering-timeout-patch.4) (2022-10-24)
+
+
+### Bug Fixes
+
+* **FEC-12097:** Update TS types - constructor should be public ([#584](https://github.com/kaltura/kaltura-player-js/issues/584)) ([1e2b5ff](https://github.com/kaltura/kaltura-player-js/commit/1e2b5ff))
+
+
+
 ### [3.7.1](https://github.com/kaltura/kaltura-player-js/compare/v3.7.0...v3.7.1) (2022-10-06)
 
 

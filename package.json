@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "3.7.1",
+  "version": "3.7.2-buffering-timeout-patch.5",
   "keywords": [
     "kaltura",
     "player",
@@ -35,8 +35,8 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "publish": "git push --follow-tags --no-verify origin master",
-    "release": "standard-version",
+    "publish": "git push --follow-tags --no-verify origin buffering-timeout-patch",
+    "release": "standard-version --prerelease buffering-timeout-patch",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
     "watch:ovp": "sh ./scripts/job.sh watch ovp"
@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.80.7",
+    "@playkit-js/playkit-js": "https://github.com/kaltura/playkit-js#e268dd4b47e06d0ae7301823cc932ec21458b984",
     "@playkit-js/playkit-js-dash": "1.31.2",
     "@playkit-js/playkit-js-hls": "1.31.0",
     "@playkit-js/playkit-js-ui": "0.72.3",
