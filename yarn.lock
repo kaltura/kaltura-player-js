@@ -1150,10 +1150,9 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.80.7":
+"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js#e268dd4b47e06d0ae7301823cc932ec21458b984":
   version "0.80.7"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.80.7.tgz#8189b700b8342ac090c421356b76b7c5f60775f9"
-  integrity sha512-R5mXp3DdcsTqVHpeqNCgCutVUKiLKXfdfzjdaH6OdnthAI42yq1IIAzsDlsIeUvHznuE5JKdBEvACvk6xMfZSg==
+  resolved "https://github.com/kaltura/playkit-js#e268dd4b47e06d0ae7301823cc932ec21458b984"
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
@@ -2268,9 +2267,9 @@ camelcase@^6.0.0:
   integrity sha512-8KMDF1Vz2gzOq54ONPJS65IvTUaB1cHJ2DMM7MbPmLZljDH1qpzzLsWdiN9pHh6qvkRVDTi/07+eNGch/oLU4w==
 
 caniuse-lite@^1.0.30001093:
-  version "1.0.30001104"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001104.tgz#4e3d5b3b1dd3c3529f10cb7f519c62ba3e579f5d"
-  integrity sha512-pkpCg7dmI/a7WcqM2yfdOiT4Xx5tzyoHAXWsX5/HxZ3TemwDZs0QXdqbE0UPLPVy/7BeK7693YfzfRYfu1YVpg==
+  version "1.0.30001423"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001423.tgz"
+  integrity sha512-09iwWGOlifvE1XuHokFMP7eR38a0JnajoyL3/i87c8ZjRWRrdKo1fqjNfugfBD0UDBIOz0U+jtNhJ0EPm1VleQ==
 
 ccount@^1.0.0:
   version "1.0.5"
