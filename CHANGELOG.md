@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.2-buffering-timeout-patch.8](https://github.com/kaltura/kaltura-player-js/compare/v3.7.2-buffering-timeout-patch.7...v3.7.2-buffering-timeout-patch.8) (2022-10-24)
+
+
+
 ### [3.7.2-buffering-timeout-patch.7](https://github.com/kaltura/kaltura-player-js/compare/v3.7.2-buffering-timeout-patch.6...v3.7.2-buffering-timeout-patch.7) (2022-10-24)
 
 
