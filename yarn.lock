@@ -1150,9 +1150,9 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js#e268dd4b47e06d0ae7301823cc932ec21458b984":
+"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js#9472ea8":
   version "0.80.7"
-  resolved "https://github.com/kaltura/playkit-js#e268dd4b47e06d0ae7301823cc932ec21458b984"
+  resolved "https://github.com/kaltura/playkit-js#9472ea8e84c09fe868609d7512b4e73c8cce6df5"
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
