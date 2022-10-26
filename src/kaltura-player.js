@@ -154,6 +154,13 @@ class KalturaPlayer extends FakeEventTarget {
     });
   }
 
+  /**
+   * sets a media.
+   * @param {KPMediaConfig} mediaConfig - The media config.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   */
   setMedia(mediaConfig: KPMediaConfig): void {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset(true);

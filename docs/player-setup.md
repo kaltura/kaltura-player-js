@@ -88,7 +88,7 @@ var config = {
 };
 ```
 
-> For full configuration details see [this]() document.
+> For full configuration details see [this](./configuration.md) document.
 
 ### Step 4 - Set Up the Player
 
