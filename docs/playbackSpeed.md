@@ -2,17 +2,21 @@
 
 The Kaltura Player exposes configuration and APIs that are used for controling the playback speed.
 
+The default playback speed is 1
+Values less than 1 will result in reducing playback speed relatively to the nornal speed
+Values greater 1 will result in increasing playback speed relatively to the nornal speed
+
 
 ### Playback Speed UI control
 
-The playback seppd can be changed using the setting => speed icon.
+The playback seepd can be changed using the UI setting => speed controller icon.
 
 
 ![example](./images/playbackSpeedConfig.png)
 
 #### PlaybackRates
 
-PlaybackRates sets the available rates at which the media can be played back
+PlaybackRates sets the available rates at which the media can be played.
 
 ######The player default playbackRates :
 
@@ -48,14 +52,15 @@ Application may change the default config by giving new range to the plyer playb
 
 Note:
  
-  * Player may have problem to serve playack in  high playback speed especially on TV's
-  * Negative values are not valid.
+  * Player may have issues to serve playack in high playback speed, especially on TV's
+  * Negative values are not valid
+  * Playback speed 0 will stop the playback
 
 
 ####Playback Speed API
 
-Application may use the player object to get ot update the player spped programatically.
-make sure you give there values which match the playbackRates Array as ginving is values out of that range will not impact the UI.
+Application may use the player API to get or set the player speed programatically.
+make sure you set values which match the playbackRates Array values, ginving values which are out of that range will not impact the UI selected speed.
 
 * Get API
 
@@ -67,7 +72,7 @@ kalturaPlayer.playbackRate = 1
 
 ```
 
-* Set
+* Set API
 
 ```
 kalturaPlayer.playbackRate = 0.5
