@@ -5,6 +5,7 @@
   - [Create a Player Using the TV Platform Player Studio](./getting-started-using-player-studio.md)
   - [Player Setup](./player-setup.md)
   - [Playing Your Video](./playing-your-video.md)
+  - [Change Media](./change-media.md)
   - [Playlist](./playlist.md)
 - [Embed Code Types](./embed-types.md)
 - [Player Events](./events.md)
