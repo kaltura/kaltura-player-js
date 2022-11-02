@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.0](https://github.com/kaltura/kaltura-player-js/compare/v3.7.1...v3.8.0) (2022-11-02)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.8](https://github.com/kaltura/playkit-js/releases/tag/v0.80.8) ([88e82df](https://github.com/kaltura/kaltura-player-js/commit/88e82df))
+* update playkit-js-dash to [1.31.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.3) ([a470b3a](https://github.com/kaltura/kaltura-player-js/commit/a470b3a))
+* **FEC-12097:** Update TS types - constructor should be public ([#584](https://github.com/kaltura/kaltura-player-js/issues/584)) ([1e2b5ff](https://github.com/kaltura/kaltura-player-js/commit/1e2b5ff))
+* **FEC-12691:** Shaka Text Track Displayer does not work unless  useNativeTextTrack set to true ([76f772f](https://github.com/kaltura/kaltura-player-js/commit/76f772f))
+
+
+### Features
+
+* update playkit-js-hls to [1.31.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.31.1) ([0a4357d](https://github.com/kaltura/kaltura-player-js/commit/0a4357d))
+* update playkit-js-providers to [2.37.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.37.0) ([ec36d0a](https://github.com/kaltura/kaltura-player-js/commit/ec36d0a))
+
+
+
 ### [3.7.1](https://github.com/kaltura/kaltura-player-js/compare/v3.7.0...v3.7.1) (2022-10-06)
 
 
