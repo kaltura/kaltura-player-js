@@ -18,7 +18,7 @@ The playback seepd can be changed using the UI setting => speed controller icon.
 
 PlaybackRates sets the available rates at which the media can be played.
 
-######The player default playbackRates :
+###### The player default playbackRates :
 
 ```
 [
