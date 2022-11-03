@@ -2,8 +2,10 @@
 
 The Kaltura Player exposes configuration and APIs that are used for controling the playback speed.
 
-The default playback speed is 1
+The default playback speed is 1.
+
 Values less than 1 will result in reducing playback speed relatively to the nornal speed
+
 Values greater 1 will result in increasing playback speed relatively to the nornal speed
 
 
