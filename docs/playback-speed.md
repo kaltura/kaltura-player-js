@@ -31,7 +31,7 @@ PlaybackRates sets the available rates at which the media can be played.
 ]
 ```
 
-Application may change the default config by giving new range to the plyer playback config object
+Application may change the default config by providing new values in the playback config object
 
 ```
 "playback": { 
