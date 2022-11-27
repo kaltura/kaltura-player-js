@@ -3,7 +3,7 @@
 The Kaltura Player exposes configuration and APIs can modify the tracks and tracks labels.
 
 
-Every track label can be cahanged using the player `customLabels` which configured on the player root level configuration object.
+Every track label can be changed using the configuration option `customLabels` on the player's root level configuration object.
 
 [Klatura Player config](https://github.com/kaltura/kaltura-player-js/blob/master/docs/configuration.md#configcustomlabels)
 [Playkit config](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#configcustomlabels)
