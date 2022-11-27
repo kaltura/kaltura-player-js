@@ -85,7 +85,7 @@ kalturaPlayer.playbackRate = 0.5
 
 #### Event: RATE_CHANGE 
 
-The application can listen to the `RATE_CHANGE` event and be informed that such action an was triggered by the user 
+The application can listen to the `RATE_CHANGE` event and be informed that such action was triggered by the user 
 
 ```
 const events = [
