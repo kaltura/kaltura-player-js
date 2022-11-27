@@ -1,6 +1,6 @@
 # Tracks Labels Configuration
 
-The Kaltura Player exposes configuration and APIs that are used for controling the tracks and tracks labels.
+The Kaltura Player exposes configuration and APIs can modify the tracks and tracks labels.
 
 
 Every track label can be cahanged using the player `customLabels` which configured on the player root level configuration object.
