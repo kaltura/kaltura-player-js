@@ -101,7 +101,7 @@ const translateLangCode = (track) => {
 
 ### Tracks UI control
 
-The tracks can be changed using the settings icon for video tracks and the globes icon for audio and text tracks
+The tracks can be changed using the settings icon for video tracks and the globe icon for audio and text tracks
 
 
 
