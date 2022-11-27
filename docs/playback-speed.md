@@ -62,7 +62,7 @@ Note:
 ####Playback Speed API
 
 Application may use the player API to get or set the player speed programatically.
-make sure you set values which match the playbackRates Array values, ginving values which are out of that range will not impact the UI selected speed.
+make sure you set values which match the playbackRates Array values, as values which are out of that range will not impact the playback speed.
 
 * Get API
 
