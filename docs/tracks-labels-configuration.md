@@ -10,7 +10,7 @@ Every track label can be changed using the configuration option `customLabels` o
 
 ```
  customLabels: {
-    //qualities: translateVideoQuality,
+    //qualities: translateVideoQuality,  // --> this can also be defined in a finclion check translateVideoQuality example below 
     qualities: function (videoTrack) {
       if (videoTrack.height > 500) {
         return 'High';
