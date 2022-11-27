@@ -101,5 +101,5 @@ events.forEach(eventName => {
 
 #### Example:
 
-**[Playback Speed Example](https://codepen.io/giladna/pen/Poawvre)**
+**[Playback Speed Example](https://kaltura.github.io/kaltura-player-js/demo/playbackRate_selector.html)**
 
