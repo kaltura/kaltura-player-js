@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.1-shaka-4.3.0-patch.0](https://github.com/kaltura/kaltura-player-js/compare/v3.8.0...v3.8.1-shaka-4.3.0-patch.0) (2022-12-06)
+
+
+
 ## [3.8.0](https://github.com/kaltura/kaltura-player-js/compare/v3.7.1...v3.8.0) (2022-11-02)
 
 
