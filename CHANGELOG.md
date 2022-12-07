@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.1](https://github.com/kaltura/kaltura-player-js/compare/v3.8.0...v3.8.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.9](https://github.com/kaltura/playkit-js/releases/tag/v0.80.9) ([25da183](https://github.com/kaltura/kaltura-player-js/commit/25da183))
+* update playkit-js-ui to [0.72.4](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.4) ([3e31546](https://github.com/kaltura/kaltura-player-js/commit/3e31546))
+* **FEC-12735:** Player v7| More plugins| Plugins inside the more plugins are not accessible ([#592](https://github.com/kaltura/kaltura-player-js/issues/592)) ([99af686](https://github.com/kaltura/kaltura-player-js/commit/99af686)), closes [kaltura/playkit-js-ui-managers#16](https://github.com/kaltura/kaltura-player-js/issues/16)
+
+
+
 ## [3.8.0](https://github.com/kaltura/kaltura-player-js/compare/v3.7.1...v3.8.0) (2022-11-02)
 
 
