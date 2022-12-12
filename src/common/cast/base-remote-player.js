@@ -53,6 +53,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   _playerConfig: Object;
   _castConfig: Object;
   _eventManager: EventManager;
+  _isCastInitiator: boolean = false;
 
   constructor(name: string, castConfig: Object, remoteControl: RemoteControl) {
     super();
@@ -430,6 +431,17 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
   }
 
   /**
+   * @returns {number} - The live duration in seconds.
+   * @instance
+   * @memberof BaseRemotePlayer
+   * @example
+   * BaseRemotePlayer.prototype.liveDuration // NaN
+   */
+  get liveDuration(): number {
+    return NaN;
+  }
+
+  /**
    * Setter.
    * @param {number} vol - The volume to set in the range of 0-1.
    * @returns {void}
@@ -585,6 +597,14 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
    */
   get config(): Object {
     return this._playerConfig;
+  }
+
+  set isCastInitiator(isCastInitiator: boolean) {
+    this._isCastInitiator = isCastInitiator;
+  }
+
+  get isCastInitiator() {
+    return this._isCastInitiator;
   }
 }
 

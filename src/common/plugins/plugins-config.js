@@ -1,8 +1,11 @@
 //@flow
-import {PluginConfigStore, templateRegex} from './plugins-config-store.js';
+import {PluginConfigStore, templateRegex} from 'plugins-config-store';
 import evaluate from '../utils/evaluate';
 import {getReferrer} from '../utils/kaltura-params';
-import {Utils} from '@playkit-js/playkit-js';
+import {Utils, getLogger} from '@playkit-js/playkit-js';
+import {getServerUIConf} from '../utils/setup-helpers';
+
+const logger = getLogger('PluginsConfig');
 
 /**
  * returns whether value is evaluated
@@ -19,6 +22,35 @@ const isValueEvaluated = (value: any): boolean =>
   !templateRegex.test(value.toString());
 
 /**
+ * returns whether the value is a simple object (not a function or class instance)
+ * @private
+ * @param {*} value - the value to be checked
+ * @returns {boolean} - whether the value is a simple object or not
+ */
+const isSimpleObject = (value: any): boolean => Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value);
+
+/**
+ * filters out unevaluated expressions in an array
+ * @private
+ * @param {Array} value - the array to be checked
+ * @returns {Array} - the array with unevaluated expressions filtered out
+ */
+const filterUnevaluatedExpressions = (value: $ReadOnlyArray<any>): $ReadOnlyArray<any> => {
+  return value
+    .map(item => {
+      if (isSimpleObject(item)) {
+        const updatedItem = removeUnevaluatedExpression(item);
+        return Utils.Object.isEmptyObject(updatedItem) ? null : updatedItem;
+      } else if (isValueEvaluated(item)) {
+        return item;
+      } else {
+        return null;
+      }
+    })
+    .filter(item => item !== null);
+};
+
+/**
  * remove unevaluated expressions form object
  * @private
  * @param {Object} obj - the object examine
@@ -26,10 +58,10 @@ const isValueEvaluated = (value: any): boolean =>
  */
 const removeUnevaluatedExpression = (obj: Object = {}): Object =>
   Object.entries(obj).reduce((product, [key, value]): Object => {
-    if (Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value)) {
+    if (isSimpleObject(value)) {
       product[key] = removeUnevaluatedExpression(value);
     } else if (Array.isArray(value)) {
-      product[key] = value.filter(index => isValueEvaluated(index));
+      product[key] = filterUnevaluatedExpressions(value);
     } else if (isValueEvaluated(value)) {
       product[key] = value;
     }
@@ -44,7 +76,7 @@ const removeUnevaluatedExpression = (obj: Object = {}): Object =>
  */
 const getModel = (options: KPOptionsObject): Object => {
   const dataModel: Object = {
-    pVersion: options.productVersion ? options.productVersion : __VERSION__,
+    pVersion: getServerUIConf()?.productVersion || __VERSION__,
     pName: __NAME__
   };
   if (options.targetId) {
@@ -112,6 +144,30 @@ function getEncodedReferrer(): string {
 }
 
 /**
+ * @private
+ * @param {string} text - the string to sanitize
+ * @returns {string} - the sanitized string
+ * @private
+ */
+function _sanitize(text: string): string {
+  if (!text) return '';
+  return (
+    text
+      .replace(/\\n/g, '\\n')
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, '\\&')
+      .replace(/\\r/g, '\\r')
+      .replace(/\\t/g, '\\t')
+      .replace(/\\b/g, '\\b')
+      .replace(/\\f/g, '\\f')
+      // remove non-printable and other non-valid JSON chars
+      // eslint-disable-next-line no-control-regex
+      .replace(/[\u0000-\u0019]+/g, '')
+  );
+}
+
+/**
  *
  * @param {string} config - the config string
  * @returns {Object} - the config object
@@ -119,6 +175,7 @@ function getEncodedReferrer(): string {
  */
 function _formatConfigString(config: string): Object {
   let configObj;
+  config = _sanitize(config);
   try {
     configObj = JSON.parse(config, function (key) {
       try {
@@ -128,10 +185,12 @@ function _formatConfigString(config: string): Object {
       }
     });
   } catch (e) {
+    logger.error('An error occurred while formatting config string.', e);
     configObj = {};
   }
   return configObj;
 }
+
 /**
  * @param {Object} data - target config object
  * @param {Object} evaluatedConfig - the evaluated object
@@ -171,28 +230,6 @@ class ConfigEvaluator {
       this._pluginConfigStore.set(options);
       const dataModel = getModel(config);
       const mergedConfig = Utils.Object.mergeDeep({}, this._pluginConfigStore.get(), options);
-      const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
-      _mergeConfig(options, evaluatedConfig);
-    }
-  }
-
-  /**
-   * @param {KPUIOptionsObject} options - UI options
-   * @param {KPOptionsObject} config - player config
-   * @return {void}
-   */
-  evaluateUIConfig(options: KPUIOptionsObject, config: KPOptionsObject): void {
-    if (options) {
-      const defaultUiConfig = {
-        components: {
-          share: {
-            shareUrl: `{{embedBaseUrl}}/index.php/extwidget/preview/partner_id/{{partnerId}}/uiconf_id/{{uiConfId}}/entry_id/{{entryId}}/embed/dynamic`,
-            embedUrl: `{{embedBaseUrl}}/p/{{partnerId}}/embedPlaykitJs/uiconf_id/{{uiConfId}}?iframeembed=true&entry_id={{entryId}}`
-          }
-        }
-      };
-      const dataModel = getModel(config);
-      const mergedConfig = Utils.Object.mergeDeep({}, defaultUiConfig, options);
       const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
       _mergeConfig(options, evaluatedConfig);
     }

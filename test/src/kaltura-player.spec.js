@@ -11,6 +11,7 @@ import {EventType as CoreEventType, FakeEvent, Utils, EventManager} from '@playk
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 import {Provider} from 'playkit-js-providers';
+import {Images} from './mock-data/images';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -105,12 +106,20 @@ describe('kaltura player api', function () {
       });
 
       it('should use the configured poster from loadMedia options', function (done) {
-        const poster = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
+        const poster = Images.POSTER;
         kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
           kalturaPlayer.poster.should.equal(poster);
           done();
         });
         kalturaPlayer.loadMedia({entryId}, {poster});
+      });
+
+      it('the reset stat should be false whenever an error occurs', function (done) {
+        kalturaPlayer._reset.should.be.true;
+        kalturaPlayer.loadMedia({}).catch(() => {
+          kalturaPlayer._reset.should.be.false;
+          done();
+        });
       });
 
       describe('maybeSetStreamPriority', function () {
@@ -176,6 +185,141 @@ describe('kaltura player api', function () {
               }
             });
           });
+        });
+      });
+    });
+    describe('setMedia', function () {
+      const mediaWithUserSession = {
+        sources: {
+          dash: [
+            {
+              id: '0_nwkp7jtx_301,mpegdash',
+              url:
+                'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
+              mimetype: 'application/dash+xml'
+            }
+          ]
+        },
+        session: {
+          isAnonymous: false,
+          ks: 'test-ks'
+        }
+      };
+      describe('shouldAddKs', () => {
+        describe('loadThumbnailWithKs is false', () => {
+          beforeEach(() => {
+            config.provider.loadThumbnailWithKs = false;
+            kalturaPlayer = setup(config);
+          });
+          afterEach(function () {
+            kalturaPlayer.destroy();
+          });
+          describe('session not set', () => {
+            it('should return false when session not set', () => {
+              kalturaPlayer.shouldAddKs().should.equals(false);
+            });
+          });
+          describe('anonymous session', () => {
+            it('should return false when loadThumbnailWithKs is false', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
+              kalturaPlayer.shouldAddKs().should.equals(false);
+              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(false);
+            });
+          });
+          describe('user session', () => {
+            it('should return false when loadThumbnailWithKs is false', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs().should.equals(false);
+              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(false);
+            });
+          });
+        });
+
+        describe('loadThumbnailWithKs is true', () => {
+          beforeEach(() => {
+            config.provider.loadThumbnailWithKs = true;
+            kalturaPlayer = setup(config);
+          });
+          afterEach(function () {
+            config.provider.loadThumbnailWithKs = false;
+            kalturaPlayer.destroy();
+          });
+          describe('session not set', () => {
+            it('should return false when session not set', () => {
+              kalturaPlayer.shouldAddKs().should.equals(false);
+            });
+          });
+          describe('anonymous session', () => {
+            it('should return false for anonymous session when called without mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
+              kalturaPlayer.shouldAddKs().should.equals(false);
+            });
+            it('should return false for anonymous session when called with mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs(MediaMockData.MediaConfig['0_wifqaipd']).should.equals(false);
+            });
+          });
+          describe('user session', () => {
+            it('should return true for user session when called without mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs().should.equals(true);
+            });
+            it('should return true for user session when called with mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
+              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(true);
+            });
+          });
+        });
+      });
+    });
+    describe('selectedSource', function () {
+      beforeEach(function () {
+        kalturaPlayer = setup(config);
+      });
+
+      afterEach(function () {
+        kalturaPlayer.destroy();
+      });
+
+      it('should get the selectedSource', function (done) {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, event => {
+          kalturaPlayer.selectedSource.should.equal(event.payload.selectedSource[0]);
+          done();
+        });
+        kalturaPlayer.setMedia({sources: SourcesConfig.Mp4});
+        kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
+      });
+    });
+    describe('setSourcesMetadata', function () {
+      const entryId = '0_wifqaipd';
+      beforeEach(function () {
+        kalturaPlayer = setup(config);
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+          const id = info.playlistId || info.entryId;
+          return id
+            ? Promise.resolve(MediaMockData.MediaConfig[id])
+            : Promise.reject({
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
+        });
+      });
+
+      afterEach(function () {
+        kalturaPlayer.destroy();
+      });
+
+      it('should set the sources metadata with the provided epgId', done => {
+        kalturaPlayer.loadMedia({entryId}).then(() => {
+          kalturaPlayer.configure({sources: {metadata: {epgId: '54321'}}});
+          kalturaPlayer.setSourcesMetadata({epgId: '12345'});
+          try {
+            kalturaPlayer.config.sources.metadata.epgId.should.equals('12345');
+            kalturaPlayer.sources.metadata.epgId.should.equals('12345');
+            done();
+          } catch (e) {
+            done(e);
+          }
         });
       });
     });
@@ -317,7 +461,7 @@ describe('kaltura player api', function () {
         kalturaPlayer.playlist.items.length.should.equal(3);
         kalturaPlayer.playlist.countdown.duration.should.equal(20);
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
-        kalturaPlayer._sourceSelected.should.be.true;
+        (kalturaPlayer.selectedSource === null).should.be.false;
       });
     });
 
@@ -1047,6 +1191,30 @@ describe('kaltura player api', function () {
             }
           });
         });
+      });
+
+      it('should plugin from setMedia be available after sources selected', () => {
+        PluginManager.register('numbers', NumbersPlugin);
+        player.setMedia({sources: SourcesConfig.Mp4, plugins: {numbers: {}}});
+        (player.plugins.numbers !== undefined).should.be.true;
+        (player.plugins.numbers !== null).should.be.true;
+        player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
+        PluginManager.unRegister('numbers', NumbersPlugin);
+      });
+
+      it('should evaluate the plugin config on source selected', done => {
+        player.addEventListener(player.Event.SOURCE_SELECTED, () => {
+          try {
+            player.plugins.colors.config.entryId.should.equals(entryId);
+            player.plugins.colors.config.partnerId.should.equals(1091);
+            player.plugins.colors.config.entryName.should.equals('Vod');
+            player.plugins.colors.config.entryType.should.equals('custom');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+        player.loadMedia({entryId});
       });
 
       it('should evaluate the configured plugin config - second media', done => {

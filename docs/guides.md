@@ -1,9 +1,11 @@
 # Guides
 
 - Getting Started
+  - [Supported Platforms](./supportedPlatforms.md)
   - [Create a Player Using the TV Platform Player Studio](./getting-started-using-player-studio.md)
   - [Player Setup](./player-setup.md)
   - [Playing Your Video](./playing-your-video.md)
+  - [Change Media](./change-media.md)
   - [Playlist](./playlist.md)
 - [Embed Code Types](./embed-types.md)
 - [Player Events](./events.md)
@@ -15,8 +17,10 @@
 - [User Preferences](./user-preferences.md)
 - [Controlling Errors](errors.md)
 - [Debugging & Troubleshooting](./debugging.md)
-- [How to Build a Plugin](./how-to-build-a-plugin.md)
+- [Writing a Plugin](./writing-a-plugin.md)
 - [Customizing the Player UI](./ui.md)
 - [Keyboard Shortcuts](./keyboard-shortcuts.md)
 - [Localization](./localization.md)
 - [Coding Guidelines](./coding-guidlines.md)
+- [Service Provider](./service-provider.md)
+- [VTT thumbnails](./adding-vtt-thumbnails.md)

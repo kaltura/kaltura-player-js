@@ -1,9 +1,12 @@
 import {MediaType} from '@playkit-js/playkit-js';
 import {DefaultThumbnailConfig, ThumbnailManager} from '../../../src/common/thumbnail-manager';
+import * as TestUtils from '../utils/test-utils';
+import {setup} from '../../../src';
+import {Images} from '../mock-data/images';
 
 describe('ThumbnailManager', () => {
   let thumbnailManager, fakePlayer, fakeMediaConfig, sandbox;
-  const thumbsSprite = 'http://stilearning.com/vision/1.1/assets/globals/img/dummy/img-10.jpg';
+  const thumbsSprite = Images.THUMBNAILS_SPRITE;
   const fakeSeekbarConfig = {
     thumbsSlices: 200,
     thumbsWidth: 100
@@ -19,7 +22,11 @@ describe('ThumbnailManager', () => {
           }
         }
       },
-      getThumbnail: () => {}
+      getThumbnail: () => {},
+      _localPlayer: {
+        getThumbnail: () => {}
+      },
+      shouldAddKs: () => true
     };
     fakeMediaConfig = {
       sources: {
@@ -95,9 +102,18 @@ describe('ThumbnailManager', () => {
   it('should return thumbnail from core player', () => {
     fakeMediaConfig.sources.poster = null;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    const spy = sandbox.spy(fakePlayer, 'getThumbnail');
+    const spy = sandbox.spy(fakePlayer._localPlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
+  });
+
+  it('should return thumbnail height from image sprite', () => {
+    fakeMediaConfig.sources.poster = null;
+    fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager._thumbsHeight = 999;
+    const thumbInfo = thumbnailManager.getThumbnail(100);
+    thumbInfo.height.should.equal(999);
   });
 
   it('should set the configured thumbs sprite with default sizes', () => {
@@ -136,5 +152,66 @@ describe('ThumbnailManager', () => {
     const config = thumbnailManager.getKalturaThumbnailConfig();
     config.thumbsSlices.should.equal(200);
     config.thumbsWidth.should.equal(300);
+  });
+
+  it('should get thumbnail slices url without ks', () => {
+    sandbox.stub(fakePlayer, 'shouldAddKs').returns(false);
+    delete DefaultThumbnailConfig.thumbsSprite;
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager
+      .getKalturaThumbnailConfig()
+      .thumbsSprite.should.equals(
+        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}`
+      );
+  });
+
+  describe('Poster Integration', function () {
+    const targetId = 'player-placeholder_ovp/thumbnail.spec';
+
+    let config, kalturaPlayer;
+    const myCustomPosterUrl = Images.POSTER;
+    const entryId = '0_hut6q26s';
+    const partnerId = 1091;
+    const env = {
+      cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
+      serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
+    };
+
+    before(function () {
+      TestUtils.createElement('DIV', targetId);
+    });
+
+    beforeEach(function () {
+      config = {
+        targetId: targetId,
+        provider: {
+          partnerId: partnerId,
+          env: env
+        },
+        sources: {}
+      };
+    });
+
+    afterEach(function () {
+      kalturaPlayer.destroy();
+      TestUtils.removeVideoElementsFromTestPage();
+    });
+
+    after(function () {
+      TestUtils.removeElement(targetId);
+    });
+
+    it.skip('should create thumbnail url from provider poster not from configured poster', function (done) {
+      config.sources.poster = myCustomPosterUrl;
+      kalturaPlayer = setup(config);
+      kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+        try {
+          kalturaPlayer.getThumbnail().should.be.exist;
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
   });
 });

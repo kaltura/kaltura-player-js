@@ -2,6 +2,587 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.1](https://github.com/kaltura/kaltura-player-js/compare/v3.8.0...v3.8.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.9](https://github.com/kaltura/playkit-js/releases/tag/v0.80.9) ([25da183](https://github.com/kaltura/kaltura-player-js/commit/25da183))
+* update playkit-js-ui to [0.72.4](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.4) ([3e31546](https://github.com/kaltura/kaltura-player-js/commit/3e31546))
+* **FEC-12735:** Player v7| More plugins| Plugins inside the more plugins are not accessible ([#592](https://github.com/kaltura/kaltura-player-js/issues/592)) ([99af686](https://github.com/kaltura/kaltura-player-js/commit/99af686)), closes [kaltura/playkit-js-ui-managers#16](https://github.com/kaltura/kaltura-player-js/issues/16)
+
+
+
+## [3.8.0](https://github.com/kaltura/kaltura-player-js/compare/v3.7.1...v3.8.0) (2022-11-02)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.8](https://github.com/kaltura/playkit-js/releases/tag/v0.80.8) ([88e82df](https://github.com/kaltura/kaltura-player-js/commit/88e82df))
+* update playkit-js-dash to [1.31.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.3) ([a470b3a](https://github.com/kaltura/kaltura-player-js/commit/a470b3a))
+* **FEC-12097:** Update TS types - constructor should be public ([#584](https://github.com/kaltura/kaltura-player-js/issues/584)) ([1e2b5ff](https://github.com/kaltura/kaltura-player-js/commit/1e2b5ff))
+* **FEC-12691:** Shaka Text Track Displayer does not work unless  useNativeTextTrack set to true ([76f772f](https://github.com/kaltura/kaltura-player-js/commit/76f772f))
+
+
+### Features
+
+* update playkit-js-hls to [1.31.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.31.1) ([0a4357d](https://github.com/kaltura/kaltura-player-js/commit/0a4357d))
+* update playkit-js-providers to [2.37.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.37.0) ([ec36d0a](https://github.com/kaltura/kaltura-player-js/commit/ec36d0a))
+
+
+
+### [3.7.1](https://github.com/kaltura/kaltura-player-js/compare/v3.7.0...v3.7.1) (2022-10-06)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.7](https://github.com/kaltura/playkit-js/releases/tag/v0.80.7) ([8121e84](https://github.com/kaltura/kaltura-player-js/commit/8121e84))
+* update playkit-js-dash to [1.31.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.2) ([5b94b18](https://github.com/kaltura/kaltura-player-js/commit/5b94b18))
+
+
+
+## [3.7.0](https://github.com/kaltura/kaltura-player-js/compare/v3.6.1...v3.7.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.6](https://github.com/kaltura/playkit-js/releases/tag/v0.80.6) ([2fc62dd](https://github.com/kaltura/kaltura-player-js/commit/2fc62dd))
+* update playkit-js-providers to [2.36.1](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.36.1) ([35d8752](https://github.com/kaltura/kaltura-player-js/commit/35d8752))
+* update playkit-js-ui to [0.72.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.3) ([87f2e44](https://github.com/kaltura/kaltura-player-js/commit/87f2e44))
+* **FEC-12097:** More plugins - Update relevant types ([#563](https://github.com/kaltura/kaltura-player-js/issues/563)) ([2fb7bd4](https://github.com/kaltura/kaltura-player-js/commit/2fb7bd4)), closes [kaltura/playkit-js-ui-managers#10](https://github.com/kaltura/kaltura-player-js/issues/10)
+* **FEC-12347:** sanitize before Json parse ([#576](https://github.com/kaltura/kaltura-player-js/issues/576)) ([5e558ba](https://github.com/kaltura/kaltura-player-js/commit/5e558ba))
+* **FEC-12526:** add debug to analyze player version not updated ([#564](https://github.com/kaltura/kaltura-player-js/issues/564)) ([09ef6a9](https://github.com/kaltura/kaltura-player-js/commit/09ef6a9))
+* **FEC-12562:** Ignore ks configuration on kava plugin incase of ottAnalytics exists on player ([#574](https://github.com/kaltura/kaltura-player-js/issues/574)) ([b01430b](https://github.com/kaltura/kaltura-player-js/commit/b01430b))
+* **FEC-12574:** loadThumbnailWithKs can break media load when used with playlist or setMedia ([#571](https://github.com/kaltura/kaltura-player-js/issues/571)) ([67ae49d](https://github.com/kaltura/kaltura-player-js/commit/67ae49d))
+
+
+### Features
+
+* update playkit-js-dash to [1.31.1](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.1) ([108deb4](https://github.com/kaltura/kaltura-player-js/commit/108deb4))
+* update playkit-js-hls to [1.31.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.31.0) ([ca9849c](https://github.com/kaltura/kaltura-player-js/commit/ca9849c))
+* **FEC-12492:** upgrade hls.js v1.2.3 ([#568](https://github.com/kaltura/kaltura-player-js/issues/568)) ([7d51efe](https://github.com/kaltura/kaltura-player-js/commit/7d51efe))
+
+
+
+### [3.6.1](https://github.com/kaltura/kaltura-player-js/compare/v3.6.0...v3.6.1) (2022-09-01)
+
+
+
+## [3.6.0](https://github.com/kaltura/kaltura-player-js/compare/v3.5.0...v3.6.0) (2022-08-31)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.5](https://github.com/kaltura/playkit-js/releases/tag/v0.80.5) ([0e89918](https://github.com/kaltura/kaltura-player-js/commit/0e89918))
+* update playkit-js-hls to [1.30.2](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.30.2) ([1652d7a](https://github.com/kaltura/kaltura-player-js/commit/1652d7a))
+* update playkit-js-ui to [0.72.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.2) ([2a06bb2](https://github.com/kaltura/kaltura-player-js/commit/2a06bb2))
+* **FEC-12238:** [WEB][ShakaPlayer] - upgrade shaka player to v4.1.2 ([#561](https://github.com/kaltura/kaltura-player-js/issues/561)) ([8a26067](https://github.com/kaltura/kaltura-player-js/commit/8a26067))
+* **FEC-12335:** Side Panel Item gets refreshed in every 'change media' ([#562](https://github.com/kaltura/kaltura-player-js/issues/562)) ([1c452c0](https://github.com/kaltura/kaltura-player-js/commit/1c452c0)), closes [kaltura/playkit-js#659](https://github.com/kaltura/kaltura-player-js/issues/659) [kaltura/playkit-js-ui#687](https://github.com/kaltura/kaltura-player-js/issues/687)
+* **FEC-12460:** upgrade HLS.JS player to v1.2.0 ([#560](https://github.com/kaltura/kaltura-player-js/issues/560)) ([b4f1c08](https://github.com/kaltura/kaltura-player-js/commit/b4f1c08)), closes [kaltura/playkit-js-hls#175](https://github.com/kaltura/kaltura-player-js/issues/175)
+
+
+### Features
+
+* update playkit-js-dash to [1.31.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.0) ([3d5861f](https://github.com/kaltura/kaltura-player-js/commit/3d5861f))
+
+
+
+## [3.5.0](https://github.com/kaltura/kaltura-player-js/compare/v3.4.0...v3.5.0) (2022-08-04)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.4](https://github.com/kaltura/playkit-js/releases/tag/v0.80.4) ([4419127](https://github.com/kaltura/kaltura-player-js/commit/4419127))
+* update playkit-js-dash to [1.30.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.3) ([5f87f31](https://github.com/kaltura/kaltura-player-js/commit/5f87f31))
+* update playkit-js-ui to [0.72.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.1) ([8d48a67](https://github.com/kaltura/kaltura-player-js/commit/8d48a67))
+* **FEC-12380:** update TS types declarations ([#553](https://github.com/kaltura/kaltura-player-js/issues/553)) ([352758a](https://github.com/kaltura/kaltura-player-js/commit/352758a))
+* **FEV-1291:** clear thumbnail manager for Youtube entries in playlist and export engineType to be used by plugins ([#555](https://github.com/kaltura/kaltura-player-js/issues/555)) ([d0071f4](https://github.com/kaltura/kaltura-player-js/commit/d0071f4))
+
+
+### Features
+
+* update playkit-js-providers to [2.36.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.36.0) ([82d0088](https://github.com/kaltura/kaltura-player-js/commit/82d0088))
+
+
+
+## [3.4.0](https://github.com/kaltura/kaltura-player-js/compare/v3.3.0...v3.4.0) (2022-07-06)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.30.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.2) ([b1e0ffb](https://github.com/kaltura/kaltura-player-js/commit/b1e0ffb))
+
+
+### Features
+
+* **FEC-12218:** [Google Tag Manager] - Add relevant TS types ([#552](https://github.com/kaltura/kaltura-player-js/issues/552)) ([dd706e6](https://github.com/kaltura/kaltura-player-js/commit/dd706e6))
+
+
+
+## [3.3.0](https://github.com/kaltura/kaltura-player-js/compare/v3.2.0...v3.3.0) (2022-06-09)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.3](https://github.com/kaltura/playkit-js/releases/tag/v0.80.3) ([b1f86b8](https://github.com/kaltura/kaltura-player-js/commit/b1f86b8))
+* **FEC-12113:** Add Side Panels Management to player UI  ([#547](https://github.com/kaltura/kaltura-player-js/issues/547)) ([5ea1b5b](https://github.com/kaltura/kaltura-player-js/commit/5ea1b5b))
+* **FEC-12157:** update Creating New Kaltura Player MD file ([#543](https://github.com/kaltura/kaltura-player-js/issues/543)) ([389e386](https://github.com/kaltura/kaltura-player-js/commit/389e386))
+* **FEC-12252:** getTextTracks should be called getNativeTextTracks ([#548](https://github.com/kaltura/kaltura-player-js/issues/548)) ([fe28136](https://github.com/kaltura/kaltura-player-js/commit/fe28136))
+
+
+### Features
+
+* update playkit-js-providers to [2.35.1](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.35.1) ([8679358](https://github.com/kaltura/kaltura-player-js/commit/8679358))
+* update playkit-js-ui to [0.72.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.72.0) ([e311817](https://github.com/kaltura/kaltura-player-js/commit/e311817))
+
+
+
+## [3.2.0](https://github.com/kaltura/kaltura-player-js/compare/v3.1.0...v3.2.0) (2022-05-12)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.30.1](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.1) ([40d6a06](https://github.com/kaltura/kaltura-player-js/commit/40d6a06))
+* **FEC-12161:** Need to replace static jpg files in player tests ([ae2798a](https://github.com/kaltura/kaltura-player-js/commit/ae2798a))
+* **FEC-12161:** Need to replace static jpg files in player tests ([d4c36b4](https://github.com/kaltura/kaltura-player-js/commit/d4c36b4))
+* add fake-event-target to ts types ([#534](https://github.com/kaltura/kaltura-player-js/issues/534)) ([e29204a](https://github.com/kaltura/kaltura-player-js/commit/e29204a))
+
+
+### Build System
+
+* use node_js 17 in travis ([04cb66a](https://github.com/kaltura/kaltura-player-js/commit/04cb66a))
+
+
+### Features
+
+* update playkit-js to [0.80.1](https://github.com/kaltura/playkit-js/releases/tag/v0.80.1) ([e61fe4e](https://github.com/kaltura/kaltura-player-js/commit/e61fe4e))
+* update playkit-js-providers to [2.35.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.35.0) ([0fabe44](https://github.com/kaltura/kaltura-player-js/commit/0fabe44))
+* update playkit-js-ui to [0.71.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.71.0) ([a65b7d5](https://github.com/kaltura/kaltura-player-js/commit/a65b7d5))
+* **FEC-11981:** Related Entries p3 ([#532](https://github.com/kaltura/kaltura-player-js/issues/532)) ([7b1596b](https://github.com/kaltura/kaltura-player-js/commit/7b1596b)), closes [kaltura/playkit-js-related#5](https://github.com/kaltura/kaltura-player-js/issues/5) [kaltura/playkit-js-ui#668](https://github.com/kaltura/kaltura-player-js/issues/668)
+* **FEC-12015:** CC button for on/off subtitles ([#536](https://github.com/kaltura/kaltura-player-js/issues/536)) ([8e3cc43](https://github.com/kaltura/kaltura-player-js/commit/8e3cc43))
+* **FEC-12113:** Add Side Panels Management to player UI ([#544](https://github.com/kaltura/kaltura-player-js/issues/544)) ([b3f599a](https://github.com/kaltura/kaltura-player-js/commit/b3f599a)), closes [kaltura/playkit-js-ui-managers#1](https://github.com/kaltura/kaltura-player-js/issues/1) [kaltura/playkit-js-ui#674](https://github.com/kaltura/kaltura-player-js/issues/674)
+* **FEC-12229:** append KS to thumbnail API ([#545](https://github.com/kaltura/kaltura-player-js/issues/545)) ([6e5a2e8](https://github.com/kaltura/kaltura-player-js/commit/6e5a2e8))
+
+
+### Tests
+
+* add catch block to muted test ([c63c5d7](https://github.com/kaltura/kaltura-player-js/commit/c63c5d7))
+* add catch to poster.spec.js getMediaConfig ([aa8e3b6](https://github.com/kaltura/kaltura-player-js/commit/aa8e3b6))
+* add catch to poster.spec.js loadMedia ([374d87d](https://github.com/kaltura/kaltura-player-js/commit/374d87d))
+* change entry id used in loadMedia in unit tests  ([e94aa2b](https://github.com/kaltura/kaltura-player-js/commit/e94aa2b))
+* check travis behavior when using https ([ab8f3be](https://github.com/kaltura/kaltura-player-js/commit/ab8f3be))
+* check travis behavior with a different entry id ([95b5d4c](https://github.com/kaltura/kaltura-player-js/commit/95b5d4c))
+* revert unit test changes and skip failed tests ([42f6ab4](https://github.com/kaltura/kaltura-player-js/commit/42f6ab4))
+
+
+
+## [3.1.0](https://github.com/kaltura/kaltura-player-js/compare/v3.0.0...v3.1.0) (2022-03-23)
+
+
+### Bug Fixes
+
+* **FEC-12000:** smart tv - dash video not working ([#530](https://github.com/kaltura/kaltura-player-js/issues/530)) ([4edac6f](https://github.com/kaltura/kaltura-player-js/commit/4edac6f))
+* **FEC-12059:** [Youbora] Rendition values have a high number of "Undefined data" records ([#533](https://github.com/kaltura/kaltura-player-js/issues/533)) ([43e023e](https://github.com/kaltura/kaltura-player-js/commit/43e023e))
+
+
+### Features
+
+* update playkit-js to [0.79.0](https://github.com/kaltura/playkit-js/releases/tag/v0.79.0) ([66e3572](https://github.com/kaltura/kaltura-player-js/commit/66e3572))
+* update playkit-js-hls to [1.30.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.30.1) ([7d6ffef](https://github.com/kaltura/kaltura-player-js/commit/7d6ffef))
+* update playkit-js-providers to [2.34.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.34.0) ([b55539d](https://github.com/kaltura/kaltura-player-js/commit/b55539d))
+* **FEC-11875:** Related Entries - by context ([#523](https://github.com/kaltura/kaltura-player-js/issues/523)) ([86fe909](https://github.com/kaltura/kaltura-player-js/commit/86fe909))
+* **FEC-11889:** Upgrade to hlsjs 1.1.5 ([#528](https://github.com/kaltura/kaltura-player-js/issues/528)) ([6990f08](https://github.com/kaltura/kaltura-player-js/commit/6990f08))
+
+
+
+## [3.0.0](https://github.com/kaltura/kaltura-player-js/compare/v2.0.0...v3.0.0) (2022-02-16)
+
+
+### Bug Fixes
+
+* update playkit-js-ui to [0.70.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.70.1) ([11ea80f](https://github.com/kaltura/kaltura-player-js/commit/11ea80f))
+* **FEC-9716:** An array doesn't merged into plugin config ([#524](https://github.com/kaltura/kaltura-player-js/issues/524)) ([773171d](https://github.com/kaltura/kaltura-player-js/commit/773171d))
+
+
+### Features
+
+* update playkit-js to [0.78.0](https://github.com/kaltura/playkit-js/releases/tag/v0.78.0) ([81c7f8f](https://github.com/kaltura/kaltura-player-js/commit/81c7f8f))
+* update playkit-js-dash to [1.30.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.30.0) ([a4d3b9a](https://github.com/kaltura/kaltura-player-js/commit/a4d3b9a))
+* update playkit-js-hls to [1.29.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.29.0) ([ad6997f](https://github.com/kaltura/kaltura-player-js/commit/ad6997f))
+* update playkit-js-providers to [2.33.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.33.0) ([112a412](https://github.com/kaltura/kaltura-player-js/commit/112a412))
+* **FEC-11214:** upgrade shaka to 3.3 ([#518](https://github.com/kaltura/kaltura-player-js/issues/518)) ([05cdfe0](https://github.com/kaltura/kaltura-player-js/commit/05cdfe0))
+* **FEC-11785:** [Youbora] - update youbora options for drm system that is used by the player ([#515](https://github.com/kaltura/kaltura-player-js/issues/515)) ([fbd6ab2](https://github.com/kaltura/kaltura-player-js/commit/fbd6ab2)), closes [kaltura/playkit-js-youbora#82](https://github.com/kaltura/kaltura-player-js/issues/82) [kaltura/playkit-js-dash#175](https://github.com/kaltura/kaltura-player-js/issues/175) [kaltura/playkit-js#624](https://github.com/kaltura/kaltura-player-js/issues/624)
+
+
+### BREAKING CHANGES
+
+* **FEC-11214:** - dash not supported on IE11
+
+
+
+## [2.0.0](https://github.com/kaltura/kaltura-player-js/compare/v1.17.3...v2.0.0) (2022-01-19)
+
+
+### Bug Fixes
+
+* **FEC-11863:** default kava details are reported with no player version ([#513](https://github.com/kaltura/kaltura-player-js/issues/513)) ([42425b8](https://github.com/kaltura/kaltura-player-js/commit/42425b8))
+* **FEC-11864:** kava reports player version instead of product version ([#514](https://github.com/kaltura/kaltura-player-js/issues/514)) ([b81f88b](https://github.com/kaltura/kaltura-player-js/commit/b81f88b))
+
+
+### Features
+
+* update playkit-js to [0.77.0](https://github.com/kaltura/playkit-js/releases/tag/v0.77.0) ([5dbbda4](https://github.com/kaltura/kaltura-player-js/commit/5dbbda4))
+* update playkit-js-dash to [1.29.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.29.0) ([2054f7c](https://github.com/kaltura/kaltura-player-js/commit/2054f7c))
+* update playkit-js-hls to [1.28.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.28.0) ([7c83f29](https://github.com/kaltura/kaltura-player-js/commit/7c83f29))
+* update playkit-js-ui to [0.70.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.70.0) ([363cc8f](https://github.com/kaltura/kaltura-player-js/commit/363cc8f))
+* **FEC-11738:** Related Entries - Phase 1 ([#511](https://github.com/kaltura/kaltura-player-js/issues/511)) ([13163a8](https://github.com/kaltura/kaltura-player-js/commit/13163a8))
+* **FEC-11761:** expose stream timed metadata - phase 2 ([#512](https://github.com/kaltura/kaltura-player-js/issues/512)) ([dea6cbb](https://github.com/kaltura/kaltura-player-js/commit/dea6cbb))
+
+
+### BREAKING CHANGES
+
+* **FEC-11761:** for - 
+https://github.com/kaltura/playkit-js-dual-screen/pull/52
+https://github.com/kaltura/playkit-js-kaltura-cuepoints/pull/15
+
+
+
+### [1.17.3](https://github.com/kaltura/kaltura-player-js/compare/v1.17.1...v1.17.3) (2022-01-02)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.76.1](https://github.com/kaltura/playkit-js/releases/tag/v0.76.1) ([77df920](https://github.com/kaltura/kaltura-player-js/commit/77df920))
+* **FEC-11792:** slides does not appear in dual video ([#510](https://github.com/kaltura/kaltura-player-js/issues/510)) ([a2f69fa](https://github.com/kaltura/kaltura-player-js/commit/a2f69fa))
+
+
+
+### [1.17.2](https://github.com/kaltura/kaltura-player-js/compare/v1.17.1...v1.17.2) (2021-12-23)
+
+
+### Bug Fixes
+
+* **FEC-11792:** slides does not appear in dual video ([#510](https://github.com/kaltura/kaltura-player-js/issues/510)) ([a2f69fa](https://github.com/kaltura/kaltura-player-js/commit/a2f69fa))
+
+
+
+### [1.17.1](https://github.com/kaltura/kaltura-player-js/compare/v1.17.0...v1.17.1) (2021-12-21)
+
+
+
+## [1.17.0](https://github.com/kaltura/kaltura-player-js/compare/v1.16.3...v1.17.0) (2021-12-21)
+
+
+### Bug Fixes
+
+* update playkit-js-hls to [1.27.5](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.5) ([064e3a1](https://github.com/kaltura/kaltura-player-js/commit/064e3a1))
+* update playkit-js-ui to [0.69.5](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.5) ([e18a2b4](https://github.com/kaltura/kaltura-player-js/commit/e18a2b4))
+* **FEC-11711:** loadMedia is triggered before configuration is set from getMediaConfig ([#508](https://github.com/kaltura/kaltura-player-js/issues/508)) ([15b90e9](https://github.com/kaltura/kaltura-player-js/commit/15b90e9))
+
+
+### Features
+
+* update playkit-js to [0.76.0](https://github.com/kaltura/playkit-js/releases/tag/v0.76.0) ([beaac5f](https://github.com/kaltura/kaltura-player-js/commit/beaac5f))
+* update playkit-js-dash to [1.28.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.28.0) ([110e03b](https://github.com/kaltura/kaltura-player-js/commit/110e03b))
+* update playkit-js-providers to [2.32.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.32.0) ([a8c7123](https://github.com/kaltura/kaltura-player-js/commit/a8c7123))
+* **FEC-11632:** expose stream timed metadata ([#509](https://github.com/kaltura/kaltura-player-js/issues/509)) ([9610316](https://github.com/kaltura/kaltura-player-js/commit/9610316))
+
+
+
+### [1.16.3](https://github.com/kaltura/kaltura-player-js/compare/v1.16.2...v1.16.3) (2021-11-24)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.27.3](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.3) ([5da47f8](https://github.com/kaltura/kaltura-player-js/commit/5da47f8))
+* update playkit-js-ui to [0.69.4](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.4) ([9a4fb0e](https://github.com/kaltura/kaltura-player-js/commit/9a4fb0e))
+* **FEC-11156:** cast button appears for one player only when multiple players configured on the page and casting failed ([#495](https://github.com/kaltura/kaltura-player-js/issues/495)) ([5a46f84](https://github.com/kaltura/kaltura-player-js/commit/5a46f84))
+
+
+
+### [1.16.2](https://github.com/kaltura/kaltura-player-js/compare/v1.16.1...v1.16.2) (2021-11-17)
+
+
+### Bug Fixes
+
+* **FEC-11695,FEC-11698:** player thumbnail stripe URL changes according to player size ([#507](https://github.com/kaltura/kaltura-player-js/issues/507)) ([50a02b0](https://github.com/kaltura/kaltura-player-js/commit/50a02b0))
+
+
+### Tests
+
+* **FEC-11611:** Pass the program ID when sending a bookmark ([#506](https://github.com/kaltura/kaltura-player-js/issues/506)) ([dc62c36](https://github.com/kaltura/kaltura-player-js/commit/dc62c36))
+
+
+
+### [1.16.1](https://github.com/kaltura/kaltura-player-js/compare/v1.16.0...v1.16.1) (2021-11-10)
+
+
+### Bug Fixes
+
+* update playkit-js-providers to [2.31.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.31.0) ([7bb11b3](https://github.com/kaltura/kaltura-player-js/commit/7bb11b3))
+
+
+
+## [1.16.0](https://github.com/kaltura/kaltura-player-js/compare/v1.15.0...v1.16.0) (2021-11-10)
+
+
+### Bug Fixes
+
+* **FEC-11611:** Pass the program ID when sending a bookmark ([#503](https://github.com/kaltura/kaltura-player-js/issues/503)) ([5355bcc](https://github.com/kaltura/kaltura-player-js/commit/5355bcc))
+* **FEC-11611:** Pass the program ID when sending a bookmark ([#504](https://github.com/kaltura/kaltura-player-js/issues/504)) ([953c3a9](https://github.com/kaltura/kaltura-player-js/commit/953c3a9))
+* **FEC-11668:** thumbnails not shown when hovering over Previous / Next playlist controls ([#502](https://github.com/kaltura/kaltura-player-js/issues/502)) ([d5ec72e](https://github.com/kaltura/kaltura-player-js/commit/d5ec72e))
+
+
+### Features
+
+* update playkit-js to [0.75.0](https://github.com/kaltura/playkit-js/releases/tag/v0.75.0) ([15eb60a](https://github.com/kaltura/kaltura-player-js/commit/15eb60a))
+
+
+
+## [1.15.0](https://github.com/kaltura/kaltura-player-js/compare/v1.14.1...v1.15.0) (2021-10-27)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.74.4](https://github.com/kaltura/playkit-js/releases/tag/v0.74.4 ([a1a0223](https://github.com/kaltura/kaltura-player-js/commit/a1a0223))
+* update playkit-js-hls to [1.27.3](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.3) ([8bb7efd](https://github.com/kaltura/kaltura-player-js/commit/8bb7efd))
+* update playkit-js-ui to [0.69.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.3) ([6c08e93](https://github.com/kaltura/kaltura-player-js/commit/6c08e93))
+
+
+### Features
+
+* **FEC-11649:** live duration APIs ([#501](https://github.com/kaltura/kaltura-player-js/issues/501)) ([ab8a715](https://github.com/kaltura/kaltura-player-js/commit/ab8a715))
+
+
+
+### [1.14.1](https://github.com/kaltura/kaltura-player-js/compare/v1.14.0...v1.14.1) (2021-10-12)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.74.2](https://github.com/kaltura/playkit-js/releases/tag/v0.74.2) ([550851b](https://github.com/kaltura/kaltura-player-js/commit/550851b))
+
+
+
+## [1.14.0](https://github.com/kaltura/kaltura-player-js/compare/v1.13.2...v1.14.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* **FEV-1011:** add TS-types for cue-point manager and cues ([#499](https://github.com/kaltura/kaltura-player-js/issues/499)) ([5abb342](https://github.com/kaltura/kaltura-player-js/commit/5abb342))
+* **FEV-1011:** add TS-types for player ([#500](https://github.com/kaltura/kaltura-player-js/issues/500)) ([6823193](https://github.com/kaltura/kaltura-player-js/commit/6823193))
+
+
+### Features
+
+* **FEC-11554:** delay addCuePoints after media loaded in video ([#498](https://github.com/kaltura/kaltura-player-js/issues/498)) ([10f80e0](https://github.com/kaltura/kaltura-player-js/commit/10f80e0))
+
+
+
+### [1.13.2](https://github.com/kaltura/kaltura-player-js/compare/v1.13.1...v1.13.2) (2021-09-30)
+
+
+### Build System
+
+* doesn't recognize correctly the branch ([#464](https://github.com/kaltura/kaltura-player-js/issues/464)) ([2cb82fc](https://github.com/kaltura/kaltura-player-js/commit/2cb82fc))
+
+
+
+### [1.13.1](https://github.com/kaltura/kaltura-player-js/compare/v1.13.0...v1.13.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.74.1](https://github.com/kaltura/playkit-js/releases/tag/v0.74.1) ([c0788f7](https://github.com/kaltura/kaltura-player-js/commit/c0788f7))
+* update playkit-js-ui to [0.69.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.2) ([94c5491](https://github.com/kaltura/kaltura-player-js/commit/94c5491))
+
+
+
+## [1.13.0](https://github.com/kaltura/kaltura-player-js/compare/v1.12.1...v1.13.0) (2021-09-15)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.74.0](https://github.com/kaltura/playkit-js/releases/tag/v0.74.0) ([a643057](https://github.com/kaltura/kaltura-player-js/commit/a643057))
+* **FEC-11498:** Remove product version from player config ([#492](https://github.com/kaltura/kaltura-player-js/issues/492)) ([900ad75](https://github.com/kaltura/kaltura-player-js/commit/900ad75))
+* **FEC-11510:** fix cvaa default font size ([#491](https://github.com/kaltura/kaltura-player-js/issues/491)) ([99f2959](https://github.com/kaltura/kaltura-player-js/commit/99f2959)), closes [kaltura/playkit-js#603](https://github.com/kaltura/kaltura-player-js/issues/603) [kaltura/playkit-js-ui#639](https://github.com/kaltura/kaltura-player-js/issues/639)
+* **FEC-11513:** Need to click the Retry button twice after error ([#485](https://github.com/kaltura/kaltura-player-js/issues/485)) ([84406e9](https://github.com/kaltura/kaltura-player-js/commit/84406e9))
+* **FEC-11525:** disableUserCache is not working properly for text style ([#487](https://github.com/kaltura/kaltura-player-js/issues/487)) ([a44e060](https://github.com/kaltura/kaltura-player-js/commit/a44e060))
+
+
+### Features
+
+* **FEC-11540:** CuePoint Manager ([#488](https://github.com/kaltura/kaltura-player-js/issues/488)) ([025059a](https://github.com/kaltura/kaltura-player-js/commit/025059a))
+
+
+
+### [1.12.1](https://github.com/kaltura/kaltura-player-js/compare/v1.12.0...v1.12.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* update playkit-js-ui to [0.69.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.1) ([3ddf68b](https://github.com/kaltura/kaltura-player-js/commit/3ddf68b))
+
+
+
+## [1.12.0](https://github.com/kaltura/kaltura-player-js/compare/v1.11.1...v1.12.0) (2021-08-26)
+
+
+### Bug Fixes
+* update playkit-js to [0.73.1](https://github.com/kaltura/playkit-js/releases/tag/v0.73.1)
+* update playkit-js-dash to [1.27.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.2) ([478e0af](https://github.com/kaltura/kaltura-player-js/commit/478e0af))
+* update playkit-js-providers to [2.30.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.30.0 ([4823de7](https://github.com/kaltura/kaltura-player-js/commit/4823de7))
+* **FEC-10598:** add streamId to ad object ([#481](https://github.com/kaltura/kaltura-player-js/issues/481)) ([e70c741](https://github.com/kaltura/kaltura-player-js/commit/e70c741))
+* **FEC-11441:** Default kava details are reported with wrong (unknown) player version ([#478](https://github.com/kaltura/kaltura-player-js/issues/478)) ([d918029](https://github.com/kaltura/kaltura-player-js/commit/d918029))
+* **FEC-11475:** revert api in uiWrapper of Manager for backward compatibility ([#483](https://github.com/kaltura/kaltura-player-js/issues/483)) ([1f5d4a7](https://github.com/kaltura/kaltura-player-js/commit/1f5d4a7))
+
+
+### Features
+
+* update playkit-js-ui to [0.69.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.69.0) ([5e2c275](https://github.com/kaltura/kaltura-player-js/commit/5e2c275))
+* **FEC-11399:** allow ignoring server config ([#480](https://github.com/kaltura/kaltura-player-js/issues/480)) ([707d519](https://github.com/kaltura/kaltura-player-js/commit/707d519))
+* **FEC-11475:** create service manager that allows registration and accessing of services ([#477](https://github.com/kaltura/kaltura-player-js/issues/477)) ([437f7b6](https://github.com/kaltura/kaltura-player-js/commit/437f7b6))
+
+
+
+### [1.11.1](https://github.com/kaltura/kaltura-player-js/compare/v1.11.0...v1.11.1) (2021-07-27)
+
+
+
+## [1.11.0](https://github.com/kaltura/kaltura-player-js/compare/v1.10.3...v1.11.0) (2021-07-27)
+
+
+### Bug Fixes
+
+* update playkit-js-hls to [1.27.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.1) ([b11f3bc](https://github.com/kaltura/kaltura-player-js/commit/b11f3bc))
+* **FEC-11402:** preview does not work - fix y position ([#471](https://github.com/kaltura/kaltura-player-js/issues/471)) ([2d79e57](https://github.com/kaltura/kaltura-player-js/commit/2d79e57))
+* **FEC-11402:** preview doesn't work in video ratio different than 16:9 ([#466](https://github.com/kaltura/kaltura-player-js/issues/466)) ([26dc475](https://github.com/kaltura/kaltura-player-js/commit/26dc475))
+* **FEC-11431:** no preview thumbnails shown when casting on chromecast - regression ([#472](https://github.com/kaltura/kaltura-player-js/issues/472)) ([830f828](https://github.com/kaltura/kaltura-player-js/commit/830f828))
+* **FEC-11431:** refactor preview thumb height from real image sprite height ([#473](https://github.com/kaltura/kaltura-player-js/issues/473)) ([fe5ad62](https://github.com/kaltura/kaltura-player-js/commit/fe5ad62)), closes [#466](https://github.com/kaltura/kaltura-player-js/issues/466) [#471](https://github.com/kaltura/kaltura-player-js/issues/471) [#472](https://github.com/kaltura/kaltura-player-js/issues/472)
+
+
+### Features
+
+* update playkit-js to [0.73.0](https://github.com/kaltura/playkit-js/releases/tag/v0.73.0) ([290e191](https://github.com/kaltura/kaltura-player-js/commit/290e191))
+* update playkit-js-dash to [1.27.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.27.0) ([ed268af](https://github.com/kaltura/kaltura-player-js/commit/ed268af))
+* update playkit.js-ui to [0.68.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.68.0) ([ab1fb88](https://github.com/kaltura/kaltura-player-js/commit/ab1fb88))
+* **FEC-10791:** Ad-Layout for live streams  ([#459](https://github.com/kaltura/kaltura-player-js/issues/459)) ([ba693c1](https://github.com/kaltura/kaltura-player-js/commit/ba693c1))
+* **FEC-11423:** upgrade shaka to 3.0.13 ([#468](https://github.com/kaltura/kaltura-player-js/issues/468)) ([54da73d](https://github.com/kaltura/kaltura-player-js/commit/54da73d))
+* **FEC-11423:** upgrade shaka to 3.0.13 ([#470](https://github.com/kaltura/kaltura-player-js/issues/470)) ([0b6f853](https://github.com/kaltura/kaltura-player-js/commit/0b6f853))
+
+
+
+### [1.10.3](https://github.com/kaltura/kaltura-player-js/compare/v1.10.2...v1.10.3) (2021-07-15)
+
+
+### Bug Fixes
+
+* update playkit.js-ui to [0.67.3](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.67.3) ([cf9a840](https://github.com/kaltura/kaltura-player-js/commit/cf9a840))
+
+
+
+### [1.10.2](https://github.com/kaltura/kaltura-player-js/compare/v1.10.1...v1.10.2) (2021-07-08)
+
+
+### Bug Fixes
+
+* update playkit.js-ui to [0.67.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.67.1) ([7e1f329](https://github.com/kaltura/kaltura-player-js/commit/7e1f329))
+
+
+### Build System
+
+* **FEC-11389:** reduce builds from travis ([0e6eedb](https://github.com/kaltura/kaltura-player-js/commit/0e6eedb))
+
+
+
+### [1.10.1](https://github.com/kaltura/kaltura-player-js/compare/v1.10.0...v1.10.1) (2021-07-01)
+
+
+### Bug Fixes
+
+* update playkit.js-providers to [2.29.1](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.29.1) ([62f6822](https://github.com/kaltura/kaltura-player-js/commit/62f6822))
+
+
+
+## [1.10.0](https://github.com/kaltura/kaltura-player-js/compare/v1.7.5...v1.10.0) (2021-07-01)
+
+
+### Bug Fixes
+
+* **FEC-10994:** Invalid version reported by players ([#452](https://github.com/kaltura/kaltura-player-js/issues/452)) ([25fcd7d](https://github.com/kaltura/kaltura-player-js/commit/25fcd7d))
+* **FEC-11125:** expose selected source ([#461](https://github.com/kaltura/kaltura-player-js/issues/461)) ([79d7c0d](https://github.com/kaltura/kaltura-player-js/commit/79d7c0d))
+* **FEC-11374:** Live DVR starting to cast from beginning of the DVR instead of Live edge ([#463](https://github.com/kaltura/kaltura-player-js/issues/463)) ([70ffe79](https://github.com/kaltura/kaltura-player-js/commit/70ffe79))
+
+
+### Build System
+
+* fix CI/CD canary process ([d2c55d8](https://github.com/kaltura/kaltura-player-js/commit/d2c55d8))
+* resolve the correct patch for deployment ([#455](https://github.com/kaltura/kaltura-player-js/issues/455)) ([f15f16d](https://github.com/kaltura/kaltura-player-js/commit/f15f16d))
+* trigger jenkins with correct canary version ([8da55b0](https://github.com/kaltura/kaltura-player-js/commit/8da55b0))
+* **FEC-10700:** Improvement for CI/CD ([#389](https://github.com/kaltura/kaltura-player-js/issues/389)) ([8937aea](https://github.com/kaltura/kaltura-player-js/commit/8937aea))
+
+
+### Features
+
+* update playkit.js to [0.72.0](https://github.com/kaltura/playkit-js/releases/tag/v0.72.0) ([f71dfb2](https://github.com/kaltura/kaltura-player-js/commit/f71dfb2))
+* update playkit.js-dash to [1.26.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.26.0) ([318deb0](https://github.com/kaltura/kaltura-player-js/commit/318deb0))
+* update playkit.js-hls to [1.27.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.27.0) ([10314bb](https://github.com/kaltura/kaltura-player-js/commit/10314bb))
+* update playkit.js-ui to [0.67.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.67.0) ([539d0cd](https://github.com/kaltura/kaltura-player-js/commit/539d0cd))
+* **FEC-10785:** add support to remove ui element ([#460](https://github.com/kaltura/kaltura-player-js/issues/460)) ([fd2172c](https://github.com/kaltura/kaltura-player-js/commit/fd2172c))
+* **FEC-10817:** expose the current time of the video element in live streams ([#431](https://github.com/kaltura/kaltura-player-js/issues/431)) ([c62a54a](https://github.com/kaltura/kaltura-player-js/commit/c62a54a))
+* **FEC-10835:** expose share to plugin ([#447](https://github.com/kaltura/kaltura-player-js/issues/447)) ([45dd205](https://github.com/kaltura/kaltura-player-js/commit/45dd205))
+* **FEC-11337:** Upgrade hls.js to 1.0  ([#456](https://github.com/kaltura/kaltura-player-js/issues/456)) ([cdedeaa](https://github.com/kaltura/kaltura-player-js/commit/cdedeaa))
+
+
+
+## [1.9.0](https://github.com/kaltura/kaltura-player-js/compare/v1.7.5...v1.9.0) (2021-07-01)
+
+
+### Bug Fixes
+
+* **FEC-11125:** expose selected source ([#461](https://github.com/kaltura/kaltura-player-js/issues/461)) ([79d7c0d](https://github.com/kaltura/kaltura-player-js/commit/79d7c0d))
+
+
+### Build System
+
+* fix CI/CD canary process ([d2c55d8](https://github.com/kaltura/kaltura-player-js/commit/d2c55d8))
+* resolve the correct patch for deployment ([#455](https://github.com/kaltura/kaltura-player-js/issues/455)) ([f15f16d](https://github.com/kaltura/kaltura-player-js/commit/f15f16d))
+* trigger jenkins with correct canary version ([8da55b0](https://github.com/kaltura/kaltura-player-js/commit/8da55b0))
+* **FEC-10700:** Improvement for CI/CD ([#389](https://github.com/kaltura/kaltura-player-js/issues/389)) ([8937aea](https://github.com/kaltura/kaltura-player-js/commit/8937aea))
+
+
+### Features
+
+* **FEC-10785:** add support to remove ui element ([#460](https://github.com/kaltura/kaltura-player-js/issues/460)) ([fd2172c](https://github.com/kaltura/kaltura-player-js/commit/fd2172c))
+* **FEC-10817:** expose the current time of the video element in live streams ([#431](https://github.com/kaltura/kaltura-player-js/issues/431)) ([c62a54a](https://github.com/kaltura/kaltura-player-js/commit/c62a54a))
+* **FEC-10835:** expose share to plugin ([#447](https://github.com/kaltura/kaltura-player-js/issues/447)) ([45dd205](https://github.com/kaltura/kaltura-player-js/commit/45dd205))
+* **FEC-11337:** Upgrade hls.js to 1.0  ([#456](https://github.com/kaltura/kaltura-player-js/issues/456)) ([cdedeaa](https://github.com/kaltura/kaltura-player-js/commit/cdedeaa))
+
+
+
+### [1.7.5](https://github.com/kaltura/kaltura-player-js/compare/v1.7.3...v1.7.5) (2021-06-03)
+
+
+### Bug Fixes
+
+* **FEC-11304:** missing entryId on plugins ([#453](https://github.com/kaltura/kaltura-player-js/issues/453)) ([db567aa](https://github.com/kaltura/kaltura-player-js/commit/db567aa))
+
+
+
+### [1.7.3](https://github.com/kaltura/kaltura-player-js/compare/v1.7.2...v1.7.3) (2021-06-02)
+
+
+### Bug Fixes
+
+* update playkit.js to [0.71.0](https://github.com/kaltura/playkit-js/releases/tag/v0.71.0) ([b148b26](https://github.com/kaltura/kaltura-player-js/commit/b148b26))
+* update playkit.js-dash to [1.25.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.25.0) ([155d5f3](https://github.com/kaltura/kaltura-player-js/commit/155d5f3))
+* update playkit.js-hls to [1.26.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.26.0) ([8305089](https://github.com/kaltura/kaltura-player-js/commit/8305089))
+* update playkit.js-ui to [0.66.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.66.2) ([994ae63](https://github.com/kaltura/kaltura-player-js/commit/994ae63))
+* **FEC-10381:** sources config need to be passed via setMedia api ([#440](https://github.com/kaltura/kaltura-player-js/issues/440)) ([2e91c65](https://github.com/kaltura/kaltura-player-js/commit/2e91c65))
+* **FEC-11281:** youbora reporting buffering during playback ([#450](https://github.com/kaltura/kaltura-player-js/issues/450)) ([fcc7234](https://github.com/kaltura/kaltura-player-js/commit/fcc7234))
+
+
+
 ### [1.7.2](https://github.com/kaltura/kaltura-player-js/compare/v1.7.1...v1.7.2) (2021-05-11)
 
 

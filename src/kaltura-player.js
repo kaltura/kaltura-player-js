@@ -35,6 +35,8 @@ import {
 } from '@playkit-js/playkit-js';
 import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middleware';
 import {ThumbnailManager} from './common/thumbnail-manager';
+import {CuePointManager} from './common/cuepoint/cuepoint-manager';
+import {ServiceProvider} from './common/service-provider';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -52,13 +54,15 @@ class KalturaPlayer extends FakeEventTarget {
   _pluginsConfig: KPPluginsConfigObject = {};
   _reset: boolean = true;
   _firstPlay: boolean = true;
-  _sourceSelected: boolean = false;
+  _sourceSelected: ?PKMediaSourceObject = null;
   _pluginReadinessMiddleware: PluginReadinessMiddleware;
   _configEvaluator: ConfigEvaluator;
   _appPluginConfig: KPPluginsConfigObject = {};
   _viewabilityManager: ViewabilityManager;
   _playbackStart: boolean;
   _thumbnailManager: ?ThumbnailManager = null;
+  _cuepointManager: CuePointManager;
+  _serviceProvider: ServiceProvider;
 
   /**
    * Whether the player browser tab is active and in the scroll view
@@ -87,6 +91,8 @@ class KalturaPlayer extends FakeEventTarget {
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
     this._uiWrapper = new UIWrapper(this, Utils.Object.mergeDeep(options, {ui: {logger: {getLogger, LogLevel}}}));
+    this._serviceProvider = new ServiceProvider(this);
+    this._cuepointManager = new CuePointManager(this);
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: {
@@ -105,6 +111,7 @@ class KalturaPlayer extends FakeEventTarget {
     //configure sources after configure finished for all components - making sure all we'll set up correctly
     this._playlistManager.configure({items: (options.playlist && options.playlist.items) || []});
     this._localPlayer.setSources(sources || {});
+    this._remotePlayerManager = new RemotePlayerManager();
   }
 
   /**
@@ -124,38 +131,39 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     return new Promise((resolve, reject) => {
-      this._provider
-        .getMediaConfig(mediaInfo)
-        .then(
-          (providerMediaConfig: ProviderMediaConfigObject) => {
-            const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
-            if (mediaOptions) {
-              mediaConfig.sources = mediaConfig.sources || {};
-              mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
-            }
-            const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
-            mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
-            this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-            this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
-            this.setMedia(mediaConfig);
-            return mediaConfig;
-          },
-          e => {
-            const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
-            this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
-            reject(e);
+      this._provider.getMediaConfig(mediaInfo).then(
+        (providerMediaConfig: ProviderMediaConfigObject) => {
+          const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+          if (mediaOptions) {
+            mediaConfig.sources = mediaConfig.sources || {};
+            mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
           }
-        )
-        .then(mediaConfig => {
-          this._maybeSetEmbedConfig();
+          const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
+          mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
+          this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
+          this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
+          this.setMedia(mediaConfig);
           resolve(mediaConfig);
-        });
+        },
+        e => {
+          const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+          this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
+          reject(e);
+        }
+      );
     });
   }
 
+  /**
+   * sets a media.
+   * @param {KPMediaConfig} mediaConfig - The media config.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   */
   setMedia(mediaConfig: KPMediaConfig): void {
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
-    this.reset();
+    this.reset(true);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     //merge the current sources from player to keep the sources passed from constructor earlier
     const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
@@ -165,17 +173,28 @@ class KalturaPlayer extends FakeEventTarget {
     Object.keys(this._pluginsConfig).forEach(name => {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
-    addKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
+    this.configure({session: mediaConfig.session});
+    if (!hasYoutubeSource(sources)) {
+      this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
+    } else {
+      this._thumbnailManager = null;
+    }
+    this.updateKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, {...playerConfig, sources});
     const playback = maybeSetStreamPriority(this, sources);
     if (playback) {
       playerConfig.playback = playback;
     }
-    if (!hasYoutubeSource(sources)) {
-      this._thumbnailManager = new ThumbnailManager(this._localPlayer, this.config.ui, mediaConfig);
-    }
-    this._localPlayer.setSources(sources || {});
-    this.configure(playerConfig);
+    this.configure({...playerConfig, sources});
+  }
+
+  updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: Object) {
+    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.config?.session?.ks : '');
+  }
+
+  shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
+    // $FlowFixMe[prop-missing]
+    return !!(this.config.provider.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.isAnonymous === false);
   }
 
   /**
@@ -249,12 +268,35 @@ class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
+  /**
+   * returns the media drm info.
+   * @returns {PKDrmDataObject} - the drm info
+   * @instance
+   * @memberof KalturaPlayer
+   */
+  getDrmInfo(): ?PKDrmDataObject {
+    return this._localPlayer.getDrmInfo();
+  }
+
   getMediaConfig(): ?KPMediaConfig {
     const mediaConfig = {
       sources: this._localPlayer.sources,
       plugins: this._pluginsConfig
     };
     return Utils.Object.copyDeep(mediaConfig);
+  }
+
+  /**
+   * Config the player.
+   * @param {PKMetadataConfigObject} sourcesMetadata - The player sources metadata config.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * kalturaPlayer.setSourcesMetadata({epgId: '1234'});
+   */
+  setSourcesMetadata(sourcesMetadata: PKMetadataConfigObject): void {
+    this._localPlayer.setSourcesMetadata(sourcesMetadata);
   }
 
   /**
@@ -274,14 +316,16 @@ class KalturaPlayer extends FakeEventTarget {
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
     if (localPlayerConfig.sources) {
-      this._localPlayer.setSources(localPlayerConfig.sources || {});
+      const {sources} = localPlayerConfig;
       delete localPlayerConfig.sources;
+      this._localPlayer.configure(localPlayerConfig);
+      this._localPlayer.setSources(sources || {});
+    } else {
+      this._localPlayer.configure(localPlayerConfig);
     }
-    this._localPlayer.configure(localPlayerConfig);
     const uiConfig = config.ui;
     if (uiConfig) {
-      this._configEvaluator.evaluateUIConfig(uiConfig, this.config);
-      this._uiWrapper.setConfig(uiConfig);
+      this._uiWrapper.setConfig(configDictionary.ui);
     }
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
@@ -312,17 +356,20 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getVideoElement();
   }
 
-  reset(): void {
+  reset(isChangeMedia: boolean = false): void {
     if (!this._reset) {
       this._reset = true;
       this._firstPlay = true;
+      this._sourceSelected = null;
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
       this._uiWrapper.reset();
       this._resetProviderPluginsConfig();
       this._pluginManager.reset();
-      this._localPlayer.reset();
+      this._cuepointManager.reset();
+      this._localPlayer.reset(isChangeMedia);
+      this._thumbnailManager?.destroy();
     }
   }
 
@@ -333,11 +380,13 @@ class KalturaPlayer extends FakeEventTarget {
     this._firstPlay = true;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
+    this._cuepointManager.destroy();
     this._playlistManager.destroy();
     this._localPlayer.destroy();
     this._eventManager.destroy();
+    this._thumbnailManager?.destroy();
     this._viewabilityManager.destroy();
-    RemotePlayerManager.destroy();
+    this._remotePlayerManager.destroy();
     this._pluginsConfig = {};
     const targetContainer = document.getElementById(targetId);
     if (targetContainer && targetContainer.parentNode) {
@@ -379,6 +428,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   hideTextTrack(): void {
     this._localPlayer.hideTextTrack();
+  }
+
+  showTextTrack(): void {
+    this._localPlayer.showTextTrack();
   }
 
   enableAdaptiveBitrate(): void {
@@ -438,12 +491,25 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getLogLevel(name);
   }
 
-  startCasting(type?: string): Promise<*> {
-    return RemotePlayerManager.startCasting(type);
+  startCasting(type: string): Promise<*> {
+    this.setIsCastInitiator(type, true);
+    return new Promise((resolve, reject) => {
+      this.remotePlayerManager
+        .startCasting(type)
+        .then(resolve)
+        .catch(() => {
+          this.setIsCastInitiator(type, false);
+          reject();
+        });
+    });
+  }
+
+  setIsCastInitiator(type: string, isCastInitiator: boolean) {
+    this._remotePlayerManager.setIsCastInitiator(type, isCastInitiator);
   }
 
   isCastAvailable(type?: string): boolean {
-    return RemotePlayerManager.isCastAvailable(type);
+    return this._remotePlayerManager.isCastAvailable(type);
   }
 
   getCastSession(): ?RemoteSession {
@@ -524,6 +590,38 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.duration;
   }
 
+  get liveDuration(): number {
+    return this._localPlayer.liveDuration;
+  }
+
+  /**
+   * In VOD playback this setter is like the regular `currentTime` setter.
+   * In live playback this setter normalizes the seek point to be relative to the start of the DVR window.
+   * This setter is useful to display a seekbar presents the available seek range only.
+   * @param {Number} to - The number to set in seconds (from 0 to the normalized duration).
+   */
+  set normalizedCurrentTime(to: number): void {
+    this.isLive() ? (this.currentTime = to + this.getStartTimeOfDvrWindow()) : (this.currentTime = to);
+  }
+
+  /**
+   * In VOD playback this getter is like the regular `currentTime` getter.
+   * In live playback this getter normalizes the current time to be relative to the start of the DVR window.
+   * This getter is useful to display a seekbar presents the available seek range only.
+   */
+  get normalizedCurrentTime(): number {
+    return this.isLive() ? this.currentTime - this.getStartTimeOfDvrWindow() : this.currentTime;
+  }
+
+  /**
+   * In VOD playback this getter is like the regular `duration` getter.
+   * In live playback this getter normalizes the duration to be relative to the start of the DVR window.
+   * This getter is useful to display a seekbar presents the available seek range only.
+   */
+  get normalizedDuration(): number {
+    return this.isLive() ? this.liveDuration - this.getStartTimeOfDvrWindow() : this.duration;
+  }
+
   set volume(vol: number): void {
     this._localPlayer.volume = vol;
   }
@@ -558,6 +656,14 @@ class KalturaPlayer extends FakeEventTarget {
 
   get src(): string {
     return this._localPlayer.src;
+  }
+
+  get videoHeight(): ?number {
+    return this._localPlayer.videoHeight;
+  }
+
+  get videoWidth(): ?number {
+    return this._localPlayer.videoWidth;
   }
 
   set dimensions(dimensions?: PKPlayerDimensions) {
@@ -602,6 +708,10 @@ class KalturaPlayer extends FakeEventTarget {
 
   get env(): Object {
     return this._localPlayer.env;
+  }
+
+  get selectedSource(): ?PKMediaSourceObject {
+    return this._sourceSelected;
   }
 
   get sources(): PKSourcesConfigObject {
@@ -710,7 +820,7 @@ class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () => this._onPlayerReset());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
     this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
-    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, () => (this._sourceSelected = true));
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, (event: FakeEvent) => (this._sourceSelected = event.payload.selectedSource[0]));
     this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
     this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => {
       this._playbackStart = true;
@@ -733,6 +843,11 @@ class KalturaPlayer extends FakeEventTarget {
         }
       });
     }
+    this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
+      if (event.payload.severity === Error.Severity.CRITICAL) {
+        this._reset = false;
+      }
+    });
   }
 
   _onChangeSourceEnded(): void {
@@ -856,19 +971,6 @@ class KalturaPlayer extends FakeEventTarget {
     }
   }
 
-  /**
-   * set the share config
-   * @returns {void}
-   * @private
-   */
-  _maybeSetEmbedConfig(): void {
-    const ui = this.config.ui;
-    if (ui && ui.components && ui.components.share) {
-      this._configEvaluator.evaluateUIConfig(ui, this.config);
-      this._uiWrapper.setConfig(ui);
-    }
-  }
-
   attachMediaSource(): void {
     this._localPlayer.attachMediaSource();
   }
@@ -944,6 +1046,63 @@ class KalturaPlayer extends FakeEventTarget {
       }
       this._autoPaused = false;
     }
+  }
+  /**
+   * Gets a registered service of that name
+   * @param {string} name - the service name
+   * @returns {Object} - the service object
+   */
+  getService(name: string): Object | void {
+    return this._serviceProvider.get(name);
+  }
+
+  /**
+   * Checks if a service of that name has been registered
+   * @param {string} name - the service name
+   * @returns {boolean} - if the service exist
+   */
+  hasService(name: string): boolean {
+    return this._serviceProvider.has(name);
+  }
+
+  /**
+   * Registers a service to be used across the player
+   * @param {string} name - the service name
+   * @param {Object} service - the service object
+   * @returns {void}
+   */
+  registerService(name: string, service: Object): void {
+    this._serviceProvider.register(name, service);
+  }
+
+  get cuePointManager(): CuePointManager {
+    return this._cuepointManager;
+  }
+
+  /**
+   * Add text track
+   * @function addTextTrack
+   * @param {string} kind - Specifies the kind of text track.
+   * @param {?string} label - A string specifying the label for the text track.
+   * @returns {?TextTrack} - A TextTrack Object, which represents the new text track.
+   * @public
+   */
+  addTextTrack(kind: string, label?: string): ?TextTrack {
+    return this._localPlayer.addTextTrack(kind, label);
+  }
+
+  /**
+   * get the native text tracks
+   * @function getNativeTextTracks
+   * @returns {Array<TextTrack>} - The native TextTracks array.
+   * @public
+   */
+  getNativeTextTracks(): Array<TextTrack> {
+    return this._localPlayer.getNativeTextTracks();
+  }
+
+  get remotePlayerManager() {
+    return this._remotePlayerManager;
   }
 }
 

@@ -79,7 +79,10 @@ describe('addKalturaParams', function () {
   });
 
   it('should add session id, referrer and client tag for PLAYMANIFEST source and session id, referrer, client tag and uiconfid to udrm license', function () {
-    let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.kaltura.com?custom_data=someData&signature=Sig'}]};
+    let source1 = {
+      url: 'a/b/c/PLAYMANIFEST/source',
+      drmData: [{licenseUrl: 'udrm.kaltura.com?custom_data=someData&signature=Sig'}]
+    };
     player.config = {provider: {uiConfId: 123}, sources: {progressive: [source1]}};
     addKalturaParams(player, player.config);
     source1.url.should.be.equal(
@@ -103,7 +106,10 @@ describe('addKalturaParams', function () {
   });
 
   it('should not add session id, referrer, client tag and uiconfid to  other drm system', function () {
-    let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.other.com?custom_data=someData&signature=Sig'}]};
+    let source1 = {
+      url: 'a/b/c/PLAYMANIFEST/source',
+      drmData: [{licenseUrl: 'udrm.other.com?custom_data=someData&signature=Sig'}]
+    };
     player.config = {provider: {uiConfId: 123}, sources: {progressive: [source1]}};
     addKalturaParams(player, player.config);
 
@@ -111,7 +117,10 @@ describe('addKalturaParams', function () {
   });
 
   it('should not add session id, referrer, client tag and uiconfid to  other drm system', function () {
-    let source1 = {url: 'a/b/c/PLAYMANIFEST/source', drmData: [{licenseUrl: 'udrm.kaltura.com?custommm_data=someData&signature=Sig'}]};
+    let source1 = {
+      url: 'a/b/c/PLAYMANIFEST/source',
+      drmData: [{licenseUrl: 'udrm.kaltura.com?custommm_data=someData&signature=Sig'}]
+    };
     player.config = {provider: {uiConfId: 123}, sources: {progressive: [source1]}};
     addKalturaParams(player, player.config);
 
@@ -208,15 +217,16 @@ describe('addUIConfId', function () {
 describe('addClientTag', function () {
   it('should add client tag as first param', function () {
     let source = {url: 'a/b/c/playmanifest/source'};
+    let productVersion = '7.37';
     player.config = {session: {}};
-    source.url = addClientTag(source.url, player);
-    source.url.should.be.equal('a/b/c/playmanifest/source?clientTag=html5:v' + __VERSION__);
+    source.url = addClientTag(source.url, productVersion);
+    source.url.should.be.equal('a/b/c/playmanifest/source?clientTag=html5:v' + productVersion);
   });
 
   it('should add client tag as second param', function () {
     let source = {url: 'a/b/c/playmanifest/source?a'};
     player.config = {session: {}};
-    source.url = addClientTag(source.url, player);
+    source.url = addClientTag(source.url);
     source.url.should.be.equal('a/b/c/playmanifest/source?a&clientTag=html5:v' + __VERSION__);
   });
 });

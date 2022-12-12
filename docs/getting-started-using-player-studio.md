@@ -11,10 +11,10 @@ To create a new Kaltura Player using the TV Platform Player Studio, you'll need 
 
 ## Creating a New Kaltura Player <a name="create"></a>
 
-1.  Open the [KMC](https://kmc.kaltura.com/index.php/kmc/kmc4#studio%7Cuniversal_studio) and select the **Studio** tab.
+1.  Open the [KMC](https://kmc.kaltura.com/index.php/kmcng/login) and select the **Studio** tab.
     ![kmc](./images/kmc.png)
 
-2.  Next, select **TV Platform Player Studio**.
+2.  Next, select **TV Platform Studio**.
     ![studio](./images/studio.png)
     <br>This displays a list of available players, including the players you've already created.
 
@@ -32,14 +32,14 @@ That's it - you've created a new Kaltura Player.
 1.  To generate an embed code, go to the **Content** tab, where you can manage your loaded entries, playlists, etc.
     ![content tab](./images/content-tab.png)
 
-2.  Select the entry you wish to embed, open the _Select Action_ dropdown and select **Preview & Embed**.
-    ![content preview & embed](./images/content-preview-and-embed.png)
+2.  Select the entry you wish to embed, click on the _3 dots_ button and select **Share & Embed**.
+    ![content preview & embed](./images/content-share-and-embed.png)
     <br>Here you can choose the player you want to use in the embed code as well as the embed type - Auto, Dynamic or iframe. See [Embed Code Types](./embed-types.md) for more information.<br>
 
 3.  From the player list, select _My first Kaltura Player_, which is the player you just created.
-4.  Click **Show Advanced Options > Dynamic Embed**.
+4.  Expand **Advanced Settings** and choose **Dynamic Embed** from the **Embed Type** dropdown list.
 5.  Click **Copy** to copy the embed code to the clipboard.
-    ![preview & embed](images/preview-and-embed-dynamic-copy.png)
+    ![preview & embed](images/share-and-embed-dynamic-copy.png)
 
 ## Embedding the Kaltura Player into Your Website <a name="embed"></a>
 

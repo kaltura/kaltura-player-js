@@ -2,6 +2,7 @@ import {addKalturaPoster} from '../../../src/ovp/poster';
 import * as TestUtils from '../utils/test-utils';
 import {setup} from '../../../src/setup';
 import {Provider} from 'playkit-js-providers';
+import {Images} from '../mock-data/images';
 
 const targetId = 'player-placeholder_ovp/poster.spec';
 
@@ -11,6 +12,7 @@ describe('addKalturaPoster', function () {
     const playerSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640');
+    mediaSources.poster.should.equal(playerSources.poster);
   });
 
   it('should not append width and height to non kaltura poster', function () {
@@ -18,6 +20,7 @@ describe('addKalturaPoster', function () {
     const playerSources = {poster: 'https//my/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('https//my/kaltura/poster');
+    mediaSources.poster.should.equal(playerSources.poster);
   });
 
   it('should not append width and height to configured kaltura poster', function () {
@@ -25,16 +28,38 @@ describe('addKalturaPoster', function () {
     const playerSources = {poster: 'https//my/non/kaltura/poster'};
     addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
     playerSources.poster.should.equal('https//my/non/kaltura/poster');
+    mediaSources.poster.should.equal(playerSources.poster);
   });
 
-  describe('Poster Integration', function () {
+  it('should change poster of mediaSources to string', function () {
+    const mediaSources = {
+      poster: [
+        {url: 'https//my/kaltura/poster', width: 0, height: 0},
+        {url: 'https//my/kaltura/poster', width: 0, height: 0}
+      ]
+    };
+    const playerSources = {poster: 'https//my/kaltura/poster'};
+    addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360});
+    mediaSources.poster.should.equal(playerSources.poster);
+  });
+
+  it('should append ks to kaltura poster', function () {
+    const mediaSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
+    const playerSources = {poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
+    const ks = '123';
+    addKalturaPoster(playerSources, mediaSources, {width: 640, height: 360}, ks);
+    playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640/ks/123');
+    mediaSources.poster.should.equal(playerSources.poster);
+  });
+
+  describe.skip('Poster Integration', function () {
     let config, kalturaPlayer, sandbox, provider;
-    const myCustomPosterUrl = 'https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg';
+    const myCustomPosterUrl = Images.POSTER;
     const entryId = '0_wifqaipd';
     const alterEntryId = '0_4ktof5po';
     const partnerId = 1091;
     const env = {
-      cdnUrl: 'http://qa-apache-php7.dev.kaltura.com/',
+      cdnUrl: 'http://qa-apache-php7.dev.kaltura.com',
       serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
     };
 

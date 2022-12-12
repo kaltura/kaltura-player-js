@@ -48,6 +48,12 @@ const defaultConfig: dataStoreType = {
   },
   vr: {
     rootElement: '{{domRootElementId}}'
+  },
+  share: {
+    partnerId: '{{partnerId}}',
+    uiConfId: '{{uiConfId}}',
+    entryId: '{{entryId}}',
+    embedBaseUrl: '{{embedBaseUrl}}'
   }
 };
 
@@ -87,7 +93,8 @@ const removeUndefineds = (obj: Object = {}): Object =>
     return product;
   }, {});
 
-class PluginConfigStore {
+class BasePluginConfigStore {
+  _basePluginsConfig: dataStoreType;
   _config: dataStoreType;
 
   /**
@@ -95,7 +102,7 @@ class PluginConfigStore {
    * @constructor
    */
   constructor() {
-    this._config = Utils.Object.copyDeep(defaultConfig);
+    this._basePluginsConfig = Utils.Object.copyDeep(defaultConfig);
   }
 
   /**
@@ -126,4 +133,4 @@ class PluginConfigStore {
   }
 }
 
-export {PluginConfigStore, templateRegex};
+export {BasePluginConfigStore, templateRegex};

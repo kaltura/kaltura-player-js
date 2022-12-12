@@ -15,8 +15,6 @@ import {
 } from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
 import StorageManager from '../storage/storage-manager';
-import {RemotePlayerManager} from '../cast/remote-player-manager';
-import {RemoteControl} from '../cast/remote-control';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
 import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewability-manager';
@@ -24,6 +22,7 @@ import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewabili
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
+const KALTURA_PLAYER_START_TIME_QS: string = 'kalturaStartTime';
 const KAVA_DEFAULT_PARTNER = 2504201;
 const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
@@ -40,7 +39,6 @@ function validateConfig(options: PartialKPOptionsObject): void {
     throw new Error(ValidationErrorType.INITIAL_CONFIG_REQUIRED);
   }
   validateTargetId(options.targetId);
-  validateProviderConfig(options.provider);
 }
 
 /**
@@ -63,20 +61,36 @@ function validateTargetId(targetId: string): void {
 }
 
 /**
+ * @param {string} url - url
+ * @param {string} productVersion - product version
+ * @return {string} - the url with the product version appended in the query params
+ * @private
+ */
+function addProductVersion(url: string, productVersion: ?string): string {
+  if (productVersion) {
+    url += `&clientVer=${productVersion}`;
+  }
+  return url;
+}
+
+/**
  * Validate the initial user input for the provider options.
  * @private
- * @param {ProviderOptionsObject} providerOptions - provider options.
+ * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function validateProviderConfig(providerOptions: ProviderOptionsObject): void {
+function validateProviderConfig(options: KPOptionsObject): void {
+  const {provider: providerOptions}: {provider: ProviderOptionsObject} = options;
+  const productVersion: string = getServerUIConf()?.productVersion;
   if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
     const source = {
       url: KAVA_DEFAULT_IMPRESSION,
       mimetype: ''
     };
+    source.url = addProductVersion(source.url, productVersion);
     source.url = addReferrer(source.url);
-    source.url = addClientTag(source.url);
+    source.url = addClientTag(source.url, productVersion);
     source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
@@ -133,7 +147,7 @@ function applyStorageSupport(player: KalturaPlayer): void {
  */
 function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer): void {
   if (defaultOptions.cast) {
-    RemotePlayerManager.load(defaultOptions.cast, new RemoteControl(player));
+    player.remotePlayerManager.load(defaultOptions.cast, player);
   }
 }
 
@@ -144,7 +158,7 @@ function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer
  * @returns {void}
  */
 function setStorageTextStyle(player: KalturaPlayer): void {
-  if (StorageManager.isLocalStorageAvailable()) {
+  if (!player.config.disableUserCache && StorageManager.isLocalStorageAvailable()) {
     const textStyleObj = StorageManager.getPlayerTextStyle();
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
@@ -181,13 +195,23 @@ function isDebugMode(): boolean {
   let isDebugMode = false;
   if (window.DEBUG_KALTURA_PLAYER === true) {
     isDebugMode = true;
-  } else if (window.URLSearchParams) {
-    const urlParams = new URLSearchParams(window.location.search);
-    isDebugMode = urlParams.has(KALTURA_PLAYER_DEBUG_QS);
   } else {
-    isDebugMode = !!getUrlParameter(KALTURA_PLAYER_DEBUG_QS);
+    isDebugMode = getUrlParameter(KALTURA_PLAYER_DEBUG_QS) === '';
   }
   return isDebugMode;
+}
+
+/**
+ * get the parameter for start time
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeApplyStartTimeQueryParam(options: KPOptionsObject): void {
+  let startTime = parseFloat(getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
+  if (!isNaN(startTime)) {
+    Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
+  }
 }
 
 /**
@@ -230,39 +254,33 @@ function setLogOptions(options: KPOptionsObject): void {
  * gets the url query string parameter
  * @private
  * @param {string} name - name of query string param
- * @returns {string} - value of the query string param
+ * @returns {?string} - value of the query string param or null if doesn't exist
  */
-function getUrlParameter(name: string) {
-  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-  const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  const results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+function getUrlParameter(name: string): ?string {
+  const getUrlParamPolyfill = (name: string) => {
+    name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    const isExist = location.search.indexOf(name) > -1;
+    return results === null ? (isExist ? '' : null) : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+  let value;
+  if (window.URLSearchParams) {
+    const urlParams = new URLSearchParams(window.location.search);
+    value = urlParams.get(name);
+  } else {
+    value = getUrlParamPolyfill(name);
+  }
+  return value;
 }
 
 /**
- * Checks if the server UIConf exist
+ * get the server UIConf
  * @private
- * @param {number} uiConfId - The server UIConf
- * @returns {boolean} - server UIConf exist
- */
-function serverUIConfExist(uiConfId: ?number): boolean {
-  const UIConf = Utils.Object.getPropertyPath(window, '__kalturaplayerdata.UIConf');
-  const hasUiConfId = uiConfId !== null && uiConfId !== undefined;
-  return hasUiConfId && ((UIConf !== undefined && UIConf[uiConfId] !== undefined) || false);
-}
-
-/**
- * Extracts the server UIConf
- * @private
- * @param {number} uiConfId - The server UIConf
  * @returns {Object} - The server UIConf
  */
-function extractServerUIConf(uiConfId: number): Object {
-  let config = {};
-  if (serverUIConfExist(uiConfId)) {
-    config = window.__kalturaplayerdata.UIConf[uiConfId];
-  }
-  return config;
+function getServerUIConf(): Object {
+  return window.__kalturaplayerdata || {};
 }
 
 /**
@@ -291,10 +309,13 @@ function getDefaultOptions(options: PartialKPOptionsObject): KPOptionsObject {
     }
   };
   Utils.Object.mergeDeep(defaultOptions, options);
-  if (defaultOptions.provider.uiConfId) {
-    const uiConfOptions = supportLegacyOptions(extractServerUIConf(defaultOptions.provider.uiConfId));
-    defaultOptions = Utils.Object.mergeDeep({}, uiConfOptions, defaultOptions);
+
+  if (!options.provider.ignoreServerConfig) {
+    const serverUIConf = Utils.Object.copyDeep(getServerUIConf());
+    delete serverUIConf.productVersion;
+    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(serverUIConf), defaultOptions);
   }
+
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
   setDefaultAnalyticsPlugin(defaultOptions);
@@ -336,7 +357,7 @@ function checkNativeHlsSupport(options: KPOptionsObject): void {
  * @returns {void}
  */
 function checkNativeTextTracksSupport(options: KPOptionsObject): void {
-  if ((Env.isMacOS && Env.isSafari) || Env.isIOS || (options.text && options.text.useShakaTextTrackDisplay)) {
+  if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
     const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -385,7 +406,7 @@ function _configureLGSDK2HlsLiveConfig(options: KPOptionsObject): void {
 }
 
 /**
- * Sets config option for LG TV
+ * Sets config option for smart TV
  * @private
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
@@ -406,6 +427,16 @@ function configureSmartTVDefaultOptions(options: KPOptionsObject): void {
       if (typeof delayUntilSourceSelected !== 'boolean') {
         options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
       }
+    }
+    if (options.plugins && options.plugins.youbora) {
+      const playheadMonitorInterval = Utils.Object.getPropertyPath(options, 'plugins.youbora.playheadMonitorInterval');
+      if (typeof playheadMonitorInterval !== 'number') {
+        options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
+      }
+    }
+    const lowLatencyMode = Utils.Object.getPropertyPath(options, 'streaming.lowLatencyMode');
+    if (typeof lowLatencyMode !== 'boolean') {
+      options = Utils.Object.createPropertyPath(options, 'streaming.lowLatencyMode', false);
     }
   }
 }
@@ -698,11 +729,14 @@ export {
   setStorageTextStyle,
   attachToFirstClick,
   validateConfig,
+  validateProviderConfig,
   setLogOptions,
+  maybeApplyStartTimeQueryParam,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
   maybeSetStreamPriority,
   hasYoutubeSource,
-  mergeProviderPluginsConfig
+  mergeProviderPluginsConfig,
+  getServerUIConf
 };

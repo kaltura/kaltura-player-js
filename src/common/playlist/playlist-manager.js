@@ -4,7 +4,6 @@ import {FakeEvent, Utils, EventManager, getLogger} from '@playkit-js/playkit-js'
 import {PlaylistEventType} from './playlist-event-type';
 import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
-import {addKalturaPoster} from 'poster';
 import {mergeProviderPluginsConfig} from '../utils/setup-helpers';
 
 /**
@@ -238,7 +237,7 @@ class PlaylistManager {
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
         );
         if (Array.isArray(itemData.sources.poster)) {
-          addKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+          this._player.updateKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
         }
         return {
           sources: itemData.sources,
@@ -277,7 +276,6 @@ class PlaylistManager {
     this._playlist.activeItemIndex = index;
     if (activeItem.isPlayable()) {
       this._resetProviderPluginsConfig();
-      this._player.reset();
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
       const providerPlugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
@@ -288,7 +286,6 @@ class PlaylistManager {
     } else {
       if (this._mediaInfoList[index]) {
         this._resetProviderPluginsConfig();
-        this._player.reset();
         const media = ({sources: activeItem.sources}: any);
         this._player.setMedia(media);
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {

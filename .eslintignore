@@ -1,4 +1,6 @@
 /flow-typed/**/*.js
+/ts-typed/**/*.d.ts
+types.d.ts
 /coverage
 /dist
 karma.conf.js
