@@ -13,7 +13,7 @@ declare module 'global' {
           useSelector: (...args: any) => any;
         };
         reducers: Record<string, {actions: Record<string, Function>, types:  Record<string, string>}>;
-        createPortal: (children: any, domElement: HTMLElement) => void;
+        createPortal: (children: any, domElement: HTMLElement) => preact.VNode<any>;
         utils: {
           getLogger: (name: string) => KalturaPlayerTypes.Logger;
           bindActions(actions: Record<string, Function>): (...args: any) => void;

@@ -12,6 +12,28 @@
 <script>
   var config = {
     targetId: 'player-placeholder',
+    "playback": {
+		"options": {
+			"html5": {
+				"hls": {},
+				"dash": {}
+			}
+		},
+		"streamPriority": [
+        {
+          "engine": "html5",
+          "format": "hls"
+        },
+        {
+          "engine": "html5",
+          "format": "dash"
+        },
+        {
+          "engine": "html5",
+          "format": "progressive"
+        }
+		  ]
+	  },
     provider: {
       partnerId: 1091,
       env: {
