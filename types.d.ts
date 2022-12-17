@@ -177,6 +177,28 @@ declare module PlaykitUI {
     ACTIVE = 1
   }
 
+  export const utils: {
+    KeyMap: {
+      TAB: 9;
+      ENTER: 13;
+      ESC: 27;
+      SPACE: 32;
+      END: 35;
+      HOME: 36;
+      LEFT: 37;
+      UP: 38;
+      RIGHT: 39;
+      DOWN: 40;
+      P: 80;
+      C: 67;
+      F: 70;
+      M: 77;
+      SEMI_COLON: 186;
+      COMMA: 188;
+      PERIOD: 190;
+    };
+  };
+
   export const Components: {
     Tooltip: preactLib.ComponentClass<{label: string}>;
     Icon: preactLib.ComponentClass<{
