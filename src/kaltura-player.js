@@ -513,7 +513,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Enter picture in picture.
+   * Enter picture in picture mode.
    * @returns {void}
    * @instance
    * @memberof KalturaPlayer
