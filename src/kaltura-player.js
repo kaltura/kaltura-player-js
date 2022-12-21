@@ -487,7 +487,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Enter full screen.
+   * Enter full screen mode.
    * @param {string} fullScreenElementId - fullScreenElementId is optional will use targetId if not provided
    * @returns {void}
    * @instance
