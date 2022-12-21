@@ -411,7 +411,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Is live media contains DVR window.
+   * Does the current media contain a DVR window. 
    * @returns {boolean} - boolean if isDvr
    * @instance
    * @memberof KalturaPlayer
