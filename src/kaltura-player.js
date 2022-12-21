@@ -501,7 +501,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Exit full screen.
+   * Exit full screen mode.
    * @returns {void}
    * @instance
    * @memberof KalturaPlayer
