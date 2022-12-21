@@ -395,7 +395,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Is live media.
+   * Is the current media a live media.
    * @returns {boolean} - boolean if isLive
    * @instance
    * @memberof KalturaPlayer
