@@ -2610,7 +2610,7 @@ Returns **void**
 
 ## isLive
 
-Is live media.
+Is the current media a live media.
 
 ### Examples
 
@@ -2622,7 +2622,7 @@ Returns **[boolean][452]** boolean if isLive
 
 ## isDvr
 
-Is live media contains DVR window.
+Does the current media contain a DVR window.
 
 ### Examples
 
@@ -2634,7 +2634,7 @@ Returns **[boolean][452]** boolean if isDvr
 
 ## isFullscreen
 
-Is full screen.
+Is in full screen mode.
 
 ### Examples
 
@@ -2646,7 +2646,7 @@ Returns **[boolean][452]** boolean if isFullscreen
 
 ## enterFullscreen
 
-Enter full screen.
+Enter full screen mode.
 
 ### Parameters
 
@@ -2662,7 +2662,7 @@ Returns **void**
 
 ## exitFullscreen
 
-Exit full screen.
+Exit full screen mode.
 
 ### Examples
 
@@ -2674,7 +2674,7 @@ Returns **void**
 
 ## enterPictureInPicture
 
-Enter picture in picture.
+Enter picture in picture mode.
 
 ### Examples
 
@@ -2698,7 +2698,7 @@ Returns **void**
 
 ## isInPictureInPicture
 
-Is in picture in picture.
+Is in picture in picture mode.
 
 ### Examples
 
@@ -2710,7 +2710,7 @@ Returns **[boolean][452]** boolean if isInPictureInPicture
 
 ## isPictureInPictureSupported
 
-Is in picture in picture supported.
+Is in picture in picture mode supported.
 
 ### Examples
 
