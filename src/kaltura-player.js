@@ -467,7 +467,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Is full screen.
+   * Is in full screen mode.
    * @returns {boolean} - boolean if isFullscreen
    * @instance
    * @memberof KalturaPlayer
