@@ -537,7 +537,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Is in picture in picture.
+   * Is in picture in picture mode.
    * @returns {boolean} - boolean if isInPictureInPicture
    * @instance
    * @memberof KalturaPlayer
