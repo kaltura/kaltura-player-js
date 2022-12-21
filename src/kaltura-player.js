@@ -394,6 +394,14 @@ class KalturaPlayer extends FakeEventTarget {
     }
   }
 
+  /**
+   * Is the current media a live media.
+   * @returns {boolean} - boolean if isLive
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.isLive();
+   */
   isLive(): boolean {
     return this._localPlayer.isLive();
   }
@@ -402,6 +410,14 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.isOnLiveEdge();
   }
 
+  /**
+   * Does the current media contain a DVR window.
+   * @returns {boolean} - boolean if isDvr
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.isDvr();
+   */
   isDvr(): boolean {
     return this._localPlayer.isDvr();
   }
@@ -450,6 +466,14 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.textDisplaySetting;
   }
 
+  /**
+   * Is in full screen mode.
+   * @returns {boolean} - boolean if isFullscreen
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.isFullscreen();
+   */
   isFullscreen(): boolean {
     return this._localPlayer.isFullscreen();
   }
@@ -462,27 +486,76 @@ class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.notifyExitFullscreen();
   }
 
+  /**
+   * Enter full screen mode.
+   * @param {string} fullScreenElementId - fullScreenElementId is optional will use targetId if not provided
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.enterFullscreen();
+   */
   enterFullscreen(fullScreenElementId: ?string): void {
     const elementId = fullScreenElementId ? fullScreenElementId : this.config.ui.targetId;
     this._localPlayer.enterFullscreen(elementId);
   }
 
+  /**
+   * Exit full screen mode.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.exitFullscreen();
+   */
   exitFullscreen(): void {
     this._localPlayer.exitFullscreen();
   }
 
+  /**
+   * Enter picture in picture mode.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.enterPictureInPicture();
+   */
   enterPictureInPicture(): void {
     this._localPlayer.enterPictureInPicture();
   }
 
+  /**
+   * Exit picture in picture mode.
+   * @returns {void}
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.exitPictureInPicture();
+   */
   exitPictureInPicture(): void {
     this._localPlayer.exitPictureInPicture();
   }
 
+  /**
+   * Is in picture in picture mode.
+   * @returns {boolean} - boolean if isInPictureInPicture
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.isInPictureInPicture();
+   */
   isInPictureInPicture(): boolean {
     return this._localPlayer.isInPictureInPicture();
   }
 
+  /**
+   * Is in picture in picture mode supported.
+   * @returns {boolean} - boolean if isPictureInPictureSupported
+   * @instance
+   * @memberof KalturaPlayer
+   * @example
+   * KalturaPlayer.isPictureInPictureSupported();
+   */
   isPictureInPictureSupported(): boolean {
     return this._localPlayer.isPictureInPictureSupported();
   }
