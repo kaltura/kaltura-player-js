@@ -525,7 +525,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * Exit picture in picture.
+   * Exit picture in picture mode.
    * @returns {void}
    * @instance
    * @memberof KalturaPlayer
