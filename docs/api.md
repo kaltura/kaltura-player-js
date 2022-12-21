@@ -2686,7 +2686,7 @@ Returns **void**
 
 ## exitPictureInPicture
 
-Exit picture in picture.
+Exit picture in picture mode.
 
 ### Examples
 
