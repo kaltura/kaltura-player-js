@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.2-static-switch-new-shaka.0](https://github.com/kaltura/kaltura-player-js/compare/v3.8.1...v3.8.2-static-switch-new-shaka.0) (2022-12-26)
+
+
+### Bug Fixes
+
+* **FEC-12779:** upgrade shaka v4.3.0 ([#594](https://github.com/kaltura/kaltura-player-js/issues/594)) ([3f42b6c](https://github.com/kaltura/kaltura-player-js/commit/3f42b6c))
+* **FEC-12780:** upgrade hls.js v1.2.8 ([#595](https://github.com/kaltura/kaltura-player-js/issues/595)) ([96d40a2](https://github.com/kaltura/kaltura-player-js/commit/96d40a2))
+
+
+
 ### [3.8.1](https://github.com/kaltura/kaltura-player-js/compare/v3.8.0...v3.8.1) (2022-12-07)
 
 
