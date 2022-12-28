@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.0](https://github.com/kaltura/kaltura-player-js/compare/v3.8.1...v3.9.0) (2022-12-28)
+
+
+### Bug Fixes
+
+* update playkit-js to [0.80.10](https://github.com/kaltura/playkit-js/releases/tag/v0.80.10) ([2e258ae](https://github.com/kaltura/kaltura-player-js/commit/2e258ae))
+* update playkit-js-dash to [1.31.4](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.31.4) ([81073ed](https://github.com/kaltura/kaltura-player-js/commit/81073ed))
+* update playkit-js-hls to [1.31.2](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.31.2) ([a87704c](https://github.com/kaltura/kaltura-player-js/commit/a87704c))
+* **FEC-12779:** upgrade shaka v4.3.0 ([#594](https://github.com/kaltura/kaltura-player-js/issues/594)) ([3f42b6c](https://github.com/kaltura/kaltura-player-js/commit/3f42b6c))
+* **FEC-12780:** upgrade hls.js v1.2.8 ([#595](https://github.com/kaltura/kaltura-player-js/issues/595)) ([96d40a2](https://github.com/kaltura/kaltura-player-js/commit/96d40a2))
+
+
+### Features
+
+* update playkit-js-ui to [0.73.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.73.0) ([7cd04a5](https://github.com/kaltura/kaltura-player-js/commit/7cd04a5))
+
+
+
 ### [3.8.1](https://github.com/kaltura/kaltura-player-js/compare/v3.8.0...v3.8.1) (2022-12-07)
 
 
