@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.2-static-switch-new-shaka.2](https://github.com/kaltura/kaltura-player-js/compare/v3.8.2-static-switch-new-shaka.1...v3.8.2-static-switch-new-shaka.2) (2023-01-01)
+
+
+
 ### [3.8.2-static-switch-new-shaka.1](https://github.com/kaltura/kaltura-player-js/compare/v3.8.2-static-switch-new-shaka.0...v3.8.2-static-switch-new-shaka.1) (2023-01-01)
 
 
