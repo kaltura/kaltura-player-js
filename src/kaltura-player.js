@@ -1,7 +1,13 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {hasYoutubeSource, maybeSetStreamPriority, mergeProviderPluginsConfig, supportLegacyOptions} from './common/utils/setup-helpers';
+import {
+  hasYoutubeSource,
+  hasImageSource,
+  maybeSetStreamPriority,
+  mergeProviderPluginsConfig,
+  supportLegacyOptions
+} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE} from './common/utils/viewability-manager';
 import {BasePlugin, ConfigEvaluator, PluginManager} from './common/plugins';
@@ -174,11 +180,12 @@ class KalturaPlayer extends FakeEventTarget {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     this.configure({session: mediaConfig.session});
-    if (!hasYoutubeSource(sources)) {
+    if (!hasYoutubeSource(sources) || !hasImageSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     } else {
       this._thumbnailManager = null;
     }
+    if (hasImageSource(sources)) this._handleImageSrc(sources.image[0]);
     this.updateKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, {...playerConfig, sources});
     const playback = maybeSetStreamPriority(this, sources);
@@ -920,6 +927,19 @@ class KalturaPlayer extends FakeEventTarget {
       if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
       }
+    });
+  }
+
+  _handleImageSrc(imgSrc: ImageSource): void {
+    let thumbnailAPIParams = {};
+    if (!this.config.session.isAnonymous) thumbnailAPIParams['ks'] = this.config.session.ks;
+    thumbnailAPIParams['width'] = this.dimensions.width;
+    thumbnailAPIParams['quality'] = 90;
+
+    thumbnailAPIParams = {...thumbnailAPIParams, ...this.config?.imageSourceOptions?.thumbnailAPIParams};
+
+    Object.keys(thumbnailAPIParams).forEach(parmaName => {
+      imgSrc.url += `/${parmaName}/${thumbnailAPIParams[parmaName]}`;
     });
   }
 

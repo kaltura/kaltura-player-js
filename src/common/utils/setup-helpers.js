@@ -763,6 +763,7 @@ export {
   getDefaultOptions,
   maybeSetStreamPriority,
   hasYoutubeSource,
+  hasImageSource,
   mergeProviderPluginsConfig,
   getServerUIConf
 };
