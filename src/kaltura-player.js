@@ -185,7 +185,6 @@ class KalturaPlayer extends FakeEventTarget {
     } else {
       this._thumbnailManager = null;
     }
-    if (hasImageSource(sources)) this._handleImageSrc(sources.image[0]);
     this.updateKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, {...playerConfig, sources});
     const playback = maybeSetStreamPriority(this, sources);
@@ -927,19 +926,6 @@ class KalturaPlayer extends FakeEventTarget {
       if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
       }
-    });
-  }
-
-  _handleImageSrc(imgSrc: ImageSource): void {
-    let thumbnailAPIParams = {};
-    if (!this.config.session.isAnonymous) thumbnailAPIParams['ks'] = this.config.session.ks;
-    thumbnailAPIParams['width'] = this.dimensions.width;
-    thumbnailAPIParams['quality'] = 90;
-
-    thumbnailAPIParams = {...thumbnailAPIParams, ...this.config?.imageSourceOptions?.thumbnailAPIParams};
-
-    Object.keys(thumbnailAPIParams).forEach(parmaName => {
-      imgSrc.url += `/${parmaName}/${thumbnailAPIParams[parmaName]}`;
     });
   }
 
