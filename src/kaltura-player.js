@@ -428,8 +428,8 @@ class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.isDvr();
   }
 
-  isImg(): boolean {
-    return hasImageSource(this.sources);
+  isUntimedImg(): boolean {
+    return hasImageSource(this.sources) && !(typeof this.config.sources.duration === 'number' && this.config.sources.duration > 0);
   }
 
   seekToLiveEdge(): void {
