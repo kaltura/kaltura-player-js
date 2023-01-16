@@ -1,6 +1,6 @@
 // @flow
-import {Utils} from '@playkit-js/playkit-js';
-const formats = ['hls', 'dash', 'progressive', 'image'];
+import {Utils, StreamType} from '@playkit-js/playkit-js';
+const formats = Object.values(StreamType);
 /**
  * @class PlaylistItem
  * @param {PKSourcesConfigObject} [sources] - The item sources
