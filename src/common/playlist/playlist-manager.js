@@ -268,7 +268,7 @@ class PlaylistManager {
   }
 
   _onChangeSourceStarted(): void {
-    if (this._playlist.items[this._playlist._activeItemIndex].sources.type === 'Image') {
+    if (this._playlist.items[this._playlist._activeItemIndex].sources?.type === 'Image') {
       this._player.configure({sources: {duration: DEFAULT_IMAGE_DURATION}});
     }
   }
