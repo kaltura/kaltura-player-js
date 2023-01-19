@@ -676,9 +676,10 @@ function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
  * @returns {boolean} - true if sources contain image source
  */
 function hasImageSource(sources: PKSourcesConfigObject): boolean {
-  const IMAGE_MIME_TYPES = /(^image)(\/)[a-zA-Z0-9_]*/;
+  // const IMAGE_MIME_TYPES = /(^image)(\/)[a-zA-Z0-9_]*/;
   const source = sources && sources.image;
-  return !!(source && source[0] && source[0].mimetype.match(IMAGE_MIME_TYPES));
+  // return !!(source && source[0] && source[0].mimetype.match(IMAGE_MIME_TYPES));
+  return !!(source && source[0]);
 }
 
 /**
