@@ -1,7 +1,13 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {Provider} from 'playkit-js-providers';
-import {hasYoutubeSource, maybeSetStreamPriority, mergeProviderPluginsConfig, supportLegacyOptions} from './common/utils/setup-helpers';
+import {
+  hasYoutubeSource,
+  hasImageSource,
+  maybeSetStreamPriority,
+  mergeProviderPluginsConfig,
+  supportLegacyOptions
+} from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE} from './common/utils/viewability-manager';
 import {BasePlugin, ConfigEvaluator, PluginManager} from './common/plugins';
@@ -174,7 +180,7 @@ class KalturaPlayer extends FakeEventTarget {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     this.configure({session: mediaConfig.session});
-    if (!hasYoutubeSource(sources)) {
+    if (!hasYoutubeSource(sources) || !hasImageSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     } else {
       this._thumbnailManager = null;
@@ -420,6 +426,10 @@ class KalturaPlayer extends FakeEventTarget {
    */
   isDvr(): boolean {
     return this._localPlayer.isDvr();
+  }
+
+  isUntimedImg(): boolean {
+    return hasImageSource(this.sources) && !(typeof this.config.sources.duration === 'number' && this.config.sources.duration > 0);
   }
 
   seekToLiveEdge(): void {

@@ -6,6 +6,8 @@ import {Playlist} from './playlist';
 import {PlaylistItem} from './playlist-item';
 import {mergeProviderPluginsConfig} from '../utils/setup-helpers';
 
+const DEFAULT_IMAGE_DURATION = 5;
+
 /**
  * @class PlaylistManager
  * @param {KalturaPlayer} player - The player instance
@@ -250,6 +252,7 @@ class PlaylistManager {
 
   _addBindings() {
     this._eventManager.listen(this._player, this._player.Event.Core.PLAYBACK_ENDED, () => this._onPlaybackEnded());
+    this._eventManager.listen(this._player, this._player.Event.Core.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
   }
 
   _onPlaybackEnded(): void {
@@ -261,6 +264,12 @@ class PlaylistManager {
       if ((nextItem && this._options.autoContinue) || this._options.loop) {
         this.playNext();
       }
+    }
+  }
+
+  _onChangeSourceStarted(): void {
+    if (this._playlist.items[this._playlist._activeItemIndex].sources?.type === 'Image') {
+      this._player.configure({sources: {duration: DEFAULT_IMAGE_DURATION}});
     }
   }
 

@@ -10,24 +10,21 @@ const MediaConfig = {
       hls: [
         {
           id: '0_wifqaipd_861,applehttp',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j,0_xcrwyk2n/a.m3u8?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j,0_xcrwyk2n/a.m3u8?uiConfId=15215933',
           mimetype: 'application/x-mpegURL'
         }
       ],
       dash: [
         {
           id: '0_wifqaipd_911,mpegdash',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/mpegdash/flavorIds/0_m131krws,0_5407xm9j,0_xcrwyk2n/a.mpd?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/mpegdash/flavorIds/0_m131krws,0_5407xm9j,0_xcrwyk2n/a.mpd?uiConfId=15215933',
           mimetype: 'application/dash+xml'
         }
       ],
       progressive: [
         {
           id: '0_h65mfj7f261,url',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_h65mfj7f/a.mp4?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_h65mfj7f/a.mp4?uiConfId=15215933',
           mimetype: 'video/mp4',
           bandwidth: 480256,
           width: 480,
@@ -36,8 +33,7 @@ const MediaConfig = {
         },
         {
           id: '0_3flmvnwc261,url',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_3flmvnwc/a.mp4?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_3flmvnwc/a.mp4?uiConfId=15215933',
           mimetype: 'video/mp4',
           bandwidth: 686080,
           width: 640,
@@ -46,8 +42,7 @@ const MediaConfig = {
         },
         {
           id: '0_m131krws261,url',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_m131krws/a.mp4?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_m131krws/a.mp4?uiConfId=15215933',
           mimetype: 'video/mp4',
           bandwidth: 987136,
           width: 640,
@@ -56,8 +51,7 @@ const MediaConfig = {
         },
         {
           id: '0_5407xm9j261,url',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_5407xm9j/a.mp4?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_5407xm9j/a.mp4?uiConfId=15215933',
           mimetype: 'video/mp4',
           bandwidth: 1667072,
           width: 1280,
@@ -66,8 +60,7 @@ const MediaConfig = {
         },
         {
           id: '0_xcrwyk2n261,url',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_xcrwyk2n/a.mp4?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_xcrwyk2n/a.mp4?uiConfId=15215933',
           mimetype: 'video/mp4',
           bandwidth: 2691072,
           width: 1280,
@@ -101,16 +94,14 @@ const MediaConfig = {
       hls: [
         {
           id: '0_nwkp7jtx_1033,applehttp',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/applehttp/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.m3u8',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/applehttp/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.m3u8',
           mimetype: 'application/x-mpegURL'
         }
       ],
       dash: [
         {
           id: '0_nwkp7jtx_301,mpegdash',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
           mimetype: 'application/dash+xml'
         }
       ],
@@ -139,16 +130,14 @@ const MediaConfig = {
       hls: [
         {
           id: '0_nwkp7jtx_1033,applehttp',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/applehttp/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.m3u8',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/applehttp/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.m3u8',
           mimetype: 'application/x-mpegURL'
         }
       ],
       dash: [
         {
           id: '0_nwkp7jtx_301,mpegdash',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_nwkp7jtx/protocol/http/format/mpegdash/flavorIds/0_iju7j519,0_98mlrldo,0_5hts3h5r,0_n6n76xp9/a.mpd',
           mimetype: 'application/dash+xml'
         }
       ],
@@ -186,8 +175,7 @@ const MediaConfig = {
       progressive: [
         {
           id: '1111',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1234/sp/123400/playManifest/entryId/1111/protocol/http/format/url/flavorIds/1111/a.mp4?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1234/sp/123400/playManifest/entryId/1111/protocol/http/format/url/flavorIds/1111/a.mp4?uiConfId=15215933',
           mimetype: 'video/youtube'
         }
       ],

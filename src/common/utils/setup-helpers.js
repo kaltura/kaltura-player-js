@@ -619,6 +619,32 @@ function printSetupMessages(): void {
 }
 
 /**
+ * Prints early setup messages.
+ * @private
+ * @param {Player} player - The player.
+ * @param {string} engine - The player engine name.
+ * @param {string} format - The player engine format.
+ * @returns {PKPlaybackConfigObject} - The playback config.
+ */
+function addEngineToStreamPriority(player: Player, engine: string, format: string): PKPlaybackConfigObject {
+  const playbackConfig = player.config.playback;
+  let hasYoutube = false;
+  playbackConfig.streamPriority.forEach(sp => {
+    if (sp.engine === engine) {
+      hasYoutube = true;
+    }
+  });
+  if (!hasYoutube) {
+    playbackConfig.streamPriority.push({
+      engine: engine,
+      format: format
+    });
+  }
+
+  return playbackConfig;
+}
+
+/**
  * set stream priority according to playerConfig
  * @param {Player} player - player
  * @param {PKSourcesConfigObject} sources - sources
@@ -626,21 +652,10 @@ function printSetupMessages(): void {
  */
 function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject): ?PKPlaybackConfigObject {
   if (sources && hasYoutubeSource(sources)) {
-    const playbackConfig = player.config.playback;
-    let hasYoutube = false;
-    playbackConfig.streamPriority.forEach(sp => {
-      if (sp.engine === 'youtube') {
-        hasYoutube = true;
-      }
-    });
-    if (!hasYoutube) {
-      playbackConfig.streamPriority.push({
-        engine: 'youtube',
-        format: 'progressive'
-      });
-    }
-
-    return playbackConfig;
+    return addEngineToStreamPriority(player, 'youtube', 'progressive');
+  }
+  if (sources && hasImageSource(sources)) {
+    return addEngineToStreamPriority(player, 'image', 'image');
   }
   return null;
 }
@@ -653,6 +668,18 @@ function maybeSetStreamPriority(player: Player, sources: PKSourcesConfigObject):
 function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
   const source = sources && sources.progressive;
   return !!(source && source[0] && source[0].mimetype === 'video/youtube');
+}
+
+/**
+ * returns true if sources contain image source
+ * @param {PKSourcesConfigObject} sources - thr sources object
+ * @returns {boolean} - true if sources contain image source
+ */
+function hasImageSource(sources: PKSourcesConfigObject): boolean {
+  // const IMAGE_MIME_TYPES = /(^image)(\/)[a-zA-Z0-9_]*/;
+  const source = sources && sources.image;
+  // return !!(source && source[0] && source[0].mimetype.match(IMAGE_MIME_TYPES));
+  return !!(source && source[0]);
 }
 
 /**
@@ -737,6 +764,7 @@ export {
   getDefaultOptions,
   maybeSetStreamPriority,
   hasYoutubeSource,
+  hasImageSource,
   mergeProviderPluginsConfig,
   getServerUIConf
 };
