@@ -180,7 +180,7 @@ class KalturaPlayer extends FakeEventTarget {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     this.configure({session: mediaConfig.session});
-    if (!hasYoutubeSource(sources) || !hasImageSource(sources)) {
+    if (!hasYoutubeSource(sources) && !hasImageSource(sources)) {
       this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     } else {
       this._thumbnailManager = null;
