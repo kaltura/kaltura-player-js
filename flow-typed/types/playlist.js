@@ -8,7 +8,8 @@ import {PlaylistItem} from '../../src/common/playlist/playlist-item';
  */
 type _KPPlaylistOptions = {
   autoContinue: boolean,
-  loop: boolean
+  loop: boolean,
+  imageDuration: number
 };
 declare type KPPlaylistOptions = _KPPlaylistOptions;
 
