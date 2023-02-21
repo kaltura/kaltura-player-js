@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "3.10.0",
+  "version": "3.11.0-test-stall-patch.0",
   "keywords": [
     "kaltura",
     "player",
@@ -35,8 +35,8 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "publish": "git push --follow-tags --no-verify origin master",
-    "release": "standard-version",
+    "publish": "git push --follow-tags --no-verify origin test-stall-patch",
+    "release": "standard-version --prerelease test-stall-patch",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
     "watch:ovp": "sh ./scripts/job.sh watch ovp"

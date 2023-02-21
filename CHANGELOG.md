@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.0-test-stall-patch.0](https://github.com/kaltura/kaltura-player-js/compare/v3.10.0...v3.11.0-test-stall-patch.0) (2023-02-21)
+
+
+### Features
+
+* **FEC-12613:** Image Entry - Kava Analytics Events ([#604](https://github.com/kaltura/kaltura-player-js/issues/604)) ([5fcff2a](https://github.com/kaltura/kaltura-player-js/commit/5fcff2ae66440e801f00e77dd43cdb12a5020833))
+* **FEC-12953:** Add configuration option to change the default playlist image item duration ([#607](https://github.com/kaltura/kaltura-player-js/issues/607)) ([a561249](https://github.com/kaltura/kaltura-player-js/commit/a5612491eb9f4fb524ac4e6ffd762890caeb0266)), closes [kaltura/playkit-js-image-player#10](https://github.com/kaltura/playkit-js-image-player/issues/10)
+
+
+### Bug Fixes
+
+* **FEC-12613:** fix isImg() public API name ([#605](https://github.com/kaltura/kaltura-player-js/issues/605)) ([14bce01](https://github.com/kaltura/kaltura-player-js/commit/14bce01ad32debaec9b7c8c862fbe2abc84cafa7))
+
 ## [3.10.0](https://github.com/kaltura/kaltura-player-js/compare/v3.9.0...v3.10.0) (2023-01-26)
 
 
