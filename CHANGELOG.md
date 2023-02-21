@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.0-test-stall-patch.1](https://github.com/kaltura/kaltura-player-js/compare/v3.11.0-test-stall-patch.0...v3.11.0-test-stall-patch.1) (2023-02-21)
+
 ## [3.11.0-test-stall-patch.0](https://github.com/kaltura/kaltura-player-js/compare/v3.10.0...v3.11.0-test-stall-patch.0) (2023-02-21)
 
 
