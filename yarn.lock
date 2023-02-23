@@ -1148,10 +1148,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playkit-js/playkit-js-dash@1.32.0":
-  version "1.32.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.32.0.tgz#3acf3dd97fd11d91df5d097eb9db13c4ae0f7cb0"
-  integrity sha512-CZiAxJ3SuR/rWj6FyWMLQOFylnHBJ/a2oXc/53ByjRW2L8tL2//A7YKDAbVLRtI+aow/8o0fxVc5vh1q7JOa4Q==
+"@playkit-js/playkit-js-dash@1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.33.0.tgz#1c8bc86f6080ce89ed4997978429c4167c5779d5"
+  integrity sha512-3v+Q6/krt4GGe78ra2HC9X5llGbp6+bGdqH8K1DdDiuSu9PRP809OH7Sl8+EJNN6ZbAk+oW9aCPQPycDYMB6sw==
 
 "@playkit-js/playkit-js-hls@1.32.0":
   version "1.32.0"
