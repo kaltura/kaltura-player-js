@@ -1191,6 +1191,121 @@ class KalturaPlayer extends FakeEventTarget {
   get remotePlayerManager() {
     return this._remotePlayerManager;
   }
+
+  /**
+   * get the media capabilities
+   * @function getMediaCapabilities
+   * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
+   * @returns {MediaCapabilitiesObject} - The media capabilities object.
+   * @public
+   */
+  async getMediaCapabilities(hevcConfig?: HEVCConfigObject): MediaCapabilitiesObject {
+    let mediaCapabilities: MediaCapabilitiesObject = {
+      isHevcSupported: false,
+      isPowerEfficient: false,
+      isDRMSupported: false,
+      supportedDRMs: []
+    };
+
+    try {
+      const hevcSupported = await this._checkHEVCSupported(hevcConfig);
+      const drmSupported = await this._checkDRMSupported();
+      Object.assign(mediaCapabilities, hevcSupported, drmSupported);
+      return mediaCapabilities;
+    } catch (ex) {
+      return mediaCapabilities;
+    }
+  }
+
+  /**
+   * checks whether and which DRMs are supported by the browser
+   * @function _checkDRMSupported
+   * @returns {DRMSupportedObject} - The DRM supported object.
+   */
+  async _checkDRMSupported(): DRMSupportedObject {
+    let drmSupportedRes: DRMSupportedObject = {
+      isDRMSupported: 'maybe',
+      supportedDRMs: []
+    };
+
+    if (!navigator.requestMediaKeySystemAccess) {
+      return drmSupportedRes;
+    }
+
+    const keySysConfig = [
+      {
+        initDataTypes: ['cenc'],
+        videoCapabilities: [
+          {
+            contentType: 'video/mp4;codecs="avc1.42E01E"'
+          }
+        ]
+      }
+    ];
+
+    const keySystemsMap = new Map([
+      ['widevine', 'com.widevine.alpha'],
+      ['playready', 'com.microsoft.playready'],
+      ['fairplay', 'com.apple.fps']
+    ]);
+
+    for (let [drm, keySys] of keySystemsMap) {
+      await navigator
+        .requestMediaKeySystemAccess(keySys, keySysConfig)
+        .then(() => {
+          drmSupportedRes.supportedDRMs.push(drm);
+          KalturaPlayer._logger.debug(`XXXX ${keySys} IS SUPPORTED`);
+        })
+        .catch(function (ex) {
+          KalturaPlayer._logger.debug('XXXX', keySys + ' not supported (' + ex.name + ' ' + ex.message + ').');
+        });
+    }
+
+    drmSupportedRes.isDRMSupported = drmSupportedRes.supportedDRMs.length > 0;
+    return drmSupportedRes;
+  }
+
+  /**
+   * checks whether the browser supports HEVC codec or not
+   * @function _checkHevcSupported
+   * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
+   * @returns {HEVCSupportedObject} - The HEVC supported object.
+   */
+  async _checkHEVCSupported(hevcConfig?: HEVCConfigObject): HEVCSupportedObject {
+    let hevcSupportedRes: HEVCSupportedObject = {
+      isHevcSupported: 'maybe',
+      isPowerEfficient: 'maybe'
+    };
+
+    if (!navigator.mediaCapabilities || !navigator.mediaCapabilities.decodingInfo) {
+      return hevcSupportedRes;
+    }
+
+    const configHvc = {
+      type: 'media-source',
+      video: {
+        contentType: 'video/mp4; codecs="hvc1.1.6.L150.90"',
+        width: hevcConfig?.width || 1920,
+        height: hevcConfig?.height || 1080,
+        bitrate: hevcConfig?.bitrate || 1200000,
+        framerate: hevcConfig?.framerate || 30
+      }
+    };
+
+    await navigator.mediaCapabilities
+      .decodingInfo(configHvc)
+      .then(result => {
+        KalturaPlayer._logger.debug('HVC SUPPORT XXXXXXXXXX', {result});
+        hevcSupportedRes.isHevcSupported = result.supported;
+        hevcSupportedRes.isPowerEfficient = result.powerEfficient;
+        // KalturaPlayer._logger.debug('mediaCapabilities XXXXXXXXXX', {mediaCapabilities});
+      })
+      .catch(() => {
+        hevcSupportedRes.isHevcSupported = false;
+        hevcSupportedRes.isPowerEfficient = false;
+      });
+    return hevcSupportedRes;
+  }
 }
 
 export {KalturaPlayer};
