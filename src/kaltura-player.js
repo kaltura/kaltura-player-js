@@ -1196,33 +1196,30 @@ class KalturaPlayer extends FakeEventTarget {
    * get the media capabilities
    * @function getMediaCapabilities
    * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
-   * @returns {MediaCapabilitiesObject} - The media capabilities object.
+   * @returns {Promise<MediaCapabilitiesObject>} - The media capabilities object.
    * @public
    */
-  async getMediaCapabilities(hevcConfig?: HEVCConfigObject): MediaCapabilitiesObject {
-    let mediaCapabilities: MediaCapabilitiesObject = {
-      isHevcSupported: false,
-      isPowerEfficient: false,
-      isDRMSupported: false,
-      supportedDRMs: []
-    };
-
+  async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
     try {
       const hevcSupported = await this._checkHEVCSupported(hevcConfig);
       const drmSupported = await this._checkDRMSupported();
-      Object.assign(mediaCapabilities, hevcSupported, drmSupported);
-      return mediaCapabilities;
+      return Object.assign({}, hevcSupported, drmSupported);
     } catch (ex) {
-      return mediaCapabilities;
+      return {
+        isHevcSupported: false,
+        isPowerEfficient: false,
+        isDRMSupported: false,
+        supportedDRMs: []
+      };
     }
   }
 
   /**
    * checks whether and which DRMs are supported by the browser
    * @function _checkDRMSupported
-   * @returns {DRMSupportedObject} - The DRM supported object.
+   * @returns {Promise<DRMSupportedObject>} - The DRM supported object.
    */
-  async _checkDRMSupported(): DRMSupportedObject {
+  async _checkDRMSupported(): Promise<DRMSupportedObject> {
     let drmSupportedRes: DRMSupportedObject = {
       isDRMSupported: 'maybe',
       supportedDRMs: []
@@ -1269,9 +1266,9 @@ class KalturaPlayer extends FakeEventTarget {
    * checks whether the browser supports HEVC codec or not
    * @function _checkHevcSupported
    * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
-   * @returns {HEVCSupportedObject} - The HEVC supported object.
+   * @returns {Promise<HEVCSupportedObject>} - The HEVC supported object.
    */
-  async _checkHEVCSupported(hevcConfig?: HEVCConfigObject): HEVCSupportedObject {
+  async _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
     let hevcSupportedRes: HEVCSupportedObject = {
       isHevcSupported: 'maybe',
       isPowerEfficient: 'maybe'
