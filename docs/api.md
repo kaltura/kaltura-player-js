@@ -2908,10 +2908,10 @@ Type: [Object][449]
 
 ### Properties
 
-- `width` **[number][454]** Width of the video (optional, default `1920`).
-- `height` **[number][454]** Height of the video (optional, default `1080`).
-- `bitrate` **[number][454]** Specifies number of bits used to encode a second of video (optional, default `1200000`).
-- `framerate` **[number][454]** Specifies number of frames used in one second (optional, default `30`).
+- `width` **[number][454]** Width of the video (optional, default `1920`) [see optional values][495].
+- `height` **[number][454]** Height of the video (optional, default `1080`) [see optional values][495].
+- `bitrate` **[number][454]** Specifies number of bits used to encode a second of video (optional, default `1200000`) [see optional values][496].
+- `framerate` **[number][454]** Specifies number of frames used in one second (optional, default `30`) [see optional values][497].
 
 ## HEVCSupportedObject
 
@@ -3449,3 +3449,6 @@ kalturaPlayer.getMediaCapabilities({width: 1280, height: 720}).then(mediaCapabil
 [492]: #getmediacapabilities
 [493]: #parameters-89
 [494]: #examples-48
+[495]: https://support.google.com/youtube/answer/6375112
+[496]: https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cbitrate
+[497]: https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cframe-rate

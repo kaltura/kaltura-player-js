@@ -1200,17 +1200,24 @@ class KalturaPlayer extends FakeEventTarget {
    * @public
    */
   async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
+    let mediaCapabilities;
     try {
+      KalturaPlayer._logger.debug('Starting to get media capabilities...');
       const hevcSupported = await this._checkHEVCSupported(hevcConfig);
       const drmSupported = await this._checkDRMSupported();
-      return Object.assign({}, hevcSupported, drmSupported);
+      mediaCapabilities = Object.assign({}, hevcSupported, drmSupported);
+      KalturaPlayer._logger.debug('Finished getting media capabilities ', {mediaCapabilities});
+      return mediaCapabilities;
     } catch (ex) {
-      return {
+      KalturaPlayer._logger.debug('There was a problem with getting the media capabilities, ', ex.message);
+      mediaCapabilities = {
         isHevcSupported: false,
         isPowerEfficient: false,
         isDRMSupported: false,
         supportedDRMs: []
       };
+      KalturaPlayer._logger.debug('Returning media capabilities defaults ', {mediaCapabilities});
+      return mediaCapabilities;
     }
   }
 
@@ -1251,10 +1258,9 @@ class KalturaPlayer extends FakeEventTarget {
         .requestMediaKeySystemAccess(keySys, keySysConfig)
         .then(() => {
           drmSupportedRes.supportedDRMs.push(drm);
-          KalturaPlayer._logger.debug(`XXXX ${keySys} IS SUPPORTED`);
         })
         .catch(function (ex) {
-          KalturaPlayer._logger.debug('XXXX', keySys + ' not supported (' + ex.name + ' ' + ex.message + ').');
+          KalturaPlayer._logger.debug(keySys + ' not supported (' + ex.name + ': ' + ex.message + ').');
         });
     }
 
@@ -1292,10 +1298,8 @@ class KalturaPlayer extends FakeEventTarget {
     await navigator.mediaCapabilities
       .decodingInfo(configHvc)
       .then(result => {
-        KalturaPlayer._logger.debug('HVC SUPPORT XXXXXXXXXX', {result});
         hevcSupportedRes.isHevcSupported = result.supported;
         hevcSupportedRes.isPowerEfficient = result.powerEfficient;
-        // KalturaPlayer._logger.debug('mediaCapabilities XXXXXXXXXX', {mediaCapabilities});
       })
       .catch(() => {
         hevcSupportedRes.isHevcSupported = false;
