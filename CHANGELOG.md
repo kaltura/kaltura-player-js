@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.12.1](https://github.com/kaltura/kaltura-player-js/compare/v3.12.0...v3.12.1) (2023-02-28)
+
+
+### Bug Fixes
+
+* update playkit-js-ui to [0.75.2](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.75.2) ([65f88ff](https://github.com/kaltura/kaltura-player-js/commit/65f88ff90017695f27ae17ba7759e37d1677c80e))
+
+## [3.12.0](https://github.com/kaltura/kaltura-player-js/compare/v3.9.0...v3.12.0) (2023-02-23)
+
+
+### Features
+
+* update playkit-js to [0.81.0](https://github.com/kaltura/playkit-js/releases/tag/v0.81.0) ([d0cc980](https://github.com/kaltura/kaltura-player-js/commit/d0cc9801086f046f9716cea2c4f5b3b4d8e0354b))
+* update playkit-js to [0.82.0](https://github.com/kaltura/playkit-js/releases/tag/v0.82.0) ([b180a94](https://github.com/kaltura/kaltura-player-js/commit/b180a943aeedae9cb8f7b61fe1df9574afa253bb))
+* update playkit-js-dash to [1.32.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.32.0) ([48a8b6b](https://github.com/kaltura/kaltura-player-js/commit/48a8b6bf3c6322b126f38d0be0f3b0d616cba0f8))
+* update playkit-js-dash to [1.33.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.33.0) ([516d76f](https://github.com/kaltura/kaltura-player-js/commit/516d76f5d058c6af26a6cf81fef1163236d71066))
+* update playkit-js-hls to [1.32.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.32.0) ([3afb816](https://github.com/kaltura/kaltura-player-js/commit/3afb816fbb4fb88bb1dd9e37505c8f238c66a37d))
+* update playkit-js-providers to [2.38.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.38.0) ([c3406c6](https://github.com/kaltura/kaltura-player-js/commit/c3406c637f0a58bba761151687ec2d70dac6f598))
+* update playkit-js-providers to [2.39.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.39.0) ([e43a5bc](https://github.com/kaltura/kaltura-player-js/commit/e43a5bcfc7e45ff4459b9b1b6d9da15893120f16))
+* update playkit-js-ui to [0.75.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.75.1) ([7e91843](https://github.com/kaltura/kaltura-player-js/commit/7e918438ab5beb01b592faec3606de4e2a6d235d))
+* **FEC-12610:** Image Playback Engine - Support for rendering an image, with or without duration ([#598](https://github.com/kaltura/kaltura-player-js/issues/598)) ([af31665](https://github.com/kaltura/kaltura-player-js/commit/af3166520f138566f93fd72b2d6d18057f5b7d2e))
+* **FEC-12613:** Image Entry - Kava Analytics Events ([#604](https://github.com/kaltura/kaltura-player-js/issues/604)) ([5fcff2a](https://github.com/kaltura/kaltura-player-js/commit/5fcff2ae66440e801f00e77dd43cdb12a5020833))
+* **FEC-12874:** upgrade shaka player library to v4.3.3 ([#602](https://github.com/kaltura/kaltura-player-js/issues/602)) ([9255cde](https://github.com/kaltura/kaltura-player-js/commit/9255cde2f25c711292b3e8d547b5cda550c6f454))
+* **FEC-12953:** Add configuration option to change the default playlist image item duration ([#607](https://github.com/kaltura/kaltura-player-js/issues/607)) ([a561249](https://github.com/kaltura/kaltura-player-js/commit/a5612491eb9f4fb524ac4e6ffd762890caeb0266)), closes [kaltura/playkit-js-image-player#10](https://github.com/kaltura/playkit-js-image-player/issues/10)
+* update playkit-js-ui to [0.74.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.74.0) ([1c7723a](https://github.com/kaltura/kaltura-player-js/commit/1c7723a5248fbac3202f37492b6d93058f9e9c6b))
+* **FEC-12873:** upgrade hls.js library to v1.3.1 ([#601](https://github.com/kaltura/kaltura-player-js/issues/601)) ([5453a74](https://github.com/kaltura/kaltura-player-js/commit/5453a742725fbf8208986a3143b2af6c812b44f5))
+
+
+### Bug Fixes
+
+* **FEC-12613:** fix isImg() public API name ([#605](https://github.com/kaltura/kaltura-player-js/issues/605)) ([14bce01](https://github.com/kaltura/kaltura-player-js/commit/14bce01ad32debaec9b7c8c862fbe2abc84cafa7))
+* **FEC-12844:** Related - autoContinue: true - countdown not canceled ([8e8cd07](https://github.com/kaltura/kaltura-player-js/commit/8e8cd0771e59253797df745eb3cf713950fb9a70))
+
+## [3.11.0](https://github.com/kaltura/kaltura-player-js/compare/v3.9.0...v3.11.0) (2023-02-23)
+
+
+### Features
+
+* update playkit-js to [0.81.0](https://github.com/kaltura/playkit-js/releases/tag/v0.81.0) ([d0cc980](https://github.com/kaltura/kaltura-player-js/commit/d0cc9801086f046f9716cea2c4f5b3b4d8e0354b))
+* update playkit-js to [0.82.0](https://github.com/kaltura/playkit-js/releases/tag/v0.82.0) ([b180a94](https://github.com/kaltura/kaltura-player-js/commit/b180a943aeedae9cb8f7b61fe1df9574afa253bb))
+* update playkit-js-dash to [1.32.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.32.0) ([48a8b6b](https://github.com/kaltura/kaltura-player-js/commit/48a8b6bf3c6322b126f38d0be0f3b0d616cba0f8))
+* update playkit-js-dash to [1.33.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.33.0) ([516d76f](https://github.com/kaltura/kaltura-player-js/commit/516d76f5d058c6af26a6cf81fef1163236d71066))
+* update playkit-js-hls to [1.32.0](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.32.0) ([3afb816](https://github.com/kaltura/kaltura-player-js/commit/3afb816fbb4fb88bb1dd9e37505c8f238c66a37d))
+* update playkit-js-providers to [2.38.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.38.0) ([c3406c6](https://github.com/kaltura/kaltura-player-js/commit/c3406c637f0a58bba761151687ec2d70dac6f598))
+* update playkit-js-providers to [2.39.0](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.39.0) ([e43a5bc](https://github.com/kaltura/kaltura-player-js/commit/e43a5bcfc7e45ff4459b9b1b6d9da15893120f16))
+* update playkit-js-ui to [0.75.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.75.1) ([7e91843](https://github.com/kaltura/kaltura-player-js/commit/7e918438ab5beb01b592faec3606de4e2a6d235d))
+* **FEC-12610:** Image Playback Engine - Support for rendering an image, with or without duration ([#598](https://github.com/kaltura/kaltura-player-js/issues/598)) ([af31665](https://github.com/kaltura/kaltura-player-js/commit/af3166520f138566f93fd72b2d6d18057f5b7d2e))
+* **FEC-12613:** Image Entry - Kava Analytics Events ([#604](https://github.com/kaltura/kaltura-player-js/issues/604)) ([5fcff2a](https://github.com/kaltura/kaltura-player-js/commit/5fcff2ae66440e801f00e77dd43cdb12a5020833))
+* **FEC-12874:** upgrade shaka player library to v4.3.3 ([#602](https://github.com/kaltura/kaltura-player-js/issues/602)) ([9255cde](https://github.com/kaltura/kaltura-player-js/commit/9255cde2f25c711292b3e8d547b5cda550c6f454))
+* **FEC-12953:** Add configuration option to change the default playlist image item duration ([#607](https://github.com/kaltura/kaltura-player-js/issues/607)) ([a561249](https://github.com/kaltura/kaltura-player-js/commit/a5612491eb9f4fb524ac4e6ffd762890caeb0266)), closes [kaltura/playkit-js-image-player#10](https://github.com/kaltura/playkit-js-image-player/issues/10)
+* update playkit-js-ui to [0.74.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.74.0) ([1c7723a](https://github.com/kaltura/kaltura-player-js/commit/1c7723a5248fbac3202f37492b6d93058f9e9c6b))
+* **FEC-12873:** upgrade hls.js library to v1.3.1 ([#601](https://github.com/kaltura/kaltura-player-js/issues/601)) ([5453a74](https://github.com/kaltura/kaltura-player-js/commit/5453a742725fbf8208986a3143b2af6c812b44f5))
+
+
+### Bug Fixes
+
+* **FEC-12613:** fix isImg() public API name ([#605](https://github.com/kaltura/kaltura-player-js/issues/605)) ([14bce01](https://github.com/kaltura/kaltura-player-js/commit/14bce01ad32debaec9b7c8c862fbe2abc84cafa7))
+* **FEC-12844:** Related - autoContinue: true - countdown not canceled ([8e8cd07](https://github.com/kaltura/kaltura-player-js/commit/8e8cd0771e59253797df745eb3cf713950fb9a70))
+
 ## [3.10.0](https://github.com/kaltura/kaltura-player-js/compare/v3.9.0...v3.10.0) (2023-01-26)
 
 

@@ -142,19 +142,24 @@ declare module PlaykitUI {
   };
 
   export const ReservedPresetAreas: {
-    PresetFloating: 'PresetFloating';
-    BottomBarLeftControls: 'BottomBarLeftControls';
-    BottomBarRightControls: 'BottomBarRightControls';
-    TopBarLeftControls: 'TopBarLeftControls';
-    TopBarRightControls: 'TopBarRightControls';
-    SidePanelTop: 'SidePanelTop';
-    SidePanelLeft: 'SidePanelLeft';
-    SidePanelRight: 'SidePanelRight';
-    SidePanelBottom: 'SidePanelBottom';
-    PresetArea: 'PresetArea';
-    InteractiveArea: 'InteractiveArea';
-    PlayerArea: 'PlayerArea';
-    VideoArea: 'VideoArea';
+    PlayerArea: 'PlayerArea',
+    PresetArea: 'PresetArea',
+    InteractiveArea: 'InteractiveArea',
+    VideoArea: 'VideoArea',
+    GuiArea: 'GuiArea',
+    TopBar: 'TopBar',
+    BottomBar: 'BottomBar',
+    PresetFloating: 'PresetFloating',
+    TopBarLeftControls: 'TopBarLeftControls',
+    TopBarRightControls: 'TopBarRightControls',
+    BottomBarLeftControls: 'BottomBarLeftControls',
+    BottomBarRightControls: 'BottomBarRightControls',
+    SidePanelTop: 'SidePanelTop',
+    SidePanelLeft: 'SidePanelLeft',
+    SidePanelRight: 'SidePanelRight',
+    SidePanelBottom: 'SidePanelBottom',
+    SeekBar: 'SeekBar',
+    LoadingSpinner: 'LoadingSpinner'
   };
 
   export const reducers: {
