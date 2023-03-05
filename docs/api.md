@@ -457,10 +457,9 @@
 - [DRMSupportedObject][489]
   - [Properties][490]
 - [MediaCapabilitiesObject][491]
-  - [Properties][492]
-- [getMediaCapabilities][493]
-  - [Parameters][494]
-  - [Examples][495]
+- [getMediaCapabilities][492]
+  - [Parameters][493]
+  - [Examples][494]
 
 ## KPAdObject
 
