@@ -450,17 +450,17 @@
 - [getPlayers][446]
 - [getPlayer][447]
   - [Parameters][448]
-- [HEVCConfigObject][449]
-  - [Properties][450]
-- [HEVCSupportedObject][451]
-  - [Properties][452]
-- [DRMSupportedObject][453]
-  - [Properties][454]
-- [MediaCapabilitiesObject][455]
-  - [Properties][456]
-- [getMediaCapabilities][457]
-  - [Parameters][458]
-  - [Examples][459]
+- [HEVCConfigObject][485]
+  - [Properties][486]
+- [HEVCSupportedObject][487]
+  - [Properties][488]
+- [DRMSupportedObject][489]
+  - [Properties][490]
+- [MediaCapabilitiesObject][491]
+  - [Properties][492]
+- [getMediaCapabilities][493]
+  - [Parameters][494]
+  - [Examples][495]
 
 ## KPAdObject
 
@@ -2934,7 +2934,7 @@ Type: [Object][449]
 
 ## MediaCapabilitiesObject
 
-Type: [HEVCSupportedObject][486] & [DRMSupportedObject][487]
+Type: [HEVCSupportedObject][487] & [DRMSupportedObject][489]
 
 ## getMediaCapabilities
 
@@ -2944,7 +2944,7 @@ get the media capabilities
 
 - `hevcConfig` **[HEVCConfigObject][485]** HEVC configuration to test. (optional, default `{}`)
 
-Returns **[Promise][463]&lt;[MediaCapabilitiesObject][488]>** the media capabilities object
+Returns **[Promise][463]&lt;[MediaCapabilitiesObject][491]>** the media capabilities object
 
 ### Examples
 
@@ -3441,6 +3441,12 @@ kalturaPlayer.getMediaCapabilities({width: 1280, height: 720}).then(mediaCapabil
 [483]: #viewabilitymanager
 [484]: #kalturaplayers
 [485]: #hevcconfigobject
-[486]: #hevcsupportedobject
-[487]: #drmsupportedobject
-[488]: #mediacapabilitiesobject
+[486]: #properties-9
+[487]: #hevcsupportedobject
+[488]: #properties-10
+[489]: #drmsupportedobject
+[490]: #properties-11
+[491]: #mediacapabilitiesobject
+[492]: #getmediacapabilities
+[493]: #parameters-89
+[494]: #examples-48
