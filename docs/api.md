@@ -2919,7 +2919,7 @@ Type: [Object][449]
 
 ### Properties
 
-- `isHevcSupported` **[boolean][452] | [string][451]** Specifies whether HEVC is supported by the browser, or `"maybe"` if there was a problem with getting the information.
+- `isHEVCSupported` **[boolean][452] | [string][451]** Specifies whether HEVC is supported by the browser, or `"maybe"` if there was a problem with getting the information.
 - `isPowerEfficient` **[boolean][454] | [string][451]** Specifies power efficiency, or `"maybe"` if there was a problem with getting the information.
 
 ## DRMSupportedObject

@@ -8,7 +8,7 @@ declare type HEVCConfigObject = {
 };
 
 declare type HEVCSupportedObject = {
-  isHevcSupported: boolean | string,
+  isHEVCSupported: boolean | string,
   isPowerEfficient: boolean | string
 };
 

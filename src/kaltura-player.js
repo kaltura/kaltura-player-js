@@ -1211,7 +1211,7 @@ class KalturaPlayer extends FakeEventTarget {
     } catch (ex) {
       KalturaPlayer._logger.debug('There was a problem with getting the media capabilities, ', ex.message);
       mediaCapabilities = {
-        isHevcSupported: false,
+        isHEVCSupported: false,
         isPowerEfficient: false,
         isDRMSupported: false,
         supportedDRMs: []
@@ -1270,13 +1270,13 @@ class KalturaPlayer extends FakeEventTarget {
 
   /**
    * checks whether the browser supports HEVC codec or not
-   * @function _checkHevcSupported
+   * @function _checkHEVCSupported
    * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
    * @returns {Promise<HEVCSupportedObject>} - The HEVC supported object.
    */
   async _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
     let hevcSupportedRes: HEVCSupportedObject = {
-      isHevcSupported: 'maybe',
+      isHEVCSupported: 'maybe',
       isPowerEfficient: 'maybe'
     };
 
@@ -1298,11 +1298,11 @@ class KalturaPlayer extends FakeEventTarget {
     await navigator.mediaCapabilities
       .decodingInfo(configHvc)
       .then(result => {
-        hevcSupportedRes.isHevcSupported = result.supported;
+        hevcSupportedRes.isHEVCSupported = result.supported;
         hevcSupportedRes.isPowerEfficient = result.powerEfficient;
       })
       .catch(() => {
-        hevcSupportedRes.isHevcSupported = false;
+        hevcSupportedRes.isHEVCSupported = false;
         hevcSupportedRes.isPowerEfficient = false;
       });
     return hevcSupportedRes;
