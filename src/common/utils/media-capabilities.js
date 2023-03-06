@@ -1,6 +1,19 @@
 //@flow
 import {getLogger} from '@playkit-js/playkit-js';
 
+const CONTENT_TYPE_AVC_CODEC: string = 'video/mp4;codecs="avc1.42E01E"';
+const DRM_SCHEME_LIST = [
+  ['widevine', 'com.widevine.alpha'],
+  ['playready', 'com.microsoft.playready'],
+  ['fairplay', 'com.apple.fps']
+];
+const CONTENT_TYPE_HVC_CODEC: string = 'video/mp4; codecs="hvc1.1.6.L150.90"';
+const WIDTH_DEFAULT: number = 1920;
+const HEIGHT_DEFAULT: number = 1080;
+const BITRATE_DEFAULT: number = 1200000;
+const FRAMERATE_DEFAULT: number = 30;
+const MAYBE: string = 'maybe';
+
 const _logger: any = getLogger('MediaCapabilities');
 
 /**
@@ -40,7 +53,7 @@ async function getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<Medi
  */
 async function _checkDRMSupported(): Promise<DRMSupportedObject> {
   let drmSupportedRes: DRMSupportedObject = {
-    isDRMSupported: 'maybe',
+    isDRMSupported: MAYBE,
     supportedDRMs: []
   };
 
@@ -53,17 +66,13 @@ async function _checkDRMSupported(): Promise<DRMSupportedObject> {
       initDataTypes: ['cenc'],
       videoCapabilities: [
         {
-          contentType: 'video/mp4;codecs="avc1.42E01E"'
+          contentType: CONTENT_TYPE_AVC_CODEC
         }
       ]
     }
   ];
 
-  const keySystemsMap = new Map([
-    ['widevine', 'com.widevine.alpha'],
-    ['playready', 'com.microsoft.playready'],
-    ['fairplay', 'com.apple.fps']
-  ]);
+  const keySystemsMap = new Map(DRM_SCHEME_LIST);
 
   for (let [drm, keySys] of keySystemsMap) {
     await navigator
@@ -89,8 +98,8 @@ async function _checkDRMSupported(): Promise<DRMSupportedObject> {
  */
 async function _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
   let hevcSupportedRes: HEVCSupportedObject = {
-    isHEVCSupported: 'maybe',
-    isPowerEfficient: 'maybe'
+    isHEVCSupported: MAYBE,
+    isPowerEfficient: MAYBE
   };
 
   if (!navigator.mediaCapabilities || !navigator.mediaCapabilities.decodingInfo) {
@@ -100,11 +109,11 @@ async function _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCS
   const configHvc = {
     type: 'media-source',
     video: {
-      contentType: 'video/mp4; codecs="hvc1.1.6.L150.90"',
-      width: hevcConfig?.width || 1920,
-      height: hevcConfig?.height || 1080,
-      bitrate: hevcConfig?.bitrate || 1200000,
-      framerate: hevcConfig?.framerate || 30
+      contentType: CONTENT_TYPE_HVC_CODEC,
+      width: hevcConfig?.width || WIDTH_DEFAULT,
+      height: hevcConfig?.height || HEIGHT_DEFAULT,
+      bitrate: hevcConfig?.bitrate || BITRATE_DEFAULT,
+      framerate: hevcConfig?.framerate || FRAMERATE_DEFAULT
     }
   };
 
