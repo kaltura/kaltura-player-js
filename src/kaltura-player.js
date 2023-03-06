@@ -1201,27 +1201,7 @@ class KalturaPlayer extends FakeEventTarget {
    * @public
    */
   async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
-    const mediaCap = await getMediaCapabilities(hevcConfig);
-    return mediaCap;
-    // let mediaCapabilities;
-    // try {
-    //   KalturaPlayer._logger.debug('Starting to get media capabilities...');
-    //   const hevcSupported = await this._checkHEVCSupported(hevcConfig);
-    //   const drmSupported = await this._checkDRMSupported();
-    //   mediaCapabilities = Object.assign({}, hevcSupported, drmSupported);
-    //   KalturaPlayer._logger.debug('Finished getting media capabilities ', {mediaCapabilities});
-    //   return mediaCapabilities;
-    // } catch (ex) {
-    //   KalturaPlayer._logger.debug('There was a problem with getting the media capabilities, ', ex.message);
-    //   mediaCapabilities = {
-    //     isHEVCSupported: false,
-    //     isPowerEfficient: false,
-    //     isDRMSupported: false,
-    //     supportedDRMs: []
-    //   };
-    //   KalturaPlayer._logger.debug('Returning media capabilities defaults ', {mediaCapabilities});
-    //   return mediaCapabilities;
-    // }
+    return await getMediaCapabilities(hevcConfig);
   }
 }
 
