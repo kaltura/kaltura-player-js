@@ -43,6 +43,7 @@ import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middl
 import {ThumbnailManager} from './common/thumbnail-manager';
 import {CuePointManager} from './common/cuepoint/cuepoint-manager';
 import {ServiceProvider} from './common/service-provider';
+import getMediaCapabilities from './common/utils/media-capabilities';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -1200,114 +1201,27 @@ class KalturaPlayer extends FakeEventTarget {
    * @public
    */
   async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
-    let mediaCapabilities;
-    try {
-      KalturaPlayer._logger.debug('Starting to get media capabilities...');
-      const hevcSupported = await this._checkHEVCSupported(hevcConfig);
-      const drmSupported = await this._checkDRMSupported();
-      mediaCapabilities = Object.assign({}, hevcSupported, drmSupported);
-      KalturaPlayer._logger.debug('Finished getting media capabilities ', {mediaCapabilities});
-      return mediaCapabilities;
-    } catch (ex) {
-      KalturaPlayer._logger.debug('There was a problem with getting the media capabilities, ', ex.message);
-      mediaCapabilities = {
-        isHEVCSupported: false,
-        isPowerEfficient: false,
-        isDRMSupported: false,
-        supportedDRMs: []
-      };
-      KalturaPlayer._logger.debug('Returning media capabilities defaults ', {mediaCapabilities});
-      return mediaCapabilities;
-    }
-  }
-
-  /**
-   * checks whether and which DRMs are supported by the browser
-   * @function _checkDRMSupported
-   * @returns {Promise<DRMSupportedObject>} - The DRM supported object.
-   * @private
-   */
-  async _checkDRMSupported(): Promise<DRMSupportedObject> {
-    let drmSupportedRes: DRMSupportedObject = {
-      isDRMSupported: 'maybe',
-      supportedDRMs: []
-    };
-
-    if (!navigator.requestMediaKeySystemAccess) {
-      return drmSupportedRes;
-    }
-
-    const keySysConfig = [
-      {
-        initDataTypes: ['cenc'],
-        videoCapabilities: [
-          {
-            contentType: 'video/mp4;codecs="avc1.42E01E"'
-          }
-        ]
-      }
-    ];
-
-    const keySystemsMap = new Map([
-      ['widevine', 'com.widevine.alpha'],
-      ['playready', 'com.microsoft.playready'],
-      ['fairplay', 'com.apple.fps']
-    ]);
-
-    for (let [drm, keySys] of keySystemsMap) {
-      await navigator
-        .requestMediaKeySystemAccess(keySys, keySysConfig)
-        .then(() => {
-          drmSupportedRes.supportedDRMs.push(drm);
-        })
-        .catch(function (ex) {
-          KalturaPlayer._logger.debug(keySys + ' not supported (' + ex.name + ': ' + ex.message + ').');
-        });
-    }
-
-    drmSupportedRes.isDRMSupported = drmSupportedRes.supportedDRMs.length > 0;
-    return drmSupportedRes;
-  }
-
-  /**
-   * checks whether the browser supports HEVC codec or not
-   * @function _checkHEVCSupported
-   * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
-   * @returns {Promise<HEVCSupportedObject>} - The HEVC supported object.
-   * @private
-   */
-  async _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
-    let hevcSupportedRes: HEVCSupportedObject = {
-      isHEVCSupported: 'maybe',
-      isPowerEfficient: 'maybe'
-    };
-
-    if (!navigator.mediaCapabilities || !navigator.mediaCapabilities.decodingInfo) {
-      return hevcSupportedRes;
-    }
-
-    const configHvc = {
-      type: 'media-source',
-      video: {
-        contentType: 'video/mp4; codecs="hvc1.1.6.L150.90"',
-        width: hevcConfig?.width || 1920,
-        height: hevcConfig?.height || 1080,
-        bitrate: hevcConfig?.bitrate || 1200000,
-        framerate: hevcConfig?.framerate || 30
-      }
-    };
-
-    await navigator.mediaCapabilities
-      .decodingInfo(configHvc)
-      .then(result => {
-        hevcSupportedRes.isHEVCSupported = result.supported;
-        hevcSupportedRes.isPowerEfficient = result.powerEfficient;
-      })
-      .catch(() => {
-        hevcSupportedRes.isHEVCSupported = false;
-        hevcSupportedRes.isPowerEfficient = false;
-      });
-    return hevcSupportedRes;
+    const mediaCap = await getMediaCapabilities(hevcConfig);
+    return mediaCap;
+    // let mediaCapabilities;
+    // try {
+    //   KalturaPlayer._logger.debug('Starting to get media capabilities...');
+    //   const hevcSupported = await this._checkHEVCSupported(hevcConfig);
+    //   const drmSupported = await this._checkDRMSupported();
+    //   mediaCapabilities = Object.assign({}, hevcSupported, drmSupported);
+    //   KalturaPlayer._logger.debug('Finished getting media capabilities ', {mediaCapabilities});
+    //   return mediaCapabilities;
+    // } catch (ex) {
+    //   KalturaPlayer._logger.debug('There was a problem with getting the media capabilities, ', ex.message);
+    //   mediaCapabilities = {
+    //     isHEVCSupported: false,
+    //     isPowerEfficient: false,
+    //     isDRMSupported: false,
+    //     supportedDRMs: []
+    //   };
+    //   KalturaPlayer._logger.debug('Returning media capabilities defaults ', {mediaCapabilities});
+    //   return mediaCapabilities;
+    // }
   }
 }
 

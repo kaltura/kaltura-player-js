@@ -6,7 +6,7 @@ This API will give you the following information:
 
 - Whether the browser is supporting HEVC or not
 - Whether the browser is supporting DRM or not
-- Which DRMs, if any, are supported by the browser (widevine, fairplay, playready)
+- Which DRM schemas, if any, are supported by the browser (widevine, fairplay, playready)
 - Whether the playback of the media will be power efficient or not
 
 It is optional to pass an object parameter to the API, which will contain the HEVC configuration to test.
