@@ -1195,7 +1195,7 @@ class KalturaPlayer extends FakeEventTarget {
   /**
    * get the media capabilities
    * @function getMediaCapabilities
-   * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
+   * @param {HEVCConfigObject} hevcConfig - The HEVC configuration to check (optional).
    * @returns {Promise<MediaCapabilitiesObject>} - The media capabilities object.
    * @public
    */
@@ -1225,6 +1225,7 @@ class KalturaPlayer extends FakeEventTarget {
    * checks whether and which DRMs are supported by the browser
    * @function _checkDRMSupported
    * @returns {Promise<DRMSupportedObject>} - The DRM supported object.
+   * @private
    */
   async _checkDRMSupported(): Promise<DRMSupportedObject> {
     let drmSupportedRes: DRMSupportedObject = {
@@ -1273,6 +1274,7 @@ class KalturaPlayer extends FakeEventTarget {
    * @function _checkHEVCSupported
    * @param {HEVCConfigObject} hevcConfig - The HEVC configuration.
    * @returns {Promise<HEVCSupportedObject>} - The HEVC supported object.
+   * @private
    */
   async _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
     let hevcSupportedRes: HEVCSupportedObject = {
