@@ -1201,7 +1201,7 @@ class KalturaPlayer extends FakeEventTarget {
    * @public
    */
   async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
-    return await getMediaCapabilities(hevcConfig);
+    return getMediaCapabilities(hevcConfig);
   }
 }
 
