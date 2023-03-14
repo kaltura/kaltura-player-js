@@ -16,21 +16,21 @@ declare type HEVCConfigObject = {
 
 /**
  * @typedef {Object} HEVCSupportedObject
- * @property {boolean | string} isHEVCSupported - Specifies whether HEVC is supported by the browser, or "maybe" if there was a problem with getting the information
- * @property {boolean | string} isPowerEfficient - Specifies power efficiency, or "maybe" if there was a problem with getting the information
+ * @property {number} isHEVCSupported - Specifies HEVC supported option by the browser
+ * @property {number} isPowerEfficient - Specifies power efficiency supported option
  */
 declare type HEVCSupportedObject = {
-  isHEVCSupported: boolean | string,
-  isPowerEfficient: boolean | string
+  isHEVCSupported: number,
+  isPowerEfficient: number
 };
 
 /**
  * @typedef {Object} DRMSupportedObject
- * @property {boolean | string} isDRMSupported - Specifies whether DRM is supported by the browser, or "maybe" if there was a problem with getting the information
+ * @property {number} isDRMSupported - Specifies DRM supported option by the browser
  * @property {Array<string>} supportedDRMs - List of supported DRMs (optional values: widevine, playready, fairplay)
  */
 declare type DRMSupportedObject = {
-  isDRMSupported: boolean | string,
+  isDRMSupported: number,
   supportedDRMs: Array<string>
 };
 
@@ -38,3 +38,8 @@ declare type DRMSupportedObject = {
  * @typedef {Object} MediaCapabilitiesObject
  */
 declare type MediaCapabilitiesObject = HEVCSupportedObject & DRMSupportedObject;
+
+/**
+ * @typedef {Object.<string, number>} SupportedOptionsType
+ */
+declare type SupportedOptionsType = {[supportedOption: string]: number};

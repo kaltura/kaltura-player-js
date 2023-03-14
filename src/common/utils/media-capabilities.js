@@ -12,9 +12,19 @@ const WIDTH_DEFAULT: number = 1920;
 const HEIGHT_DEFAULT: number = 1080;
 const BITRATE_DEFAULT: number = 1200000;
 const FRAMERATE_DEFAULT: number = 30;
-const MAYBE: string = 'maybe';
 
 const _logger: any = getLogger('MediaCapabilities');
+
+/**
+ * enum for supported options
+ * @const
+ * @type {Object}
+ */
+const SupportedOptions: SupportedOptionsType = {
+  SUPPORTED: 1,
+  NOT_SUPPORTED: 0,
+  MAYBE_SUPPORTED: -1
+};
 
 /**
  * get the media capabilities
@@ -35,9 +45,9 @@ async function getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<Medi
   } catch (ex) {
     _logger.debug('There was a problem with getting the media capabilities, ', ex.message);
     mediaCapabilities = {
-      isHEVCSupported: false,
-      isPowerEfficient: false,
-      isDRMSupported: false,
+      isHEVCSupported: SupportedOptions.NOT_SUPPORTED,
+      isPowerEfficient: SupportedOptions.NOT_SUPPORTED,
+      isDRMSupported: SupportedOptions.NOT_SUPPORTED,
       supportedDRMs: []
     };
     _logger.debug('Returning media capabilities defaults ', {mediaCapabilities});
@@ -52,8 +62,8 @@ async function getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<Medi
  * @private
  */
 async function _checkDRMSupported(): Promise<DRMSupportedObject> {
-  let drmSupportedRes: DRMSupportedObject = {
-    isDRMSupported: MAYBE,
+  const drmSupportedRes: DRMSupportedObject = {
+    isDRMSupported: SupportedOptions.MAYBE_SUPPORTED,
     supportedDRMs: []
   };
 
@@ -85,7 +95,7 @@ async function _checkDRMSupported(): Promise<DRMSupportedObject> {
       });
   }
 
-  drmSupportedRes.isDRMSupported = drmSupportedRes.supportedDRMs.length > 0;
+  drmSupportedRes.isDRMSupported = drmSupportedRes.supportedDRMs.length > 0 ? SupportedOptions.SUPPORTED : SupportedOptions.NOT_SUPPORTED;
   return drmSupportedRes;
 }
 
@@ -97,9 +107,9 @@ async function _checkDRMSupported(): Promise<DRMSupportedObject> {
  * @private
  */
 async function _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
-  let hevcSupportedRes: HEVCSupportedObject = {
-    isHEVCSupported: MAYBE,
-    isPowerEfficient: MAYBE
+  const hevcSupportedRes: HEVCSupportedObject = {
+    isHEVCSupported: SupportedOptions.MAYBE_SUPPORTED,
+    isPowerEfficient: SupportedOptions.MAYBE_SUPPORTED
   };
 
   if (!navigator.mediaCapabilities || !navigator.mediaCapabilities.decodingInfo) {
@@ -120,12 +130,12 @@ async function _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCS
   await navigator.mediaCapabilities
     .decodingInfo(configHvc)
     .then(result => {
-      hevcSupportedRes.isHEVCSupported = result.supported;
-      hevcSupportedRes.isPowerEfficient = result.powerEfficient;
+      hevcSupportedRes.isHEVCSupported = result.supported ? SupportedOptions.SUPPORTED : SupportedOptions.NOT_SUPPORTED;
+      hevcSupportedRes.isPowerEfficient = result.powerEfficient ? SupportedOptions.SUPPORTED : SupportedOptions.NOT_SUPPORTED;
     })
     .catch(() => {
-      hevcSupportedRes.isHEVCSupported = false;
-      hevcSupportedRes.isPowerEfficient = false;
+      hevcSupportedRes.isHEVCSupported = SupportedOptions.NOT_SUPPORTED;
+      hevcSupportedRes.isPowerEfficient = SupportedOptions.NOT_SUPPORTED;
     });
   return hevcSupportedRes;
 }
