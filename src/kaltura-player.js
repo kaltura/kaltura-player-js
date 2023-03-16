@@ -43,6 +43,7 @@ import {PluginReadinessMiddleware} from './common/plugins/plugin-readiness-middl
 import {ThumbnailManager} from './common/thumbnail-manager';
 import {CuePointManager} from './common/cuepoint/cuepoint-manager';
 import {ServiceProvider} from './common/service-provider';
+import getMediaCapabilities from './common/utils/media-capabilities';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -1190,6 +1191,17 @@ class KalturaPlayer extends FakeEventTarget {
 
   get remotePlayerManager() {
     return this._remotePlayerManager;
+  }
+
+  /**
+   * get the media capabilities
+   * @function getMediaCapabilities
+   * @param {HEVCConfigObject} hevcConfig - The HEVC configuration to check (optional).
+   * @returns {Promise<MediaCapabilitiesObject>} - The media capabilities object.
+   * @public
+   */
+  async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
+    return getMediaCapabilities(hevcConfig);
   }
 }
 

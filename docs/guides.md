@@ -24,3 +24,4 @@
 - [Coding Guidelines](./coding-guidlines.md)
 - [Service Provider](./service-provider.md)
 - [VTT thumbnails](./adding-vtt-thumbnails.md)
+- [Media Capabilities](./media-capabilities.md)
