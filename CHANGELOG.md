@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.13.0](https://github.com/kaltura/kaltura-player-js/compare/v3.12.1...v3.13.0) (2023-03-22)
+
+
+### Features
+
+* update playkit-js-ui to [0.76.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.76.0) ([51b8e5e](https://github.com/kaltura/kaltura-player-js/commit/51b8e5ee43efd671ca23451272082701a86824a9))
+* **FEC-10883:** web media capabilities ([#609](https://github.com/kaltura/kaltura-player-js/issues/609)) ([ff5ec9e](https://github.com/kaltura/kaltura-player-js/commit/ff5ec9e190ddb491d8f37a9286bb75b68f086186))
+
+
+### Bug Fixes
+
+* update playkit-js to [0.82.1](https://github.com/kaltura/playkit-js/releases/tag/v0.82.1) ([b024f0e](https://github.com/kaltura/kaltura-player-js/commit/b024f0e5d36ae277509c1866ebe4ca25b29fc27b))
+* update playkit-js-dash to [1.33.1](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.33.1) ([dcf66b1](https://github.com/kaltura/kaltura-player-js/commit/dcf66b19bd086b1bf96fa2bf6b97da5987655e29))
+* update playkit-js-hls to [1.32.1](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.32.1) ([667d699](https://github.com/kaltura/kaltura-player-js/commit/667d699a6539591757a89ba89554cdeee06b7c28))
+
 ### [3.12.1](https://github.com/kaltura/kaltura-player-js/compare/v3.12.0...v3.12.1) (2023-02-28)
 
 
