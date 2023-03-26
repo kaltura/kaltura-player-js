@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.1](https://github.com/kaltura/kaltura-player-js/compare/v3.13.0...v3.13.1) (2023-03-26)
+
+
+### Bug Fixes
+
+* update playkit-js-ui to [0.76.1](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.76.1) ([d378871](https://github.com/kaltura/kaltura-player-js/commit/d3788712993a8523487d009e544935208a03e02d))
+
 ## [3.13.0](https://github.com/kaltura/kaltura-player-js/compare/v3.12.1...v3.13.0) (2023-03-22)
 
 
