@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "3.12.1",
+  "version": "3.12.2-player-3.12.1-shaka-debug-patch.0",
   "keywords": [
     "kaltura",
     "player",
@@ -35,8 +35,8 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "publish": "git push --follow-tags --no-verify origin master",
-    "release": "standard-version",
+    "publish": "git push --follow-tags --no-verify origin player-3.12.1-shaka-debug-patch",
+    "release": "standard-version --prerelease player-3.12.1-shaka-debug-patch",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
     "watch:ovp": "sh ./scripts/job.sh watch ovp"
