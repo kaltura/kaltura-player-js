@@ -45,9 +45,7 @@ export class CuePointManager {
     let cue = null;
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.some(track => {
-      if (track.cues) {
-        cue = track.cues.getCueById(id);
-      }
+      cue = track.cues.getCueById(id);
       return cue;
     });
     return cue;
