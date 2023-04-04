@@ -15,7 +15,7 @@ export class CuePointManager {
   }
 
   _getMetadataTracks(): Array<TextTrack> {
-    return this._player.getNativeTextTracks().filter(track => track.kind === TextTrack.KIND.METADATA);
+    return this._player.getNativeTextTracks().filter(track => track.kind === TextTrack.KIND.METADATA && track.cues);
   }
 
   _createTextTrackCue(data: CuePoint): TextTrackCue {
