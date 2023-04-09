@@ -61,5 +61,6 @@ declare namespace KalturaPlayerTypes {
     getTracks: (trackType: string) => Array<any>;
     Track: Record<string, string>;
     MediaType: Record<string, string>;
+    isImage: () => boolean;
   }
 }
