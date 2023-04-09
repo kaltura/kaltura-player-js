@@ -1148,10 +1148,9 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playkit-js/playkit-js-dash@1.33.1":
+"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash#ad2cad59e16275ec14e3dc84053a8aea4d5738bd":
   version "1.33.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.33.1.tgz#e8a3d4991097e7038636cfd462781bedcf31986d"
-  integrity sha512-dvHgib/IqNhR5WPP1fJWcT68PZ5ojS3cuMF5a62IZ4uBDZDd6yasGOXe9PzwjtiOuEDAjShU6A0eW726DWq+mQ==
+  resolved "https://github.com/kaltura/playkit-js-dash#ad2cad59e16275ec14e3dc84053a8aea4d5738bd"
 
 "@playkit-js/playkit-js-hls@1.32.1":
   version "1.32.1"
@@ -9416,10 +9415,9 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-shaka-player@4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.3.5.tgz#304d60ad867fb7a0780b850b32a9614296b842db"
-  integrity sha512-WkqvHm8QHOsQ71d/qoc2Wa6Z5rBrG3Zgsc6ho9I9e8Xwa0io+MeREgqBuG0z6qoXK55sTImipFhDoERrkmDdUg==
+"shaka-player@https://github.com/SivanA-Kaltura/shaka-player#264193a8fbc736d37436e023b0ee669853a7e14a":
+  version "4.3.0"
+  resolved "https://github.com/SivanA-Kaltura/shaka-player#264193a8fbc736d37436e023b0ee669853a7e14a"
   dependencies:
     eme-encryption-scheme-polyfill "^2.1.1"
 
