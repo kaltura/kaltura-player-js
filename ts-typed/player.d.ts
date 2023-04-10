@@ -12,6 +12,7 @@ declare namespace KalturaPlayerTypes {
     play(): void;
     isLive: () => boolean;
     isDvr: () => boolean;
+    isImage: () => boolean;
     dispatchEvent(event: FakeEvent): boolean;
     seekToLiveEdge(): void;
     destroy(): void;
@@ -46,9 +47,7 @@ declare namespace KalturaPlayerTypes {
     sources: KalturaPlayerTypes.Sources;
     src?: string;
     poster?: string;
-    getThumbnail: (
-      time: number
-    ) => {
+    getThumbnail: (time: number) => {
       height: number;
       url: string;
       width: number;
@@ -61,6 +60,5 @@ declare namespace KalturaPlayerTypes {
     getTracks: (trackType: string) => Array<any>;
     Track: Record<string, string>;
     MediaType: Record<string, string>;
-    isImage: () => boolean;
   }
 }
