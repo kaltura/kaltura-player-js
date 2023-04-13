@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.14.0-is-startover-patch.1](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1...v3.14.0-is-startover-patch.1) (2023-04-13)
+
+
+### Features
+
+* **FEC-13082:** upgrade shaka player v4.3.5 ([#610](https://github.com/kaltura/kaltura-player-js/issues/610)) ([1e9468e](https://github.com/kaltura/kaltura-player-js/commit/1e9468e2b7f326739aa09ce82b03bf27208cf23f))
+* **FEC-13083:** upgrade hls.js 1.3.5 ([#611](https://github.com/kaltura/kaltura-player-js/issues/611)) ([06b3897](https://github.com/kaltura/kaltura-player-js/commit/06b3897cce17c50b61dc2e1cf733a59edd9d1015))
+
+
+### Bug Fixes
+
+* **FEC-13076:** Safari track.cues issue ([#612](https://github.com/kaltura/kaltura-player-js/issues/612)) ([963a8d2](https://github.com/kaltura/kaltura-player-js/commit/963a8d27ded4f4470b992a6f9d4e57ca29229536))
+
+## [3.14.0-is-startover-patch.0](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1...v3.14.0-is-startover-patch.0) (2023-04-13)
+
+
+### Features
+
+* **FEC-13082:** upgrade shaka player v4.3.5 ([#610](https://github.com/kaltura/kaltura-player-js/issues/610)) ([1e9468e](https://github.com/kaltura/kaltura-player-js/commit/1e9468e2b7f326739aa09ce82b03bf27208cf23f))
+* **FEC-13083:** upgrade hls.js 1.3.5 ([#611](https://github.com/kaltura/kaltura-player-js/issues/611)) ([06b3897](https://github.com/kaltura/kaltura-player-js/commit/06b3897cce17c50b61dc2e1cf733a59edd9d1015))
+
+
+### Bug Fixes
+
+* **FEC-13076:** Safari track.cues issue ([#612](https://github.com/kaltura/kaltura-player-js/issues/612)) ([963a8d2](https://github.com/kaltura/kaltura-player-js/commit/963a8d27ded4f4470b992a6f9d4e57ca29229536))
+
 ### [3.13.1](https://github.com/kaltura/kaltura-player-js/compare/v3.13.0...v3.13.1) (2023-03-26)
 
 
