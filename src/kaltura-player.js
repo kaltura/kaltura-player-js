@@ -6,7 +6,8 @@ import {
   hasImageSource,
   maybeSetStreamPriority,
   mergeProviderPluginsConfig,
-  supportLegacyOptions
+  supportLegacyOptions,
+  getDefaultStartOverOptions
 } from './common/utils/setup-helpers';
 import {addKalturaParams} from './common/utils/kaltura-params';
 import {ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE} from './common/utils/viewability-manager';
@@ -192,6 +193,7 @@ class KalturaPlayer extends FakeEventTarget {
     if (playback) {
       playerConfig.playback = playback;
     }
+    Utils.Object.mergeDeep(playerConfig.playback, this.configure(getDefaultStartOverOptions(mediaConfig)));
     this.configure({...playerConfig, sources});
   }
 
