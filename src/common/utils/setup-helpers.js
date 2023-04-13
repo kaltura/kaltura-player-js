@@ -502,6 +502,23 @@ function configureDAIDefaultOptions(options: KPOptionsObject): void {
 }
 
 /**
+ * Sets default config option for is start over
+ * @private
+ * @param {KPMediaConfig} mediaConfig - kaltura player sources configuration
+ * @returns {void}
+ */
+function getDefaultStartOverOptions(mediaConfig: KPMediaConfig) {
+  const isStartOverType = Utils.Object.getPropertyPath(mediaConfig, 'sources.metadata.contextType')?.toUpperCase() === 'START_OVER';
+  return {
+    sources: {
+      options: {
+        isStartOverType
+      }
+    }
+  };
+}
+
+/**
  * Sets default config option for bumper plugin when ima-dai enabled
  * @private
  * @param {KPOptionsObject} options - kaltura player options
@@ -766,5 +783,6 @@ export {
   hasYoutubeSource,
   hasImageSource,
   mergeProviderPluginsConfig,
-  getServerUIConf
+  getServerUIConf,
+  getDefaultStartOverOptions
 };
