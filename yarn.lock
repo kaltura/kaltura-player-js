@@ -1167,10 +1167,9 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.82.1":
+"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js#036891fe3cae4f93d999986b74da320bc5d56f09":
   version "0.82.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.82.1.tgz#3e821ac5eb979eaefa9a72bf85c792fb39796a12"
-  integrity sha512-b+BRGkGwXgrhfKMwwtu1vPfpLVIUxb+w8GHgpGd0cx16quF96vMF51pDz1bvFdlb49i/WWynmnxehhQX5JhJUw==
+  resolved "https://github.com/kaltura/playkit-js#036891fe3cae4f93d999986b74da320bc5d56f09"
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
