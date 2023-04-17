@@ -435,9 +435,17 @@ The configuration uses the following structure:
 >
 > > #### KPViewabilityConfigObject
 > >
+> > The viewability feature is coupled with the autoplay/autopause configs
+
+> > If the autoplay config is set to `autoplay: inview` the player will only play when it gets into the view
+
+> > If the autopause config is set to `autopause: true` the palyer will pause the playback when it gets out of view
+
+> > If floating player is configured, it will be used to float the player when it gets out of the view and it gets back to the place when you go into original viewport of player.  
+
 > > ##### Properties
 > >
-> > - `observedThresholds` **[Array][1]&lt;[number][2]>** An array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed.
+> > - `observedThresholds` **[Array][1]&lt;[number][2]>** An array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed. It will fire events when it meets thresholds and the default player threshold is used for defining when to take an action.
 > > - `playerThreshold` **[number][2]** The minimal viewable percentage of the player to consider as visible.
 
 ## Configuration Priority
