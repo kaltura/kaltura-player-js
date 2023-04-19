@@ -1148,9 +1148,9 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash#32a8308d5636242178e1c8f75428c0747fa5fe04":
+"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash#4e6a3872bd15ac29e5db68a46794aab3371f75f3":
   version "1.33.1"
-  resolved "https://github.com/kaltura/playkit-js-dash#32a8308d5636242178e1c8f75428c0747fa5fe04"
+  resolved "https://github.com/kaltura/playkit-js-dash#4e6a3872bd15ac29e5db68a46794aab3371f75f3"
 
 "@playkit-js/playkit-js-hls@1.32.1":
   version "1.32.1"
