@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.14.0-is-startover-patch.7](https://github.com/kaltura/kaltura-player-js/compare/v3.14.0-is-startover-patch.6...v3.14.0-is-startover-patch.7) (2023-04-19)
+
 ## [3.14.0-is-startover-patch.6](https://github.com/kaltura/kaltura-player-js/compare/v3.14.0-is-startover-patch.5...v3.14.0-is-startover-patch.6) (2023-04-18)
 
 ## [3.14.0-is-startover-patch.5](https://github.com/kaltura/kaltura-player-js/compare/v3.14.0-is-startover-patch.4...v3.14.0-is-startover-patch.5) (2023-04-18)
