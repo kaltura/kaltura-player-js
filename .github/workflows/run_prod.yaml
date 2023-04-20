@@ -1,0 +1,24 @@
+## Prod CI
+name: Prod
+run-name: Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prod:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_cicd.yaml@v1.0.0
+    secrets:
+      PLAYER_CENTRAL_ACCOUNT_ID: ${{ secrets.PLAYER_CENTRAL_ACCOUNT_ID }}
+      PLAYER_SERVICES_ACCOUNT_ID: ${{ secrets.PLAYER_SERVICES_ACCOUNT_ID }}
+      PLAYER_S3_BUCKET_DEPLOYMENT: ${{ secrets.PLAYER_S3_BUCKET_DEPLOYMENT }}
+      PLAYER_S3_BUCKET_APPS: ${{ secrets.PLAYER_S3_BUCKET_APPS }}
+      PLAYER_NPM_TOKEN: ${{ secrets.PLAYER_NPM_TOKEN }}
+      PLAYER_LAMBDA_NAME: ${{ secrets.PLAYER_LAMBDA_NAME }}
+      PLAYER_MSTEAMS_WEBHOOK: ${{ secrets.PLAYER_MSTEAMS_WEBHOOK }}
+      PLAYER_GITHUB_BOT_TOKEN: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
+    with:
+      type: "plugin"
+      env: "prod"
+      schema-type: "playerV3Versions"
+      tests-yarn-run-to-execute: 'eslint flow test'
