@@ -19,7 +19,8 @@
   "types": "types.d.ts",
   "scripts": {
     "build:ott": "sh ./scripts/job.sh build ott",
-    "build:ovp": "sh scripts/job.sh build ovp",
+    "build:ovp": "sh ./scripts/job.sh build ovp",
+    "build": "sh ./scripts/job.sh build ott && sh ./scripts/job.sh build ovp",
     "clean": "rm -rf ./dist",
     "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' --no-verify || exit 0)",
     "dev:ott": "sh ./scripts/job.sh dev ott",

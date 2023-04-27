@@ -22,8 +22,7 @@ jobs:
       PLAYER_GITHUB_BOT_TOKEN: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
     with:
       type: "player"
-      player-type: "ovp"
-      #player-type: "tv"
+      player-type: "ovp tv"
       stage: "canary"
       schema-type: "playerV3Versions"
       tests-yarn-run-to-execute: 'eslint flow test'
