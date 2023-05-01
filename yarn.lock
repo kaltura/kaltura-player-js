@@ -9415,9 +9415,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-"shaka-player@https://github.com/SivanA-Kaltura/shaka-player#264193a8fbc736d37436e023b0ee669853a7e14a":
-  version "4.3.0"
-  resolved "https://github.com/SivanA-Kaltura/shaka-player#264193a8fbc736d37436e023b0ee669853a7e14a"
+shaka-player@4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.3.6.tgz#9cc99f7918bb8da4b4eadb9215e781de89220f3a"
+  integrity sha512-IX0rJY9NZyENcFH3MDf50cpOLOBsWWdaX8D3Fy0kSl7j1D1I+sXrzOQ2LxFgwmlqbIX3XrHzY9bxiWapV3ZjEg==
   dependencies:
     eme-encryption-scheme-polyfill "^2.1.1"
 
