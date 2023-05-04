@@ -1,6 +1,6 @@
 # Kaltura Player JS Platform - Cloud TV and OVP Media Players Based on the [PlayKit JS Player]
 
-[![Build Status](https://travis-ci.org/kaltura/kaltura-player-js.svg?branch=master)](https://travis-ci.org/kaltura/kaltura-player-js)
+[![Build Status](https://github.com/kaltura/kaltura/kaltura-player-js/actions/workflows/run_canary_full_flow.yaml/badge.svg)](https://github.com/kaltura/kaltura/kaltura-player-js/actions/workflows/run_canary_full_flow.yaml)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 The Kaltura Player utilizes a highly modular approach for creating a powerful media player.
