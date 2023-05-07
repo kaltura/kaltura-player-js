@@ -1,5 +1,5 @@
 {
-  "name": "kaltura-player-js",
+  "name": "@playkit-js/kaltura-player-js",
   "version": "3.14.0",
   "keywords": [
     "kaltura",
@@ -19,7 +19,8 @@
   "types": "types.d.ts",
   "scripts": {
     "build:ott": "sh ./scripts/job.sh build ott",
-    "build:ovp": "sh scripts/job.sh build ovp",
+    "build:ovp": "sh ./scripts/job.sh build ovp",
+    "build": "sh ./scripts/job.sh build ott && sh ./scripts/job.sh build ovp",
     "clean": "rm -rf ./dist",
     "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' --no-verify || exit 0)",
     "dev:ott": "sh ./scripts/job.sh dev ott",
@@ -35,7 +36,7 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "publish": "git push --follow-tags --no-verify origin master",
+    "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
@@ -121,6 +122,9 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "envManager": {
     "devMode": {},

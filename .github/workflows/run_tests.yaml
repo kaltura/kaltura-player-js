@@ -1,0 +1,24 @@
+## CI - Player And Plugin Tests
+name: Player And Plugin Tests
+run-name: Player And Plugin Tests
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  running-tests:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@v1.0.0
+    with:
+      yarn-run-to-execute: 'eslint flow test'
+  notification:
+    if: always()
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/notification.yaml@v1.0.0
+    needs: running-tests
+    secrets:
+      PLAYER_MSTEAMS_WEBHOOK: ${{ secrets.PLAYER_MSTEAMS_WEBHOOK }}
+    with:
+      failure-status: ${{ contains(needs.*.result, 'failure') }}
+      cancelled-status: ${{ contains(needs.*.result, 'cancelled') }}
+      is-test: 'true'
