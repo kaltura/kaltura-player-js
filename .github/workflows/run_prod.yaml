@@ -18,7 +18,10 @@ jobs:
       PLAYER_MSTEAMS_WEBHOOK: ${{ secrets.PLAYER_MSTEAMS_WEBHOOK }}
       PLAYER_GITHUB_BOT_TOKEN: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
     with:
-      type: "plugin"
+      type: "player"
       env: "prod"
+      player-type: "ovp tv"
       schema-type: "playerV3Versions"
       tests-yarn-run-to-execute: 'eslint flow test'
+      yarn-upgrade-list: "@playkit-js/playkit-js @playkit-js/playkit-js-dash @playkit-js/playkit-js-hls @playkit-js/playkit-js-ui @playkit-js/playkit-js-providers" 
+      
