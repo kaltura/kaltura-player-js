@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/kaltura-player-js",
-  "version": "3.14.1",
+  "version": "3.14.2",
   "keywords": [
     "kaltura",
     "player",
@@ -62,12 +62,12 @@
     "@playkit-js/playkit-js": "0.82.1",
     "@playkit-js/playkit-js-dash": "1.34.0",
     "@playkit-js/playkit-js-hls": "1.32.2",
-    "@playkit-js/playkit-js-ui": "0.77.0",
     "@playkit-js/playkit-js-providers": "2.39.2",
+    "@playkit-js/playkit-js-ui": "0.77.0",
     "@types/preact-i18n": "^2.3.1",
+    "hls.js": "1.3.5",
     "intersection-observer": "^0.12.0",
     "proxy-polyfill": "^0.3.0",
-    "hls.js": "1.3.5",
     "shaka-player": "4.3.5"
   },
   "devDependencies": {
