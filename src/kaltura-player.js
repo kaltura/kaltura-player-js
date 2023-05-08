@@ -276,7 +276,7 @@ class KalturaPlayer extends FakeEventTarget {
   }
 
   /**
-   * returns the media drm info.
+   * Returns the media drm info.
    * @returns {PKDrmDataObject} - the drm info
    * @instance
    * @memberof KalturaPlayer
