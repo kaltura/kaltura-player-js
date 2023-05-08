@@ -1158,6 +1158,11 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.2.tgz#ee9e17888d0764c7728064127d1588ccf3eff854"
   integrity sha512-9xc9Vl1eoMlZTpEhNH/lVg66u56zG+J2jBSsFXVDiSvTv5Qgs7t8RiB04QEl9PF9b2VFh8ANbvoCbIdd3HnYjQ==
 
+"@playkit-js/playkit-js-providers@2.39.2":
+  version "2.39.2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.39.2.tgz#b00b611c2094d7b9024ba0477e412d6c064354e3"
+  integrity sha512-BdM9qGhe1EAzBgQPHwlqhgwiGFAiOe4yPmuCVjRsgXm+fWNJAYJAUmzujfwatvGAkXUG/MH4gbWdZyL/Qo1yUg==
+
 "@playkit-js/playkit-js-ui@0.77.0":
   version "0.77.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.77.0.tgz#e6e9b1533cc60496a9271dca163118e56b561647"
@@ -8310,10 +8315,6 @@ pkg-dir@^5.0.0:
     json-parser "^1.1.5"
     prompt "^1.0.0"
     shelljs "^0.7.8"
-
-"playkit-js-providers@https://github.com/kaltura/playkit-js-providers.git#v2.39.0":
-  version "2.39.0"
-  resolved "https://github.com/kaltura/playkit-js-providers.git#ddaac7ae611eab35ad33249061bbca8f3e4fc787"
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"
