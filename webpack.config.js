@@ -103,7 +103,8 @@ function createConfig(env, argv, target) {
         'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
         'hls.js': path.resolve('./node_modules/hls.js/dist/hls.min.js'),
         poster: path.resolve(`./src/${playerType}/poster`),
-        'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`)
+        'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`),
+        'shaka-player': path.resolve('./node_modules/shaka-player/dist/shaka-player.compiled.debug.js')
       },
       modules: [path.resolve(__dirname, 'src'), 'node_modules']
     }
