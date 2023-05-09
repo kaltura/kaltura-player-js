@@ -5,7 +5,7 @@ run-name: Canary Full Flow
 on:
   push:
     branches:
-      - master
+      - patch-kux
 
 jobs:
   canary-full-flow:
