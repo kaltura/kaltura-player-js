@@ -5,9 +5,7 @@
   <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no'>
   <title>Title</title>
   <link rel='stylesheet' type='text/css' href='./style.css' />
-  <!-- <script src='./kaltura-ovp-player.js' type='text/javascript'></script> -->
-
-  <script src="https://cdnapisec.kaltura.com/p/2748741/sp/274874100/embedPlaykitJs/uiconf_id/52125042/partner_id/2748741/versions/kaltura-tv-player=3.13.1-test-shaka-9-4-23.7"></script>
+  <script src='./kaltura-ovp-player.js' type='text/javascript'></script>
 </head>
 <body>
 <div id='player-placeholder'></div>
@@ -22,18 +20,18 @@
 			}
 		},
 		"streamPriority": [
-        // {
-        //   "engine": "html5",
-        //   "format": "hls"
-        // },
+        {
+          "engine": "html5",
+          "format": "hls"
+        },
         {
           "engine": "html5",
           "format": "dash"
         },
-        // {
-        //   "engine": "html5",
-        //   "format": "progressive"
-        // }
+        {
+          "engine": "html5",
+          "format": "progressive"
+        }
 		  ]
 	  },
     provider: {
@@ -47,17 +45,7 @@
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
-    
-    //kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
-    kalturaPlayer.setMedia({
-      sources: {
-        dash: [{
-          url: "https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths/dash.mpd",
-          mimetype: "application/dash+xml"
-        }]
-      }
-    });
-
+    kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
   } catch (e) {
     console.error(e.message);
   }
