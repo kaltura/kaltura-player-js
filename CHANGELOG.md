@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.14.2 (2023-05-08)
+
+### 3.14.1 (2023-05-07)
+
+## [3.14.0](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1...v3.14.0) (2023-04-19)
+
+
+### Features
+
+* update playkit-js-dash to [1.34.0](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.34.0) ([ff67075](https://github.com/kaltura/kaltura-player-js/commit/ff67075852ceb9731546a6e3c15c93dbe855f20b))
+* update playkit-js-hls to [1.32.2](https://github.com/kaltura/playkit-js-hls/releases/tag/v1.32.2) ([83ff47c](https://github.com/kaltura/kaltura-player-js/commit/83ff47c4a211f3a13205052a78c518e46b66d493))
+* update playkit-js-ui to [0.77.0](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.77.0) ([f6291f6](https://github.com/kaltura/kaltura-player-js/commit/f6291f6d24013fde74a4ac7ba7aa4053f536f352))
+* **FEC-12862:** Download Button Plugin in v7 Player that respects Kaltura account security configurations ([182dc1d](https://github.com/kaltura/kaltura-player-js/commit/182dc1d75a22d2ad76865bb7de5710997045bae7))
+* **FEC-13082:** upgrade shaka player v4.3.5 ([#610](https://github.com/kaltura/kaltura-player-js/issues/610)) ([1e9468e](https://github.com/kaltura/kaltura-player-js/commit/1e9468e2b7f326739aa09ce82b03bf27208cf23f))
+* **FEC-13083:** upgrade hls.js 1.3.5 ([#611](https://github.com/kaltura/kaltura-player-js/issues/611)) ([06b3897](https://github.com/kaltura/kaltura-player-js/commit/06b3897cce17c50b61dc2e1cf733a59edd9d1015))
+
+
+### Bug Fixes
+
+* **FEC-13076:** Safari track.cues issue ([#612](https://github.com/kaltura/kaltura-player-js/issues/612)) ([963a8d2](https://github.com/kaltura/kaltura-player-js/commit/963a8d27ded4f4470b992a6f9d4e57ca29229536))
+
 ### [3.13.1](https://github.com/kaltura/kaltura-player-js/compare/v3.13.0...v3.13.1) (2023-03-26)
 
 

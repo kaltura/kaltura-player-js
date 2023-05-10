@@ -1,6 +1,6 @@
 {
-  "name": "kaltura-player-js",
-  "version": "3.13.1",
+  "name": "@playkit-js/kaltura-player-js",
+  "version": "3.14.2",
   "keywords": [
     "kaltura",
     "player",
@@ -19,7 +19,8 @@
   "types": "types.d.ts",
   "scripts": {
     "build:ott": "sh ./scripts/job.sh build ott",
-    "build:ovp": "sh scripts/job.sh build ovp",
+    "build:ovp": "sh ./scripts/job.sh build ovp",
+    "build": "sh ./scripts/job.sh build ott && sh ./scripts/job.sh build ovp",
     "clean": "rm -rf ./dist",
     "commit:dist": "git add --force --all dist && (git commit -m 'chore: update dist' --no-verify || exit 0)",
     "dev:ott": "sh ./scripts/job.sh dev ott",
@@ -35,7 +36,7 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "publish": "git push --follow-tags --no-verify origin master",
+    "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
@@ -59,13 +60,13 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@playkit-js/playkit-js": "0.82.1",
-    "@playkit-js/playkit-js-dash": "1.33.1",
-    "@playkit-js/playkit-js-hls": "1.32.1",
-    "@playkit-js/playkit-js-ui": "0.76.1",
+    "@playkit-js/playkit-js-dash": "1.34.0",
+    "@playkit-js/playkit-js-hls": "1.32.2",
+    "@playkit-js/playkit-js-providers": "2.39.2",
+    "@playkit-js/playkit-js-ui": "0.77.0",
     "@types/preact-i18n": "^2.3.1",
     "hls.js": "1.3.5",
     "intersection-observer": "^0.12.0",
-    "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.39.0",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "4.3.5"
   },
@@ -121,6 +122,9 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "envManager": {
     "devMode": {},

@@ -64,6 +64,7 @@ export class KalturaPlayer {
   public get ui(): UIWrapper;
   public get Event(): EventTypes;
   public get paused(): boolean;
+  public get sources(): Sources;
   public configure(config: Object): void;
   public ready(): Promise<void>;
   public load(): void;
@@ -102,6 +103,38 @@ export interface EventTypes {
   Cast: {[event: string]: string};
   Playlist: {[event: string]: string};
 }
+
+export interface Sources {
+  hls: any[];
+  dash: any[];
+  progressive: any[];
+  image: any[];
+  captions?: any[];
+  thumbnails?: any;
+  options: any;
+  type: string;
+  dvr: boolean;
+  metadata: SourcesMetadata;
+  id?: string;
+  poster?: string;
+  duration?: number;
+  startTime?: number;
+  vr: Object | null;
+  imageSourceOptions?: any;
+}
+
+export interface SourcesMetadata {
+  entryId?: string;
+  name?: string;
+  description?: string;
+  mediaType?: string,
+  metas?: Object;
+  tags?: Object;
+  epgId?: string;
+  recordingId?: string
+}
+
+
 
 declare module PlaykitUI {
   export class EventManager {
