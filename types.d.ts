@@ -2,9 +2,9 @@ import {Store} from 'redux';
 import * as preactLib from 'preact';
 import * as preacti18nLib from 'preact-i18n';
 import * as reduxLib from 'react-redux';
-import {BasePlugin} from 'kaltura-player-js';
+import {BasePlugin} from '@playkit-js/kaltura-player-js';
 
-declare module 'kaltura-player-js' {
+declare module '@playkit-js/kaltura-player-js' {
   export function setup(config: any): KalturaPlayer;
   export const ui: typeof PlaykitUI;
   export class FakeEvent implements CustomEvent {
