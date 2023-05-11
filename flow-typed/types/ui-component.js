@@ -10,4 +10,4 @@ declare type KPUIRemoveComponent = {
   area: string
 };
 
-declare type KPUIComponent = KPUIAddComponent | KPUIRemoveComponent;
+declare type KPUIComponent = KPUIAddComponent & KPUIRemoveComponent;
