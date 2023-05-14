@@ -11,7 +11,7 @@ jobs:
   running-tests:
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@v1.0.0
     with:
-      yarn-run-to-execute: 'eslint flow test'
+      yarn-run-to-execute: 'build eslint flow test'
   notification:
     if: always()
     uses: kaltura/ovp-pipelines-pub/.github/workflows/notification.yaml@v1.0.0
