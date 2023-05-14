@@ -25,5 +25,5 @@ jobs:
       player-type: "ovp tv"
       stage: "canary"
       schema-type: "playerV3Versions"
-      tests-yarn-run-to-execute: 'eslint flow test'
+      tests-yarn-run-to-execute: 'build eslint flow test'
       yarn-upgrade-list: "@playkit-js/playkit-js@canary @playkit-js/playkit-js-dash@canary @playkit-js/playkit-js-hls@canary @playkit-js/playkit-js-ui@canary @playkit-js/playkit-js-providers@canary"
