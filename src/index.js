@@ -6,7 +6,7 @@ import * as core from '@playkit-js/playkit-js';
 // Import ui
 import * as ui from '@playkit-js/playkit-js-ui';
 // Import provider
-import * as providers from 'playkit-js-providers';
+import * as providers from '@playkit-js/playkit-js-providers';
 // Import media source adapters
 import '@playkit-js/playkit-js-hls';
 import '@playkit-js/playkit-js-dash';
