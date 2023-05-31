@@ -173,7 +173,7 @@ class KalturaPlayer extends FakeEventTarget {
     this.reset(true);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     //merge the current sources from player to keep the sources passed from constructor earlier
-    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
+    const sources = Utils.Object.mergeDeep({}, this._localPlayer.sources, playerConfig.sources);
     delete playerConfig.sources;
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     playerConfig.plugins = playerConfig.plugins || {};
