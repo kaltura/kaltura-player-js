@@ -1,6 +1,6 @@
 // @flow
 import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
-import {Provider} from 'playkit-js-providers';
+import {Provider} from '@playkit-js/playkit-js-providers';
 import {
   hasYoutubeSource,
   hasImageSource,
