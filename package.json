@@ -1,6 +1,6 @@
 {
   "name": "kaltura-player-js",
-  "version": "3.13.1-test-shaka-9-4-23.8",
+  "version": "3.13.1-test-shaka-9-4-23.9",
   "keywords": [
     "kaltura",
     "player",
@@ -67,7 +67,7 @@
     "intersection-observer": "^0.12.0",
     "playkit-js-providers": "https://github.com/kaltura/playkit-js-providers.git#v2.39.0",
     "proxy-polyfill": "^0.3.0",
-    "shaka-player": "https://github.com/SivanA-Kaltura/shaka-player#4d24aa3b804948c29272961ca384463b09290d62"
+    "shaka-player": "https://github.com/SivanA-Kaltura/shaka-player#4d60824b0ea71628c695352a6366b7356e8d9eb3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
