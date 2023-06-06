@@ -68,7 +68,6 @@ function createConfig(env, argv, target) {
       libraryTarget: target,
       devtoolModuleFilenameTemplate: './kaltura-player/[resource-path]'
     },
-    devtool: 'source-map',
     module: {
       rules: [
         {
