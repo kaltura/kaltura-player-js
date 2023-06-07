@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.14.5 (2023-06-07)
+
+
+### Bug Fixes
+
+* update playkit-js-providers to [2.39.4](https://github.com/kaltura/playkit-js-providers/releases/tag/v2.39.4) ([16cbfa8](https://github.com/kaltura/kaltura-player-js/commit/16cbfa8570dfb30df137e804d9e7cd7588fd261b))
+
 ### 3.14.4 (2023-05-21)
 
 
