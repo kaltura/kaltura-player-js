@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.1-test-shaka-9-4-23.13](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1-test-shaka-9-4-23.11...v3.13.1-test-shaka-9-4-23.13) (2023-06-07)
+
+### [3.13.1-test-shaka-9-4-23.12](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1-test-shaka-9-4-23.11...v3.13.1-test-shaka-9-4-23.12) (2023-06-07)
+
 ### [3.13.1-test-shaka-9-4-23.11](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1-test-shaka-9-4-23.10...v3.13.1-test-shaka-9-4-23.11) (2023-06-06)
 
 ### [3.13.1-test-shaka-9-4-23.10](https://github.com/kaltura/kaltura-player-js/compare/v3.13.1-test-shaka-9-4-23.9...v3.13.1-test-shaka-9-4-23.10) (2023-06-05)
