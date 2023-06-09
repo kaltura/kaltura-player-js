@@ -421,7 +421,7 @@ The configuration uses the following structure:
 
 > ### config.cast
 >
-> ##### Type: [CastConfigObject](https://github.com/kaltura/playkit-js-cast-sender/blob/master/docs/configuration-api.md#castconfigobject)
+> ##### Type: [CastConfigObject](https://github.com/kaltura/playkit-js-cast-sender/blob/master/docs/api.md#castconfigobject)
 >
 > ##### Description: Defines the cast configuration.
 
