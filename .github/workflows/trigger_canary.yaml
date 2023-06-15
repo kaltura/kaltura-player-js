@@ -1,5 +1,5 @@
 ## Trigger Canary Release
-name: Canary Release
+name: Manual Trigger Canary Release
 
 on:
   workflow_dispatch:
