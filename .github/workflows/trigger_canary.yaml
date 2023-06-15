@@ -1,5 +1,5 @@
 ## Trigger Canary Release
-name: Canary Release
+name: Manual Trigger Canary Release
 
 on:
   workflow_dispatch:
@@ -20,8 +20,8 @@ jobs:
           token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
       - name: Setup Git
         run: |
-          git config --global user.email "ovp.cp@kaltura.com"
-          git config --global user.name "ovp-github-actions"
+          git config --global user.email ${{ secrets.PLAYER_BOT_EMAIL }}
+          git config --global user.name ${{ secrets.PLAYER_BOT_USER }}
       - name: Commit and Push
         run: |
             set +e
