@@ -1,40 +1,31 @@
 ## Trigger Canary CI
 name: Canary release
-run-name: Canary release
 
 on:
   workflow_dispatch:
     inputs:
-      release_type:
-        type: choice
+      repo_name:
+        default: master
         required: true
-        description: 'Release Type'
-        options:
-          - Canary
-
-env:
-  PLAYER_GITHUB_BOT_TOKEN: '${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}'
 
 jobs:
-  canary-release:
-    environment: Canary
+  trigger_canary:
+
     runs-on: ubuntu-latest
 
-  steps:
-      - name: Checkout repo and clone to CI workspace
+    steps:
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: '0'
-
-      - name: Setup Git And Push
-      with:
-        github_token: '${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}'
-      run: |
-        git config --global user.email "ovp.cp@kaltura.com"
-        git config --global user.name "ovp-github-actions"
-        set +e
-        git commit --no-verify --allow-empty -m "chore: trigger build"
-        set -e
-        git push origin HEAD:master
-
+          token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
+      - name: Setup Git
+        run: |
+          git config --global user.email "ovp.cp@kaltura.com"
+          git config --global user.name "ovp-github-actions"
+      - name: Commit and Push
+        run: |
+            set +e
+            git commit --no-verify --allow-empty -m "chore: trigger build"
+            set -e
+            git push origin HEAD:master
 
