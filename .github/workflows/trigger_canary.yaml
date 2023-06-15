@@ -1,0 +1,31 @@
+## Trigger Canary Release
+name: Canary Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        default: master
+        required: true
+
+jobs:
+  trigger_canary:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
+      - name: Setup Git
+        run: |
+          git config --global user.email "ovp.cp@kaltura.com"
+          git config --global user.name "ovp-github-actions"
+      - name: Commit and Push
+        run: |
+            set +e
+            git commit --no-verify --allow-empty -m "chore: trigger build"
+            set -e
+            git push origin HEAD:master
+
