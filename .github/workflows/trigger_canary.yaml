@@ -1,5 +1,5 @@
-## Trigger Canary CI
-name: Canary release
+## Trigger Canary Release
+name: Canary Release
 
 on:
   workflow_dispatch:
