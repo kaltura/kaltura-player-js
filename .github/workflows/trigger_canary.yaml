@@ -19,7 +19,6 @@ jobs:
   canary-release:
     environment: Canary
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
       - name: Checkout repo and clone to CI workspace
