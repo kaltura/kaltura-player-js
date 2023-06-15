@@ -10,11 +10,11 @@ env:
 jobs:
    steps:
       - name: Checkout repo and clone to CI workspace
-         uses: actions/checkout@v3
-         with:
+        uses: actions/checkout@v3
+        with:
            fetch-depth: '0'
-       - name: Setup Git And Push
-         with:
+      - name: Setup Git And Push
+        with:
           github_token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
         run: |
           git config --global user.email "ovp.cp@kaltura.com"
