@@ -14,9 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repo and clone to CI workspace
+        uses: actions/checkout@v3
       - name: Setup Git
         run: |
-          git checkout -b master 
           GH_USER_NAME="Github Actions Bot KLTR"
           git config --global user.name "$GH_USER_NAME"
           git config --global user.email "<>"
