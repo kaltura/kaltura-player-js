@@ -44,6 +44,7 @@ import {ThumbnailManager} from './common/thumbnail-manager';
 import {CuePointManager} from './common/cuepoint/cuepoint-manager';
 import {ServiceProvider} from './common/service-provider';
 import getMediaCapabilities from './common/utils/media-capabilities';
+import {convertDurationToISO8601, convertUnixTimestampToISO8601} from './common/utils/date-formaters';
 
 class KalturaPlayer extends FakeEventTarget {
   static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -150,6 +151,7 @@ class KalturaPlayer extends FakeEventTarget {
           this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
           this.configure(getDefaultRedirectOptions(({sources: this.sources}: any), mediaConfig));
           this.setMedia(mediaConfig);
+          this.sendSEOStructuredData();
           resolve(mediaConfig);
         },
         e => {
@@ -269,6 +271,33 @@ class KalturaPlayer extends FakeEventTarget {
     this._configEvaluator.evaluatePluginsConfig(config.plugins, config);
     this._configureOrLoadPlugins(config.plugins);
     this._playlistManager.load(playlistData, playlistConfig, entryList);
+  }
+
+  getSEOStructuredData(): Object {
+    const name = this.sources.metadata.name;
+    const thumbnailUrl = this.sources.poster;
+    const uploadDate = this.sources.metadata.createdAt;
+    const StructuredDataRequiredProperties = name && thumbnailUrl && uploadDate;
+    if (!StructuredDataRequiredProperties) return null;
+    return {
+      '@context': 'http://schema.org',
+      '@type': 'VideoObject',
+      name: name,
+      description: this.sources.metadata.description,
+      thumbnailUrl: thumbnailUrl,
+      uploadDate: convertUnixTimestampToISO8601(uploadDate),
+      duration: convertDurationToISO8601(this.sources.duration),
+      contentUrl: this._sourceSelected.url
+    };
+  }
+
+  sendSEOStructuredData(): void {
+    const SEOStructuredData = this.getSEOStructuredData();
+    if (SEOStructuredData) {
+      window.parent.postMessage({type: 'SEOStructuredData', SEOStructuredData}, '*');
+    } else {
+      KalturaPlayer._logger.debug('SEO Structured Data Required property is missing - SEOStructuredData Event has not been fired');
+    }
   }
 
   getMediaInfo(): ?ProviderMediaInfoObject {
