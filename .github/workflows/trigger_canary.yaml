@@ -20,6 +20,7 @@ jobs:
           token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
       - name: Setup Git
         run: |
+          GH_USER_NAME="Github Actions Bot KLTR"
           git config --global user.name "$GH_USER_NAME"
           git config --global user.email "<>"
       - name: Commit and Push
