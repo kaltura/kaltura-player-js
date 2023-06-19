@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/kaltura-player-js",
-  "version": "3.14.5",
+  "version": "3.14.6-kux-patch-new.0",
   "keywords": [
     "kaltura",
     "player",
@@ -36,8 +36,8 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
-    "release": "standard-version",
+    "pushTaggedRelease": "git push --follow-tags --no-verify origin kux-patch-new",
+    "release": "standard-version --prerelease kux-patch-new",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
     "watch:ovp": "sh ./scripts/job.sh watch ovp"
@@ -68,7 +68,7 @@
     "hls.js": "1.3.5",
     "intersection-observer": "^0.12.0",
     "proxy-polyfill": "^0.3.0",
-    "shaka-player": "4.3.5"
+    "shaka-player": "https://github.com/SivanA-Kaltura/shaka-player#4d60824b0ea71628c695352a6366b7356e8d9eb3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
