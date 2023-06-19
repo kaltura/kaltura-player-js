@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo and clone to CI workspace
+      - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
       - name: Setup Git
         run: |
-          GH_USER_NAME="Github Actions Bot KLTR"
-          git config --global user.name "$GH_USER_NAME"
-          git config --global user.email "<>"
+          git config --global user.email ${{ secrets.PLAYER_BOT_EMAIL }}
+          git config --global user.name ${{ secrets.PLAYER_BOT_USER }}
       - name: Commit and Push
         run: |
             set +e
             git commit --no-verify --allow-empty -m "chore: trigger build"
             set -e
             git push origin HEAD:master
-
