@@ -232,6 +232,10 @@ class PlaylistManager {
       countdown: playlistConfig ? playlistConfig.countdown : this.countdown,
       items: playlistData.items.map((item, index) => {
         const itemData = Utils.Object.copyDeep(item);
+        ['sources.dvr', 'sources.type'].forEach(omitKey => {
+          // use medias source data instead of playlist source data
+          Utils.Object.deletePropertyPath(itemData, omitKey);
+        });
         Utils.Object.mergeDeep(
           itemData.sources,
           playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources
