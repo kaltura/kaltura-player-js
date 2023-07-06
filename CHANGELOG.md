@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.14.7-kux-patch-new-2.0](https://github.com/kaltura/kaltura-player-js/compare/v3.14.6...v3.14.7-kux-patch-new-2.0) (2023-07-06)
+
 ### 3.14.6 (2023-06-28)
 
 ### 3.14.5 (2023-06-07)
