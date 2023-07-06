@@ -1148,10 +1148,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playkit-js/playkit-js-dash@1.34.3":
-  version "1.34.3"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.34.3.tgz#3c824f8094cf33252d0c21492c58aef81df2967a"
-  integrity sha512-RcyOsBBeTXL+8IWtvTuM9gbEWCL/hzdVmk7YdzT1eMEd8ezajtxTj/1uFb+GVVAwzIJtApIJKhV39+ZdWuOWZA==
+"@playkit-js/playkit-js-dash@1.35.0":
+  version "1.35.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.35.0.tgz#e02ea1888e51bd43af495cf6f5665c07a8710477"
+  integrity sha512-jrNAQibva6xr7gZM4lPXBeUkBw3PfhfA5nRStUQjcuF+aawTuSWPj88JSuEMh9+FgSfDjiyFttB8NqO2qGzBog==
 
 "@playkit-js/playkit-js-hls@1.32.4":
   version "1.32.4"
@@ -1173,10 +1173,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.82.4":
-  version "0.82.4"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.82.4.tgz#b5263b77bf32ac4b698b6ad2a5503bc2cfc99f89"
-  integrity sha512-86z+IvxWZLqp+TusV51v0LuqjR26xDQKsEZ+yCScS+NAbEU429g4UjveWMIo5VQkH8V6SA2rxgxbkToGh177hQ==
+"@playkit-js/playkit-js@0.82.5":
+  version "0.82.5"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.82.5.tgz#b339802ac98687c91589c90abc9bf413807ae82c"
+  integrity sha512-ZIc+LKbZovF9egoff0AMOrTe01pktxl3b9eV53jnu+XIA9L7v31cZRICoXUJoF6A2aKOKmSFjrkAA6m5UujLAg==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
