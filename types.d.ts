@@ -249,6 +249,7 @@ declare module PlaykitUI {
       height?: number;
       viewBox?: string;
     }>;
+    PLAYER_BREAK_POINTS: Record<string, number>;
     PLAYER_SIZE: {
       TINY: 'tiny';
       EXTRA_SMALL: 'extrasmall';
