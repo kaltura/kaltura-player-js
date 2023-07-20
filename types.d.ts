@@ -14,7 +14,7 @@ declare module '@playkit-js/kaltura-player-js' {
     readonly CAPTURING_PHASE: number;
     readonly NONE: number;
     readonly bubbles: boolean;
-    cancelBubble: boolean;
+    readonly cancelBubble: boolean;
     readonly cancelable: boolean;
     readonly composed: boolean;
     readonly currentTarget: EventTarget | null;
@@ -65,6 +65,7 @@ export class KalturaPlayer {
   public get Event(): EventTypes;
   public get paused(): boolean;
   public get sources(): Sources;
+  public get selectedSource(): MediaSourceObject;
   public configure(config: Object): void;
   public ready(): Promise<void>;
   public load(): void;
@@ -105,9 +106,9 @@ export interface EventTypes {
 }
 
 export interface Sources {
-  hls: any[];
-  dash: any[];
-  progressive: any[];
+  hls: MediaSourceObject[];
+  dash: MediaSourceObject[];
+  progressive: MediaSourceObject[];
   image: any[];
   captions?: any[];
   thumbnails?: any;
@@ -131,8 +132,21 @@ export interface SourcesMetadata {
   metas?: Object;
   tags?: Object;
   epgId?: string;
-  recordingId?: string
+  recordingId?: string;
+  createdAt?: number;
+  endDate?: number;
 }
+
+export interface MediaSourceObject {
+  mimetype: string;
+  url: string;
+  id?: string,
+  bandwidth?: number;
+  width?: number;
+  height?: number;
+  drmData?: any[];
+}
+
 
 
 
