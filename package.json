@@ -62,7 +62,7 @@
     "@playkit-js/playkit-js": "0.82.5",
     "@playkit-js/playkit-js-dash": "1.35.0",
     "@playkit-js/playkit-js-hls": "1.32.6",
-    "@playkit-js/playkit-js-providers": "2.39.4",
+    "@playkit-js/playkit-js-providers": "2.39.5",
     "@playkit-js/playkit-js-ui": "0.77.5",
     "@types/preact-i18n": "^2.3.1",
     "hls.js": "^1.4.8",
