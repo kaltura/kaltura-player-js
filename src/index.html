@@ -5,7 +5,34 @@
   <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no'>
   <title>Title</title>
   <link rel='stylesheet' type='text/css' href='./style.css' />
+  <!--  <script src='https://cdnapisec.kaltura.com/p/4393802/embedPlaykitJs/uiconf_id/52002652versions/kaltura-ovp-player=3.4.0' type='text/javascript'></script>-->
   <script src='./kaltura-ovp-player.js' type='text/javascript'></script>
+  <script src="https://github.com/kaltura/playkit-js-ui-managers/releases/download/v1.3.4/playkit-ui-managers.js"></script>
+  <script src='http://localhost:8080/playkit.js'></script>
+  <!--    <script src='http://localhost:8082/playkit-navigation.js'></script>-->
+<!--    <script src='http://localhost:8084/playkit-ui.js'></script>-->
+    <script src='http://localhost:8081/playkit-playlist.js'></script>
+  <!--  <script src='http://localhost:8082/playkit-ovp-provider.js'></script>-->
+  <!--  <script src='http://localhost:8082/playkit-providers.js'></script>-->
+<!--    <script src='http://localhost:8080/playkit-kaltura-live.js'></script>-->
+  <!--  <script src='http://localhost:8080/playkit-kava.js'></script>-->
+<!--    <script src='http://localhost:8084/playkit-share.js'></script>-->
+<!--    <script src='http://localhost:8085/playkit-transcript.js'></script>-->
+<!--  <script src='http://localhost:8086/playkit-info.js'></script>-->
+<!--  <script src='http://localhost:8080/playkit-downloads.js'></script>-->
+  <!--  //<script src='http://localhost:8080/playkit-hotspots.js'></script>-->
+<!--  <script src='http://localhost:8082/playkit-kaltura-cuepoints.js'></script>-->
+  <!--    <script src='http://localhost:8080/playkit-ima.js'></script>-->
+<!--  <script src='http://localhost:8080/playkit-qna.js'></script>-->
+<!--  <script src='http://localhost:8081/playkit-dual-screen.js'></script>-->
+  <script src='http://localhost:8082/playkit-kaltura-cuepoints.js'></script>
+<!--  <script src='http://localhost:8083/playkit-youtube.js'></script>-->
+<!--  <script src='http://localhost:8080/playkit-ivq.js'></script>-->
+<!--  <script src='http://localhost:8081/playkit-timeline.js'></script>-->
+
+
+
+
 </head>
 <body>
 <div id='player-placeholder'></div>
@@ -13,13 +40,14 @@
   var config = {
     targetId: 'player-placeholder',
     "playback": {
-		"options": {
-			"html5": {
-				"hls": {},
-				"dash": {}
-			}
-		},
-		"streamPriority": [
+      "options": {
+        "html5": {
+          "hls": {},
+          "dash": {}
+        },
+      },
+      'preload': 'auto',
+      "streamPriority": [
         {
           "engine": "html5",
           "format": "hls"
@@ -32,23 +60,107 @@
           "engine": "html5",
           "format": "progressive"
         }
-		  ]
-	  },
+      ]
+    },
+    "sources": {
+      startTime: 0,
+      options:{},
+    },
     provider: {
-      partnerId: 1091,
+      partnerId: 2607092,
       env: {
-        cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
-        serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
+        //cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
+        // serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
       }
+    },
+    "ui":{
+      "locale":"es",
+      "translations":{
+        "es": {
+          "navigation":{
+            "hide_plugin": "Ocultar navegación",
+            "show_plugin": "Mostrar navegación",
+            "search_description": "Puede buscar en los subtítulos del video palabras o frases específicas",
+            "search_placeholder": "Buscar en video"
+          },
+          "controls": {
+            "moreIcon": "Más",
+            "share": "Compartir",
+            "info": "Video Información"
+          },
+          "info": {
+            "info": "Información"
+          },
+          "share": {
+            "title": "Compartir",
+            "embed_options": "Insertar opciones",
+            "start_video_at": "Iniciar vídeo en el",
+            "email": "Compartir por correo electrónico",
+            "embed": "Obtener código de inserción",
+            "share-on-facebook": "Compartir en Facebook",
+            "share-on-twitter": "Compartir en Twitter",
+            "share-on-linkedin": "Compartir en Linkedin"
+          },
+          "download": {
+            "download": "Descargar",
+            "downloads": "Descargas",
+            "download_has_started": "La descarga ha comenzado",
+            "download_has_failed": "Error al descargar",
+            "attachments": "Archivos adjuntos"
+          }
+        }
+      }
+    },
+    playback: {
+      "textLanguage": "es",
+      // autoplay:false,
+      options:{
+        youtube:{}
+      }
+    },
+    "disableUserCache":true,
+    plugins: {
+      // "playkit-js-hotspots": {},
+      "kalturaCuepoints": {},
+      "uiManagers":{},
+      "dualscreen": {},
+      "playlist":{
+        "position":"right",
+        "expandMode":"alongside",
+        "expandOnFirstPlay":true
+      },
+      // "kaltura-live":{},
+      // providers:{},
+      // navigation:{},
+      // share: {},
+      // timeline: {},
+      // qna: {
+      // },
+      // kava: {},
+      // 'playkit-js-transcript': {},
+      // "playkit-js-info": {},
+      // "download": {},
+      // ivq: {}
+      // ima: {
+      //   adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator='
+      // }
     }
   };
 
   try {
     var kalturaPlayer = KalturaPlayer.setup(config);
-    kalturaPlayer.loadMedia({entryId: '0_wifqaipd'});
+    // kalturaPlayer.loadMedia({entryId: '1_df1nluya'},{startPoint:0});
+    kalturaPlayer.loadPlaylist({playlistId: '1_0udtf579'}, {
+      options: {autoContinue: false , loop: false},
+      countdown: {
+        duration: 1,
+        showing: false
+      }
+    });
   } catch (e) {
     console.error(e.message);
   }
 </script>
 </body>
 </html>
+
