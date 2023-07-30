@@ -280,8 +280,12 @@ class PlaylistManager {
     PlaylistManager._logger.debug(`Playing item number ${index}`, activeItem);
     const playback: Object = {loop: false};
     if (this._playlist.current) {
-      // from the second item onwards
-      playback['autoplay'] = true;
+      if (this._player._playbackStart) {
+        // from the second item onwards
+        playback['autoplay'] = true;
+      } else {
+        playback['autoplay'] = this._playerOptions.playback.autoplay;
+      }
     }
     this._player.configure({playback});
     this._playlist.activeItemIndex = index;
