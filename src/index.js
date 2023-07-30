@@ -8,7 +8,6 @@ import * as ui from '@playkit-js/playkit-js-ui';
 // Import provider
 import * as providers from '@playkit-js/playkit-js-providers';
 // Import media source adapters
-import '@playkit-js/playkit-js-hls';
 import '@playkit-js/playkit-js-dash';
 // Import setup method
 import {setup} from './setup';

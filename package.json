@@ -61,11 +61,9 @@
     "@babel/polyfill": "^7.0.0",
     "@playkit-js/playkit-js": "https://github.com/kaltura/playkit-js#2611fb78a7c6d229ed7f858ca4cd7e34b5c96a2c",
     "@playkit-js/playkit-js-dash": "1.35.0",
-    "@playkit-js/playkit-js-hls": "1.32.4",
     "@playkit-js/playkit-js-providers": "2.39.4",
     "@playkit-js/playkit-js-ui": "0.77.3",
     "@types/preact-i18n": "^2.3.1",
-    "hls.js": "1.3.5",
     "intersection-observer": "^0.12.0",
     "proxy-polyfill": "^0.3.0",
     "shaka-player": "https://github.com/SivanA-Kaltura/shaka-player#4d60824b0ea71628c695352a6366b7356e8d9eb3"
