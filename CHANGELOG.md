@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.14.8 (2023-07-31)
+
+
+### Bug Fixes
+
+* **FEC-13293:** revert hls.js version upgrade ([3a60eb7](https://github.com/kaltura/kaltura-player-js/commit/3a60eb7ffd377bf5c311a6409ff912724a694961))
+
 ### 3.14.7 (2023-07-26)
 
 
