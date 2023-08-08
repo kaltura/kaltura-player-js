@@ -284,7 +284,7 @@ class PlaylistManager {
         // from the second item onwards
         playback['autoplay'] = true;
       } else {
-        playback['autoplay'] = this._playerOptions.playback ? this._playerOptions.playback.autoplay : false;
+        playback['autoplay'] = !!this._playerOptions.playback?.autoplay;
       }
     }
     this._player.configure({playback});
