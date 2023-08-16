@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "https://github.com/kaltura/playkit-js#2611fb78a7c6d229ed7f858ca4cd7e34b5c96a2c",
+    "@playkit-js/playkit-js": "https://github.com/kaltura/playkit-js#eb307f85309fb8d940d31bcc3db4bde7e2f3240e",
     "@playkit-js/playkit-js-dash": "1.35.0",
     "@playkit-js/playkit-js-providers": "2.39.4",
     "@playkit-js/playkit-js-ui": "0.77.3",
