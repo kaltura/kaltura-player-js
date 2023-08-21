@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@playkit-js/playkit-js": "0.82.5",
+    "@playkit-js/playkit-js": "0.82.7",
     "@playkit-js/playkit-js-dash": "1.35.0",
     "@playkit-js/playkit-js-hls": "1.32.7",
     "@playkit-js/playkit-js-providers": "2.39.5",
