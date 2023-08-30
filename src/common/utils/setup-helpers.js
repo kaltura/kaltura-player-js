@@ -766,5 +766,6 @@ export {
   hasYoutubeSource,
   hasImageSource,
   mergeProviderPluginsConfig,
-  getServerUIConf
+  getServerUIConf,
+  KALTURA_PLAYER_START_TIME_QS
 };

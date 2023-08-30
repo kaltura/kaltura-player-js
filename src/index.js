@@ -17,6 +17,7 @@ import {getPlayers, getPlayer} from './proxy';
 import {cast} from './common/cast';
 // Import playlist
 import {playlist} from './common/playlist';
+import {KALTURA_PLAYER_START_TIME_QS} from './common/utils/setup-helpers';
 
 // Import plugin framework
 import {Ad, AdBreak} from './common/ads';
@@ -54,5 +55,6 @@ export {
   registerPlugin,
   PLAYER_TYPE,
   VERSION,
-  PLAYER_NAME
+  PLAYER_NAME,
+  KALTURA_PLAYER_START_TIME_QS
 };
