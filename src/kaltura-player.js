@@ -437,6 +437,10 @@ class KalturaPlayer extends FakeEventTarget {
     return hasImageSource(this.sources);
   }
 
+  isAudio(): boolean {
+    return this._localPlayer.isAudio();
+  }
+
   seekToLiveEdge(): void {
     this._localPlayer.seekToLiveEdge();
   }

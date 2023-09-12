@@ -128,7 +128,7 @@ export interface SourcesMetadata {
   entryId?: string;
   name?: string;
   description?: string;
-  mediaType?: string,
+  mediaType?: string;
   metas?: Object;
   tags?: Object;
   epgId?: string;
@@ -140,15 +140,12 @@ export interface SourcesMetadata {
 export interface MediaSourceObject {
   mimetype: string;
   url: string;
-  id?: string,
+  id?: string;
   bandwidth?: number;
   width?: number;
   height?: number;
   drmData?: any[];
 }
-
-
-
 
 declare module PlaykitUI {
   export class EventManager {
@@ -189,24 +186,24 @@ declare module PlaykitUI {
   };
 
   export const ReservedPresetAreas: {
-    PlayerArea: 'PlayerArea',
-    PresetArea: 'PresetArea',
-    InteractiveArea: 'InteractiveArea',
-    VideoArea: 'VideoArea',
-    GuiArea: 'GuiArea',
-    TopBar: 'TopBar',
-    BottomBar: 'BottomBar',
-    PresetFloating: 'PresetFloating',
-    TopBarLeftControls: 'TopBarLeftControls',
-    TopBarRightControls: 'TopBarRightControls',
-    BottomBarLeftControls: 'BottomBarLeftControls',
-    BottomBarRightControls: 'BottomBarRightControls',
-    SidePanelTop: 'SidePanelTop',
-    SidePanelLeft: 'SidePanelLeft',
-    SidePanelRight: 'SidePanelRight',
-    SidePanelBottom: 'SidePanelBottom',
-    SeekBar: 'SeekBar',
-    LoadingSpinner: 'LoadingSpinner'
+    PlayerArea: 'PlayerArea';
+    PresetArea: 'PresetArea';
+    InteractiveArea: 'InteractiveArea';
+    VideoArea: 'VideoArea';
+    GuiArea: 'GuiArea';
+    TopBar: 'TopBar';
+    BottomBar: 'BottomBar';
+    PresetFloating: 'PresetFloating';
+    TopBarLeftControls: 'TopBarLeftControls';
+    TopBarRightControls: 'TopBarRightControls';
+    BottomBarLeftControls: 'BottomBarLeftControls';
+    BottomBarRightControls: 'BottomBarRightControls';
+    SidePanelTop: 'SidePanelTop';
+    SidePanelLeft: 'SidePanelLeft';
+    SidePanelRight: 'SidePanelRight';
+    SidePanelBottom: 'SidePanelBottom';
+    SeekBar: 'SeekBar';
+    LoadingSpinner: 'LoadingSpinner';
   };
 
   export const reducers: {
@@ -252,6 +249,13 @@ declare module PlaykitUI {
   };
 
   export const Components: {
+    ExpandableText: preactLib.ComponentClass<{
+      text: string;
+      lines: number;
+      forceShowMore?: boolean;
+      onClick?: () => void;
+      children: preactLib.ComponentChildren;
+    }>;
     Tooltip: preactLib.ComponentClass<{label: string}>;
     Icon: preactLib.ComponentClass<{
       id: string | number;
