@@ -8,6 +8,7 @@ export default class StorageManager {
     VOLUME: 'volume',
     AUDIO_LANG: 'audioLanguage',
     TEXT_LANG: 'textLanguage',
+    CAPTIONS_DISPLAY: 'captionsDisplay',
     TEXT_STYLE: 'textStyle'
   };
 
@@ -61,13 +62,23 @@ export default class StorageManager {
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
       const textTrack = event.payload.captionTrack;
-      StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
+      if (textTrack.language !== 'off') {
+        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, textTrack.language);
+        StorageWrapper.setItem(StorageManager.StorageKeys.CAPTIONS_DISPLAY, true);
+      } else {
+        StorageWrapper.setItem(StorageManager.StorageKeys.CAPTIONS_DISPLAY, false);
+      }
     });
 
     const onToggleCaptions = () => {
       eventManager.listenOnce(player, player.Event.TEXT_TRACK_CHANGED, event => {
         const {selectedTextTrack} = event.payload;
-        StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+        if (selectedTextTrack.language !== 'off') {
+          StorageWrapper.setItem(StorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+          StorageWrapper.setItem(StorageManager.StorageKeys.CAPTIONS_DISPLAY, true);
+        } else {
+          StorageWrapper.setItem(StorageManager.StorageKeys.CAPTIONS_DISPLAY, false);
+        }
       });
     };
 

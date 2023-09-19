@@ -137,7 +137,7 @@ The configuration uses the following structure:
 > ##### Description: Defines the player dimensions configuration.
 
 ##
-  
+
 > ### config.abr
 >
 > ##### Type: [PKAbrConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkabrconfigobject)
@@ -151,7 +151,6 @@ The configuration uses the following structure:
 > ##### Type: [PKDrmConfigObject](https://github.com/kaltura/playkit-js/blob/master/docs/configuration.md#type-pkdrmconfigobject)
 >
 > ##### Description: Defines the drm system configuration.
-
 
 > ### config.playlist
 >
@@ -441,7 +440,7 @@ The configuration uses the following structure:
 
 > > If the autopause config is set to `autopause: true` the palyer will pause the playback when it gets out of view
 
-> > If floating player is configured, it will be used to float the player when it gets out of the view and it gets back to the place when you go into original viewport of player.  
+> > If floating player is configured, it will be used to float the player when it gets out of the view and it gets back to the place when you go into original viewport of player.
 
 > > ##### Properties
 > >
@@ -507,6 +506,7 @@ Default Player Configuration
 	textLanguage: '',
 	muted: false,
 	volume: 1,
+  captionsDisplay: false
 	autoplay: false
 }
 ```
@@ -519,6 +519,7 @@ Default Player Configuration
 	textLanguage: '',
 	muted: true,
 	volume: 0.7,
+  captionsDisplay: false,
 	autoplay: true
 }
 ```
