@@ -300,7 +300,7 @@ class PlaylistManager {
         new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {
           index,
           activeItem,
-          entryId: this._mediaInfoList[index]?.entryId || activeItem.sources.id
+          entryId: this._mediaInfoList[index]?.entryId || activeItem.sources?.id
         })
       );
       return Promise.resolve();
