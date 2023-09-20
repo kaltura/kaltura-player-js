@@ -33,6 +33,7 @@ When a player instantiates, a partial configuration is created internally by the
 	volume: number,
 	audioLanguage: string,
 	textLanguage: string,
+	captionsDisplay: boolean,
 	textStyle: TextStyle
 }
 ```
