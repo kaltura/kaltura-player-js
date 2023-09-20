@@ -296,7 +296,13 @@ class PlaylistManager {
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
       const media = ({session: this._player.config.session, plugins: providerPlugins, sources: activeItem.sources}: any);
       this._player.setMedia(media);
-      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
+      this._player.dispatchEvent(
+        new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {
+          index,
+          activeItem,
+          entryId: this._mediaInfoList[index]?.entryId || activeItem.sources?.id
+        })
+      );
       return Promise.resolve();
     } else {
       if (this._mediaInfoList[index]) {
@@ -306,7 +312,13 @@ class PlaylistManager {
         return this._player.loadMedia(this._mediaInfoList[index]).then(mediaConfig => {
           this._playlist.updateItemSources(index, mediaConfig.sources);
           this._playlist.updateItemPlugins(index, mediaConfig.plugins);
-          this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {index, activeItem}));
+          this._player.dispatchEvent(
+            new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {
+              index,
+              activeItem,
+              entryId: this._mediaInfoList[index].entryId
+            })
+          );
         });
       }
     }
