@@ -1,7 +1,4 @@
 // @flow
-if (!window._babelPolyfill) {
-  require('@babel/polyfill');
-}
 
 export default class PolyfillManager {
   static _polyfills: Array<Function> = [];
