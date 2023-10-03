@@ -9,7 +9,7 @@ on:
 
 jobs:
   canary:
-    uses: kaltura/playkit-js-common/.github/workflows/canary_full_flow_player.yaml@0acc2c19c8fa88c798023e9b2ec76b806cacec03
+    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
     secrets: inherit
     with:
       player-type: "ovp tv"
