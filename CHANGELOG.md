@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 3.16.0 (2023-10-08)
+
+
+### Features
+
+* update playkit-js-ui to [0.77.8](https://github.com/kaltura/playkit-js-ui/releases/tag/v0.77.8) ([724edba](https://github.com/kaltura/kaltura-player-js/commit/724edba3b0bfa073ffbefcd46aa23bd22e34b1ed))
+
 ### 3.15.2 (2023-09-11)
 
 
