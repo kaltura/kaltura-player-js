@@ -63,7 +63,7 @@
     "@playkit-js/playkit-js-dash": "1.35.1",
     "@playkit-js/playkit-js-hls": "1.32.8",
     "@playkit-js/playkit-js-providers": "2.39.5",
-    "@playkit-js/playkit-js-ui": "0.77.7",
+    "@playkit-js/playkit-js-ui": "0.77.8",
     "@types/preact-i18n": "^2.3.1",
     "hls.js": "1.4.11",
     "intersection-observer": "^0.12.0",
