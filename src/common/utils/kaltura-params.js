@@ -157,8 +157,9 @@ function addClientTag(url: string, productVersion: ?string): string {
  * @return {string} - the url with the seekFrom and clipTo appended in the query params
  * @private
  */
-function addStartAndEndTime(url: string, sources: PKSourcesConfigObject): string {
-  const {seekFrom, clipTo} = sources;
+function addStartAndEndTime(url: string, sources?: PKSourcesConfigObject): string {
+  const seekFrom = Utils.Object.getPropertyPath(sources, 'seekFrom');
+  const clipTo = Utils.Object.getPropertyPath(sources, 'clipTo');
   if (seekFrom && typeof seekFrom === 'number' && url.indexOf(SEEK_FROM) === -1) {
     url += getQueryStringParamDelimiter(url) + SEEK_FROM + seekFrom * 1000;
   }
