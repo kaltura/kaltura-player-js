@@ -11,6 +11,8 @@ const CLIENT_TAG = 'clientTag=html5:v';
 const UDRM_DOMAIN = 'kaltura.com';
 const CUSTOM_DATA = 'custom_data=';
 const SIGNATURE = 'signature=';
+const SEEK_FROM = 'seekFrom=';
+const CLIP_TO = 'clipTo=';
 
 /**
  * @param {Player} player - player
@@ -150,6 +152,23 @@ function addClientTag(url: string, productVersion: ?string): string {
 }
 
 /**
+ * @param {string} url - url
+ * @param {PKSourcesConfigObject} sources - sources
+ * @return {string} - the url with the seekFrom and clipTo appended in the query params
+ * @private
+ */
+function addStartAndEndTime(url: string, sources: PKSourcesConfigObject): string {
+  const {seekFrom, clipTo} = sources;
+  if (seekFrom && typeof seekFrom === 'number' && url.indexOf(SEEK_FROM) === -1) {
+    url += getQueryStringParamDelimiter(url) + SEEK_FROM + seekFrom * 1000;
+  }
+  if (clipTo && typeof clipTo === 'number' && url.indexOf(CLIP_TO) === -1) {
+    url += getQueryStringParamDelimiter(url) + CLIP_TO + clipTo * 1000;
+  }
+  return url;
+}
+
+/**
  * Adding Kaltura specific params to player config and player sources.
  * @param {Player} player - player
  * @param {PartialKPOptionsObject} playerConfig - player config
@@ -169,6 +188,7 @@ function addKalturaParams(player: Player, playerConfig: PartialKPOptionsObject):
           source.url = updateSessionIdInUrl(source.url, sessionId);
           source.url = addReferrer(source.url);
           source.url = addClientTag(source.url, productVersion);
+          source.url = addStartAndEndTime(source.url, sources);
         }
         if (source.drmData && source.drmData.length) {
           source.drmData.forEach(drmData => {

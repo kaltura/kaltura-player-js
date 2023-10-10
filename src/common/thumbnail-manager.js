@@ -77,6 +77,19 @@ class ThumbnailManager {
     };
   };
 
+  _maybeCutThumbnail = (baseUrl: string): string => {
+    const seekFromConfig = Utils.Object.getPropertyPath(this._player.config.sources, 'seekFrom');
+    const clipToConfig = Utils.Object.getPropertyPath(this._player.config.sources, 'clipTo');
+    let url = baseUrl;
+    if (seekFromConfig && typeof seekFromConfig === 'number') {
+      url += `/start_sec/${seekFromConfig}`;
+    }
+    if (clipToConfig && typeof clipToConfig === 'number') {
+      url += `/end_sec/${clipToConfig}`;
+    }
+    return url;
+  };
+
   _getThumbSlicesUrl = (posterUrl: string | Array<Object>, ks: ?string, thumbnailConfig: Object): string => {
     if (typeof posterUrl === 'string') {
       if (THUMBNAIL_REGEX.test(posterUrl)) {
@@ -85,7 +98,8 @@ class ThumbnailManager {
             thumbnailUrl: posterUrl,
             ...thumbnailConfig
           };
-          const url = evaluate(THUMBNAIL_SERVICE_TEMPLATE, model);
+          const baseUrl = evaluate(THUMBNAIL_SERVICE_TEMPLATE, model);
+          const url = this._maybeCutThumbnail(baseUrl);
           return ks ? url + `/ks/${ks}` : url;
         } catch (e) {
           return '';
