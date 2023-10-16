@@ -157,6 +157,7 @@ declare namespace KalturaPlayerTypes {
     vr?: null;
     metadata?: Metadata;
     captions?: KalturaCaptionSource[];
+    downloadUrl?: string;
   }
 
   export interface Dash {

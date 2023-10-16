@@ -122,6 +122,7 @@ export interface Sources {
   startTime?: number;
   vr: Object | null;
   imageSourceOptions?: any;
+  downloadUrl?: string;
 }
 
 export interface SourcesMetadata {
@@ -158,7 +159,7 @@ declare module PlaykitUI {
 
   export type SidePanelPosition = 'top' | 'bottom' | 'right' | 'left';
   export type SidePanelMode = 'alongside' | 'hidden' | 'over';
-  export type ReservedPresetName = 'Playback' | 'Live' | 'Idle' | 'Ads' | 'Error';
+  export type ReservedPresetName = 'Playback' | 'Live' | 'Idle' | 'Ads' | 'Error' | 'Img';
   export const SidePanelOrientation: {
     VERTICAL: 'vertical';
     HORIZONTAL: 'horizontal';
@@ -183,6 +184,7 @@ declare module PlaykitUI {
     Idle: 'Idle';
     Ads: 'Ads';
     Error: 'Error';
+    Img: 'Img';
   };
 
   export const ReservedPresetAreas: {
