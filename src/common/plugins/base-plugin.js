@@ -125,6 +125,15 @@ export class BasePlugin implements IPlugin {
   loadMedia(): void {}
 
   /**
+   * Runs the onPresetChange logic of the plugin.
+   * plugin must implement this method.
+   * @public
+   * @virtual
+   * @returns {void}
+   */
+  onPresetChange(): void {}
+
+  /**
    * Runs the destroy logic of the plugin.
    * plugin must implement this method.
    * @public

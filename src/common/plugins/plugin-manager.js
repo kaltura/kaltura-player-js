@@ -119,6 +119,17 @@ export class PluginManager {
   }
 
   /**
+   * Iterates over all the plugins and calls onPresetChange().
+   * @param {string} oldPreset - The old preset
+   * @param {string} newPreset - The new preset
+   * @public
+   * @returns {void}
+   */
+  onPresetChange(oldPreset: string, newPreset: string): void {
+    Object.keys(this._plugins).forEach(k => this._plugins[k].onPresetChange(oldPreset, newPreset));
+  }
+
+  /**
    * Iterates over all the plugins and calls destroy().
    * @public
    * @returns {void}

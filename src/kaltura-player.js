@@ -940,6 +940,12 @@ class KalturaPlayer extends FakeEventTarget {
         this._reset = false;
       }
     });
+    this._eventManager.listen(this, UIEventType.UI_PRESET_CHANGE, (event: FakeEvent) => this._onPresetChange(event));
+  }
+
+  _onPresetChange(event: FakeEvent): void {
+    const {from, to} = event.payload;
+    this._pluginManager.onPresetChange(from, to);
   }
 
   _onChangeSourceEnded(): void {

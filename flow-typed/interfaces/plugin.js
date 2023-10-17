@@ -4,5 +4,6 @@ declare interface IPlugin {
   updateConfig(update: Object): void;
   loadMedia(): void;
   destroy(): void;
-  reset(): void;
+  reset(): void
+  onPresetChange(oldPreset: string, newPreset: string): void;
 }
