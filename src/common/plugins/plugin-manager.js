@@ -115,7 +115,7 @@ export class PluginManager {
    * @returns {void}
    */
   loadMedia(): void {
-    Object.keys(this._plugins).forEach(k => this._plugins[k].loadMedia());
+    Object.keys(this._plugins).forEach(pluginName => this._plugins[pluginName].loadMedia());
   }
 
   /**
@@ -126,7 +126,7 @@ export class PluginManager {
    * @returns {void}
    */
   onPresetChange(oldPreset: string, newPreset: string): void {
-    Object.keys(this._plugins).forEach(k => this._plugins[k].onPresetChange(oldPreset, newPreset));
+    Object.keys(this._plugins).forEach(pluginName => this._plugins[pluginName].onPresetChange(oldPreset, newPreset));
   }
 
   /**
