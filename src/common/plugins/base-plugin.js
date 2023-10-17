@@ -126,7 +126,6 @@ export class BasePlugin implements IPlugin {
 
   /**
    * Runs the onPresetChange logic of the plugin.
-   * plugin must implement this method.
    * @public
    * @virtual
    * @returns {void}
