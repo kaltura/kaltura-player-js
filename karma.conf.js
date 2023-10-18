@@ -1,20 +1,9 @@
-const path = require('path');
-const webpackConfig = require('./webpack.config')( 'playerType=ovp',{mode: 'development'});
+const webpackConfig = require('./webpack.config')( {playerType: 'ovp'},{mode: 'development'});
 delete webpackConfig.entry;
 delete webpackConfig.externals;
 delete webpackConfig.output;
 delete webpackConfig.devServer;
 webpackConfig.devtool = 'inline-source-map';
-playerType = 'ovp'
-webpackConfig.resolve = {
-  extensions: ['.ts', '.js'],
-    alias: {
-    '@playkit-js/playkit-js-providers': path.resolve(`./node_modules/@playkit-js/playkit-js-providers/dist/playkit-${playerType}-provider`),
-      'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
-      poster: path.resolve(`./src/${playerType}/poster`),
-      'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`)
-  }
-},
 
 module.exports = function (config) {
   config.set({

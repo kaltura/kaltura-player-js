@@ -23,7 +23,8 @@ class ViewabilityManager {
    * @param {number} viewabilityConfig - the configuration needed to create the manager
    * @constructor
    */
-  constructor(viewabilityConfig: ViewabilityConfig) {
+  // @ts-ignore
+  constructor(viewabilityConfig: ViewabilityConfig = {}) {
     viewabilityConfig.observedThresholds = viewabilityConfig.observedThresholds || DEFAULT_OBSERVED_THRESHOLDS;
     viewabilityConfig.playerThreshold = typeof viewabilityConfig.playerThreshold === 'number' ? viewabilityConfig.playerThreshold : DEFAULT_PLAYER_THRESHOLD;
 
