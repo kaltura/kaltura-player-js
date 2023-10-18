@@ -1,1 +1,0 @@
-{"version":3,"file":"ui-component-options.d.ts","sourceRoot":"","sources":["../../src/types/ui-component-options.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,oBAAoB;IACnC,KAAK,EAAE,MAAM,CAAC;IACd,OAAO,EAAE,KAAK,CAAC,MAAM,CAAC,CAAC;IACvB,IAAI,EAAE,MAAM,CAAC;IACb,eAAe,CAAC,EAAE,MAAM,CAAC;IACzB,cAAc,CAAC,EAAE,MAAM,CAAC;IACxB,gBAAgB,CAAC,EAAE,MAAM,CAAA;CAC1B"}

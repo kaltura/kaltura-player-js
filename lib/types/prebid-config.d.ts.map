@@ -1,1 +1,0 @@
-{"version":3,"file":"prebid-config.d.ts","sourceRoot":"","sources":["../../src/types/prebid-config.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC7B,MAAM,EAAE,MAAM,CAAC;IACf,MAAM,CAAC,EAAE,MAAM,CAAC;IAChB,OAAO,CAAC,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,CAAA;CAChB;AAED,MAAM,WAAW,YAAa,SAAQ,cAAc;IAClD,MAAM,EAAE,MAAM,CAAC;CAChB"}

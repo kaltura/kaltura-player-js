@@ -316,7 +316,7 @@
         },
         {
           "kind": "Function",
-          "canonicalReference": "@playkit-js/kaltura-player-js!setup:function(1)",
+          "canonicalReference": "@playkit-js/kaltura-player-js!setup_2:function(1)",
           "docComment": "/**\n * Setup the Kaltura Player.\n *\n * @param options - partial kaltura player options  @private\n *\n * @returns {KalturaPlayer} - The Kaltura Player.\n */\n",
           "excerptTokens": [
             {
@@ -359,7 +359,7 @@
               "isOptional": false
             }
           ],
-          "name": "setup"
+          "name": "setup_2"
         },
         {
           "kind": "Variable",

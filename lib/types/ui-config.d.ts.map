@@ -1,1 +1,0 @@
-{"version":3,"file":"ui-config.d.ts","sourceRoot":"","sources":["../../src/types/ui-config.ts"],"names":[],"mappings":"AACA,MAAM,WAAW,QAAQ;IACvB,OAAO,CAAC,EAAE,OAAO,CAAC;IAClB,GAAG,CAAC,EAAE,MAAM,CAAC;IACb,YAAY,CAAC,EAAE;QAAC,QAAQ,EAAE,MAAM,GAAG,CAAC;QAAC,SAAS,EAAE,MAAM,GAAG,CAAA;KAAC,EAAE,CAAA;IAE5D,QAAQ,EAAE,MAAM,CAAC;CAClB"}

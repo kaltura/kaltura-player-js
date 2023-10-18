@@ -100,13 +100,9 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
-  "envManager": {
-    "devMode": {},
-    "releaseMode": []
-  },
   "standard-version": {
     "scripts": {
-      "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott && npm run commit:dist)"
+      "precommit": "tmp=$(npm run build:ovp && yarn run build:ott)"
     }
   }
 }
