@@ -173,6 +173,1805 @@
       "preserveMemberOrder": false,
       "members": [
         {
+          "kind": "Class",
+          "canonicalReference": "@playkit-js/kaltura-player-js!Ad:class",
+          "docComment": "/**\n * @class Ad\n *\n * @param id - Ad ID.\n *\n * @param options - Ad data options.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class Ad "
+            }
+          ],
+          "fileUrlPath": "src/common/ads/ad.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "Ad",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `Ad` class\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(id: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", options: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PKAdOptions",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!~PKAdOptions:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "id",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "options",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#bitrate:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad bitrate.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get bitrate(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "bitrate",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#bumper:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {boolean} - Whether the ad is bumper.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get bumper(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "bumper",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#clickThroughUrl:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad click through URL.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get clickThroughUrl(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "clickThroughUrl",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#contentType:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad content type.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get contentType(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "contentType",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#duration:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad duration.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get duration(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "duration",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#height:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad height.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get height(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "height",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#id:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad ID.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get id(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "id",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#inStream:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {boolean} - Whether the ad is imadai.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get inStream(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "inStream",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#linear:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {boolean} - Whether the ad is linear.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get linear(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "linear",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#position:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad position inside the ad break.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get position(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "position",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#posterUrl:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad poster URL.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get posterUrl(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "posterUrl",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#skipOffset:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad skip offset.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get skipOffset(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "skipOffset",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#skippable:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Whether the ad is skippable or not.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get skippable(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "skippable",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#streamId:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - The ad streamId.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get streamId(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "streamId",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#system:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string | undefined} - Ad system.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get system(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "system",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#title:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad title.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get title(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "title",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#toJSON:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "toJSON(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "toJSON"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#url:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad URL.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get url(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "url",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#vpaid:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {boolean} - Whether the ad is vpaid or not.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get vpaid(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "vpaid",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#width:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - Ad width.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get width(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "width",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#wrapperAdIds:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - The ad wrapperAdIds.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get wrapperAdIds(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "wrapperAdIds",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#wrapperAdSystems:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - The ad wrapperAdSystems.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get wrapperAdSystems(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "wrapperAdSystems",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!Ad#wrapperCreativeIds:member",
+              "docComment": "/**\n * @instance  @memberof Ad  @return {string} - The ad wrapperCreativeIds.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get wrapperCreativeIds(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "wrapperCreativeIds",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@playkit-js/kaltura-player-js!AdBreak:class",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class AdBreak "
+            }
+          ],
+          "fileUrlPath": "src/common/ads/ad-break.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "AdBreak",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@playkit-js/kaltura-player-js!AdBreak:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `AdBreak` class\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(options: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PKAdBreakOptions",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!~PKAdBreakOptions:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "options",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!AdBreak#numAds:member",
+              "docComment": "/**\n * @instance  @memberof AdBreak  @return {string} - The number of ads inside the ad break.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get numAds(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "numAds",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!AdBreak#position:member",
+              "docComment": "/**\n * @instance  @memberof AdBreak  @return {string} - Ad break position on the playback timeline.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get position(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "position",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!AdBreak#toJSON:member(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "toJSON(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "toJSON"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!AdBreak#type:member",
+              "docComment": "/**\n * @instance  @memberof AdBreak  @return {string} - Ad break type - pre/mid/post.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get type(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "type",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin:class",
+          "docComment": "/**\n * The BasePlugin responsible to implement the plugin interface. Contains several default implementations. Other plugins should extend this class.  @classdesc\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare class BasePlugin implements "
+            },
+            {
+              "kind": "Reference",
+              "text": "IPlugin",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~IPlugin:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "src/common/plugins/base-plugin.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "BasePlugin",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin:constructor(1)",
+              "docComment": "/**\n * constructor\n *\n * @param name - The plugin name\n *\n * @param player - The player reference\n *\n * @param config - The plugin configuration  @constructor  @private\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", player: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "KalturaPlayer",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!~KalturaPlayer:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", config: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "name",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "player",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "config",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 5,
+                    "endIndex": 6
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#config:member",
+              "docComment": "/**\n * The runtime configuration of the plugin.  @member\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected config: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "config",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin.createPlugin:member(1)",
+              "docComment": "/**\n * Factory method to create the actual plugin.\n *\n * @param name - The plugin name\n *\n * @param player - The player reference\n *\n * @param config - The plugin configuration\n *\n * @returns {BasePlugin} - New runtime plugin instance  @static\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static createPlugin(name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", player: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "KalturaPlayer",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!~KalturaPlayer:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", config?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "BasePlugin",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 7,
+                "endIndex": 8
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "name",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "player",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "config",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 5,
+                    "endIndex": 6
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "createPlugin"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin.defaultConfig:member",
+              "docComment": "/**\n * The default configuration of the plugin. Inherited plugins should override this property.  @type {Object}  @static  @member\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected static defaultConfig: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "defaultConfig",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": true,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#destroy:member(1)",
+              "docComment": "/**\n * Runs the destroy logic of the plugin. plugin must implement this method.\n *\n * @returns {void}\n *\n * @public @virtual\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "destroy(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "destroy"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#dispatchEvent:member(1)",
+              "docComment": "/**\n * Dispatch an event via the plugin.\n *\n * @param name - The event name.\n *\n * @param payload - The event payload.\n *\n * @returns {void}\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "dispatchEvent(name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", payload: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "name",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "payload",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "dispatchEvent"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#eventManager:member",
+              "docComment": "/**\n * The event manager of the plugin.  @member\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected eventManager: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "EventManager",
+                  "canonicalReference": "!unknown"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "eventManager",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#getConfig:member(1)",
+              "docComment": "/**\n * Getter for the configuration of the plugin.\n *\n * @param attr - The key in the plugin configuration (optional).\n *\n * @returns {*} - If attribute is provided, returns its value. Else, Returns the config of the plugin.\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getConfig(attr?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "attr",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getConfig"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#getName:member(1)",
+              "docComment": "/**\n * Getter for the plugin's name.\n *\n * @returns {string} - The name of the plugin.\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getName(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getName"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin.isValid:member(1)",
+              "docComment": "/**\n * Returns under what conditions the plugin is valid. Plugin must implement this method.\n *\n * @returns {boolean} - Whether the plugin is valid and can be initiated. Default implementation is true  @static\n *\n * @abstract\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected static isValid(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "isValid"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#loadMedia:member(1)",
+              "docComment": "/**\n * Runs the loadMedia logic of the plugin. plugin must implement this method.\n *\n * @returns {void}\n *\n * @public @virtual\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "loadMedia(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "loadMedia"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#logger:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected logger: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "logger",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#name:member",
+              "docComment": "/**\n * The name of the plugin.  @member\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "name",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#player:member",
+              "docComment": "/**\n * Reference to the actual player.  @member\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected player: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "KalturaPlayer",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!~KalturaPlayer:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "player",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#ready:member",
+              "docComment": "/**\n * Getter for the ready promise of the plugin.\n *\n * @returns {Promise<*>} - returns a resolved promise unless the plugin overrides this ready getter.\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected get ready(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<any>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "ready",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": false,
+              "isProtected": true,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#reset:member(1)",
+              "docComment": "/**\n * Runs the reset logic of the plugin. plugin must implement this method.\n *\n * @returns {void}\n *\n * @public @virtual\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "reset(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "reset"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@playkit-js/kaltura-player-js!BasePlugin#updateConfig:member(1)",
+              "docComment": "/**\n * Updates the config of the plugin.\n *\n * @param update - The updated configuration.\n *\n * @returns {void}\n *\n * @public\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "updateConfig(update: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "update",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "updateConfig"
+            }
+          ],
+          "implementsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 2
+            }
+          ]
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@playkit-js/kaltura-player-js!cast:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "cast: "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    registerRemotePlayer: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemotePlayerManager.register",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemotePlayerManager.register:member"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    PlayerSnapshot: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "PlayerSnapshot",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~PlayerSnapshot:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    RemoteControl: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemoteControl",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemoteControl:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    RemoteSession: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemoteSession",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemoteSession:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    BaseRemotePlayer: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "BaseRemotePlayer",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~BaseRemotePlayer:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    RemoteConnectedPayload: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemoteConnectedPayload",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemoteConnectedPayload:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    RemoteDisconnectedPayload: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemoteDisconnectedPayload",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemoteDisconnectedPayload:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    RemoteAvailablePayload: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemoteAvailablePayload",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemoteAvailablePayload:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    RemotePlayerUI: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "RemotePlayerUI",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~RemotePlayerUI:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    CastEventType: {\n        [event: string]: string;\n    };\n    RemotePlayerType: {\n        [type: string]: string;\n    };\n    TextStyleConverter: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "TextStyleConverter",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~TextStyleConverter:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    CustomEventMessage: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "CustomEventMessage",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~CustomEventMessage:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    CustomActionMessage: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "CustomActionMessage",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~CustomActionMessage:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    CustomMessageType: {\n        [type: string]: string;\n    };\n    CustomActionType: {\n        [action: string]: string;\n    };\n    CustomMessage: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "CustomMessage",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~CustomMessage:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n}"
+            }
+          ],
+          "fileUrlPath": "src/common/cast/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "cast",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 28
+          }
+        },
+        {
           "kind": "Function",
           "canonicalReference": "@playkit-js/kaltura-player-js!getPlayer:function(1)",
           "docComment": "/**\n * get a player instance by id\n *\n * @param id - the player ID\n *\n * @returns {KalturaPlayer | null} - the player if found by the supplied ID or null if key doesn't exist\n */\n",
@@ -190,8 +1989,13 @@
               "text": "): "
             },
             {
+              "kind": "Reference",
+              "text": "KalturaPlayer",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~KalturaPlayer:class"
+            },
+            {
               "kind": "Content",
-              "text": "any"
+              "text": " | null"
             },
             {
               "kind": "Content",
@@ -201,7 +2005,7 @@
           "fileUrlPath": "src/proxy.ts",
           "returnTypeTokenRange": {
             "startIndex": 3,
-            "endIndex": 4
+            "endIndex": 5
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -227,8 +2031,22 @@
               "text": "declare function getPlayers(): "
             },
             {
+              "kind": "Reference",
+              "text": "Record",
+              "canonicalReference": "!Record:type"
+            },
+            {
               "kind": "Content",
-              "text": "{}"
+              "text": "<string, "
+            },
+            {
+              "kind": "Reference",
+              "text": "KalturaPlayer",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~KalturaPlayer:class"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
             },
             {
               "kind": "Content",
@@ -238,7 +2056,7 @@
           "fileUrlPath": "src/proxy.ts",
           "returnTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 2
+            "endIndex": 5
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -312,6 +2130,57 @@
           "variableTypeTokenRange": {
             "startIndex": 1,
             "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@playkit-js/kaltura-player-js!playlist:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "playlist: "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    PlaylistEventType: {\n        [event: string]: string;\n    };\n}"
+            }
+          ],
+          "fileUrlPath": "src/common/playlist/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "playlist",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@playkit-js/kaltura-player-js!registerPlugin:var",
+          "docComment": "/**\n * Export the register method.  @type {function}  @constant\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "registerPlugin: "
+            },
+            {
+              "kind": "Content",
+              "text": "typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "PluginManager.register",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~PluginManager.register:member"
+            }
+          ],
+          "fileUrlPath": "src/common/plugins/plugin-manager.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "registerPlugin",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
           }
         },
         {

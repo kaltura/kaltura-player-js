@@ -4,17 +4,125 @@
 
 ```ts
 
+import { BaseMiddleware } from '@playkit-js/playkit-js';
 import * as core from '@playkit-js/playkit-js';
+import { Error as Error_2 } from '@playkit-js/playkit-js';
+import { EventManager } from '@playkit-js/playkit-js';
+import { FakeEvent } from '@playkit-js/playkit-js';
 import { FakeEventTarget } from '@playkit-js/playkit-js';
+import { Provider } from '@playkit-js/playkit-js-providers';
+import * as providers from '@playkit-js/playkit-js-providers';
+import { TextStyle } from '@playkit-js/playkit-js';
+import { ThumbnailInfo } from '@playkit-js/playkit-js';
+import { TimedMetadata } from '@playkit-js/playkit-js';
+import { Track } from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
+
+// @public
+export class Ad {
+    // Warning: (ae-forgotten-export) The symbol "PKAdOptions" needs to be exported by the entry point index.d.ts
+    constructor(id: string, options: PKAdOptions);
+    get bitrate(): number;
+    get bumper(): boolean;
+    get clickThroughUrl(): string | undefined;
+    get contentType(): string | undefined;
+    get duration(): number | undefined;
+    get height(): number;
+    get id(): string;
+    get inStream(): boolean;
+    get linear(): boolean;
+    get position(): number | undefined;
+    get posterUrl(): string | undefined;
+    get skipOffset(): number | undefined;
+    get skippable(): boolean;
+    get streamId(): string;
+    get system(): string | undefined;
+    get title(): string | undefined;
+    // (undocumented)
+    toJSON(): any;
+    get url(): string | undefined;
+    get vpaid(): boolean;
+    get width(): number;
+    get wrapperAdIds(): Array<string>;
+    get wrapperAdSystems(): Array<string>;
+    get wrapperCreativeIds(): Array<string>;
+}
+
+// @public (undocumented)
+export class AdBreak {
+    // Warning: (ae-forgotten-export) The symbol "PKAdBreakOptions" needs to be exported by the entry point index.d.ts
+    constructor(options: PKAdBreakOptions);
+    get numAds(): number | undefined;
+    get position(): number | undefined;
+    // (undocumented)
+    toJSON(): any;
+    get type(): string | undefined;
+}
+
+// Warning: (ae-forgotten-export) The symbol "IPlugin" needs to be exported by the entry point index.d.ts
+//
+// @public
+export class BasePlugin implements IPlugin {
+    constructor(name: string, player: KalturaPlayer, config: any);
+    protected config: any;
+    static createPlugin(name: string, player: KalturaPlayer, config?: any): BasePlugin;
+    protected static defaultConfig: any;
+    // @virtual
+    destroy(): void;
+    dispatchEvent(name: string, payload: any): void;
+    protected eventManager: EventManager;
+    getConfig(attr?: string): any;
+    getName(): string;
+    protected static isValid(): boolean;
+    // @virtual
+    loadMedia(): void;
+    // (undocumented)
+    protected logger: any;
+    name: string;
+    // Warning: (ae-forgotten-export) The symbol "KalturaPlayer" needs to be exported by the entry point index.d.ts
+    protected player: KalturaPlayer;
+    protected get ready(): Promise<any>;
+    // @virtual
+    reset(): void;
+    updateConfig(update: any): void;
+}
+
+// @public (undocumented)
+export const cast: {
+    registerRemotePlayer: typeof RemotePlayerManager.register;
+    PlayerSnapshot: typeof PlayerSnapshot;
+    RemoteControl: typeof RemoteControl;
+    RemoteSession: typeof RemoteSession;
+    BaseRemotePlayer: typeof BaseRemotePlayer;
+    RemoteConnectedPayload: typeof RemoteConnectedPayload;
+    RemoteDisconnectedPayload: typeof RemoteDisconnectedPayload;
+    RemoteAvailablePayload: typeof RemoteAvailablePayload;
+    RemotePlayerUI: typeof RemotePlayerUI;
+    CastEventType: {
+        [event: string]: string;
+    };
+    RemotePlayerType: {
+        [type: string]: string;
+    };
+    TextStyleConverter: typeof TextStyleConverter;
+    CustomEventMessage: typeof CustomEventMessage;
+    CustomActionMessage: typeof CustomActionMessage;
+    CustomMessageType: {
+        [type: string]: string;
+    };
+    CustomActionType: {
+        [action: string]: string;
+    };
+    CustomMessage: typeof CustomMessage;
+};
 
 export { core }
 
 // @public
-export function getPlayer(id: string): any;
+export function getPlayer(id: string): KalturaPlayer | null;
 
 // @public
-export function getPlayers(): {};
+export function getPlayers(): Record<string, KalturaPlayer>;
 
 // @public (undocumented)
 export const KALTURA_PLAYER_START_TIME_QS: string;
@@ -25,8 +133,21 @@ export const PLAYER_NAME: string;
 // @public (undocumented)
 export const PLAYER_TYPE: string;
 
+// @public (undocumented)
+export const playlist: {
+    PlaylistEventType: {
+        [event: string]: string;
+    };
+};
+
+export { providers }
+
+// Warning: (ae-forgotten-export) The symbol "PluginManager" needs to be exported by the entry point index.d.ts
+//
+// @public
+export const registerPlugin: typeof PluginManager.register;
+
 // Warning: (ae-forgotten-export) The symbol "PartialKPOptionsObject" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "KalturaPlayer" needs to be exported by the entry point index.d.ts
 //
 // @public
 function setup_2(options: PartialKPOptionsObject): KalturaPlayer;
@@ -36,6 +157,22 @@ export { ui }
 
 // @public (undocumented)
 export const VERSION: string;
+
+// Warnings were encountered during analysis:
+//
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemotePlayerManager" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "PlayerSnapshot" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteControl" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteSession" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "BaseRemotePlayer" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteConnectedPayload" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteDisconnectedPayload" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteAvailablePayload" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemotePlayerUI" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "TextStyleConverter" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomEventMessage" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomActionMessage" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomMessage" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
