@@ -1,32 +1,63 @@
 {
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint"],
+//  "plugins": ["prettier", "@typescript-eslint"],
+  "rules": {
+    "indent": ["error", 2],
+    "react/prefer-stateless-function": "off",
+    "max-len": ["warn", { "code": 200 }],
+    "eol-last": "off",
+//    "prettier/prettier": "error",
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+//    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        "accessibility": "explicit",
+        "overrides": {
+          "accessors": "explicit",
+          "constructors": "no-public",
+          "methods": "explicit",
+          "properties": "explicit",
+          "parameterProperties": "explicit"
+        }
+      }
+    ],
+    "block-scoped-var": "error",
+    "arrow-parens": "error",
+    "eqeqeq": "error",
+    "no-var": "error",
+    "no-console": "error",
+    "prefer-const": "error",
+    "prefer-arrow-callback": "error",
+    "no-trailing-spaces": "error",
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "describe",
+        "property": "only"
+      },
+      {
+        "object": "it",
+        "property": "only"
+      }
+    ]
   },
-  "extends": ["eslint:recommended", "plugin:flowtype/recommended"],
-  "plugins": ["prettier", "import", "flowtype", "mocha-no-only"],
+  "overrides": [],
+  "settings": {
+    "jest": {
+      "version": 26
+    }
+  },
   "env": {
     "browser": true,
-    "es6": true,
-    "mocha": true,
-    "amd": true,
-    "commonjs": true
-  },
-  "globals": {
-    "should": true,
-    "sinon": true,
-    "__VERSION__": true,
-    "__NAME__": true,
-    "__PACKAGE_URL__": true,
-    "__CONFIG_DOCS_URL__": true
-  },
-  "rules": {
-    "prettier/prettier": "error",
-    "no-console": "error",
-    "no-alert": "error",
-    "mocha-no-only/mocha-no-only": "off",
-    "require-jsdoc": ["error"],
-    "valid-jsdoc": ["error"]
+    "commonjs": true,
+    "es6": true
   }
 }

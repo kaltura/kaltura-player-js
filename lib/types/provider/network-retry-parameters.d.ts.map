@@ -1,0 +1,1 @@
+{"version":3,"file":"network-retry-parameters.d.ts","sourceRoot":"","sources":["../../../src/types/provider/network-retry-parameters.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,8BAA8B;IAC7C,KAAK,CAAC,EAAE,OAAO,CAAC;IAChB,OAAO,CAAC,EAAE,MAAM,CAAC;IACjB,WAAW,CAAC,EAAE,MAAM,CAAC;CACtB"}

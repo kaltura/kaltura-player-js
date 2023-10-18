@@ -1,0 +1,1 @@
+{"version":3,"file":"entry-list.d.ts","sourceRoot":"","sources":["../../../src/types/provider/entry-list.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,iBAAiB,EAAC,MAAM,cAAc,CAAC;AAE/C,MAAM,MAAM,uBAAuB,GAAG;IACpC,OAAO,EAAE,KAAK,CAAC,iBAAiB,CAAC,CAAC;IAClC,EAAE,CAAC,EAAE,MAAM,CAAA;CACZ,CAAC"}

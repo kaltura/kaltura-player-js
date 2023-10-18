@@ -1,0 +1,1 @@
+{"version":3,"file":"plugins-config-store.d.ts","sourceRoot":"","sources":["../../../src/ovp/plugins/plugins-config-store.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,qBAAqB,EAAE,aAAa,EAAC,MAAM,2CAA2C,CAAC;AAI/F,cAAM,iBAAkB,SAAQ,qBAAqB;IACnD,iBAAiB,EAAE;QAAC,CAAC,UAAU,EAAE,MAAM,GAAG,MAAM,CAAA;KAAC,CAE/C;;CAOH;AAED,OAAO,EAAC,iBAAiB,EAAE,aAAa,EAAC,CAAC"}
