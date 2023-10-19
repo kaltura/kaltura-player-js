@@ -1,6 +1,6 @@
-import {addKalturaPoster} from '../../../../src/ovp/poster';
-import * as TestUtils from '../../../utils/test-utils';
-import {setup} from '../../../../src';
+import {addKalturaPoster} from '../../../src/ovp/poster';
+import * as TestUtils from '../../utils/test-utils';
+import {setup} from '../../../src';
 import {Provider} from '@playkit-js/playkit-js-providers';
 import {Images} from '../mock-data/images';
 

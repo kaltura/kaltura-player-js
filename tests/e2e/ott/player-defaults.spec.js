@@ -1,4 +1,4 @@
-import {getDefaultRedirectOptions} from '../../../../src/ott/player-defaults';
+import {getDefaultRedirectOptions} from '../../../src/ott/player-defaults';
 
 describe('redirectExternalStreamsHandler', function () {
   it('should return the default', function () {

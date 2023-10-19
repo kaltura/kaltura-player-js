@@ -1,6 +1,6 @@
 import { getLogger, Utils } from '@playkit-js/playkit-js';
 import { KPAdPrebidConfig, KPPrebidConfig } from '../../types/ads/prebid-config';
-import { DefferedPromise } from '../../types/utils/deffered-promise';
+import { DeferredPromise } from '../../types/utils/deferred-promise';
 
 const AD_REQUEST_TIMEOUT = 4000;
 
@@ -36,7 +36,7 @@ class PrebidManager {
    * @private
    * @memberof PrebidManager
    */
-  private _loadPromise: DefferedPromise;
+  private _loadPromise: DeferredPromise;
 
   constructor(config?: KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();

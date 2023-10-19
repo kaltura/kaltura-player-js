@@ -1,4 +1,4 @@
-import {addKalturaPoster} from '../../../../src/ott/poster';
+import {addKalturaPoster} from '../../../src/ott/poster';
 
 describe('addKalturaPoster', function () {
   it('should change poster of mediaSources to string', function () {

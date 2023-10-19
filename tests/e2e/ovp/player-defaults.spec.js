@@ -1,4 +1,4 @@
-import {getDefaultRedirectOptions} from '../../../../src/ovp/player-defaults';
+import {getDefaultRedirectOptions} from '../../../src/ovp/player-defaults';
 import {Env, MediaType} from '@playkit-js/playkit-js';
 
 describe('getDefaultRedirectOptions', function () {

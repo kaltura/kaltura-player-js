@@ -18,6 +18,14 @@ module.exports = function (config) {
       {
         pattern: 'tests/index.js',
         watched: false
+      },
+      {
+        pattern: 'tests/assets/mov_bbb.mp4',
+        included: false
+      },
+      {
+        pattern: 'tests/assets/audios.mp4',
+        included: false
       }
     ],
 

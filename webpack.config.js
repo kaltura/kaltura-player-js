@@ -44,7 +44,8 @@ module.exports = (env, { mode }) => {
     module: {
       rules: [
         {
-          test: /\.ts/,
+          test: /\.(ts|js)$/,  // Match both .ts and .js files
+          // test: /\.ts/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
