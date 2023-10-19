@@ -44,7 +44,7 @@
     "clean": "rm -rf dist/*",
     "build": "npm run clean && npm run build:prod:ovp && npm run build:prod:ott",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
-    "test": "karma start --color --mode development",
+    "test": "karma start karma.conf.js",
     "test:debug": "DEBUG_UNIT_TESTS=1 karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
     "test:watch": "karma start karma.conf.js --auto-watch --no-single-run",
     "lint": "eslint src/ tests/ --ext .js --ext .ts",
