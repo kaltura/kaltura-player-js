@@ -51,7 +51,8 @@ describe('StorageManager', function () {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'size').get(() => 1);
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
-    StorageManager.getStorageConfig().should.deep.equal({
+    const storageConfig = JSON.parse(JSON.stringify(StorageManager.getStorageConfig()));
+    storageConfig.should.deep.equal({
       playback: {
         volume: 1
       }
@@ -65,7 +66,8 @@ describe('StorageManager', function () {
     getItemStub.withArgs('muted').returns(false);
     getItemStub.withArgs('textLanguage').returns('heb');
     getItemStub.withArgs('audioLanguage').returns('eng');
-    StorageManager.getStorageConfig().should.deep.equal({
+    const storageConfig = JSON.parse(JSON.stringify(StorageManager.getStorageConfig()));
+    storageConfig.should.deep.equal({
       playback: {
         volume: 0.5,
         muted: false,

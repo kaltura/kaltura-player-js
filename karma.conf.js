@@ -43,6 +43,9 @@ module.exports = function (config) {
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: ['mocha'],
+    mochaReporter: {
+      showDiff: true,
+    },
 
     coverageIstanbulReporter: {
       reports: ['lcov', 'text-summary'],
