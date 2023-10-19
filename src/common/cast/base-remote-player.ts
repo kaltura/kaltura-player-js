@@ -60,7 +60,8 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     this._playerConfig = {};
     BaseRemotePlayer._logger = getLogger(name);
     this._remoteControl = remoteControl;
-    this._castConfig = Utils.Object.mergeDeep({}, BaseRemotePlayer.defaultConfig, castConfig);
+    // @ts-ignore
+    this._castConfig = Utils.Object.mergeDeep({}, this.constructor.defaultConfig, castConfig);
     this._eventManager = new EventManager();
     BaseRemotePlayer._logger.debug('Initialized');
   }

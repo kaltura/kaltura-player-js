@@ -83,7 +83,8 @@ export class BasePlugin implements IPlugin {
     this.eventManager = new EventManager();
     this.logger = getLogger(Utils.String.capitlize(this.name));
     this.config = {};
-    Utils.Object.mergeDeep(this.config, BasePlugin.defaultConfig, config);
+    // @ts-ignore
+    Utils.Object.mergeDeep(this.config, this.constructor.defaultConfig, config);
   }
 
   /**
