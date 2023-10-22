@@ -42,7 +42,7 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessWithFlags: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
+        flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--mute-audio']
       }
     },
     browsers: ['ChromeHeadlessWithFlags'],
