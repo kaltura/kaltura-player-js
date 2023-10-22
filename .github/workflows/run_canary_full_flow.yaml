@@ -20,6 +20,7 @@ jobs:
       PLAYER_MSTEAMS_WEBHOOK: ${{ secrets.PLAYER_MSTEAMS_WEBHOOK }}
       PLAYER_GITHUB_BOT_TOKEN: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
     with:
+      node-version: "20.x"
       type: "player"
       player-type: "ovp tv"
       stage: "canary"
