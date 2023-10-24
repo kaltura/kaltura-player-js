@@ -1,6 +1,8 @@
+// eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import {ConfigEvaluator, getEncodedReferrer} from '../../../../src/common/plugins';
 
-let sandbox = sinon.createSandbox();
+const sandbox = sinon.createSandbox();
 
 describe('evaluatePluginsConfig', () => {
   let playerConfig, pluginsConfig, configEvaluator;
@@ -17,7 +19,7 @@ describe('evaluatePluginsConfig', () => {
     };
     pluginsConfig = {
       kava: {
-        myHandler: () => {},
+        myHandler: (): any => {},
         myUnevaluatedConfig: '{{abc}}',
         myArray: arrayValue
       }
@@ -67,8 +69,8 @@ describe('evaluatePluginsConfig', () => {
   });
 
   it('should handle functions arrays in plugin config', () => {
-    function function1() {}
-    function function2() {}
+    function function1(): any {}
+    function function2(): any {}
     const functionArray = [function1, function2];
 
     pluginsConfig.kava.myArray = [function1, function2];
@@ -76,7 +78,7 @@ describe('evaluatePluginsConfig', () => {
   });
 
   it('should handle object arrays in plugin config', () => {
-    const objectArrayValue = arrayValue.map(item => {
+    const objectArrayValue = arrayValue.map((item) => {
       return {
         value: item
       };
@@ -100,8 +102,8 @@ describe('evaluatePluginsConfig', () => {
   });
 
   it('should handle nested functions inside object array in plugin config', () => {
-    function function1() {}
-    function function2() {}
+    function function1(): any {}
+    function function2(): any {}
     const functionArray = [function1, function2];
 
     pluginsConfig.kava.myArray = functionArray;

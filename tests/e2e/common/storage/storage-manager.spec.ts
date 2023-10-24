@@ -7,7 +7,7 @@ import {setStorageTextStyle} from '../../../../src/common/utils/setup-helpers';
 
 const targetId = 'player-placeholder_storage-manager.spec';
 
-describe('StorageManager', function () {
+describe('StorageManager', (): any => {
   let config, player, sandbox;
   const partnerId = 1091;
   const entryId = '0_wifqaipd';
@@ -16,7 +16,7 @@ describe('StorageManager', function () {
     serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
   };
 
-  beforeEach(function () {
+  beforeEach((): any => {
     TestUtils.createElement('DIV', targetId);
     sandbox = sinon.createSandbox();
     config = {
@@ -28,28 +28,28 @@ describe('StorageManager', function () {
     };
   });
 
-  afterEach(function () {
+  afterEach((): any => {
     sandbox.restore();
     TestUtils.removeVideoElementsFromTestPage();
     TestUtils.removeElement(targetId);
     window.localStorage.clear();
   });
 
-  it('should return it has no storage', function () {
-    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    sandbox.stub(StorageWrapper, 'size').get(() => 0);
+  it('should return it has no storage', (): any => {
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    sandbox.stub(StorageWrapper, 'size').get((): any => 0);
     StorageManager.hasStorage().should.be.false;
   });
 
-  it('should return it has storage', function () {
-    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    sandbox.stub(StorageWrapper, 'size').get(() => 1);
+  it('should return it has storage', (): any => {
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    sandbox.stub(StorageWrapper, 'size').get((): any => 1);
     StorageManager.hasStorage().should.be.true;
   });
 
-  it('should return config for volume', function () {
-    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    sandbox.stub(StorageWrapper, 'size').get(() => 1);
+  it('should return config for volume', (): any => {
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    sandbox.stub(StorageWrapper, 'size').get((): any => 1);
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
     const storageConfig = JSON.parse(JSON.stringify(StorageManager.getStorageConfig()));
     storageConfig.should.deep.equal({
@@ -59,9 +59,9 @@ describe('StorageManager', function () {
     });
   });
 
-  it('should return config for all properties', function () {
-    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    let getItemStub = sandbox.stub(StorageWrapper, 'getItem');
+  it('should return config for all properties', (): any => {
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    const getItemStub = sandbox.stub(StorageWrapper, 'getItem');
     getItemStub.withArgs('volume').returns(0.5);
     getItemStub.withArgs('muted').returns(false);
     getItemStub.withArgs('textLanguage').returns('heb');
@@ -77,10 +77,10 @@ describe('StorageManager', function () {
     });
   });
 
-  it.skip('should set muted to true/false depends on changed volume', function (done) {
-    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
+  it.skip('should set muted to true/false depends on changed volume', (done) => {
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
-    player.loadMedia({entryId: entryId}).then(() => {
+    player.loadMedia({entryId: entryId}).then((): Promise<any> => {
       try {
         player.muted = true;
         player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
@@ -100,8 +100,8 @@ describe('StorageManager', function () {
     });
   });
 
-  it('should set textStyle of player with textStyle from local storage', function () {
-    let player = {
+  it('should set textStyle of player with textStyle from local storage', (): any => {
+    const player = {
       config: {
         disableUserCache: false
       },
@@ -115,8 +115,8 @@ describe('StorageManager', function () {
     player.textStyle.fontFamily.should.equal('Arial');
   });
 
-  it('should not change textStyle of player', function () {
-    let player = {
+  it('should not change textStyle of player', (): any => {
+    const player = {
       config: {
         disableUserCache: true
       },
@@ -130,17 +130,17 @@ describe('StorageManager', function () {
     player.textStyle.fontFamily.should.equal('Verdana');
   });
 
-  it.skip('should set textLanguage depends on CC toggle', function (done) {
-    StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
+  it.skip('should set textLanguage depends on CC toggle', (done) => {
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
-    player.loadMedia({entryId: entryId}).then(() => {
+    player.loadMedia({entryId: entryId}).then((): Promise<any> => {
       player.load();
-      player.ready().then(() => {
+      player.ready().then((): Promise<any> => {
         try {
           player.dispatchEvent(new FakeEvent(player.Event.UI.USER_SHOWED_CAPTIONS, {element: 'ClosedCaptions'}));
-          player.addEventListener(player.Event.TEXT_TRACK_CHANGED, event => {
+          player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
             const {selectedTextTrack} = event.payload;
-            setTimeout(() => {
+            setTimeout((): any => {
               try {
                 StorageManager.getStorageConfig().playback.textLanguage.should.be.equal(selectedTextTrack.language);
                 if (selectedTextTrack.language === 'off') {

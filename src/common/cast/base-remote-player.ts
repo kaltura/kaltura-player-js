@@ -60,6 +60,7 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     this._playerConfig = {};
     BaseRemotePlayer._logger = getLogger(name);
     this._remoteControl = remoteControl;
+    // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this._castConfig = Utils.Object.mergeDeep({}, this.constructor.defaultConfig, castConfig);
     this._eventManager = new EventManager();

@@ -1,3 +1,4 @@
+// eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import {PluginManager} from '../../../../src/common/plugins';
 import ColorsPlugin from './test-plugins/colors-plugin';
@@ -6,7 +7,7 @@ import NumbersPlugin from './test-plugins/numbers-plugin';
 /**
  * @returns {void}
  */
-function registerAll() {
+function registerAll(): void {
   PluginManager.register('numbers', NumbersPlugin);
   PluginManager.register('colors', ColorsPlugin);
 }
@@ -14,7 +15,7 @@ function registerAll() {
 /**
  * @returns {void}
  */
-function unRegisterAll() {
+function unRegisterAll(): any {
   PluginManager.unRegister('numbers');
   PluginManager.unRegister('colors');
 }
@@ -36,7 +37,7 @@ describe('PluginManager.registry', () => {
 
   it("shouldn't register the plugin because handler isn't derived from BasePlugin", () => {
     unRegisterAll();
-    PluginManager.register('numbers', function () {}).should.be.false;
+    PluginManager.register('numbers', () => {}).should.be.false;
     (PluginManager._registry.get('numbers') === undefined).should.be.true;
   });
 
@@ -102,7 +103,7 @@ describe('PluginManager.plugins', () => {
   });
 
   it("shouldn't load() the plugin", () => {
-    sandbox.stub(ColorsPlugin, 'isValid').callsFake(function () {
+    sandbox.stub(ColorsPlugin, 'isValid').callsFake(() => {
       return false;
     });
     pluginManager.load('colors', {}, {}).should.be.false;
@@ -140,10 +141,10 @@ describe('PluginManager.plugins', () => {
   it('should destroy() all the plugins', () => {
     pluginManager.load('colors', {}, {}).should.be.true;
     pluginManager.load('numbers', {}, {}).should.be.true;
-    let colorsPlugin = pluginManager.get('colors');
-    let numbersPlugin = pluginManager.get('numbers');
-    let destroyColorsSpy = sandbox.spy(colorsPlugin, 'destroy');
-    let destroyNumbersSpy = sandbox.spy(numbersPlugin, 'destroy');
+    const colorsPlugin = pluginManager.get('colors');
+    const numbersPlugin = pluginManager.get('numbers');
+    const destroyColorsSpy = sandbox.spy(colorsPlugin, 'destroy');
+    const destroyNumbersSpy = sandbox.spy(numbersPlugin, 'destroy');
     pluginManager.destroy();
     destroyColorsSpy.should.have.been.calledOnce;
     destroyNumbersSpy.should.have.been.calledOnce;
@@ -155,10 +156,10 @@ describe('PluginManager.plugins', () => {
   it('should reset() all the plugins', () => {
     pluginManager.load('colors', {}, {}).should.be.true;
     pluginManager.load('numbers', {}, {}).should.be.true;
-    let colorsPlugin = pluginManager.get('colors');
-    let numbersPlugin = pluginManager.get('numbers');
-    let resetColorsSpy = sandbox.spy(colorsPlugin, 'reset');
-    let resetNumbersSpy = sandbox.spy(numbersPlugin, 'reset');
+    const colorsPlugin = pluginManager.get('colors');
+    const numbersPlugin = pluginManager.get('numbers');
+    const resetColorsSpy = sandbox.spy(colorsPlugin, 'reset');
+    const resetNumbersSpy = sandbox.spy(numbersPlugin, 'reset');
     pluginManager.reset();
     resetColorsSpy.should.have.been.calledOnce;
     resetNumbersSpy.should.have.been.calledOnce;

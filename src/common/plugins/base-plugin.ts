@@ -83,6 +83,7 @@ export class BasePlugin implements IPlugin {
     this.eventManager = new EventManager();
     this.logger = getLogger(Utils.String.capitlize(this.name));
     this.config = {};
+    // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
     Utils.Object.mergeDeep(this.config, this.constructor.defaultConfig, config);
   }

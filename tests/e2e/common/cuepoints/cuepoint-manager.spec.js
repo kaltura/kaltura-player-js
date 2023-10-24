@@ -21,11 +21,11 @@ describe('CuePointManager', () => {
     sandbox.restore();
   });
 
-  it('should get cue-point manager', function () {
+  it('should get cue-point manager', () => {
     expect(player.cuePointManager).instanceOf(CuePointManager);
   });
 
-  it('should create and add text-track', function () {
+  it('should create and add text-track', () => {
     player.setMedia({sources: SourcesConfig.Mp4});
     expect(player.cuePointManager._textTrack).to.eql(null);
     player.cuePointManager.addCuePoints([]);
@@ -34,7 +34,7 @@ describe('CuePointManager', () => {
     });
   });
 
-  it('should add/get/remove/clear-all cue points', function () {
+  it('should add/get/remove/clear-all cue points', () => {
     const cuePoints = [
       {
         id: 'test-id-1',

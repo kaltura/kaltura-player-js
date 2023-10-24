@@ -22,11 +22,11 @@ describe('ThumbnailManager', () => {
           }
         }
       },
-      getThumbnail: () => {},
+      getThumbnail: (): any => {},
       _localPlayer: {
-        getThumbnail: () => {}
+        getThumbnail: (): any => {}
       },
-      shouldAddKs: () => true
+      shouldAddKs: (): any => true
     };
     fakeMediaConfig = {
       sources: {
@@ -71,25 +71,25 @@ describe('ThumbnailManager', () => {
   it('should get empty thumbnail slices url for non string given', () => {
     fakeMediaConfig.sources.poster = null;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
+    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should get empty thumbnail slices url for non valid string given', () => {
     fakeMediaConfig.sources.poster = '//my-thumb-service.com/p/1/entry_id/2/version/3';
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
+    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
-  it('should get empty thumbnail slices url for live content', () => {
+  it('should get empty thumbnail slices url for live content - 1', () => {
     fakeMediaConfig.sources.type = MediaType.LIVE;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
+    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
-  it('should get empty thumbnail slices url for live content', () => {
+  it('should get empty thumbnail slices url for live content - 2', () => {
     fakeMediaConfig.sources.type = MediaType.LIVE;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals(``);
+    thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should return kaltura thumbnail', () => {
@@ -165,7 +165,7 @@ describe('ThumbnailManager', () => {
       );
   });
 
-  describe('Poster Integration', function () {
+  describe('Poster Integration', () => {
     const targetId = 'player-placeholder_ovp/thumbnail.spec';
 
     let config, kalturaPlayer;
@@ -177,11 +177,11 @@ describe('ThumbnailManager', () => {
       serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
     };
 
-    before(function () {
+    before(() => {
       TestUtils.createElement('DIV', targetId);
     });
 
-    beforeEach(function () {
+    beforeEach(() => {
       config = {
         targetId: targetId,
         provider: {
@@ -192,16 +192,16 @@ describe('ThumbnailManager', () => {
       };
     });
 
-    afterEach(function () {
+    afterEach(() => {
       kalturaPlayer.destroy();
       TestUtils.removeVideoElementsFromTestPage();
     });
 
-    after(function () {
+    after(() => {
       TestUtils.removeElement(targetId);
     });
 
-    it.skip('should create thumbnail url from provider poster not from configured poster', function (done) {
+    it.skip('should create thumbnail url from provider poster not from configured poster', (done) => {
       config.sources.poster = myCustomPosterUrl;
       kalturaPlayer = setup(config);
       kalturaPlayer.loadMedia({entryId: entryId}).then(() => {

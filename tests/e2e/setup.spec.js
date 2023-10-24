@@ -7,7 +7,7 @@ import * as sinon from 'sinon';
 
 const targetId = 'player-placeholder_setup.spec';
 
-describe('setup', function () {
+describe('setup', () => {
   let config, kalturaPlayer, sandbox;
   const entryId = '0_wifqaipd';
   const partnerId = 1091;
@@ -16,11 +16,11 @@ describe('setup', function () {
     serviceUrl: 'http://qa-apache-php7.dev.kaltura.com/api_v3'
   };
 
-  before(function () {
+  before(() => {
     TestUtils.createElement('DIV', targetId);
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
@@ -31,18 +31,18 @@ describe('setup', function () {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
     kalturaPlayer.destroy();
     kalturaPlayer = null;
     TestUtils.removeVideoElementsFromTestPage();
   });
 
-  after(function () {
+  after(() => {
     TestUtils.removeElement(targetId);
   });
 
-  it.skip('should create a full player', function (done) {
+  it.skip('should create a full player', (done) => {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
@@ -52,17 +52,17 @@ describe('setup', function () {
     });
   });
 
-  it('should create an empty player', function () {
+  it('should create an empty player', () => {
     kalturaPlayer = setup(config);
     (!kalturaPlayer.config.id).should.be.true;
   });
 
-  it.skip('should decorate the selected source by session id', function (done) {
+  it.skip('should decorate the selected source by session id', (done) => {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
     kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
       kalturaPlayer.ready().then(() => {
-        let sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
+        const sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
         sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
         done();
       });
@@ -70,8 +70,8 @@ describe('setup', function () {
     });
   });
 
-  it('should set text style from storage', function () {
-    let textStyle = TextStyle.fromJson({
+  it('should set text style from storage', () => {
+    const textStyle = TextStyle.fromJson({
       fontSize: '75%',
       fontFamily: 'sans-serif',
       fontColor: [14, 15, 0],
@@ -85,7 +85,7 @@ describe('setup', function () {
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
 
-  it('should configure sources', function (done) {
+  it('should configure sources', (done) => {
     const url = 'http://cfvod.kaltura.com/pd/p/2196781/sp/219678100/serveFlavor/entryId/1_afvj3z0u/v/1/flavorId/1_vpmhfzgl/name/a.mp4';
     config.sources = {
       progressive: [

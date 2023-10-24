@@ -5,10 +5,19 @@
   "plugins": [
     "mocha"
   ],
+  "globals": {
+    "sinon": true,
+    "__VERSION__": true,
+    "__NAME__": true
+  },
   "rules": {
-    "mocha/no-skipped-tests": "error",
+    "mocha/max-top-level-suites": "off",
+    "mocha/no-skipped-tests": "off",
+    "mocha/no-setup-in-describe": "off",
+    "mocha/no-nested-tests": "off",
+    "mocha/no-sibling-hooks": "off",
     "mocha/no-exclusive-tests": "error",
     "mocha/no-mocha-arrows": "off",
-    "max-len": ["warn", { "code": 200 }]
+    "max-len": ["warn", { "code": 50000 }]
   }
 }

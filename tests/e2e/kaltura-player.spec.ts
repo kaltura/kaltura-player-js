@@ -1,3 +1,5 @@
+// eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import {setup} from '../../src';
 import * as TestUtils from '../utils/test-utils';
 import * as MediaMockData from './mock-data/media';
@@ -15,15 +17,15 @@ import {Images} from './mock-data/images';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
-describe('kaltura player api', function () {
+describe('kaltura player api', () => {
   let config, kalturaPlayer, sandbox;
   const partnerId = 1091;
 
-  before(function () {
+  before(() => {
     TestUtils.createElement('DIV', targetId);
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     sandbox = sinon.createSandbox();
     config = {
       targetId: targetId,
@@ -33,63 +35,63 @@ describe('kaltura player api', function () {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
     kalturaPlayer = null;
     TestUtils.removeVideoElementsFromTestPage();
   });
 
-  after(function () {
+  after(() => {
     TestUtils.removeElement(targetId);
   });
 
-  describe('constructor', function () {
-    beforeEach(function () {
+  describe('constructor', () => {
+    beforeEach(() => {
       kalturaPlayer = setup(config);
     });
 
-    afterEach(function () {
+    afterEach(() => {
       kalturaPlayer.destroy();
     });
-    it('config.sources should be an empty object if no configured', function () {
+    it('config.sources should be an empty object if no configured', () => {
       kalturaPlayer.config.sources.should.be.exist;
     });
   });
-  describe('media api', function () {
-    describe('loadMedia', function () {
+  describe('media api', () => {
+    describe('loadMedia', () => {
       const entryId = '0_wifqaipd';
 
-      beforeEach(function () {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake((info) => {
           const id = info.playlistId || info.entryId;
           return id
             ? Promise.resolve(MediaMockData.MediaConfig[id])
             : Promise.reject({
-                success: false,
-                data: 'Missing mandatory parameter'
-              });
+              success: false,
+              data: 'Missing mandatory parameter'
+            });
         });
       });
 
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should get media by id from the provider and set it', function (done) {
-        kalturaPlayer.loadMedia({playlistId: entryId}).then(mediaConfig => {
+      it('should get media by id from the provider and set it', (done) => {
+        kalturaPlayer.loadMedia({playlistId: entryId}).then((mediaConfig) => {
           mediaConfig.sources.id.should.equal(entryId);
           kalturaPlayer.config.sources.id.should.equal(entryId);
           done();
         });
       });
 
-      it('should reject and throw an error when the provider request failed', function (done) {
+      it('should reject and throw an error when the provider request failed', (done) => {
         let errorEventTriggered = false;
         kalturaPlayer.addEventListener(kalturaPlayer.Event.ERROR, () => {
           errorEventTriggered = true;
         });
-        kalturaPlayer.loadMedia({}).catch(error => {
+        kalturaPlayer.loadMedia({}).catch((error) => {
           error.data.should.equal('Missing mandatory parameter');
           error.success.should.be.false;
           errorEventTriggered.should.be.true;
@@ -97,7 +99,7 @@ describe('kaltura player api', function () {
         });
       });
 
-      it('should use the configured start time from loadMedia options', function (done) {
+      it('should use the configured start time from loadMedia options', (done) => {
         kalturaPlayer.addEventListener(kalturaPlayer.Event.FIRST_PLAYING, () => {
           (kalturaPlayer.currentTime >= 10).should.be.true;
           done();
@@ -105,7 +107,7 @@ describe('kaltura player api', function () {
         kalturaPlayer.loadMedia({entryId}, {startTime: 10}).then(() => kalturaPlayer.play());
       });
 
-      it('should use the configured poster from loadMedia options', function (done) {
+      it('should use the configured poster from loadMedia options', (done) => {
         const poster = Images.POSTER;
         kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
           kalturaPlayer.poster.should.equal(poster);
@@ -114,7 +116,7 @@ describe('kaltura player api', function () {
         kalturaPlayer.loadMedia({entryId}, {poster});
       });
 
-      it('the reset stat should be false whenever an error occurs', function (done) {
+      it('the reset stat should be false whenever an error occurs', (done) => {
         kalturaPlayer._reset.should.be.true;
         kalturaPlayer.loadMedia({}).catch(() => {
           kalturaPlayer._reset.should.be.false;
@@ -122,12 +124,12 @@ describe('kaltura player api', function () {
         });
       });
 
-      describe('maybeSetStreamPriority', function () {
-        describe('media source mime type is video/youtube', function () {
-          it('should add youtube to stream priority if not already set', function (done) {
+      describe('maybeSetStreamPriority', () => {
+        describe('media source mime type is video/youtube', () => {
+          it('should add youtube to stream priority if not already set', (done) => {
             kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
               let hasYoutube = false;
-              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+              kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
                 if (sp.engine === 'youtube') {
                   hasYoutube = true;
                 }
@@ -140,7 +142,7 @@ describe('kaltura player api', function () {
               }
             });
           });
-          it('should not add youtube to stream priority if already set', function (done) {
+          it('should not add youtube to stream priority if already set', (done) => {
             kalturaPlayer.configure({
               playback: {
                 streamPriority: [
@@ -154,7 +156,7 @@ describe('kaltura player api', function () {
             kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
               let hasYoutube = false;
               kalturaPlayer.config.playback.streamPriority.length.should.equal(1);
-              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+              kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
                 if (sp.engine === 'youtube') {
                   hasYoutube = true;
                 }
@@ -168,11 +170,11 @@ describe('kaltura player api', function () {
             });
           });
         });
-        describe('media source mime type is not video/youtube', function () {
-          it('should not add youtube to stream priority', function (done) {
+        describe('media source mime type is not video/youtube', () => {
+          it('should not add youtube to stream priority', (done) => {
             kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
               let hasYoutube = false;
-              kalturaPlayer.config.playback.streamPriority.forEach(sp => {
+              kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
                 if (sp.engine === 'youtube') {
                   hasYoutube = true;
                 }
@@ -188,7 +190,7 @@ describe('kaltura player api', function () {
         });
       });
     });
-    describe('setMedia', function () {
+    describe('setMedia', () => {
       const mediaWithUserSession = {
         sources: {
           dash: [
@@ -210,7 +212,7 @@ describe('kaltura player api', function () {
             config.provider.loadThumbnailWithKs = false;
             kalturaPlayer = setup(config);
           });
-          afterEach(function () {
+          afterEach(() => {
             kalturaPlayer.destroy();
           });
           describe('session not set', () => {
@@ -239,7 +241,7 @@ describe('kaltura player api', function () {
             config.provider.loadThumbnailWithKs = true;
             kalturaPlayer = setup(config);
           });
-          afterEach(function () {
+          afterEach(() => {
             config.provider.loadThumbnailWithKs = false;
             kalturaPlayer.destroy();
           });
@@ -271,17 +273,17 @@ describe('kaltura player api', function () {
         });
       });
     });
-    describe('selectedSource', function () {
-      beforeEach(function () {
+    describe('selectedSource', () => {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
       });
 
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should get the selectedSource', function (done) {
-        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, event => {
+      it('should get the selectedSource', (done) => {
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, (event) => {
           kalturaPlayer.selectedSource.should.equal(event.payload.selectedSource[0]);
           done();
         });
@@ -289,26 +291,26 @@ describe('kaltura player api', function () {
         kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
       });
     });
-    describe('setSourcesMetadata', function () {
+    describe('setSourcesMetadata', () => {
       const entryId = '0_wifqaipd';
-      beforeEach(function () {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake(function (info) {
+        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake((info) => {
           const id = info.playlistId || info.entryId;
           return id
             ? Promise.resolve(MediaMockData.MediaConfig[id])
             : Promise.reject({
-                success: false,
-                data: 'Missing mandatory parameter'
-              });
+              success: false,
+              data: 'Missing mandatory parameter'
+            });
         });
       });
 
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should set the sources metadata with the provided epgId', done => {
+      it('should set the sources metadata with the provided epgId', (done) => {
         kalturaPlayer.loadMedia({entryId}).then(() => {
           kalturaPlayer.configure({sources: {metadata: {epgId: '54321'}}});
           kalturaPlayer.setSourcesMetadata({epgId: '12345'});
@@ -324,33 +326,33 @@ describe('kaltura player api', function () {
     });
   });
 
-  describe('playlist api', function () {
-    describe('loadPlaylist', function () {
+  describe('playlist api', () => {
+    describe('loadPlaylist', () => {
       const playlistId = '0_wckoqjnn';
 
-      beforeEach(function () {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getPlaylistConfig').callsFake(function (playlistInfo) {
+        sinon.stub(kalturaPlayer._provider, 'getPlaylistConfig').callsFake((playlistInfo) => {
           return playlistInfo.playlistId
             ? Promise.resolve(PlaylistMockData.playlistByID)
             : Promise.reject({success: false, data: 'Missing mandatory parameter'});
         });
       });
 
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should get playlist by id from the provider and set it - without config', function (done) {
-        kalturaPlayer.loadPlaylist({playlistId: playlistId}).then(playlistData => {
+      it('should get playlist by id from the provider and set it - without config', (done) => {
+        kalturaPlayer.loadPlaylist({playlistId: playlistId}).then((playlistData) => {
           playlistData.id.should.equal(playlistId);
           kalturaPlayer.playlist.id.should.equal(playlistData.id);
           done();
         });
       });
 
-      it('should get playlist by id from the provider and set it - with config', function (done) {
-        kalturaPlayer.loadPlaylist({playlistId: playlistId}, {options: {autoContinue: false}}).then(playlistData => {
+      it('should get playlist by id from the provider and set it - with config', (done) => {
+        kalturaPlayer.loadPlaylist({playlistId: playlistId}, {options: {autoContinue: false}}).then((playlistData) => {
           playlistData.id.should.equal(playlistId);
           kalturaPlayer.playlist.id.should.equal(playlistData.id);
           kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -358,12 +360,12 @@ describe('kaltura player api', function () {
         });
       });
 
-      it('should reject and throw an error when the provider request failed', function (done) {
+      it('should reject and throw an error when the provider request failed', (done) => {
         let errorEventTriggered = false;
         kalturaPlayer.addEventListener(kalturaPlayer.Event.ERROR, () => {
           errorEventTriggered = true;
         });
-        kalturaPlayer.loadPlaylist({}).catch(error => {
+        kalturaPlayer.loadPlaylist({}).catch((error) => {
           error.data.should.equal('Missing mandatory parameter');
           error.success.should.be.false;
           errorEventTriggered.should.be.true;
@@ -372,10 +374,10 @@ describe('kaltura player api', function () {
       });
     });
 
-    describe('loadPlaylistByEntryList', function () {
-      beforeEach(function () {
+    describe('loadPlaylistByEntryList', () => {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getEntryListConfig').callsFake(function (entryList) {
+        sinon.stub(kalturaPlayer._provider, 'getEntryListConfig').callsFake((entryList) => {
           return entryList.entries
             ? Promise.resolve(PlaylistMockData.playlistByEntryList)
             : Promise.reject({success: false, data: 'Missing mandatory parameter'});
@@ -386,16 +388,16 @@ describe('kaltura player api', function () {
         kalturaPlayer.destroy();
       });
 
-      it('should get playlist by entry list from the provider and set it - without config', function (done) {
-        kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}).then(playlistData => {
+      it('should get playlist by entry list from the provider and set it - without config', (done) => {
+        kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}).then((playlistData) => {
           playlistData.id.should.equal('a1234');
           kalturaPlayer.playlist.id.should.equal('a1234');
           done();
         });
       });
 
-      it('should get playlist by entry list from the provider and set it- with config', function (done) {
-        kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}, {options: {autoContinue: false}}).then(playlistData => {
+      it('should get playlist by entry list from the provider and set it- with config', (done) => {
+        kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}, {options: {autoContinue: false}}).then((playlistData) => {
           playlistData.id.should.equal('a1234');
           kalturaPlayer.playlist.id.should.equal('a1234');
           kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -403,12 +405,12 @@ describe('kaltura player api', function () {
         });
       });
 
-      it('should reject and throw an error when the provider request failed', function (done) {
+      it('should reject and throw an error when the provider request failed', (done) => {
         let errorEventTriggered = false;
         kalturaPlayer.addEventListener(kalturaPlayer.Event.ERROR, () => {
           errorEventTriggered = true;
         });
-        kalturaPlayer.loadPlaylistByEntryList({}).catch(error => {
+        kalturaPlayer.loadPlaylistByEntryList({}).catch((error) => {
           error.data.should.equal('Missing mandatory parameter');
           error.success.should.be.false;
           errorEventTriggered.should.be.true;
@@ -417,21 +419,21 @@ describe('kaltura player api', function () {
       });
     });
 
-    describe('setPlaylist', function () {
-      beforeEach(function () {
+    describe('setPlaylist', () => {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
       });
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should set the playlist and evaluate the plugins - without config and entry list', function () {
+      it('should set the playlist and evaluate the plugins - without config and entry list', () => {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList);
         kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
       });
 
-      it('should set the playlist and evaluate the plugins - with config and entry list', function () {
+      it('should set the playlist and evaluate the plugins - with config and entry list', () => {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList, {options: {autoContinue: false}}, [
           {entryId: '0_nwkp7jtx'},
           {entryId: '0_wifqaipd'}
@@ -443,16 +445,16 @@ describe('kaltura player api', function () {
       });
     });
 
-    describe('load playlist by setup config', function () {
-      beforeEach(function () {
+    describe('load playlist by setup config', () => {
+      beforeEach(() => {
         config.playlist = PlaylistMockData.playlistByConfig;
         kalturaPlayer = setup(config);
       });
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should set the configured playlist', function () {
+      it('should set the configured playlist', () => {
         kalturaPlayer.playlist.id.should.equal('b1234');
         kalturaPlayer.playlist.metadata.name.should.equal('my playlist name');
         kalturaPlayer.playlist.metadata.description.should.equal('my playlist desc');
@@ -464,16 +466,16 @@ describe('kaltura player api', function () {
       });
     });
 
-    describe('load playlist by configure', function () {
-      beforeEach(function () {
+    describe('load playlist by configure', () => {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
       });
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should set the configured playlist', function (done) {
-        kalturaPlayer.addEventListener('kaltura-player-playlistloaded', event => {
+      it('should set the configured playlist', (done) => {
+        kalturaPlayer.addEventListener('kaltura-player-playlistloaded', (event) => {
           event.payload.playlist.id.should.equal('b1234');
           kalturaPlayer.playlist.id.should.equal('b1234');
           kalturaPlayer.playlist.metadata.name.should.equal('my playlist name');
@@ -488,8 +490,8 @@ describe('kaltura player api', function () {
       });
     });
 
-    describe('mix setup config and api', function () {
-      beforeEach(function () {
+    describe('mix setup config and api', () => {
+      beforeEach(() => {
         config.playlist = {
           countdown: {
             duration: 20,
@@ -501,11 +503,11 @@ describe('kaltura player api', function () {
         };
         kalturaPlayer = setup(config);
       });
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should load the playlist with the preset config', function () {
+      it('should load the playlist with the preset config', () => {
         kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -514,15 +516,15 @@ describe('kaltura player api', function () {
       });
     });
 
-    describe('mix configure and api', function () {
-      beforeEach(function () {
+    describe('mix configure and api', () => {
+      beforeEach(() => {
         kalturaPlayer = setup(config);
       });
-      afterEach(function () {
+      afterEach(() => {
         kalturaPlayer.destroy();
       });
 
-      it('should load the playlist with the preset config', function () {
+      it('should load the playlist with the preset config', () => {
         kalturaPlayer.configure({
           playlist: {
             countdown: {
@@ -555,7 +557,7 @@ describe('kaltura player api', function () {
       PluginManager.unRegister('numbers');
     });
 
-    it('should load 2 plugins on initial config and configure them on configure', function () {
+    it('should load 2 plugins on initial config and configure them on configure', () => {
       player = new Player({
         ui: {},
         provider: {},
@@ -604,7 +606,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should load 1st plugin on initial config, load 2nd plugin and configure the 1st on configure', function () {
+    it('should load 1st plugin on initial config, load 2nd plugin and configure the 1st on configure', () => {
       player = new Player({
         ui: {},
         provider: {},
@@ -645,7 +647,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should create player without plugins, load plugins on configure', function () {
+    it('should create player without plugins, load plugins on configure', () => {
       player = new Player({
         ui: {},
         plugins: {},
@@ -680,7 +682,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should create player without plugins, load 1st plugin on configure, configure 1st plugin with/after sources', function () {
+    it('should create player without plugins, load 1st plugin on configure, configure 1st plugin with/after sources', () => {
       player = new Player({
         ui: {},
         plugins: {},
@@ -734,7 +736,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should create player with plugin and fail to configure other plugin after sources', function () {
+    it('should create player with plugin and fail to configure other plugin after sources', () => {
       player = new Player({
         ui: {},
         provider: {},
@@ -772,7 +774,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should create the plugin before playlist source selected', function () {
+    it('should create the plugin before playlist source selected', () => {
       const eventManager = new EventManager();
       player = new Player({
         ui: {},
@@ -806,7 +808,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should create player with plugin and fail to configure other plugin after playlist source selected', function () {
+    it('should create player with plugin and fail to configure other plugin after playlist source selected', () => {
       player = new Player({
         ui: {},
         provider: {},
@@ -866,7 +868,7 @@ describe('kaltura player api', function () {
       player.destroy();
     });
 
-    it('should create player with async resolve plugin - check async load', done => {
+    it('should create player with async resolve plugin - check async load', (done) => {
       try {
         player = new Player({
           ui: {},
@@ -877,7 +879,7 @@ describe('kaltura player api', function () {
           }
         });
         player._pluginManager.get('asyncResolve').should.exist;
-        sinon.stub(player._localPlayer, '_load').callsFake(function () {
+        sinon.stub(player._localPlayer, '_load').callsFake(() => {
           player._pluginManager.get('asyncResolve').ready.then(() => {
             done();
           });
@@ -888,7 +890,7 @@ describe('kaltura player api', function () {
       }
     });
 
-    it('should create player with async resolve plugin - check async play', done => {
+    it('should create player with async resolve plugin - check async play', (done) => {
       try {
         player = new Player({
           ui: {},
@@ -899,7 +901,7 @@ describe('kaltura player api', function () {
           }
         });
         player._pluginManager.get('asyncResolve').should.exist;
-        sinon.stub(player._localPlayer, '_play').callsFake(function () {
+        sinon.stub(player._localPlayer, '_play').callsFake(() => {
           player._pluginManager.get('asyncResolve').ready.then(() => {
             done();
           });
@@ -910,7 +912,7 @@ describe('kaltura player api', function () {
       }
     });
 
-    it('should create player with async reject plugin - check async load', done => {
+    it('should create player with async reject plugin - check async load', (done) => {
       try {
         player = new Player({
           ui: {},
@@ -921,7 +923,7 @@ describe('kaltura player api', function () {
           }
         });
         player._pluginManager.get('asyncReject').should.exist;
-        sinon.stub(player._localPlayer, '_load').callsFake(function () {
+        sinon.stub(player._localPlayer, '_load').callsFake(() => {
           player._pluginManager.get('asyncReject').ready.catch(() => {
             done();
           });
@@ -932,7 +934,7 @@ describe('kaltura player api', function () {
       }
     });
 
-    it('should create player with async reject plugin - check async play', done => {
+    it('should create player with async reject plugin - check async play', (done) => {
       try {
         player = new Player({
           ui: {},
@@ -943,7 +945,7 @@ describe('kaltura player api', function () {
           }
         });
         player._pluginManager.get('asyncReject').should.exist;
-        sinon.stub(player._localPlayer, '_play').callsFake(function () {
+        sinon.stub(player._localPlayer, '_play').callsFake(() => {
           player._pluginManager.get('asyncReject').ready.catch(() => {
             done();
           });
@@ -954,7 +956,7 @@ describe('kaltura player api', function () {
       }
     });
 
-    it('should create player with async resolve plugin and reject plugin - check async play', done => {
+    it('should create player with async resolve plugin and reject plugin - check async play', (done) => {
       try {
         player = new Player({
           ui: {},
@@ -967,7 +969,7 @@ describe('kaltura player api', function () {
         });
         player._pluginManager.get('asyncReject').should.exist;
         player._pluginManager.get('asyncResolve').should.exist;
-        sinon.stub(player._localPlayer, '_load').callsFake(function () {
+        sinon.stub(player._localPlayer, '_load').callsFake(() => {
           player._pluginManager.get('asyncResolve').ready.then(() => {
             player._pluginManager.get('asyncReject').ready.catch(() => {
               done();
@@ -981,10 +983,10 @@ describe('kaltura player api', function () {
     });
   });
 
-  describe('events', function () {
+  describe('events', () => {
     let player;
 
-    it('should fire PLAYBACK_START on play', done => {
+    it('should fire PLAYBACK_START on play', (done) => {
       player = new Player({
         ui: {},
         provider: {}
@@ -995,7 +997,7 @@ describe('kaltura player api', function () {
       player.play();
     });
 
-    it('should fire PLAYBACK_START on autoplay', done => {
+    it('should fire PLAYBACK_START on autoplay', (done) => {
       player = new Player({
         ui: {},
         provider: {}
@@ -1013,7 +1015,7 @@ describe('kaltura player api', function () {
       });
     });
 
-    it('should fire auto play failed and show the poster once get AD_AUTOPLAY_FAILED', done => {
+    it('should fire auto play failed and show the poster once get AD_AUTOPLAY_FAILED', (done) => {
       player = new Player({
         ui: {},
         provider: {},
@@ -1021,7 +1023,7 @@ describe('kaltura player api', function () {
           autoplay: true
         }
       });
-      player.addEventListener(player.Event.AUTOPLAY_FAILED, event => {
+      player.addEventListener(player.Event.AUTOPLAY_FAILED, (event) => {
         try {
           player._localPlayer.posterManager._el.style.display.should.equal('');
           event.payload.error.should.equal('mock failure');
@@ -1034,7 +1036,7 @@ describe('kaltura player api', function () {
     });
   });
 
-  describe('evaluate plugins config', function () {
+  describe('evaluate plugins config', () => {
     beforeEach(() => {
       PluginManager.register('colors', ColorsPlugin);
     });
@@ -1062,7 +1064,7 @@ describe('kaltura player api', function () {
       const test = class Test {
         constructor() {}
 
-        print() {}
+        public print(): any {}
       };
       const config = {
         plugins: {
@@ -1077,11 +1079,11 @@ describe('kaltura player api', function () {
       player.getMediaConfig().plugins.should.deep.equals(config.plugins);
     });
 
-    it('should pass class instance as plugin config', done => {
+    it('should pass class instance as plugin config', (done) => {
       const test = class Test {
         constructor() {}
 
-        check() {
+        public check(): any {
           done();
         }
       };
@@ -1099,8 +1101,8 @@ describe('kaltura player api', function () {
       player.plugins.colors.config.prop.check();
     });
 
-    it('should pass function as plugin config', done => {
-      const test = () => {
+    it('should pass function as plugin config', (done) => {
+      const test = (): any => {
         done();
       };
       const config = {
@@ -1117,7 +1119,7 @@ describe('kaltura player api', function () {
       player.plugins.colors.config.prop();
     });
 
-    describe('changeMedia and multi players', function () {
+    describe('changeMedia and multi players', () => {
       const config = {
         plugins: {},
         ui: {},
@@ -1145,14 +1147,14 @@ describe('kaltura player api', function () {
             }
           }
         });
-        sinon.stub(Provider.prototype, 'getMediaConfig').callsFake(info => {
+        sinon.stub(Provider.prototype, 'getMediaConfig').callsFake((info) => {
           const id = info.playlistId || info.entryId;
           return id
             ? Promise.resolve(MediaMockData.MediaConfig[id])
             : Promise.reject({
-                success: false,
-                data: 'Missing mandatory parameter'
-              });
+              success: false,
+              data: 'Missing mandatory parameter'
+            });
         });
       });
 
@@ -1162,7 +1164,7 @@ describe('kaltura player api', function () {
         player.destroy();
       });
 
-      it('should evaluate the plugin config - first media', done => {
+      it('should evaluate the plugin config - first media', (done) => {
         player.loadMedia({entryId}).then(() => {
           try {
             player.plugins.colors.config.entryId.should.equals(entryId);
@@ -1176,7 +1178,7 @@ describe('kaltura player api', function () {
         });
       });
 
-      it('should evaluate the default plugin config - second media', done => {
+      it('should evaluate the default plugin config - second media', (done) => {
         player.loadMedia({entryId}).then(() => {
           player.loadMedia({entryId: entryId2}).then(() => {
             try {
@@ -1201,7 +1203,7 @@ describe('kaltura player api', function () {
         PluginManager.unRegister('numbers', NumbersPlugin);
       });
 
-      it('should evaluate the plugin config on source selected', done => {
+      it('should evaluate the plugin config on source selected', (done) => {
         player.addEventListener(player.Event.SOURCE_SELECTED, () => {
           try {
             player.plugins.colors.config.entryId.should.equals(entryId);
@@ -1216,7 +1218,7 @@ describe('kaltura player api', function () {
         player.loadMedia({entryId});
       });
 
-      it('should evaluate the configured plugin config - second media', done => {
+      it('should evaluate the configured plugin config - second media', (done) => {
         player.loadMedia({entryId}).then(() => {
           player.configure({
             plugins: {
@@ -1240,7 +1242,7 @@ describe('kaltura player api', function () {
         });
       });
 
-      it('should evaluate the plugin config - another player', done => {
+      it('should evaluate the plugin config - another player', (done) => {
         const player2 = new Player(
           Utils.Object.mergeDeep(
             {},

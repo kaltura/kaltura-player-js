@@ -2,44 +2,44 @@ import {BasePlugin} from '../../../../../src';
 import {KalturaPlayer as Player} from '../../../../../src/kaltura-player';
 
 export default class ColorsPlugin extends BasePlugin {
-  _favouriteColor: string = '';
-  _size: number = 0;
-  _colors: Array<string> = [];
+  private _favouriteColor: string = '';
+  private _size: number = 0;
+  private _colors: Array<string> = [];
 
-  static defaultConfig: Object = {
+  public static defaultConfig: any = {
     size: 3,
     favouriteColor: 'green'
   };
 
-  static isValid(): boolean {
+  public static isValid(): boolean {
     return true;
   }
 
-  constructor(name: string, player: Player, config: Object) {
+  constructor(name: string, player: Player, config: any) {
     super(name, player, config);
     this._configure();
     this._setup();
   }
 
-  _configure() {
+  private _configure(): void {
     this._size = this.config.size;
     this._favouriteColor = this.config.favouriteColor;
     this.logger.info('_configure', this.config);
   }
 
-  _setup() {
+  private _setup(): void {
     this._colors = [this._favouriteColor, 'blue', 'pink'];
     this.logger.info('_setup', this._colors);
   }
 
-  destroy() {
+  public destroy(): void {
     this._colors = [];
     this._favouriteColor = '';
     this._size = 0;
     this.logger.info('destroy', this._colors, this._favouriteColor, this._size);
   }
 
-  reset() {
+  public reset(): void {
     this._colors = ['pink'];
     this._size = 1;
   }

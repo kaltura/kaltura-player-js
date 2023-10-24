@@ -42,7 +42,7 @@
     "watch:ott": "webpack --watch --mode development --env playerType=ott",
     "build:ott": "webpack --mode production --env playerType=ott",
     "clean": "rm -rf dist/*",
-    "build": "npm run clean && npm run build:ovp && npm run build:ott",
+    "build": "yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
     "test": "karma start karma.conf.js",
     "test:debug": "DEBUG_UNIT_TESTS=1 karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
@@ -61,6 +61,7 @@
     "@playkit-js/playkit-js-hls": "1.32.8",
     "@playkit-js/playkit-js-providers": "2.39.5",
     "@playkit-js/playkit-js-ui": "0.77.7",
+    "eslint-plugin-mocha": "^10.2.0",
     "hls.js": "1.4.11",
     "shaka-player": "4.4.2"
   },

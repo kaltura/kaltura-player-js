@@ -50,7 +50,11 @@ module.exports = (env, { mode }) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [['@babel/preset-env', { targets: 'defaults' }], '@babel/preset-typescript'],
+              presets: [['@babel/preset-env', {
+                loose: true,
+                bugfixes: true,
+                targets: 'defaults'
+              }], '@babel/preset-typescript'],
               // presets: [['@babel/preset-env', { targets: { "chrome": "49"} }], '@babel/preset-typescript'],
               plugins: [['@babel/plugin-transform-runtime']]
             }

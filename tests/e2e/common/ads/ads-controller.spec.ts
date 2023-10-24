@@ -22,14 +22,14 @@ describe('AdsController', () => {
   });
 
   describe('advertising config', () => {
-    it('Should fire AD_MANIFEST_LOADED with the uniq and valid breaks only', done => {
+    it('Should fire AD_MANIFEST_LOADED with the uniq and valid breaks only', (done) => {
       const fakeCtrl = {
-        playAdNow: () => {}
+        playAdNow: (): any => {}
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
-      player.addEventListener(AdEventType.AD_MANIFEST_LOADED, event => {
+      player.addEventListener(AdEventType.AD_MANIFEST_LOADED, (event) => {
         try {
           event.payload.adBreaksPosition.should.deep.equal(['0%', 0, 2, '50%', 1, -1, '100%']);
           done();
@@ -56,11 +56,11 @@ describe('AdsController', () => {
       player.setMedia({sources: SourcesConfig.Mp4});
     });
 
-    it('Should not fire AD_MANIFEST_LOADED for empty list', done => {
+    it('Should not fire AD_MANIFEST_LOADED for empty list', (done) => {
       const fakeCtrl = {
-        playAdNow: () => {}
+        playAdNow: (): any => {}
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.addEventListener(AdEventType.AD_MANIFEST_LOADED, () => {
@@ -77,11 +77,11 @@ describe('AdsController', () => {
       setTimeout(done);
     });
 
-    it('Should play pre-roll, 2 mid-rolls and post-roll by position', done => {
+    it('Should play pre-roll, 2 mid-rolls and post-roll by position', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -93,11 +93,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): Promise<any> => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -114,11 +114,11 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should play pre-roll, 2 mid-rolls and post-roll by percentage', done => {
+    it('Should play pre-roll, 2 mid-rolls and post-roll by percentage', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -130,11 +130,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -151,10 +151,10 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should play 5 mid-rolls by every', done => {
+    it('Should play 5 mid-rolls by every', (done) => {
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             adBreakIndex++;
             player._adsController && (player._adsController._adIsLoading = false);
@@ -163,11 +163,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -188,7 +188,7 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should play pre-roll, mid-rolls and post-roll by mix position, percentage and every', done => {
+    it('Should play pre-roll, mid-rolls and post-roll by mix position, percentage and every', (done) => {
       const adBreaks = [
         [{url: ['PRE_ROLL_1']}, {url: ['PRE_ROLL_1']}],
         [{url: ['MID_ROLL_1']}],
@@ -199,7 +199,7 @@ describe('AdsController', () => {
       ];
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -211,11 +211,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -234,11 +234,11 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should skip the first mid-roll (snap-back)', done => {
+    it('Should skip the first mid-roll (snap-back)', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -250,11 +250,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -274,12 +274,12 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should fire PLAYBACK_ENDED when snap-back after post-roll finished', done => {
+    it('Should fire PLAYBACK_ENDED when snap-back after post-roll finished', (done) => {
       const adBreaks = [[{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 1;
       const fakeCtrl = {
         done: true,
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -289,11 +289,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -315,12 +315,12 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should fire PLAYBACK_ENDED when snap-back after post-roll failed', done => {
+    it('Should fire PLAYBACK_ENDED when snap-back after post-roll failed', (done) => {
       const adBreaks = [[{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 1;
       const fakeCtrl = {
         done: true,
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             player._adsController._adPlayed = true;
@@ -331,11 +331,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -357,10 +357,10 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should not play skipped mid-roll (snap-back) on replay', done => {
+    it('Should not play skipped mid-roll (snap-back) on replay', (done) => {
       const adBreaks = [[{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}]];
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[1]);
@@ -368,11 +368,11 @@ describe('AdsController', () => {
             done(new Error('Should not play skipped mid-roll'));
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -399,7 +399,7 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should play the in reverse (snap-back)', done => {
+    it('Should play the in reverse (snap-back)', (done) => {
       const adBreaks = [
         [{url: ['PRE_ROLL']}],
         [{url: ['MID_ROLL_3']}],
@@ -410,7 +410,7 @@ describe('AdsController', () => {
       ];
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -428,11 +428,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -454,11 +454,11 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should skip the pre-roll and first mid-roll as playback.startTime configured', done => {
+    it('Should skip the pre-roll and first mid-roll as playback.startTime configured', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 2;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -470,11 +470,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -494,11 +494,11 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should skip the pre-roll and first mid-roll as playAdsAfterTime configured', done => {
+    it('Should skip the pre-roll and first mid-roll as playAdsAfterTime configured', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 2;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -510,11 +510,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -532,11 +532,11 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should not skip even playback.startTime since playAdsAfterTime configured', done => {
+    it('Should not skip even playback.startTime since playAdsAfterTime configured', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
       let adBreakIndex = 0;
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[adBreakIndex]);
@@ -548,11 +548,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -573,10 +573,10 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should unify 2 pre-rolls', done => {
+    it('Should unify 2 pre-rolls', (done) => {
       const adBreaks = [[{url: ['PRE_ROLL_1']}, {url: ['PRE_ROLL_2']}]];
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[0]);
@@ -585,11 +585,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -604,10 +604,10 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should unify 2 mid-rolls', done => {
+    it('Should unify 2 mid-rolls', (done) => {
       const adBreaks = [[{url: ['MID_ROLL_1']}, {url: ['MID_ROLL_2']}]];
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[0]);
@@ -616,11 +616,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -635,10 +635,10 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should unify 2 post-rolls', done => {
+    it('Should unify 2 post-rolls', (done) => {
       const adBreaks = [[{url: ['POST_ROLL_1']}, {url: ['POST_ROLL_2']}]];
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             player._adsController && (player._adsController._adIsLoading = false);
             ads.should.deep.equal(adBreaks[0]);
@@ -647,11 +647,11 @@ describe('AdsController', () => {
             done(e);
           }
         },
-        onPlaybackEnded: () => {
+        onPlaybackEnded: (): any => {
           return Promise.resolve();
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -666,13 +666,13 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should ignore ad break positioned out of the duration', done => {
+    it('Should ignore ad break positioned out of the duration', (done) => {
       const fakeCtrl = {
-        playAdNow: () => {
+        playAdNow: (): any => {
           done(new Error('Should not play an out of range ad break'));
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -682,7 +682,7 @@ describe('AdsController', () => {
       });
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         try {
-          player._adsController._configAdBreaks.every(adBreak => adBreak.played).should.be.true;
+          player._adsController._configAdBreaks.every((adBreak) => adBreak.played).should.be.true;
           done();
         } catch (e) {
           done(e);
@@ -692,14 +692,14 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should validate only one time is configured', done => {
+    it('Should validate only one time is configured', (done) => {
       const fakeCtrl = {
-        playAdNow: () => {}
+        playAdNow: (): any => {}
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
-      player.addEventListener(AdEventType.AD_MANIFEST_LOADED, event => {
+      player.addEventListener(AdEventType.AD_MANIFEST_LOADED, (event) => {
         try {
           event.payload.adBreaksPosition.should.deep.equal([10, '60%', '5s', 0.5, 1, '80%', 2]);
         } catch (e) {
@@ -759,10 +759,10 @@ describe('AdsController', () => {
   });
 
   describe('playAdNow', () => {
-    it('Should play pre-roll', done => {
+    it('Should play pre-roll', (done) => {
       const preroll = [{url: ['PRE_ROLL']}];
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             ads.should.deep.equal(preroll);
             done();
@@ -771,17 +771,17 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.setMedia({sources: SourcesConfig.Mp4});
       player.ads.playAdNow(preroll);
     });
 
-    it('Should play mid-roll', done => {
+    it('Should play mid-roll', (done) => {
       const midroll = [{url: ['MID_ROLL']}];
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             ads.should.deep.equal(midroll);
             done();
@@ -790,7 +790,7 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.setMedia({sources: SourcesConfig.Mp4});
@@ -800,14 +800,14 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should not play mid-roll while ad break', done => {
+    it('Should not play mid-roll while ad break', (done) => {
       const midroll = [{url: ['MID_ROLL']}];
       const fakeCtrl = {
-        playAdNow: () => {
+        playAdNow: (): any => {
           done(new Error('Should not play ad while ad break'));
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.setMedia({sources: SourcesConfig.Mp4});
@@ -835,9 +835,9 @@ describe('AdsController', () => {
       });
     });
 
-    it('Should play Prebid as pre-roll', done => {
+    it('Should play Prebid as pre-roll', (done) => {
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             (player.currentTime === 0).should.be.true;
             ads.should.deep.equal(preroll);
@@ -847,7 +847,7 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -855,19 +855,19 @@ describe('AdsController', () => {
           adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
         }
       });
-      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
-      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
         return Promise.resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
       });
       player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
       player.play();
     });
 
-    it('Should Prebid delay pre-roll until Prebid loaded', done => {
+    it('Should Prebid delay pre-roll until Prebid loaded', (done) => {
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             (player.currentTime === 0).should.be.true;
             ads.should.deep.equal(preroll);
@@ -877,7 +877,7 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -885,26 +885,26 @@ describe('AdsController', () => {
           adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
         }
       });
-      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
-      sandbox.stub(player._adsController._prebidManager, '_loadPrebidSDKLib').callsFake(function () {
-        return new Promise(resolve => {
+      sandbox.stub(player._adsController._prebidManager, '_loadPrebidSDKLib').callsFake(() => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
           }, 3000);
         });
       });
-      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
         return Promise.resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
       });
       player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
       player.play();
     });
 
-    it('Should Prebid delay pre-roll until Prebid ad loaded', done => {
+    it('Should Prebid delay pre-roll until Prebid ad loaded', (done) => {
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             (player.currentTime === 0).should.be.true;
             ads.should.deep.equal(preroll);
@@ -914,7 +914,7 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -922,11 +922,11 @@ describe('AdsController', () => {
           adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
         }
       });
-      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
-      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
-        return new Promise(resolve => {
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
           }, 3000);
@@ -936,9 +936,9 @@ describe('AdsController', () => {
       player.play();
     });
 
-    it('Should play Prebid as mid-roll', done => {
+    it('Should play Prebid as mid-roll', (done) => {
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             (Math.floor(player.currentTime) === 2).should.be.true;
             ads.should.deep.equal(midroll);
@@ -948,7 +948,7 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -956,19 +956,19 @@ describe('AdsController', () => {
           adBreaks: [{position: 2, ads: [{url: ['MID_ROLL'], prebid: {}}]}]
         }
       });
-      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
-      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
         return Promise.resolve([{vastUrl: 'PREBID_MID_ROLL'}]);
       });
       player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
       player.play();
     });
 
-    it('Should delay play Prebid mid-roll until it loaded', done => {
+    it('Should delay play Prebid mid-roll until it loaded', (done) => {
       const fakeCtrl = {
-        playAdNow: ads => {
+        playAdNow: (ads): any => {
           try {
             (Math.floor(player.currentTime) > 2).should.be.true;
             ads.should.deep.equal(midroll);
@@ -978,7 +978,7 @@ describe('AdsController', () => {
           }
         }
       };
-      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(function () {
+      sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
       player.configure({
@@ -986,11 +986,11 @@ describe('AdsController', () => {
           adBreaks: [{position: 2, ads: [{url: ['MID_ROLL'], prebid: {}}]}]
         }
       });
-      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(function () {
+      sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
-      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(function () {
-        return new Promise(resolve => {
+      sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve([{vastUrl: 'PREBID_MID_ROLL'}]);
           }, 5000);

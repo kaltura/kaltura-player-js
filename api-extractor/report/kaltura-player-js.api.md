@@ -12,15 +12,24 @@ import { FakeEvent } from '@playkit-js/playkit-js';
 import { FakeEventTarget } from '@playkit-js/playkit-js';
 import { Provider } from '@playkit-js/playkit-js-providers';
 import * as providers from '@playkit-js/playkit-js-providers';
-import { TextStyle } from '@playkit-js/playkit-js';
+import { TextStyle as TextStyle_2 } from '@playkit-js/playkit-js';
 import { ThumbnailInfo } from '@playkit-js/playkit-js';
 import { TimedMetadata } from '@playkit-js/playkit-js';
 import { Track } from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
 
+// @public (undocumented)
+export interface AbrConfig {
+    // (undocumented)
+    capLevelOnFPSDrop: boolean;
+    // (undocumented)
+    fpsDroppedFramesInterval: number;
+    // (undocumented)
+    fpsDroppedMonitoringThreshold: number;
+}
+
 // @public
 export class Ad {
-    // Warning: (ae-forgotten-export) The symbol "PKAdOptions" needs to be exported by the entry point index.d.ts
     constructor(id: string, options: PKAdOptions);
     get bitrate(): number;
     get bumper(): boolean;
@@ -49,14 +58,49 @@ export class Ad {
 }
 
 // @public (undocumented)
+export type AdapterDataConfig = {
+    [key: string]: {
+        value: string;
+        objectType?: string;
+    };
+};
+
+// @public (undocumented)
 export class AdBreak {
-    // Warning: (ae-forgotten-export) The symbol "PKAdBreakOptions" needs to be exported by the entry point index.d.ts
     constructor(options: PKAdBreakOptions);
     get numAds(): number | undefined;
     get position(): number | undefined;
     // (undocumented)
     toJSON(): any;
     get type(): string | undefined;
+}
+
+// @public (undocumented)
+export interface AdPrebidConfig {
+    // (undocumented)
+    adUnit: Object;
+    // (undocumented)
+    options?: Object;
+    // (undocumented)
+    params?: Object;
+    // (undocumented)
+    timeout: number;
+}
+
+// @public
+export interface AdvertisingConfig {
+    // (undocumented)
+    adBreakCuePointStyle?: Object;
+    // Warning: (ae-forgotten-export) The symbol "AdBreakObject" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    adBreaks: AdBreakObject[];
+    // (undocumented)
+    playAdsAfterTime?: number;
+    // (undocumented)
+    prebid?: PrebidConfig;
+    // (undocumented)
+    showAdBreakCuePoint?: boolean;
 }
 
 // Warning: (ae-forgotten-export) The symbol "IPlugin" needs to be exported by the entry point index.d.ts
@@ -116,7 +160,70 @@ export const cast: {
     CustomMessage: typeof CustomMessage;
 };
 
+// @public (undocumented)
+export type ClassConstructor<T> = new (...args: any[]) => T;
+
 export { core }
+
+// @public (undocumented)
+export interface CuePoint {
+    // (undocumented)
+    endTime: number;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    metadata: any;
+    // (undocumented)
+    startTime: number;
+}
+
+// @public (undocumented)
+export type DeferredPromise = {
+    resolve: (value?: any | PromiseLike<any>) => void;
+    reject: (reason?: any) => void;
+    catch: (param: () => any) => void;
+    then(param: () => void): any;
+};
+
+// @public (undocumented)
+export interface DimensionsConfig {
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    ratio?: string;
+    // (undocumented)
+    width: number;
+}
+
+// @public (undocumented)
+export interface DrmDataObject {
+    // (undocumented)
+    certificate?: string;
+    // (undocumented)
+    licenseUrl: string;
+    // (undocumented)
+    scheme: string;
+}
+
+// @public (undocumented)
+export interface ExternalCaptionObject {
+    // (undocumented)
+    default: boolean | undefined;
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    language: string;
+    // (undocumented)
+    type: string | undefined;
+    // (undocumented)
+    url: string;
+}
+
+// @public (undocumented)
+export interface ExternalThumbnailsConfig {
+    // (undocumented)
+    vttUrl: string;
+}
 
 // @public
 export function getPlayer(id: string): KalturaPlayer | null;
@@ -125,7 +232,504 @@ export function getPlayer(id: string): KalturaPlayer | null;
 export function getPlayers(): Record<string, KalturaPlayer>;
 
 // @public (undocumented)
+export interface IAdsController {
+    // (undocumented)
+    allAdsCompleted: boolean;
+    // (undocumented)
+    getAd(): Ad | undefined;
+    // (undocumented)
+    getAdBreak(): AdBreak | undefined;
+    // (undocumented)
+    getAdBreaksLayout(): Array<number | string>;
+    // (undocumented)
+    isAdBreak(): boolean;
+    // (undocumented)
+    playAdNow(adPod: KPAdPod): void;
+    // (undocumented)
+    skipAd(): void;
+}
+
+// @public (undocumented)
+export interface IAdsControllerProvider {
+    // (undocumented)
+    getAdsController(): IAdsPluginController;
+}
+
+// @public (undocumented)
+export interface IAdsPluginController {
+    // (undocumented)
+    active: boolean;
+    // (undocumented)
+    done: boolean;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    onPlaybackEnded(): Promise<void>;
+    // (undocumented)
+    playAdNow(adPod: KPAdPod): void;
+    // (undocumented)
+    skipAd(): void;
+}
+
+// @public (undocumented)
+export interface ImageSourceOptions {
+    // (undocumented)
+    thumbnailAPIParams: {
+        [parmaName: string]: string;
+    };
+}
+
+// @public (undocumented)
 export const KALTURA_PLAYER_START_TIME_QS: string;
+
+// @public (undocumented)
+export interface KalturaPlayerConfig {
+    // (undocumented)
+    abr?: AbrConfig;
+    // (undocumented)
+    advertising: AdvertisingConfig;
+    // (undocumented)
+    cast?: {
+        [key: string]: any;
+    };
+    // (undocumented)
+    dimensions?: DimensionsConfig;
+    // (undocumented)
+    disableUserCache?: boolean;
+    // (undocumented)
+    log?: LogConfig;
+    // (undocumented)
+    network?: NetworkConfig;
+    // (undocumented)
+    playback: PlaybackConfig;
+    // (undocumented)
+    playlist?: PlaylistConfig;
+    // (undocumented)
+    plugins: PluginsConfig;
+    // (undocumented)
+    productVersion?: string;
+    // (undocumented)
+    provider: ProviderConfig;
+    // (undocumented)
+    session?: SessionConfig;
+    // (undocumented)
+    sources: SourcesConfig;
+    // (undocumented)
+    targetId: string;
+    // (undocumented)
+    text?: TextConfig;
+    // (undocumented)
+    ui: UiConfig;
+    // (undocumented)
+    viewability: ViewabilityConfig;
+}
+
+// @public
+export type KPAdBreakObject = {
+    position: number;
+    percentage?: number;
+    every?: number;
+    ads: KPAdPod;
+};
+
+// @public
+export type KPAdObject = {
+    url?: Array<string>;
+    response?: Array<string>;
+    bumper?: boolean;
+    prebid?: KPAdPrebidConfig;
+};
+
+// @public
+export type KPAdPod = Array<KPAdObject>;
+
+// @public (undocumented)
+export interface KPAdPrebidConfig {
+    // (undocumented)
+    adUnit: any;
+    // (undocumented)
+    options?: Object;
+    // (undocumented)
+    params?: Object;
+    // (undocumented)
+    timeout: number;
+}
+
+// @public
+export type KPAdvertisingConfigObject = {
+    prebid?: KPPrebidConfig;
+    adBreaks: Array<KPAdBreakObject>;
+    playAdsAfterTime?: number;
+    showAdBreakCuePoint?: boolean;
+    adBreakCuePointStyle?: Object;
+};
+
+// @public (undocumented)
+export type KPEventTypes = {
+    Core: any;
+    UI: {
+        [event: string]: string;
+    };
+    Cast: {
+        [event: string]: string;
+    };
+    Playlist: {
+        [event: string]: string;
+    };
+};
+
+// @public
+export interface KPMediaConfig extends PlaybackConfig {
+    // (undocumented)
+    plugins?: {
+        [plugin: string]: Object;
+    };
+    // (undocumented)
+    session?: SessionConfig;
+    // (undocumented)
+    sources: ProviderMediaConfigSources;
+}
+
+// @public
+export type KPPlaylistItemConfigObject = {
+    countdown?: PlaylistCountdownOptions;
+};
+
+// @public
+export interface KPPlaylistObject extends PlaylistConfigObject {
+    // (undocumented)
+    id?: string;
+    // (undocumented)
+    metadata?: ProviderPlaylistMetadata;
+    // (undocumented)
+    poster?: string;
+}
+
+// @public (undocumented)
+export interface KPPrebidConfig extends KPAdPrebidConfig {
+    // (undocumented)
+    libUrl: string;
+}
+
+// @public (undocumented)
+export type KPThumbnailConfig = {
+    thumbsSprite: string;
+    thumbsWidth: number;
+    thumbsSlices: number;
+};
+
+// @public (undocumented)
+export interface KPUIAddComponent extends KPUIComponentOptions {
+    // (undocumented)
+    get: () => any;
+    // (undocumented)
+    props?: {};
+}
+
+// @public (undocumented)
+export interface KPUIComponent extends KPUIAddComponent, KPUIRemoveComponent {
+}
+
+// @public (undocumented)
+export interface KPUIComponentOptions {
+    // (undocumented)
+    afterComponent?: string;
+    // (undocumented)
+    area: string;
+    // (undocumented)
+    beforeComponent?: string;
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    presets: Array<string>;
+    // (undocumented)
+    replaceComponent?: string;
+}
+
+// @public (undocumented)
+export interface KPUIRemoveComponent {
+    // (undocumented)
+    area: string;
+    // @deprecated (undocumented)
+    container: string;
+    // (undocumented)
+    presets: Array<string>;
+    // (undocumented)
+    removeComponent: string;
+}
+
+// @public (undocumented)
+export interface LegacyPartialKPOptionsObject {
+    // (undocumented)
+    disableUserCache?: boolean;
+    // (undocumented)
+    logLevel?: string;
+    // (undocumented)
+    player?: any;
+    // (undocumented)
+    provider: ProviderConfig;
+    // (undocumented)
+    targetId: string;
+    // (undocumented)
+    ui?: UiConfig;
+}
+
+// @public (undocumented)
+export interface LogConfig {
+    // (undocumented)
+    handler?: (messages: any[], context: Object) => void;
+    // (undocumented)
+    level: string;
+    // (undocumented)
+    playerVersion?: boolean;
+}
+
+// @public (undocumented)
+export interface Logger {
+    // (undocumented)
+    getLogger: loggerFunctionType;
+    // (undocumented)
+    LogLevel: LogLevelType;
+}
+
+// @public (undocumented)
+export type loggerFunctionType = {
+    VERSION: String;
+    DEBUG: LogLevelObject;
+    ERROR: LogLevelObject;
+    INFO: LogLevelObject;
+    OFF: LogLevelObject;
+    TIME: LogLevelObject;
+    TRACE: LogLevelObject;
+    WARN: LogLevelObject;
+    createDefaultHandler: () => void;
+    debug: () => void;
+    enabledFor: () => void;
+    error: () => void;
+    get: () => void;
+    getLevel: () => void;
+    info: () => void;
+    log: () => void;
+    setHandler: () => void;
+    setLevel: () => void;
+    time: () => void;
+    timeEnd: () => void;
+    trace: () => void;
+    useDefaults: () => void;
+    warn: () => void;
+};
+
+// @public (undocumented)
+export type LogLevelObject = {
+    value: number;
+    name: string;
+};
+
+// @public (undocumented)
+export type LogLevelType = {
+    [level: string]: LogLevelObject;
+};
+
+// @public (undocumented)
+export interface MediaSourceObject {
+    // (undocumented)
+    bandwidth?: number;
+    // (undocumented)
+    drmData?: DrmDataObject[];
+    // (undocumented)
+    height?: number;
+    // (undocumented)
+    id?: string;
+    // (undocumented)
+    label?: string;
+    // (undocumented)
+    mimetype: string;
+    // (undocumented)
+    url: string;
+    // (undocumented)
+    width?: number;
+}
+
+// @public (undocumented)
+export interface MediaSourceOptionsObject {
+    // (undocumented)
+    forceRedirectExternalStreams: boolean;
+    // (undocumented)
+    redirectExternalStreamsHandler: () => void | undefined;
+    // (undocumented)
+    redirectExternalStreamsTimeout: number | undefined;
+}
+
+// @public (undocumented)
+export interface MetadataConfig {
+    // (undocumented)
+    contextType?: string;
+    // (undocumented)
+    description?: string;
+    // (undocumented)
+    epgId?: string;
+    // (undocumented)
+    mediaType?: string;
+    // (undocumented)
+    metas?: Object;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    recordingId?: string;
+    // (undocumented)
+    tags?: Object;
+}
+
+// @public (undocumented)
+export interface NetworkConfig {
+    // (undocumented)
+    maxStaleLevelReloads: number;
+    // (undocumented)
+    requestFilter?: () => void;
+    // (undocumented)
+    responseFilter?: () => void;
+}
+
+// @public (undocumented)
+export interface OTTProviderMediaInfo extends OVPProviderMediaInfo {
+    // (undocumented)
+    adapterData?: AdapterDataConfig;
+    // (undocumented)
+    assetReferenceType?: string;
+    // (undocumented)
+    contextType: string;
+    // (undocumented)
+    fileIds?: string;
+    // (undocumented)
+    formats?: Array<string>;
+    // (undocumented)
+    mediaType: string;
+    // (undocumented)
+    protocol?: string;
+    // (undocumented)
+    streamerType?: string;
+    // (undocumented)
+    urlType?: string;
+}
+
+// @public (undocumented)
+export interface OVPProviderMediaInfo {
+    // (undocumented)
+    entryId?: string;
+    // (undocumented)
+    ks?: string;
+    // (undocumented)
+    referenceId?: string;
+}
+
+// @public (undocumented)
+export type PartialKPOptionsObject = Omit<KalturaPlayerConfig, 'productVersion'>;
+
+// @public (undocumented)
+export interface PKAdBreakOptions {
+    // (undocumented)
+    numAds?: number;
+    // (undocumented)
+    position?: number;
+    // (undocumented)
+    type?: string;
+}
+
+// @public (undocumented)
+export type PKAdBreakTypes = {
+    [type: string]: string;
+};
+
+// @public (undocumented)
+export interface PKAdOptions {
+    // (undocumented)
+    bitrate: number;
+    // (undocumented)
+    bumper: boolean;
+    // (undocumented)
+    clickThroughUrl?: string;
+    // (undocumented)
+    contentType?: string;
+    // (undocumented)
+    duration?: number;
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    inStream?: boolean;
+    // (undocumented)
+    linear: boolean;
+    // (undocumented)
+    position?: number;
+    // (undocumented)
+    posterUrl?: string;
+    // (undocumented)
+    skipOffset?: number;
+    // (undocumented)
+    streamId?: string;
+    // (undocumented)
+    system?: string;
+    // (undocumented)
+    title?: string;
+    // (undocumented)
+    url?: string;
+    // (undocumented)
+    vpaid?: boolean;
+    // (undocumented)
+    width: number;
+    // (undocumented)
+    wrapperAdIds: Array<string>;
+    // (undocumented)
+    wrapperAdSystems: Array<string>;
+    // (undocumented)
+    wrapperCreativeIds: Array<string>;
+}
+
+// @public (undocumented)
+export type PKAdTagTypes = {
+    [type: string]: string;
+};
+
+// @public (undocumented)
+export interface PlaybackConfig {
+    // (undocumented)
+    additionalAudioLanguage: string;
+    // (undocumented)
+    additionalTextLanguage: string;
+    // (undocumented)
+    allowMutedAutoPlay: boolean;
+    // (undocumented)
+    audioLanguage: string;
+    // (undocumented)
+    autoplay: {
+        [type: string]: string | boolean;
+    };
+    // (undocumented)
+    captionsDisplay: boolean;
+    // (undocumented)
+    crossOrigin: string;
+    // (undocumented)
+    inBrowserFullscreen: boolean;
+    // (undocumented)
+    muted: boolean;
+    // (undocumented)
+    pictureInPicture: boolean;
+    // (undocumented)
+    playAdsWithMSE: boolean;
+    // (undocumented)
+    playsinline: boolean;
+    // (undocumented)
+    preferNative: PreferNativeConfig;
+    // (undocumented)
+    preload: string;
+    // (undocumented)
+    screenLockOrientionMode: string;
+    // (undocumented)
+    streamPriority: StreamPriority[];
+    // (undocumented)
+    textLanguage: string;
+    // (undocumented)
+    volume: number;
+}
 
 // @public (undocumented)
 export const PLAYER_NAME: string;
@@ -134,10 +738,219 @@ export const PLAYER_NAME: string;
 export const PLAYER_TYPE: string;
 
 // @public (undocumented)
+export interface PlayerDimensions {
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    width: number;
+}
+
+// @public (undocumented)
+export type PlayerStreamTypes = 'dash' | 'hls' | 'progressive' | 'image';
+
+// @public (undocumented)
 export const playlist: {
     PlaylistEventType: {
         [event: string]: string;
     };
+};
+
+// @public (undocumented)
+export interface PlaylistConfig {
+    // (undocumented)
+    countdown?: PlaylistCountdownOptions;
+    // (undocumented)
+    id: string;
+    // Warning: (ae-forgotten-export) The symbol "PlaylistItem" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    items: Array<PlaylistItem>;
+    // (undocumented)
+    metadata: ProviderPlaylistMetadata;
+    // (undocumented)
+    options?: PlaylistOptions;
+    // (undocumented)
+    poster?: string;
+}
+
+// @public (undocumented)
+export interface PlaylistConfigObject {
+    // (undocumented)
+    countdown?: PlaylistCountdownOptions;
+    // (undocumented)
+    items: Array<PlaylistItem>;
+    // (undocumented)
+    options?: PlaylistOptions;
+}
+
+// @public
+export interface PlaylistCountdownOptions {
+    // (undocumented)
+    duration: number;
+    // (undocumented)
+    showing: boolean;
+    // (undocumented)
+    timeToShow?: number;
+}
+
+// @public
+export interface PlaylistOptions {
+    // (undocumented)
+    autoContinue: boolean;
+    // (undocumented)
+    imageDuration: number;
+    // (undocumented)
+    loop: boolean;
+}
+
+// @public (undocumented)
+export interface PluginsConfig {
+    // (undocumented)
+    [plugin: string]: any;
+}
+
+// @public (undocumented)
+export interface Poster {
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    url: string;
+    // (undocumented)
+    width: number;
+}
+
+// @public (undocumented)
+export interface PrebidConfig extends AdPrebidConfig {
+    // (undocumented)
+    libUrl: string;
+}
+
+// @public (undocumented)
+export interface PreferNativeConfig {
+    // (undocumented)
+    dash: boolean;
+    // (undocumented)
+    hls: boolean;
+}
+
+// @public (undocumented)
+export interface ProviderConfig {
+    // (undocumented)
+    env?: ProviderEnvConfig;
+    // (undocumented)
+    filterOptions?: ProviderFilterOptions;
+    // (undocumented)
+    ignoreServerConfig?: boolean;
+    // (undocumented)
+    ks?: string;
+    // (undocumented)
+    loadThumbnailWithKs?: boolean;
+    // (undocumented)
+    logger?: Logger;
+    // (undocumented)
+    networkRetryParameters?: ProviderNetworkRetryParameters;
+    // (undocumented)
+    partnerId: number;
+    // (undocumented)
+    uiConfId?: number;
+    // (undocumented)
+    widgetId?: string;
+}
+
+// @public (undocumented)
+export type ProviderEntryListObject = {
+    entries: Array<ProviderMediaInfo>;
+    ks?: string;
+};
+
+// @public (undocumented)
+export interface ProviderEnvConfig {
+    // (undocumented)
+    analyticsServiceUrl?: string;
+    // (undocumented)
+    cdnUrl?: string;
+    // (undocumented)
+    replaceHostOnlyManifestUrls?: boolean;
+    // (undocumented)
+    serviceUrl: string;
+    // (undocumented)
+    useApiCaptions?: boolean;
+}
+
+// @public (undocumented)
+export interface ProviderFilterOptions {
+    // (undocumented)
+    redirectFromEntryId?: boolean;
+}
+
+// @public (undocumented)
+export interface ProviderMediaConfigSources {
+    // (undocumented)
+    captions?: ExternalCaptionObject[];
+    // (undocumented)
+    dash: MediaSourceObject[];
+    // (undocumented)
+    duration?: number;
+    // (undocumented)
+    dvr: boolean;
+    // (undocumented)
+    hls: MediaSourceObject[];
+    // (undocumented)
+    id?: string;
+    // (undocumented)
+    image: MediaSourceObject[];
+    // (undocumented)
+    metadata: MetadataConfig;
+    // (undocumented)
+    poster: string | Poster[];
+    // (undocumented)
+    progressive: MediaSourceObject[];
+    // (undocumented)
+    type: string;
+    // (undocumented)
+    vr: Object | undefined;
+}
+
+// @public (undocumented)
+export type ProviderMediaInfo = OVPProviderMediaInfo | OTTProviderMediaInfo;
+
+// @public (undocumented)
+export interface ProviderNetworkRetryParameters {
+    // (undocumented)
+    async?: boolean;
+    // (undocumented)
+    maxAttempts?: number;
+    // (undocumented)
+    timeout?: number;
+}
+
+// @public (undocumented)
+export interface ProviderPlaylistInfoObject {
+    // (undocumented)
+    ks?: string;
+    // (undocumented)
+    playlistId: string;
+}
+
+// @public (undocumented)
+export type ProviderPlaylistItemObject = {
+    sources: ProviderMediaConfigSources;
+};
+
+// @public (undocumented)
+export interface ProviderPlaylistMetadata {
+    // (undocumented)
+    description: string;
+    // (undocumented)
+    name: string;
+}
+
+// @public (undocumented)
+export type ProviderPlaylistObject = {
+    id: string;
+    metadata: ProviderPlaylistMetadata;
+    poster: string;
+    items: Array<ProviderPlaylistItemObject>;
 };
 
 export { providers }
@@ -147,16 +960,137 @@ export { providers }
 // @public
 export const registerPlugin: typeof PluginManager.register;
 
-// Warning: (ae-forgotten-export) The symbol "PartialKPOptionsObject" needs to be exported by the entry point index.d.ts
-//
+// @public (undocumented)
+export interface SessionConfig {
+    // (undocumented)
+    id?: string;
+    // (undocumented)
+    isAnonymous?: boolean;
+    // (undocumented)
+    ks?: string;
+    // (undocumented)
+    partnerId?: number;
+    // (undocumented)
+    uiConfId?: number;
+}
+
 // @public
 function setup_2(options: PartialKPOptionsObject): KalturaPlayer;
 export { setup_2 as setup }
 
+// @public (undocumented)
+export interface SourcesConfig extends Omit<ProviderMediaConfigSources, 'poster'> {
+    // (undocumented)
+    imageSourceOptions?: ImageSourceOptions;
+    // (undocumented)
+    options: MediaSourceOptionsObject;
+    // (undocumented)
+    poster?: string;
+    // (undocumented)
+    startTime: number;
+    // (undocumented)
+    thumbnails?: ExternalThumbnailsConfig;
+}
+
+// @public (undocumented)
+export interface StreamPriority {
+    // (undocumented)
+    engine: string;
+    // (undocumented)
+    format: string;
+}
+
+// @public (undocumented)
+export interface TextConfig {
+    // (undocumented)
+    captionsTextTrack1Label: string;
+    // (undocumented)
+    captionsTextTrack1LanguageCode: string;
+    // (undocumented)
+    captionsTextTrack2Label: string;
+    // (undocumented)
+    captionsTextTrack2LanguageCode: string;
+    // (undocumented)
+    enableCEA708Captions: boolean;
+    // (undocumented)
+    forceCenter: boolean;
+    // (undocumented)
+    textStyle: TextStyle;
+    // (undocumented)
+    textTrackDisplaySetting: TextTrackDisplaySetting;
+    // (undocumented)
+    useNativeTextTrack: boolean;
+    // (undocumented)
+    useShakaTextTrackDisplay: boolean;
+}
+
+// @public
+export interface TextStyle {
+    // (undocumented)
+    backgroundColor?: [number, number, number];
+    // (undocumented)
+    backgroundOpacity?: number;
+    // (undocumented)
+    fontColor?: [number, number, number];
+    // (undocumented)
+    fontEdge?: Array<[number, number, number, number, number, number]>;
+    // (undocumented)
+    fontFamily?: string;
+    // (undocumented)
+    fontOpacity?: number;
+    // (undocumented)
+    fontScale?: -2 | -1 | 0 | 2 | 3 | 4;
+    // (undocumented)
+    fontSize?: '50%' | '75%' | '100%' | '200%' | '300%' | '400%';
+}
+
+// @public (undocumented)
+export interface TextTrackDisplaySetting {
+    // (undocumented)
+    align: string;
+    // (undocumented)
+    line: string | number;
+    // (undocumented)
+    lineAlign: string;
+    // (undocumented)
+    position: number;
+    // (undocumented)
+    positionAlign: string;
+    // (undocumented)
+    size: number;
+    // (undocumented)
+    snapToLines: boolean;
+    // (undocumented)
+    vertical: string;
+}
+
 export { ui }
 
 // @public (undocumented)
+export interface UiConfig {
+    // (undocumented)
+    css?: string;
+    // (undocumented)
+    customPreset?: {
+        template: () => any;
+        condition: () => any;
+    }[];
+    // (undocumented)
+    disable?: boolean;
+    // (undocumented)
+    targetId: string;
+}
+
+// @public (undocumented)
 export const VERSION: string;
+
+// @public (undocumented)
+export interface ViewabilityConfig {
+    // (undocumented)
+    observedThresholds: Array<number>;
+    // (undocumented)
+    playerThreshold: number;
+}
 
 // Warnings were encountered during analysis:
 //

@@ -28,4 +28,6 @@ const PLAYER_NAME = __NAME__;
 const PLAYER_TYPE = __PLAYER_TYPE__;
 const VERSION = __VERSION__;
 
+export * from './types'
+
 export { getPlayers, getPlayer, core, ui, providers, setup, cast, playlist, Ad, AdBreak, BasePlugin, registerPlugin, PLAYER_TYPE, VERSION, PLAYER_NAME, KALTURA_PLAYER_START_TIME_QS };

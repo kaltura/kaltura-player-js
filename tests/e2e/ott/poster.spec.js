@@ -1,7 +1,7 @@
 import {addKalturaPoster} from '../../../src/ott/poster';
 
-describe('addKalturaPoster', function () {
-  it('should change poster of mediaSources to string', function () {
+describe('addKalturaPoster', () => {
+  it('should change poster of mediaSources to string', () => {
     const mediaSources = {
       poster: [
         {url: 'https//my/kaltura/poster', width: 0, height: 0},
@@ -13,7 +13,7 @@ describe('addKalturaPoster', function () {
     mediaSources.poster.should.have.string(playerSources.poster);
   });
 
-  it('should align poster of mediaSources with poster of playerSources', function () {
+  it('should align poster of mediaSources with poster of playerSources', () => {
     const mediaSources = {poster: 'https//my/kaltura/poster'};
     const playerSources = {
       poster: [

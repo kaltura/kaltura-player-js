@@ -7,8 +7,8 @@ import {Images} from '../../mock-data/images';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 
-describe('error handling', function () {
-  it('should throw error because no config provided', function (done) {
+describe('error handling', () => {
+  it('should throw error because no config provided', (done) => {
     try {
       SetupHelpers.validateConfig();
     } catch (e) {
@@ -17,7 +17,7 @@ describe('error handling', function () {
     }
   });
 
-  it('should throw error because no target id provided', function (done) {
+  it('should throw error because no target id provided', (done) => {
     try {
       SetupHelpers.validateConfig({});
     } catch (e) {
@@ -26,7 +26,7 @@ describe('error handling', function () {
     }
   });
 
-  it('should throw error because no DOM element found', function (done) {
+  it('should throw error because no DOM element found', (done) => {
     try {
       SetupHelpers.validateConfig({targetId: 'my-player-div'});
     } catch (e) {
@@ -35,16 +35,16 @@ describe('error handling', function () {
     }
   });
 
-  describe('send beacon', function () {
-    beforeEach(function () {
+  describe('send beacon', () => {
+    beforeEach(() => {
       sinon.spy(navigator, 'sendBeacon');
     });
 
-    afterEach(function () {
+    afterEach(() => {
       navigator.sendBeacon.restore();
     });
 
-    it('should emit a beacon when no partner id provided', function (done) {
+    it('should emit a beacon when no partner id provided', (done) => {
       const div = document.createElement('DIV');
       div.id = 'test-id';
       document.body.appendChild(div);
@@ -59,7 +59,7 @@ describe('error handling', function () {
       done();
     });
 
-    it('should emit a beacon when the default partner id provided', function (done) {
+    it('should emit a beacon when the default partner id provided', (done) => {
       const div = document.createElement('DIV');
       div.id = 'test-id';
       document.body.appendChild(div);
@@ -74,7 +74,7 @@ describe('error handling', function () {
       done();
     });
 
-    it('should the beacon include clientVer', function (done) {
+    it('should the beacon include clientVer', (done) => {
       const div = document.createElement('DIV');
       window.__kalturaplayerdata = {productVersion: '7.37'};
       div.id = 'test-id';
@@ -92,25 +92,25 @@ describe('error handling', function () {
   });
 });
 
-describe('createKalturaPlayerContainer', function () {
-  beforeEach(function () {
+describe('createKalturaPlayerContainer', () => {
+  beforeEach(() => {
     TestUtils.createElement('DIV', targetId);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     TestUtils.removeElement(targetId);
   });
 
-  it('should create kaltura player container', function () {
-    let containerId = SetupHelpers.createKalturaPlayerContainer(targetId);
-    let el = document.getElementById(containerId);
+  it('should create kaltura player container', () => {
+    const containerId = SetupHelpers.createKalturaPlayerContainer(targetId);
+    const el = document.getElementById(containerId);
     el.should.exist;
     el.className.should.equal('kaltura-player-container');
   });
 });
 
-describe('checkNativeHlsSupport', function () {
-  it('set preferNative to true if user preference was set to true', function () {
+describe('checkNativeHlsSupport', () => {
+  it('set preferNative to true if user preference was set to true', () => {
     const playerConfig = {
       playback: {
         preferNative: {
@@ -122,7 +122,7 @@ describe('checkNativeHlsSupport', function () {
     playerConfig.playback.preferNative.hls.should.be.true;
   });
 
-  it('set preferNative to false if user preference was set to false', function () {
+  it('set preferNative to false if user preference was set to false', () => {
     const playerConfig = {
       playback: {
         preferNative: {
@@ -134,7 +134,7 @@ describe('checkNativeHlsSupport', function () {
     playerConfig.playback.preferNative.hls.should.be.false;
   });
 
-  it('set preferNative to default value if user preference was not set 1', function () {
+  it('set preferNative to default value if user preference was not set 1', () => {
     const playerConfig = {};
     SetupHelpers.checkNativeHlsSupport(playerConfig);
     if (Env.isSafari || Env.isIOS) {
@@ -144,7 +144,7 @@ describe('checkNativeHlsSupport', function () {
     }
   });
 
-  it('set preferNative to default value if user preference was not set 2', function () {
+  it('set preferNative to default value if user preference was not set 2', () => {
     const playerConfig = {
       playback: {}
     };
@@ -158,7 +158,7 @@ describe('checkNativeHlsSupport', function () {
     }
   });
 
-  it('set preferNative to default value if user preference was not set 3', function () {
+  it('set preferNative to default value if user preference was not set 3', () => {
     const playerConfig = {
       playback: {
         preferNative: {}
@@ -177,7 +177,7 @@ describe('checkNativeHlsSupport', function () {
   });
 });
 
-describe('setStorageConfig', function () {
+describe('setStorageConfig', () => {
   let sandbox;
 
   beforeEach(() => {
@@ -188,7 +188,7 @@ describe('setStorageConfig', function () {
     sandbox.restore();
   });
 
-  it('should merge the player and storage config with priority to the storage config', function () {
+  it('should merge the player and storage config with priority to the storage config', () => {
     const config = {
       player: {
         playback: {
@@ -210,7 +210,7 @@ describe('setStorageConfig', function () {
     config.playback.audioLanguage.should.equal('fra');
   });
 
-  it('should take the storage config in case no player config', function () {
+  it('should take the storage config in case no player config', () => {
     const config = {player: {}};
     const storageConfig = {
       playback: {
@@ -227,7 +227,7 @@ describe('setStorageConfig', function () {
   });
 });
 
-describe('supportLegacyOptions', function () {
+describe('supportLegacyOptions', () => {
   let sandbox;
   const legacyOptions = {
     targetId: 'player-placeholder',
@@ -310,44 +310,44 @@ describe('supportLegacyOptions', function () {
     }
   };
 
-  beforeEach(function () {
+  beforeEach(() => {
     sandbox = sinon.createSandbox();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  it('should transform options with the old structure', function () {
+  it('should transform options with the old structure', () => {
     SetupHelpers.supportLegacyOptions(legacyOptions);
     legacyOptions.should.deep.equal(options);
   });
 
-  it('should not transform config with the new structure', function () {
+  it('should not transform config with the new structure', () => {
     SetupHelpers.supportLegacyOptions(options);
     legacyOptions.should.deep.equal(options);
   });
 
-  it('check method support duplicate configuration take the new configuration', function () {
+  it('check method support duplicate configuration take the new configuration', () => {
     SetupHelpers.supportLegacyOptions(duplicateOptions);
     duplicateOptions.should.deep.equal(options);
   });
 });
 
-describe('plugins config', function () {
+describe('plugins config', () => {
   let sandbox, isIOS;
 
-  beforeEach(function () {
+  beforeEach(() => {
     isIOS = Env.isIOS;
     sandbox = sinon.createSandbox();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     Env.isIOS = isIOS;
     sandbox.restore();
   });
 
-  it('should config bumper plugin according to the env and configuration', function () {
+  it('should config bumper plugin according to the env and configuration', () => {
     Env.isIOS = true;
     const options = {
       provider: {
@@ -367,7 +367,7 @@ describe('plugins config', function () {
     defaultOptions.plugins.bumper.playOnMainVideoTag.should.be.true;
   });
 
-  it('should not change the bumper plugin', function () {
+  it('should not change the bumper plugin', () => {
     Env.isIOS = true;
     const options = {
       provider: {
@@ -392,8 +392,8 @@ describe('plugins config', function () {
   });
 });
 
-describe('ignoreServerConfig', function () {
-  it('should use server config if ignoreServerConfig flag is not true', function () {
+describe('ignoreServerConfig', () => {
+  it('should use server config if ignoreServerConfig flag is not true', () => {
     const serverConfig = {
       playback: {
         mute: true
@@ -414,7 +414,7 @@ describe('ignoreServerConfig', function () {
     defaultOptions.playback.mute.should.be.true;
   });
 
-  it('should not use server config if ignoreServerConfig flag is true', function () {
+  it('should not use server config if ignoreServerConfig flag is true', () => {
     const serverConfig = {
       playback: {
         mute: true

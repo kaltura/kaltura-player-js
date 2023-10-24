@@ -23,6 +23,7 @@ class ViewabilityManager {
    * @param {number} viewabilityConfig - the configuration needed to create the manager
    * @constructor
    */
+  // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
   // @ts-ignore
   constructor(viewabilityConfig: ViewabilityConfig = {}) {
     viewabilityConfig.observedThresholds = viewabilityConfig.observedThresholds || DEFAULT_OBSERVED_THRESHOLDS;
