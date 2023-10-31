@@ -1,6 +1,5 @@
 // @flow
-import PolyfillManager from './common/polyfills/polyfill-manager';
-import './common/polyfills/all';
+import 'regenerator-runtime';
 // Import core
 import * as core from '@playkit-js/playkit-js';
 // Import ui
@@ -31,8 +30,6 @@ declare var __PLAYER_TYPE__: string;
 const PLAYER_NAME = __NAME__;
 const PLAYER_TYPE = __PLAYER_TYPE__;
 const VERSION = __VERSION__;
-
-PolyfillManager.installAll();
 
 /* eslint-disable no-import-assign */
 core.Ad = Ad;
