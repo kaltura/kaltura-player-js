@@ -54,8 +54,8 @@ class TextStyleConverter {
     return hex.toUpperCase();
   }
 
-  public static hexToRGB(hex: string): Array<number> {
-    const rgb = [];
+  public static hexToRGB(hex: string): [number, number, number] {
+    const rgb: [number, number, number] = [] as unknown as [number, number, number];
     hex = hex.slice(1);
     const channels = hex.match(/.{1,2}/g);
     for (let i = 0; i < 3; i++) {

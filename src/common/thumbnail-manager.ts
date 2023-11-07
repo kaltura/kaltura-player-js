@@ -19,7 +19,7 @@ class ThumbnailManager {
   private _player: KalturaPlayer;
   private _thumbnailConfig: KPThumbnailConfig;
   private _eventManager: EventManager;
-  private _thumbsHeight: number | undefined;
+  private _thumbsHeight!: number;
 
   constructor(player: KalturaPlayer, uiConfig: UiConfig, mediaConfig: KPMediaConfig) {
     this._player = player;
@@ -38,7 +38,7 @@ class ThumbnailManager {
     this._eventManager.destroy();
   }
 
-  public getThumbnail(time: number): ThumbnailInfo {
+  public getThumbnail(time: number): ThumbnailInfo | null {
     if (this._isUsingKalturaThumbnail()) {
       return this._convertKalturaThumbnailToThumbnailInfo(time);
     }
@@ -55,10 +55,10 @@ class ThumbnailManager {
     return !!(this._thumbnailConfig && this._thumbnailConfig.thumbsSprite);
   };
 
-  private _convertKalturaThumbnailToThumbnailInfo = (time: number): ThumbnailInfo => {
+  private _convertKalturaThumbnailToThumbnailInfo = (time: number): ThumbnailInfo | null => {
     if (this._thumbnailConfig) {
       const { thumbsSprite, thumbsWidth, thumbsSlices } = this._thumbnailConfig;
-      const duration = this._player.duration / thumbsSlices;
+      const duration = this._player.duration! / thumbsSlices;
       const thumbnailInfo = {
         x: Math.floor(time / duration) * thumbsWidth,
         y: 0,
@@ -68,6 +68,7 @@ class ThumbnailManager {
       };
       return new ThumbnailInfo(thumbnailInfo);
     }
+    return null;
   };
 
   private _buildKalturaThumbnailConfig = (uiConfig: UiConfig, mediaConfig: KPMediaConfig): KPThumbnailConfig => {

@@ -11,7 +11,6 @@ module.exports = function (config) {
     browserDisconnectTimeout: 60000,
     browserNoActivityTimeout: 60000,
     files: [
-      'node_modules/regenerator-runtime/runtime.js',
       {
         pattern: 'tests/index.js',
         watched: false

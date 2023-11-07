@@ -43,7 +43,7 @@ class ViewabilityManager {
 
   private _intersectionChangedHandler(entries: Array<IntersectionObserverEntry>): void {
     entries.forEach((entry: IntersectionObserverEntry) => {
-      const targetObserveredBindings: Array<_TargetObserveredBinding> = this._targetsObserved.get(entry.target);
+      const targetObserveredBindings: Array<_TargetObserveredBinding> = this._targetsObserved.get(entry.target as HTMLElement);
       targetObserveredBindings.forEach((targetObservedBinding: _TargetObserveredBinding) => {
         const visible = entry.intersectionRatio >= targetObservedBinding.threshold;
         targetObservedBinding.lastIntersectionRatio = entry.intersectionRatio;
@@ -105,7 +105,7 @@ class ViewabilityManager {
    * @param {Function} listener - the callback function to be removed
    * @returns {void}
    */
-  public unObserve(target: HTMLElement, listener: ListenerType): void {
+  public unObserve(target: HTMLElement, listener: _TargetObserveredBinding): void {
     if (!this._observer) return;
     this._targetsObserved.remove(target, listener);
     if (!this._targetsObserved.has(target)) {

@@ -14,7 +14,7 @@ class AdLayoutMiddleware extends BaseMiddleware {
    * @public
    * @memberof AdLayoutMiddleware
    */
-  private id: string = 'AdLayoutMiddleware';
+  public id: string = 'AdLayoutMiddleware';
   /**
    * The plugin context.
    * @member

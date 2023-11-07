@@ -1,4 +1,3 @@
-// @flow
 import { FakeEvent, TextStyle, Track } from '@playkit-js/playkit-js';
 import { RemoteSession } from './remote-session';
 import { ProviderMediaInfo } from '../../types/provider/media-info';

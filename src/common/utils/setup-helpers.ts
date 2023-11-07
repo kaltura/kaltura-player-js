@@ -5,12 +5,7 @@ import StorageManager from '../storage/storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
 import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-params';
 import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
-import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject } from '../../types/kaltura-player-options';
-import { ProviderConfig } from '../../types/provider-options';
-import { PluginsConfig } from '../../types/plugins-config';
-import { SourcesConfig } from '../../types/sources-config';
-import { PlaybackConfig } from '../../types/playback-config';
-import { LogLevelObject } from '../../types/provider/Logger';
+import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, ProviderConfig, PluginsConfig, SourcesConfig,PlaybackConfig, LogLevelObject } from '../../types';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';

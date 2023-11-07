@@ -12,6 +12,8 @@ export interface PlaybackConfig {
   crossOrigin: string;
   preload: string;
   autoplay: { [type: string]: string | boolean };
+  autopause: boolean;
+  loop: boolean;
   allowMutedAutoPlay: boolean;
   muted: boolean;
   pictureInPicture: boolean;

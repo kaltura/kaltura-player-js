@@ -16,15 +16,11 @@ import {
   Utils,
   EngineDecoratorProvider
 } from '@playkit-js/playkit-js';
-import { KalturaPlayerConfig } from './types/kaltura-player-options';
 import { UIWrapper } from './common/ui-wrapper';
 import { AdsController, ControllerProvider } from './common/controllers';
 import { Provider } from '@playkit-js/playkit-js-providers';
-import { ProviderMediaInfo } from './types/provider/media-info';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';
 import { BasePlugin, ConfigEvaluator, PluginManager } from './common/plugins';
-import { PluginsConfig } from './types/plugins-config';
-import { MediaSourceObject } from './types/media-source';
 import { PluginReadinessMiddleware } from './common/plugins/plugin-readiness-middleware';
 import { ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE } from './common/utils/viewability-manager';
 import { ThumbnailManager } from './common/thumbnail-manager';
@@ -32,39 +28,48 @@ import { CuePointManager } from './common/cuepoint/cuepoint-manager';
 import { ServiceProvider } from './common/service-provider';
 import { PlaylistManager } from './common/playlist/playlist-manager';
 import { RemotePlayerManager } from './common/cast/remote-player-manager';
-import { SourcesConfig } from './types/sources-config';
-import { ProviderMediaConfigSources } from './types/provider/provider-media-config';
 import { hasImageSource, hasYoutubeSource, maybeSetStreamPriority, mergeProviderPluginsConfig, supportLegacyOptions } from './common/utils/setup-helpers';
 import { getDefaultRedirectOptions } from 'player-defaults';
-import { KPMediaConfig } from './types/media-config';
+import { KPMediaConfig } from './types';
 import { addKalturaParams } from './common/utils/kaltura-params';
 import { addKalturaPoster } from 'poster';
-import { ProviderPlaylistInfoObject } from './types/provider/playlist-info';
-import { ProviderPlaylistObject } from './types/provider/provider-playlist-config';
-import { ProviderEntryListObject } from './types/provider/entry-list';
-import { PlaylistConfigObject } from './types/playlist/playlist- config-object';
-import { DrmDataObject } from './types/drm-data';
-import { MetadataConfig } from './types/metadata-config';
 import { RemoteSession } from './common/cast/remote-session';
-import { PlayerDimensions } from './types/dimensions-config';
 import getMediaCapabilities from './common/utils/media-capabilities';
 import { HEVCConfigObject, MediaCapabilitiesObject } from './types/media-capabilities';
 import { CastEventType } from './common/cast/cast-event-type';
 import { PlaylistEventType } from './common/playlist/playlist-event-type';
-import { KPEventTypes } from './types/events/event-types';
+import { Player } from '@playkit-js/playkit-js';
+import { IEngineDecoratorProvider } from '@playkit-js/playkit-js';
+import { TrackTypes } from '@playkit-js/playkit-js/lib/track/track-type';
+import {
+  KalturaPlayerConfig,
+  PlaylistConfigObject,
+  ProviderMediaInfo,
+  MediaSourceObject,
+  PluginsConfig,
+  ProviderMediaConfigSources,
+  SourcesConfig,
+  ProviderPlaylistInfoObject,
+  ProviderPlaylistObject,
+  ProviderEntryListObject,
+  DrmDataObject,
+  MetadataConfig,
+  PlayerDimensions,
+  KPEventTypes
+} from './types';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
-  private _localPlayer: any; // TODO
-  private _provider: any; // TODO
+  private _localPlayer: Player;
+  private _provider: Provider;
   private _uiWrapper: UIWrapper;
   private _controllerProvider: ControllerProvider;
   private _adsController: AdsController | undefined;
   private _eventManager: EventManager = new EventManager();
-  private _attachEventManager: EventManager;
+  private _attachEventManager!: EventManager;
   private _playlistManager: PlaylistManager;
   private _remotePlayerManager: RemotePlayerManager;
-  private _mediaInfo: ProviderMediaInfo| null = null;
+  private _mediaInfo: ProviderMediaInfo | null = null;
   public _remotePlayer: BaseRemotePlayer | null = null;
   private _pluginManager: PluginManager = new PluginManager();
   private _pluginsConfig: PluginsConfig = {};
@@ -111,13 +116,10 @@ export class KalturaPlayer extends FakeEventTarget {
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach((coreEvent) =>
       this._eventManager.listen(this._localPlayer, coreEvent, (e) =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         this.dispatchEvent(e)
       )
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
     this._addBindings();
     const playlistConfig = Utils.Object.mergeDeep({}, options.playlist, {
       items: null
@@ -129,6 +131,7 @@ export class KalturaPlayer extends FakeEventTarget {
       items: (options.playlist && options.playlist.items) || []
     });
     this._remotePlayerManager = new RemotePlayerManager();
+    // @ts-ignore - cucucuc
     this._localPlayer.setSources(sources || {});
   }
 
@@ -265,7 +268,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
-  public getDrmInfo(): DrmDataObject {
+  public getDrmInfo(): DrmDataObject | null {
     return this._localPlayer.getDrmInfo();
   }
 
@@ -301,7 +304,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getView();
   }
 
-  public getVideoElement(): HTMLVideoElement {
+  public getVideoElement(): HTMLVideoElement | undefined {
     return this._localPlayer.getVideoElement();
   }
 
@@ -375,7 +378,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getStartTimeOfDvrWindow();
   }
 
-  public getTracks(type?: string): Array<Track> {
+  public getTracks(type?: TrackTypes): Array<Track> {
     return this._localPlayer.getTracks(type);
   }
 
@@ -517,16 +520,17 @@ export class KalturaPlayer extends FakeEventTarget {
   public getThumbnail(time?: number): ThumbnailInfo | null {
     if (!time) {
       // If time isn't supplied, return thumbnail for player's current time
-      if (!isNaN(this.currentTime)) {
-        time = this.currentTime;
+      if (!isNaN(this.currentTime!)) {
+        time = this.currentTime!;
       } else {
         return null;
       }
     }
-    time = this.isLive() ? time + this.getStartTimeOfDvrWindow() : time;
+    time = this.isLive() ? time! + this.getStartTimeOfDvrWindow() : time;
     if (this._thumbnailManager) {
-      return this._thumbnailManager.getThumbnail(time);
+      return this._thumbnailManager.getThumbnail(time!);
     }
+    return null;
   }
 
   public set textStyle(style: TextStyle) {
@@ -537,7 +541,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.textStyle;
   }
 
-  public get buffered(): TimeRanges {
+  public get buffered(): TimeRanges | null {
     return this._localPlayer.buffered;
   }
 
@@ -550,15 +554,15 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.currentTime = to;
   }
 
-  public get currentTime(): number {
+  public get currentTime(): number | null {
     return this._localPlayer.currentTime;
   }
 
-  public get duration(): number {
+  public get duration(): number | null {
     return this._localPlayer.duration;
   }
 
-  public get liveDuration(): number {
+  public get liveDuration(): number | null {
     return this._localPlayer.liveDuration;
   }
 
@@ -577,8 +581,8 @@ export class KalturaPlayer extends FakeEventTarget {
    * In live playback this getter normalizes the current time to be relative to the start of the DVR window.
    * This getter is useful to display a seekbar presents the available seek range only.
    */
-  public get normalizedCurrentTime(): number {
-    return this.isLive() ? this.currentTime - this.getStartTimeOfDvrWindow() : this.currentTime;
+  public get normalizedCurrentTime(): number | null {
+    return this.isLive() ? this.currentTime! - this.getStartTimeOfDvrWindow() : this.currentTime;
   }
 
   /**
@@ -586,23 +590,23 @@ export class KalturaPlayer extends FakeEventTarget {
    * In live playback this getter normalizes the duration to be relative to the start of the DVR window.
    * This getter is useful to display a seekbar presents the available seek range only.
    */
-  public get normalizedDuration(): number {
-    return this.isLive() ? this.liveDuration - this.getStartTimeOfDvrWindow() : this.duration;
+  public get normalizedDuration(): number | null {
+    return this.isLive() ? this.liveDuration! - this.getStartTimeOfDvrWindow() : this.duration;
   }
 
   public set volume(vol: number) {
     this._localPlayer.volume = vol;
   }
 
-  public get volume(): number {
+  public get volume(): number | null {
     return this._localPlayer.volume;
   }
 
-  public get paused(): boolean {
+  public get paused(): boolean | null {
     return this._localPlayer.paused;
   }
 
-  public get seeking(): boolean {
+  public get seeking(): boolean | null {
     return this._localPlayer.seeking;
   }
 
@@ -610,7 +614,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.playsinline = playsinline;
   }
 
-  public get playsinline(): boolean {
+  public get playsinline(): boolean | null {
     return this._localPlayer.playsinline;
   }
 
@@ -618,19 +622,19 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.muted = mute;
   }
 
-  public get muted(): boolean {
+  public get muted(): boolean | null {
     return this._localPlayer.muted;
   }
 
-  public get src(): string {
+  public get src(): string | null {
     return this._localPlayer.src;
   }
 
-  public get videoHeight(): number | undefined {
+  public get videoHeight(): number | null {
     return this._localPlayer.videoHeight;
   }
 
-  public get videoWidth(): number | undefined {
+  public get videoWidth(): number | null {
     return this._localPlayer.videoWidth;
   }
 
@@ -646,7 +650,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.poster;
   }
 
-  public get ended(): boolean {
+  public get ended(): boolean | null {
     return this._localPlayer.ended;
   }
 
@@ -654,7 +658,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.playbackRate = rate;
   }
 
-  public get playbackRate(): number {
+  public get playbackRate(): number | null {
     return this._localPlayer.playbackRate;
   }
 
@@ -683,6 +687,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public get sources(): SourcesConfig {
+    // @ts-ignore - cucucuc
     return { ...this._localPlayer.sources };
   }
 
@@ -755,7 +760,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.State;
   }
 
-  // TODO - used to PKTrackTypes
+  // TODO - used to TrackTypes
   public get Track(): any {
     return this._localPlayer.Track;
   }
@@ -832,7 +837,7 @@ export class KalturaPlayer extends FakeEventTarget {
 
   private _onChangeSourceEnded(): void {
     if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
-      this._viewabilityManager.observe(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+      this._viewabilityManager.observe(document.getElementById(this.config.ui.targetId)!, this._handleVisibilityChange.bind(this));
     } else {
       KalturaPlayer._logger.warn('Cannot observe visibility change without config.ui.targetId');
     }
@@ -841,7 +846,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _onPlayerReset(): void {
     this._playbackStart = false;
     if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
-      this._viewabilityManager.unObserve(Utils.Dom.getElementById(this.config.ui.targetId), this._handleVisibilityChange.bind(this));
+      this._viewabilityManager.unObserve(document.getElementById(this.config.ui.targetId)!, this._handleVisibilityChange.bind(this));
     }
   }
 
@@ -857,21 +862,15 @@ export class KalturaPlayer extends FakeEventTarget {
     setTimeout(() => {
       if (this._adsController && !this._adsController.allAdsCompleted) {
         this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
         });
       } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
       }
     });
   }
 
   private _onPlaybackEnded(): void {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     if (this.config.playback.loop) {
       this.currentTime = 0;
       this.play();
@@ -888,8 +887,6 @@ export class KalturaPlayer extends FakeEventTarget {
   private _onAdAutoplayFailed(event: FakeEvent): void {
     if (this._firstPlay && this.config.playback.autoplay) {
       this._localPlayer.posterManager.show();
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       this.dispatchEvent(new FakeEvent(CoreEventType.AUTOPLAY_FAILED, event.payload));
     }
   }
@@ -921,25 +918,20 @@ export class KalturaPlayer extends FakeEventTarget {
             // @ts-ignore
             plugins.push(plugin);
             pluginsConfig[name] = plugin.getConfig();
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            if (typeof plugin.getMiddlewareImpl === 'function') {
+            if (typeof plugin['getMiddlewareImpl'] === 'function') {
               // push the bumper middleware to the end, to play the bumper right before the content
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               plugin.name === 'bumper' ? middlewares.push(plugin.getMiddlewareImpl()) : middlewares.unshift(plugin.getMiddlewareImpl());
             }
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            if (typeof plugin.getUIComponents === 'function') {
+
+            if (typeof plugin['getUIComponents'] === 'function') {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               uiComponents.push(...(plugin.getUIComponents() || []));
             }
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            if (typeof plugin.getEngineDecorator === 'function') {
-              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin));
+            if (typeof plugin['getEngineDecorator'] === 'function') {
+              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin as unknown as IEngineDecoratorProvider));
             }
           }
         } else {
@@ -965,8 +957,6 @@ export class KalturaPlayer extends FakeEventTarget {
         this._adsController = new AdsController(this, adsPluginControllers);
         this._localPlayer.playbackMiddleware.use(this._adsController.getMiddleware());
         this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, (event) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           this.dispatchEvent(event);
         });
       }
@@ -1000,7 +990,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * Get crossOrigin attribute.
    * @returns {?string} - 'anonymous' or 'use-credentials'
    */
-  public get crossOrigin(): string {
+  public get crossOrigin(): string | null {
     return this._localPlayer.crossOrigin;
   }
 
@@ -1024,15 +1014,12 @@ export class KalturaPlayer extends FakeEventTarget {
 
   private _handleVisibilityChange(visible: boolean): void {
     this._isVisible = visible;
+    this.dispatchEvent(new FakeEvent(VISIBILITY_CHANGE, { visible: this._isVisible }));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.dispatchEvent(new FakeEvent(VISIBILITY_CHANGE, { visible: this._isVisible }));
-
     if (this.config.playback.autoplay === AutoPlayType.IN_VIEW && this._isVisible && !this._playbackStart) {
       this._localPlayer.play({ programmatic: true });
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     if (this.config.playback.autopause === true) {
       this._handleAutoPause(visible);
     }
@@ -1093,7 +1080,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * @returns {?TextTrack} - A TextTrack Object, which represents the new text track.
    * @public
    */
-  public addTextTrack(kind: string, label?: string): TextTrack {
+  public addTextTrack(kind: TextTrackKind, label?: string): TextTrack | undefined {
     return this._localPlayer.addTextTrack(kind, label);
   }
 

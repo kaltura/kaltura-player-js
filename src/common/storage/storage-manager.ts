@@ -46,7 +46,7 @@ export default class StorageManager {
 
     eventManager.listen(player, player.Event.UI.USER_CHANGED_VOLUME, () => {
       if (!player.isCasting()) {
-        if (player.volume > 0) {
+        if (player.volume! > 0) {
           StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, false);
         } else {
           StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, true);
