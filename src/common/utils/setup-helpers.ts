@@ -1,11 +1,13 @@
 import { setDefaultAnalyticsPlugin } from 'player-defaults';
-import { Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme, getLogger, LogLevel, setLogHandler, setLogLevel as _setLogLevel } from '@playkit-js/playkit-js';
+import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme, getLogger, LogLevel, setLogHandler, setLogLevel as _setLogLevel, ILogLevel, PKSourcesConfigObject} from '@playkit-js/playkit-js';
 import { ValidationErrorType } from './validation-error';
 import StorageManager from '../storage/storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
 import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-params';
 import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
-import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, ProviderConfig, PluginsConfig, SourcesConfig,PlaybackConfig, LogLevelObject } from '../../types';
+import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, SourcesConfig,PlaybackConfig } from '../../types';
+import {ProviderOptionsObject} from '@playkit-js/playkit-js-providers';
+import {BasePlugin} from '../plugins';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -69,7 +71,7 @@ function addProductVersion(url: string, productVersion?: string): string {
  * @returns {void}
  */
 function validateProviderConfig(options: KalturaPlayerConfig): void {
-  const { provider: providerOptions }: { provider: ProviderConfig } = options;
+  const { provider: providerOptions }: { provider: ProviderOptionsObject } = options;
   const productVersion: string = getServerUIConf()?.productVersion;
   if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
@@ -235,7 +237,7 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     options.ui.log.handler = options.provider.log.handler = options.log.handler;
   }
 
-  let logLevelObj: LogLevelObject = LogLevel.ERROR;
+  let logLevelObj: ILogLevel = LogLevel.ERROR;
   if (options.log && isDebugMode()) {
     logLevelObj = LogLevel.DEBUG;
     options.log.level = LogLevel.DEBUG.name;
@@ -469,7 +471,7 @@ function configureEdgeDRMDefaultOptions(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function configureIMADefaultOptions(options: KalturaPlayerConfig): void {
-  if (Env.isIOS && options.plugins && options.plugins.ima && !options.plugins.ima.disable) {
+  if (Env.isIOS && options.plugins && options.plugins.ima && !options.plugins.ima['disable']) {
     const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
     const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
     if (playsinline === false && typeof disableMediaPreloadIma !== 'boolean') {
@@ -485,7 +487,7 @@ function configureIMADefaultOptions(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function configureDAIDefaultOptions(options: KalturaPlayerConfig): void {
-  if (options.plugins && options.plugins.imadai && !options.plugins.imadai.disable) {
+  if (options.plugins && options.plugins.imadai && !options.plugins.imadai['disable']) {
     const autoStartLoadConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.autoStartLoad');
     if (typeof autoStartLoadConfig !== 'boolean') {
       Utils.Object.mergeDeep(options, {
@@ -649,7 +651,7 @@ function addEngineToStreamPriority(player: KalturaPlayer, engine: string, format
  * @param {PKSourcesConfigObject} sources - sources
  * @return {void}
  */
-function maybeSetStreamPriority(player: KalturaPlayer, sources: SourcesConfig): PlaybackConfig | null {
+function maybeSetStreamPriority(player: KalturaPlayer, sources: PKSourcesConfigObject): PlaybackConfig | null {
   if (sources && hasYoutubeSource(sources)) {
     return addEngineToStreamPriority(player, 'youtube', 'progressive');
   }
@@ -664,7 +666,7 @@ function maybeSetStreamPriority(player: KalturaPlayer, sources: SourcesConfig): 
  * @param {PKSourcesConfigObject} sources - thr sources object
  * @returns {boolean} - true if sources contain youtube source
  */
-function hasYoutubeSource(sources: SourcesConfig): boolean {
+function hasYoutubeSource(sources: PKSourcesConfigObject): boolean {
   const source = sources && sources.progressive;
   return !!(source && source[0] && source[0].mimetype === 'video/youtube');
 }
@@ -674,7 +676,7 @@ function hasYoutubeSource(sources: SourcesConfig): boolean {
  * @param {PKSourcesConfigObject} sources - thr sources object
  * @returns {boolean} - true if sources contain image source
  */
-function hasImageSource(sources: SourcesConfig): boolean {
+function hasImageSource(sources: PKSourcesConfigObject): boolean {
   // const IMAGE_MIME_TYPES = /(^image)(\/)[a-zA-Z0-9_]*/;
   const source = sources && sources.image;
   // return !!(source && source[0] && source[0].mimetype.match(IMAGE_MIME_TYPES));
@@ -737,8 +739,8 @@ function mergeProviderPluginsConfig(providerPluginsConfig: PluginsConfig, appPlu
   const respectiveAppPluginsConfig: PluginsConfig = {};
   Utils.Object.isObject(providerPluginsConfig) &&
     Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, any]) => {
-      mergePluginConfig[pluginName] = {};
-      respectiveAppPluginsConfig[pluginName] = {};
+      mergePluginConfig[pluginName] = {} as BasePlugin;
+      respectiveAppPluginsConfig[pluginName] = {} as BasePlugin;
       Object.entries(pluginConfig).forEach(([key, providerValue]) => {
         const appValue = Utils.Object.getPropertyPath(appPluginsConfig[pluginName], key);
         mergePluginConfig[pluginName][key] = appValue || providerValue;

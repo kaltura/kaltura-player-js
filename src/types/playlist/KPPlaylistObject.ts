@@ -1,8 +1,6 @@
-import { ProviderPlaylistMetadata } from './playlist-metadata';
-import { PlaylistOptions } from './playlist-options';
 import { PlaylistItem } from '../../common/playlist/playlist-item';
-import { PlaylistCountdownOptions } from './playlis-countdown-options';
-import { PlaylistConfigObject } from './playlist- config-object';
+import { PlaylistConfigObject } from './playlist-config-object';
+import {ProviderPlaylistMetadataObject} from '@playkit-js/playkit-js-providers';
 
 /**
  * @typedef {Object} KPPlaylistObject
@@ -14,6 +12,6 @@ import { PlaylistConfigObject } from './playlist- config-object';
  */
 export interface KPPlaylistObject extends PlaylistConfigObject {
   id?: string;
-  metadata?: ProviderPlaylistMetadata;
+  metadata?: ProviderPlaylistMetadataObject;
   poster?: string;
 }

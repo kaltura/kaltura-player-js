@@ -1,7 +1,7 @@
-import { SourcesConfig } from '../types/sources-config';
-import { ProviderMediaConfigSources } from '../types/provider/provider-media-config';
-import { DimensionsConfig } from '../types/dimensions-config';
-import { Poster } from '../types/provider/poster';
+// import { DimensionsConfig } from '../types';
+import {ProviderMediaConfigSourcesObject} from '@playkit-js/playkit-js-providers';
+import {PKDimensionsConfig, PKSourcesConfigObject} from '@playkit-js/playkit-js';
+import {Poster} from '@playkit-js/playkit-js-providers';
 
 /**
  * Add poster with player dimensions.
@@ -13,7 +13,7 @@ import { Poster } from '../types/provider/poster';
  * @private
  * @returns {void}
  */
-function addKalturaPoster(playerSources: SourcesConfig, mediaSources: ProviderMediaConfigSources, dimensions: DimensionsConfig): void {
+function addKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: PKDimensionsConfig): void {
   const playerPoster = playerSources.poster;
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;

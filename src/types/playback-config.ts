@@ -1,25 +1,6 @@
-import { StreamPriority } from './stream-priority';
-import { PreferNativeConfig } from './prefer-native-config';
+import {PKPlaybackConfigObject} from '@playkit-js/playkit-js/lib/types';
 
-export interface PlaybackConfig {
-  audioLanguage: string;
-  textLanguage: string;
-  captionsDisplay: boolean;
-  additionalAudioLanguage: string;
-  additionalTextLanguage: string;
-  volume: number;
-  playsinline: boolean;
-  crossOrigin: string;
-  preload: string;
-  autoplay: { [type: string]: string | boolean };
+export interface PlaybackConfig extends PKPlaybackConfigObject {
   autopause: boolean;
   loop: boolean;
-  allowMutedAutoPlay: boolean;
-  muted: boolean;
-  pictureInPicture: boolean;
-  streamPriority: StreamPriority[];
-  preferNative: PreferNativeConfig;
-  inBrowserFullscreen: boolean;
-  playAdsWithMSE: boolean;
-  screenLockOrientionMode: string;
 }

@@ -4,16 +4,13 @@ import { PlaylistEventType } from './playlist-event-type';
 import { Playlist } from './playlist';
 import { PlaylistItem } from './playlist-item';
 import { mergeProviderPluginsConfig } from '../utils/setup-helpers';
-import { PlaylistOptions } from '../../types/playlist/playlist-options';
-import { PlaylistCountdownOptions } from '../../types/playlist/playlis-countdown-options';
-import { KalturaPlayerConfig } from '../../types/kaltura-player-options';
-import { PluginsConfig } from '../../types/plugins-config';
-import { KPPlaylistObject } from '../../types/playlist/KPPlaylistObject';
-import { ProviderPlaylistMetadata } from '../../types/playlist/playlist-metadata';
-import { ProviderEntryListObject } from '../../types/provider/entry-list';
-import { ProviderMediaInfo } from '../../types/provider/media-info';
-import { ProviderPlaylistObject } from '../../types/provider/provider-playlist-config';
-import { PlaylistConfigObject } from '../../types/playlist/playlist- config-object';
+import { PlaylistOptions } from '../../types';
+import { PlaylistCountdownOptions } from '../../types';
+import { KalturaPlayerConfig } from '../../types';
+import { PluginsConfig } from '../../types';
+import { KPPlaylistObject } from '../../types';
+import { PlaylistConfigObject } from '../../types';
+import {ProviderEntryListObject, ProviderMediaInfoObject, ProviderPlaylistMetadataObject, ProviderPlaylistObject} from '@playkit-js/playkit-js-providers';
 
 /**
  * @class PlaylistManager
@@ -28,7 +25,7 @@ class PlaylistManager {
   private readonly _options: PlaylistOptions;
   private readonly _countdown: PlaylistCountdownOptions;
   private _playerOptions: KalturaPlayerConfig;
-  private _mediaInfoList: Array<ProviderMediaInfo>;
+  private _mediaInfoList: Array<ProviderMediaInfoObject>;
   private _appPluginConfig: PluginsConfig;
 
   constructor(player: KalturaPlayer, options: KalturaPlayerConfig) {
@@ -193,7 +190,7 @@ class PlaylistManager {
    * @instance
    * @memberof PlaylistManager
    */
-  public get metadata(): ProviderPlaylistMetadata {
+  public get metadata(): ProviderPlaylistMetadataObject {
     return this._playlist.metadata;
   }
 

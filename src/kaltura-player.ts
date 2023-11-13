@@ -14,11 +14,20 @@ import {
   ThumbnailInfo,
   Track,
   Utils,
-  EngineDecoratorProvider
+  EngineDecoratorProvider, PKSourcesConfigObject, PKMetadataConfigObject, PKMediaSourceObject, PKDrmDataObject
 } from '@playkit-js/playkit-js';
 import { UIWrapper } from './common/ui-wrapper';
 import { AdsController, ControllerProvider } from './common/controllers';
-import { Provider } from '@playkit-js/playkit-js-providers';
+import {
+  BaseProvider, OTTProviderMediaInfoObject, OVPProviderMediaInfoObject,
+  Provider,
+  ProviderEntryListObject,
+  ProviderMediaConfigObject,
+  ProviderMediaConfigSourcesObject,
+  ProviderMediaInfoObject,
+  ProviderPlaylistInfoObject,
+  ProviderPlaylistObject
+} from '@playkit-js/playkit-js-providers';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';
 import { BasePlugin, ConfigEvaluator, PluginManager } from './common/plugins';
 import { PluginReadinessMiddleware } from './common/plugins/plugin-readiness-middleware';
@@ -44,24 +53,16 @@ import { TrackTypes } from '@playkit-js/playkit-js/lib/track/track-type';
 import {
   KalturaPlayerConfig,
   PlaylistConfigObject,
-  ProviderMediaInfo,
-  MediaSourceObject,
   PluginsConfig,
-  ProviderMediaConfigSources,
   SourcesConfig,
-  ProviderPlaylistInfoObject,
-  ProviderPlaylistObject,
-  ProviderEntryListObject,
-  DrmDataObject,
-  MetadataConfig,
-  PlayerDimensions,
   KPEventTypes
 } from './types';
+import {PKPlayerDimensions} from '@playkit-js/playkit-js';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
   private _localPlayer: Player;
-  private _provider: Provider;
+  private _provider: BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject>;
   private _uiWrapper: UIWrapper;
   private _controllerProvider: ControllerProvider;
   private _adsController: AdsController | undefined;
@@ -69,13 +70,13 @@ export class KalturaPlayer extends FakeEventTarget {
   private _attachEventManager!: EventManager;
   private _playlistManager: PlaylistManager;
   private _remotePlayerManager: RemotePlayerManager;
-  private _mediaInfo: ProviderMediaInfo | null = null;
+  private _mediaInfo: ProviderMediaInfoObject | null = null;
   public _remotePlayer: BaseRemotePlayer | null = null;
   private _pluginManager: PluginManager = new PluginManager();
   private _pluginsConfig: PluginsConfig = {};
   private _reset: boolean = true;
   private _firstPlay: boolean = true;
-  private _sourceSelected: MediaSourceObject | null = null;
+  private _sourceSelected: PKMediaSourceObject | null = null;
   private _pluginReadinessMiddleware!: PluginReadinessMiddleware;
   private _configEvaluator: ConfigEvaluator;
   private _appPluginConfig: PluginsConfig = {};
@@ -135,14 +136,14 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setSources(sources || {});
   }
 
-  public async loadMedia(mediaInfo: ProviderMediaInfo, mediaOptions?: SourcesConfig): Promise<any> {
+  public async loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any> {
     KalturaPlayer._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     try {
-      const providerMediaConfig: ProviderMediaConfigSources = await this._provider.getMediaConfig(mediaInfo);
+      const providerMediaConfig: ProviderMediaConfigObject = await this._provider.getMediaConfig(mediaInfo);
       const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
       if (mediaOptions) {
         mediaConfig.sources = mediaConfig.sources || {};
@@ -256,7 +257,7 @@ export class KalturaPlayer extends FakeEventTarget {
     }
   }
 
-  public updateKalturaPoster(playerSources: SourcesConfig, mediaSources: ProviderMediaConfigSources, dimensions: PlayerDimensions): void {
+  public updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: PKPlayerDimensions): void {
     addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.config?.session?.ks : '');
   }
 
@@ -264,11 +265,11 @@ export class KalturaPlayer extends FakeEventTarget {
     return !!(this.config.provider.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.isAnonymous === false);
   }
 
-  public getMediaInfo(): ProviderMediaInfo {
+  public getMediaInfo(): ProviderMediaInfoObject {
     return Utils.Object.copyDeep(this._mediaInfo);
   }
 
-  public getDrmInfo(): DrmDataObject | null {
+  public getDrmInfo(): PKDrmDataObject | null {
     return this._localPlayer.getDrmInfo();
   }
 
@@ -280,7 +281,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return Utils.Object.copyDeep(mediaConfig);
   }
 
-  public setSourcesMetadata(sourcesMetadata: MetadataConfig): void {
+  public setSourcesMetadata(sourcesMetadata: PKMetadataConfigObject): void {
     this._localPlayer.setSourcesMetadata(sourcesMetadata);
   }
 
@@ -638,11 +639,11 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.videoWidth;
   }
 
-  public set dimensions(dimensions: PlayerDimensions) {
+  public set dimensions(dimensions: PKPlayerDimensions) {
     this._localPlayer.dimensions = dimensions;
   }
 
-  public get dimensions(): PlayerDimensions {
+  public get dimensions(): PKPlayerDimensions {
     return this._localPlayer.dimensions;
   }
 
@@ -682,12 +683,11 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.env;
   }
 
-  public get selectedSource(): MediaSourceObject | null {
+  public get selectedSource(): PKMediaSourceObject | null {
     return this._sourceSelected;
   }
 
-  public get sources(): SourcesConfig {
-    // @ts-ignore - cucucuc
+  public get sources(): PKSourcesConfigObject {
     return { ...this._localPlayer.sources };
   }
 
@@ -715,7 +715,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  public get provider(): Provider {
+  public get provider(): BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject> {
     return this._provider;
   }
 

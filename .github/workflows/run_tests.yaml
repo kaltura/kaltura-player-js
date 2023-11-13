@@ -12,7 +12,7 @@ jobs:
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: "20.x"
-      yarn-run-to-execute: 'build eslint type-check test'
+      yarn-run-to-execute: 'build lint type-check test'
   notification:
     if: always()
     uses: kaltura/ovp-pipelines-pub/.github/workflows/notification.yaml@master

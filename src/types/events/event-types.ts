@@ -1,11 +1,9 @@
-import {VISIBILITY_CHANGE} from '../../common/utils/viewability-manager';
+import {PKEventTypes} from '@playkit-js/playkit-js';
 
 export type KPEventTypes = {
-  // TODO - PKEventTypes
-  // Core: PKEventTypes,
-  Core: any;
+  Core: PKEventTypes;
   UI: { [event: string]: string };
   Cast: { [event: string]: string };
   Playlist: { [event: string]: string };
-  VISIBILITY_CHANGE: string;
+  VISIBILITY_CHANGE: 'visibilitychange';
 };

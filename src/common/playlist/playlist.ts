@@ -1,14 +1,14 @@
 import { PlaylistItem } from './playlist-item';
 import { Utils } from '@playkit-js/playkit-js';
-import { MediaSourceOptionsObject } from '../../types/media-source-options';
-import { KPPlaylistObject } from '../../types/playlist/KPPlaylistObject';
-import { SourcesConfig } from '../../types/sources-config';
-import { PluginsConfig } from '../../types/plugins-config';
-import { ProviderPlaylistMetadata } from '../../types/playlist/playlist-metadata';
+import { MediaSourceOptionsObject } from '../../types';
+import { KPPlaylistObject } from '../../types';
+import { SourcesConfig } from '../../types';
+import { PluginsConfig } from '../../types';
+import {ProviderPlaylistMetadataObject} from '@playkit-js/playkit-js-providers';
 
 class Playlist {
   private _id: string;
-  private _metadata: ProviderPlaylistMetadata;
+  private _metadata: ProviderPlaylistMetadataObject;
   private _poster: string | undefined;
   private _items: Array<PlaylistItem>;
   public _activeItemIndex: number;
@@ -54,7 +54,7 @@ class Playlist {
     return this._items;
   }
 
-  public get metadata(): ProviderPlaylistMetadata {
+  public get metadata(): ProviderPlaylistMetadataObject {
     return this._metadata;
   }
 

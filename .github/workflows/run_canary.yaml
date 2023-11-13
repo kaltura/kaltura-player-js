@@ -15,5 +15,5 @@ jobs:
       node-version: "20.x"
       player-type: "ovp tv"
       schema-type: "playerV3Versions"
-      tests-yarn-run-to-execute: 'build eslint type-check test'
+      tests-yarn-run-to-execute: 'build lint type-check test'
       yarn-upgrade-list: "@playkit-js/playkit-js@canary @playkit-js/playkit-js-dash@canary @playkit-js/playkit-js-hls@canary @playkit-js/playkit-js-ui@canary @playkit-js/playkit-js-providers@canary"

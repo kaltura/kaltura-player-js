@@ -1,9 +1,7 @@
-import { StreamType, Utils } from '@playkit-js/playkit-js';
+import {PKSourcesConfigObject, PlayerStreamTypes, StreamType, Utils} from '@playkit-js/playkit-js';
 import { getServerUIConf } from './setup-helpers';
 import { KalturaPlayer } from '../../kaltura-player';
-import { PartialKPOptionsObject } from '../../types/kaltura-player-options';
-import { SourcesConfig } from '../../types/sources-config';
-import { PlayerStreamTypes } from '../../types/stream-types';
+import { PartialKPOptionsObject } from '../../types';
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
@@ -165,7 +163,7 @@ function addClientTag(url: string, productVersion?: string): string {
  */
 function addKalturaParams(player: KalturaPlayer, playerConfig: PartialKPOptionsObject): void {
   handleSessionId(player, playerConfig);
-  const sources: SourcesConfig = playerConfig.sources!;
+  const sources: PKSourcesConfigObject = playerConfig.sources!;
   const sessionId = playerConfig.session && playerConfig.session.id;
   const productVersion = getServerUIConf()?.productVersion;
   Object.values(StreamType).forEach((key: PlayerStreamTypes) => {
@@ -178,8 +176,8 @@ function addKalturaParams(player: KalturaPlayer, playerConfig: PartialKPOptionsO
           source.url = addReferrer(source.url);
           source.url = addClientTag(source.url, productVersion);
         }
-        if (source.drmData && source.drmData.length) {
-          source.drmData.forEach((drmData) => {
+        if (source['drmData'] && source['drmData'].length) {
+          source['drmData'].forEach((drmData) => {
             if (typeof drmData.licenseUrl === 'string' && [UDRM_DOMAIN, CUSTOM_DATA, SIGNATURE].every((t) => drmData.licenseUrl.includes(t))) {
               drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, sessionId, DRM_SESSION_ID);
               drmData.licenseUrl = addClientTag(drmData.licenseUrl, productVersion);

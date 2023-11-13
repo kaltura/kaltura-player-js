@@ -1,7 +1,7 @@
 import { KalturaPlayer } from '../../kaltura-player';
 import { TextStyle, TrackType, Utils } from '@playkit-js/playkit-js';
-import { ProviderMediaInfo } from '../../types/provider/media-info';
-import { KPMediaConfig } from '../../types/media-config';
+import { KPMediaConfig } from '../../types';
+import {ProviderMediaInfoObject} from '@playkit-js/playkit-js-providers';
 
 /**
  * @class PlayerSnapshot
@@ -9,7 +9,7 @@ import { KPMediaConfig } from '../../types/media-config';
  *
  */
 class PlayerSnapshot {
-  public mediaInfo: ProviderMediaInfo;
+  public mediaInfo: ProviderMediaInfoObject;
   public mediaConfig: KPMediaConfig;
   /**
    * @type {TextStyle}
@@ -67,8 +67,8 @@ function getStartTime(player: KalturaPlayer): number {
     } else {
       return -1;
     }
-  } else if (!player.isCasting() && !player.currentTime && player.config.sources.startTime > -1) {
-    return player.config.sources.startTime;
+  } else if (!player.isCasting() && !player.currentTime && player.config.sources.startTime! > -1) {
+    return player.config.sources.startTime!;
   }
   return player.currentTime!;
 }

@@ -1,7 +1,8 @@
 import { FakeEvent, TextStyle, Track } from '@playkit-js/playkit-js';
 import { RemoteSession } from './remote-session';
-import { ProviderMediaInfo } from '../../types/provider/media-info';
+// import { ProviderMediaInfo } from '../../types/provider/media-info';
 import { KPMediaConfig } from '../../types/media-config';
+import {ProviderMediaInfoObject} from '@playkit-js/playkit-js-providers';
 
 /**
  * @interface IRemotePlayer
@@ -178,7 +179,7 @@ export interface IRemotePlayer {
    * @instance
    * @memberof IRemotePlayer
    */
-  getMediaInfo(): ProviderMediaInfo;
+  getMediaInfo(): ProviderMediaInfoObject;
 
   /**
    * @method

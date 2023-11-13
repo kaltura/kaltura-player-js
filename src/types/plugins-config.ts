@@ -1,4 +1,5 @@
+import {BasePlugin} from '../common/plugins';
+
 export interface PluginsConfig {
-  // TODO - temp - use plugin instance
-  [plugin: string]: any;
+  [plugin: string]: BasePlugin;
 }

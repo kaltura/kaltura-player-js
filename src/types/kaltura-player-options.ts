@@ -1,37 +1,33 @@
 import { LogConfig } from './log-level';
-import { TextConfig } from './text-config';
 import { PlaybackConfig } from './playback-config';
-import { SourcesConfig } from './sources-config';
-import { SessionConfig } from './session-config';
 import { AdvertisingConfig } from './advertising-config';
-import { ProviderConfig } from './provider-options';
 import { PlaylistConfig } from './playlist-object';
-import { DimensionsConfig } from './dimensions-config';
 import { UiConfig } from './ui-config';
 import { ViewabilityConfig } from './visibility-config';
 import { NetworkConfig } from './network-config';
-import { AbrConfig } from './abr-config';
 import { PluginsConfig } from './plugins-config';
+import {ProviderOptionsObject} from '@playkit-js/playkit-js-providers';
+import {PKAbrConfigObject, PKDimensionsConfig, PKSessionConfigObject, PKSourcesConfigObject, PKTextConfigObject} from '@playkit-js/playkit-js';
 
 export interface KalturaPlayerConfig {
   targetId: string;
   log?: LogConfig;
   disableUserCache?: boolean;
-  text?: TextConfig;
+  text?: PKTextConfigObject;
   playback: PlaybackConfig;
-  sources: SourcesConfig;
+  sources: PKSourcesConfigObject;
   plugins: PluginsConfig;
   advertising: AdvertisingConfig;
-  session?: SessionConfig;
-  provider: ProviderConfig;
+  session?: PKSessionConfigObject;
+  provider: ProviderOptionsObject;
   playlist?: PlaylistConfig;
-  dimensions?: DimensionsConfig;
+  dimensions?: PKDimensionsConfig;
   ui: UiConfig;
   cast?: { [key: string]: any };
   productVersion?: string;
   viewability: ViewabilityConfig;
   network?: NetworkConfig;
-  abr?: AbrConfig;
+  abr?: PKAbrConfigObject;
 }
 
 export type PartialKPOptionsObject = Omit<KalturaPlayerConfig, 'productVersion'>;
@@ -43,6 +39,6 @@ export interface LegacyPartialKPOptionsObject {
   // TODO - fix
   // player?: PKPlayerOptionsObject;
   player?: any;
-  provider: ProviderConfig;
+  provider: ProviderOptionsObject;
   ui?: UiConfig;
 }

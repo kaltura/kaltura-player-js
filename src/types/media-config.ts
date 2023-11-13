@@ -1,6 +1,5 @@
 import { PlaybackConfig } from './playback-config';
-import { SessionConfig } from './session-config';
-import { ProviderMediaConfigSources } from './provider/provider-media-config';
+import {ProviderMediaConfigSessionObject, ProviderMediaConfigSourcesObject} from '@playkit-js/playkit-js-providers';
 
 /**
  * @typedef {Object} KPMediaConfig
@@ -9,7 +8,7 @@ import { ProviderMediaConfigSources } from './provider/provider-media-config';
  * @property {{[plugin: string]: Object}} plugins
  */
 export interface KPMediaConfig extends PlaybackConfig {
-  sources: ProviderMediaConfigSources;
-  session?: SessionConfig;
+  sources: ProviderMediaConfigSourcesObject;
+  session?: ProviderMediaConfigSessionObject;
   plugins?: { [plugin: string]: Object };
 }

@@ -138,7 +138,7 @@ class UIWrapper {
   }
 
   private _handleVr(config: PluginsConfig = {}): void {
-    if (config.vr && !config.vr.disable) {
+    if (config.vr && !config.vr['disable']) {
       this._setStereoConfig(config.vr);
     }
   }

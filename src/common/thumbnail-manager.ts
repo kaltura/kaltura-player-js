@@ -1,10 +1,8 @@
 import { Utils, ThumbnailInfo, MediaType, EventManager } from '@playkit-js/playkit-js';
 import evaluate from './utils/evaluate';
 import { KalturaPlayer } from '../kaltura-player';
-import { KPThumbnailConfig } from '../types/thumbnail-config';
-import { UiConfig } from '../types/ui-config';
-import { KPMediaConfig } from '../types/media-config';
-import { Poster } from '../types/provider/poster';
+import { KPThumbnailConfig, UiConfig, KPMediaConfig } from '../types';
+import {Poster} from '@playkit-js/playkit-js-providers';
 
 const DefaultThumbnailConfig: any = {
   thumbsWidth: 164,
@@ -84,7 +82,7 @@ class ThumbnailManager {
     };
   };
 
-  private _getThumbSlicesUrl = (posterUrl: string | Poster[], ks: string | undefined, thumbnailConfig: any): string => {
+  private _getThumbSlicesUrl = (posterUrl: string | Poster[] | undefined, ks: string | undefined, thumbnailConfig: any): string => {
     if (typeof posterUrl === 'string') {
       if (THUMBNAIL_REGEX.test(posterUrl)) {
         try {

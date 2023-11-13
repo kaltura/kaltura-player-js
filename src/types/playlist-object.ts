@@ -1,11 +1,11 @@
-import { ProviderPlaylistMetadata } from './playlist/playlist-metadata';
-import { PlaylistOptions } from './playlist/playlist-options';
-import { PlaylistCountdownOptions } from './playlist/playlis-countdown-options';
+import { PlaylistOptions } from './playlist';
+import { PlaylistCountdownOptions } from './playlist';
 import { PlaylistItem } from '../common/playlist/playlist-item';
+import {ProviderPlaylistMetadataObject} from '@playkit-js/playkit-js-providers';
 
 export interface PlaylistConfig {
   id: string;
-  metadata: ProviderPlaylistMetadata;
+  metadata: ProviderPlaylistMetadataObject;
   poster?: string;
   options?: PlaylistOptions;
   countdown?: PlaylistCountdownOptions;

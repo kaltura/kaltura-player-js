@@ -1,12 +1,9 @@
-import { MediaSourceObject } from './media-source';
-import { ExternalCaptionObject } from './external-caption-object';
 import { ExternalThumbnailsConfig } from './exteranl-thumbnails-object';
 import { MediaSourceOptionsObject } from './media-source-options';
-import { MetadataConfig } from './metadata-config';
 import { ImageSourceOptions } from './image-player-options';
-import { ProviderMediaConfigSources } from './provider/provider-media-config';
+import {ProviderMediaConfigSourcesObject} from '@playkit-js/playkit-js-providers';
 
-export interface SourcesConfig extends Omit<ProviderMediaConfigSources, 'poster'> {
+export interface SourcesConfig extends Omit<ProviderMediaConfigSourcesObject, 'poster'> {
   thumbnails?: ExternalThumbnailsConfig;
   options: MediaSourceOptionsObject;
   startTime: number;
