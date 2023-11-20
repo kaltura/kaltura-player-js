@@ -9,7 +9,8 @@ export default class StorageManager {
     AUDIO_LANG: 'audioLanguage',
     TEXT_LANG: 'textLanguage',
     CAPTIONS_DISPLAY: 'captionsDisplay',
-    TEXT_STYLE: 'textStyle'
+    TEXT_STYLE: 'textStyle',
+    PLAYBACK_RATE: 'playbackRate'
   };
 
   static _logger: any = getLogger('StorageManager');
@@ -41,6 +42,12 @@ export default class StorageManager {
     eventManager.listen(player, player.Event.UI.USER_CLICKED_UNMUTE, () => {
       if (!player.isCasting()) {
         StorageWrapper.setItem(StorageManager.StorageKeys.MUTED, player.muted);
+      }
+    });
+
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_SPEED, () => {
+      if (!player.isCasting()) {
+        StorageWrapper.setItem(StorageManager.StorageKeys.PLAYBACK_RATE, player.playbackRate);
       }
     });
 
