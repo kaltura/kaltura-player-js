@@ -56,6 +56,7 @@ type _KPPlaylistObject = {
   items: Array<PlaylistItem>,
   lastEntryId?: string
 };
+
 declare type KPPlaylistObject = _KPPlaylistObject;
 
 /**
