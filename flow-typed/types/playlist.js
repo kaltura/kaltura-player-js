@@ -53,8 +53,10 @@ type _KPPlaylistObject = {
   poster?: string,
   options: KPPlaylistOptions,
   countdown: KPPlaylistCountdownOptions,
-  items: Array<PlaylistItem>
+  items: Array<PlaylistItem>,
+  lastEntryId?: string
 };
+
 declare type KPPlaylistObject = _KPPlaylistObject;
 
 /**
