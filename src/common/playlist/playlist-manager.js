@@ -235,6 +235,7 @@ class PlaylistManager {
       poster: (playlistData.poster: string),
       options: playlistConfig ? playlistConfig.options : this._options,
       countdown: playlistConfig ? playlistConfig.countdown : this.countdown,
+      // $FlowFixMe
       lastEntryId: playlistData.playlistLastEntryId,
       items: playlistData.items.map((item, index) => {
         const itemData = Utils.Object.copyDeep(item);
