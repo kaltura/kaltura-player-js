@@ -255,7 +255,7 @@ declare module PlaykitUI {
       text: string;
       lines: number;
       forceShowMore?: boolean;
-      onClick?: () => void;
+      onClick?: (e: MouseEvent) => void;
       children: preactLib.ComponentChildren;
     }>;
     Tooltip: preactLib.ComponentClass<{label: string}>;
