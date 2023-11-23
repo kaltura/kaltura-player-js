@@ -54,12 +54,7 @@ class PlaylistManager {
         });
         this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, {playlist: this}));
         this._addBindings();
-        const lastEntryIdIndex = config.lastEntryId ? this._mediaInfoList.findIndex(item => item.entryId === config.lastEntryId) : -1;
-        if (lastEntryIdIndex !== -1) {
-          this.playItem(lastEntryIdIndex);
-        } else {
-          this.playNext();
-        }
+        this.playNext();
       }
     }
   }
@@ -235,8 +230,6 @@ class PlaylistManager {
       poster: (playlistData.poster: string),
       options: playlistConfig ? playlistConfig.options : this._options,
       countdown: playlistConfig ? playlistConfig.countdown : this.countdown,
-      // $FlowFixMe
-      lastEntryId: playlistData.playlistLastEntryId,
       items: playlistData.items.map((item, index) => {
         const itemData = Utils.Object.copyDeep(item);
         ['sources.dvr', 'sources.type'].forEach(omitKey => {
