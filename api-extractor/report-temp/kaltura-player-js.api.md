@@ -5,28 +5,40 @@
 ```ts
 
 import { BaseMiddleware } from '@playkit-js/playkit-js';
+import { BaseProvider } from '@playkit-js/playkit-js-providers';
 import * as core from '@playkit-js/playkit-js';
 import { Error as Error_2 } from '@playkit-js/playkit-js';
 import { EventManager } from '@playkit-js/playkit-js';
 import { FakeEvent } from '@playkit-js/playkit-js';
 import { FakeEventTarget } from '@playkit-js/playkit-js';
-import { Provider } from '@playkit-js/playkit-js-providers';
+import { OTTProviderMediaInfoObject } from '@playkit-js/playkit-js-providers';
+import { OVPProviderMediaInfoObject } from '@playkit-js/playkit-js-providers';
+import { PKAbrConfigObject } from '@playkit-js/playkit-js';
+import { PKDimensionsConfig } from '@playkit-js/playkit-js';
+import { PKDrmDataObject } from '@playkit-js/playkit-js';
+import { PKEventTypes } from '@playkit-js/playkit-js';
+import { PKMediaSourceObject } from '@playkit-js/playkit-js';
+import { PKMetadataConfigObject } from '@playkit-js/playkit-js';
+import { PKPlaybackConfigObject } from '@playkit-js/playkit-js/lib/types';
+import { PKPlayerDimensions } from '@playkit-js/playkit-js';
+import { PKSessionConfigObject } from '@playkit-js/playkit-js';
+import { PKSourcesConfigObject } from '@playkit-js/playkit-js';
+import { PKTextConfigObject } from '@playkit-js/playkit-js';
+import { ProviderEntryListObject } from '@playkit-js/playkit-js-providers';
+import { ProviderMediaConfigSessionObject } from '@playkit-js/playkit-js-providers';
+import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers';
+import { ProviderMediaInfoObject } from '@playkit-js/playkit-js-providers';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
+import { ProviderPlaylistInfoObject } from '@playkit-js/playkit-js-providers';
+import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers';
+import { ProviderPlaylistObject } from '@playkit-js/playkit-js-providers';
 import * as providers from '@playkit-js/playkit-js-providers';
-import { TextStyle as TextStyle_2 } from '@playkit-js/playkit-js';
+import { TextStyle } from '@playkit-js/playkit-js';
 import { ThumbnailInfo } from '@playkit-js/playkit-js';
 import { TimedMetadata } from '@playkit-js/playkit-js';
 import { Track } from '@playkit-js/playkit-js';
+import { TrackTypes } from '@playkit-js/playkit-js/lib/track/track-type';
 import * as ui from '@playkit-js/playkit-js-ui';
-
-// @public (undocumented)
-export interface AbrConfig {
-    // (undocumented)
-    capLevelOnFPSDrop: boolean;
-    // (undocumented)
-    fpsDroppedFramesInterval: number;
-    // (undocumented)
-    fpsDroppedMonitoringThreshold: number;
-}
 
 // @public
 export class Ad {
@@ -56,14 +68,6 @@ export class Ad {
     get wrapperAdSystems(): Array<string>;
     get wrapperCreativeIds(): Array<string>;
 }
-
-// @public (undocumented)
-export type AdapterDataConfig = {
-    [key: string]: {
-        value: string;
-        objectType?: string;
-    };
-};
 
 // @public (undocumented)
 export class AdBreak {
@@ -123,7 +127,6 @@ export class BasePlugin implements IPlugin {
     // (undocumented)
     protected logger: any;
     name: string;
-    // Warning: (ae-forgotten-export) The symbol "KalturaPlayer" needs to be exported by the entry point index.d.ts
     protected player: KalturaPlayer;
     protected get ready(): Promise<any>;
     // @virtual
@@ -184,40 +187,6 @@ export type DeferredPromise = {
     catch: (param: () => any) => void;
     then(param: () => void): any;
 };
-
-// @public (undocumented)
-export interface DimensionsConfig {
-    // (undocumented)
-    height: number;
-    // (undocumented)
-    ratio?: string;
-    // (undocumented)
-    width: number;
-}
-
-// @public (undocumented)
-export interface DrmDataObject {
-    // (undocumented)
-    certificate?: string;
-    // (undocumented)
-    licenseUrl: string;
-    // (undocumented)
-    scheme: string;
-}
-
-// @public (undocumented)
-export interface ExternalCaptionObject {
-    // (undocumented)
-    default: boolean | undefined;
-    // (undocumented)
-    label: string;
-    // (undocumented)
-    language: string;
-    // (undocumented)
-    type: string | undefined;
-    // (undocumented)
-    url: string;
-}
 
 // @public (undocumented)
 export interface ExternalThumbnailsConfig {
@@ -283,9 +252,265 @@ export interface ImageSourceOptions {
 export const KALTURA_PLAYER_START_TIME_QS: string;
 
 // @public (undocumented)
+export class KalturaPlayer extends FakeEventTarget {
+    constructor(options: KalturaPlayerConfig);
+    // (undocumented)
+    get AbrMode(): any;
+    addTextTrack(kind: TextTrackKind, label?: string): TextTrack | undefined;
+    // Warning: (ae-forgotten-export) The symbol "AdsController" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    get ads(): AdsController | undefined;
+    // (undocumented)
+    attachMediaSource(): void;
+    // (undocumented)
+    get buffered(): TimeRanges | null;
+    // (undocumented)
+    get config(): KalturaPlayerConfig;
+    // (undocumented)
+    configure(config?: Partial<KalturaPlayerConfig>): void;
+    set crossOrigin(crossOrigin: string);
+    get crossOrigin(): string | null;
+    // Warning: (ae-forgotten-export) The symbol "CuePointManager" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    get cuePointManager(): CuePointManager;
+    set currentTime(to: number);
+    // (undocumented)
+    get currentTime(): number | null;
+    // (undocumented)
+    get defaultPlaybackRate(): number;
+    // (undocumented)
+    destroy(): void;
+    // (undocumented)
+    detachMediaSource(): void;
+    set dimensions(dimensions: PKPlayerDimensions);
+    // (undocumented)
+    get dimensions(): PKPlayerDimensions;
+    // (undocumented)
+    get duration(): number | null;
+    // (undocumented)
+    enableAdaptiveBitrate(): void;
+    // (undocumented)
+    get ended(): boolean | null;
+    // (undocumented)
+    get EngineType(): any;
+    // (undocumented)
+    get engineType(): string;
+    // (undocumented)
+    enterFullscreen(fullScreenElementId?: string): void;
+    // (undocumented)
+    enterPictureInPicture(): void;
+    // (undocumented)
+    get env(): any;
+    // (undocumented)
+    get Error(): typeof Error_2;
+    // (undocumented)
+    get Event(): KPEventTypes;
+    // (undocumented)
+    exitFullscreen(): void;
+    // (undocumented)
+    exitPictureInPicture(): void;
+    // (undocumented)
+    getActiveTracks(): any;
+    // (undocumented)
+    getCastSession(): RemoteSession | null;
+    // (undocumented)
+    getDrmInfo(): PKDrmDataObject | null;
+    // (undocumented)
+    getLogLevel(name?: string): any;
+    // Warning: (ae-forgotten-export) The symbol "HEVCConfigObject" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "MediaCapabilitiesObject" needs to be exported by the entry point index.d.ts
+    getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject>;
+    // (undocumented)
+    getMediaConfig(): KPMediaConfig;
+    // (undocumented)
+    getMediaInfo(): ProviderMediaInfoObject;
+    getNativeTextTracks(): Array<TextTrack>;
+    getService(name: string): any | void;
+    // (undocumented)
+    getStartTimeOfDvrWindow(): number;
+    // (undocumented)
+    getThumbnail(time?: number): ThumbnailInfo | null;
+    // (undocumented)
+    getTracks(type?: TrackTypes): Array<Track>;
+    // (undocumented)
+    getVideoElement(): HTMLVideoElement | undefined;
+    // (undocumented)
+    getView(): HTMLElement;
+    hasService(name: string): boolean;
+    // (undocumented)
+    get hasUserInteracted(): boolean;
+    // (undocumented)
+    hideTextTrack(): void;
+    // (undocumented)
+    isAdaptiveBitrateEnabled(): boolean;
+    // (undocumented)
+    isAudio(): boolean;
+    // (undocumented)
+    isCastAvailable(type?: string): boolean;
+    // (undocumented)
+    isCasting(): boolean;
+    // (undocumented)
+    isDvr(): boolean;
+    // (undocumented)
+    isFullscreen(): boolean;
+    // (undocumented)
+    isImage(): boolean;
+    // (undocumented)
+    isInPictureInPicture(): boolean;
+    // (undocumented)
+    isInVrStereoMode(): boolean;
+    // (undocumented)
+    isLive(): boolean;
+    // (undocumented)
+    isOnLiveEdge(): boolean;
+    // (undocumented)
+    isPictureInPictureSupported(): boolean;
+    // (undocumented)
+    isUntimedImg(): boolean;
+    get isVisible(): boolean;
+    // (undocumented)
+    isVr(): boolean;
+    // (undocumented)
+    get liveDuration(): number | null;
+    // (undocumented)
+    load(): void;
+    // (undocumented)
+    set loadingMedia(loading: boolean);
+    // (undocumented)
+    loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any>;
+    // (undocumented)
+    loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject>;
+    // (undocumented)
+    loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject>;
+    // (undocumented)
+    get LogLevel(): any;
+    // (undocumented)
+    get LogLevelType(): any;
+    // (undocumented)
+    get MediaType(): any;
+    set muted(mute: boolean);
+    // (undocumented)
+    get muted(): boolean | null;
+    set normalizedCurrentTime(to: number);
+    get normalizedCurrentTime(): number | null;
+    get normalizedDuration(): number | null;
+    // (undocumented)
+    notifyEnterFullscreen(): void;
+    // (undocumented)
+    notifyExitFullscreen(): void;
+    // (undocumented)
+    pause(): void;
+    // (undocumented)
+    get paused(): boolean | null;
+    // (undocumented)
+    play(): void;
+    set playbackRate(rate: number);
+    // (undocumented)
+    get playbackRate(): number | null;
+    // (undocumented)
+    get playbackRates(): Array<number>;
+    // (undocumented)
+    _playbackStart: boolean;
+    // Warning: (ae-forgotten-export) The symbol "PlaylistManager" needs to be exported by the entry point index.d.ts
+    get playlist(): PlaylistManager;
+    set playsinline(playsinline: boolean);
+    // (undocumented)
+    get playsinline(): boolean | null;
+    // (undocumented)
+    get plugins(): {
+        [name: string]: BasePlugin;
+    };
+    // (undocumented)
+    get poster(): string;
+    // (undocumented)
+    get provider(): BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject>;
+    // (undocumented)
+    ready(): Promise<void>;
+    registerService(name: string, service: any): void;
+    // (undocumented)
+    _remotePlayer: BaseRemotePlayer | null;
+    // (undocumented)
+    get remotePlayerManager(): RemotePlayerManager;
+    // (undocumented)
+    reset(isChangeMedia?: boolean): void;
+    // (undocumented)
+    get seeking(): boolean | null;
+    // (undocumented)
+    seekToLiveEdge(): void;
+    // (undocumented)
+    get selectedSource(): PKMediaSourceObject | null;
+    // (undocumented)
+    selectTrack(track: Track): void;
+    // (undocumented)
+    setIsCastInitiator(type: string, isCastInitiator: boolean): void;
+    // (undocumented)
+    setLogLevel(level: any, name?: string): void;
+    // (undocumented)
+    setMedia(mediaConfig: KPMediaConfig): void;
+    // (undocumented)
+    setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: PlaylistConfigObject, entryList?: ProviderEntryListObject): void;
+    // (undocumented)
+    setSourcesMetadata(sourcesMetadata: PKMetadataConfigObject): void;
+    // (undocumented)
+    setTextDisplaySettings(settings: any): void;
+    // (undocumented)
+    shouldAddKs(mediaConfig?: KPMediaConfig): boolean;
+    // (undocumented)
+    showTextTrack(): void;
+    // (undocumented)
+    get sources(): PKSourcesConfigObject;
+    // (undocumented)
+    get src(): string | null;
+    // (undocumented)
+    startCasting(type: string): Promise<void>;
+    // (undocumented)
+    get State(): any;
+    // (undocumented)
+    get stats(): any;
+    // (undocumented)
+    stopCasting(): void;
+    // (undocumented)
+    get StreamType(): any;
+    // (undocumented)
+    get streamType(): string;
+    // (undocumented)
+    get textDisplaySetting(): any;
+    // (undocumented)
+    get TextStyle(): typeof TextStyle;
+    set textStyle(style: TextStyle);
+    // (undocumented)
+    get textStyle(): TextStyle;
+    // (undocumented)
+    toggleVrStereoMode(): void;
+    // (undocumented)
+    get Track(): any;
+    // Warning: (ae-forgotten-export) The symbol "UIWrapper" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    get ui(): UIWrapper;
+    // (undocumented)
+    updateKalturaPoster(playerSources: PKSourcesConfigObject, mediaSources: ProviderMediaConfigSourcesObject, dimensions: PKPlayerDimensions): void;
+    // (undocumented)
+    get videoHeight(): number | null;
+    // (undocumented)
+    get videoWidth(): number | null;
+    // Warning: (ae-forgotten-export) The symbol "ViewabilityManager" needs to be exported by the entry point index.d.ts
+    get viewabilityManager(): ViewabilityManager;
+    // (undocumented)
+    get ViewabilityType(): {
+        [type: string]: string;
+    };
+    set volume(vol: number);
+    // (undocumented)
+    get volume(): number | null;
+}
+
+// @public (undocumented)
 export interface KalturaPlayerConfig {
     // (undocumented)
-    abr?: AbrConfig;
+    abr?: PKAbrConfigObject;
     // (undocumented)
     advertising: AdvertisingConfig;
     // (undocumented)
@@ -293,7 +518,7 @@ export interface KalturaPlayerConfig {
         [key: string]: any;
     };
     // (undocumented)
-    dimensions?: DimensionsConfig;
+    dimensions?: PKDimensionsConfig;
     // (undocumented)
     disableUserCache?: boolean;
     // (undocumented)
@@ -309,15 +534,15 @@ export interface KalturaPlayerConfig {
     // (undocumented)
     productVersion?: string;
     // (undocumented)
-    provider: ProviderConfig;
+    provider: ProviderOptionsObject;
     // (undocumented)
-    session?: SessionConfig;
+    session?: PKSessionConfigObject;
     // (undocumented)
-    sources: SourcesConfig;
+    sources: PKSourcesConfigObject;
     // (undocumented)
     targetId: string;
     // (undocumented)
-    text?: TextConfig;
+    text?: PKTextConfigObject;
     // (undocumented)
     ui: UiConfig;
     // (undocumented)
@@ -366,7 +591,7 @@ export type KPAdvertisingConfigObject = {
 
 // @public (undocumented)
 export type KPEventTypes = {
-    Core: any;
+    Core: PKEventTypes;
     UI: {
         [event: string]: string;
     };
@@ -376,6 +601,7 @@ export type KPEventTypes = {
     Playlist: {
         [event: string]: string;
     };
+    VISIBILITY_CHANGE: 'visibilitychange';
 };
 
 // @public
@@ -385,9 +611,9 @@ export interface KPMediaConfig extends PlaybackConfig {
         [plugin: string]: Object;
     };
     // (undocumented)
-    session?: SessionConfig;
+    session?: ProviderMediaConfigSessionObject;
     // (undocumented)
-    sources: ProviderMediaConfigSources;
+    sources: ProviderMediaConfigSourcesObject;
 }
 
 // @public
@@ -400,7 +626,7 @@ export interface KPPlaylistObject extends PlaylistConfigObject {
     // (undocumented)
     id?: string;
     // (undocumented)
-    metadata?: ProviderPlaylistMetadata;
+    metadata?: ProviderPlaylistMetadataObject;
     // (undocumented)
     poster?: string;
 }
@@ -438,6 +664,8 @@ export interface KPUIComponentOptions {
     area: string;
     // (undocumented)
     beforeComponent?: string;
+    // @deprecated (undocumented)
+    container?: string;
     // (undocumented)
     label: string;
     // (undocumented)
@@ -451,7 +679,7 @@ export interface KPUIRemoveComponent {
     // (undocumented)
     area: string;
     // @deprecated (undocumented)
-    container: string;
+    container?: string;
     // (undocumented)
     presets: Array<string>;
     // (undocumented)
@@ -467,7 +695,7 @@ export interface LegacyPartialKPOptionsObject {
     // (undocumented)
     player?: any;
     // (undocumented)
-    provider: ProviderConfig;
+    provider: ProviderOptionsObject;
     // (undocumented)
     targetId: string;
     // (undocumented)
@@ -485,72 +713,6 @@ export interface LogConfig {
 }
 
 // @public (undocumented)
-export interface Logger {
-    // (undocumented)
-    getLogger: loggerFunctionType;
-    // (undocumented)
-    LogLevel: LogLevelType;
-}
-
-// @public (undocumented)
-export type loggerFunctionType = {
-    VERSION: String;
-    DEBUG: LogLevelObject;
-    ERROR: LogLevelObject;
-    INFO: LogLevelObject;
-    OFF: LogLevelObject;
-    TIME: LogLevelObject;
-    TRACE: LogLevelObject;
-    WARN: LogLevelObject;
-    createDefaultHandler: () => void;
-    debug: () => void;
-    enabledFor: () => void;
-    error: () => void;
-    get: () => void;
-    getLevel: () => void;
-    info: () => void;
-    log: () => void;
-    setHandler: () => void;
-    setLevel: () => void;
-    time: () => void;
-    timeEnd: () => void;
-    trace: () => void;
-    useDefaults: () => void;
-    warn: () => void;
-};
-
-// @public (undocumented)
-export type LogLevelObject = {
-    value: number;
-    name: string;
-};
-
-// @public (undocumented)
-export type LogLevelType = {
-    [level: string]: LogLevelObject;
-};
-
-// @public (undocumented)
-export interface MediaSourceObject {
-    // (undocumented)
-    bandwidth?: number;
-    // (undocumented)
-    drmData?: DrmDataObject[];
-    // (undocumented)
-    height?: number;
-    // (undocumented)
-    id?: string;
-    // (undocumented)
-    label?: string;
-    // (undocumented)
-    mimetype: string;
-    // (undocumented)
-    url: string;
-    // (undocumented)
-    width?: number;
-}
-
-// @public (undocumented)
 export interface MediaSourceOptionsObject {
     // (undocumented)
     forceRedirectExternalStreams: boolean;
@@ -561,26 +723,6 @@ export interface MediaSourceOptionsObject {
 }
 
 // @public (undocumented)
-export interface MetadataConfig {
-    // (undocumented)
-    contextType?: string;
-    // (undocumented)
-    description?: string;
-    // (undocumented)
-    epgId?: string;
-    // (undocumented)
-    mediaType?: string;
-    // (undocumented)
-    metas?: Object;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    recordingId?: string;
-    // (undocumented)
-    tags?: Object;
-}
-
-// @public (undocumented)
 export interface NetworkConfig {
     // (undocumented)
     maxStaleLevelReloads: number;
@@ -588,38 +730,6 @@ export interface NetworkConfig {
     requestFilter?: () => void;
     // (undocumented)
     responseFilter?: () => void;
-}
-
-// @public (undocumented)
-export interface OTTProviderMediaInfo extends OVPProviderMediaInfo {
-    // (undocumented)
-    adapterData?: AdapterDataConfig;
-    // (undocumented)
-    assetReferenceType?: string;
-    // (undocumented)
-    contextType: string;
-    // (undocumented)
-    fileIds?: string;
-    // (undocumented)
-    formats?: Array<string>;
-    // (undocumented)
-    mediaType: string;
-    // (undocumented)
-    protocol?: string;
-    // (undocumented)
-    streamerType?: string;
-    // (undocumented)
-    urlType?: string;
-}
-
-// @public (undocumented)
-export interface OVPProviderMediaInfo {
-    // (undocumented)
-    entryId?: string;
-    // (undocumented)
-    ks?: string;
-    // (undocumented)
-    referenceId?: string;
 }
 
 // @public (undocumented)
@@ -690,45 +800,11 @@ export type PKAdTagTypes = {
 };
 
 // @public (undocumented)
-export interface PlaybackConfig {
+export interface PlaybackConfig extends PKPlaybackConfigObject {
     // (undocumented)
-    additionalAudioLanguage: string;
+    autopause: boolean;
     // (undocumented)
-    additionalTextLanguage: string;
-    // (undocumented)
-    allowMutedAutoPlay: boolean;
-    // (undocumented)
-    audioLanguage: string;
-    // (undocumented)
-    autoplay: {
-        [type: string]: string | boolean;
-    };
-    // (undocumented)
-    captionsDisplay: boolean;
-    // (undocumented)
-    crossOrigin: string;
-    // (undocumented)
-    inBrowserFullscreen: boolean;
-    // (undocumented)
-    muted: boolean;
-    // (undocumented)
-    pictureInPicture: boolean;
-    // (undocumented)
-    playAdsWithMSE: boolean;
-    // (undocumented)
-    playsinline: boolean;
-    // (undocumented)
-    preferNative: PreferNativeConfig;
-    // (undocumented)
-    preload: string;
-    // (undocumented)
-    screenLockOrientionMode: string;
-    // (undocumented)
-    streamPriority: StreamPriority[];
-    // (undocumented)
-    textLanguage: string;
-    // (undocumented)
-    volume: number;
+    loop: boolean;
 }
 
 // @public (undocumented)
@@ -736,17 +812,6 @@ export const PLAYER_NAME: string;
 
 // @public (undocumented)
 export const PLAYER_TYPE: string;
-
-// @public (undocumented)
-export interface PlayerDimensions {
-    // (undocumented)
-    height: number;
-    // (undocumented)
-    width: number;
-}
-
-// @public (undocumented)
-export type PlayerStreamTypes = 'dash' | 'hls' | 'progressive' | 'image';
 
 // @public (undocumented)
 export const playlist: {
@@ -766,7 +831,7 @@ export interface PlaylistConfig {
     // (undocumented)
     items: Array<PlaylistItem>;
     // (undocumented)
-    metadata: ProviderPlaylistMetadata;
+    metadata: ProviderPlaylistMetadataObject;
     // (undocumented)
     options?: PlaylistOptions;
     // (undocumented)
@@ -806,17 +871,7 @@ export interface PlaylistOptions {
 // @public (undocumented)
 export interface PluginsConfig {
     // (undocumented)
-    [plugin: string]: any;
-}
-
-// @public (undocumented)
-export interface Poster {
-    // (undocumented)
-    height: number;
-    // (undocumented)
-    url: string;
-    // (undocumented)
-    width: number;
+    [plugin: string]: BasePlugin;
 }
 
 // @public (undocumented)
@@ -825,134 +880,6 @@ export interface PrebidConfig extends AdPrebidConfig {
     libUrl: string;
 }
 
-// @public (undocumented)
-export interface PreferNativeConfig {
-    // (undocumented)
-    dash: boolean;
-    // (undocumented)
-    hls: boolean;
-}
-
-// @public (undocumented)
-export interface ProviderConfig {
-    // (undocumented)
-    env?: ProviderEnvConfig;
-    // (undocumented)
-    filterOptions?: ProviderFilterOptions;
-    // (undocumented)
-    ignoreServerConfig?: boolean;
-    // (undocumented)
-    ks?: string;
-    // (undocumented)
-    loadThumbnailWithKs?: boolean;
-    // (undocumented)
-    logger?: Logger;
-    // (undocumented)
-    networkRetryParameters?: ProviderNetworkRetryParameters;
-    // (undocumented)
-    partnerId: number;
-    // (undocumented)
-    uiConfId?: number;
-    // (undocumented)
-    widgetId?: string;
-}
-
-// @public (undocumented)
-export type ProviderEntryListObject = {
-    entries: Array<ProviderMediaInfo>;
-    ks?: string;
-};
-
-// @public (undocumented)
-export interface ProviderEnvConfig {
-    // (undocumented)
-    analyticsServiceUrl?: string;
-    // (undocumented)
-    cdnUrl?: string;
-    // (undocumented)
-    replaceHostOnlyManifestUrls?: boolean;
-    // (undocumented)
-    serviceUrl: string;
-    // (undocumented)
-    useApiCaptions?: boolean;
-}
-
-// @public (undocumented)
-export interface ProviderFilterOptions {
-    // (undocumented)
-    redirectFromEntryId?: boolean;
-}
-
-// @public (undocumented)
-export interface ProviderMediaConfigSources {
-    // (undocumented)
-    captions?: ExternalCaptionObject[];
-    // (undocumented)
-    dash: MediaSourceObject[];
-    // (undocumented)
-    duration?: number;
-    // (undocumented)
-    dvr: boolean;
-    // (undocumented)
-    hls: MediaSourceObject[];
-    // (undocumented)
-    id?: string;
-    // (undocumented)
-    image: MediaSourceObject[];
-    // (undocumented)
-    metadata: MetadataConfig;
-    // (undocumented)
-    poster: string | Poster[];
-    // (undocumented)
-    progressive: MediaSourceObject[];
-    // (undocumented)
-    type: string;
-    // (undocumented)
-    vr: Object | undefined;
-}
-
-// @public (undocumented)
-export type ProviderMediaInfo = OVPProviderMediaInfo | OTTProviderMediaInfo;
-
-// @public (undocumented)
-export interface ProviderNetworkRetryParameters {
-    // (undocumented)
-    async?: boolean;
-    // (undocumented)
-    maxAttempts?: number;
-    // (undocumented)
-    timeout?: number;
-}
-
-// @public (undocumented)
-export interface ProviderPlaylistInfoObject {
-    // (undocumented)
-    ks?: string;
-    // (undocumented)
-    playlistId: string;
-}
-
-// @public (undocumented)
-export type ProviderPlaylistItemObject = {
-    sources: ProviderMediaConfigSources;
-};
-
-// @public (undocumented)
-export interface ProviderPlaylistMetadata {
-    // (undocumented)
-    description: string;
-    // (undocumented)
-    name: string;
-}
-
-// @public (undocumented)
-export type ProviderPlaylistObject = {
-    id: string;
-    metadata: ProviderPlaylistMetadata;
-    poster: string;
-    items: Array<ProviderPlaylistItemObject>;
-};
-
 export { providers }
 
 // Warning: (ae-forgotten-export) The symbol "PluginManager" needs to be exported by the entry point index.d.ts
@@ -960,26 +887,12 @@ export { providers }
 // @public
 export const registerPlugin: typeof PluginManager.register;
 
-// @public (undocumented)
-export interface SessionConfig {
-    // (undocumented)
-    id?: string;
-    // (undocumented)
-    isAnonymous?: boolean;
-    // (undocumented)
-    ks?: string;
-    // (undocumented)
-    partnerId?: number;
-    // (undocumented)
-    uiConfId?: number;
-}
-
 // @public
 function setup_2(options: PartialKPOptionsObject): KalturaPlayer;
 export { setup_2 as setup }
 
 // @public (undocumented)
-export interface SourcesConfig extends Omit<ProviderMediaConfigSources, 'poster'> {
+export interface SourcesConfig extends Omit<ProviderMediaConfigSourcesObject, 'poster'> {
     // (undocumented)
     imageSourceOptions?: ImageSourceOptions;
     // (undocumented)
@@ -990,78 +903,6 @@ export interface SourcesConfig extends Omit<ProviderMediaConfigSources, 'poster'
     startTime: number;
     // (undocumented)
     thumbnails?: ExternalThumbnailsConfig;
-}
-
-// @public (undocumented)
-export interface StreamPriority {
-    // (undocumented)
-    engine: string;
-    // (undocumented)
-    format: string;
-}
-
-// @public (undocumented)
-export interface TextConfig {
-    // (undocumented)
-    captionsTextTrack1Label: string;
-    // (undocumented)
-    captionsTextTrack1LanguageCode: string;
-    // (undocumented)
-    captionsTextTrack2Label: string;
-    // (undocumented)
-    captionsTextTrack2LanguageCode: string;
-    // (undocumented)
-    enableCEA708Captions: boolean;
-    // (undocumented)
-    forceCenter: boolean;
-    // (undocumented)
-    textStyle: TextStyle;
-    // (undocumented)
-    textTrackDisplaySetting: TextTrackDisplaySetting;
-    // (undocumented)
-    useNativeTextTrack: boolean;
-    // (undocumented)
-    useShakaTextTrackDisplay: boolean;
-}
-
-// @public
-export interface TextStyle {
-    // (undocumented)
-    backgroundColor?: [number, number, number];
-    // (undocumented)
-    backgroundOpacity?: number;
-    // (undocumented)
-    fontColor?: [number, number, number];
-    // (undocumented)
-    fontEdge?: Array<[number, number, number, number, number, number]>;
-    // (undocumented)
-    fontFamily?: string;
-    // (undocumented)
-    fontOpacity?: number;
-    // (undocumented)
-    fontScale?: -2 | -1 | 0 | 2 | 3 | 4;
-    // (undocumented)
-    fontSize?: '50%' | '75%' | '100%' | '200%' | '300%' | '400%';
-}
-
-// @public (undocumented)
-export interface TextTrackDisplaySetting {
-    // (undocumented)
-    align: string;
-    // (undocumented)
-    line: string | number;
-    // (undocumented)
-    lineAlign: string;
-    // (undocumented)
-    position: number;
-    // (undocumented)
-    positionAlign: string;
-    // (undocumented)
-    size: number;
-    // (undocumented)
-    snapToLines: boolean;
-    // (undocumented)
-    vertical: string;
 }
 
 export { ui }

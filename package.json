@@ -20,7 +20,8 @@
   "types": "./dist/kaltura-player-js.d.ts",
   "files": [
     "dist/**/*",
-    "src/**/*"
+    "src/**/*",
+    "flow-typed/**/*"
   ],
   "publishConfig": {
     "access": "public"

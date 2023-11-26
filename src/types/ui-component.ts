@@ -7,7 +7,7 @@ export interface KPUIAddComponent extends KPUIComponentOptions {
 
 export interface KPUIRemoveComponent {
   /** @deprecated Use area instead. */
-  container: string;
+  container?: string;
   removeComponent: string;
   presets: Array<string>;
   area: string;
