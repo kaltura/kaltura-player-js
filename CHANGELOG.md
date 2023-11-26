@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.17.3 (2023-11-26)
+
+
+### Bug Fixes
+
+* update playkit-js-dash to [1.35.2](https://github.com/kaltura/playkit-js-dash/releases/tag/v1.35.2) ([9b36d5c](https://github.com/kaltura/kaltura-player-js/commit/9b36d5c9bd88b4b068cf5fdd6a75dab287dca4b7))
+
 ### 3.17.2 (2023-11-12)
 
 ### 3.17.1 (2023-11-12)
