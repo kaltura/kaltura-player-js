@@ -223,11 +223,11 @@ function maybeApplyStartTimeQueryParam(options: KPOptionsObject): void {
  * @returns {void}
  */
 function maybeApplyClipQueryParams(options: KPOptionsObject): void {
-  let seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS));
+  const seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS));
   if (!isNaN(seekFrom)) {
     Utils.Object.createPropertyPath(options, 'sources.seekFrom', seekFrom);
   }
-  let clipTo = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_END_TIME_QS));
+  const clipTo = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_END_TIME_QS));
   if (!isNaN(clipTo)) {
     Utils.Object.createPropertyPath(options, 'sources.clipTo', clipTo);
   }
