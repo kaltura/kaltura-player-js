@@ -7,6 +7,7 @@ import {
   attachToFirstClick,
   getDefaultOptions,
   maybeApplyStartTimeQueryParam,
+  maybeApplyClipQueryParams,
   printKalturaPlayerVersionToLog,
   printSetupMessages,
   setLogOptions,
@@ -31,6 +32,7 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   validateProviderConfig(defaultOptions);
   setLogOptions(defaultOptions);
   maybeApplyStartTimeQueryParam(defaultOptions);
+  maybeApplyClipQueryParams(defaultOptions);
   printSetupMessages();
   setStorageConfig(defaultOptions);
   const player = getPlayerProxy(defaultOptions);

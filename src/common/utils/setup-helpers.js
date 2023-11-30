@@ -23,6 +23,8 @@ const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
 const KALTURA_PLAYER_START_TIME_QS: string = 'kalturaStartTime';
+const KALTURA_PLAYER_CLIP_START_TIME_QS: string = 'kalturaSeekFrom';
+const KALTURA_PLAYER_CLIP_END_TIME_QS: string = 'kalturaClipTo';
 const KAVA_DEFAULT_PARTNER = 2504201;
 const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
@@ -211,6 +213,23 @@ function maybeApplyStartTimeQueryParam(options: KPOptionsObject): void {
   let startTime = parseFloat(getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
   if (!isNaN(startTime)) {
     Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
+  }
+}
+
+/**
+ * get the parameters for seekFrom and clipTo
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeApplyClipQueryParams(options: KPOptionsObject): void {
+  let seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS));
+  if (!isNaN(seekFrom)) {
+    Utils.Object.createPropertyPath(options, 'sources.seekFrom', seekFrom);
+  }
+  let clipTo = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_END_TIME_QS));
+  if (!isNaN(clipTo)) {
+    Utils.Object.createPropertyPath(options, 'sources.clipTo', clipTo);
   }
 }
 
@@ -759,6 +778,7 @@ export {
   validateProviderConfig,
   setLogOptions,
   maybeApplyStartTimeQueryParam,
+  maybeApplyClipQueryParams,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
