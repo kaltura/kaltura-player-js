@@ -14,15 +14,6 @@ export default class SessionStorageManager extends BaseStorageManager {
   }
 
   /**
-   * @static
-   * @private
-   * @returns {boolean} - Whether session storage is implemented in the current browser.
-   */
-  static isSessionStorageAvailable(): boolean {
-    return StorageWrapper.isStorageAvailable(SessionStorageManager.getStorageObject());
-  }
-
-  /**
    * Attaches the player listeners to the local storage wrapper.
    * @private
    * @param {Player} player - The player reference.

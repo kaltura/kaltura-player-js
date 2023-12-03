@@ -20,15 +20,6 @@ export default class LocalStorageManager extends BaseStorageManager {
   }
 
   /**
-   * @static
-   * @private
-   * @returns {boolean} - Whether local storage is implemented in the current browser.
-   */
-  static isLocalStorageAvailable(): boolean {
-    return StorageWrapper.isStorageAvailable();
-  }
-
-  /**
    * Attaches the player listeners to the local storage wrapper.
    * @private
    * @param {Player} player - The player reference.

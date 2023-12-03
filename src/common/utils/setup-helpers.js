@@ -125,10 +125,10 @@ function createKalturaPlayerContainer(targetId: string): string {
  */
 function setStorageConfig(options: KPOptionsObject): void {
   if (!options.disableUserCache) {
-    if (LocalStorageManager.isLocalStorageAvailable() && LocalStorageManager.hasStorage()) {
+    if (LocalStorageManager.isStorageAvailable() && LocalStorageManager.hasStorage()) {
       Utils.Object.mergeDeep(options, LocalStorageManager.getStorageConfig());
     }
-    if (SessionStorageManager.isSessionStorageAvailable() && SessionStorageManager.hasStorage()) {
+    if (SessionStorageManager.isStorageAvailable() && SessionStorageManager.hasStorage()) {
       Utils.Object.mergeDeep(options, SessionStorageManager.getStorageConfig());
     }
   }
@@ -141,10 +141,10 @@ function setStorageConfig(options: KPOptionsObject): void {
  * @returns {void}
  */
 function applyStorageSupport(player: KalturaPlayer): void {
-  if (LocalStorageManager.isLocalStorageAvailable()) {
+  if (LocalStorageManager.isStorageAvailable()) {
     LocalStorageManager.attach(player);
   }
-  if (SessionStorageManager.isSessionStorageAvailable()) {
+  if (SessionStorageManager.isStorageAvailable()) {
     SessionStorageManager.attach(player);
   }
 }
@@ -169,7 +169,7 @@ function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer
  * @returns {void}
  */
 function setStorageTextStyle(player: KalturaPlayer): void {
-  if (!player.config.disableUserCache && LocalStorageManager.isLocalStorageAvailable()) {
+  if (!player.config.disableUserCache && LocalStorageManager.isStorageAvailable()) {
     const textStyleObj = LocalStorageManager.getPlayerTextStyle();
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);

@@ -1,10 +1,20 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
-import {Utils} from '@playkit-js/playkit-js';
+import {Error, Utils} from '@playkit-js/playkit-js';
 
 export class BaseStorageManager {
   static _logger: any;
   static StorageKeys: {[key: string]: string};
+
+  /**
+   * @static
+   * @private
+   * @returns {boolean} - Whether the storage is implemented in the current browser.
+   */
+  static isStorageAvailable(): boolean {
+    return StorageWrapper.isStorageAvailable(this.getStorageObject());
+  }
+
   /**
    * Checks if we have previous storage.
    * @private
@@ -56,6 +66,6 @@ export class BaseStorageManager {
   }
 
   static getStorageObject(): Object {
-    throw Error('');
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'getStorageObject()');
   }
 }
