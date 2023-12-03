@@ -108,7 +108,7 @@ describe('StorageManager', function () {
       }
     };
     sandbox.stub(LocalStorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
-    sandbox.stub(LocalStorageManager, 'isLocalStorageAvailable').returns(true);
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Arial');
   });
@@ -123,7 +123,7 @@ describe('StorageManager', function () {
       }
     };
     sandbox.stub(LocalStorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
-    sandbox.stub(LocalStorageManager, 'isLocalStorageAvailable').returns(true);
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Verdana');
   });

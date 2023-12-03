@@ -202,7 +202,7 @@ describe('setStorageConfig', function () {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(LocalStorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').callsFake(() => true);
     sandbox.stub(LocalStorageManager, 'hasStorage').callsFake(() => true);
     sandbox.stub(LocalStorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     SetupHelpers.setStorageConfig(config);
@@ -218,7 +218,7 @@ describe('setStorageConfig', function () {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(LocalStorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').callsFake(() => true);
     sandbox.stub(LocalStorageManager, 'hasStorage').callsFake(() => true);
     sandbox.stub(LocalStorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     SetupHelpers.setStorageConfig(config);
