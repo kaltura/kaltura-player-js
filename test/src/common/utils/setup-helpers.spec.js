@@ -1,6 +1,6 @@
 import * as TestUtils from '../../utils/test-utils';
 import {ValidationErrorType} from '../../../../src/common/utils/validation-error';
-import StorageManager from '../../../../src/common/storage/storage-manager';
+import LocalStorageManager from '../../../../src/common/storage/local-storage-manager';
 import * as SetupHelpers from '../../../../src/common/utils/setup-helpers';
 import {Env} from '@playkit-js/playkit-js';
 import {Images} from '../../mock-data/images';
@@ -202,9 +202,9 @@ describe('setStorageConfig', function () {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
-    sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
-    sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
+    sandbox.stub(LocalStorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'hasStorage').callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     SetupHelpers.setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
@@ -218,9 +218,9 @@ describe('setStorageConfig', function () {
         audioLanguage: 'fra'
       }
     };
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable').callsFake(() => true);
-    sandbox.stub(StorageManager, 'hasStorage').callsFake(() => true);
-    sandbox.stub(StorageManager, 'getStorageConfig').callsFake(() => storageConfig);
+    sandbox.stub(LocalStorageManager, 'isLocalStorageAvailable').callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'hasStorage').callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     SetupHelpers.setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');

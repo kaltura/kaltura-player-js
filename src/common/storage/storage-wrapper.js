@@ -9,13 +9,14 @@ export default class StorageWrapper {
   /**
    * @static
    * @private
+   * @param {Object} storage - The storage object
    * @returns {boolean} - Whether a local storage object is available on the current environment.
    */
-  static isLocalStorageAvailable(): boolean {
+  static isStorageAvailable(storage: Object = localStorage): boolean {
     if (typeof Storage !== 'undefined') {
       try {
-        localStorage.setItem('test', 'test');
-        localStorage.removeItem('test');
+        storage.setItem('test', 'test');
+        storage.removeItem('test');
         return true;
       } catch (e) {
         return false;
@@ -26,27 +27,30 @@ export default class StorageWrapper {
   }
 
   /**
+   * Gets the storage size
+   * @param {Object} storage - The storage object to use.
    * @static
    * @private
    * @return {number} - The number of keys in the local storage started with wanted prefix.
    */
-  static get size(): number {
-    return Object.keys(localStorage).filter(key => key.startsWith(STORAGE_PREFIX)).length;
+  static getStorageSize(storage: Object = localStorage): number {
+    return Object.keys(storage).filter(key => key.startsWith(STORAGE_PREFIX)).length;
   }
 
   /**
    * Sets an item in the local storage.
    * @param {string} key - The key of the item.
    * @param {any} item - The value of the item.
+   * @param {Object} storage - The storage object to use.
    * @static
    * @private
    * @returns {void}
    */
-  static setItem(key: string, item: any): void {
+  static setItem(key: string, item: any, storage: Object = localStorage): void {
     StorageWrapper._validateKey(key);
     try {
       StorageWrapper._logger.debug('Sets item for key: ' + key, item);
-      localStorage.setItem(STORAGE_PREFIX + key, item);
+      storage.setItem(STORAGE_PREFIX + key, item);
     } catch (e) {
       if (StorageWrapper._isQuotaExceeded(e)) {
         StorageWrapper._logger.error('Quota exceeded: ' + e.message);
@@ -59,15 +63,16 @@ export default class StorageWrapper {
   /**
    * Gets an item from the local storage.
    * @param {string} key - The item key.
+   * @param {Object} storage - The storage object to use.
    * @static
    * @private
    * @returns {any} - The item value.
    */
-  static getItem(key: string): any {
+  static getItem(key: string, storage: Object = localStorage): any {
     StorageWrapper._validateKey(key);
     let item = null;
     try {
-      item = localStorage.getItem(STORAGE_PREFIX + key);
+      item = storage.getItem(STORAGE_PREFIX + key);
       if (typeof item === 'string') {
         return JSON.parse(item);
       } else {

@@ -14,10 +14,11 @@ import {
   type LogLevelObject
 } from '@playkit-js/playkit-js';
 import {ValidationErrorType} from './validation-error';
-import StorageManager from '../storage/storage-manager';
+import LocalStorageManager from '../storage/local-storage-manager';
 import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
 import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewability-manager';
+import SessionStorageManager from '../storage/session-storage-manager';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -123,8 +124,13 @@ function createKalturaPlayerContainer(targetId: string): string {
  * @returns {void}
  */
 function setStorageConfig(options: KPOptionsObject): void {
-  if (!options.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    Utils.Object.mergeDeep(options, StorageManager.getStorageConfig());
+  if (!options.disableUserCache) {
+    if (LocalStorageManager.isLocalStorageAvailable() && LocalStorageManager.hasStorage()) {
+      Utils.Object.mergeDeep(options, LocalStorageManager.getStorageConfig());
+    }
+    if (SessionStorageManager.isSessionStorageAvailable() && SessionStorageManager.hasStorage()) {
+      Utils.Object.mergeDeep(options, SessionStorageManager.getStorageConfig());
+    }
   }
 }
 
@@ -135,8 +141,11 @@ function setStorageConfig(options: KPOptionsObject): void {
  * @returns {void}
  */
 function applyStorageSupport(player: KalturaPlayer): void {
-  if (StorageManager.isLocalStorageAvailable()) {
-    StorageManager.attach(player);
+  if (LocalStorageManager.isLocalStorageAvailable()) {
+    LocalStorageManager.attach(player);
+  }
+  if (SessionStorageManager.isSessionStorageAvailable()) {
+    SessionStorageManager.attach(player);
   }
 }
 
@@ -160,8 +169,8 @@ function applyCastSupport(defaultOptions: KPOptionsObject, player: KalturaPlayer
  * @returns {void}
  */
 function setStorageTextStyle(player: KalturaPlayer): void {
-  if (!player.config.disableUserCache && StorageManager.isLocalStorageAvailable()) {
-    const textStyleObj = StorageManager.getPlayerTextStyle();
+  if (!player.config.disableUserCache && LocalStorageManager.isLocalStorageAvailable()) {
+    const textStyleObj = LocalStorageManager.getPlayerTextStyle();
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
     }
