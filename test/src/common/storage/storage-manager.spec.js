@@ -26,6 +26,7 @@ describe('StorageManager', function () {
         env
       }
     };
+    LocalStorageManager.initialize();
   });
 
   afterEach(function () {

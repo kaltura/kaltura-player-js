@@ -1,12 +1,15 @@
 // @flow
-import {EventManager, getLogger} from '@playkit-js/playkit-js';
+import {EventManager} from '@playkit-js/playkit-js';
 import {BaseStorageManager} from './base-storage-manager';
 
 export default class SessionStorageManager extends BaseStorageManager {
   static StorageKeys: {[key: string]: string} = {
     PLAYBACK_RATE: 'playbackRate'
   };
-  static _logger: any = getLogger('SessionStorageManager');
+
+  static initialize() {
+    this.init(this.name);
+  }
 
   static getStorageObject() {
     return sessionStorage;
@@ -20,11 +23,11 @@ export default class SessionStorageManager extends BaseStorageManager {
    * @returns {void}
    */
   static attach(player: Player): void {
-    SessionStorageManager._logger.debug('Attach session storage');
+    this._logger.debug('Attach session storage');
     let eventManager = new EventManager();
     eventManager.listen(player, player.Event.UI.USER_SELECTED_SPEED, () => {
       if (!player.isCasting()) {
-        SessionStorageManager.setItem(SessionStorageManager.StorageKeys.PLAYBACK_RATE, player.playbackRate);
+        this.setItem(this.StorageKeys.PLAYBACK_RATE, player.playbackRate);
       }
     });
   }

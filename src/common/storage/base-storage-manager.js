@@ -1,10 +1,74 @@
 // @flow
 import StorageWrapper from './storage-wrapper';
-import {Error, Utils} from '@playkit-js/playkit-js';
+import {Error, Utils, getLogger} from '@playkit-js/playkit-js';
+
+export class BaseStorageHelper {
+  static instance: BaseStorageHelper | null = null;
+  storageManagers: Array<BaseStorageManager>;
+
+  constructor() {
+    this.storageManagers = [];
+  }
+
+  addManager(manager: BaseStorageManager): void {
+    this.storageManagers.push(manager);
+  }
+
+  static getInstance(): BaseStorageHelper {
+    if (this.instance === null) {
+      this.instance = new BaseStorageHelper();
+    }
+    return this.instance;
+  }
+}
 
 export class BaseStorageManager {
   static _logger: any;
   static StorageKeys: {[key: string]: string};
+
+  /**
+   * Initializes class.
+   * @private
+   * @param {string} className - The manager's class name.
+   * @returns {void}
+   */
+  static init(className: string): void {
+    this._logger = getLogger(className);
+    //$FlowFixMe
+    BaseStorageHelper.getInstance().addManager(this);
+  }
+
+  /**
+   * Applies cache support if it's supported by the environment.
+   * @private
+   * @param {KalturaPlayer} player - The Kaltura player.
+   * @returns {void}
+   */
+  static attachAll(player: Player): void {
+    BaseStorageHelper.getInstance().storageManagers.forEach((manager: BaseStorageManager) => {
+      //$FlowFixMe
+      if (manager.isStorageAvailable()) {
+        //$FlowFixMe
+        manager.attach(player);
+      }
+    });
+  }
+
+  /**
+   * Sets the storage config on the player config if certain conditions are met.
+   * @private
+   * @param {KPOptionsObject} options - kaltura player options
+   * @returns {void}
+   */
+  static setStorageConfig(options: KPOptionsObject): void {
+    BaseStorageHelper.getInstance().storageManagers.forEach(manager => {
+      //$FlowFixMe
+      if (manager.isStorageAvailable() && manager.hasStorage()) {
+        //$FlowFixMe
+        Utils.Object.mergeDeep(options, manager.getStorageConfig());
+      }
+    });
+  }
 
   /**
    * @static
@@ -120,5 +184,25 @@ export class BaseStorageManager {
    */
   static getStorageObject(): Object {
     throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'getStorageObject()');
+  }
+
+  /**
+   * Attaches listeners to the storage manager.
+   * @private
+   * @static
+   * @return {void}
+   */
+  static attach(): void {
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'attach()');
+  }
+
+  /**
+   * Initialize the storage manager.
+   * @private
+   * @static
+   * @return {void}
+   */
+  static initialize(): void {
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'initialize()');
   }
 }

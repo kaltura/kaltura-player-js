@@ -10,6 +10,7 @@ import {
   maybeApplyClipQueryParams,
   printKalturaPlayerVersionToLog,
   printSetupMessages,
+  initializeStorageManagers,
   setLogOptions,
   setStorageConfig,
   setStorageTextStyle,
@@ -34,6 +35,7 @@ function setup(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): 
   maybeApplyStartTimeQueryParam(defaultOptions);
   maybeApplyClipQueryParams(defaultOptions);
   printSetupMessages();
+  initializeStorageManagers();
   setStorageConfig(defaultOptions);
   const player = getPlayerProxy(defaultOptions);
   setStorageTextStyle(player);

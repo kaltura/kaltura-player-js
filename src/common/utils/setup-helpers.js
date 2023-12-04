@@ -19,6 +19,7 @@ import {KalturaPlayer} from '../../kaltura-player';
 import {addClientTag, addReferrer, updateSessionIdInUrl} from './kaltura-params';
 import {DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD} from './viewability-manager';
 import SessionStorageManager from '../storage/session-storage-manager';
+import {BaseStorageManager} from '../storage/base-storage-manager';
 
 const setupMessages: Array<Object> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -118,6 +119,16 @@ function createKalturaPlayerContainer(targetId: string): string {
 }
 
 /**
+ * Initializes the storage managers.
+ * @private
+ * @returns {void}
+ */
+function initializeStorageManagers(): void {
+  LocalStorageManager.initialize();
+  SessionStorageManager.initialize();
+}
+
+/**
  * Sets the storage config on the player config if certain conditions are met.
  * @private
  * @param {KPOptionsObject} options - kaltura player options
@@ -125,12 +136,7 @@ function createKalturaPlayerContainer(targetId: string): string {
  */
 function setStorageConfig(options: KPOptionsObject): void {
   if (!options.disableUserCache) {
-    if (LocalStorageManager.isStorageAvailable() && LocalStorageManager.hasStorage()) {
-      Utils.Object.mergeDeep(options, LocalStorageManager.getStorageConfig());
-    }
-    if (SessionStorageManager.isStorageAvailable() && SessionStorageManager.hasStorage()) {
-      Utils.Object.mergeDeep(options, SessionStorageManager.getStorageConfig());
-    }
+    BaseStorageManager.setStorageConfig(options);
   }
 }
 
@@ -141,12 +147,7 @@ function setStorageConfig(options: KPOptionsObject): void {
  * @returns {void}
  */
 function applyStorageSupport(player: KalturaPlayer): void {
-  if (LocalStorageManager.isStorageAvailable()) {
-    LocalStorageManager.attach(player);
-  }
-  if (SessionStorageManager.isStorageAvailable()) {
-    SessionStorageManager.attach(player);
-  }
+  BaseStorageManager.attachAll(player);
 }
 
 /**
@@ -796,5 +797,6 @@ export {
   hasImageSource,
   mergeProviderPluginsConfig,
   getServerUIConf,
+  initializeStorageManagers,
   KALTURA_PLAYER_START_TIME_QS
 };
