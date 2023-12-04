@@ -10,9 +10,9 @@ export default class StorageWrapper {
    * @static
    * @private
    * @param {Object} storage - The storage object
-   * @returns {boolean} - Whether a local storage object is available on the current environment.
+   * @returns {boolean} - Whether a storage object is available on the current environment.
    */
-  static isStorageAvailable(storage: Object = localStorage): boolean {
+  static isStorageAvailable(storage: Object): boolean {
     if (typeof Storage !== 'undefined') {
       try {
         storage.setItem('test', 'test');
@@ -31,14 +31,14 @@ export default class StorageWrapper {
    * @param {Object} storage - The storage object to use.
    * @static
    * @private
-   * @return {number} - The number of keys in the local storage started with wanted prefix.
+   * @return {number} - The number of keys in the storage started with wanted prefix.
    */
-  static getStorageSize(storage: Object = localStorage): number {
+  static getStorageSize(storage: Object): number {
     return Object.keys(storage).filter(key => key.startsWith(STORAGE_PREFIX)).length;
   }
 
   /**
-   * Sets an item in the local storage.
+   * Sets an item in the storage.
    * @param {string} key - The key of the item.
    * @param {any} item - The value of the item.
    * @param {Object} storage - The storage object to use.
@@ -46,7 +46,7 @@ export default class StorageWrapper {
    * @private
    * @returns {void}
    */
-  static setItem(key: string, item: any, storage: Object = localStorage): void {
+  static setItem(key: string, item: any, storage: Object): void {
     StorageWrapper._validateKey(key);
     try {
       StorageWrapper._logger.debug('Sets item for key: ' + key, item);
@@ -61,14 +61,14 @@ export default class StorageWrapper {
   }
 
   /**
-   * Gets an item from the local storage.
+   * Gets an item from the storage.
    * @param {string} key - The item key.
    * @param {Object} storage - The storage object to use.
    * @static
    * @private
    * @returns {any} - The item value.
    */
-  static getItem(key: string, storage: Object = localStorage): any {
+  static getItem(key: string, storage: Object): any {
     StorageWrapper._validateKey(key);
     let item = null;
     try {

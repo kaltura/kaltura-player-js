@@ -22,7 +22,7 @@ export class BaseStorageManager {
    * @return {boolean} - Whether we have previous storage.
    */
   static hasStorage(): boolean {
-    const storageSize = StorageWrapper.getStorageSize(this.getStorageObject());
+    const storageSize = this.getStorageSize();
     const hasStorage = storageSize !== 0;
     if (hasStorage) {
       this._logger.debug('Storage found with size of ', storageSize);
@@ -30,6 +30,39 @@ export class BaseStorageManager {
       this._logger.debug('No storage found');
     }
     return hasStorage;
+  }
+
+  /**
+   * Sets an item in the storage.
+   * @private
+   * @static
+   * @param {string} key - The key of the item
+   * @param {any} item - The value of the item
+   * @returns {void}
+   */
+  static setItem(key: string, item: any): void {
+    StorageWrapper.setItem(key, item, this.getStorageObject());
+  }
+
+  /**
+   * Gets an item from the storage.
+   * @private
+   * @static
+   * @param {string} key - The item key
+   * @returns {any} - The item value
+   */
+  static getItem(key: string): any {
+    StorageWrapper.getItem(key, this.getStorageObject());
+  }
+
+  /**
+   * Gets the storage size
+   * @static
+   * @private
+   * @return {number} - The number of keys in the local storage started with wanted prefix.
+   */
+  static getStorageSize(): number {
+    return StorageWrapper.getStorageSize(this.getStorageObject());
   }
 
   /**
@@ -45,6 +78,12 @@ export class BaseStorageManager {
     return storageConfig;
   }
 
+  /**
+   * Gets the current existing values in the storage.
+   * @private
+   * @static
+   * @return {Object} - The values object from the storage.
+   */
   static _getExistingValues(): Object {
     const obj = {};
     Object.keys(this.StorageKeys).forEach(key => {
@@ -57,6 +96,13 @@ export class BaseStorageManager {
     return obj;
   }
 
+  /**
+   * Builds the storage configuration object.
+   * @private
+   * @static
+   * @param {Object} values - The values to set to storage configuration
+   * @return {Object} - The configuration with values from the storage.
+   */
   static _buildStorageConfig(values: Object): Object {
     const storageConfig = Utils.Object.mergeDeep({}, values);
     delete storageConfig.textStyle;
@@ -65,6 +111,13 @@ export class BaseStorageManager {
     };
   }
 
+  /**
+   * Gets the storage object to access.
+   * i.e: sessionStorage, localStorage
+   * @private
+   * @static
+   * @return {Object} - The storage object.
+   */
   static getStorageObject(): Object {
     throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'getStorageObject()');
   }

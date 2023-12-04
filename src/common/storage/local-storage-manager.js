@@ -1,5 +1,4 @@
 // @flow
-import StorageWrapper from './storage-wrapper';
 import {EventManager, getLogger} from '@playkit-js/playkit-js';
 import {BaseStorageManager} from './base-storage-manager';
 
@@ -31,38 +30,38 @@ export default class LocalStorageManager extends BaseStorageManager {
     let eventManager = new EventManager();
     eventManager.listen(player, player.Event.UI.USER_CLICKED_MUTE, () => {
       if (!player.isCasting()) {
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.MUTED, player.muted);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.MUTED, player.muted);
       }
     });
     eventManager.listen(player, player.Event.UI.USER_CLICKED_UNMUTE, () => {
       if (!player.isCasting()) {
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.MUTED, player.muted);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.MUTED, player.muted);
       }
     });
 
     eventManager.listen(player, player.Event.UI.USER_CHANGED_VOLUME, () => {
       if (!player.isCasting()) {
         if (player.volume > 0) {
-          StorageWrapper.setItem(LocalStorageManager.StorageKeys.MUTED, false);
+          LocalStorageManager.setItem(LocalStorageManager.StorageKeys.MUTED, false);
         } else {
-          StorageWrapper.setItem(LocalStorageManager.StorageKeys.MUTED, true);
+          LocalStorageManager.setItem(LocalStorageManager.StorageKeys.MUTED, true);
         }
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.VOLUME, player.volume);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.VOLUME, player.volume);
       }
     });
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
       const audioTrack = event.payload.audioTrack;
-      StorageWrapper.setItem(LocalStorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
+      LocalStorageManager.setItem(LocalStorageManager.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
       const textTrack = event.payload.captionTrack;
       if (textTrack.language !== 'off') {
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.TEXT_LANG, textTrack.language);
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, true);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.TEXT_LANG, textTrack.language);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, true);
       } else {
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, false);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, false);
       }
     });
 
@@ -70,10 +69,10 @@ export default class LocalStorageManager extends BaseStorageManager {
       eventManager.listenOnce(player, player.Event.TEXT_TRACK_CHANGED, event => {
         const {selectedTextTrack} = event.payload;
         if (selectedTextTrack.language !== 'off') {
-          StorageWrapper.setItem(LocalStorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
-          StorageWrapper.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, true);
+          LocalStorageManager.setItem(LocalStorageManager.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+          LocalStorageManager.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, true);
         } else {
-          StorageWrapper.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, false);
+          LocalStorageManager.setItem(LocalStorageManager.StorageKeys.CAPTIONS_DISPLAY, false);
         }
       });
     };
@@ -84,7 +83,7 @@ export default class LocalStorageManager extends BaseStorageManager {
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
       try {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
-        StorageWrapper.setItem(LocalStorageManager.StorageKeys.TEXT_STYLE, textStyle);
+        LocalStorageManager.setItem(LocalStorageManager.StorageKeys.TEXT_STYLE, textStyle);
       } catch (e) {
         LocalStorageManager._logger.error(e.message);
       }
@@ -100,6 +99,6 @@ export default class LocalStorageManager extends BaseStorageManager {
    * @returns {?Object} - The stored text style object
    */
   static getPlayerTextStyle(): ?Object {
-    return StorageWrapper.getItem(LocalStorageManager.StorageKeys.TEXT_STYLE);
+    return LocalStorageManager.getItem(LocalStorageManager.StorageKeys.TEXT_STYLE);
   }
 }
