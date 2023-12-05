@@ -1,4 +1,4 @@
-import StorageManager from '../../../../src/common/storage/storage-manager';
+import LocalStorageManager from '../../../../src/common/storage/local-storage-manager';
 import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
 import * as TestUtils from '../../utils/test-utils';
 import {setup} from '../../../../src';
@@ -26,6 +26,7 @@ describe('StorageManager', function () {
         env
       }
     };
+    LocalStorageManager.initialize();
   });
 
   afterEach(function () {
@@ -37,21 +38,21 @@ describe('StorageManager', function () {
 
   it('should return it has no storage', function () {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    sandbox.stub(StorageWrapper, 'size').get(() => 0);
-    StorageManager.hasStorage().should.be.false;
+    sandbox.stub(StorageWrapper, 'getStorageSize').returns(0);
+    LocalStorageManager.hasStorage().should.be.false;
   });
 
   it('should return it has storage', function () {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    sandbox.stub(StorageWrapper, 'size').get(() => 1);
-    StorageManager.hasStorage().should.be.true;
+    sandbox.stub(StorageWrapper, 'getStorageSize').returns(1);
+    LocalStorageManager.hasStorage().should.be.true;
   });
 
   it('should return config for volume', function () {
     StorageWrapper._testForLocalStorage = () => (StorageWrapper._isLocalStorageAvailable = true);
-    sandbox.stub(StorageWrapper, 'size').get(() => 1);
+    sandbox.stub(StorageWrapper, 'getStorageSize').returns(1);
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
-    StorageManager.getStorageConfig().should.deep.equal({
+    LocalStorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 1
       }
@@ -65,7 +66,7 @@ describe('StorageManager', function () {
     getItemStub.withArgs('muted').returns(false);
     getItemStub.withArgs('textLanguage').returns('heb');
     getItemStub.withArgs('audioLanguage').returns('eng');
-    StorageManager.getStorageConfig().should.deep.equal({
+    LocalStorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 0.5,
         muted: false,
@@ -82,15 +83,15 @@ describe('StorageManager', function () {
       try {
         player.muted = true;
         player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
-        StorageManager.getStorageConfig().playback.muted.should.be.true;
+        LocalStorageManager.getStorageConfig().playback.muted.should.be.true;
         player.volume = 0.5;
         player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-        StorageManager.getStorageConfig().playback.muted.should.be.false;
-        StorageManager.getStorageConfig().playback.volume.should.equals(0.5);
+        LocalStorageManager.getStorageConfig().playback.muted.should.be.false;
+        LocalStorageManager.getStorageConfig().playback.volume.should.equals(0.5);
         player.volume = 0;
         player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
-        StorageManager.getStorageConfig().playback.muted.should.be.true;
-        StorageManager.getStorageConfig().playback.volume.should.equals(0);
+        LocalStorageManager.getStorageConfig().playback.muted.should.be.true;
+        LocalStorageManager.getStorageConfig().playback.volume.should.equals(0);
         done();
       } catch (err) {
         done(err);
@@ -107,8 +108,8 @@ describe('StorageManager', function () {
         fontFamily: 'Verdana'
       }
     };
-    sandbox.stub(StorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable').returns(true);
+    sandbox.stub(LocalStorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Arial');
   });
@@ -122,8 +123,8 @@ describe('StorageManager', function () {
         fontFamily: 'Verdana'
       }
     };
-    sandbox.stub(StorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
-    sandbox.stub(StorageManager, 'isLocalStorageAvailable').returns(true);
+    sandbox.stub(LocalStorageManager, 'getPlayerTextStyle').returns({fontFamily: 'Arial'});
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Verdana');
   });
@@ -140,7 +141,7 @@ describe('StorageManager', function () {
             const {selectedTextTrack} = event.payload;
             setTimeout(() => {
               try {
-                StorageManager.getStorageConfig().playback.textLanguage.should.be.equal(selectedTextTrack.language);
+                LocalStorageManager.getStorageConfig().playback.textLanguage.should.be.equal(selectedTextTrack.language);
                 if (selectedTextTrack.language === 'off') {
                   done();
                   return;

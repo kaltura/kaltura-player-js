@@ -1,8 +1,8 @@
 import '../../src/index';
 import {setup} from '../../src/setup';
 import * as TestUtils from './utils/test-utils';
-import StorageWrapper from '../../src/common/storage/storage-wrapper';
 import {TextStyle} from '@playkit-js/playkit-js';
+import LocalStorageManager from '../../src/common/storage/local-storage-manager';
 
 const targetId = 'player-placeholder_setup.spec';
 
@@ -79,7 +79,7 @@ describe('setup', function () {
       backgroundOpacity: 1,
       fontEdge: []
     });
-    sandbox.stub(StorageWrapper, 'getItem').withArgs('textStyle').returns(textStyle);
+    sandbox.stub(LocalStorageManager, 'getItem').withArgs('textStyle').returns(textStyle);
     kalturaPlayer = setup(config);
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
