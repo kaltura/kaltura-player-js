@@ -4,11 +4,13 @@ name: Manual update of @playkit-js dependencies
 on:
   workflow_dispatch:
     inputs:
-      repo_name:
+      branch_name:
         default: master
         required: true
   # TODO: remove on push
-  push: FEC-13477-update-dependenices-script
+  push:
+    branches:
+      - FEC-13477-update-dependenices-script
 
 jobs:
   check_and_update_dependencies:
