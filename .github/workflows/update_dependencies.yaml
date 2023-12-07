@@ -36,7 +36,7 @@ jobs:
         run: |
           IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
           for dependency in "${dependencies[@]}"; do
-            sanitized_dependency=$(echo "$dependency" | tr -cd 'A-Za-z0-9_-')
+            sanitized_dependency=$(echo "$dependency" | tr -cd 'A-Za-z0-9_' | awk '{print toupper($0)}')
             version=$(npm show "$dependency" version)
             echo "${sanitized_dependency//_/@}=${version}" >> $GITHUB_ENV
           done
