@@ -11,9 +11,6 @@ on:
   push:
     branches:
       - FEC-13477-update-dependenices-script
-  # pull_request:
-  #   branches:
-  #     - "*"
 
 jobs:
   check_and_update_dependencies:
@@ -26,6 +23,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install jq for JSON processing
+        run: sudo apt-get -y install jq
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -36,9 +36,9 @@ jobs:
         run: |
           IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
           for dependency in "${dependencies[@]}"; do
-            sanitized_dependency=$(echo "$dependency" | tr -cd 'A-Za-z0-9_' | awk '{print toupper($0)}')
+            sanitized_dependency=$(echo "$dependency" | sed 's/[^a-zA-Z0-9]/_/g' | tr '[:upper:]' '[:lower:]')
             version=$(npm show "$dependency" version)
-            echo "${sanitized_dependency//_/@}=${version}" >> $GITHUB_ENV
+            echo "${sanitized_dependency}=${version}" >> $GITHUB_ENV
           done
 
       - name: Check Versions
