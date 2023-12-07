@@ -16,8 +16,8 @@ jobs:
   check_and_update_dependencies:
     runs-on: ubuntu-latest
 
-    env:
-      DEPENDENCIES_TO_CHECK: '@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui'
+    # env:
+    #   DEPENDENCIES_TO_CHECK: '@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui'
 
     steps:
       - name: Checkout code
@@ -31,26 +31,43 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Get Latest Versions
-        id: latest-versions
+      - name: Check updates Kaltura dependencies
         run: |
-          IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
-          for dependency in "${dependencies[@]}"; do
-            sanitized_dependency=$(echo "$dependency" | sed 's/[^a-zA-Z0-9]/_/g' | tr '[:upper:]' '[:lower:]')
-            version=$(npm show "$dependency" version)
-            echo "${sanitized_dependency}=${version}" >> $GITHUB_ENV
-          done
+          # Define dependencies
+          kalturaDependencies=(
+            '{"package": "@playkit-js/playkit-js"}'
+            '{"package": "@playkit-js/playkit-js-dash"}'
+            '{"package": "@playkit-js/playkit-js-hls"}'
+            '{"package": "@playkit-js/playkit-js-providers"}'
+            '{"package": "@playkit-js/playkit-js-ui"}'
+          )
 
-      - name: Check Versions
-        run: |
-          echo "Checking Versions:"
-          while IFS=, read -r dep; do
-            current_version=$(jq -r ".dependencies[\"${dep//_/@}\"]" package.json)
-            latest_version="${!dep}"
-            if [ "$current_version" != "$latest_version" ]; then
-              echo "Mismatch: $dep - Current version: $current_version, Latest version: $latest_version"
-              # You can add additional steps here for further actions.
+          # Check and update a dependency
+          checkAndUpdateDependency() {
+            local packageName="$1"
+            local currentContent=$(cat package.json)
+            local currentVersion=$(echo "$currentContent" | jq -r ".dependencies.\"$packageName\"")
+
+            # Check if the dependency exists in package.json
+            if [[ "$currentVersion" != "null" ]]; then
+              # Get the latest version of the package using npm
+              local latestVersion=$(npm view "$packageName" version)
+              
+              # Update the package.json file only if the version has changed
+              if [[ "$currentVersion" != "$latestVersion" ]]; then
+                echo "Update $packageName to version $latestVersion"
+                # UPDATED_CONTENT=$(echo "$currentContent" | jq ".kaltura.dependencies.\"$dependencyName\" = \"$latestVersion\"")
+                # echo "$UPDATED_CONTENT" > package.json
+                # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+              else
+                echo "Dependency $packageName already has the latest version: $latestVersion"
+              fi
             else
-              echo "Match: $dep - Current version: $current_version, Latest version: $latest_version"
+              echo "No $packageName dependency found in package.json"
             fi
-          done <<< "${DEPENDENCIES_TO_CHECK}"
+          }
+
+          for dependency in "${kalturaDependencies[@]}"; do
+            packageName=$(echo "$dependency" | jq -r ".package")
+            checkAndUpdateDependency "$packageName"
+          done
