@@ -36,15 +36,16 @@ jobs:
         run: |
           IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
           for dependency in "${dependencies[@]}"; do
+            sanitized_dependency=$(echo "$dependency" | tr '@' '_')
             version=$(npm show "$dependency" version)
-            echo "$dependency=$version" >> $GITHUB_ENV
+            echo "${sanitized_dependency}=${version}" >> $GITHUB_ENV
           done
 
       - name: Check Versions
         run: |
           echo "Checking Versions:"
           while IFS=, read -r dep; do
-            current_version=$(jq -r ".dependencies[\"$dep\"]" package.json)
+            current_version=$(jq -r ".dependencies[\"${dep//_/@}\"]" package.json)
             latest_version="${!dep}"
             if [ "$current_version" != "$latest_version" ]; then
               echo "Mismatch: $dep - Current version: $current_version, Latest version: $latest_version"
