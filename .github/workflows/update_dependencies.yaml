@@ -59,9 +59,9 @@ jobs:
               
               # Update the package.json file only if the version has changed
               if [[ "$currentVersion" != "$latestVersion" ]]; then
-                echo "Update $packageName to version $latestVersion"
+                echo "Update $packageName from $currentVersion to version $latestVersion"
                 yarn add $packageName@$latestVersion
-                echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+                # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
               else
                 echo "Dependency $packageName already has the latest version: $latestVersion"
               fi
@@ -80,7 +80,6 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           title: 'fix(FEC-00000): Upgrade Kaltura-player dependencies (automated)'
-          secrets: inherit
           delete-branch: true
           branch: 'upgrade-npm-dependencies-automated'
           commit-message: 'Upgrade Kaltura-player dependencies (automated)'
