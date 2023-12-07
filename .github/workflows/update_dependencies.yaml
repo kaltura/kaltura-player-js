@@ -13,7 +13,7 @@ on:
   #     - FEC-13477-update-dependenices-script
   pull_request:
     branches:
-      - FEC-13477-update-dependenices-script
+      - "*"
 
 jobs:
   check_and_update_dependencies:
