@@ -8,9 +8,9 @@ on:
         default: master
         required: true
   # TODO: remove
-  # push:
-  #   branches:
-  #     - FEC-13477-update-dependenices-script
+  push:
+    branches:
+      - FEC-13477-update-dependenices-script
   pull_request:
     branches:
       - "*"
