@@ -54,8 +54,7 @@ jobs:
               if [[ "$currentVersion" != "$latestVersion" ]]; then
                 echo "Update $packageName to version $latestVersion"
                 yarn add $packageName@$latestVersion
-                cat package.json
-                # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+                echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
               else
                 echo "Dependency $packageName already has the latest version: $latestVersion"
               fi
