@@ -34,9 +34,9 @@ jobs:
       - name: Get Latest Versions
         id: latest-versions
         run: |
-          IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
+          IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_INCLUDE"
           for dependency in "${dependencies[@]}"; do
-            version=$(npm show "$dependency" version)
+            version=$(npm view "$dependency" version)
             echo "::set-output name=${dependency}::${version}"
           done
 
