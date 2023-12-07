@@ -17,8 +17,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.email ${{ secrets.PLAYER_BOT_EMAIL }}
+          git config --global user.name ${{ secrets.PLAYER_BOT_USER }}
 
       - name: Install jq for JSON processing
         run: sudo apt-get -y install jq
@@ -73,6 +80,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           title: 'fix(FEC-00000): Upgrade Kaltura-player dependencies (automated)'
+          secrets: inherit
           delete-branch: true
           branch: 'upgrade-npm-dependencies-automated'
           commit-message: 'Upgrade Kaltura-player dependencies (automated)'
