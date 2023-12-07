@@ -58,11 +58,11 @@
     ]
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.0",
-    "@playkit-js/playkit-js-dash": "1.35.2",
+    "@playkit-js/playkit-js": "0.84.1",
+    "@playkit-js/playkit-js-dash": "1.35.3",
     "@playkit-js/playkit-js-hls": "1.32.9",
     "@playkit-js/playkit-js-providers": "2.40.0",
-    "@playkit-js/playkit-js-ui": "0.77.11",
+    "@playkit-js/playkit-js-ui": "0.77.12",
     "@types/preact-i18n": "^2.3.1",
     "hls.js": "1.4.11",
     "intersection-observer": "^0.12.0",
