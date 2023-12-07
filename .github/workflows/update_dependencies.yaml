@@ -24,9 +24,6 @@ jobs:
         with:
           node-version: '18.x'
 
-      # - name: Install jq for JSON processing
-      #   run: sudo apt-get -y install jq
-
       - name: Get Latest Versions
         id: latest-versions
         run: |
@@ -57,19 +54,3 @@ jobs:
               echo "Match: $dep - Current version: $current_version, Latest version: $latest_version"
             fi
           done <<< "${DEPENDENCIES_TO_CHECK}"
-
-      # - name: Commit and Push
-      #   run: |
-      #       set +e
-      #       git commit --no-verify --allow-empty -m "chore: trigger build"
-      #       set -e
-      #       git push origin HEAD:master
-
-      # - name: Commit changes
-      #   if: env.COMMIT_REQUIRED == 'true'
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     title: 'fix(FEC-00000): Upgrade Kaltura dependencies (automated)'
-      #     delete-branch: true
-      #     branch: 'upgrade-npm-packages-automated'
-      #     commit-message: 'Upgrade Kaltura dependencies (automated)'
