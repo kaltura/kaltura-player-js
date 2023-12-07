@@ -9,12 +9,11 @@ on:
         required: true
 
 jobs:
-  trigger_canary:
-
+  check_and_update_dependencies:
     runs-on: ubuntu-latest
 
     env:
-      DEPENDENCIES_TO_INCLUDE: "@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui"
+      DEPENDENCIES_TO_INCLUDE: '@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui'
 
     steps:
       - name: Checkout code
@@ -27,7 +26,7 @@ jobs:
 
       # - name: Install jq for JSON processing
       #   run: sudo apt-get -y install jq
-      
+
       - name: Get Latest Versions
         id: latest-versions
         run: |
@@ -59,15 +58,12 @@ jobs:
             fi
           done <<< "${DEPENDENCIES_TO_CHECK}"
 
-
-
       # - name: Commit and Push
       #   run: |
       #       set +e
       #       git commit --no-verify --allow-empty -m "chore: trigger build"
       #       set -e
       #       git push origin HEAD:master
-
 
       # - name: Commit changes
       #   if: env.COMMIT_REQUIRED == 'true'
