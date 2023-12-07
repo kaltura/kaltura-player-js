@@ -7,6 +7,8 @@ on:
       repo_name:
         default: master
         required: true
+  # TODO: remove on push
+  push: FEC-13477-update-dependenices-script
 
 jobs:
   check_and_update_dependencies:
