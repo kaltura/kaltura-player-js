@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DEPENDENCIES_TO_INCLUDE: '@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui'
+      DEPENDENCIES_TO_CHECK: '@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui'
 
     steps:
       - name: Checkout code
@@ -34,16 +34,16 @@ jobs:
       - name: Get Latest Versions
         id: latest-versions
         run: |
-          IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_INCLUDE"
+          IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
           for dependency in "${dependencies[@]}"; do
-            version=$(npm view "$dependency" version)
-            echo "::set-output name=${dependency}::${version}"
+            version=$(npm show "$dependency" version)
+            echo "$dependency=$version" >> $GITHUB_ENV
           done
 
       - name: Print Latest Versions
         run: |
           echo "Latest Versions:"
-          echo "${DEPENDENCIES_TO_INCLUDE}" | tr ',' '\n' | while read -r dep; do
+          echo "${DEPENDENCIES_TO_CHECK}" | tr ',' '\n' | while read -r dep; do
             version="${{ steps.latest-versions.outputs.${dep} }}"
             echo "${dep}: ${version}"
           done
@@ -53,7 +53,7 @@ jobs:
           echo "Checking Versions:"
           while IFS=, read -r dep; do
             current_version=$(jq -r ".dependencies[\"$dep\"]" package.json)
-            latest_version="${{ steps.latest-versions.outputs.${dep} }}"
+            latest_version="${!dep}"
             if [ "$current_version" != "$latest_version" ]; then
               echo "Mismatch: $dep - Current version: $current_version, Latest version: $latest_version"
               # You can add additional steps here for further actions.
