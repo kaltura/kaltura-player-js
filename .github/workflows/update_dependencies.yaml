@@ -40,14 +40,6 @@ jobs:
             echo "$dependency=$version" >> $GITHUB_ENV
           done
 
-      - name: Print Latest Versions
-        run: |
-          echo "Latest Versions:"
-          echo "${DEPENDENCIES_TO_CHECK}" | tr ',' '\n' | while read -r dep; do
-            version="${{ steps.latest-versions.outputs.${dep} }}"
-            echo "${dep}: ${version}"
-          done
-
       - name: Check Versions
         run: |
           echo "Checking Versions:"
