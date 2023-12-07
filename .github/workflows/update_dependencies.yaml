@@ -11,9 +11,9 @@ on:
   push:
     branches:
       - FEC-13477-update-dependenices-script
-  pull_request:
-    branches:
-      - "*"
+  # pull_request:
+  #   branches:
+  #     - "*"
 
 jobs:
   check_and_update_dependencies:
