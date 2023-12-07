@@ -1,0 +1,79 @@
+## Update Kaltura-player dependencies
+name: Manual update of @playkit-js dependencies
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        default: master
+        required: true
+
+jobs:
+  trigger_canary:
+
+    runs-on: ubuntu-latest
+
+    env:
+      DEPENDENCIES_TO_INCLUDE: "@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      # - name: Install jq for JSON processing
+      #   run: sudo apt-get -y install jq
+      
+      - name: Get Latest Versions
+        id: latest-versions
+        run: |
+          IFS=',' read -ra dependencies <<< "$DEPENDENCIES_TO_CHECK"
+          for dependency in "${dependencies[@]}"; do
+            version=$(npm show "$dependency" version)
+            echo "::set-output name=${dependency}::${version}"
+          done
+
+      - name: Print Latest Versions
+        run: |
+          echo "Latest Versions:"
+          echo "${DEPENDENCIES_TO_INCLUDE}" | tr ',' '\n' | while read -r dep; do
+            version="${{ steps.latest-versions.outputs.${dep} }}"
+            echo "${dep}: ${version}"
+          done
+
+      - name: Check Versions
+        run: |
+          echo "Checking Versions:"
+          while IFS=, read -r dep; do
+            current_version=$(jq -r ".dependencies[\"$dep\"]" package.json)
+            latest_version="${{ steps.latest-versions.outputs.${dep} }}"
+            if [ "$current_version" != "$latest_version" ]; then
+              echo "Mismatch: $dep - Current version: $current_version, Latest version: $latest_version"
+              # You can add additional steps here for further actions.
+            else
+              echo "Match: $dep - Current version: $current_version, Latest version: $latest_version"
+            fi
+          done <<< "${DEPENDENCIES_TO_CHECK}"
+
+
+
+      # - name: Commit and Push
+      #   run: |
+      #       set +e
+      #       git commit --no-verify --allow-empty -m "chore: trigger build"
+      #       set -e
+      #       git push origin HEAD:master
+
+
+      # - name: Commit changes
+      #   if: env.COMMIT_REQUIRED == 'true'
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     title: 'fix(FEC-00000): Upgrade Kaltura dependencies (automated)'
+      #     delete-branch: true
+      #     branch: 'upgrade-npm-packages-automated'
+      #     commit-message: 'Upgrade Kaltura dependencies (automated)'
