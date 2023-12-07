@@ -16,9 +16,6 @@ jobs:
   check_and_update_dependencies:
     runs-on: ubuntu-latest
 
-    # env:
-    #   DEPENDENCIES_TO_CHECK: '@playkit-js/playkit-js,@playkit-js/playkit-js-dash,@playkit-js/playkit-js-hls,@playkit-js/playkit-js-providers,@playkit-js/playkit-js-ui'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -56,8 +53,8 @@ jobs:
               # Update the package.json file only if the version has changed
               if [[ "$currentVersion" != "$latestVersion" ]]; then
                 echo "Update $packageName to version $latestVersion"
-                # UPDATED_CONTENT=$(echo "$currentContent" | jq ".kaltura.dependencies.\"$dependencyName\" = \"$latestVersion\"")
-                # echo "$UPDATED_CONTENT" > package.json
+                yarn add $packageName@$latestVersion
+                cat package.json
                 # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
               else
                 echo "Dependency $packageName already has the latest version: $latestVersion"
@@ -71,3 +68,12 @@ jobs:
             packageName=$(echo "$dependency" | jq -r ".package")
             checkAndUpdateDependency "$packageName"
           done
+
+      - name: Commit changes
+        if: env.COMMIT_REQUIRED == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'fix(FEC-00000): Upgrade Kaltura-player dependencies (automated)'
+          delete-branch: true
+          branch: 'upgrade-npm-dependencies-automated'
+          commit-message: 'Upgrade Kaltura-player dependencies (automated)'
