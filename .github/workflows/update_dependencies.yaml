@@ -10,27 +10,27 @@ on:
       # Define what depencencies should be updated
       playkit-js:
         description: 'playkit-js'
-        required: true
+        required: false
         default: true
         type: boolean
       playkit-js-ui:
         description: 'playkit-js-ui'
-        required: true
+        required: false
         default: true
         type: boolean
       playkit-js-providers:
         description: 'playkit-js-providers'
-        required: true
+        required: false
         default: false
         type: boolean
       playkit-js-dash:
         description: 'playkit-js-dash'
-        required: true
+        required: false
         default: true
         type: boolean
       playkit-js-hls:
         description: 'playkit-js-hls'
-        required: true
+        required: false
         default: true
         type: boolean
   push:
@@ -79,6 +79,7 @@ jobs:
             if [[ "$currentVersion" != "null" ]]; then
 
               # Check if the dependency checked in script inputs
+              echo ">> inputs $github.event.inputs"
               if [[ github.event.inputs.$packageName == 'true' ]]; then
 
                 # Get the latest version of the package using npm
@@ -94,7 +95,7 @@ jobs:
                 fi
 
               else
-                echo "Depencency $dependencyName skiped"
+                echo "Depencency $dependencyName skiped by user"
               fi
               
             else
