@@ -100,12 +100,12 @@ jobs:
             if [[ "$currentVersion" != "null" ]]; then
 
               # Check if the dependency checked in script inputs
-              if [[ github.event.inputs.update_$packageName != "true" ]]; then
+              if [[ github.event.inputs.update_$dependencyName != "true" ]]; then
 
                 # Get the latest version of the package using npm
                 local latestVersion
-                if [[ github.event.inputs.version_$packageName != "latest" ]]; then
-                  $latestVersion=github.event.inputs.version_$packageName
+                if [[ github.event.inputs.version_$dependencyName != "latest" ]]; then
+                  $latestVersion=github.event.inputs.version_$dependencyName
                 else
                   $latestVersion=$(npm view "$packageName" version)
                 fi
