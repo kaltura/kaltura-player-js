@@ -2,36 +2,61 @@
 name: Manual update of @playkit-js dependencies
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      playkit-js:
+      update_playkit-js:
         description: 'check updates for playkit-js'
         required: true
         default: true
         type: boolean
-      playkit-js-ui:
+      version_playkit-js:
+        description: 'version of playkit-js'
+        required: true
+        default: latest
+
+      update_playkit-js-ui:
         description: 'check updates for playkit-js-ui'
         required: true
         default: true
         type: boolean
-      playkit-js-providers:
+      version_playkit-js-ui:
+        description: 'version of playkit-js-ui'
+        required: true
+        default: latest
+
+      update_playkit-js-providers:
         description: 'check updates for playkit-js-providers'
         required: true
         default: false
         type: boolean
-      playkit-js-dash:
+      version_playkit-js-providers:
+        description: 'version of playkit-js-providers'
+        required: true
+        default: latest
+
+      update_playkit-js-dash:
         description: 'check updates for playkit-js-dash'
         required: true
         default: true
         type: boolean
-      playkit-js-hls:
+      version_playkit-js-dash:
+        description: 'version of playkit-js-dash'
+        required: true
+        default: latest
+
+      update_playkit-js-hls:
         description: 'check updates for playkit-js-hls'
         required: true
         default: true
         type: boolean
-  # push:
-  #   branches:
-  #     - FEC-13477-update-dependenices-script
+      version_playkit-js-hls:
+        description: 'version of playkit-js-hls'
+        required: true
+        default: latest
+
+  push:
+    branches:
+      - FEC-13477-update-dependenices-script
 
 jobs:
   check_and_update_dependencies:
@@ -75,11 +100,18 @@ jobs:
             if [[ "$currentVersion" != "null" ]]; then
 
               # Check if the dependency checked in script inputs
-              if [[ github.event.inputs.$packageName == 'true' ]]; then
+              if [[ github.event.inputs.update_$packageName != "true" ]]; then
 
                 # Get the latest version of the package using npm
-                local latestVersion=$(npm view "$packageName" version)
-                
+                local latestVersion
+                if [[ github.event.inputs.version_$packageName != "latest" ]]; then
+                  $latestVersion = github.event.inputs.version_$packageName
+                else
+                  $latestVersion = $(npm view "$packageName" version)
+                fi
+
+                echo ">>> $latestVersion"
+
                 # Update the package.json file only if the version has changed
                 if [[ "$currentVersion" != "$latestVersion" ]]; then
                   echo "Update $packageName from $currentVersion to version $latestVersion"
