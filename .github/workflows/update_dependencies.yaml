@@ -105,9 +105,9 @@ jobs:
                 # Get the latest version of the package using npm
                 local latestVersion
                 if [[ github.event.inputs.version_$packageName != "latest" ]]; then
-                  $latestVersion = github.event.inputs.version_$packageName
+                  $latestVersion=github.event.inputs.version_$packageName
                 else
-                  $latestVersion = $(npm view "$packageName" version)
+                  $latestVersion=$(npm view "$packageName" version)
                 fi
 
                 echo ">>> $latestVersion"
