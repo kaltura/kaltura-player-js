@@ -7,7 +7,32 @@ on:
       branch_name:
         default: master
         required: true
-  # TODO: remove
+      # Define what depencencies should be updated
+      playkit-js:
+        description: 'playkit-js'
+        required: true
+        default: true
+        type: boolean
+      playkit-js-ui:
+        description: 'playkit-js-ui'
+        required: true
+        default: true
+        type: boolean
+      playkit-js-providers:
+        description: 'playkit-js-providers'
+        required: true
+        default: false
+        type: boolean
+      playkit-js-dash:
+        description: 'playkit-js-dash'
+        required: true
+        default: true
+        type: boolean
+      playkit-js-hls:
+        description: 'playkit-js-hls'
+        required: true
+        default: true
+        type: boolean
   push:
     branches:
       - FEC-13477-update-dependenices-script
@@ -36,40 +61,51 @@ jobs:
         run: |
           # Define dependencies
           kalturaDependencies=(
-            '{"package": "@playkit-js/playkit-js"}'
-            '{"package": "@playkit-js/playkit-js-dash"}'
-            '{"package": "@playkit-js/playkit-js-hls"}'
-            '{"package": "@playkit-js/playkit-js-providers"}'
-            '{"package": "@playkit-js/playkit-js-ui"}'
+            '{"name": "playkit-js", "package": "@playkit-js/playkit-js"}'
+            '{"name": "playkit-js-dash", "package": "@playkit-js/playkit-js-dash"}'
+            '{"name": "playkit-js-hls", "package": "@playkit-js/playkit-js-hls"}'
+            '{"name": "playkit-js-providers", "package": "@playkit-js/playkit-js-providers"}'
+            '{"name": "playkit-js-ui", "package": "@playkit-js/playkit-js-ui"}'
           )
 
           # Check and update a dependency
           checkAndUpdateDependency() {
-            local packageName="$1"
+            local dependencyName="$1"
+            local packageName="$2"
             local currentContent=$(cat package.json)
             local currentVersion=$(echo "$currentContent" | jq -r ".dependencies.\"$packageName\"")
 
             # Check if the dependency exists in package.json
             if [[ "$currentVersion" != "null" ]]; then
-              # Get the latest version of the package using npm
-              local latestVersion=$(npm view "$packageName" version)
-              
-              # Update the package.json file only if the version has changed
-              if [[ "$currentVersion" != "$latestVersion" ]]; then
-                echo "Update $packageName from $currentVersion to version $latestVersion"
-                yarn add $packageName@$latestVersion --silent
-                # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+
+              # Check if the dependency checked in script inputs
+              if [[ github.event.inputs.$packageName == 'true' ]]; then
+
+                # Get the latest version of the package using npm
+                local latestVersion=$(npm view "$packageName" version)
+                
+                # Update the package.json file only if the version has changed
+                if [[ "$currentVersion" != "$latestVersion" ]]; then
+                  echo "Update $packageName from $currentVersion to version $latestVersion"
+                  yarn add $packageName@$latestVersion --silent
+                  # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+                else
+                  echo "Dependency $packageName already has the latest version: $latestVersion"
+                fi
+
               else
-                echo "Dependency $packageName already has the latest version: $latestVersion"
+                echo "Depencency $dependencyName skiped"
               fi
+              
             else
               echo "No $packageName dependency found in package.json"
             fi
           }
 
           for dependency in "${kalturaDependencies[@]}"; do
+            dependencyName=$(echo "$dependency" | jq -r ".name")
             packageName=$(echo "$dependency" | jq -r ".package")
-            checkAndUpdateDependency "$packageName"
+            checkAndUpdateDependency "$dependencyName" "$packageName"
           done
 
       - name: Commit changes
