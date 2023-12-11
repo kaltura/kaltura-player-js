@@ -10,7 +10,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js:
-        description: 'use version'
+        description: 'playkit-js version'
         required: true
         default: latest
 
@@ -20,7 +20,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-ui:
-        description: 'use version'
+        description: 'playkit-js-ui version'
         required: true
         default: latest
 
@@ -30,7 +30,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-providers:
-        description: 'use version'
+        description: 'js-providers version'
         required: true
         default: latest
 
@@ -40,7 +40,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-dash:
-        description: 'use version'
+        description: 'playkit-js-dash version'
         required: true
         default: latest
 
@@ -50,7 +50,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-hls:
-        description: 'use version'
+        description: 'playkit-js-hls version'
         required: true
         default: latest
 
@@ -94,15 +94,15 @@ jobs:
             # Check if the dependency exists in package.json
             if [[ "$currentVersion" != "null" ]]; then
 
-              # Check if the dependency checked in script inputs
-              if [[ github.event.inputs.UPDATE-$dependencyName == "true" ]]; then
+              # Save script inputs to local variable
+              local inputsJson="${{ toJson(github.event.inputs) }}"
 
-                # Get the latest version of the package using npm
+              # Check if the dependency checked in script inputs
+              if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-$dependencyName" '.[$key]') == "true" ]]; then
+
                 local latestVersion
                 local inputName="VERSION-${dependencyName}"
 
-                # Save script inputs to a variable
-                local inputsJson="${{ toJson(github.event.inputs) }}"
                 # Use jq to extract the inputs value
                 local inputValue=$(echo "$inputsJson" | jq -r --arg inputName "$inputName" '.[$inputName]')
 
@@ -110,8 +110,10 @@ jobs:
                 if [[ $inputValue == "null" ]]; then
                   echo "Input value is 'null'. Skipping update for $dependencyName"
                 elif [[ $inputValue == "latest" ]]; then
+                  # Get the latest version of the package using npm
                   latestVersion=$(npm view "$packageName" version)
                 else
+                  # Get version from script inputs
                   latestVersion=$inputValue
                 fi
 
