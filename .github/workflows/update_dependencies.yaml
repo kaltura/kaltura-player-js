@@ -105,12 +105,11 @@ jobs:
                 # Get the latest version of the package using npm
                 local latestVersion
                 local inputName="VERSION${dependencyName}"
-
                 echo "inputName >>> $inputName"
 
-                local inputValue="${{ github.event.inputs[$inputName] }}"
+                local inputValue="${github.event.inputs}${inputName}"
                 echo "inputValue >>> $inputValue"
-                
+
                 if [[ $inputValue != "latest" ]]; then
                   latestVersion=$inputValue
                 else
