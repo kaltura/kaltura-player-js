@@ -90,11 +90,11 @@ jobs:
             dependencyName=$(echo "$dependency" | jq -r ".name")
             packageName=$(echo "$dependency" | jq -r ".package")
 
-            local checkedKey="UPDATE-$dependencyName"
-            local versionKey="VERSION-$dependencyName"
+            checkedKey="UPDATE-$dependencyName"
+            versionKey="VERSION-$dependencyName"
 
-            local checkedValue="${{ github.event.inputs[checkedKey] }}"
-            local versionValue="${{ github.event.inputs[versionKey] }}"
+            checkedValue="${{ github.event.inputs[$checkedKey] }}"
+            versionValue="${{ github.event.inputs[$versionKey] }}"
 
             echo ">> checked $checkedValue"
             echo ">> version $versionValue"
