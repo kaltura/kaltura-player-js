@@ -106,7 +106,7 @@ jobs:
                 local latestVersion
                 local inputName="version_${dependencyName}"
                 if [[ "${{ github.event.inputs[$inputName] }}" != "latest" ]]; then
-                  latestVersion="${{ github.event.inputs[$inputName] }}"
+                  latestVersion="${{ github.event.inputs | jq -r .$inputName }}"
                 else
                   latestVersion=$(npm view "$packageName" version)
                 fi
