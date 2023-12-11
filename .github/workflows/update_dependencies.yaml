@@ -97,28 +97,35 @@ jobs:
               # Save script inputs to local variable
               local inputsJson="${{ toJson(github.event.inputs) }}"
 
+              echo ">> inputs $inputsJson"
+              
+              # Replace newlines with spaces in the JSON
+              inputsJson=$(echo "$inputsJson" | tr '\n' ' ')
+
+              echo ">> inputs $inputsJson"
+
               local dependencyKey="UPDATE-$dependencyName"
               local versionKey="VERSION-$dependencyName"
 
-              echo ">> dependencyKey $dependencyKey"
-              echo ">> versionKey $versionKey"
-              echo ">> checked $(echo "$inputsJson" | jq -r --arg key "$dependencyKey" '.[$key]')"
-              echo ">> version $(echo "$inputsJson" | jq -r --arg key "$versionKey" '.[$key]')"
+              local checkedValue=$(echo "$inputsJson" | jq -r --arg key "$dependencyKey" '.[$key]')
+              local versionValue=$(echo "$inputsJson" | jq -r --arg key "$versionKey" '.[$key]')
+
+              echo ">> checked $checkedValue"
+              echo ">> version $versionValue"
 
               # Check if the dependency checked in script inputs
-              if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-${dependencyName}" '.[$key]') == "true" ]]; then
-                local inputValue=$(echo "$inputsJson" | jq -r --arg key "VERSION-${dependencyName}" '.[$key]')
+              if [[ $checkedValue == "true" ]]; then
 
                 # Check and set version for update
                 local latestVersion
-                if [[ $inputValue == "null" ]]; then
-                  echo "Input value is 'null'. Skipping update for $dependencyName"
-                elif [[ $inputValue == "latest" ]]; then
+                if [[ $versionValue == "null" ]]; then
+                  echo "Input versino value is 'null'. Skipping update for $dependencyName"
+                elif [[ $versionValue == "latest" ]]; then
                   # Get the latest version of the package using npm
                   latestVersion=$(npm view "$packageName" version)
                 else
                   # Get version from script inputs
-                  latestVersion=$inputValue
+                  latestVersion=$versionValue
                 fi
 
                 # Update the package.json file only if the version has changed
