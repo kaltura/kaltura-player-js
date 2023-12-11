@@ -95,7 +95,7 @@ jobs:
             if [[ "$currentVersion" != "null" ]]; then
 
               # Save script inputs to local variable
-              local inputsJson="${{ toJson(github.event.inputs) }}"
+              local inputsJson=$(echo "${{ toJson(github.event.inputs) }}" | jq -r '. | to_entries | map("\(.key): \(.value)") | join(", ")')
               local dependencyKey="UPDATE-$dependencyName"
               local versionKey="VERSION-$dependencyName"
 
