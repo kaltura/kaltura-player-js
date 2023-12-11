@@ -1,0 +1,153 @@
+## Update Kaltura-player dependencies
+name: Manual update of @playkit-js dependencies
+
+on:
+  workflow_dispatch:
+    inputs:
+      UPDATE-playkit-js:
+        description: 'check updates for playkit-js'
+        required: true
+        default: true
+        type: boolean
+      VERSION-playkit-js:
+        description: 'version of playkit-js'
+        required: true
+        default: latest
+
+      UPDATE-playkit-js-ui:
+        description: 'check updates for playkit-js-ui'
+        required: true
+        default: true
+        type: boolean
+      VERSION-playkit-js-ui:
+        description: 'version of playkit-js-ui'
+        required: true
+        default: latest
+
+      UPDATE-playkit-js-providers:
+        description: 'check updates for playkit-js-providers'
+        required: true
+        default: false
+        type: boolean
+      VERSION-playkit-js-providers:
+        description: 'version of playkit-js-providers'
+        required: true
+        default: latest
+
+      UPDATE-playkit-js-dash:
+        description: 'check updates for playkit-js-dash'
+        required: true
+        default: true
+        type: boolean
+      VERSION-playkit-js-dash:
+        description: 'version of playkit-js-dash'
+        required: true
+        default: latest
+
+      UPDATE-playkit-js-hls:
+        description: 'check updates for playkit-js-hls'
+        required: true
+        default: true
+        type: boolean
+      VERSION-playkit-js-hls:
+        description: 'version of playkit-js-hls'
+        required: true
+        default: latest
+
+  push:
+    branches:
+      - FEC-13477-update-dependenices-script
+
+jobs:
+  check_and_update_dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.email ${{ secrets.PLAYER_BOT_EMAIL }}
+          git config --global user.name ${{ secrets.PLAYER_BOT_USER }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Check updates Kaltura dependencies (branch - ${{ github.ref_name }})
+        run: |
+          # Define dependencies
+          kalturaDependencies=(
+            '{"name": "playkit-js", "package": "@playkit-js/playkit-js"}'
+            '{"name": "playkit-js-dash", "package": "@playkit-js/playkit-js-dash"}'
+            '{"name": "playkit-js-hls", "package": "@playkit-js/playkit-js-hls"}'
+            '{"name": "playkit-js-providers", "package": "@playkit-js/playkit-js-providers"}'
+            '{"name": "playkit-js-ui", "package": "@playkit-js/playkit-js-ui"}'
+          )
+
+          # Check and update a dependency
+          checkAndUpdateDependency() {
+            local dependencyName="$1"
+            local packageName="$2"
+            local currentContent=$(cat package.json)
+            local currentVersion=$(echo "$currentContent" | jq -r ".dependencies.\"$packageName\"")
+
+            # Check if the dependency exists in package.json
+            if [[ "$currentVersion" != "null" ]]; then
+
+              # Check if the dependency checked in script inputs
+              if [[ github.event.inputs.UPDATE-$dependencyName != "true" ]]; then
+
+                # Get the latest version of the package using npm
+                local latestVersion
+                local inputName="VERSION-${dependencyName}"
+
+                # Save inputs to a temporary JSON file
+                echo "${{ toJson(github.event.inputs) }}" > inputs.json
+                # Use jq to extract the input value
+                local inputValue=$(jq -r --arg inputName "$inputName" '.[$inputName]' inputs.json)
+                # Remove the temporary JSON file
+                rm -f inputs.json
+
+                if [[ $inputValue != "latest" ]]; then
+                  latestVersion=$inputValue
+                else
+                  latestVersion=$(npm view "$packageName" version)
+                fi
+
+                # Update the package.json file only if the version has changed
+                if [[ "$currentVersion" != "$latestVersion" ]]; then
+                  echo "Update $packageName from $currentVersion to version $latestVersion"
+                  yarn add $packageName@$latestVersion --silent
+                  echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+                else
+                  echo "Dependency $packageName already has same version: $latestVersion"
+                fi
+
+              else
+                echo "Update of depencency $dependencyName skiped (checkbox unchecked)"
+              fi
+              
+            else
+              echo "No $packageName dependency found in package.json"
+            fi
+          }
+
+          for dependency in "${kalturaDependencies[@]}"; do
+            dependencyName=$(echo "$dependency" | jq -r ".name")
+            packageName=$(echo "$dependency" | jq -r ".package")
+            checkAndUpdateDependency "$dependencyName" "$packageName"
+          done
+
+      - name: Commit changes
+        if: env.COMMIT_REQUIRED == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'fix(FEC-00000): Upgrade Kaltura-player dependencies (automated)'
+          delete-branch: true
+          branch: 'upgrade-npm-dependencies-automated'
+          commit-message: 'Upgrade Kaltura-player dependencies (automated)'
