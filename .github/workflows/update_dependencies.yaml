@@ -98,8 +98,8 @@ jobs:
               local inputsJson="${{ toJson(github.event.inputs) }}"
 
               echo ">> inputs $inputsJson"
-              echo ">> checked $(echo "$inputsJson" | jq -r --arg key "UPDATE-$dependencyName" '.[$dependencyName]')"
-              echo ">> version $(echo "$inputsJson" | jq -r --arg key "VERSION-$dependencyName" '.[$dependencyName]')"
+              echo ">> checked $(echo "$inputsJson" | jq -r --arg key "UPDATE-$dependencyName" --arg depName "$dependencyName" '.[$depName]')"
+              echo ">> version $(echo "$inputsJson" | jq -r --arg key "VERSION-$dependencyName" --arg depName "$dependencyName" '.[$depName]')"
 
               # Check if the dependency checked in script inputs
               if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-${dependencyName}" '.[$key]') == "true" ]]; then
