@@ -152,4 +152,4 @@ jobs:
           title: 'fix(FEC-00000): Upgrade Kaltura-player dependencies (automated)'
           delete-branch: true
           branch: 'upgrade-npm-dependencies-automated'
-          commit-message: 'Upgrade Kaltura-player dependencies (automated)'
+          commit-message: 'chore: upgrade kaltura-player dependencies'
