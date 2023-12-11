@@ -1175,22 +1175,22 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playkit-js/playkit-js-dash@1.35.3":
+"@playkit-js/playkit-js-dash@^1.35.3":
   version "1.35.3"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.35.3.tgz#6d76563b5e88b8cbc6193f2d0f0490422c35e26e"
   integrity sha512-/nbvg9L29AQX+tDoc9AyzYG2PG+za5ngsebBrlLcg88oZyuFcxNwK5eVTPYL/ew8ExHzFyS6Q4qgmO/32zqQNg==
 
-"@playkit-js/playkit-js-hls@1.32.9":
+"@playkit-js/playkit-js-hls@^1.32.9":
   version "1.32.9"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.9.tgz#71d43b4d8f4df480d4183af1c4f335bb94e7c5c3"
   integrity sha512-15MWDlJaGHpfvQWanDPcnUaKPbtq5mxeld58GbIHk+/6h+9JFu7ho208p3mL03C5M4qQG6nkE3d0PtO5VZEEgQ==
 
-"@playkit-js/playkit-js-providers@2.40.0":
+"@playkit-js/playkit-js-providers@^2.40.0":
   version "2.40.0"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.40.0.tgz#70d8dd48d179b68b6bd8fae6e73b0f8479cb93f9"
   integrity sha512-YSXEPPZ90J/6SCEUtNx2pjeSASDtg6ffnL6bHjztnnglwmtfm38i9/Tn4Qlb7uM9NccBsXe6rSdrilo+9GOKSg==
 
-"@playkit-js/playkit-js-ui@0.77.12":
+"@playkit-js/playkit-js-ui@^0.77.12":
   version "0.77.12"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.77.12.tgz#84b48368ca515296c7c85b69d327bf97a77787ac"
   integrity sha512-wALlIY1aEURsyPa9gen7kHjR8M+scqphDfI2otCrEe7LUDA94kCsc66sHCHATpyOXZzGt7rlcYUjg2UtkcAsbA==
@@ -1200,7 +1200,7 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.84.1":
+"@playkit-js/playkit-js@^0.84.1":
   version "0.84.1"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.1.tgz#7fa443b167434e9e9b10e52668fbc44de0a343dd"
   integrity sha512-b/I2cmOMWGDNfVCoWU2ezbPLP34Nfs71iVIBKJsiZGiPr8MmNi4uWKJefZeO8/N1wTRKGly9A0AMHxvDcA+KLg==
