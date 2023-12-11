@@ -72,7 +72,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: Check updates Kaltura dependencies (branch - ${{ github.ref_name }})
         run: |
@@ -98,9 +98,11 @@ jobs:
               local inputsJson="${{ toJson(github.event.inputs) }}"
 
               echo ">> inputs $inputsJson"
+              echo ">> checked $(echo "$inputsJson" | jq -r --arg key "UPDATE-${dependencyName}" '.[$key]')"
+              echo ">> version $(echo "$inputsJson" | jq -r --arg key "VERSION-${dependencyName}" '.[$key]')"
 
               # Check if the dependency checked in script inputs
-              if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-$dependencyName" '.[$key]') == "true" ]]; then
+              if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-${dependencyName}" '.[$key]') == "true" ]]; then
                 local inputValue=$(echo "$inputsJson" | jq -r --arg key "VERSION-${dependencyName}" '.[$key]')
 
                 # Check and set version for update
