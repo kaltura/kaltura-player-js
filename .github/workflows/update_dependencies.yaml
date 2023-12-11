@@ -105,9 +105,6 @@ jobs:
               # Trim leading and trailing spaces from checkedValue and versionValue
               checkedValue=$(echo $checkedValue | xargs)
               versionValue=$(echo $versionValue | xargs)
-              
-              echo ">>$checkedValue"
-              echo ">>$versionValue"
 
               # Check if the dependency checked in script inputs
               if [[ $checkedValue == "true" ]]; then
