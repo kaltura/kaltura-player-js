@@ -97,9 +97,13 @@ jobs:
               # Save script inputs to local variable
               local inputsJson="${{ toJson(github.event.inputs) }}"
 
-              echo ">> inputs $inputsJson"
-              echo ">> checked $(echo "$inputsJson" | jq -r --arg key "UPDATE-$dependencyName" --arg depName "$dependencyName" '.[$depName]')"
-              echo ">> version $(echo "$inputsJson" | jq -r --arg key "VERSION-$dependencyName" --arg depName "$dependencyName" '.[$depName]')"
+              local dependencyKey="UPDATE-$dependencyName"
+              local versionKey="VERSION-$dependencyName"
+
+              echo ">> dependencyKey $dependencyKey"
+              echo ">> versionKey $versionKey"
+              echo ">> checked $(echo "$inputsJson" | jq -r --arg key "$dependencyKey" '.[$key]')"
+              echo ">> version $(echo "$inputsJson" | jq -r --arg key "$versionKey" '.[$key]')"
 
               # Check if the dependency checked in script inputs
               if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-${dependencyName}" '.[$key]') == "true" ]]; then
