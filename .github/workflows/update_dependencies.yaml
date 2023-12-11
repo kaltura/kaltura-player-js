@@ -114,9 +114,12 @@ jobs:
                 latestVersion=$versionValue
               fi
 
+              # Get the current version from package.json
+              local currentVersion=$(jq -r ".dependencies.\"$packageName\"" package.json)
+
               # Update the package.json file only if the version has changed
-              if [[ "$(jq -r ".dependencies.\"$packageName\"" package.json)" != "$latestVersion" ]]; then
-                echo "Update $packageName from $(jq -r ".dependencies.\"$packageName\"" package.json) to version $latestVersion"
+              if [[ "$currentVersion" != "$latestVersion" ]]; then
+                echo "Update $packageName from $currentVersion to version $latestVersion"
                 yarn add $packageName@$latestVersion --silent
                 echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
               else
