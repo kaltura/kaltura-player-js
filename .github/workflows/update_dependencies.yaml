@@ -96,16 +96,12 @@ jobs:
 
               # Save script inputs to local variable
               local inputsJson="${{ toJson(github.event.inputs) }}"
-
-              echo ">> inputs $inputsJson"
-              
-              # Replace newlines with spaces in the JSON
-              inputsJson=$(echo "$inputsJson" | tr '\n' ' ')
-
-              echo ">> inputs $inputsJson"
-
               local dependencyKey="UPDATE-$dependencyName"
               local versionKey="VERSION-$dependencyName"
+
+              # Debug: Print jq commands
+              echo ">> jq command for checked: jq -r --arg key \"$dependencyKey\" '.[\$key]'"
+              echo ">> jq command for version: jq -r --arg key \"$versionKey\" '.[\$key]'"
 
               local checkedValue=$(echo "$inputsJson" | jq -r --arg key "$dependencyKey" '.[$key]')
               local versionValue=$(echo "$inputsJson" | jq -r --arg key "$versionKey" '.[$key]')
