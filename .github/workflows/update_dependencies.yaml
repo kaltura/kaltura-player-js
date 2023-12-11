@@ -96,14 +96,14 @@ jobs:
 
               # Save script inputs to local variable
               local inputsJson="${{ toJson(github.event.inputs) }}"
-              local dependencyKey=".[\"UPDATE-$dependencyName\"]"
-              local versionKey=".[\"VERSION-$dependencyName\"]"
+              local dependencyKey="UPDATE-$dependencyName"
+              local versionKey="VERSION-$dependencyName"
 
               # Debug:
               echo ">> inputsJson $inputsJson"
 
-              local checkedValue=$(echo $inputsJson | jq -r "$dependencyKey")
-              local versionValue=$(echo $inputsJson | jq -r "$versionKey")
+              local checkedValue=$(echo $inputsJson | sed -n "s/.*$dependencyKey:\([^,}]*\).*/\1/p")
+              local versionValue=$(echo $inputsJson | sed -n "s/.*$versionKey:\([^,}]*\).*/\1/p")
 
               echo ">> checked $checkedValue"
               echo ">> version $versionValue"
