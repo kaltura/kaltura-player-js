@@ -10,7 +10,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js:
-        description: 'use version'
+        description: 'version of playkit-js'
         required: true
         default: latest
 
@@ -20,7 +20,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-ui:
-        description: 'use version'
+        description: 'version of playkit-js-ui'
         required: true
         default: latest
 
@@ -30,7 +30,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-providers:
-        description: 'use version'
+        description: 'version of playkit-js-providers'
         required: true
         default: latest
 
@@ -40,7 +40,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-dash:
-        description: 'use version'
+        description: 'version of playkit-js-dash'
         required: true
         default: latest
 
@@ -50,7 +50,7 @@ on:
         default: true
         type: boolean
       VERSION-playkit-js-hls:
-        description: 'use version'
+        description: 'version of playkit-js-hls'
         required: true
         default: latest
 
