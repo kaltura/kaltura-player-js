@@ -98,8 +98,8 @@ jobs:
               local versionKey="VERSION-$dependencyName"
 
               # Save input values to local variables
-              local checkedValue="${{ github.event.inputs[$checkedKey] }}"
-              local versionValue="${{ github.event.inputs[$versionKey] }}"
+              local checkedValue="${{ github.event.inputs[checkedKey] }}"
+              local versionValue="${{ github.event.inputs[versionKey] }}"
 
               echo ">> checked $checkedValue"
               echo ">> version $versionValue"
