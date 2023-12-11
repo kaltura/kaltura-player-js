@@ -4,52 +4,52 @@ name: Manual update of @playkit-js dependencies
 on:
   workflow_dispatch:
     inputs:
-      update_playkit-js:
+      UPDATEplaykit-js:
         description: 'check updates for playkit-js'
         required: true
         default: true
         type: boolean
-      version_playkit-js:
+      VERSIONplaykit-js:
         description: 'version of playkit-js'
         required: true
         default: latest
 
-      update_playkit-js-ui:
+      UPDATEplaykit-js-ui:
         description: 'check updates for playkit-js-ui'
         required: true
         default: true
         type: boolean
-      version_playkit-js-ui:
+      VERSIONplaykit-js-ui:
         description: 'version of playkit-js-ui'
         required: true
         default: latest
 
-      update_playkit-js-providers:
+      UPDATEplaykit-js-providers:
         description: 'check updates for playkit-js-providers'
         required: true
         default: false
         type: boolean
-      version_playkit-js-providers:
+      VERSIONplaykit-js-providers:
         description: 'version of playkit-js-providers'
         required: true
         default: latest
 
-      update_playkit-js-dash:
+      UPDATEplaykit-js-dash:
         description: 'check updates for playkit-js-dash'
         required: true
         default: true
         type: boolean
-      version_playkit-js-dash:
+      VERSIONplaykit-js-dash:
         description: 'version of playkit-js-dash'
         required: true
         default: latest
 
-      update_playkit-js-hls:
+      UPDATEplaykit-js-hls:
         description: 'check updates for playkit-js-hls'
         required: true
         default: true
         type: boolean
-      version_playkit-js-hls:
+      VERSIONplaykit-js-hls:
         description: 'version of playkit-js-hls'
         required: true
         default: latest
@@ -59,7 +59,7 @@ on:
       - FEC-13477-update-dependenices-script
 
 jobs:
-  check_and_update_dependencies:
+  check_and_UPDATEdependencies:
     runs-on: ubuntu-latest
 
     steps:
@@ -100,13 +100,19 @@ jobs:
             if [[ "$currentVersion" != "null" ]]; then
 
               # Check if the dependency checked in script inputs
-              if [[ github.event.inputs.update_$dependencyName != "true" ]]; then
+              if [[ github.event.inputs.UPDATE$dependencyName != "true" ]]; then
 
                 # Get the latest version of the package using npm
                 local latestVersion
-                local inputName="version_${dependencyName}"
-                if [[ "${{ github.event.inputs[$inputName] }}" != "latest" ]]; then
-                  latestVersion="${{ github.event.inputs | jq -r .$inputName }}"
+                local inputName="VERSION${dependencyName}"
+
+                echo "inputName >>> $inputName"
+
+                local inputValue="${{ github.event.inputs[$inputName] }}"
+                echo "inputValue >>> $inputValue"
+                
+                if [[ $inputValue != "latest" ]]; then
+                  latestVersion=$inputValue
                 else
                   latestVersion=$(npm view "$packageName" version)
                 fi
