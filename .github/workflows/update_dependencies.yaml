@@ -97,16 +97,14 @@ jobs:
               # Save script inputs to local variable
               local inputsJson="${{ toJson(github.event.inputs) }}"
 
+              echo ">> inputs $inputsJson"
+
               # Check if the dependency checked in script inputs
               if [[ $(echo "$inputsJson" | jq -r --arg key "UPDATE-$dependencyName" '.[$key]') == "true" ]]; then
-
-                local latestVersion
-                local inputName="VERSION-${dependencyName}"
-
-                # Use jq to extract the inputs value
-                local inputValue=$(echo "$inputsJson" | jq -r --arg inputName "$inputName" '.[$inputName]')
+                local inputValue=$(echo "$inputsJson" | jq -r --arg key "VERSION-${dependencyName}" '.[$key]')
 
                 # Check and set version for update
+                local latestVersion
                 if [[ $inputValue == "null" ]]; then
                   echo "Input value is 'null'. Skipping update for $dependencyName"
                 elif [[ $inputValue == "latest" ]]; then
