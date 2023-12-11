@@ -1,4 +1,6 @@
 dist
-lib
+lib/
+api-extractor/report/
+api-extractor/report-temp/
 node_modules
 *.log
