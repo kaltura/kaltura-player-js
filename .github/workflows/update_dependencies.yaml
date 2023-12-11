@@ -89,30 +89,30 @@ jobs:
           checkAndUpdateDependency() {
             local dependencyName="$1"
             local packageName="$2"
-            local currentContent=$(cat package.json)
-            local currentVersion=$(echo "$currentContent" | jq -r ".dependencies.\"$packageName\"")
+            local currentVersion=$(jq -r ".dependencies.\"$packageName\"" package.json)
 
             # Check if the dependency exists in package.json
             if [[ "$currentVersion" != "null" ]]; then
 
               # Check if the dependency checked in script inputs
-              if [[ github.event.inputs.UPDATE-$dependencyName != "true" ]]; then
+              if [[ github.event.inputs.UPDATE-$dependencyName == "true" ]]; then
 
                 # Get the latest version of the package using npm
                 local latestVersion
                 local inputName="VERSION-${dependencyName}"
 
-                # Save inputs to a temporary JSON file
-                echo "${{ toJson(github.event.inputs) }}" > inputs.json
-                # Use jq to extract the input value
-                local inputValue=$(jq -r --arg inputName "$inputName" '.[$inputName]' inputs.json)
-                # Remove the temporary JSON file
-                rm -f inputs.json
+                # Save script inputs to a variable
+                local inputsJson="${{ toJson(github.event.inputs) }}"
+                # Use jq to extract the inputs value
+                local inputValue=$(echo "$inputsJson" | jq -r --arg inputName "$inputName" '.[$inputName]')
 
-                if [[ $inputValue != "latest" ]]; then
-                  latestVersion=$inputValue
-                else
+                # Check and set version for update
+                if [[ $inputValue == "null" ]]; then
+                  echo "Input value is 'null'. Skipping update for $dependencyName"
+                elif [[ $inputValue == "latest" ]]; then
                   latestVersion=$(npm view "$packageName" version)
+                else
+                  latestVersion=$inputValue
                 fi
 
                 # Update the package.json file only if the version has changed
