@@ -107,8 +107,15 @@ jobs:
                 local inputName="VERSION${dependencyName}"
                 echo "inputName >>> $inputName"
 
-                local inputValue="${{ github.event.inputs | fromJson | getpath([$inputName]) }}"
+                # Save inputs to a temporary JSON file
+                echo "${{ toJson(github.event.inputs) }}" > inputs.json
+
+                # Use jq to extract the input value
+                local inputValue=$(jq -r ".$inputName" inputs.json)
                 echo "inputValue >>> $inputValue"
+
+                # Remove the temporary JSON file
+                rm -f inputs.json
 
                 if [[ $inputValue != "latest" ]]; then
                   latestVersion=$inputValue
