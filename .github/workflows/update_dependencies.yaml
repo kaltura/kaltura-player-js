@@ -4,52 +4,52 @@ name: Manual update of @playkit-js dependencies
 on:
   workflow_dispatch:
     inputs:
-      UPDATEplaykit-js:
+      UPDATE-playkit-js:
         description: 'check updates for playkit-js'
         required: true
         default: true
         type: boolean
-      VERSIONplaykit-js:
+      VERSION-playkit-js:
         description: 'version of playkit-js'
         required: true
         default: latest
 
-      UPDATEplaykit-js-ui:
+      UPDATE-playkit-js-ui:
         description: 'check updates for playkit-js-ui'
         required: true
         default: true
         type: boolean
-      VERSIONplaykit-js-ui:
+      VERSION-playkit-js-ui:
         description: 'version of playkit-js-ui'
         required: true
         default: latest
 
-      UPDATEplaykit-js-providers:
+      UPDATE-playkit-js-providers:
         description: 'check updates for playkit-js-providers'
         required: true
         default: false
         type: boolean
-      VERSIONplaykit-js-providers:
+      VERSION-playkit-js-providers:
         description: 'version of playkit-js-providers'
         required: true
         default: latest
 
-      UPDATEplaykit-js-dash:
+      UPDATE-playkit-js-dash:
         description: 'check updates for playkit-js-dash'
         required: true
         default: true
         type: boolean
-      VERSIONplaykit-js-dash:
+      VERSION-playkit-js-dash:
         description: 'version of playkit-js-dash'
         required: true
         default: latest
 
-      UPDATEplaykit-js-hls:
+      UPDATE-playkit-js-hls:
         description: 'check updates for playkit-js-hls'
         required: true
         default: true
         type: boolean
-      VERSIONplaykit-js-hls:
+      VERSION-playkit-js-hls:
         description: 'version of playkit-js-hls'
         required: true
         default: latest
@@ -100,18 +100,16 @@ jobs:
             if [[ "$currentVersion" != "null" ]]; then
 
               # Check if the dependency checked in script inputs
-              if [[ github.event.inputs.UPDATE$dependencyName != "true" ]]; then
+              if [[ github.event.inputs.UPDATE-$dependencyName != "true" ]]; then
 
                 # Get the latest version of the package using npm
                 local latestVersion
-                local inputName="VERSION${dependencyName}"
-                echo "inputName >>> $inputName"
+                local inputName="VERSION-${dependencyName}"
 
                 # Save inputs to a temporary JSON file
                 echo "${{ toJson(github.event.inputs) }}" > inputs.json
                 # Use jq to extract the input value
                 local inputValue=$(jq -r --arg inputName "$inputName" '.[$inputName]' inputs.json)
-                echo "inputValue >>> $inputValue"
                 # Remove the temporary JSON file
                 rm -f inputs.json
 
@@ -121,15 +119,13 @@ jobs:
                   latestVersion=$(npm view "$packageName" version)
                 fi
 
-                echo ">>> $latestVersion"
-
                 # Update the package.json file only if the version has changed
                 if [[ "$currentVersion" != "$latestVersion" ]]; then
                   echo "Update $packageName from $currentVersion to version $latestVersion"
                   yarn add $packageName@$latestVersion --silent
                   # echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
                 else
-                  echo "Dependency $packageName already has the latest version: $latestVersion"
+                  echo "Dependency $packageName already has same version: $latestVersion"
                 fi
 
               else
