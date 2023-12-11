@@ -149,7 +149,7 @@ jobs:
         if: env.COMMIT_REQUIRED == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          title: 'fix(FEC-00000): Upgrade Kaltura-player dependencies (automated)'
+          title: 'chore: upgrade kaltura-player dependencies'
           delete-branch: true
           branch: 'upgrade-npm-dependencies-automated'
           commit-message: 'chore: upgrade kaltura-player dependencies'
