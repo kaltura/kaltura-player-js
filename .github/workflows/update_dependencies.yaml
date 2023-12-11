@@ -5,58 +5,54 @@ on:
   workflow_dispatch:
     inputs:
       UPDATE-playkit-js:
-        description: 'check updates for playkit-js'
+        description: 'playkit-js'
         required: true
         default: true
         type: boolean
       VERSION-playkit-js:
-        description: 'version of playkit-js'
+        description: 'use version'
         required: true
         default: latest
 
       UPDATE-playkit-js-ui:
-        description: 'check updates for playkit-js-ui'
+        description: 'playkit-js-ui'
         required: true
         default: true
         type: boolean
       VERSION-playkit-js-ui:
-        description: 'version of playkit-js-ui'
+        description: 'use version'
         required: true
         default: latest
 
       UPDATE-playkit-js-providers:
-        description: 'check updates for playkit-js-providers'
+        description: 'playkit-js-providers'
         required: true
-        default: false
+        default: true
         type: boolean
       VERSION-playkit-js-providers:
-        description: 'version of playkit-js-providers'
+        description: 'use version'
         required: true
         default: latest
 
       UPDATE-playkit-js-dash:
-        description: 'check updates for playkit-js-dash'
+        description: 'playkit-js-dash'
         required: true
         default: true
         type: boolean
       VERSION-playkit-js-dash:
-        description: 'version of playkit-js-dash'
+        description: 'use version'
         required: true
         default: latest
 
       UPDATE-playkit-js-hls:
-        description: 'check updates for playkit-js-hls'
+        description: 'playkit-js-hls'
         required: true
         default: true
         type: boolean
       VERSION-playkit-js-hls:
-        description: 'version of playkit-js-hls'
+        description: 'use version'
         required: true
         default: latest
-
-  push:
-    branches:
-      - FEC-13477-update-dependenices-script
 
 jobs:
   check_and_update_dependencies:
