@@ -109,11 +109,9 @@ jobs:
 
                 # Save inputs to a temporary JSON file
                 echo "${{ toJson(github.event.inputs) }}" > inputs.json
-
                 # Use jq to extract the input value
-                local inputValue=$(jq -r ".$inputName" inputs.json)
+                local inputValue=$(jq -r --arg inputName "$inputName" '.[$inputName]' inputs.json)
                 echo "inputValue >>> $inputValue"
-
                 # Remove the temporary JSON file
                 rm -f inputs.json
 
