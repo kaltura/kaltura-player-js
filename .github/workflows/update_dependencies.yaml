@@ -107,7 +107,7 @@ jobs:
                 local inputName="VERSION${dependencyName}"
                 echo "inputName >>> $inputName"
 
-                local inputValue="${{ github.event.inputs.$inputName }}"
+                local inputValue=$(echo "${{ toJson(github.event.inputs) }}" | jq -r ".$inputName")
                 echo "inputValue >>> $inputValue"
 
                 if [[ $inputValue != "latest" ]]; then
