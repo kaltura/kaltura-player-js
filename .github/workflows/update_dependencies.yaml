@@ -104,8 +104,9 @@ jobs:
 
                 # Get the latest version of the package using npm
                 local latestVersion
-                if [[ "${{ github.event.inputs["version_$dependencyName"] }}" != "latest" ]]; then
-                  latestVersion="${{ github.event.inputs["version_$dependencyName"] }}"
+                local inputName="version_${dependencyName}"
+                if [[ "${{ github.event.inputs[$inputName] }}" != "latest" ]]; then
+                  latestVersion="${{ github.event.inputs[$inputName] }}"
                 else
                   latestVersion=$(npm view "$packageName" version)
                 fi
