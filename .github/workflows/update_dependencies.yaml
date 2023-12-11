@@ -93,18 +93,13 @@ jobs:
 
             # Check if the dependency exists in package.json
             if [[ "$currentVersion" != "null" ]]; then
-
-              # Save script inputs to local variable
-              local inputsJson="${{ toJson(github.event.inputs) }}"
-              local dependencyKey="UPDATE-$dependencyName"
+              # Construct the input keys dynamically
+              local checkedKey="UPDATE-$dependencyName"
               local versionKey="VERSION-$dependencyName"
 
-              # Debug: Print jq commands
-              echo ">> jq command for checked: jq -r --arg key \"$dependencyKey\" '.[\$key]'"
-              echo ">> jq command for version: jq -r --arg key \"$versionKey\" '.[\$key]'"
-
-              local checkedValue=$(echo "$inputsJson" | jq -r --arg key "$dependencyKey" '.[$key]')
-              local versionValue=$(echo "$inputsJson" | jq -r --arg key "$versionKey" '.[$key]')
+              # Save input values to local variables
+              local checkedValue="${{ github.event.inputs[$checkedKey] }}"
+              local versionValue="${{ github.event.inputs[$versionKey] }}"
 
               echo ">> checked $checkedValue"
               echo ">> version $versionValue"
