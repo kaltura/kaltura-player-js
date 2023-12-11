@@ -86,49 +86,65 @@ jobs:
           )
 
           # Check and update a dependency
+          checkAndUpdateDependency() {
+            local dependencyName="$1"
+            local packageName="$2"
+            local currentVersion=$(jq -r ".dependencies.\"$packageName\"" package.json)
+
+            # Check if the dependency exists in package.json
+            if [[ "$currentVersion" != "null" ]]; then
+
+              # Save script inputs to local variable
+              local inputsJson="${{ toJson(github.event.inputs) }}"
+              local dependencyKey="UPDATE-$dependencyName"
+              local versionKey="VERSION-$dependencyName"
+
+              # Debug:
+              echo ">> inputsJson $inputsJson"
+
+              local checkedValue=$(echo "$inputsJson" | jq -r --arg key "$dependencyKey" '.[$key]')
+              local versionValue=$(echo "$inputsJson" | jq -r --arg key "$versionKey" '.[$key]')
+
+              echo ">> checked $checkedValue"
+              echo ">> version $versionValue"
+
+              # Check if the dependency checked in script inputs
+              if [[ $checkedValue == "true" ]]; then
+
+                # Check and set version for update
+                local latestVersion
+                if [[ $versionValue == "null" ]]; then
+                  echo "Input versino value is 'null'. Skipping update for $dependencyName"
+                elif [[ $versionValue == "latest" ]]; then
+                  # Get the latest version of the package using npm
+                  latestVersion=$(npm view "$packageName" version)
+                else
+                  # Get version from script inputs
+                  latestVersion=$versionValue
+                fi
+
+                # Update the package.json file only if the version has changed
+                if [[ "$currentVersion" != "$latestVersion" ]]; then
+                  echo "Update $packageName from $currentVersion to version $latestVersion"
+                  yarn add $packageName@$latestVersion --silent
+                  echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+                else
+                  echo "Dependency $packageName already has same version: $latestVersion"
+                fi
+
+              else
+                echo "Update of depencency $dependencyName skiped (checkbox unchecked)"
+              fi
+              
+            else
+              echo "No $packageName dependency found in package.json"
+            fi
+          }
+
           for dependency in "${kalturaDependencies[@]}"; do
             dependencyName=$(echo "$dependency" | jq -r ".name")
             packageName=$(echo "$dependency" | jq -r ".package")
-
-            checkedKey="UPDATE-$dependencyName"
-            versionKey="VERSION-$dependencyName"
-
-            checkedValue="${{ github.event.inputs[$checkedKey] }}"
-            versionValue="${{ github.event.inputs[$versionKey] }}"
-
-            echo ">> checked $checkedValue"
-            echo ">> version $versionValue"
-
-            # Check if the dependency checked in script inputs
-            if [[ $checkedValue == "true" ]]; then
-
-              # Check and set version for update
-              local latestVersion
-              if [[ $versionValue == "null" ]]; then
-                echo "Input version value is 'null'. Skipping update for $dependencyName"
-              elif [[ $versionValue == "latest" ]]; then
-                # Get the latest version of the package using npm
-                latestVersion=$(npm view "$packageName" version)
-              else
-                # Get version from script inputs
-                latestVersion=$versionValue
-              fi
-
-              # Get the current version from package.json
-              local currentVersion=$(jq -r ".dependencies.\"$packageName\"" package.json)
-
-              # Update the package.json file only if the version has changed
-              if [[ "$currentVersion" != "$latestVersion" ]]; then
-                echo "Update $packageName from $currentVersion to version $latestVersion"
-                yarn add $packageName@$latestVersion --silent
-                echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
-              else
-                echo "Dependency $packageName already has the same version: $latestVersion"
-              fi
-
-            else
-              echo "Update of dependency $dependencyName skipped (checkbox unchecked)"
-            fi
+            checkAndUpdateDependency "$dependencyName" "$packageName"
           done
 
       - name: Commit changes
