@@ -8,13 +8,14 @@ export default class StorageWrapper {
   /**
    * @static
    * @private
-   * @returns {boolean} - Whether a local storage object is available on the current environment.
+   * @param {Object} storage - The storage object
+   * @returns {boolean} - Whether a storage object is available on the current environment.
    */
-  public static isLocalStorageAvailable(): boolean {
+  public static isLocalStorageAvailable(storage: any): boolean {
     if (typeof Storage !== 'undefined') {
       try {
-        localStorage.setItem('test', 'test');
-        localStorage.removeItem('test');
+        storage.setItem('test', 'test');
+        storage.removeItem('test');
         return true;
       } catch (e) {
         return false;
@@ -25,27 +26,30 @@ export default class StorageWrapper {
   }
 
   /**
+   * Gets the storage size
+   * @param {Object} storage - The storage object to use.
    * @static
    * @private
-   * @return {number} - The number of keys in the local storage started with wanted prefix.
+   * @return {number} - The number of keys in the storage started with wanted prefix.
    */
-  public static get size(): number {
-    return Object.keys(localStorage).filter((key) => key.startsWith(STORAGE_PREFIX)).length;
+  public static get size(storage: any): number {
+    return Object.keys(storage).filter(key => key.startsWith(STORAGE_PREFIX)).length;
   }
 
   /**
-   * Sets an item in the local storage.
+   * Sets an item in the storage.
    * @param {string} key - The key of the item.
    * @param {any} item - The value of the item.
+   * @param {Object} storage - The storage object to use.
    * @static
    * @private
    * @returns {void}
    */
-  public static setItem(key: string, item: any): void {
+  public static setItem(key: string, item: any, storage: any): void {
     StorageWrapper._validateKey(key);
     try {
       StorageWrapper._logger.debug('Sets item for key: ' + key, item);
-      localStorage.setItem(STORAGE_PREFIX + key, item);
+      storage.setItem(STORAGE_PREFIX + key, item);
     } catch (e) {
       if (StorageWrapper._isQuotaExceeded(e)) {
         StorageWrapper._logger.error('Quota exceeded: ' + e.message);
@@ -56,17 +60,18 @@ export default class StorageWrapper {
   }
 
   /**
-   * Gets an item from the local storage.
+   * Gets an item from the storage.
    * @param {string} key - The item key.
+   * @param {Object} storage - The storage object to use.
    * @static
    * @private
    * @returns {any} - The item value.
    */
-  public static getItem(key: string): any {
+  public static getItem(key: string, storage: any): any {
     StorageWrapper._validateKey(key);
     let item: string | null = null;
     try {
-      item = localStorage.getItem(STORAGE_PREFIX + key);
+      item = storage.getItem(STORAGE_PREFIX + key);
       if (typeof item === 'string') {
         return JSON.parse(item);
       } else {

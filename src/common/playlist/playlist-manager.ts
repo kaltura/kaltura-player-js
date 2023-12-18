@@ -280,7 +280,7 @@ class PlaylistManager {
   }
 
   private _onChangeSourceStarted(): void {
-    if (this._playlist.items[this._playlist._activeItemIndex].sources?.type === 'Image') {
+    if (this._player.isImage()) {
       // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
       // @ts-ignore
       this._player.configure({ sources: { duration: this._options.imageDuration } });

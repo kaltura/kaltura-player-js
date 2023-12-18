@@ -2,40 +2,72 @@ import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
 
 const STORAGE_PREFIX = __NAME__ + '_';
 
-describe('StorageWrapper', () => {
-  afterEach(() => {
-    window.localStorage.clear();
+describe('StorageWrapper', function () {
+  describe('LocalStorage', () => {
+    afterEach(function () {
+      window.localStorage.clear();
+    });
+
+    it('should have size of 0', function () {
+      StorageWrapper.getStorageSize(window.localStorage).should.equal(0);
+    });
+
+    it('should set an item in the local storage', function () {
+      if (StorageWrapper.isStorageAvailable(window.localStorage)) {
+        let key = 'test';
+        StorageWrapper.setItem(key, 1, window.localStorage);
+        StorageWrapper.getStorageSize(window.localStorage).should.equal(1);
+        window.localStorage[STORAGE_PREFIX + key].should.exist;
+        window.localStorage[STORAGE_PREFIX + key].should.equal('1');
+      }
+    });
+
+    it('should get an item from the local storage', function () {
+      if (StorageWrapper.isStorageAvailable(window.localStorage)) {
+        let key = 'test';
+        StorageWrapper.setItem(key, 2, window.localStorage);
+        StorageWrapper.getStorageSize(window.localStorage).should.equal(1);
+        let value = StorageWrapper.getItem(key, window.localStorage);
+        value.should.equal(2);
+      }
+    });
+
+    it('should validate a wrong key', function (done) {
+      try {
+        StorageWrapper.setItem(2, 2, window.localStorage);
+      } catch (e) {
+        done();
+      }
+    });
   });
 
-  it('should have size of 0', () => {
-    StorageWrapper.size.should.equal(0);
-  });
+  describe('SessionStorage', () => {
+    afterEach(function () {
+      window.sessionStorage.clear();
+    });
 
-  it('should set an item in the local storage', () => {
-    if (StorageWrapper._isLocalStorageAvailable) {
-      const key = 'test';
-      StorageWrapper.setItem(key, 1);
-      StorageWrapper.size.should.equal(1);
-      window.localStorage[STORAGE_PREFIX + key].should.exist;
-      window.localStorage[STORAGE_PREFIX + key].should.equal('1');
-    }
-  });
+    it('should have size of 0', function () {
+      StorageWrapper.getStorageSize(window.sessionStorage).should.equal(0);
+    });
 
-  it('should get an item from the local storage', () => {
-    if (StorageWrapper._isLocalStorageAvailable) {
-      const key = 'test';
-      StorageWrapper.setItem(key, 2);
-      StorageWrapper.size.should.equal(1);
-      const value = StorageWrapper.getItem(key);
-      value.should.equal(2);
-    }
-  });
+    it('should set an item in the session storage', function () {
+      if (StorageWrapper.isStorageAvailable(window.sessionStorage)) {
+        let key = 'test';
+        StorageWrapper.setItem(key, 1, window.sessionStorage);
+        StorageWrapper.getStorageSize(window.sessionStorage).should.equal(1);
+        window.sessionStorage[STORAGE_PREFIX + key].should.exist;
+        window.sessionStorage[STORAGE_PREFIX + key].should.equal('1');
+      }
+    });
 
-  it('should validate a wrong key', (done) => {
-    try {
-      StorageWrapper.setItem(2, 2);
-    } catch (e) {
-      done();
-    }
+    it('should get an item from the session storage', function () {
+      if (StorageWrapper.isStorageAvailable(window.sessionStorage)) {
+        let key = 'test';
+        StorageWrapper.setItem(key, 2, window.sessionStorage);
+        StorageWrapper.getStorageSize(window.sessionStorage).should.equal(1);
+        let value = StorageWrapper.getItem(key, window.sessionStorage);
+        value.should.equal(2);
+      }
+    });
   });
 });

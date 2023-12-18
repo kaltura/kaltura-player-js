@@ -5,6 +5,8 @@ import StorageManager from '../storage/storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
 import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-params';
 import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
+import SessionStorageManager from '../storage/session-storage-manager';
+import {BaseStorageManager} from '../storage/base-storage-manager';
 import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, SourcesConfig,PlaybackConfig } from '../../types';
 import {ProviderOptionsObject} from '@playkit-js/playkit-js-providers';
 import {BasePlugin} from '../plugins';
@@ -13,6 +15,8 @@ const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
 const KALTURA_PLAYER_START_TIME_QS: string = 'kalturaStartTime';
+const KALTURA_PLAYER_CLIP_START_TIME_QS: string = 'kalturaSeekFrom';
+const KALTURA_PLAYER_CLIP_END_TIME_QS: string = 'kalturaClipTo';
 const KAVA_DEFAULT_PARTNER = 2504201;
 // eslint-disable-next-line max-len
 const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
@@ -106,14 +110,24 @@ function createKalturaPlayerContainer(targetId: string): string {
 }
 
 /**
+ * Initializes the storage managers.
+ * @private
+ * @returns {void}
+ */
+function initializeStorageManagers(): void {
+  LocalStorageManager.initialize();
+  SessionStorageManager.initialize();
+}
+
+/**
  * Sets the storage config on the player config if certain conditions are met.
  * @private
  * @param {KalturaPlayerConfig} options - kaltura player options
  * @returns {void}
  */
 function setStorageConfig(options: KalturaPlayerConfig): void {
-  if (!options.disableUserCache && StorageManager.isLocalStorageAvailable() && StorageManager.hasStorage()) {
-    Utils.Object.mergeDeep(options, StorageManager.getStorageConfig());
+  if (!options.disableUserCache) {
+    BaseStorageManager.setStorageConfig(options);
   }
 }
 
@@ -124,9 +138,7 @@ function setStorageConfig(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function applyStorageSupport(player: KalturaPlayer): void {
-  if (StorageManager.isLocalStorageAvailable()) {
-    StorageManager.attach(player);
-  }
+  BaseStorageManager.attachAll(player);
 }
 
 /**
@@ -149,8 +161,8 @@ function applyCastSupport(defaultOptions: KalturaPlayerConfig, player: KalturaPl
  * @returns {void}
  */
 function setStorageTextStyle(player: KalturaPlayer): void {
-  if (!player.config.disableUserCache && StorageManager.isLocalStorageAvailable()) {
-    const textStyleObj = StorageManager.getPlayerTextStyle();
+  if (!player.config.disableUserCache && LocalStorageManager.isStorageAvailable()) {
+    const textStyleObj = LocalStorageManager.getPlayerTextStyle();
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
     }
@@ -210,6 +222,23 @@ function maybeApplyStartTimeQueryParam(options: KalturaPlayerConfig): void {
   const startTime = parseFloat(<string>getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
   if (!isNaN(startTime)) {
     Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
+  }
+}
+
+/**
+ * get the parameters for seekFrom and clipTo
+ * @private
+ * @param {KPOptionsObject} options - kaltura player options
+ * @returns {void}
+ */
+function maybeApplyClipQueryParams(options: KPOptionsObject): void {
+  const seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS));
+  if (!isNaN(seekFrom)) {
+    Utils.Object.createPropertyPath(options, 'sources.seekFrom', seekFrom);
+  }
+  const clipTo = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_END_TIME_QS));
+  if (!isNaN(clipTo)) {
+    Utils.Object.createPropertyPath(options, 'sources.clipTo', clipTo);
   }
 }
 
@@ -763,6 +792,7 @@ export {
   validateProviderConfig,
   setLogOptions,
   maybeApplyStartTimeQueryParam,
+  maybeApplyClipQueryParams,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
   getDefaultOptions,
@@ -771,5 +801,6 @@ export {
   hasImageSource,
   mergeProviderPluginsConfig,
   getServerUIConf,
+  initializeStorageManagers,
   KALTURA_PLAYER_START_TIME_QS
 };
