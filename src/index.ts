@@ -1,9 +1,4 @@
-// TEMP - remove this and from package.json: (and from webpack from plugins section)
-//  "@babel/runtime": "^7.23.1",
-//  "@babel/plugin-transform-runtime": "^7.22.15",
-// import 'regenerator-runtime';
 import '../assets/style.css';
-import 'regenerator-runtime'
 import * as core from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
 import * as providers from '@playkit-js/playkit-js-providers';

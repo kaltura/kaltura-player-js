@@ -1,0 +1,19 @@
+{
+  "name": "@playkit-js/browserslist-config",
+  "version": "1.0.0",
+  "description": "Shareable `browserslist` config for browsers supported by kaltura player",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaltura/kaltura-player-js/browserslist-config"
+  },
+  "keywords": [
+    "browserslist",
+    "config"
+  ],
+  "author": "JonathanTGold",
+  "license": "MIT",
+  "devDependencies": {
+    "browserslist": "^4.22.2"
+  }
+}

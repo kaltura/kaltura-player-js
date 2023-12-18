@@ -40,23 +40,24 @@ module.exports = (env, { mode }) => {
         })
       ]
     },
-    devtool: 'source-map',
+    devtool: mode === 'development' ? 'eval-source-map' : 'source-map',
     module: {
       rules: [
         {
-          test: /\.(ts|js)$/,  // Match both .ts and .js files
-          // test: /\.ts/,
+          test: /\.js$/,
+          enforce: "pre",
+          use: ["source-map-loader"],
+        },
+        {
+          test: /\.(ts|js)$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
               presets: [['@babel/preset-env', {
-                loose: true,
-                bugfixes: true,
-                targets: 'defaults'
+                bugfixes: true, // This option will be enabled by default in Babel 8.
+                // run 'npx browserslist' to see supported browsers and version by the current target config & 'npx babel --show-config' to see the babel final target config
               }], '@babel/preset-typescript'],
-              // presets: [['@babel/preset-env', { targets: { "chrome": "49"} }], '@babel/preset-typescript'],
-              plugins: [['@babel/plugin-transform-runtime']]
             }
           }
         },
@@ -72,7 +73,8 @@ module.exports = (env, { mode }) => {
         '@playkit-js/playkit-js-providers': path.resolve(`./node_modules/@playkit-js/playkit-js-providers/dist/playkit-${playerType}-provider`),
         'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
         poster: path.resolve(`./src/${playerType}/poster`),
-        'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`)
+        'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`),
+        'hls.js': path.resolve(__dirname, 'node_modules/hls.js/dist/hls.min.js')
       }
     },
     output: {
@@ -114,6 +116,7 @@ module.exports = (env, { mode }) => {
           }
         ]
       })
-    ]
+    ],
+    ignoreWarnings: [/Failed to parse source map/],
   };
 };
