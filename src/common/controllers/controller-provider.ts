@@ -1,5 +1,3 @@
-//@flow
-
 import { PluginManager } from '../plugins';
 import { IAdsPluginController } from '../../types/ads/ads-plugin-controller';
 import { IAdsControllerProvider } from '../../types/ads/ads-controller-provider';
