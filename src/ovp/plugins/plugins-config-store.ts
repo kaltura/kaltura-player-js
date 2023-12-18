@@ -1,9 +1,11 @@
-import { BasePluginConfigStore, templateRegex } from '../../common/plugins/plugins-config-store';
+//@flow
 
-import { Utils } from '@playkit-js/playkit-js';
+import {BasePluginConfigStore, templateRegex} from '../../common/plugins/plugins-config-store';
+
+import {Utils} from '@playkit-js/playkit-js';
 
 class PluginConfigStore extends BasePluginConfigStore {
-  private _ovpPluginsConfig: { [pluginName: string]: any } = {
+  _ovpPluginsConfig: {[pluginName: string]: Object} = {
     ottAnalytics: {}
   };
 
@@ -14,4 +16,4 @@ class PluginConfigStore extends BasePluginConfigStore {
   }
 }
 
-export { PluginConfigStore, templateRegex };
+export {PluginConfigStore, templateRegex};
