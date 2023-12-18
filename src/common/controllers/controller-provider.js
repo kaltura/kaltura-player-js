@@ -1,13 +1,13 @@
-//@flow
-
-import {PluginManager} from '../plugins';
+import { PluginManager } from '../plugins';
+import { IAdsPluginController } from '../../types/ads/ads-plugin-controller';
+import { IAdsControllerProvider } from '../../types/ads/ads-controller-provider';
 
 /**
  * Controller provider
  * @classdesc
  */
 class ControllerProvider {
-  _pluginManager: PluginManager;
+  private _pluginManager: PluginManager;
 
   /**
    * @constructor
@@ -21,14 +21,16 @@ class ControllerProvider {
    * Get the ads controller of the all ads plugins.
    * @returns {Array<IAdsPluginController>} - the ads controllers.
    */
-  getAdsControllers(): Array<IAdsPluginController> {
-    //$FlowFixMe
+  public getAdsControllers(): Array<IAdsPluginController> {
+    // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const adPlugins: Array<IAdsControllerProvider> = Object.values(this._pluginManager.getAll()).filter(
-      //$FlowFixMe
-      plugin => typeof plugin.getAdsController === 'function'
+      // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      (plugin) => typeof plugin.getAdsController === 'function'
     );
-    return adPlugins.map(plugin => plugin.getAdsController());
+    return adPlugins.map((plugin) => plugin.getAdsController());
   }
 }
 
-export {ControllerProvider};
+export { ControllerProvider };
