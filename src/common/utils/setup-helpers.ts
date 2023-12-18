@@ -1,7 +1,7 @@
 import { setDefaultAnalyticsPlugin } from 'player-defaults';
 import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme, getLogger, LogLevel, setLogHandler, setLogLevel as _setLogLevel, ILogLevel, PKSourcesConfigObject} from '@playkit-js/playkit-js';
 import { ValidationErrorType } from './validation-error';
-import StorageManager from '../storage/storage-manager';
+import LocalStorageManager from '../storage/local-storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
 import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-params';
 import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
@@ -231,12 +231,12 @@ function maybeApplyStartTimeQueryParam(options: KalturaPlayerConfig): void {
  * @param {KPOptionsObject} options - kaltura player options
  * @returns {void}
  */
-function maybeApplyClipQueryParams(options: KPOptionsObject): void {
-  const seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS));
+function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
+  const seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS)!);
   if (!isNaN(seekFrom)) {
     Utils.Object.createPropertyPath(options, 'sources.seekFrom', seekFrom);
   }
-  const clipTo = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_END_TIME_QS));
+  const clipTo = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_END_TIME_QS)!);
   if (!isNaN(clipTo)) {
     Utils.Object.createPropertyPath(options, 'sources.clipTo', clipTo);
   }

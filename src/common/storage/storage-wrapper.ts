@@ -11,7 +11,7 @@ export default class StorageWrapper {
    * @param {Object} storage - The storage object
    * @returns {boolean} - Whether a storage object is available on the current environment.
    */
-  public static isLocalStorageAvailable(storage: any): boolean {
+  public static isStorageAvailable(storage: any): boolean {
     if (typeof Storage !== 'undefined') {
       try {
         storage.setItem('test', 'test');
@@ -32,7 +32,7 @@ export default class StorageWrapper {
    * @private
    * @return {number} - The number of keys in the storage started with wanted prefix.
    */
-  public static get size(storage: any): number {
+  static getStorageSize(storage: any): number {
     return Object.keys(storage).filter(key => key.startsWith(STORAGE_PREFIX)).length;
   }
 
