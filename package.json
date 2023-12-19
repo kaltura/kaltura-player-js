@@ -36,7 +36,7 @@
     "build:ott:prod": "webpack --mode production --env playerType=ott",
     "build:ott:dev": "webpack --mode development --env playerType=ott",
     "clean": "rm -rf dist/*",
-    "build": "yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
+    "build": "yarn run clean && yarn run build:ovp:prod && yarn run build:ott:dev && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
