@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/browserslist-config",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Shareable `browserslist` config for browsers supported by kaltura player",
   "main": "index.js",
   "repository": {
