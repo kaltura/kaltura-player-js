@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/browserslist-config",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Shareable `browserslist` config for browsers supported by kaltura player",
   "main": "index.js",
   "repository": {
@@ -13,7 +13,18 @@
   ],
   "author": "JonathanTGold",
   "license": "MIT",
+  "files": [
+    "src/**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"EverythingOk keep going\" && exit 0",
+    "release": "standard-version"
+  },
   "devDependencies": {
-    "browserslist": "^4.22.2"
+    "browserslist": "^4.22.2",
+    "standard-version": "^9.5.0"
   }
 }
