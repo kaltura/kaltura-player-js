@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "CommonJS",
+    "module": "ESNext",
     "baseUrl": ".",
     "sourceMap": true,
     "strict": false,
     "strictNullChecks": true,
+    "moduleResolution": "Node",
     "strictPropertyInitialization": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": [
       "dom",
-      "es2015",
-      "es2015.proxy"
+      "ESNext"
     ],
     "outDir": "./lib/",
     "allowSyntheticDefaultImports": true,
@@ -23,5 +22,5 @@
       "poster": ["./src/ovp/poster", "./src/ott/poster"]
     }
   },
-  "include": ["src/**/*", "tests/unit/**/*", "demo/**/*", "./src/types/global/*.d.ts"]
+  "include": ["src/**/*"]
 }

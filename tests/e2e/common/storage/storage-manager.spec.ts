@@ -1,6 +1,6 @@
 import LocalStorageManager from '../../../../src/common/storage/local-storage-manager';
 import StorageWrapper from '../../../../src/common/storage/storage-wrapper';
-import * as TestUtils from '../../utils/test-utils';
+import * as TestUtils from '../../../utils/test-utils';
 import {setup} from '../../../../src';
 import {FakeEvent} from '@playkit-js/playkit-js';
 import {setStorageTextStyle} from '../../../../src/common/utils/setup-helpers';
