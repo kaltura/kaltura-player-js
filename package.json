@@ -94,9 +94,6 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
-  "browserslist": [
-    "extends @playkit-js/browserslist-config"
-  ],
   "standard-version": {
     "scripts": {
       "precommit": "tmp=$(npm run build:ovp && yarn run build:ott)"
