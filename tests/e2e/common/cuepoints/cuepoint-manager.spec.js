@@ -27,7 +27,7 @@ describe('CuePointManager', () => {
 
   it('should create and add text-track', () => {
     player.setMedia({sources: SourcesConfig.Mp4});
-    expect(player.cuePointManager._textTrack).to.eql(null);
+    expect(player.cuePointManager._textTrack).to.eql(undefined);
     player.cuePointManager.addCuePoints([]);
     player.ready().then(() => {
       expect(player.cuePointManager._textTrack).instanceOf(TextTrack);
