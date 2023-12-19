@@ -1,0 +1,45 @@
+## CI - Player And Plugin Tests
+name: Player And Plugin Tests
+run-name: Player And Plugin Tests
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
+    with:
+      node-version: '20.x'
+      yarn-run-to-execute: 'build'
+  test:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
+    with:
+      node-version: '20.x'
+      yarn-run-to-execute: 'test'
+  type-check:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
+    with:
+      node-version: '20.x'
+      yarn-run-to-execute: 'type-check'
+  build-types:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
+    with:
+      node-version: '20.x'
+      yarn-run-to-execute: 'build:types'
+  lint:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
+    with:
+      node-version: '20.x'
+      yarn-run-to-execute: 'lint'
+  notification:
+    if: always()
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/notification.yaml@master
+    needs: [build, test, type-check, lint]
+    secrets:
+      PLAYER_MSTEAMS_WEBHOOK: ${{ secrets.PLAYER_MSTEAMS_WEBHOOK }}
+    with:
+      failure-status: ${{ contains(needs.*.result, 'failure') }}
+      cancelled-status: ${{ contains(needs.*.result, 'cancelled') }}
+      is-test: 'true'
