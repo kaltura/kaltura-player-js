@@ -27,7 +27,7 @@
     "access": "public"
   },
   "scripts": {
-    "serve:ovp": "yarn run build:ovp:dev && webpack serve --open --mode development --env playerType=ovp",
+    "serve:ovp": "webpack serve --open --mode development --env playerType=ovp",
     "watch:ovp": "webpack --watch --mode development --env playerType=ovp",
     "build:ovp:prod": "webpack --mode production --env playerType=ovp",
     "build:ovp:dev": "webpack --mode development --env playerType=ovp",

@@ -27,20 +27,7 @@ module.exports = (env, { mode }) => {
       [`kaltura-${playerType}-player.js`]: './src/index.ts',
       [`kaltura-${playerType}-player.mjs`]: './src/index.ts'
     },
-    optimization: {
-      minimize: mode !== 'development',
-      minimizer: [
-        new TerserPlugin({
-          extractComments: false,
-          terserOptions: {
-            format: {
-              comments: false
-            }
-          }
-        })
-      ]
-    },
-    devtool: mode === 'development' ? 'eval-source-map' : 'source-map',
+    devtool:'source-map',
     module: {
       rules: [
         {
