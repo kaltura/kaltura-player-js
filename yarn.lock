@@ -1175,25 +1175,25 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playkit-js/playkit-js-dash@1.35.3":
-  version "1.35.3"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.35.3.tgz#6d76563b5e88b8cbc6193f2d0f0490422c35e26e"
-  integrity sha512-/nbvg9L29AQX+tDoc9AyzYG2PG+za5ngsebBrlLcg88oZyuFcxNwK5eVTPYL/ew8ExHzFyS6Q4qgmO/32zqQNg==
+"@playkit-js/playkit-js-dash@1.36.0":
+  version "1.36.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.36.0.tgz#7231bf49fbffd2c606d4ed96adbcd209e4099974"
+  integrity sha512-3OBETIHwWoh9KRxBZAdVmhxkh7AzX05U37hSYmZt6IWgIjlXwIOhcVntkP2tGLvVMB9bF+Jw+5/TY1RyF5N05w==
 
 "@playkit-js/playkit-js-hls@1.32.9":
   version "1.32.9"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.9.tgz#71d43b4d8f4df480d4183af1c4f335bb94e7c5c3"
   integrity sha512-15MWDlJaGHpfvQWanDPcnUaKPbtq5mxeld58GbIHk+/6h+9JFu7ho208p3mL03C5M4qQG6nkE3d0PtO5VZEEgQ==
 
-"@playkit-js/playkit-js-providers@2.40.0":
-  version "2.40.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.40.0.tgz#70d8dd48d179b68b6bd8fae6e73b0f8479cb93f9"
-  integrity sha512-YSXEPPZ90J/6SCEUtNx2pjeSASDtg6ffnL6bHjztnnglwmtfm38i9/Tn4Qlb7uM9NccBsXe6rSdrilo+9GOKSg==
+"@playkit-js/playkit-js-providers@2.40.1":
+  version "2.40.1"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.40.1.tgz#d2805d72ce3c53b446c44d5a023d6bad04207a86"
+  integrity sha512-PkM3Uw+H0KXrlUM/qqN4Mxp3lhC8WYbyNdYJ1EsAyn536sBKFjGXALQJ3wxpFerILY0oZoKcM+TjNMsKcOOM1A==
 
-"@playkit-js/playkit-js-ui@0.77.12":
-  version "0.77.12"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.77.12.tgz#84b48368ca515296c7c85b69d327bf97a77787ac"
-  integrity sha512-wALlIY1aEURsyPa9gen7kHjR8M+scqphDfI2otCrEe7LUDA94kCsc66sHCHATpyOXZzGt7rlcYUjg2UtkcAsbA==
+"@playkit-js/playkit-js-ui@0.77.13":
+  version "0.77.13"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.77.13.tgz#e88543055d98d08a07267e546f623f68878f5af2"
+  integrity sha512-NAbOWpfGLPtZU5IEegN6ps8AEfEyuGSyMe6dHnf8U7vPSbZu8RsESezlY7kSxusRubsS8jnx3kC5MHSx8vrDVg==
   dependencies:
     preact "^10.3.4"
     preact-i18n "^2.0.0-preactx.2"
