@@ -49,7 +49,7 @@ import { CastEventType } from './common/cast/cast-event-type';
 import { PlaylistEventType } from './common/playlist/playlist-event-type';
 import { Player } from '@playkit-js/playkit-js';
 import { IEngineDecoratorProvider } from '@playkit-js/playkit-js';
-import { TrackTypes } from '@playkit-js/playkit-js/lib/track/track-type';
+import { TrackTypes } from '@playkit-js/playkit-js';
 import {
   KalturaPlayerConfig,
   PlaylistConfigObject,
@@ -58,6 +58,7 @@ import {
   KPEventTypes
 } from './types';
 import {PKPlayerDimensions} from '@playkit-js/playkit-js';
+import { TrackType } from "@playkit-js/playkit-js";
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -761,7 +762,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   // TODO - used to TrackTypes
-  public get Track(): any {
+  public get Track(): typeof TrackType {
     return this._localPlayer.Track;
   }
 

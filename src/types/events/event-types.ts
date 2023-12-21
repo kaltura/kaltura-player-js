@@ -6,4 +6,4 @@ export type KPEventTypes = {
   Cast: { [event: string]: string };
   Playlist: { [event: string]: string };
   VISIBILITY_CHANGE: 'visibilitychange';
-};
+} & any;
