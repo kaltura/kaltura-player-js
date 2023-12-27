@@ -4,13 +4,17 @@
 
 ```ts
 
+import { AbrMode } from '@playkit-js/playkit-js';
 import { BaseMiddleware } from '@playkit-js/playkit-js';
 import { BaseProvider } from '@playkit-js/playkit-js-providers';
 import * as core from '@playkit-js/playkit-js';
+import { EngineType } from '@playkit-js/playkit-js';
 import { Error as Error_2 } from '@playkit-js/playkit-js';
 import { EventManager } from '@playkit-js/playkit-js';
 import { FakeEvent } from '@playkit-js/playkit-js';
 import { FakeEventTarget } from '@playkit-js/playkit-js';
+import { LoggerLevels } from '@playkit-js/playkit-js';
+import { MediaType } from '@playkit-js/playkit-js';
 import { OTTProviderMediaInfoObject } from '@playkit-js/playkit-js-providers';
 import { OVPProviderMediaInfoObject } from '@playkit-js/playkit-js-providers';
 import { PKAbrConfigObject } from '@playkit-js/playkit-js';
@@ -19,7 +23,7 @@ import { PKDrmDataObject } from '@playkit-js/playkit-js';
 import { PKEventTypes } from '@playkit-js/playkit-js';
 import { PKMediaSourceObject } from '@playkit-js/playkit-js';
 import { PKMetadataConfigObject } from '@playkit-js/playkit-js';
-import { PKPlaybackConfigObject } from '@playkit-js/playkit-js/lib/types';
+import { PKPlaybackConfigObject } from '@playkit-js/playkit-js';
 import { PKPlayerDimensions } from '@playkit-js/playkit-js';
 import { PKSessionConfigObject } from '@playkit-js/playkit-js';
 import { PKSourcesConfigObject } from '@playkit-js/playkit-js';
@@ -33,12 +37,16 @@ import { ProviderPlaylistInfoObject } from '@playkit-js/playkit-js-providers';
 import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers';
 import { ProviderPlaylistObject } from '@playkit-js/playkit-js-providers';
 import * as providers from '@playkit-js/playkit-js-providers';
+import { StateType } from '@playkit-js/playkit-js';
+import { StreamType } from '@playkit-js/playkit-js';
 import { TextStyle } from '@playkit-js/playkit-js';
 import { ThumbnailInfo } from '@playkit-js/playkit-js';
 import { TimedMetadata } from '@playkit-js/playkit-js';
 import { Track } from '@playkit-js/playkit-js';
-import { TrackTypes } from '@playkit-js/playkit-js/lib/track/track-type';
+import { TrackType } from '@playkit-js/playkit-js';
+import { TrackTypes } from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
+import { UIEventType } from '@playkit-js/playkit-js-ui';
 
 // @public
 export class Ad {
@@ -146,7 +154,12 @@ export const cast: {
     RemoteAvailablePayload: typeof RemoteAvailablePayload;
     RemotePlayerUI: typeof RemotePlayerUI;
     CastEventType: {
-        [event: string]: string;
+        readonly CAST_SESSION_START_FAILED: "kaltura-player-castsessionstartfailed";
+        readonly CAST_SESSION_STARTING: "kaltura-player-castsessionstarting";
+        readonly CAST_SESSION_STARTED: "kaltura-player-castsessionstarted";
+        readonly CAST_SESSION_ENDING: "kaltura-player-castsessionending";
+        readonly CAST_SESSION_ENDED: "kaltura-player-castsessionended";
+        readonly CAST_AVAILABLE: "kaltura-player-castavailable";
     };
     RemotePlayerType: {
         [type: string]: string;
@@ -255,7 +268,7 @@ export const KALTURA_PLAYER_START_TIME_QS: string;
 export class KalturaPlayer extends FakeEventTarget {
     constructor(options: KalturaPlayerConfig);
     // (undocumented)
-    get AbrMode(): any;
+    get AbrMode(): typeof AbrMode;
     addTextTrack(kind: TextTrackKind, label?: string): TextTrack | undefined;
     // Warning: (ae-forgotten-export) The symbol "AdsController" needs to be exported by the entry point index.d.ts
     //
@@ -294,7 +307,7 @@ export class KalturaPlayer extends FakeEventTarget {
     // (undocumented)
     get ended(): boolean | null;
     // (undocumented)
-    get EngineType(): any;
+    get EngineType(): typeof EngineType;
     // (undocumented)
     get engineType(): string;
     // (undocumented)
@@ -385,11 +398,11 @@ export class KalturaPlayer extends FakeEventTarget {
     // (undocumented)
     loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject>;
     // (undocumented)
-    get LogLevel(): any;
+    get LogLevel(): LoggerLevels;
     // (undocumented)
-    get LogLevelType(): any;
+    get LogLevelType(): Record<keyof LoggerLevels, keyof LoggerLevels>;
     // (undocumented)
-    get MediaType(): any;
+    get MediaType(): typeof MediaType;
     set muted(mute: boolean);
     // (undocumented)
     get muted(): boolean | null;
@@ -466,13 +479,13 @@ export class KalturaPlayer extends FakeEventTarget {
     // (undocumented)
     startCasting(type: string): Promise<void>;
     // (undocumented)
-    get State(): any;
+    get State(): typeof StateType;
     // (undocumented)
     get stats(): any;
     // (undocumented)
     stopCasting(): void;
     // (undocumented)
-    get StreamType(): any;
+    get StreamType(): typeof StreamType;
     // (undocumented)
     get streamType(): string;
     // (undocumented)
@@ -485,7 +498,7 @@ export class KalturaPlayer extends FakeEventTarget {
     // (undocumented)
     toggleVrStereoMode(): void;
     // (undocumented)
-    get Track(): any;
+    get Track(): typeof TrackType;
     // Warning: (ae-forgotten-export) The symbol "UIWrapper" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -498,10 +511,10 @@ export class KalturaPlayer extends FakeEventTarget {
     get videoWidth(): number | null;
     // Warning: (ae-forgotten-export) The symbol "ViewabilityManager" needs to be exported by the entry point index.d.ts
     get viewabilityManager(): ViewabilityManager;
+    // Warning: (ae-forgotten-export) The symbol "ViewabilityType" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    get ViewabilityType(): {
-        [type: string]: string;
-    };
+    get ViewabilityType(): typeof ViewabilityType;
     set volume(vol: number);
     // (undocumented)
     get volume(): number | null;
@@ -592,15 +605,9 @@ export type KPAdvertisingConfigObject = {
 // @public (undocumented)
 export type KPEventTypes = {
     Core: PKEventTypes;
-    UI: {
-        [event: string]: string;
-    };
-    Cast: {
-        [event: string]: string;
-    };
-    Playlist: {
-        [event: string]: string;
-    };
+    UI: typeof UIEventType;
+    Cast: typeof CastEventType;
+    Playlist: typeof PlaylistEventType;
     VISIBILITY_CHANGE: 'visibilitychange';
 };
 
@@ -816,7 +823,9 @@ export const PLAYER_TYPE: string;
 // @public (undocumented)
 export const playlist: {
     PlaylistEventType: {
-        [event: string]: string;
+        readonly PLAYLIST_LOADED: "kaltura-player-playlistloaded";
+        readonly PLAYLIST_ITEM_CHANGED: "kaltura-player-playlistitemchanged";
+        readonly PLAYLIST_ENDED: "kaltura-player-playlistended";
     };
 };
 
@@ -948,6 +957,8 @@ export interface ViewabilityConfig {
 // src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomEventMessage" needs to be exported by the entry point index.d.ts
 // src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomActionMessage" needs to be exported by the entry point index.d.ts
 // src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomMessage" needs to be exported by the entry point index.d.ts
+// src/types/events/event-types.ts:9:3 - (ae-forgotten-export) The symbol "CastEventType" needs to be exported by the entry point index.d.ts
+// src/types/events/event-types.ts:10:3 - (ae-forgotten-export) The symbol "PlaylistEventType" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

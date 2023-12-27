@@ -124,10 +124,10 @@ class ViewabilityManager {
   }
 }
 
-const ViewabilityType: { [type: string]: string } = {
+const ViewabilityType = {
   VIEWPORT: 'viewport',
   TAB: 'tab'
-};
+} as const;
 
 type ListenerType = (visible: boolean, reason: string) => any;
 

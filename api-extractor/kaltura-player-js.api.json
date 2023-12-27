@@ -1,7 +1,7 @@
 {
   "metadata": {
     "toolPackage": "@microsoft/api-extractor",
-    "toolVersion": "7.38.0",
+    "toolVersion": "7.38.5",
     "schemaVersion": 1011,
     "oldestForwardsCompatibleVersion": 1001,
     "tsdocConfig": {
@@ -2212,7 +2212,7 @@
             },
             {
               "kind": "Content",
-              "text": ";\n    CastEventType: {\n        [event: string]: string;\n    };\n    RemotePlayerType: {\n        [type: string]: string;\n    };\n    TextStyleConverter: typeof "
+              "text": ";\n    CastEventType: {\n        readonly CAST_SESSION_START_FAILED: \"kaltura-player-castsessionstartfailed\";\n        readonly CAST_SESSION_STARTING: \"kaltura-player-castsessionstarting\";\n        readonly CAST_SESSION_STARTED: \"kaltura-player-castsessionstarted\";\n        readonly CAST_SESSION_ENDING: \"kaltura-player-castsessionending\";\n        readonly CAST_SESSION_ENDED: \"kaltura-player-castsessionended\";\n        readonly CAST_AVAILABLE: \"kaltura-player-castavailable\";\n    };\n    RemotePlayerType: {\n        [type: string]: string;\n    };\n    TextStyleConverter: typeof "
             },
             {
               "kind": "Reference",
@@ -3298,7 +3298,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AbrMode",
+                  "canonicalReference": "@playkit-js/playkit-js!AbrMode:var"
                 },
                 {
                   "kind": "Content",
@@ -3311,7 +3316,7 @@
               "name": "AbrMode",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -3927,7 +3932,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "EngineType",
+                  "canonicalReference": "@playkit-js/playkit-js!EngineType:var"
                 },
                 {
                   "kind": "Content",
@@ -3940,7 +3950,7 @@
               "name": "EngineType",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -5691,8 +5701,9 @@
                   "text": "get LogLevel(): "
                 },
                 {
-                  "kind": "Content",
-                  "text": "any"
+                  "kind": "Reference",
+                  "text": "LoggerLevels",
+                  "canonicalReference": "@playkit-js/playkit-js!LoggerLevels:type"
                 },
                 {
                   "kind": "Content",
@@ -5721,8 +5732,31 @@
                   "text": "get LogLevelType(): "
                 },
                 {
+                  "kind": "Reference",
+                  "text": "Record",
+                  "canonicalReference": "!Record:type"
+                },
+                {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "<keyof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LoggerLevels",
+                  "canonicalReference": "@playkit-js/playkit-js!LoggerLevels:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", keyof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "LoggerLevels",
+                  "canonicalReference": "@playkit-js/playkit-js!LoggerLevels:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
                 },
                 {
                   "kind": "Content",
@@ -5735,7 +5769,7 @@
               "name": "LogLevelType",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 7
               },
               "isStatic": false,
               "isProtected": false,
@@ -5752,7 +5786,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MediaType",
+                  "canonicalReference": "@playkit-js/playkit-js!MediaType:var"
                 },
                 {
                   "kind": "Content",
@@ -5765,7 +5804,7 @@
               "name": "MediaType",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -7149,7 +7188,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "StateType",
+                  "canonicalReference": "@playkit-js/playkit-js!StateType:var"
                 },
                 {
                   "kind": "Content",
@@ -7162,7 +7206,7 @@
               "name": "State",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -7270,7 +7314,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "StreamType",
+                  "canonicalReference": "@playkit-js/playkit-js!StreamType:var"
                 },
                 {
                   "kind": "Content",
@@ -7283,7 +7332,7 @@
               "name": "StreamType",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -7427,7 +7476,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "any"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "TrackType",
+                  "canonicalReference": "@playkit-js/playkit-js!TrackType:var"
                 },
                 {
                   "kind": "Content",
@@ -7440,7 +7494,7 @@
               "name": "Track",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -7662,7 +7716,12 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "{\n        [type: string]: string;\n    }"
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ViewabilityType",
+                  "canonicalReference": "@playkit-js/kaltura-player-js!~ViewabilityType:var"
                 },
                 {
                   "kind": "Content",
@@ -7675,7 +7734,7 @@
               "name": "ViewabilityType",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 2
+                "endIndex": 3
               },
               "isStatic": false,
               "isProtected": false,
@@ -8574,7 +8633,34 @@
             },
             {
               "kind": "Content",
-              "text": ";\n    UI: {\n        [event: string]: string;\n    };\n    Cast: {\n        [event: string]: string;\n    };\n    Playlist: {\n        [event: string]: string;\n    };\n    VISIBILITY_CHANGE: 'visibilitychange';\n}"
+              "text": ";\n    UI: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "UIEventType",
+              "canonicalReference": "!unknown:member"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    Cast: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "CastEventType",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~CastEventType:var"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    Playlist: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "PlaylistEventType",
+              "canonicalReference": "@playkit-js/kaltura-player-js!~PlaylistEventType:var"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    VISIBILITY_CHANGE: 'visibilitychange';\n}"
             },
             {
               "kind": "Content",
@@ -8586,7 +8672,7 @@
           "name": "KPEventTypes",
           "typeTokenRange": {
             "startIndex": 1,
-            "endIndex": 4
+            "endIndex": 10
           }
         },
         {
@@ -10815,7 +10901,7 @@
             },
             {
               "kind": "Content",
-              "text": "{\n    PlaylistEventType: {\n        [event: string]: string;\n    };\n}"
+              "text": "{\n    PlaylistEventType: {\n        readonly PLAYLIST_LOADED: \"kaltura-player-playlistloaded\";\n        readonly PLAYLIST_ITEM_CHANGED: \"kaltura-player-playlistitemchanged\";\n        readonly PLAYLIST_ENDED: \"kaltura-player-playlistended\";\n    };\n}"
             }
           ],
           "fileUrlPath": "src/common/playlist/index.ts",

@@ -15,7 +15,7 @@ const namespace = 'kaltura-player';
  *   console.log(e.payload.playlist.metadata.name);
  * };
  */
-const PlaylistEventType: { [event: string]: string } = {
+const PlaylistEventType = {
   /**
    * Fires when the playlist has been loaded.
    * @event PLAYLIST_LOADED
@@ -34,6 +34,6 @@ const PlaylistEventType: { [event: string]: string } = {
    * @memberof PlaylistEventType
    */
   PLAYLIST_ENDED: `${namespace}-playlistended`
-};
+} as const;
 
 export { PlaylistEventType };

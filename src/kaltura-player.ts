@@ -1,4 +1,4 @@
-import { EventType as UIEventType } from '@playkit-js/playkit-js-ui';
+import { UIEventType } from '@playkit-js/playkit-js-ui';
 import {
   AdEventType,
   AutoPlayType,
@@ -14,6 +14,10 @@ import {
   ThumbnailInfo,
   Track,
   Utils,
+  AbrMode,
+  MediaType,
+  StreamType,
+  EngineType,
   EngineDecoratorProvider, PKSourcesConfigObject, PKMetadataConfigObject, PKMediaSourceObject, PKDrmDataObject
 } from '@playkit-js/playkit-js';
 import { UIWrapper } from './common/ui-wrapper';
@@ -59,6 +63,8 @@ import {
 } from './types';
 import {PKPlayerDimensions} from '@playkit-js/playkit-js';
 import { TrackType } from "@playkit-js/playkit-js";
+import { StateType } from "@playkit-js/playkit-js";
+import { LoggerLevels } from "@playkit-js/playkit-js";
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -752,47 +758,39 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.TextStyle;
   }
 
-  public get ViewabilityType(): { [type: string]: string } {
+  public get ViewabilityType(): typeof ViewabilityType {
     return ViewabilityType;
   }
 
-  // TODO - used to PKStateTypes
-  public get State(): any {
+  public get State(): typeof StateType {
     return this._localPlayer.State;
   }
 
-  // TODO - used to TrackTypes
   public get Track(): typeof TrackType {
     return this._localPlayer.Track;
   }
 
-  // TODO - used to PKLogLevelTypes
-  public get LogLevelType(): any {
+  public get LogLevelType(): Record<keyof LoggerLevels, keyof LoggerLevels> {
     return this._localPlayer.LogLevelType;
   }
 
-  // TODO - used to PKLogLevels
-  public get LogLevel(): any {
+  public get LogLevel(): LoggerLevels {
     return this._localPlayer.LogLevel;
   }
 
-  // TODO - used to PKAbrModes
-  public get AbrMode(): any {
+  public get AbrMode(): typeof AbrMode {
     return this._localPlayer.AbrMode;
   }
 
-  // TODO - used to PKMediaTypes
-  public get MediaType(): any {
+  public get MediaType(): typeof MediaType {
     return this._localPlayer.MediaType;
   }
 
-  // TODO - used to PKStreamTypes
-  public get StreamType(): any {
+  public get StreamType(): typeof StreamType {
     return this._localPlayer.StreamType;
   }
 
-  // TODO - used to PKEngineTypes
-  public get EngineType(): any {
+  public get EngineType(): typeof EngineType {
     return this._localPlayer.EngineType;
   }
 

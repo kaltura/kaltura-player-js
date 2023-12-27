@@ -17,7 +17,7 @@ const namespace = 'kaltura-player';
  *   console.log(e.session);
  * };
  */
-const CastEventType: { [event: string]: string } = {
+const CastEventType = {
   /**
    * Fires when cast session start failed.
    * @event CAST_SESSION_START_FAILED
@@ -54,6 +54,6 @@ const CastEventType: { [event: string]: string } = {
    * @memberof CastEventType
    */
   CAST_AVAILABLE: `${namespace}-castavailable`
-};
+} as const;
 
 export { CastEventType };
