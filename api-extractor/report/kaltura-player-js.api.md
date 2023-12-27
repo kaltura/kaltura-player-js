@@ -201,6 +201,12 @@ export type DeferredPromise = {
     then(param: () => void): any;
 };
 
+// @public
+export type DRMSupportedObject = {
+    isDRMSupported: number;
+    supportedDRMs: Array<string>;
+};
+
 // @public (undocumented)
 export interface ExternalThumbnailsConfig {
     // (undocumented)
@@ -212,6 +218,20 @@ export function getPlayer(id: string): KalturaPlayer | null;
 
 // @public
 export function getPlayers(): Record<string, KalturaPlayer>;
+
+// @public
+export type HEVCConfigObject = {
+    width?: number;
+    height?: number;
+    bitrate?: number;
+    framerate?: number;
+};
+
+// @public
+export type HEVCSupportedObject = {
+    isHEVCSupported: number;
+    isPowerEfficient: number;
+};
 
 // @public (undocumented)
 export interface IAdsController {
@@ -332,8 +352,6 @@ export class KalturaPlayer extends FakeEventTarget {
     getDrmInfo(): PKDrmDataObject | null;
     // (undocumented)
     getLogLevel(name?: string): any;
-    // Warning: (ae-forgotten-export) The symbol "HEVCConfigObject" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "MediaCapabilitiesObject" needs to be exported by the entry point index.d.ts
     getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject>;
     // (undocumented)
     getMediaConfig(): KPMediaConfig;
@@ -719,6 +737,9 @@ export interface LogConfig {
     playerVersion?: boolean;
 }
 
+// @public
+export type MediaCapabilitiesObject = HEVCSupportedObject & DRMSupportedObject;
+
 // @public (undocumented)
 export interface MediaSourceOptionsObject {
     // (undocumented)
@@ -913,6 +934,11 @@ export interface SourcesConfig extends Omit<ProviderMediaConfigSourcesObject, 'p
     // (undocumented)
     thumbnails?: ExternalThumbnailsConfig;
 }
+
+// @public
+export type SupportedOptionsType = {
+    [supportedOption: string]: number;
+};
 
 export { ui }
 

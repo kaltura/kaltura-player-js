@@ -1,5 +1,5 @@
 import { Error, EventManager, FakeEvent, Utils, getLogger } from '@playkit-js/playkit-js';
-import {KalturaPlayer} from '../../kaltura-player';
+import { KalturaPlayer } from '../../kaltura-player';
 
 // TODO - should be taken from plugin repo
 interface IPlugin {}

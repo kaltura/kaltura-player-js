@@ -1,12 +1,12 @@
 // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import {KalturaPlayer} from '../../../../src/kaltura-player';
-import {PlaylistManager} from '../../../../src/common/playlist/playlist-manager';
+import { KalturaPlayer } from '../../../../src/kaltura-player';
+import { PlaylistManager } from '../../../../src/common/playlist/playlist-manager';
 import * as MediaMockData from '../../mock-data/media';
 import * as PlaylistMockData from '../../mock-data/playlist';
-import {FakeEvent} from '@playkit-js/playkit-js';
-import {PlaylistEventType} from '../../../../src/common/playlist/playlist-event-type';
-import {PluginManager} from '../../../../src/common/plugins';
+import { FakeEvent } from '@playkit-js/playkit-js';
+import { PlaylistEventType } from '../../../../src/common/playlist/playlist-event-type';
+import { PluginManager } from '../../../../src/common/plugins';
 import ColorsPlugin from '../plugin/test-plugins/colors-plugin';
 
 describe('PlaylistManager', () => {
@@ -59,8 +59,8 @@ describe('PlaylistManager', () => {
     it('should update config', () => {
       playlistManager.configure({
         id: '1234',
-        options: {autoContinue: false},
-        countdown: {duration: 20, showing: false, timeToShow: 50}
+        options: { autoContinue: false },
+        countdown: { duration: 20, showing: false, timeToShow: 50 }
       });
       playlistManager._playlist.id.should.equal('1234');
       playlistManager._options.autoContinue.should.be.false;
@@ -88,12 +88,12 @@ describe('PlaylistManager', () => {
       kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_LOADED, () => {
         done(new Error('fail'));
       });
-      playlistManager.configure({items: [{}]});
+      playlistManager.configure({ items: [{}] });
       done();
     });
 
     it('should update the media info list', () => {
-      playlistManager.configure(PlaylistMockData.playlistByConfig, {entries: ['abc', {entryId: '123'}]});
+      playlistManager.configure(PlaylistMockData.playlistByConfig, { entries: ['abc', { entryId: '123' }] });
       playlistManager._mediaInfoList.length.should.equal(3);
       playlistManager._mediaInfoList[0].entryId.should.equal('id1');
       playlistManager._mediaInfoList[1].entryId.should.equal('123');
@@ -226,16 +226,16 @@ describe('PlaylistManager', () => {
     });
 
     it('should set the configured sources.options for all items', () => {
-      kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1}}});
-      playlistManager.configure({items: [{sources: {}}, {sources: {}}]});
+      kalturaPlayer.configure({ sources: { options: { forceRedirectExternalStreams: true, redirectExternalStreamsHandler: () => 1 } } });
+      playlistManager.configure({ items: [{ sources: {} }, { sources: {} }] });
       playlistManager.items.forEach((item) => item.sources.options.forceRedirectExternalStreams.should.be.true);
       playlistManager.items.forEach((item) => (item.sources.options.redirectExternalStreamsHandler() === 1).should.be.true);
     });
 
     it('should prefer the item configuration before the sources.options', () => {
-      kalturaPlayer.configure({sources: {options: {forceRedirectExternalStreams: true, redirectExternalStreamsHandler: (): number => 1}}});
+      kalturaPlayer.configure({ sources: { options: { forceRedirectExternalStreams: true, redirectExternalStreamsHandler: (): number => 1 } } });
       playlistManager.configure({
-        items: [{sources: {options: {forceRedirectExternalStreams: false}}}, {sources: {options: {redirectExternalStreamsHandler: (): number => 2}}}]
+        items: [{ sources: { options: { forceRedirectExternalStreams: false } } }, { sources: { options: { redirectExternalStreamsHandler: (): number => 2 } } }]
       });
       playlistManager.items[0].sources.options.forceRedirectExternalStreams.should.be.false;
       playlistManager.items[1].sources.options.forceRedirectExternalStreams.should.be.true;
@@ -267,14 +267,14 @@ describe('PlaylistManager', () => {
           },
           {
             sources: {
-              hls: [{url: 'source_url'}],
+              hls: [{ url: 'source_url' }],
               poster: 'poster_url',
               dvr: true
             }
           }
         ]
       };
-      playlistManager.load(PlaylistMockData.playlistByID, playlistConfig, {entries: [{entryId: '123'}]});
+      playlistManager.load(PlaylistMockData.playlistByID, playlistConfig, { entries: [{ entryId: '123' }] });
       playlistManager._playlist.id.should.equal('0_wckoqjnn');
       playlistManager._playlist.metadata.name.should.equal('Playlist_VOD_Only');
       playlistManager._playlist.poster.should.equal('http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162');
@@ -302,14 +302,14 @@ describe('PlaylistManager', () => {
         items: [
           {
             sources: {
-              hls: [{url: 'source_url'}],
+              hls: [{ url: 'source_url' }],
               poster: 'poster_url',
               dvr: true
             }
           }
         ],
-        options: {autoContinue: false},
-        countdown: {duration: 20, showing: false, timeToShow: 50}
+        options: { autoContinue: false },
+        countdown: { duration: 20, showing: false, timeToShow: 50 }
       });
       playlistManager._playlist.id.should.equal('1234');
       playlistManager._playlist.items.length.should.equal(1);
@@ -481,7 +481,7 @@ describe('PlaylistManager', () => {
 
   describe('playNext', () => {
     before(() => {
-      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(({entryId}) => {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(({ entryId }) => {
         return Promise.resolve(MediaMockData.MediaConfig[entryId]);
       });
     });
@@ -515,7 +515,7 @@ describe('PlaylistManager', () => {
 
   describe('playPrev', () => {
     before(() => {
-      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(({entryId}) => {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(({ entryId }) => {
         return Promise.resolve(MediaMockData.MediaConfig[entryId]);
       });
     });
@@ -552,7 +552,7 @@ describe('PlaylistManager', () => {
 
   describe('playItem', () => {
     before(() => {
-      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(({entryId}) => {
+      sinon.stub(kalturaPlayer, 'loadMedia').callsFake(({ entryId }) => {
         return Promise.resolve(MediaMockData.MediaConfig[entryId]);
       });
     });

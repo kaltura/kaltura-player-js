@@ -37,7 +37,7 @@ class UIWrapper {
       this._handleExternalCSS(config);
     }
     return new Proxy(this, {
-      get: (uiw: UIWrapper, prop: string): UIWrapper | (() => undefined)  => {
+      get: (uiw: UIWrapper, prop: string): UIWrapper | (() => undefined) => {
         if (this._disabled) return () => undefined;
         // $FlowFixMe
         return uiw[prop];

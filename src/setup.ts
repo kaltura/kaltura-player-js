@@ -17,7 +17,7 @@ import {
   validateConfig,
   validateProviderConfig
 } from './common/utils/setup-helpers';
-import { PartialKPOptionsObject } from './types/kaltura-player-options';
+import { PartialKPOptionsObject } from './types';
 
 /**
  * Setup the Kaltura Player.

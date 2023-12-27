@@ -2461,6 +2461,41 @@
           }
         },
         {
+          "kind": "TypeAlias",
+          "canonicalReference": "@playkit-js/kaltura-player-js!DRMSupportedObject:type",
+          "docComment": "/**\n * @typedef {Object} DRMSupportedObject  @property {number} isDRMSupported - Specifies DRM supported option by the browser  @property {Array<string>} supportedDRMs - List of supported DRMs (optional values: widevine; playready; fairplay)\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type DRMSupportedObject = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    isDRMSupported: number;\n    supportedDRMs: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Array",
+              "canonicalReference": "!Array:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "<string>;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/types/media-capabilities.ts",
+          "releaseTag": "Public",
+          "name": "DRMSupportedObject",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
           "kind": "Interface",
           "canonicalReference": "@playkit-js/kaltura-player-js!ExternalThumbnailsConfig:interface",
           "docComment": "",
@@ -2596,6 +2631,58 @@
           "overloadIndex": 1,
           "parameters": [],
           "name": "getPlayers"
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@playkit-js/kaltura-player-js!HEVCConfigObject:type",
+          "docComment": "/**\n * @typedef {Object} HEVCConfigObject  @property {number} width - Optional width of the video  @property {number} height - Optional height of the video  @property {number} bitrate - Optional number of bits used to encode a second of video  @property {number} framerate - Optional number of frames used in one second\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type HEVCConfigObject = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    width?: number;\n    height?: number;\n    bitrate?: number;\n    framerate?: number;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/types/media-capabilities.ts",
+          "releaseTag": "Public",
+          "name": "HEVCConfigObject",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@playkit-js/kaltura-player-js!HEVCSupportedObject:type",
+          "docComment": "/**\n * @typedef {Object} HEVCSupportedObject  @property {number} isHEVCSupported - Specifies HEVC supported option by the browser  @property {number} isPowerEfficient - Specifies power efficiency supported option\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type HEVCSupportedObject = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    isHEVCSupported: number;\n    isPowerEfficient: number;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/types/media-capabilities.ts",
+          "releaseTag": "Public",
+          "name": "HEVCSupportedObject",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
         },
         {
           "kind": "Interface",
@@ -4356,7 +4443,7 @@
                 {
                   "kind": "Reference",
                   "text": "HEVCConfigObject",
-                  "canonicalReference": "@playkit-js/kaltura-player-js!~HEVCConfigObject:type"
+                  "canonicalReference": "@playkit-js/kaltura-player-js!HEVCConfigObject:type"
                 },
                 {
                   "kind": "Content",
@@ -4374,7 +4461,7 @@
                 {
                   "kind": "Reference",
                   "text": "MediaCapabilitiesObject",
-                  "canonicalReference": "@playkit-js/kaltura-player-js!~MediaCapabilitiesObject:type"
+                  "canonicalReference": "@playkit-js/kaltura-player-js!MediaCapabilitiesObject:type"
                 },
                 {
                   "kind": "Content",
@@ -9797,6 +9884,42 @@
           "extendsTokenRanges": []
         },
         {
+          "kind": "TypeAlias",
+          "canonicalReference": "@playkit-js/kaltura-player-js!MediaCapabilitiesObject:type",
+          "docComment": "/**\n * @typedef {Object} MediaCapabilitiesObject\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type MediaCapabilitiesObject = "
+            },
+            {
+              "kind": "Reference",
+              "text": "HEVCSupportedObject",
+              "canonicalReference": "@playkit-js/kaltura-player-js!HEVCSupportedObject:type"
+            },
+            {
+              "kind": "Content",
+              "text": " & "
+            },
+            {
+              "kind": "Reference",
+              "text": "DRMSupportedObject",
+              "canonicalReference": "@playkit-js/kaltura-player-js!DRMSupportedObject:type"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/types/media-capabilities.ts",
+          "releaseTag": "Public",
+          "name": "MediaCapabilitiesObject",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
           "kind": "Interface",
           "canonicalReference": "@playkit-js/kaltura-player-js!MediaSourceOptionsObject:interface",
           "docComment": "",
@@ -11802,6 +11925,32 @@
               "endIndex": 5
             }
           ]
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@playkit-js/kaltura-player-js!SupportedOptionsType:type",
+          "docComment": "/**\n * @typedef {Object.<string; number>} SupportedOptionsType\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type SupportedOptionsType = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    [supportedOption: string]: number;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/types/media-capabilities.ts",
+          "releaseTag": "Public",
+          "name": "SupportedOptionsType",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
         },
         {
           "kind": "Interface",

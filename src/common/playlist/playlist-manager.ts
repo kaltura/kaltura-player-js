@@ -10,7 +10,7 @@ import { KalturaPlayerConfig } from '../../types';
 import { PluginsConfig } from '../../types';
 import { KPPlaylistObject } from '../../types';
 import { PlaylistConfigObject } from '../../types';
-import {ProviderEntryListObject, ProviderMediaInfoObject, ProviderPlaylistMetadataObject, ProviderPlaylistObject} from '@playkit-js/playkit-js-providers';
+import { ProviderEntryListObject, ProviderMediaInfoObject, ProviderPlaylistMetadataObject, ProviderPlaylistObject } from '@playkit-js/playkit-js-providers';
 
 /**
  * @class PlaylistManager

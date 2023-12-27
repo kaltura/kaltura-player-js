@@ -1,6 +1,6 @@
 // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import {ConfigEvaluator, getEncodedReferrer} from '../../../../src/common/plugins';
+import { ConfigEvaluator, getEncodedReferrer } from '../../../../src/common/plugins';
 
 const sandbox = sinon.createSandbox();
 
@@ -122,7 +122,7 @@ describe('evaluatePluginsConfig', () => {
   });
 
   it('should set playerVersion as productVersion from server', () => {
-    window.__kalturaplayerdata = {productVersion: '7.43.1'};
+    window.__kalturaplayerdata = { productVersion: '7.43.1' };
     configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.should.have.property('playerVersion');
     pluginsConfig.kava.playerVersion.should.equal('7.43.1');
@@ -136,7 +136,7 @@ describe('evaluatePluginsConfig', () => {
   });
 
   it('should sanitize the entryName', () => {
-    playerConfig.sources = {metadata: {name: 'invalid\tname'}};
+    playerConfig.sources = { metadata: { name: 'invalid\tname' } };
     pluginsConfig.kava.entryName = '{{entryName}}';
     configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.should.have.property('entryName');

@@ -18,12 +18,23 @@ import {
   MediaType,
   StreamType,
   EngineType,
-  EngineDecoratorProvider, PKSourcesConfigObject, PKMetadataConfigObject, PKMediaSourceObject, PKDrmDataObject
+  EngineDecoratorProvider,
+  PKSourcesConfigObject,
+  PKMetadataConfigObject,
+  PKMediaSourceObject,
+  PKDrmDataObject,
+  Player,
+  IEngineDecoratorProvider,
+  TrackTypes,
+  PKPlayerDimensions,
+  TrackType,
+  StateType,
+  LoggerLevels
 } from '@playkit-js/playkit-js';
-import { UIWrapper } from './common/ui-wrapper';
-import { AdsController, ControllerProvider } from './common/controllers';
 import {
-  BaseProvider, OTTProviderMediaInfoObject, OVPProviderMediaInfoObject,
+  BaseProvider,
+  OTTProviderMediaInfoObject,
+  OVPProviderMediaInfoObject,
   Provider,
   ProviderEntryListObject,
   ProviderMediaConfigObject,
@@ -32,6 +43,8 @@ import {
   ProviderPlaylistInfoObject,
   ProviderPlaylistObject
 } from '@playkit-js/playkit-js-providers';
+import { UIWrapper } from './common/ui-wrapper';
+import { AdsController, ControllerProvider } from './common/controllers';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';
 import { BasePlugin, ConfigEvaluator, PluginManager } from './common/plugins';
 import { PluginReadinessMiddleware } from './common/plugins/plugin-readiness-middleware';
@@ -43,28 +56,13 @@ import { PlaylistManager } from './common/playlist/playlist-manager';
 import { RemotePlayerManager } from './common/cast/remote-player-manager';
 import { hasImageSource, hasYoutubeSource, maybeSetStreamPriority, mergeProviderPluginsConfig, supportLegacyOptions } from './common/utils/setup-helpers';
 import { getDefaultRedirectOptions } from 'player-defaults';
-import { KPMediaConfig } from './types';
 import { addKalturaParams } from './common/utils/kaltura-params';
 import { addKalturaPoster } from 'poster';
 import { RemoteSession } from './common/cast/remote-session';
 import getMediaCapabilities from './common/utils/media-capabilities';
-import { HEVCConfigObject, MediaCapabilitiesObject } from './types/media-capabilities';
 import { CastEventType } from './common/cast/cast-event-type';
 import { PlaylistEventType } from './common/playlist/playlist-event-type';
-import { Player } from '@playkit-js/playkit-js';
-import { IEngineDecoratorProvider } from '@playkit-js/playkit-js';
-import { TrackTypes } from '@playkit-js/playkit-js';
-import {
-  KalturaPlayerConfig,
-  PlaylistConfigObject,
-  PluginsConfig,
-  SourcesConfig,
-  KPEventTypes
-} from './types';
-import {PKPlayerDimensions} from '@playkit-js/playkit-js';
-import { TrackType } from "@playkit-js/playkit-js";
-import { StateType } from "@playkit-js/playkit-js";
-import { LoggerLevels } from "@playkit-js/playkit-js";
+import { KalturaPlayerConfig, PlaylistConfigObject, KPMediaConfig, PluginsConfig, SourcesConfig, KPEventTypes, HEVCConfigObject, MediaCapabilitiesObject } from './types';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -122,11 +120,7 @@ export class KalturaPlayer extends FakeEventTarget {
       __VERSION__
     );
     this._playlistManager = new PlaylistManager(this, options);
-    Object.values(CoreEventType).forEach((coreEvent) =>
-      this._eventManager.listen(this._localPlayer, coreEvent, (e) =>
-        this.dispatchEvent(e)
-      )
-    );
+    Object.values(CoreEventType).forEach((coreEvent) => this._eventManager.listen(this._localPlayer, coreEvent, (e) => this.dispatchEvent(e)));
 
     this._addBindings();
     const playlistConfig = Utils.Object.mergeDeep({}, options.playlist, {
@@ -139,7 +133,7 @@ export class KalturaPlayer extends FakeEventTarget {
       items: (options.playlist && options.playlist.items) || []
     });
     this._remotePlayerManager = new RemotePlayerManager();
-    // @ts-ignore - cucucuc
+    // "@ts-expect-error - ???
     this._localPlayer.setSources(sources || {});
   }
 

@@ -1,15 +1,28 @@
 import { setDefaultAnalyticsPlugin } from 'player-defaults';
-import {Env, TextStyle, Utils, setCapabilities, EngineType, DrmScheme, getLogger, LogLevel, setLogHandler, setLogLevel as _setLogLevel, ILogLevel, PKSourcesConfigObject} from '@playkit-js/playkit-js';
+import {
+  Env,
+  TextStyle,
+  Utils,
+  setCapabilities,
+  EngineType,
+  DrmScheme,
+  getLogger,
+  LogLevel,
+  setLogHandler,
+  setLogLevel as _setLogLevel,
+  ILogLevel,
+  PKSourcesConfigObject
+} from '@playkit-js/playkit-js';
 import { ValidationErrorType } from './validation-error';
 import LocalStorageManager from '../storage/local-storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
 import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-params';
 import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
 import SessionStorageManager from '../storage/session-storage-manager';
-import {BaseStorageManager} from '../storage/base-storage-manager';
-import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, SourcesConfig,PlaybackConfig } from '../../types';
-import {ProviderOptionsObject} from '@playkit-js/playkit-js-providers';
-import {BasePlugin} from '../plugins';
+import { BaseStorageManager } from '../storage/base-storage-manager';
+import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, PlaybackConfig } from '../../types';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
+import { BasePlugin } from '../plugins';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -183,7 +196,7 @@ function attachToFirstClick(player: KalturaPlayer): void {
       player.removeEventListener(player.Event.UI.UI_CLICKED, onUIClicked);
       setCapabilities(EngineType.HTML5, { autoplay: true });
     };
-    const onSourceSelected = () : void => {
+    const onSourceSelected = (): void => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       player.removeEventListener(player.Event.SOURCE_SELECTED, onSourceSelected);

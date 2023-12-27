@@ -1,7 +1,7 @@
 import { FakeEvent, PKTextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
-import { CuePoint } from "../../types";
-import {PKTextTrackCue} from '@playkit-js/playkit-js';
+import { CuePoint } from '../../types';
+import { PKTextTrackCue } from '@playkit-js/playkit-js';
 const CUE_POINTS_TEXT_TRACK = 'CuePoints';
 
 export class CuePointManager {
@@ -37,12 +37,16 @@ export class CuePointManager {
 
   public getAllCuePoints(): Array<TimedMetadata> {
     const metadataTracks = this._getMetadataTracks();
-    return metadataTracks.reduce((cues, track) => cues.concat(Array.from(track.cues!).map<TimedMetadata>((cue) => createTimedMetadata(cue) as TimedMetadata)), [] as TimedMetadata[]).sort(this._cuesSorter);
+    return metadataTracks
+      .reduce((cues, track) => cues.concat(Array.from(track.cues!).map<TimedMetadata>((cue) => createTimedMetadata(cue) as TimedMetadata)), [] as TimedMetadata[])
+      .sort(this._cuesSorter);
   }
 
   public getActiveCuePoints(): Array<TimedMetadata> {
     const metadataTracks = this._getMetadataTracks();
-    return metadataTracks.reduce((cues, track) => cues.concat(Array.from(track.activeCues!).map<TimedMetadata>((cue) => createTimedMetadata(cue) as TimedMetadata)), [] as TimedMetadata[]).sort(this._cuesSorter);
+    return metadataTracks
+      .reduce((cues, track) => cues.concat(Array.from(track.activeCues!).map<TimedMetadata>((cue) => createTimedMetadata(cue) as TimedMetadata)), [] as TimedMetadata[])
+      .sort(this._cuesSorter);
   }
 
   private _getTextTrackCueById(id: string): TextTrackCue | null {

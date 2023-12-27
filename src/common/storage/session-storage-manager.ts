@@ -1,17 +1,17 @@
-import {EventManager} from '@playkit-js/playkit-js';
-import {BaseStorageManager} from './base-storage-manager';
-import { KalturaPlayer } from "../../kaltura-player";
+import { EventManager } from '@playkit-js/playkit-js';
+import { BaseStorageManager } from './base-storage-manager';
+import { KalturaPlayer } from '../../kaltura-player';
 
 export default class SessionStorageManager extends BaseStorageManager {
-  static StorageKeys: {[key: string]: string} = {
+  public static StorageKeys: { [key: string]: string } = {
     PLAYBACK_RATE: 'playbackRate'
   };
 
-  static initialize() {
+  public static initialize(): void {
     this.init(this.name);
   }
 
-  static getStorageObject() {
+  public static getStorageObject(): Storage {
     return sessionStorage;
   }
 
@@ -22,9 +22,9 @@ export default class SessionStorageManager extends BaseStorageManager {
    * @static
    * @returns {void}
    */
-  static attach(player: KalturaPlayer): void {
+  public static attach(player: KalturaPlayer): void {
     this._logger.debug('Attach session storage');
-    let eventManager = new EventManager();
+    const eventManager = new EventManager();
     eventManager.listen(player, player.Event.UI.USER_SELECTED_SPEED, () => {
       if (!player.isCasting()) {
         this.setItem(this.StorageKeys.PLAYBACK_RATE, player.playbackRate);

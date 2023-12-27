@@ -351,10 +351,7 @@ class AdsController extends FakeEventTarget implements IAdsController {
   private _handleConfiguredMidrolls(): void {
     this._eventManager.listen(this._player, Html5EventType.TIME_UPDATE, () => {
       if (!this._player.paused && !this._liveSeeking) {
-        const adBreaks = this._configAdBreaks.filter(
-
-          (adBreak) => !adBreak.played && this._player.currentTime && adBreak.position <= this._player.currentTime && adBreak.position > this._snapback
-        );
+        const adBreaks = this._configAdBreaks.filter((adBreak) => !adBreak.played && this._player.currentTime && adBreak.position <= this._player.currentTime && adBreak.position > this._snapback);
         if (adBreaks.length) {
           const maxPosition = adBreaks[adBreaks.length - 1].position;
           const lastAdBreaks = adBreaks.filter((adBreak) => adBreak.position === maxPosition);
@@ -365,16 +362,12 @@ class AdsController extends FakeEventTarget implements IAdsController {
 
             returnToLive
               ? this._handleReturnToLive(lastAdBreaks)
-              : this._pushNextAdsForLive(
-                lastAdBreaks,
-                (adBreak) => (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + adBreak.every);
+              : this._pushNextAdsForLive(lastAdBreaks, (adBreak) => (this._player.isOnLiveEdge() ? this._player.currentTime : adBreak.position) + adBreak.every);
           } else {
             this._snapback = maxPosition;
             AdsController._logger.debug(`Set snapback value ${this._snapback}`);
             this._eventManager.listen(this._player, Html5EventType.SEEKED, () => {
-              const nextPlayedAdBreakIndex = this._configAdBreaks.findIndex(
-                (adBreak) => adBreak.played && typeof this._player.currentTime === 'number' && this._player.currentTime < adBreak.position
-              );
+              const nextPlayedAdBreakIndex = this._configAdBreaks.findIndex((adBreak) => adBreak.played && typeof this._player.currentTime === 'number' && this._player.currentTime < adBreak.position);
               if (nextPlayedAdBreakIndex > 0 && !this._configAdBreaks[nextPlayedAdBreakIndex - 1].played) {
                 this._snapback = 0;
                 AdsController._logger.debug('Reset snapback value');

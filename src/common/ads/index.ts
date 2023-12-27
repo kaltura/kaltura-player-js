@@ -1,2 +1,2 @@
-export {AdBreak} from './ad-break';
-export {Ad} from './ad';
+export { AdBreak } from './ad-break';
+export { Ad } from './ad';

@@ -2,7 +2,7 @@ import { Utils, ThumbnailInfo, MediaType, EventManager } from '@playkit-js/playk
 import evaluate from './utils/evaluate';
 import { KalturaPlayer } from '../kaltura-player';
 import { KPThumbnailConfig, UiConfig, KPMediaConfig } from '../types';
-import {Poster} from '@playkit-js/playkit-js-providers';
+import { Poster } from '@playkit-js/playkit-js-providers';
 
 const DefaultThumbnailConfig: any = {
   thumbsWidth: 164,

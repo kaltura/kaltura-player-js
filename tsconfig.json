@@ -10,10 +10,7 @@
     "resolveJsonModule": true,
     "strictPropertyInitialization": true,
     "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "ESNext"
-    ],
+    "lib": ["dom", "ESNext"],
     "outDir": "./lib/",
     "allowSyntheticDefaultImports": true,
     "paths": {

@@ -10,7 +10,5 @@ global.expect = chai.expect;
 global.should = chai.should;
 global.sinon = sinon;
 
-
-
 const testsContext = require.context('./e2e', true);
 testsContext.keys().forEach(testsContext);

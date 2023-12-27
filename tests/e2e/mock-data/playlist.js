@@ -319,4 +319,4 @@ const playlistByConfig = {
   }
 };
 
-export {playlistByID, playlistByEntryList, playlistByEntryListWithPlugins, playlistByConfig};
+export { playlistByID, playlistByEntryList, playlistByEntryListWithPlugins, playlistByConfig };

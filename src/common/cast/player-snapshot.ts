@@ -1,7 +1,7 @@
 import { KalturaPlayer } from '../../kaltura-player';
 import { TextStyle, TrackType, Utils } from '@playkit-js/playkit-js';
 import { KPMediaConfig } from '../../types';
-import {ProviderMediaInfoObject} from '@playkit-js/playkit-js-providers';
+import { ProviderMediaInfoObject } from '@playkit-js/playkit-js-providers';
 
 /**
  * @class PlayerSnapshot

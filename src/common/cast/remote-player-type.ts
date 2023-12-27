@@ -1,5 +1,5 @@
-const RemotePlayerType: {[type: string]: string} = {
+const RemotePlayerType: { [type: string]: string } = {
   CHROMECAST: 'chromecast'
 };
 
-export {RemotePlayerType};
+export { RemotePlayerType };

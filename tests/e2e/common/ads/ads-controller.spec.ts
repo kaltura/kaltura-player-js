@@ -1,7 +1,7 @@
 import SourcesConfig from '../../configs/sources.json';
-import {getConfigStructure} from '../../../utils/test-utils';
-import {KalturaPlayer as Player} from '../../../../src/kaltura-player';
-import {CustomEventType, AdEventType, Error, FakeEvent, Utils} from '@playkit-js/playkit-js';
+import { getConfigStructure } from '../../../utils/test-utils';
+import { KalturaPlayer as Player } from '../../../../src/kaltura-player';
+import { CustomEventType, AdEventType, Error, FakeEvent, Utils } from '@playkit-js/playkit-js';
 import * as sinon from 'sinon';
 
 describe('AdsController', () => {
@@ -40,20 +40,20 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {percentage: 0, ads: [{}]},
-            {position: 0, ads: [{}]},
-            {position: '1', ads: [{}]},
-            {position: 1, ads: []},
-            {position: 2, ads: [{}]},
-            {position: 2, ads: [{}]},
-            {percentage: 50, ads: [{}]},
-            {position: 1, ads: [{}]},
-            {position: -1, ads: [{}]},
-            {percentage: 100, ads: [{}]}
+            { percentage: 0, ads: [{}] },
+            { position: 0, ads: [{}] },
+            { position: '1', ads: [{}] },
+            { position: 1, ads: [] },
+            { position: 2, ads: [{}] },
+            { position: 2, ads: [{}] },
+            { percentage: 50, ads: [{}] },
+            { position: 1, ads: [{}] },
+            { position: -1, ads: [{}] },
+            { percentage: 100, ads: [{}] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
     });
 
     it('Should not fire AD_MANIFEST_LOADED for empty list', (done) => {
@@ -69,8 +69,8 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: '1', ads: [{}]},
-            {position: 1, ads: []}
+            { position: '1', ads: [{}] },
+            { position: 1, ads: [] }
           ]
         }
       });
@@ -78,7 +78,7 @@ describe('AdsController', () => {
     });
 
     it('Should play pre-roll, 2 mid-rolls and post-roll by position', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 0;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -103,19 +103,19 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 0, ads: adBreaks[0]},
-            {position: 1, ads: adBreaks[1]},
-            {position: 2, ads: adBreaks[2]},
-            {position: -1, ads: adBreaks[3]}
+            { position: 0, ads: adBreaks[0] },
+            { position: 1, ads: adBreaks[1] },
+            { position: 2, ads: adBreaks[2] },
+            { position: -1, ads: adBreaks[3] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should play pre-roll, 2 mid-rolls and post-roll by percentage', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 0;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -140,14 +140,14 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {percentage: 0, ads: adBreaks[0]},
-            {percentage: 25, ads: adBreaks[1]},
-            {percentage: 50, ads: adBreaks[2]},
-            {percentage: 100, ads: adBreaks[3]}
+            { percentage: 0, ads: adBreaks[0] },
+            { percentage: 25, ads: adBreaks[1] },
+            { percentage: 50, ads: adBreaks[2] },
+            { percentage: 100, ads: adBreaks[3] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
@@ -158,7 +158,7 @@ describe('AdsController', () => {
           try {
             adBreakIndex++;
             player._adsController && (player._adsController._adIsLoading = false);
-            ads.should.deep.equal([{url: ['MID_ROLL']}]);
+            ads.should.deep.equal([{ url: ['MID_ROLL'] }]);
           } catch (e) {
             done(e);
           }
@@ -172,7 +172,7 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{every: 1, ads: [{url: ['MID_ROLL']}]}]
+          adBreaks: [{ every: 1, ads: [{ url: ['MID_ROLL'] }] }]
         }
       });
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
@@ -184,18 +184,18 @@ describe('AdsController', () => {
           done(e);
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should play pre-roll, mid-rolls and post-roll by mix position, percentage and every', (done) => {
       const adBreaks = [
-        [{url: ['PRE_ROLL_1']}, {url: ['PRE_ROLL_1']}],
-        [{url: ['MID_ROLL_1']}],
-        [{url: ['MID_ROLL_2']}],
-        [{url: ['MID_ROLL_3']}],
-        [{url: ['MID_ROLL_3']}],
-        [{url: ['POST_ROLL']}]
+        [{ url: ['PRE_ROLL_1'] }, { url: ['PRE_ROLL_1'] }],
+        [{ url: ['MID_ROLL_1'] }],
+        [{ url: ['MID_ROLL_2'] }],
+        [{ url: ['MID_ROLL_3'] }],
+        [{ url: ['MID_ROLL_3'] }],
+        [{ url: ['POST_ROLL'] }]
       ];
       let adBreakIndex = 0;
       const fakeCtrl = {
@@ -221,21 +221,21 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 0, ads: [adBreaks[0][0]]},
-            {percentage: 0, ads: [adBreaks[0][1]]},
-            {percentage: 25, ads: adBreaks[1]},
-            {position: 2, ads: adBreaks[2]},
-            {every: 2.5, ads: adBreaks[3]},
-            {percentage: 100, ads: adBreaks[5]}
+            { position: 0, ads: [adBreaks[0][0]] },
+            { percentage: 0, ads: [adBreaks[0][1]] },
+            { percentage: 25, ads: adBreaks[1] },
+            { position: 2, ads: adBreaks[2] },
+            { every: 2.5, ads: adBreaks[3] },
+            { percentage: 100, ads: adBreaks[5] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should skip the first mid-roll (snap-back)', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 0;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -260,14 +260,14 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 0, ads: adBreaks[0]},
-            {position: 1, ads: adBreaks[1]},
-            {position: 2, ads: adBreaks[1]},
-            {position: -1, ads: adBreaks[2]}
+            { position: 0, ads: adBreaks[0] },
+            { position: 1, ads: adBreaks[1] },
+            { position: 2, ads: adBreaks[1] },
+            { position: -1, ads: adBreaks[2] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.currentTime = 2;
       });
@@ -275,7 +275,7 @@ describe('AdsController', () => {
     });
 
     it('Should fire PLAYBACK_ENDED when snap-back after post-roll finished', (done) => {
-      const adBreaks = [[{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 1;
       const fakeCtrl = {
         done: true,
@@ -299,13 +299,13 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 1, ads: adBreaks[0]},
-            {position: 2, ads: adBreaks[1]},
-            {position: -1, ads: adBreaks[2]}
+            { position: 1, ads: adBreaks[0] },
+            { position: 2, ads: adBreaks[1] },
+            { position: -1, ads: adBreaks[2] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         done();
       });
@@ -316,7 +316,7 @@ describe('AdsController', () => {
     });
 
     it('Should fire PLAYBACK_ENDED when snap-back after post-roll failed', (done) => {
-      const adBreaks = [[{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 1;
       const fakeCtrl = {
         done: true,
@@ -326,7 +326,7 @@ describe('AdsController', () => {
             player._adsController._adPlayed = true;
             ads.should.deep.equal(adBreaks[adBreakIndex]);
             adBreakIndex++;
-            setTimeout(() => player.dispatchEvent(new FakeEvent(AdEventType.AD_ERROR, {severity: 2})));
+            setTimeout(() => player.dispatchEvent(new FakeEvent(AdEventType.AD_ERROR, { severity: 2 })));
           } catch (e) {
             done(e);
           }
@@ -341,13 +341,13 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 1, ads: adBreaks[0]},
-            {position: 2, ads: adBreaks[1]},
-            {position: -1, ads: adBreaks[2]}
+            { position: 1, ads: adBreaks[0] },
+            { position: 2, ads: adBreaks[1] },
+            { position: -1, ads: adBreaks[2] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         done();
       });
@@ -358,7 +358,7 @@ describe('AdsController', () => {
     });
 
     it('Should not play skipped mid-roll (snap-back) on replay', (done) => {
-      const adBreaks = [[{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}]];
+      const adBreaks = [[{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }]];
       const fakeCtrl = {
         playAdNow: (ads): any => {
           try {
@@ -378,13 +378,13 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 2, ads: adBreaks[0]},
-            {position: 3, ads: adBreaks[1]}
+            { position: 2, ads: adBreaks[0] },
+            { position: 3, ads: adBreaks[1] }
           ]
         }
       });
       let firstPlay = true;
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
         if (firstPlay) {
           player.play();
@@ -400,14 +400,7 @@ describe('AdsController', () => {
     });
 
     it('Should play the in reverse (snap-back)', (done) => {
-      const adBreaks = [
-        [{url: ['PRE_ROLL']}],
-        [{url: ['MID_ROLL_3']}],
-        [{url: ['MID_ROLL_2']}],
-        [{url: ['MID_ROLL_1']}],
-        [{url: ['MID_ROLL_4']}],
-        [{url: ['POST_ROLL']}]
-      ];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_3'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_4'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 0;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -438,16 +431,16 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 0, ads: adBreaks[0]},
-            {position: 1, ads: adBreaks[3]},
-            {position: 2, ads: adBreaks[2]},
-            {position: 3, ads: adBreaks[1]},
-            {position: 4, ads: adBreaks[4]},
-            {position: -1, ads: adBreaks[5]}
+            { position: 0, ads: adBreaks[0] },
+            { position: 1, ads: adBreaks[3] },
+            { position: 2, ads: adBreaks[2] },
+            { position: 3, ads: adBreaks[1] },
+            { position: 4, ads: adBreaks[4] },
+            { position: -1, ads: adBreaks[5] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.currentTime = 3;
       });
@@ -455,7 +448,7 @@ describe('AdsController', () => {
     });
 
     it('Should skip the pre-roll and first mid-roll as playback.startTime configured', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 2;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -483,19 +476,19 @@ describe('AdsController', () => {
         },
         advertising: {
           adBreaks: [
-            {position: 0, ads: adBreaks[0]},
-            {position: 1, ads: adBreaks[1]},
-            {position: 2, ads: adBreaks[2]},
-            {position: -1, ads: adBreaks[3]}
+            { position: 0, ads: adBreaks[0] },
+            { position: 1, ads: adBreaks[1] },
+            { position: 2, ads: adBreaks[2] },
+            { position: -1, ads: adBreaks[3] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should skip the pre-roll and first mid-roll as playAdsAfterTime configured', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 2;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -521,19 +514,19 @@ describe('AdsController', () => {
         advertising: {
           playAdsAfterTime: 1,
           adBreaks: [
-            {position: 0, ads: adBreaks[0]},
-            {position: 1, ads: adBreaks[1]},
-            {position: 2, ads: adBreaks[2]},
-            {position: -1, ads: adBreaks[3]}
+            { position: 0, ads: adBreaks[0] },
+            { position: 1, ads: adBreaks[1] },
+            { position: 2, ads: adBreaks[2] },
+            { position: -1, ads: adBreaks[3] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should not skip even playback.startTime since playAdsAfterTime configured', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL']}], [{url: ['MID_ROLL_1']}], [{url: ['MID_ROLL_2']}], [{url: ['POST_ROLL']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL'] }], [{ url: ['MID_ROLL_1'] }], [{ url: ['MID_ROLL_2'] }], [{ url: ['POST_ROLL'] }]];
       let adBreakIndex = 0;
       const fakeCtrl = {
         playAdNow: (ads): any => {
@@ -562,19 +555,19 @@ describe('AdsController', () => {
         advertising: {
           playAdsAfterTime: -1,
           adBreaks: [
-            {position: 0, ads: adBreaks[0]},
-            {position: 1, ads: adBreaks[1]},
-            {position: 2, ads: adBreaks[2]},
-            {position: -1, ads: adBreaks[3]}
+            { position: 0, ads: adBreaks[0] },
+            { position: 1, ads: adBreaks[1] },
+            { position: 2, ads: adBreaks[2] },
+            { position: -1, ads: adBreaks[3] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should unify 2 pre-rolls', (done) => {
-      const adBreaks = [[{url: ['PRE_ROLL_1']}, {url: ['PRE_ROLL_2']}]];
+      const adBreaks = [[{ url: ['PRE_ROLL_1'] }, { url: ['PRE_ROLL_2'] }]];
       const fakeCtrl = {
         playAdNow: (ads): any => {
           try {
@@ -595,17 +588,17 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 0, ads: [adBreaks[0][0]]},
-            {position: 0, ads: [adBreaks[0][1]]}
+            { position: 0, ads: [adBreaks[0][0]] },
+            { position: 0, ads: [adBreaks[0][1]] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should unify 2 mid-rolls', (done) => {
-      const adBreaks = [[{url: ['MID_ROLL_1']}, {url: ['MID_ROLL_2']}]];
+      const adBreaks = [[{ url: ['MID_ROLL_1'] }, { url: ['MID_ROLL_2'] }]];
       const fakeCtrl = {
         playAdNow: (ads): any => {
           try {
@@ -626,17 +619,17 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 2, ads: [adBreaks[0][0]]},
-            {position: 2, ads: [adBreaks[0][1]]}
+            { position: 2, ads: [adBreaks[0][0]] },
+            { position: 2, ads: [adBreaks[0][1]] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
     it('Should unify 2 post-rolls', (done) => {
-      const adBreaks = [[{url: ['POST_ROLL_1']}, {url: ['POST_ROLL_2']}]];
+      const adBreaks = [[{ url: ['POST_ROLL_1'] }, { url: ['POST_ROLL_2'] }]];
       const fakeCtrl = {
         playAdNow: (ads): any => {
           try {
@@ -657,12 +650,12 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: -1, ads: [adBreaks[0][0]]},
-            {position: -1, ads: [adBreaks[0][1]]}
+            { position: -1, ads: [adBreaks[0][0]] },
+            { position: -1, ads: [adBreaks[0][1]] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
@@ -677,7 +670,7 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{position: 10, ads: [{url: ['MID_ROLL_1']}]}]
+          adBreaks: [{ position: 10, ads: [{ url: ['MID_ROLL_1'] }] }]
         }
       });
       player.addEventListener(CustomEventType.PLAYBACK_ENDED, () => {
@@ -688,7 +681,7 @@ describe('AdsController', () => {
           done(e);
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
 
@@ -743,24 +736,24 @@ describe('AdsController', () => {
       player.configure({
         advertising: {
           adBreaks: [
-            {position: 10, ads: [{url: ['']}]},
-            {percentage: 60, ads: [{url: ['']}]},
-            {every: 5, ads: [{url: ['']}]},
-            {position: 0.5, percentage: 50, ads: [{url: ['']}]},
-            {position: 1, every: 15, ads: [{url: ['']}]},
-            {percentage: 80, every: 10, ads: [{url: ['']}]},
-            {position: 2, percentage: 60, every: 20, ads: [{url: ['']}]}
+            { position: 10, ads: [{ url: [''] }] },
+            { percentage: 60, ads: [{ url: [''] }] },
+            { every: 5, ads: [{ url: [''] }] },
+            { position: 0.5, percentage: 50, ads: [{ url: [''] }] },
+            { position: 1, every: 15, ads: [{ url: [''] }] },
+            { percentage: 80, every: 10, ads: [{ url: [''] }] },
+            { position: 2, percentage: 60, every: 20, ads: [{ url: [''] }] }
           ]
         }
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.play();
     });
   });
 
   describe('playAdNow', () => {
     it('Should play pre-roll', (done) => {
-      const preroll = [{url: ['PRE_ROLL']}];
+      const preroll = [{ url: ['PRE_ROLL'] }];
       const fakeCtrl = {
         playAdNow: (ads): any => {
           try {
@@ -774,12 +767,12 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.ads.playAdNow(preroll);
     });
 
     it('Should play mid-roll', (done) => {
-      const midroll = [{url: ['MID_ROLL']}];
+      const midroll = [{ url: ['MID_ROLL'] }];
       const fakeCtrl = {
         playAdNow: (ads): any => {
           try {
@@ -793,7 +786,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player.ads.playAdNow(midroll);
       });
@@ -801,7 +794,7 @@ describe('AdsController', () => {
     });
 
     it('Should not play mid-roll while ad break', (done) => {
-      const midroll = [{url: ['MID_ROLL']}];
+      const midroll = [{ url: ['MID_ROLL'] }];
       const fakeCtrl = {
         playAdNow: (): any => {
           done(new Error('Should not play ad while ad break'));
@@ -810,7 +803,7 @@ describe('AdsController', () => {
       sandbox.stub(player._controllerProvider, 'getAdsControllers').callsFake(() => {
         return [fakeCtrl];
       });
-      player.setMedia({sources: SourcesConfig.Mp4});
+      player.setMedia({ sources: SourcesConfig.Mp4 });
       player.addEventListener(CustomEventType.FIRST_PLAY, () => {
         player._adsController._adBreak = true;
         player.ads.playAdNow(midroll);
@@ -821,13 +814,13 @@ describe('AdsController', () => {
   });
 
   describe('Prebid', () => {
-    const preroll = [{url: ['PREBID_PRE_ROLL', 'PRE_ROLL'], prebid: {}}];
-    const midroll = [{url: ['PREBID_MID_ROLL', 'MID_ROLL'], prebid: {}}];
+    const preroll = [{ url: ['PREBID_PRE_ROLL', 'PRE_ROLL'], prebid: {} }];
+    const midroll = [{ url: ['PREBID_MID_ROLL', 'MID_ROLL'], prebid: {} }];
 
     before(() => {
       config = Utils.Object.mergeDeep({}, getConfigStructure(), {
         advertising: {
-          prebid: {libUrl: 'dummyUrl'}
+          prebid: { libUrl: 'dummyUrl' }
         },
         plugins: {
           ima: {}
@@ -852,16 +845,16 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
+          adBreaks: [{ position: 0, ads: [{ url: ['PRE_ROLL'], prebid: {} }] }]
         }
       });
       sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
       sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
-        return Promise.resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+        return Promise.resolve([{ vastUrl: 'PREBID_PRE_ROLL' }]);
       });
-      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.setMedia({ sources: SourcesConfig.Mp4, session: {}, plugins: {} });
       player.play();
     });
 
@@ -882,7 +875,7 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
+          adBreaks: [{ position: 0, ads: [{ url: ['PRE_ROLL'], prebid: {} }] }]
         }
       });
       sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
@@ -891,14 +884,14 @@ describe('AdsController', () => {
       sandbox.stub(player._adsController._prebidManager, '_loadPrebidSDKLib').callsFake(() => {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+            resolve([{ vastUrl: 'PREBID_PRE_ROLL' }]);
           }, 3000);
         });
       });
       sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
-        return Promise.resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+        return Promise.resolve([{ vastUrl: 'PREBID_PRE_ROLL' }]);
       });
-      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.setMedia({ sources: SourcesConfig.Mp4, session: {}, plugins: {} });
       player.play();
     });
 
@@ -919,7 +912,7 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{position: 0, ads: [{url: ['PRE_ROLL'], prebid: {}}]}]
+          adBreaks: [{ position: 0, ads: [{ url: ['PRE_ROLL'], prebid: {} }] }]
         }
       });
       sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
@@ -928,11 +921,11 @@ describe('AdsController', () => {
       sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve([{vastUrl: 'PREBID_PRE_ROLL'}]);
+            resolve([{ vastUrl: 'PREBID_PRE_ROLL' }]);
           }, 3000);
         });
       });
-      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.setMedia({ sources: SourcesConfig.Mp4, session: {}, plugins: {} });
       player.play();
     });
 
@@ -953,16 +946,16 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{position: 2, ads: [{url: ['MID_ROLL'], prebid: {}}]}]
+          adBreaks: [{ position: 2, ads: [{ url: ['MID_ROLL'], prebid: {} }] }]
         }
       });
       sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
       });
       sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
-        return Promise.resolve([{vastUrl: 'PREBID_MID_ROLL'}]);
+        return Promise.resolve([{ vastUrl: 'PREBID_MID_ROLL' }]);
       });
-      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.setMedia({ sources: SourcesConfig.Mp4, session: {}, plugins: {} });
       player.play();
     });
 
@@ -983,7 +976,7 @@ describe('AdsController', () => {
       });
       player.configure({
         advertising: {
-          adBreaks: [{position: 2, ads: [{url: ['MID_ROLL'], prebid: {}}]}]
+          adBreaks: [{ position: 2, ads: [{ url: ['MID_ROLL'], prebid: {} }] }]
         }
       });
       sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
@@ -992,11 +985,11 @@ describe('AdsController', () => {
       sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve([{vastUrl: 'PREBID_MID_ROLL'}]);
+            resolve([{ vastUrl: 'PREBID_MID_ROLL' }]);
           }, 5000);
         });
       });
-      player.setMedia({sources: SourcesConfig.Mp4, session: {}, plugins: {}});
+      player.setMedia({ sources: SourcesConfig.Mp4, session: {}, plugins: {} });
       player.play();
     });
   });

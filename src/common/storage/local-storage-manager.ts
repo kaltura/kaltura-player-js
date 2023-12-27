@@ -1,9 +1,9 @@
-import {EventManager} from '@playkit-js/playkit-js';
-import {BaseStorageManager} from './base-storage-manager';
-import { KalturaPlayer } from "../../kaltura-player";
+import { EventManager } from '@playkit-js/playkit-js';
+import { BaseStorageManager } from './base-storage-manager';
+import { KalturaPlayer } from '../../kaltura-player';
 
 export default class LocalStorageManager extends BaseStorageManager {
-  static StorageKeys: {[key: string]: string} = {
+  public static StorageKeys: { [key: string]: string } = {
     MUTED: 'muted',
     VOLUME: 'volume',
     AUDIO_LANG: 'audioLanguage',
@@ -12,11 +12,11 @@ export default class LocalStorageManager extends BaseStorageManager {
     TEXT_STYLE: 'textStyle'
   };
 
-  static initialize() {
+  public static initialize(): void {
     this.init(this.name);
   }
 
-  static getStorageObject() {
+  public static getStorageObject(): Storage {
     return localStorage;
   }
 
@@ -27,9 +27,9 @@ export default class LocalStorageManager extends BaseStorageManager {
    * @static
    * @returns {void}
    */
-  static attach(player: KalturaPlayer): void {
+  public static attach(player: KalturaPlayer): void {
     this._logger.debug('Attach local storage');
-    let eventManager = new EventManager();
+    const eventManager = new EventManager();
     eventManager.listen(player, player.Event.UI.USER_CLICKED_MUTE, () => {
       if (!player.isCasting()) {
         this.setItem(this.StorageKeys.MUTED, player.muted);
@@ -48,12 +48,12 @@ export default class LocalStorageManager extends BaseStorageManager {
       }
     });
 
-    eventManager.listen(player, player.Event.UI.USER_SELECTED_AUDIO_TRACK, event => {
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_AUDIO_TRACK, (event) => {
       const audioTrack = event.payload.audioTrack;
       this.setItem(this.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
 
-    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, event => {
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, (event) => {
       const textTrack = event.payload.captionTrack;
       if (textTrack.language !== 'off') {
         this.setItem(this.StorageKeys.TEXT_LANG, textTrack.language);
@@ -63,9 +63,9 @@ export default class LocalStorageManager extends BaseStorageManager {
       }
     });
 
-    const onToggleCaptions = () => {
-      eventManager.listenOnce(player, player.Event.Core.TEXT_TRACK_CHANGED, event => {
-        const {selectedTextTrack} = event.payload;
+    const onToggleCaptions = (): any => {
+      eventManager.listenOnce(player, player.Event.Core.TEXT_TRACK_CHANGED, (event) => {
+        const { selectedTextTrack } = event.payload;
         if (selectedTextTrack.language !== 'off') {
           this.setItem(this.StorageKeys.TEXT_LANG, selectedTextTrack.language);
           this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
@@ -78,7 +78,7 @@ export default class LocalStorageManager extends BaseStorageManager {
     eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, onToggleCaptions);
     eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, onToggleCaptions);
 
-    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, event => {
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
       try {
         const textStyle = JSON.stringify(event.payload.captionsStyle);
         this.setItem(this.StorageKeys.TEXT_STYLE, textStyle);
@@ -96,7 +96,7 @@ export default class LocalStorageManager extends BaseStorageManager {
    * @static
    * @returns {?Object} - The stored text style object
    */
-  static getPlayerTextStyle(): any | undefined {
+  public static getPlayerTextStyle(): any | undefined {
     return this.getItem(this.StorageKeys.TEXT_STYLE);
   }
 }

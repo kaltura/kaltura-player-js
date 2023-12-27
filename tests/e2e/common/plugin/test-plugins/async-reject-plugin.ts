@@ -1,7 +1,7 @@
-import {BasePlugin} from '../../../../../src';
-import {Utils} from '@playkit-js/playkit-js';
-import {KalturaPlayer} from '../../../../../src/kaltura-player';
-import {DeferredPromise} from '../../../../../src/types/utils/deferred-promise';
+import { BasePlugin } from '../../../../../src';
+import { Utils } from '@playkit-js/playkit-js';
+import { KalturaPlayer } from '../../../../../src/kaltura-player';
+import { DeferredPromise } from '../../../../../src/types/utils/deferred-promise';
 
 export default class AsyncRejectPlugin extends BasePlugin {
   public static DELAY_ASYNC = 300;

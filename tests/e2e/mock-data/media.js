@@ -197,4 +197,4 @@ const MediaConfig = {
   }
 };
 
-export {MediaConfig};
+export { MediaConfig };

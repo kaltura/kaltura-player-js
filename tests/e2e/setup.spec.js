@@ -1,8 +1,8 @@
 import '../../src/index';
-import {setup} from '../../src';
+import { setup } from '../../src';
 import * as TestUtils from '../utils/test-utils';
 import LocalStorageManager from '../../src/common/storage/local-storage-manager';
-import {TextStyle} from '@playkit-js/playkit-js';
+import { TextStyle } from '@playkit-js/playkit-js';
 import * as sinon from 'sinon';
 
 const targetId = 'player-placeholder_setup.spec';
@@ -45,7 +45,7 @@ describe('setup', () => {
   it.skip('should create a full player', (done) => {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
-    kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+    kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
       kalturaPlayer.config.sources.id.should.equal(entryId);
       kalturaPlayer.config.session.partnerId.should.equal(partnerId);
       done();
@@ -60,7 +60,7 @@ describe('setup', () => {
   it.skip('should decorate the selected source by session id', (done) => {
     kalturaPlayer = setup(config);
     kalturaPlayer.loadMedia.should.exist;
-    kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+    kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
       kalturaPlayer.ready().then(() => {
         const sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
         sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);

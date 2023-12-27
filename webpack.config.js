@@ -27,13 +27,13 @@ module.exports = (env, { mode }) => {
       [`kaltura-${playerType}-player.js`]: './src/index.ts',
       [`kaltura-${playerType}-player.mjs`]: './src/index.ts'
     },
-    devtool:'source-map',
+    devtool: 'source-map',
     module: {
       rules: [
         {
           test: /\.js$/,
-          enforce: "pre",
-          use: ["source-map-loader"],
+          enforce: 'pre',
+          use: ['source-map-loader']
         },
         {
           test: /\.(ts|js)$/,
@@ -41,10 +41,16 @@ module.exports = (env, { mode }) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [['@babel/preset-env', {
-                bugfixes: true, // This option will be enabled by default in Babel 8.
-                // run 'npx browserslist' to see supported browsers and version by the current target config & 'npx babel --show-config' to see the babel final target config
-              }], '@babel/preset-typescript'],
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    bugfixes: true // This option will be enabled by default in Babel 8.
+                    // run 'npx browserslist' to see supported browsers and version by the current target config & 'npx babel --show-config' to see the babel final target config
+                  }
+                ],
+                '@babel/preset-typescript'
+              ]
             }
           }
         },
@@ -104,6 +110,6 @@ module.exports = (env, { mode }) => {
         ]
       })
     ],
-    ignoreWarnings: [/Failed to parse source map/],
+    ignoreWarnings: [/Failed to parse source map/]
   };
 };

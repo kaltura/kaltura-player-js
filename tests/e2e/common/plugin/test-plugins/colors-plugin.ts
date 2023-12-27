@@ -1,5 +1,5 @@
-import {BasePlugin} from '../../../../../src';
-import {KalturaPlayer as Player} from '../../../../../src/kaltura-player';
+import { BasePlugin } from '../../../../../src';
+import { KalturaPlayer as Player } from '../../../../../src/kaltura-player';
 
 export default class ColorsPlugin extends BasePlugin {
   private _favouriteColor: string = '';

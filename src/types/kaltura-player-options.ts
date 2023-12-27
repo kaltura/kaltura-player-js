@@ -6,8 +6,8 @@ import { UiConfig } from './ui-config';
 import { ViewabilityConfig } from './visibility-config';
 import { NetworkConfig } from './network-config';
 import { PluginsConfig } from './plugins-config';
-import {ProviderOptionsObject} from '@playkit-js/playkit-js-providers';
-import {PKAbrConfigObject, PKDimensionsConfig, PKSessionConfigObject, PKSourcesConfigObject, PKTextConfigObject} from '@playkit-js/playkit-js';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
+import { PKAbrConfigObject, PKDimensionsConfig, PKSessionConfigObject, PKSourcesConfigObject, PKTextConfigObject } from '@playkit-js/playkit-js';
 
 export interface KalturaPlayerConfig {
   targetId: string;

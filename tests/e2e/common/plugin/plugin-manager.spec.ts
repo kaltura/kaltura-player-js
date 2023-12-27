@@ -1,6 +1,6 @@
 // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import {PluginManager} from '../../../../src/common/plugins';
+import { PluginManager } from '../../../../src/common/plugins';
 import ColorsPlugin from './test-plugins/colors-plugin';
 import NumbersPlugin from './test-plugins/numbers-plugin';
 
@@ -110,17 +110,17 @@ describe('PluginManager.plugins', () => {
   });
 
   it("shouldn't load() the plugin, plugin is disabled in the config", () => {
-    pluginManager.load('colors', {}, {disable: true}).should.be.false;
+    pluginManager.load('colors', {}, { disable: true }).should.be.false;
   });
 
   it("shouldn't load() the plugin, plugin is disabled in the previous config", () => {
-    pluginManager.load('colors', {}, {disable: true}).should.be.false;
+    pluginManager.load('colors', {}, { disable: true }).should.be.false;
     pluginManager.load('colors', {}).should.be.false;
   });
 
   it('should load() the plugin, plugin is enable after is disabled in the config', () => {
-    pluginManager.load('colors', {}, {disable: true}).should.be.false;
-    pluginManager.load('colors', {}, {disable: false}).should.be.true;
+    pluginManager.load('colors', {}, { disable: true }).should.be.false;
+    pluginManager.load('colors', {}, { disable: false }).should.be.true;
     Object.keys(pluginManager._plugins).length.should.equal(1);
   });
 

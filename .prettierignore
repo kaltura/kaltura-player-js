@@ -1,0 +1,13 @@
+dist/
+lib/
+docs/
+.github/
+flow-typed/
+samples/
+coverage/
+CHANGELOG.md
+yarn.lock
+yarn-error.log
+LICENSE
+README.md
+

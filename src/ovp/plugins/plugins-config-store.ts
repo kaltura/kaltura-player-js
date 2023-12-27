@@ -3,9 +3,9 @@ import { BasePluginConfigStore, templateRegex } from '../../common/plugins/plugi
 import { Utils } from '@playkit-js/playkit-js';
 
 class PluginConfigStore extends BasePluginConfigStore {
-    private _ovpPluginsConfig: { [pluginName: string]: any } = {
-        ottAnalytics: {}
-    };
+  private _ovpPluginsConfig: { [pluginName: string]: any } = {
+    ottAnalytics: {}
+  };
 
   constructor() {
     super();
@@ -14,4 +14,4 @@ class PluginConfigStore extends BasePluginConfigStore {
   }
 }
 
-export {PluginConfigStore, templateRegex};
+export { PluginConfigStore, templateRegex };

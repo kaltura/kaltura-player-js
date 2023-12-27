@@ -1,19 +1,19 @@
 // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import {setup} from '../../src';
+import { setup } from '../../src';
 import * as TestUtils from '../utils/test-utils';
 import * as MediaMockData from './mock-data/media';
 import * as PlaylistMockData from './mock-data/playlist';
-import {PluginManager} from '../../src/common/plugins';
+import { PluginManager } from '../../src/common/plugins';
 import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
-import {KalturaPlayer as Player} from '../../src/kaltura-player';
+import { KalturaPlayer as Player } from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources.json';
-import {EventType as CoreEventType, FakeEvent, Utils, EventManager} from '@playkit-js/playkit-js';
+import { EventType as CoreEventType, FakeEvent, Utils, EventManager } from '@playkit-js/playkit-js';
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
-import {Provider} from '@playkit-js/playkit-js-providers';
-import {Images} from './mock-data/images';
+import { Provider } from '@playkit-js/playkit-js-providers';
+import { Images } from './mock-data/images';
 
 const targetId = 'player-placeholder_kaltura-player.spec';
 
@@ -79,7 +79,7 @@ describe('kaltura player api', () => {
       });
 
       it('should get media by id from the provider and set it', (done) => {
-        kalturaPlayer.loadMedia({playlistId: entryId}).then((mediaConfig) => {
+        kalturaPlayer.loadMedia({ playlistId: entryId }).then((mediaConfig) => {
           mediaConfig.sources.id.should.equal(entryId);
           kalturaPlayer.config.sources.id.should.equal(entryId);
           done();
@@ -104,7 +104,7 @@ describe('kaltura player api', () => {
           (kalturaPlayer.currentTime >= 10).should.be.true;
           done();
         });
-        kalturaPlayer.loadMedia({entryId}, {startTime: 10}).then(() => kalturaPlayer.play());
+        kalturaPlayer.loadMedia({ entryId }, { startTime: 10 }).then(() => kalturaPlayer.play());
       });
 
       it('should use the configured poster from loadMedia options', (done) => {
@@ -113,7 +113,7 @@ describe('kaltura player api', () => {
           kalturaPlayer.poster.should.equal(poster);
           done();
         });
-        kalturaPlayer.loadMedia({entryId}, {poster});
+        kalturaPlayer.loadMedia({ entryId }, { poster });
       });
 
       it('the reset stat should be false whenever an error occurs', (done) => {
@@ -127,7 +127,7 @@ describe('kaltura player api', () => {
       describe('maybeSetStreamPriority', () => {
         describe('media source mime type is video/youtube', () => {
           it('should add youtube to stream priority if not already set', (done) => {
-            kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
+            kalturaPlayer.loadMedia({ entryId: 'Youtube' }).then(() => {
               let hasYoutube = false;
               kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
                 if (sp.engine === 'youtube') {
@@ -153,7 +153,7 @@ describe('kaltura player api', () => {
                 ]
               }
             });
-            kalturaPlayer.loadMedia({entryId: 'Youtube'}).then(() => {
+            kalturaPlayer.loadMedia({ entryId: 'Youtube' }).then(() => {
               let hasYoutube = false;
               kalturaPlayer.config.playback.streamPriority.length.should.equal(1);
               kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
@@ -172,7 +172,7 @@ describe('kaltura player api', () => {
         });
         describe('media source mime type is not video/youtube', () => {
           it('should not add youtube to stream priority', (done) => {
-            kalturaPlayer.loadMedia({entryId: entryId}).then(() => {
+            kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
               let hasYoutube = false;
               kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
                 if (sp.engine === 'youtube') {
@@ -287,7 +287,7 @@ describe('kaltura player api', () => {
           kalturaPlayer.selectedSource.should.equal(event.payload.selectedSource[0]);
           done();
         });
-        kalturaPlayer.setMedia({sources: SourcesConfig.Mp4});
+        kalturaPlayer.setMedia({ sources: SourcesConfig.Mp4 });
         kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
       });
     });
@@ -311,9 +311,9 @@ describe('kaltura player api', () => {
       });
 
       it('should set the sources metadata with the provided epgId', (done) => {
-        kalturaPlayer.loadMedia({entryId}).then(() => {
-          kalturaPlayer.configure({sources: {metadata: {epgId: '54321'}}});
-          kalturaPlayer.setSourcesMetadata({epgId: '12345'});
+        kalturaPlayer.loadMedia({ entryId }).then(() => {
+          kalturaPlayer.configure({ sources: { metadata: { epgId: '54321' } } });
+          kalturaPlayer.setSourcesMetadata({ epgId: '12345' });
           try {
             kalturaPlayer.config.sources.metadata.epgId.should.equals('12345');
             kalturaPlayer.sources.metadata.epgId.should.equals('12345');
@@ -333,9 +333,7 @@ describe('kaltura player api', () => {
       beforeEach(() => {
         kalturaPlayer = setup(config);
         sinon.stub(kalturaPlayer._provider, 'getPlaylistConfig').callsFake((playlistInfo) => {
-          return playlistInfo.playlistId
-            ? Promise.resolve(PlaylistMockData.playlistByID)
-            : Promise.reject({success: false, data: 'Missing mandatory parameter'});
+          return playlistInfo.playlistId ? Promise.resolve(PlaylistMockData.playlistByID) : Promise.reject({ success: false, data: 'Missing mandatory parameter' });
         });
       });
 
@@ -344,7 +342,7 @@ describe('kaltura player api', () => {
       });
 
       it('should get playlist by id from the provider and set it - without config', (done) => {
-        kalturaPlayer.loadPlaylist({playlistId: playlistId}).then((playlistData) => {
+        kalturaPlayer.loadPlaylist({ playlistId: playlistId }).then((playlistData) => {
           playlistData.id.should.equal(playlistId);
           kalturaPlayer.playlist.id.should.equal(playlistData.id);
           done();
@@ -352,7 +350,7 @@ describe('kaltura player api', () => {
       });
 
       it('should get playlist by id from the provider and set it - with config', (done) => {
-        kalturaPlayer.loadPlaylist({playlistId: playlistId}, {options: {autoContinue: false}}).then((playlistData) => {
+        kalturaPlayer.loadPlaylist({ playlistId: playlistId }, { options: { autoContinue: false } }).then((playlistData) => {
           playlistData.id.should.equal(playlistId);
           kalturaPlayer.playlist.id.should.equal(playlistData.id);
           kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -378,9 +376,7 @@ describe('kaltura player api', () => {
       beforeEach(() => {
         kalturaPlayer = setup(config);
         sinon.stub(kalturaPlayer._provider, 'getEntryListConfig').callsFake((entryList) => {
-          return entryList.entries
-            ? Promise.resolve(PlaylistMockData.playlistByEntryList)
-            : Promise.reject({success: false, data: 'Missing mandatory parameter'});
+          return entryList.entries ? Promise.resolve(PlaylistMockData.playlistByEntryList) : Promise.reject({ success: false, data: 'Missing mandatory parameter' });
         });
       });
 
@@ -389,7 +385,7 @@ describe('kaltura player api', () => {
       });
 
       it('should get playlist by entry list from the provider and set it - without config', (done) => {
-        kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}).then((playlistData) => {
+        kalturaPlayer.loadPlaylistByEntryList({ entries: ['0_nwkp7jtx', '0_wifqaipd'] }).then((playlistData) => {
           playlistData.id.should.equal('a1234');
           kalturaPlayer.playlist.id.should.equal('a1234');
           done();
@@ -397,7 +393,7 @@ describe('kaltura player api', () => {
       });
 
       it('should get playlist by entry list from the provider and set it- with config', (done) => {
-        kalturaPlayer.loadPlaylistByEntryList({entries: ['0_nwkp7jtx', '0_wifqaipd']}, {options: {autoContinue: false}}).then((playlistData) => {
+        kalturaPlayer.loadPlaylistByEntryList({ entries: ['0_nwkp7jtx', '0_wifqaipd'] }, { options: { autoContinue: false } }).then((playlistData) => {
           playlistData.id.should.equal('a1234');
           kalturaPlayer.playlist.id.should.equal('a1234');
           kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -434,10 +430,7 @@ describe('kaltura player api', () => {
       });
 
       it('should set the playlist and evaluate the plugins - with config and entry list', () => {
-        kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList, {options: {autoContinue: false}}, [
-          {entryId: '0_nwkp7jtx'},
-          {entryId: '0_wifqaipd'}
-        ]);
+        kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList, { options: { autoContinue: false } }, [{ entryId: '0_nwkp7jtx' }, { entryId: '0_wifqaipd' }]);
         kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -486,7 +479,7 @@ describe('kaltura player api', () => {
           kalturaPlayer.playlist.options.autoContinue.should.be.false;
           done();
         });
-        kalturaPlayer.configure({playlist: PlaylistMockData.playlistByConfig});
+        kalturaPlayer.configure({ playlist: PlaylistMockData.playlistByConfig });
       });
     });
 
@@ -508,7 +501,7 @@ describe('kaltura player api', () => {
       });
 
       it('should load the playlist with the preset config', () => {
-        kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
+        kalturaPlayer.setPlaylist({ id: 'a12345', items: [] }, { countdown: { showing: false } });
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer.playlist.countdown.showing.should.be.false;
@@ -536,7 +529,7 @@ describe('kaltura player api', () => {
             }
           }
         });
-        kalturaPlayer.setPlaylist({id: 'a12345', items: []}, {countdown: {showing: false}});
+        kalturaPlayer.setPlaylist({ id: 'a12345', items: [] }, { countdown: { showing: false } });
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer.playlist.countdown.showing.should.be.false;
@@ -1032,7 +1025,7 @@ describe('kaltura player api', () => {
           done(e);
         }
       });
-      player.dispatchEvent(new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, {error: 'mock failure'}));
+      player.dispatchEvent(new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, { error: 'mock failure' }));
     });
   });
 
@@ -1046,7 +1039,7 @@ describe('kaltura player api', () => {
     });
 
     it('should pass deep object as plugin config', () => {
-      const test = {a: {b: {c: 'd'}}};
+      const test = { a: { b: { c: 'd' } } };
       const config = {
         plugins: {
           colors: {
@@ -1165,7 +1158,7 @@ describe('kaltura player api', () => {
       });
 
       it('should evaluate the plugin config - first media', (done) => {
-        player.loadMedia({entryId}).then(() => {
+        player.loadMedia({ entryId }).then(() => {
           try {
             player.plugins.colors.config.entryId.should.equals(entryId);
             player.plugins.colors.config.partnerId.should.equals(1091);
@@ -1179,8 +1172,8 @@ describe('kaltura player api', () => {
       });
 
       it('should evaluate the default plugin config - second media', (done) => {
-        player.loadMedia({entryId}).then(() => {
-          player.loadMedia({entryId: entryId2}).then(() => {
+        player.loadMedia({ entryId }).then(() => {
+          player.loadMedia({ entryId: entryId2 }).then(() => {
             try {
               player.plugins.colors.config.entryId.should.equals(entryId2);
               player.plugins.colors.config.partnerId.should.equals(1091);
@@ -1196,7 +1189,7 @@ describe('kaltura player api', () => {
 
       it('should plugin from setMedia be available after sources selected', () => {
         PluginManager.register('numbers', NumbersPlugin);
-        player.setMedia({sources: SourcesConfig.Mp4, plugins: {numbers: {}}});
+        player.setMedia({ sources: SourcesConfig.Mp4, plugins: { numbers: {} } });
         (player.plugins.numbers !== undefined).should.be.true;
         (player.plugins.numbers !== null).should.be.true;
         player.plugins.numbers.should.be.instanceOf(NumbersPlugin);
@@ -1215,11 +1208,11 @@ describe('kaltura player api', () => {
             done(e);
           }
         });
-        player.loadMedia({entryId});
+        player.loadMedia({ entryId });
       });
 
       it('should evaluate the configured plugin config - second media', (done) => {
-        player.loadMedia({entryId}).then(() => {
+        player.loadMedia({ entryId }).then(() => {
           player.configure({
             plugins: {
               colors: {
@@ -1228,7 +1221,7 @@ describe('kaltura player api', () => {
               }
             }
           });
-          player.loadMedia({entryId: entryId2}).then(() => {
+          player.loadMedia({ entryId: entryId2 }).then(() => {
             try {
               player.plugins.colors.config.entryId.should.equals(entryId2);
               player.plugins.colors.config.partnerId.should.equals(entryId2);
@@ -1261,7 +1254,7 @@ describe('kaltura player api', () => {
             partnerId: '{{partnerId}}'
           }
         };
-        player2.loadMedia({entryId}).then(() => {
+        player2.loadMedia({ entryId }).then(() => {
           try {
             player2.plugins.colors.config.entryId.should.equals(entryId);
             player2.plugins.colors.config.partnerId.should.equals(1091);

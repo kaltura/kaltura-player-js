@@ -1,5 +1,5 @@
 import * as TestUtils from '../../../utils/test-utils';
-import {ViewabilityManager, ViewabilityType} from '../../../../src/common/utils/viewability-manager';
+import { ViewabilityManager, ViewabilityType } from '../../../../src/common/utils/viewability-manager';
 
 describe('ViewabilityManager', () => {
   const targetId = 'ViewabilityManagerSpecDiv';

@@ -1,10 +1,6 @@
 {
-  "extends": [
-    "plugin:mocha/recommended"
-  ],
-  "plugins": [
-    "mocha"
-  ],
+  "extends": ["plugin:mocha/recommended"],
+  "plugins": ["mocha"],
   "globals": {
     "sinon": true,
     "__VERSION__": true,

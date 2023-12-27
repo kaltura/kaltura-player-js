@@ -1,8 +1,8 @@
-import {BasePlugin} from '../../../../src';
+import { BasePlugin } from '../../../../src';
 
 describe('BasePlugin', () => {
   let basePlugin;
-  const config = {x: 1, y: 2};
+  const config = { x: 1, y: 2 };
 
   beforeEach(() => {
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
@@ -42,9 +42,9 @@ describe('BasePlugin', () => {
   });
 
   it('should update the plugin config', () => {
-    const update = {y: 'hello'};
+    const update = { y: 'hello' };
     basePlugin.updateConfig(update);
-    basePlugin.getConfig().should.deep.equal({x: 1, y: 'hello'});
+    basePlugin.getConfig().should.deep.equal({ x: 1, y: 'hello' });
   });
 
   it('should throw isValid() exception', () => {

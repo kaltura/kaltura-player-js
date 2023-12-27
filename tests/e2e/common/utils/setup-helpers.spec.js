@@ -1,9 +1,9 @@
 import * as TestUtils from '../../../utils/test-utils';
-import {ValidationErrorType} from '../../../../src/common/utils/validation-error';
+import { ValidationErrorType } from '../../../../src/common/utils/validation-error';
 import LocalStorageManager from '../../../../src/common/storage/local-storage-manager';
 import * as SetupHelpers from '../../../../src/common/utils/setup-helpers';
-import {Env} from '@playkit-js/playkit-js';
-import {Images} from '../../mock-data/images';
+import { Env } from '@playkit-js/playkit-js';
+import { Images } from '../../mock-data/images';
 
 const targetId = 'player-placeholder_setup-helpers.spec';
 
@@ -28,7 +28,7 @@ describe('error handling', () => {
 
   it('should throw error because no DOM element found', (done) => {
     try {
-      SetupHelpers.validateConfig({targetId: 'my-player-div'});
+      SetupHelpers.validateConfig({ targetId: 'my-player-div' });
     } catch (e) {
       e.message.should.equal(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + 'my-player-div');
       done();
@@ -49,7 +49,7 @@ describe('error handling', () => {
       div.id = 'test-id';
       document.body.appendChild(div);
       (navigator.sendBeacon.getCall(0) === null).should.be.true;
-      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {}});
+      SetupHelpers.validateProviderConfig({ targetId: div.id, provider: {} });
       document.body.removeChild(div);
       navigator.sendBeacon
         .getCall(0)
@@ -64,7 +64,7 @@ describe('error handling', () => {
       div.id = 'test-id';
       document.body.appendChild(div);
       (navigator.sendBeacon.getCall(0) === null).should.be.true;
-      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {partnerId: 2504201}});
+      SetupHelpers.validateProviderConfig({ targetId: div.id, provider: { partnerId: 2504201 } });
       document.body.removeChild(div);
       navigator.sendBeacon
         .getCall(0)
@@ -76,11 +76,11 @@ describe('error handling', () => {
 
     it('should the beacon include clientVer', (done) => {
       const div = document.createElement('DIV');
-      window.__kalturaplayerdata = {productVersion: '7.37'};
+      window.__kalturaplayerdata = { productVersion: '7.37' };
       div.id = 'test-id';
       document.body.appendChild(div);
       (navigator.sendBeacon.getCall(0) === null).should.be.true;
-      SetupHelpers.validateProviderConfig({targetId: div.id, provider: {partnerId: 2504201}});
+      SetupHelpers.validateProviderConfig({ targetId: div.id, provider: { partnerId: 2504201 } });
       document.body.removeChild(div);
       navigator.sendBeacon
         .getCall(0)
@@ -211,7 +211,7 @@ describe('setStorageConfig', () => {
   });
 
   it('should take the storage config in case no player config', () => {
-    const config = {player: {}};
+    const config = { player: {} };
     const storageConfig = {
       playback: {
         textLanguage: 'eng',

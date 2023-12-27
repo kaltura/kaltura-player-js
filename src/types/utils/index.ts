@@ -1,2 +1,2 @@
-export * from './class-constructor'
-export * from './deferred-promise'
+export * from './class-constructor';
+export * from './deferred-promise';

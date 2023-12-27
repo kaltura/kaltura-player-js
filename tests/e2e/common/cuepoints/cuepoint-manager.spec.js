@@ -1,8 +1,8 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import SourcesConfig from '../../configs/sources.json';
-import {getConfigStructure} from '../../../utils/test-utils';
-import {KalturaPlayer as Player} from '../../../../src/kaltura-player';
-import {CuePointManager} from '../../../../src/common/cuepoint/cuepoint-manager';
+import { getConfigStructure } from '../../../utils/test-utils';
+import { KalturaPlayer as Player } from '../../../../src/kaltura-player';
+import { CuePointManager } from '../../../../src/common/cuepoint/cuepoint-manager';
 
 describe('CuePointManager', () => {
   let config, player, sandbox;
@@ -26,7 +26,7 @@ describe('CuePointManager', () => {
   });
 
   it('should create and add text-track', () => {
-    player.setMedia({sources: SourcesConfig.Mp4});
+    player.setMedia({ sources: SourcesConfig.Mp4 });
     expect(player.cuePointManager._textTrack).to.eql(undefined);
     player.cuePointManager.addCuePoints([]);
     player.ready().then(() => {
@@ -52,7 +52,7 @@ describe('CuePointManager', () => {
         endTime: 15
       }
     ];
-    player.setMedia({sources: SourcesConfig.Mp4});
+    player.setMedia({ sources: SourcesConfig.Mp4 });
     player.ready().then(() => {
       expect(player.cuePointManager.getAllCuePoints().length).eql(0);
       player.cuePointManager.addCuePoints(cuePoints);

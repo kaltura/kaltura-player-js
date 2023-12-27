@@ -1,6 +1,6 @@
 import { PlaylistItem } from '../../common/playlist/playlist-item';
 import { PlaylistConfigObject } from './playlist-config-object';
-import {ProviderPlaylistMetadataObject} from '@playkit-js/playkit-js-providers';
+import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers';
 
 /**
  * @typedef {Object} KPPlaylistObject

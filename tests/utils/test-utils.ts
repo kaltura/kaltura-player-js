@@ -88,4 +88,4 @@ function setServerConfig(value): void {
   window.__kalturaplayerdata = value;
 }
 
-export {createElement, removeElement, removeVideoElementsFromTestPage, getConfigStructure, setServerConfig};
+export { createElement, removeElement, removeVideoElementsFromTestPage, getConfigStructure, setServerConfig };

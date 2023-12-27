@@ -1,4 +1,4 @@
-import {PKSourcesConfigObject, PlayerStreamTypes, StreamType, Utils} from '@playkit-js/playkit-js';
+import { PKSourcesConfigObject, PlayerStreamTypes, StreamType, Utils } from '@playkit-js/playkit-js';
 import { getServerUIConf } from './setup-helpers';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PartialKPOptionsObject } from '../../types';
