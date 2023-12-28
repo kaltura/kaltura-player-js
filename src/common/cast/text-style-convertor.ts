@@ -46,10 +46,7 @@ class TextStyleConverter {
       let digit = rgb[3];
       digit = Math.round(digit * 100) / 100;
       const alpha = Math.round(digit * 255);
-      hex += (alpha + 0x10000)
-        .toString(16)
-        .substr(-2)
-        .toUpperCase();
+      hex += (alpha + 0x10000).toString(16).substr(-2).toUpperCase();
     } else {
       hex += 'FF';
     }
@@ -57,7 +54,7 @@ class TextStyleConverter {
   }
 
   public static hexToRGB(hex: string): [number, number, number] {
-    const rgb: [number, number, number] = ([] as unknown) as [number, number, number];
+    const rgb: [number, number, number] = [] as unknown as [number, number, number];
     hex = hex.slice(1);
     const channels = hex.match(/.{1,2}/g);
     for (let i = 0; i < 3; i++) {

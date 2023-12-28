@@ -10,16 +10,14 @@ const MediaConfig = {
       hls: [
         {
           id: '0_wifqaipd_861,applehttp',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j,0_xcrwyk2n/a.m3u8?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j,0_xcrwyk2n/a.m3u8?uiConfId=15215933',
           mimetype: 'application/x-mpegURL'
         }
       ],
       dash: [
         {
           id: '0_wifqaipd_911,mpegdash',
-          url:
-            'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/mpegdash/flavorIds/0_m131krws,0_5407xm9j,0_xcrwyk2n/a.mpd?uiConfId=15215933',
+          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/mpegdash/flavorIds/0_m131krws,0_5407xm9j,0_xcrwyk2n/a.mpd?uiConfId=15215933',
           mimetype: 'application/dash+xml'
         }
       ],

@@ -280,8 +280,7 @@ const playlistByConfig = {
         hls: [
           {
             mimetype: 'application/x-mpegURL',
-            url:
-              'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_fu4ifhie/protocol/http/format/applehttp/flavorIds/0_wbawecj0,0_cj2odpyt,0_uj45vim0,0_xlpm7btj,0_6p25la0i,0_cmq5aigy/a.m3u8'
+            url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_fu4ifhie/protocol/http/format/applehttp/flavorIds/0_wbawecj0,0_cj2odpyt,0_uj45vim0,0_xlpm7btj,0_6p25la0i,0_cmq5aigy/a.m3u8'
           }
         ]
       }

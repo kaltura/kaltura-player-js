@@ -172,7 +172,7 @@ function _formatConfigString(config: string): any {
   let configObj;
   config = _sanitize(config);
   try {
-    configObj = JSON.parse(config, function(key) {
+    configObj = JSON.parse(config, function (key) {
       try {
         return JSON.parse(this[key]);
       } catch (e) {
