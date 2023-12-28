@@ -75,6 +75,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "6.8.1",
     "eslint": "8.22.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-mocha": "^10.2.0",
     "eslint-plugin-prettier": "^5.1.2",
     "karma": "^6.4.0",
