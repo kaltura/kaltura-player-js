@@ -80,7 +80,10 @@ describe('setup', () => {
       backgroundOpacity: 1,
       fontEdge: []
     });
-    sandbox.stub(LocalStorageManager, 'getItem').withArgs('textStyle').returns(textStyle);
+    sandbox
+      .stub(LocalStorageManager, 'getItem')
+      .withArgs('textStyle')
+      .returns(textStyle);
     kalturaPlayer = setup(config);
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });

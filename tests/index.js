@@ -1,8 +1,7 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon/pkg/sinon-esm';
-// import 'promise-polyfill/src/polyfill';
-// eslint-disable-next-line no-undef
+
 chai.should();
 chai.use(sinonChai);
 global.chai = chai;

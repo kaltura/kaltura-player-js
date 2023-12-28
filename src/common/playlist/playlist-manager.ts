@@ -5,7 +5,7 @@ import { PlaylistEventType } from './playlist-event-type';
 import { Playlist } from './playlist';
 import { PlaylistItem } from './playlist-item';
 import { mergeProviderPluginsConfig } from '../utils/setup-helpers';
-import { PlaylistOptions, PlaylistCountdownOptions, KalturaPlayerConfig, PluginsConfig,KPPlaylistObject, PlaylistConfigObject } from '../../types';
+import { PlaylistOptions, PlaylistCountdownOptions, KalturaPlayerConfig, PluginsConfig, KPPlaylistObject, PlaylistConfigObject } from '../../types';
 
 /**
  * @class PlaylistManager

@@ -3,7 +3,7 @@ import evaluate from '../utils/evaluate';
 import { getReferrer } from '../utils/kaltura-params';
 import { Utils, getLogger } from '@playkit-js/playkit-js';
 import { getServerUIConf } from '../utils/setup-helpers';
-import { KalturaPlayerConfig, PluginsConfig } from "../../types";
+import { KalturaPlayerConfig, PluginsConfig } from '../../types';
 
 const logger = getLogger('PluginsConfig');
 
@@ -172,7 +172,7 @@ function _formatConfigString(config: string): any {
   let configObj;
   config = _sanitize(config);
   try {
-    configObj = JSON.parse(config, function (key) {
+    configObj = JSON.parse(config, function(key) {
       try {
         return JSON.parse(this[key]);
       } catch (e) {

@@ -1,5 +1,5 @@
 import { PluginManager } from '../plugins';
-import { IAdsPluginController, IAdsControllerProvider } from "../../types";
+import { IAdsPluginController, IAdsControllerProvider } from '../../types';
 
 /**
  * Controller provider

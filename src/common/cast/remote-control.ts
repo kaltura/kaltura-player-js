@@ -4,7 +4,7 @@ import { PlayerSnapshot } from './player-snapshot';
 import { CastEventType } from './cast-event-type';
 import { RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload } from './remote-payload';
 import { UIWrapper } from '../ui-wrapper';
-import { SourcesConfig, PlaybackConfig } from "../../types";
+import { SourcesConfig, PlaybackConfig } from '../../types';
 
 /**
  * @class RemoteControl

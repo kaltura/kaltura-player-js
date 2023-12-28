@@ -1,7 +1,4 @@
-import { Presets } from '@playkit-js/playkit-js-ui';
-
-// TODO - should come from UI
-class UIPreset {}
+import { Presets, UIPreset } from '@playkit-js/playkit-js-ui';
 
 /**
  * @class RemotePlayerUI

@@ -1,6 +1,6 @@
 import { Env, Utils, MediaType } from '@playkit-js/playkit-js';
 import { getRedirectExternalStreamsHandler } from '../common/utils/external-stream-redirect-helper';
-import { KalturaPlayerConfig } from "../types";
+import { KalturaPlayerConfig } from '../types';
 
 /**
  * Sets the default analytics plugin for the ovp player.

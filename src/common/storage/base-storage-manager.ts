@@ -35,7 +35,6 @@ export class BaseStorageManager {
    */
   public static init(className: string): void {
     this._logger = getLogger(className);
-    //$FlowFixMe
     BaseStorageHelper.getInstance().addManager(this);
   }
 

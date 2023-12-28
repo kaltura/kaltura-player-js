@@ -2,7 +2,7 @@ import { getLogger } from '@playkit-js/playkit-js';
 import { RemoteControl } from './remote-control';
 import { BaseRemotePlayer } from './base-remote-player';
 import { KalturaPlayer } from '../../kaltura-player';
-import { ClassConstructor } from "../../types";
+import { ClassConstructor } from '../../types';
 
 class RemotePlayerManager {
   private static _registry: Map<string, ClassConstructor<BaseRemotePlayer>> = new Map();

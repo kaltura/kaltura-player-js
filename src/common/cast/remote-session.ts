@@ -1,4 +1,3 @@
-
 /**
  * @class RemoteSession
  * @param {string} id - Session ID.

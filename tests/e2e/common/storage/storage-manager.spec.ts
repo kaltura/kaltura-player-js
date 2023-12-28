@@ -51,7 +51,10 @@ describe('StorageManager', (): any => {
   it('should return config for volume', () => {
     StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'getStorageSize').returns(1);
-    sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
+    sandbox
+      .stub(StorageWrapper, 'getItem')
+      .withArgs('volume')
+      .returns(1);
     LocalStorageManager.getStorageConfig().should.deep.equal({
       playback: {
         volume: 1

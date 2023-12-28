@@ -924,7 +924,7 @@ export class KalturaPlayer extends FakeEventTarget {
               uiComponents.push(...(plugin.getUIComponents() || []));
             }
             if (typeof plugin['getEngineDecorator'] === 'function') {
-              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin as unknown as IEngineDecoratorProvider));
+              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider((plugin as unknown) as IEngineDecoratorProvider));
             }
           }
         } else {

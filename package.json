@@ -39,12 +39,12 @@
     "build": "yarn run clean && yarn run ovp:build:prod && yarn run ott:build:prod && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
     "type-check": "tsc --noEmit",
-    "type-check:watch": "npm run type-check -- --watch",
+    "type-check:watch": "yarn run type-check -- --watch",
     "test": "karma start karma.conf.js",
     "test:debug": "DEBUG_UNIT_TESTS=1 karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
     "test:watch": "karma start karma.conf.js --auto-watch --no-single-run",
     "lint": "eslint src/ tests/ --ext .js --ext .ts",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "yarn run lint -- --fix",
     "prettier": "prettier --write .",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version"
@@ -63,6 +63,7 @@
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-typescript": "^7.22.15",
     "@microsoft/api-extractor": "^7.38.0",
+    "@playkit-js/browserslist-config": "^1.0.5",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
     "@types/sinon": "^10.0.20",
@@ -92,12 +93,11 @@
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1",
-    "@playkit-js/browserslist-config": "1.0.0"
+    "webpack-dev-server": "^4.15.1"
   },
   "standard-version": {
     "scripts": {
-      "precommit": "tmp=$(npm run build:ovp && yarn run build:ott)"
+      "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott)"
     }
   }
 }

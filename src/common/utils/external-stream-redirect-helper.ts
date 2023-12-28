@@ -1,5 +1,5 @@
 import { Utils } from '@playkit-js/playkit-js';
-import { KalturaPlayerConfig } from "../../types";
+import { KalturaPlayerConfig } from '../../types';
 
 /**
  * JSONP handler function, returns the direct manifest uri.
