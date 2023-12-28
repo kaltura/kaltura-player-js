@@ -1,0 +1,9 @@
+body {
+  background-color: #212121;
+}
+
+#player-placeholder {
+  margin: 100px auto;
+  width: 640px;
+  height: 360px;
+}

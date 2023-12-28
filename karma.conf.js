@@ -1,55 +1,64 @@
-// Create custom launcher in case running with Travis
-const launchers = {
-  Chrome_browser: {
-    base: 'ChromeHeadless',
-    flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required']
-  }
-};
+const webpackConfig = require('./webpack.config')(
+  { playerType: 'ovp' },
+  { mode: 'development' }
+);
+delete webpackConfig.entry;
+delete webpackConfig.externals;
+delete webpackConfig.output;
+delete webpackConfig.devServer;
+webpackConfig.devtool = 'inline-source-map';
 
-module.exports = config => {
-  const karmaConf = {
-    logLevel: config.LOG_INFO,
-    customLaunchers: launchers,
-    browsers: [],
-    concurrency: 1,
-    singleRun: true,
-    colors: true,
-    frameworks: ['mocha'],
+module.exports = function (config) {
+  config.set({
+    frameworks: ['webpack', 'mocha'],
+    browserDisconnectTimeout: 60000,
+    browserNoActivityTimeout: 60000,
     files: [
-      'node_modules/regenerator-runtime/runtime.js',
-      'test/setup/karma.js',
       {
-        pattern: 'test/assets/mov_bbb.mp4',
-        included: false
+        pattern: 'tests/index.js',
+        watched: false
       },
       {
-        pattern: 'test/assets/audios.mp4',
+        pattern: 'tests/assets/**/*',
         included: false
       }
     ],
+    exclude: [],
     preprocessors: {
-      'src/**/*.js': ['webpack', 'sourcemap'],
-      'test/setup/karma.js': ['webpack', 'sourcemap']
+      'tests/index.js': ['webpack', 'sourcemap']
     },
-    reporters: ['progress', 'coverage'],
-    webpack: {
-      ...require('./webpack.config.js')(process.env.NODE_ENV, {mode: config.mode || 'development'})[0],
-      externals: {}, //Need to remove externals otherwise they won't be included in test
-      devtool: 'inline-source-map', // Need to define inline source maps when using karma
-      mode: config.mode || 'development' // run in development mode by default to avoid minifying -> faster
+    reporters: ['mocha'],
+    mochaReporter: {
+      showDiff: true
     },
-    webpackServer: {
-      noInfo: true
+
+    coverageIstanbulReporter: {
+      reports: ['lcov', 'text-summary'],
+      fixWebpackSourcePaths: true
     },
+    webpack: webpackConfig,
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: false,
+    customLaunchers: {
+      ChromeHeadlessWithFlags: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--autoplay-policy=no-user-gesture-required',
+          '--mute-audio'
+        ]
+      }
+    },
+    browsers: ['ChromeHeadlessWithFlags'],
+    singleRun: true,
+    concurrency: Infinity,
     client: {
       mocha: {
-        timeout: 10000,
-        reporter: 'html'
+        reporter: 'html',
+        timeout: 50000
       }
     }
-  };
-
-  karmaConf.customLaunchers = launchers;
-  karmaConf.browsers = ['Chrome_browser'];
-  config.set(karmaConf);
+  });
 };
