@@ -155,7 +155,8 @@ export class BaseStorageManager {
     Object.keys(this.StorageKeys).forEach((key) => {
       const value = this.StorageKeys[key];
       const item = StorageWrapper.getItem(value, this.getStorageObject());
-      if (item !== null) {
+      // eslint-disable-next-line - dont change to !==, it effects the logic
+      if (item != null) {
         obj[value] = item;
       }
     });
