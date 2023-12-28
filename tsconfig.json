@@ -9,7 +9,6 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "strictPropertyInitialization": true,
-//    "skipLibCheck": true,
     "esModuleInterop": true,
     "lib": ["dom", "ESNext"],
     "outDir": "./lib/",
