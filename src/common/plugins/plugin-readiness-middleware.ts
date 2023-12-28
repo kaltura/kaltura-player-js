@@ -34,9 +34,9 @@ class PluginReadinessMiddleware extends BaseMiddleware {
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const readyPromise = this._plugins[index].ready
-      // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ? this._plugins[index].ready
+      ? // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this._plugins[index].ready
       : Promise.resolve();
     readyPromise
       .then(() => {

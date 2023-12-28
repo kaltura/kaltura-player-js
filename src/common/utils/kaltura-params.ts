@@ -210,7 +210,6 @@ function addKalturaParams(
   Object.values(StreamType).forEach((key: PlayerStreamTypes) => {
     if (sources[key]) {
       sources[key].forEach((source) => {
-
         if (
           typeof source.url === 'string' &&
           source.url.toLowerCase().indexOf(PLAY_MANIFEST) > -1 &&

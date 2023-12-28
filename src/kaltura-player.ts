@@ -1088,14 +1088,14 @@ export class KalturaPlayer extends FakeEventTarget {
             pluginsConfig[name] = plugin.getConfig();
             if (typeof plugin['getMiddlewareImpl'] === 'function') {
               plugin.name === 'bumper'
-                // push the bumper middleware to the end, to play the bumper right before the content
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                ? middlewares.push(plugin.getMiddlewareImpl())
-                // push the bumper middleware to the end, to play the bumper right before the content
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                : middlewares.unshift(plugin.getMiddlewareImpl());
+                ? // push the bumper middleware to the end, to play the bumper right before the content
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  middlewares.push(plugin.getMiddlewareImpl())
+                : // push the bumper middleware to the end, to play the bumper right before the content
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  middlewares.unshift(plugin.getMiddlewareImpl());
             }
 
             if (typeof plugin['getUIComponents'] === 'function') {
