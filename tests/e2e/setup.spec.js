@@ -63,7 +63,9 @@ describe('setup', () => {
     kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
       kalturaPlayer.ready().then(() => {
         const sessionIdRegex = /playSessionId=((?:[a-z0-9]|-|:)*)/i;
-        sessionIdRegex.exec(kalturaPlayer.src)[1].should.equal(kalturaPlayer.config.session.id);
+        sessionIdRegex
+          .exec(kalturaPlayer.src)[1]
+          .should.equal(kalturaPlayer.config.session.id);
         done();
       });
       kalturaPlayer.load();
@@ -80,13 +82,17 @@ describe('setup', () => {
       backgroundOpacity: 1,
       fontEdge: []
     });
-    sandbox.stub(LocalStorageManager, 'getItem').withArgs('textStyle').returns(textStyle);
+    sandbox
+      .stub(LocalStorageManager, 'getItem')
+      .withArgs('textStyle')
+      .returns(textStyle);
     kalturaPlayer = setup(config);
     kalturaPlayer.textStyle.should.deep.equal(textStyle);
   });
 
   it('should configure sources', (done) => {
-    const url = 'http://cfvod.kaltura.com/pd/p/2196781/sp/219678100/serveFlavor/entryId/1_afvj3z0u/v/1/flavorId/1_vpmhfzgl/name/a.mp4';
+    const url =
+      'http://cfvod.kaltura.com/pd/p/2196781/sp/219678100/serveFlavor/entryId/1_afvj3z0u/v/1/flavorId/1_vpmhfzgl/name/a.mp4';
     config.sources = {
       progressive: [
         {

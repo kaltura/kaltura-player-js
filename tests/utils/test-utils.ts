@@ -44,7 +44,11 @@ function getConfigStructure(): any {
  * @param {string} opt_parentId - Optional parent id.
  * @returns {HTMLDivElement}
  */
-function createElement(type: string, id: string, opt_parentId?: string): HTMLElement {
+function createElement(
+  type: string,
+  id: string,
+  opt_parentId?: string
+): HTMLElement {
   const element = document.createElement(type);
   element.id = id;
   if (!opt_parentId) {
@@ -88,4 +92,10 @@ function setServerConfig(value): void {
   window.__kalturaplayerdata = value;
 }
 
-export { createElement, removeElement, removeVideoElementsFromTestPage, getConfigStructure, setServerConfig };
+export {
+  createElement,
+  removeElement,
+  removeVideoElementsFromTestPage,
+  getConfigStructure,
+  setServerConfig
+};

@@ -1,4 +1,7 @@
-const webpackConfig = require('./webpack.config')({ playerType: 'ovp' }, { mode: 'development' });
+const webpackConfig = require('./webpack.config')(
+  { playerType: 'ovp' },
+  { mode: 'development' }
+);
 delete webpackConfig.entry;
 delete webpackConfig.externals;
 delete webpackConfig.output;
@@ -41,7 +44,11 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessWithFlags: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--mute-audio']
+        flags: [
+          '--no-sandbox',
+          '--autoplay-policy=no-user-gesture-required',
+          '--mute-audio'
+        ]
       }
     },
     browsers: ['ChromeHeadlessWithFlags'],

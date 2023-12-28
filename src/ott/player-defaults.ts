@@ -19,7 +19,10 @@ export function setDefaultAnalyticsPlugin(options: KalturaPlayerConfig): void {
       }
     });
   }
-  const ottAnalyticsPlugin = Utils.Object.getPropertyPath(options, 'plugins.ottAnalytics');
+  const ottAnalyticsPlugin = Utils.Object.getPropertyPath(
+    options,
+    'plugins.ottAnalytics'
+  );
   if (!ottAnalyticsPlugin) {
     Utils.Object.mergeDeep(options, {
       plugins: {
@@ -36,6 +39,12 @@ export function setDefaultAnalyticsPlugin(options: KalturaPlayerConfig): void {
  * @param {KPOptionsObject} mediaOptions - The media config.
  * @returns {Object} - config object
  */
-export function getDefaultRedirectOptions(playerOptions: KalturaPlayerConfig, mediaOptions: KalturaPlayerConfig | any = {}): any {
-  return Utils.Object.mergeDeep({}, getRedirectExternalStreamsHandler(playerOptions, mediaOptions));
+export function getDefaultRedirectOptions(
+  playerOptions: KalturaPlayerConfig,
+  mediaOptions: KalturaPlayerConfig | any = {}
+): any {
+  return Utils.Object.mergeDeep(
+    {},
+    getRedirectExternalStreamsHandler(playerOptions, mediaOptions)
+  );
 }

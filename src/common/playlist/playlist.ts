@@ -1,7 +1,12 @@
 import { Utils } from '@playkit-js/playkit-js';
 import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers';
 import { PlaylistItem } from './playlist-item';
-import { KPPlaylistObject, SourcesConfig, PluginsConfig, MediaSourceOptionsObject } from '../../types';
+import {
+  KPPlaylistObject,
+  SourcesConfig,
+  PluginsConfig,
+  MediaSourceOptionsObject
+} from '../../types';
 
 class Playlist {
   private _id: string;
@@ -18,7 +23,10 @@ class Playlist {
     this._activeItemIndex = -1;
   }
 
-  public configure(config: KPPlaylistObject, sourcesOptions: MediaSourceOptionsObject): void {
+  public configure(
+    config: KPPlaylistObject,
+    sourcesOptions: MediaSourceOptionsObject
+  ): void {
     this._id = config.id ? config.id : this._id;
     this._poster = config.poster ? config.poster : this._poster;
     this._metadata = config.metadata ? config.metadata : this._metadata;
@@ -26,9 +34,15 @@ class Playlist {
       this._items = [];
       config.items.forEach((item, index) => {
         if (item.sources) {
-          const configSourcesOptions = Utils.Object.mergeDeep({}, sourcesOptions);
+          const configSourcesOptions = Utils.Object.mergeDeep(
+            {},
+            sourcesOptions
+          );
           const itemSourcesOptions = item.sources.options || {};
-          item.sources.options = Utils.Object.mergeDeep(configSourcesOptions, itemSourcesOptions);
+          item.sources.options = Utils.Object.mergeDeep(
+            configSourcesOptions,
+            itemSourcesOptions
+          );
         }
         this._items.push(new PlaylistItem(item.sources, item.config, index));
       });
@@ -64,7 +78,9 @@ class Playlist {
   }
 
   public getNext(loop: boolean): PlaylistItem | undefined {
-    const nextIndex = loop ? (this._activeItemIndex + 1) % this._items.length : this._activeItemIndex + 1;
+    const nextIndex = loop
+      ? (this._activeItemIndex + 1) % this._items.length
+      : this._activeItemIndex + 1;
     return this._items[nextIndex] || null;
   }
 

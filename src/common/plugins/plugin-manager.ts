@@ -46,16 +46,25 @@ export class PluginManager {
    * @public
    */
   public static register(name: string, handler: () => any): boolean {
-    if (typeof handler !== 'function' || handler.prototype instanceof BasePlugin === false) {
-      PluginManager._logger.error(`Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`);
+    if (
+      typeof handler !== 'function' ||
+      handler.prototype instanceof BasePlugin === false
+    ) {
+      PluginManager._logger.error(
+        `Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`
+      );
       return false;
     }
     if (!PluginManager._registry.has(name)) {
       PluginManager._registry.set(name, handler);
-      PluginManager._logger.debug(`Plugin <${name}> has been registered successfully`);
+      PluginManager._logger.debug(
+        `Plugin <${name}> has been registered successfully`
+      );
       return true;
     }
-    PluginManager._logger.debug(`Plugin <${name}> is already registered, do not register again`);
+    PluginManager._logger.debug(
+      `Plugin <${name}> is already registered, do not register again`
+    );
     return false;
   }
 
@@ -83,8 +92,15 @@ export class PluginManager {
    */
   public load(name: string, player: any, config: any = {}): boolean {
     if (!PluginManager._registry.has(name)) {
-      PluginManager._logger.warn(`Plugin <${name}> loading failed, plugin is not registered`);
-      throw new Error(Error.Severity.RECOVERABLE, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_NOT_REGISTERED_PLUGIN, name);
+      PluginManager._logger.warn(
+        `Plugin <${name}> loading failed, plugin is not registered`
+      );
+      throw new Error(
+        Error.Severity.RECOVERABLE,
+        Error.Category.PLAYER,
+        Error.Code.RUNTIME_ERROR_NOT_REGISTERED_PLUGIN,
+        name
+      );
     }
     const pluginClass = PluginManager._registry.get(name);
     if (typeof config.disable === 'boolean') {
@@ -96,13 +112,20 @@ export class PluginManager {
       try {
         this._plugins[name] = pluginClass.createPlugin(name, player, config);
       } catch (e) {
-        throw new Error(Error.Severity.RECOVERABLE, Error.Category.PLAYER, Error.Code.PLUGIN_LOAD_FAILED, e);
+        throw new Error(
+          Error.Severity.RECOVERABLE,
+          Error.Category.PLAYER,
+          Error.Code.PLUGIN_LOAD_FAILED,
+          e
+        );
       }
       this._isDisabledPluginMap.set(name, false);
       PluginManager._logger.debug(`Plugin <${name}> has been loaded`);
       return true;
     }
-    PluginManager._logger.debug(`Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`);
+    PluginManager._logger.debug(
+      `Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`
+    );
     return false;
   }
 

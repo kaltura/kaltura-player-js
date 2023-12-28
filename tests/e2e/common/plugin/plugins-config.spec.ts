@@ -1,6 +1,9 @@
 // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { ConfigEvaluator, getEncodedReferrer } from '../../../../src/common/plugins';
+import {
+  ConfigEvaluator,
+  getEncodedReferrer
+} from '../../../../src/common/plugins';
 
 const sandbox = sinon.createSandbox();
 
@@ -98,7 +101,9 @@ describe('evaluatePluginsConfig', () => {
     pluginsConfig.kava.myArray = objectArrayValue;
     configEvaluator.evaluatePluginsConfig(pluginsConfig, playerConfig);
     pluginsConfig.kava.myArray.length.should.equal(1);
-    pluginsConfig.kava.myArray[0].value.length.should.equal(updatedArrayValue.length);
+    pluginsConfig.kava.myArray[0].value.length.should.equal(
+      updatedArrayValue.length
+    );
   });
 
   it('should handle nested functions inside object array in plugin config', () => {
@@ -149,6 +154,8 @@ describe('getEncodedReferrer', () => {
     sandbox.stub(window.parent.document, 'URL').get(() => {
       return 'http://localhost:3000/?debugKalturaPlayer';
     });
-    getEncodedReferrer().should.be.equal('http%3A%2F%2Flocalhost%3A3000%2F%3FdebugKalturaPlayer');
+    getEncodedReferrer().should.be.equal(
+      'http%3A%2F%2Flocalhost%3A3000%2F%3FdebugKalturaPlayer'
+    );
   });
 });

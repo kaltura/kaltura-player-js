@@ -57,9 +57,10 @@ class PlayerSnapshot {
 function getStartTime(player: KalturaPlayer): number {
   if (player.isLive()) {
     if (player.isDvr()) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const isOnLiveEdge = player.duration - player.currentTime < player.config.cast.dvrThreshold;
+      const isOnLiveEdge =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        player.duration - player.currentTime < player.config.cast.dvrThreshold;
       if (isOnLiveEdge || !player.currentTime) {
         return -1;
       }
@@ -67,7 +68,11 @@ function getStartTime(player: KalturaPlayer): number {
     } else {
       return -1;
     }
-  } else if (!player.isCasting() && !player.currentTime && player.config.sources.startTime! > -1) {
+  } else if (
+    !player.isCasting() &&
+    !player.currentTime &&
+    player.config.sources.startTime! > -1
+  ) {
     return player.config.sources.startTime!;
   }
   return player.currentTime!;

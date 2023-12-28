@@ -37,4 +37,10 @@ class CustomActionMessage extends CustomMessage {
   }
 }
 
-export { CustomMessageType, CustomActionType, CustomMessage, CustomEventMessage, CustomActionMessage };
+export {
+  CustomMessageType,
+  CustomActionType,
+  CustomMessage,
+  CustomEventMessage,
+  CustomActionMessage
+};

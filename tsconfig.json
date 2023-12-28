@@ -14,9 +14,18 @@
     "outDir": "./lib/",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@playkit-js/playkit-js-providers": ["./node_modules/@playkit-js/playkit-js-providers/dist/playkit-ovp-provider", "./node_modules/@playkit-js/playkit-js-providers/dist/playkit-ott-provider"],
-      "player-defaults": ["./src/ovp/player-defaults", "./src/ott/player-defaults"],
-      "plugins-config-store": ["./src/ovp/plugins/plugins-config-store", "./src/ott/plugins/plugins-config-store"],
+      "@playkit-js/playkit-js-providers": [
+        "./node_modules/@playkit-js/playkit-js-providers/dist/playkit-ovp-provider",
+        "./node_modules/@playkit-js/playkit-js-providers/dist/playkit-ott-provider"
+      ],
+      "player-defaults": [
+        "./src/ovp/player-defaults",
+        "./src/ott/player-defaults"
+      ],
+      "plugins-config-store": [
+        "./src/ovp/plugins/plugins-config-store",
+        "./src/ott/plugins/plugins-config-store"
+      ],
       "poster": ["./src/ovp/poster", "./src/ott/poster"]
     }
   },

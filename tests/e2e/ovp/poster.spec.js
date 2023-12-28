@@ -11,7 +11,9 @@ describe('addKalturaPoster', () => {
     const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const playerSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     addKalturaPoster(playerSources, mediaSources, { width: 640, height: 360 });
-    playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640');
+    playerSources.poster.should.equal(
+      '/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640'
+    );
     mediaSources.poster.should.equal(playerSources.poster);
   });
 
@@ -47,8 +49,15 @@ describe('addKalturaPoster', () => {
     const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const playerSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const ks = '123';
-    addKalturaPoster(playerSources, mediaSources, { width: 640, height: 360 }, ks);
-    playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640/ks/123');
+    addKalturaPoster(
+      playerSources,
+      mediaSources,
+      { width: 640, height: 360 },
+      ks
+    );
+    playerSources.poster.should.equal(
+      '/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640/ks/123'
+    );
     mediaSources.poster.should.equal(playerSources.poster);
   });
 
@@ -107,7 +116,9 @@ describe('addKalturaPoster', () => {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({ entryId: entryId }).then((mediaConfig) => {
         kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
-          kalturaPlayer.sources.poster.should.have.string(mediaConfig.sources.poster);
+          kalturaPlayer.sources.poster.should.have.string(
+            mediaConfig.sources.poster
+          );
           done();
         });
       });
@@ -117,13 +128,19 @@ describe('addKalturaPoster', () => {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({ entryId: entryId }).then((mediaConfig) => {
         kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
-          kalturaPlayer.config.sources.poster.should.have.string(mediaConfig.sources.poster);
-          provider.getMediaConfig({ entryId: alterEntryId }).then((alterMediaConfig) => {
-            kalturaPlayer.loadMedia({ entryId: alterEntryId }).then(() => {
-              kalturaPlayer.sources.poster.should.have.string(alterMediaConfig.sources.poster);
-              done();
+          kalturaPlayer.config.sources.poster.should.have.string(
+            mediaConfig.sources.poster
+          );
+          provider
+            .getMediaConfig({ entryId: alterEntryId })
+            .then((alterMediaConfig) => {
+              kalturaPlayer.loadMedia({ entryId: alterEntryId }).then(() => {
+                kalturaPlayer.sources.poster.should.have.string(
+                  alterMediaConfig.sources.poster
+                );
+                done();
+              });
             });
-          });
         });
       });
     });
@@ -132,7 +149,9 @@ describe('addKalturaPoster', () => {
       kalturaPlayer = setup(config);
       provider.getMediaConfig({ entryId: entryId }).then((mediaConfig) => {
         kalturaPlayer.loadMedia({ entryId: entryId }).then(() => {
-          kalturaPlayer.sources.poster.should.have.string(mediaConfig.sources.poster);
+          kalturaPlayer.sources.poster.should.have.string(
+            mediaConfig.sources.poster
+          );
           kalturaPlayer.reset();
           kalturaPlayer.configure({
             sources: {

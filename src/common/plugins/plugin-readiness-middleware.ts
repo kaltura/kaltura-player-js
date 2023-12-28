@@ -33,14 +33,22 @@ class PluginReadinessMiddleware extends BaseMiddleware {
   private _checkSettle(index: number, next: () => any): void {
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const readyPromise = this._plugins[index].ready ? this._plugins[index].ready : Promise.resolve();
+    const readyPromise = this._plugins[index].ready
+      // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ? this._plugins[index].ready
+      : Promise.resolve();
     readyPromise
       .then(() => {
-        PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise resolved`);
+        PluginReadinessMiddleware._logger.debug(
+          `plugin ${this._plugins[index].name} ready promise resolved`
+        );
         this._checkNextSettle(index + 1, next);
       })
       .catch(() => {
-        PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise rejected`);
+        PluginReadinessMiddleware._logger.debug(
+          `plugin ${this._plugins[index].name} ready promise rejected`
+        );
         this._checkNextSettle(index + 1, next);
       });
   }

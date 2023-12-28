@@ -16,7 +16,9 @@ class ServiceProvider {
   constructor(player: KalturaPlayer) {
     ServiceProvider._logger = getLogger('ServiceProvider');
     this._eventManager = new EventManager();
-    this._eventManager.listen(player, player.Event.Core.PLAYER_RESET, () => this.reset());
+    this._eventManager.listen(player, player.Event.Core.PLAYER_RESET, () =>
+      this.reset()
+    );
   }
 
   /**
@@ -55,14 +57,18 @@ class ServiceProvider {
    * @returns {void}
    */
   public reset(): void {
-    this._servicesRegistry.forEach((service) => typeof service.reset === 'function' && service.reset());
+    this._servicesRegistry.forEach(
+      (service) => typeof service.reset === 'function' && service.reset()
+    );
   }
 
   /**
    * @returns {void}
    */
   public destroy(): void {
-    this._servicesRegistry.forEach((service) => typeof service.destroy === 'function' && service.destroy());
+    this._servicesRegistry.forEach(
+      (service) => typeof service.destroy === 'function' && service.destroy()
+    );
     this._eventManager.removeAll();
     this._servicesRegistry.clear();
   }

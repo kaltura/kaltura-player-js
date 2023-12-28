@@ -1,4 +1,10 @@
-import { Error, EventManager, FakeEvent, Utils, getLogger } from '@playkit-js/playkit-js';
+import {
+  Error,
+  EventManager,
+  FakeEvent,
+  Utils,
+  getLogger
+} from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 
 // TODO - should be taken from plugin repo
@@ -53,7 +59,11 @@ export class BasePlugin implements IPlugin {
    * @static
    * @public
    */
-  public static createPlugin(name: string, player: KalturaPlayer, config: any = {}): BasePlugin {
+  public static createPlugin(
+    name: string,
+    player: KalturaPlayer,
+    config: any = {}
+  ): BasePlugin {
     return new this(name, player, config);
   }
 
@@ -66,7 +76,12 @@ export class BasePlugin implements IPlugin {
    * @abstract
    */
   protected static isValid(): boolean {
-    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'isValid()');
+    throw new Error(
+      Error.Severity.CRITICAL,
+      Error.Category.PLAYER,
+      Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED,
+      'isValid()'
+    );
   }
 
   /**

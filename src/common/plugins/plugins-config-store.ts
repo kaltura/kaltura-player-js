@@ -120,7 +120,9 @@ class BasePluginConfigStore {
   public set(pluginsConfig?: dataStoreType): void {
     if (pluginsConfig) {
       const newConfig = resolveNewConfig(pluginsConfig);
-      this._config = removeUndefineds(Utils.Object.mergeDeep(this._config, newConfig));
+      this._config = removeUndefineds(
+        Utils.Object.mergeDeep(this._config, newConfig)
+      );
     }
   }
   /**

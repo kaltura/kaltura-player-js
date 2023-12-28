@@ -2,7 +2,12 @@ import { UIManager, Components } from '@playkit-js/playkit-js-ui';
 import { Env, getLogger, Utils } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../kaltura-player';
 import { UiConfig } from '../types';
-import { KalturaPlayerConfig, KPUIAddComponent, KPUIRemoveComponent, PluginsConfig } from '../types';
+import {
+  KalturaPlayerConfig,
+  KPUIAddComponent,
+  KPUIRemoveComponent,
+  PluginsConfig
+} from '../types';
 
 /**
  * The logger of the UIWrapper class.
@@ -142,9 +147,15 @@ class UIWrapper {
   }
 
   private _setStereoConfig(vrConfig: any): void {
-    if (vrConfig.toggleStereo || ((Env.isMobile || Env.isTablet) && vrConfig.toggleStereo !== false)) {
+    if (
+      vrConfig.toggleStereo ||
+      ((Env.isMobile || Env.isTablet) && vrConfig.toggleStereo !== false)
+    ) {
       // enable stereo mode by default for mobile device
-      this.setConfig(Utils.Object.mergeDeep({}, { vrStereoMode: !!vrConfig.startInStereo }), 'vrStereo');
+      this.setConfig(
+        Utils.Object.mergeDeep({}, { vrStereoMode: !!vrConfig.startInStereo }),
+        'vrStereo'
+      );
     }
   }
 }

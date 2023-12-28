@@ -1,5 +1,9 @@
 import { Utils } from '@playkit-js/playkit-js';
-import { PluginsConfig, SourcesConfig, KPPlaylistItemConfigObject } from '../../types';
+import {
+  PluginsConfig,
+  SourcesConfig,
+  KPPlaylistItemConfigObject
+} from '../../types';
 const formats = ['hls', 'dash', 'progressive', 'image'];
 /**
  * @class PlaylistItem
@@ -12,7 +16,11 @@ class PlaylistItem {
   private _plugins!: PluginsConfig;
   private _index: number;
 
-  constructor(sources: SourcesConfig, config: KPPlaylistItemConfigObject, index: number) {
+  constructor(
+    sources: SourcesConfig,
+    config: KPPlaylistItemConfigObject,
+    index: number
+  ) {
     this._sources = sources;
     this._config = config;
     this._index = index;
@@ -48,7 +56,11 @@ class PlaylistItem {
    */
   public get sources(): SourcesConfig {
     formats.forEach((format: string) => {
-      if (this._sources && this._sources[format] && this._sources[format].length === 0) {
+      if (
+        this._sources &&
+        this._sources[format] &&
+        this._sources[format].length === 0
+      ) {
         delete this._sources[format];
       }
     });
@@ -92,7 +104,9 @@ class PlaylistItem {
    */
   public isPlayable(): boolean {
     return !!formats.find((format) => {
-      return this._sources && this._sources[format] && this._sources[format].length;
+      return (
+        this._sources && this._sources[format] && this._sources[format].length
+      );
     });
   }
 }

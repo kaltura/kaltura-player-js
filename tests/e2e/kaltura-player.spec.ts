@@ -9,7 +9,12 @@ import ColorsPlugin from './common/plugin/test-plugins/colors-plugin';
 import NumbersPlugin from './common/plugin/test-plugins/numbers-plugin';
 import { KalturaPlayer as Player } from '../../src/kaltura-player';
 import SourcesConfig from './configs/sources.json';
-import { EventType as CoreEventType, FakeEvent, Utils, EventManager } from '@playkit-js/playkit-js';
+import {
+  EventType as CoreEventType,
+  FakeEvent,
+  Utils,
+  EventManager
+} from '@playkit-js/playkit-js';
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 import { Provider } from '@playkit-js/playkit-js-providers';
@@ -63,15 +68,17 @@ describe('kaltura player api', () => {
 
       beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake((info) => {
-          const id = info.playlistId || info.entryId;
-          return id
-            ? Promise.resolve(MediaMockData.MediaConfig[id])
-            : Promise.reject({
-                success: false,
-                data: 'Missing mandatory parameter'
-              });
-        });
+        sinon
+          .stub(kalturaPlayer._provider, 'getMediaConfig')
+          .callsFake((info) => {
+            const id = info.playlistId || info.entryId;
+            return id
+              ? Promise.resolve(MediaMockData.MediaConfig[id])
+              : Promise.reject({
+                  success: false,
+                  data: 'Missing mandatory parameter'
+                });
+          });
       });
 
       afterEach(() => {
@@ -100,19 +107,27 @@ describe('kaltura player api', () => {
       });
 
       it('should use the configured start time from loadMedia options', (done) => {
-        kalturaPlayer.addEventListener(kalturaPlayer.Event.FIRST_PLAYING, () => {
-          (kalturaPlayer.currentTime >= 10).should.be.true;
-          done();
-        });
-        kalturaPlayer.loadMedia({ entryId }, { startTime: 10 }).then(() => kalturaPlayer.play());
+        kalturaPlayer.addEventListener(
+          kalturaPlayer.Event.FIRST_PLAYING,
+          () => {
+            (kalturaPlayer.currentTime >= 10).should.be.true;
+            done();
+          }
+        );
+        kalturaPlayer
+          .loadMedia({ entryId }, { startTime: 10 })
+          .then(() => kalturaPlayer.play());
       });
 
       it('should use the configured poster from loadMedia options', (done) => {
         const poster = Images.POSTER;
-        kalturaPlayer.addEventListener(kalturaPlayer.Event.CHANGE_SOURCE_ENDED, () => {
-          kalturaPlayer.poster.should.equal(poster);
-          done();
-        });
+        kalturaPlayer.addEventListener(
+          kalturaPlayer.Event.CHANGE_SOURCE_ENDED,
+          () => {
+            kalturaPlayer.poster.should.equal(poster);
+            done();
+          }
+        );
         kalturaPlayer.loadMedia({ entryId }, { poster });
       });
 
@@ -155,7 +170,9 @@ describe('kaltura player api', () => {
             });
             kalturaPlayer.loadMedia({ entryId: 'Youtube' }).then(() => {
               let hasYoutube = false;
-              kalturaPlayer.config.playback.streamPriority.length.should.equal(1);
+              kalturaPlayer.config.playback.streamPriority.length.should.equal(
+                1
+              );
               kalturaPlayer.config.playback.streamPriority.forEach((sp) => {
                 if (sp.engine === 'youtube') {
                   hasYoutube = true;
@@ -224,14 +241,18 @@ describe('kaltura player api', () => {
             it('should return false when loadThumbnailWithKs is false', () => {
               kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
               kalturaPlayer.shouldAddKs().should.equals(false);
-              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(false);
+              kalturaPlayer
+                .shouldAddKs(mediaWithUserSession)
+                .should.equals(false);
             });
           });
           describe('user session', () => {
             it('should return false when loadThumbnailWithKs is false', () => {
               kalturaPlayer.setMedia(mediaWithUserSession);
               kalturaPlayer.shouldAddKs().should.equals(false);
-              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(false);
+              kalturaPlayer
+                .shouldAddKs(mediaWithUserSession)
+                .should.equals(false);
             });
           });
         });
@@ -257,7 +278,9 @@ describe('kaltura player api', () => {
             });
             it('should return false for anonymous session when called with mediaConfig parameter', () => {
               kalturaPlayer.setMedia(mediaWithUserSession);
-              kalturaPlayer.shouldAddKs(MediaMockData.MediaConfig['0_wifqaipd']).should.equals(false);
+              kalturaPlayer
+                .shouldAddKs(MediaMockData.MediaConfig['0_wifqaipd'])
+                .should.equals(false);
             });
           });
           describe('user session', () => {
@@ -267,7 +290,9 @@ describe('kaltura player api', () => {
             });
             it('should return true for user session when called with mediaConfig parameter', () => {
               kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
-              kalturaPlayer.shouldAddKs(mediaWithUserSession).should.equals(true);
+              kalturaPlayer
+                .shouldAddKs(mediaWithUserSession)
+                .should.equals(true);
             });
           });
         });
@@ -283,27 +308,36 @@ describe('kaltura player api', () => {
       });
 
       it('should get the selectedSource', (done) => {
-        kalturaPlayer.addEventListener(kalturaPlayer.Event.SOURCE_SELECTED, (event) => {
-          kalturaPlayer.selectedSource.should.equal(event.payload.selectedSource[0]);
-          done();
-        });
+        kalturaPlayer.addEventListener(
+          kalturaPlayer.Event.SOURCE_SELECTED,
+          (event) => {
+            kalturaPlayer.selectedSource.should.equal(
+              event.payload.selectedSource[0]
+            );
+            done();
+          }
+        );
         kalturaPlayer.setMedia({ sources: SourcesConfig.Mp4 });
-        kalturaPlayer.selectedSource.should.equal(kalturaPlayer.sources.progressive[0]);
+        kalturaPlayer.selectedSource.should.equal(
+          kalturaPlayer.sources.progressive[0]
+        );
       });
     });
     describe('setSourcesMetadata', () => {
       const entryId = '0_wifqaipd';
       beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getMediaConfig').callsFake((info) => {
-          const id = info.playlistId || info.entryId;
-          return id
-            ? Promise.resolve(MediaMockData.MediaConfig[id])
-            : Promise.reject({
-                success: false,
-                data: 'Missing mandatory parameter'
-              });
-        });
+        sinon
+          .stub(kalturaPlayer._provider, 'getMediaConfig')
+          .callsFake((info) => {
+            const id = info.playlistId || info.entryId;
+            return id
+              ? Promise.resolve(MediaMockData.MediaConfig[id])
+              : Promise.reject({
+                  success: false,
+                  data: 'Missing mandatory parameter'
+                });
+          });
       });
 
       afterEach(() => {
@@ -312,7 +346,9 @@ describe('kaltura player api', () => {
 
       it('should set the sources metadata with the provided epgId', (done) => {
         kalturaPlayer.loadMedia({ entryId }).then(() => {
-          kalturaPlayer.configure({ sources: { metadata: { epgId: '54321' } } });
+          kalturaPlayer.configure({
+            sources: { metadata: { epgId: '54321' } }
+          });
           kalturaPlayer.setSourcesMetadata({ epgId: '12345' });
           try {
             kalturaPlayer.config.sources.metadata.epgId.should.equals('12345');
@@ -332,9 +368,16 @@ describe('kaltura player api', () => {
 
       beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getPlaylistConfig').callsFake((playlistInfo) => {
-          return playlistInfo.playlistId ? Promise.resolve(PlaylistMockData.playlistByID) : Promise.reject({ success: false, data: 'Missing mandatory parameter' });
-        });
+        sinon
+          .stub(kalturaPlayer._provider, 'getPlaylistConfig')
+          .callsFake((playlistInfo) => {
+            return playlistInfo.playlistId
+              ? Promise.resolve(PlaylistMockData.playlistByID)
+              : Promise.reject({
+                  success: false,
+                  data: 'Missing mandatory parameter'
+                });
+          });
       });
 
       afterEach(() => {
@@ -342,20 +385,27 @@ describe('kaltura player api', () => {
       });
 
       it('should get playlist by id from the provider and set it - without config', (done) => {
-        kalturaPlayer.loadPlaylist({ playlistId: playlistId }).then((playlistData) => {
-          playlistData.id.should.equal(playlistId);
-          kalturaPlayer.playlist.id.should.equal(playlistData.id);
-          done();
-        });
+        kalturaPlayer
+          .loadPlaylist({ playlistId: playlistId })
+          .then((playlistData) => {
+            playlistData.id.should.equal(playlistId);
+            kalturaPlayer.playlist.id.should.equal(playlistData.id);
+            done();
+          });
       });
 
       it('should get playlist by id from the provider and set it - with config', (done) => {
-        kalturaPlayer.loadPlaylist({ playlistId: playlistId }, { options: { autoContinue: false } }).then((playlistData) => {
-          playlistData.id.should.equal(playlistId);
-          kalturaPlayer.playlist.id.should.equal(playlistData.id);
-          kalturaPlayer.playlist.options.autoContinue.should.be.false;
-          done();
-        });
+        kalturaPlayer
+          .loadPlaylist(
+            { playlistId: playlistId },
+            { options: { autoContinue: false } }
+          )
+          .then((playlistData) => {
+            playlistData.id.should.equal(playlistId);
+            kalturaPlayer.playlist.id.should.equal(playlistData.id);
+            kalturaPlayer.playlist.options.autoContinue.should.be.false;
+            done();
+          });
       });
 
       it('should reject and throw an error when the provider request failed', (done) => {
@@ -375,9 +425,16 @@ describe('kaltura player api', () => {
     describe('loadPlaylistByEntryList', () => {
       beforeEach(() => {
         kalturaPlayer = setup(config);
-        sinon.stub(kalturaPlayer._provider, 'getEntryListConfig').callsFake((entryList) => {
-          return entryList.entries ? Promise.resolve(PlaylistMockData.playlistByEntryList) : Promise.reject({ success: false, data: 'Missing mandatory parameter' });
-        });
+        sinon
+          .stub(kalturaPlayer._provider, 'getEntryListConfig')
+          .callsFake((entryList) => {
+            return entryList.entries
+              ? Promise.resolve(PlaylistMockData.playlistByEntryList)
+              : Promise.reject({
+                  success: false,
+                  data: 'Missing mandatory parameter'
+                });
+          });
       });
 
       afterEach(() => {
@@ -385,20 +442,27 @@ describe('kaltura player api', () => {
       });
 
       it('should get playlist by entry list from the provider and set it - without config', (done) => {
-        kalturaPlayer.loadPlaylistByEntryList({ entries: ['0_nwkp7jtx', '0_wifqaipd'] }).then((playlistData) => {
-          playlistData.id.should.equal('a1234');
-          kalturaPlayer.playlist.id.should.equal('a1234');
-          done();
-        });
+        kalturaPlayer
+          .loadPlaylistByEntryList({ entries: ['0_nwkp7jtx', '0_wifqaipd'] })
+          .then((playlistData) => {
+            playlistData.id.should.equal('a1234');
+            kalturaPlayer.playlist.id.should.equal('a1234');
+            done();
+          });
       });
 
       it('should get playlist by entry list from the provider and set it- with config', (done) => {
-        kalturaPlayer.loadPlaylistByEntryList({ entries: ['0_nwkp7jtx', '0_wifqaipd'] }, { options: { autoContinue: false } }).then((playlistData) => {
-          playlistData.id.should.equal('a1234');
-          kalturaPlayer.playlist.id.should.equal('a1234');
-          kalturaPlayer.playlist.options.autoContinue.should.be.false;
-          done();
-        });
+        kalturaPlayer
+          .loadPlaylistByEntryList(
+            { entries: ['0_nwkp7jtx', '0_wifqaipd'] },
+            { options: { autoContinue: false } }
+          )
+          .then((playlistData) => {
+            playlistData.id.should.equal('a1234');
+            kalturaPlayer.playlist.id.should.equal('a1234');
+            kalturaPlayer.playlist.options.autoContinue.should.be.false;
+            done();
+          });
       });
 
       it('should reject and throw an error when the provider request failed', (done) => {
@@ -430,7 +494,11 @@ describe('kaltura player api', () => {
       });
 
       it('should set the playlist and evaluate the plugins - with config and entry list', () => {
-        kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList, { options: { autoContinue: false } }, [{ entryId: '0_nwkp7jtx' }, { entryId: '0_wifqaipd' }]);
+        kalturaPlayer.setPlaylist(
+          PlaylistMockData.playlistByEntryList,
+          { options: { autoContinue: false } },
+          [{ entryId: '0_nwkp7jtx' }, { entryId: '0_wifqaipd' }]
+        );
         kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -450,8 +518,12 @@ describe('kaltura player api', () => {
       it('should set the configured playlist', () => {
         kalturaPlayer.playlist.id.should.equal('b1234');
         kalturaPlayer.playlist.metadata.name.should.equal('my playlist name');
-        kalturaPlayer.playlist.metadata.description.should.equal('my playlist desc');
-        kalturaPlayer.playlist.poster.should.equal('http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162');
+        kalturaPlayer.playlist.metadata.description.should.equal(
+          'my playlist desc'
+        );
+        kalturaPlayer.playlist.poster.should.equal(
+          'http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162'
+        );
         kalturaPlayer.playlist.items.length.should.equal(3);
         kalturaPlayer.playlist.countdown.duration.should.equal(20);
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
@@ -468,18 +540,29 @@ describe('kaltura player api', () => {
       });
 
       it('should set the configured playlist', (done) => {
-        kalturaPlayer.addEventListener('kaltura-player-playlistloaded', (event) => {
-          event.payload.playlist.id.should.equal('b1234');
-          kalturaPlayer.playlist.id.should.equal('b1234');
-          kalturaPlayer.playlist.metadata.name.should.equal('my playlist name');
-          kalturaPlayer.playlist.metadata.description.should.equal('my playlist desc');
-          kalturaPlayer.playlist.poster.should.equal('http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162');
-          kalturaPlayer.playlist.items.length.should.equal(3);
-          kalturaPlayer.playlist.countdown.duration.should.equal(20);
-          kalturaPlayer.playlist.options.autoContinue.should.be.false;
-          done();
+        kalturaPlayer.addEventListener(
+          'kaltura-player-playlistloaded',
+          (event) => {
+            event.payload.playlist.id.should.equal('b1234');
+            kalturaPlayer.playlist.id.should.equal('b1234');
+            kalturaPlayer.playlist.metadata.name.should.equal(
+              'my playlist name'
+            );
+            kalturaPlayer.playlist.metadata.description.should.equal(
+              'my playlist desc'
+            );
+            kalturaPlayer.playlist.poster.should.equal(
+              'http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162'
+            );
+            kalturaPlayer.playlist.items.length.should.equal(3);
+            kalturaPlayer.playlist.countdown.duration.should.equal(20);
+            kalturaPlayer.playlist.options.autoContinue.should.be.false;
+            done();
+          }
+        );
+        kalturaPlayer.configure({
+          playlist: PlaylistMockData.playlistByConfig
         });
-        kalturaPlayer.configure({ playlist: PlaylistMockData.playlistByConfig });
       });
     });
 
@@ -501,7 +584,10 @@ describe('kaltura player api', () => {
       });
 
       it('should load the playlist with the preset config', () => {
-        kalturaPlayer.setPlaylist({ id: 'a12345', items: [] }, { countdown: { showing: false } });
+        kalturaPlayer.setPlaylist(
+          { id: 'a12345', items: [] },
+          { countdown: { showing: false } }
+        );
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer.playlist.countdown.showing.should.be.false;
@@ -529,7 +615,10 @@ describe('kaltura player api', () => {
             }
           }
         });
-        kalturaPlayer.setPlaylist({ id: 'a12345', items: [] }, { countdown: { showing: false } });
+        kalturaPlayer.setPlaylist(
+          { id: 'a12345', items: [] },
+          { countdown: { showing: false } }
+        );
         kalturaPlayer.playlist.id.should.equal('a12345');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer.playlist.countdown.showing.should.be.false;
@@ -1025,7 +1114,11 @@ describe('kaltura player api', () => {
           done(e);
         }
       });
-      player.dispatchEvent(new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, { error: 'mock failure' }));
+      player.dispatchEvent(
+        new FakeEvent(player.Event.AD_AUTOPLAY_FAILED, {
+          error: 'mock failure'
+        })
+      );
     });
   });
 
@@ -1189,7 +1282,10 @@ describe('kaltura player api', () => {
 
       it('should plugin from setMedia be available after sources selected', () => {
         PluginManager.register('numbers', NumbersPlugin);
-        player.setMedia({ sources: SourcesConfig.Mp4, plugins: { numbers: {} } });
+        player.setMedia({
+          sources: SourcesConfig.Mp4,
+          plugins: { numbers: {} }
+        });
         (player.plugins.numbers !== undefined).should.be.true;
         (player.plugins.numbers !== null).should.be.true;
         player.plugins.numbers.should.be.instanceOf(NumbersPlugin);

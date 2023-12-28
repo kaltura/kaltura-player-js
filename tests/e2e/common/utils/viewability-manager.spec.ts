@@ -1,5 +1,8 @@
 import * as TestUtils from '../../../utils/test-utils';
-import { ViewabilityManager, ViewabilityType } from '../../../../src/common/utils/viewability-manager';
+import {
+  ViewabilityManager,
+  ViewabilityType
+} from '../../../../src/common/utils/viewability-manager';
 
 describe('ViewabilityManager', () => {
   const targetId = 'ViewabilityManagerSpecDiv';
@@ -22,7 +25,10 @@ describe('ViewabilityManager', () => {
     const handleVisibility = function (): any {
       done();
     };
-    viewabilityManager.observe(document.getElementById(targetId), handleVisibility);
+    viewabilityManager.observe(
+      document.getElementById(targetId),
+      handleVisibility
+    );
   });
 
   it('should create a viewability manager with a given config and observe a div', (done) => {
@@ -34,19 +40,31 @@ describe('ViewabilityManager', () => {
     const handleVisibility = function (): any {
       done();
     };
-    viewabilityManager.observe(document.getElementById(targetId), handleVisibility);
+    viewabilityManager.observe(
+      document.getElementById(targetId),
+      handleVisibility
+    );
   });
 
   it('should observe twice the same div and check both listeners are invoked', (done) => {
     viewabilityManager = new ViewabilityManager();
     const handleVisibility1 = function (): any {
-      viewabilityManager.observe(document.getElementById(targetId), handleVisibility2);
+      viewabilityManager.observe(
+        document.getElementById(targetId),
+        handleVisibility2
+      );
     };
     const handleVisibility2 = function (): any {
       done();
-      viewabilityManager.unObserve(document.getElementById(targetId), handleVisibility2);
+      viewabilityManager.unObserve(
+        document.getElementById(targetId),
+        handleVisibility2
+      );
     };
-    viewabilityManager.observe(document.getElementById(targetId), handleVisibility1);
+    viewabilityManager.observe(
+      document.getElementById(targetId),
+      handleVisibility1
+    );
   });
 
   it('should check types TAB and VIEWPORT were sent correct', (done) => {
@@ -59,6 +77,9 @@ describe('ViewabilityManager', () => {
         done();
       }
     };
-    viewabilityManager.observe(document.getElementById(targetId), handleVisibility);
+    viewabilityManager.observe(
+      document.getElementById(targetId),
+      handleVisibility
+    );
   });
 });

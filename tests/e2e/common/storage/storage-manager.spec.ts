@@ -37,19 +37,22 @@ describe('StorageManager', (): any => {
   });
 
   it('should return it has no storage', () => {
-    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any =>
+      (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'getStorageSize').returns(0);
     LocalStorageManager.hasStorage().should.be.false;
   });
 
   it('should return it has storage', () => {
-    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any =>
+      (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'getStorageSize').returns(1);
     LocalStorageManager.hasStorage().should.be.true;
   });
 
   it('should return config for volume', () => {
-    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any =>
+      (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'getStorageSize').returns(1);
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
     LocalStorageManager.getStorageConfig().should.deep.equal({
@@ -60,7 +63,8 @@ describe('StorageManager', (): any => {
   });
 
   it('should return config for all properties', () => {
-    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any =>
+      (StorageWrapper._isLocalStorageAvailable = true);
     const getItemStub = sandbox.stub(StorageWrapper, 'getItem');
     getItemStub.withArgs('volume').returns(0.5);
     getItemStub.withArgs('muted').returns(false);
@@ -77,7 +81,8 @@ describe('StorageManager', (): any => {
   });
 
   it.skip('should set muted to true/false depends on changed volume', (done) => {
-    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any =>
+      (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({ entryId: entryId }).then(() => {
       try {
@@ -85,11 +90,17 @@ describe('StorageManager', (): any => {
         player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CLICKED_MUTE));
         LocalStorageManager.getStorageConfig().playback.muted.should.be.true;
         player.volume = 0.5;
-        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+        player.dispatchEvent(
+          new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME)
+        );
         LocalStorageManager.getStorageConfig().playback.muted.should.be.false;
-        LocalStorageManager.getStorageConfig().playback.volume.should.equals(0.5);
+        LocalStorageManager.getStorageConfig().playback.volume.should.equals(
+          0.5
+        );
         player.volume = 0;
-        player.dispatchEvent(new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME));
+        player.dispatchEvent(
+          new FakeEvent(player.Event.UI.USER_CHANGED_VOLUME)
+        );
         LocalStorageManager.getStorageConfig().playback.muted.should.be.true;
         LocalStorageManager.getStorageConfig().playback.volume.should.equals(0);
         done();
@@ -108,7 +119,9 @@ describe('StorageManager', (): any => {
         fontFamily: 'Verdana'
       }
     };
-    sandbox.stub(LocalStorageManager, 'getPlayerTextStyle').returns({ fontFamily: 'Arial' });
+    sandbox
+      .stub(LocalStorageManager, 'getPlayerTextStyle')
+      .returns({ fontFamily: 'Arial' });
     sandbox.stub(LocalStorageManager, 'isStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Arial');
@@ -123,30 +136,43 @@ describe('StorageManager', (): any => {
         fontFamily: 'Verdana'
       }
     };
-    sandbox.stub(LocalStorageManager, 'getPlayerTextStyle').returns({ fontFamily: 'Arial' });
+    sandbox
+      .stub(LocalStorageManager, 'getPlayerTextStyle')
+      .returns({ fontFamily: 'Arial' });
     sandbox.stub(LocalStorageManager, 'isStorageAvailable').returns(true);
     setStorageTextStyle(player);
     player.textStyle.fontFamily.should.equal('Verdana');
   });
 
   it.skip('should set textLanguage depends on CC toggle', (done) => {
-    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any =>
+      (StorageWrapper._isLocalStorageAvailable = true);
     player = setup(config);
     player.loadMedia({ entryId: entryId }).then(() => {
       player.load();
       player.ready().then(() => {
         try {
-          player.dispatchEvent(new FakeEvent(player.Event.UI.USER_SHOWED_CAPTIONS, { element: 'ClosedCaptions' }));
+          player.dispatchEvent(
+            new FakeEvent(player.Event.UI.USER_SHOWED_CAPTIONS, {
+              element: 'ClosedCaptions'
+            })
+          );
           player.addEventListener(player.Event.TEXT_TRACK_CHANGED, (event) => {
             const { selectedTextTrack } = event.payload;
             setTimeout(() => {
               try {
-                LocalStorageManager.getStorageConfig().playback.textLanguage.should.be.equal(selectedTextTrack.language);
+                LocalStorageManager.getStorageConfig().playback.textLanguage.should.be.equal(
+                  selectedTextTrack.language
+                );
                 if (selectedTextTrack.language === 'off') {
                   done();
                   return;
                 }
-                player.dispatchEvent(new FakeEvent(player.Event.UI.USER_HID_CAPTIONS, { element: 'ClosedCaptions' }));
+                player.dispatchEvent(
+                  new FakeEvent(player.Event.UI.USER_HID_CAPTIONS, {
+                    element: 'ClosedCaptions'
+                  })
+                );
                 player.hideTextTrack();
               } catch (err) {
                 done(err);

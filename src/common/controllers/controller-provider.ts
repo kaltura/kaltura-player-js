@@ -23,7 +23,9 @@ class ControllerProvider {
   public getAdsControllers(): Array<IAdsPluginController> {
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const adPlugins: Array<IAdsControllerProvider> = Object.values(this._pluginManager.getAll()).filter(
+    const adPlugins: Array<IAdsControllerProvider> = Object.values(
+      this._pluginManager.getAll()
+    ).filter(
       // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
       // @ts-ignore
       (plugin) => typeof plugin.getAdsController === 'function'

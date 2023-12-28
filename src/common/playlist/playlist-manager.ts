@@ -1,11 +1,28 @@
-import { FakeEvent, Utils, EventManager, getLogger } from '@playkit-js/playkit-js';
-import { ProviderEntryListObject, ProviderMediaInfoObject, ProviderPlaylistMetadataObject, ProviderPlaylistObject } from '@playkit-js/playkit-js-providers';
+import {
+  FakeEvent,
+  Utils,
+  EventManager,
+  getLogger
+} from '@playkit-js/playkit-js';
+import {
+  ProviderEntryListObject,
+  ProviderMediaInfoObject,
+  ProviderPlaylistMetadataObject,
+  ProviderPlaylistObject
+} from '@playkit-js/playkit-js-providers';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PlaylistEventType } from './playlist-event-type';
 import { Playlist } from './playlist';
 import { PlaylistItem } from './playlist-item';
 import { mergeProviderPluginsConfig } from '../utils/setup-helpers';
-import { PlaylistOptions, PlaylistCountdownOptions, KalturaPlayerConfig, PluginsConfig, KPPlaylistObject, PlaylistConfigObject } from '../../types';
+import {
+  PlaylistOptions,
+  PlaylistCountdownOptions,
+  KalturaPlayerConfig,
+  PluginsConfig,
+  KPPlaylistObject,
+  PlaylistConfigObject
+} from '../../types';
 
 /**
  * @class PlaylistManager
@@ -42,18 +59,30 @@ class PlaylistManager {
    * @instance
    * @memberof PlaylistManager
    */
-  public configure(config: KPPlaylistObject, entryList?: ProviderEntryListObject): void {
+  public configure(
+    config: KPPlaylistObject,
+    entryList?: ProviderEntryListObject
+  ): void {
     if (config) {
-      this._playlist.configure(config, Utils.Object.getPropertyPath(this._player.sources, 'options'));
+      this._playlist.configure(
+        config,
+        Utils.Object.getPropertyPath(this._player.sources, 'options')
+      );
       Utils.Object.mergeDeep(this._options, config.options);
       Utils.Object.mergeDeep(this._countdown, config.countdown);
       if (config.items && config.items.find((item) => !!item.sources)) {
         this._mediaInfoList = config.items.map((item, index) => {
-          return entryList && entryList.entries && typeof entryList.entries[index] === 'object' ? entryList.entries[index] : { entryId: item.sources.id };
+          return entryList &&
+            entryList.entries &&
+            typeof entryList.entries[index] === 'object'
+            ? entryList.entries[index]
+            : { entryId: item.sources.id };
         });
         // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, { playlist: this }));
+        this._player.dispatchEvent(
+          new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, { playlist: this })
+        );
         this._addBindings();
         this.playNext();
       }
@@ -69,8 +98,15 @@ class PlaylistManager {
    * @instance
    * @memberof PlaylistManager
    */
-  public load(playlistData: ProviderPlaylistObject, playlistConfig: PlaylistConfigObject, entryList?: ProviderEntryListObject): void {
-    const mergedPlaylistData: KPPlaylistObject = this._getMergedPlaylistData(playlistData, playlistConfig);
+  public load(
+    playlistData: ProviderPlaylistObject,
+    playlistConfig: PlaylistConfigObject,
+    entryList?: ProviderEntryListObject
+  ): void {
+    const mergedPlaylistData: KPPlaylistObject = this._getMergedPlaylistData(
+      playlistData,
+      playlistConfig
+    );
     this.configure(mergedPlaylistData, entryList);
   }
 
@@ -211,7 +247,11 @@ class PlaylistManager {
         duration: 10,
         showing: true
       };
-      Utils.Object.mergeDeep(mergedConfig, this._countdown, this._playlist.current.config.countdown);
+      Utils.Object.mergeDeep(
+        mergedConfig,
+        this._countdown,
+        this._playlist.current.config.countdown
+      );
       return mergedConfig;
     }
     return this._countdown;
@@ -227,7 +267,10 @@ class PlaylistManager {
     return this._options;
   }
 
-  private _getMergedPlaylistData(playlistData: ProviderPlaylistObject, playlistConfig: PlaylistConfigObject): KPPlaylistObject {
+  private _getMergedPlaylistData(
+    playlistData: ProviderPlaylistObject,
+    playlistConfig: PlaylistConfigObject
+  ): KPPlaylistObject {
     const mergedPlaylistData: KPPlaylistObject = {
       id: playlistData.id,
       metadata: playlistData.metadata,
@@ -242,13 +285,27 @@ class PlaylistManager {
           // use medias source data instead of playlist source data
           Utils.Object.deletePropertyPath(itemData, omitKey);
         });
-        Utils.Object.mergeDeep(itemData.sources, playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].sources);
+        Utils.Object.mergeDeep(
+          itemData.sources,
+          playlistConfig &&
+            playlistConfig.items &&
+            playlistConfig.items[index] &&
+            playlistConfig.items[index].sources
+        );
         if (Array.isArray(itemData.sources.poster)) {
-          this._player.updateKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+          this._player.updateKalturaPoster(
+            itemData.sources,
+            item.sources,
+            this._player.dimensions
+          );
         }
         return {
           sources: itemData.sources,
-          config: playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].config
+          config:
+            playlistConfig &&
+            playlistConfig.items &&
+            playlistConfig.items[index] &&
+            playlistConfig.items[index].config
         };
       })
     };
@@ -256,8 +313,16 @@ class PlaylistManager {
   }
 
   private _addBindings(): void {
-    this._eventManager.listen(this._player, this._player.Event.Core.PLAYBACK_ENDED, () => this._onPlaybackEnded());
-    this._eventManager.listen(this._player, this._player.Event.Core.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
+    this._eventManager.listen(
+      this._player,
+      this._player.Event.Core.PLAYBACK_ENDED,
+      () => this._onPlaybackEnded()
+    );
+    this._eventManager.listen(
+      this._player,
+      this._player.Event.Core.CHANGE_SOURCE_STARTED,
+      () => this._onChangeSourceStarted()
+    );
   }
 
   private _onPlaybackEnded(): void {
@@ -265,7 +330,9 @@ class PlaylistManager {
     if (!nextItem) {
       // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      this._player.dispatchEvent(new FakeEvent(PlaylistEventType.PLAYLIST_ENDED));
+      this._player.dispatchEvent(
+        new FakeEvent(PlaylistEventType.PLAYLIST_ENDED)
+      );
     }
     if (this._playerOptions.ui.disable || !this.countdown.showing) {
       if ((nextItem && this._options.autoContinue) || this._options.loop) {
@@ -276,9 +343,11 @@ class PlaylistManager {
 
   private _onChangeSourceStarted(): void {
     if (this._player.isImage()) {
-      // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this._player.configure({ sources: { duration: this._options.imageDuration } });
+      this._player.configure({
+        // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        sources: { duration: this._options.imageDuration }
+      });
     }
   }
 
@@ -298,7 +367,10 @@ class PlaylistManager {
     this._playlist.activeItemIndex = index;
     if (activeItem.isPlayable()) {
       this._resetProviderPluginsConfig();
-      const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
+      const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(
+        activeItem.plugins,
+        this._player.config.plugins
+      );
       const providerPlugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
       const media = {
@@ -326,19 +398,21 @@ class PlaylistManager {
         // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
         // @ts-ignore
         this._player.setMedia(media);
-        return this._player.loadMedia(this._mediaInfoList[index]).then((mediaConfig) => {
-          this._playlist.updateItemSources(index, mediaConfig.sources);
-          this._playlist.updateItemPlugins(index, mediaConfig.plugins);
-          // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this._player.dispatchEvent(
-            new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {
-              index,
-              activeItem,
-              entryId: this._mediaInfoList[index].entryId
-            })
-          );
-        });
+        return this._player
+          .loadMedia(this._mediaInfoList[index])
+          .then((mediaConfig) => {
+            this._playlist.updateItemSources(index, mediaConfig.sources);
+            this._playlist.updateItemPlugins(index, mediaConfig.plugins);
+            // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            this._player.dispatchEvent(
+              new FakeEvent(PlaylistEventType.PLAYLIST_ITEM_CHANGED, {
+                index,
+                activeItem,
+                entryId: this._mediaInfoList[index].entryId
+              })
+            );
+          });
       }
     }
     return Promise.reject();

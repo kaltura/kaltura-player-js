@@ -9,7 +9,8 @@ function evaluate(template: string, model: any = {}): string {
     let reg,
       res = template;
     for (const key in model) {
-      let value = model[key] !== undefined && model[key] !== null ? model[key] : '';
+      let value =
+        model[key] !== undefined && model[key] !== null ? model[key] : '';
       if (typeof value === 'string' && value.indexOf('"') > -1) {
         value = value.replace(/"/g, '\\"');
       }

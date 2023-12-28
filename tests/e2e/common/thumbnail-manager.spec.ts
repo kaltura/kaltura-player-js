@@ -1,5 +1,8 @@
 import { MediaType } from '@playkit-js/playkit-js';
-import { DefaultThumbnailConfig, ThumbnailManager } from '../../../src/common/thumbnail-manager';
+import {
+  DefaultThumbnailConfig,
+  ThumbnailManager
+} from '../../../src/common/thumbnail-manager';
 import * as TestUtils from '../../utils/test-utils';
 import { setup } from '../../../src';
 import { Images } from '../mock-data/images';
@@ -44,10 +47,16 @@ describe('ThumbnailManager', () => {
   });
 
   it('should get thumbnail slices url with default params', () => {
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager
       .getKalturaThumbnailConfig()
-      .thumbsSprite.should.equals(`${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`);
+      .thumbsSprite.should.equals(
+        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
+      );
   });
 
   it('should get thumbnail slices url with the custom params', () => {
@@ -58,46 +67,80 @@ describe('ThumbnailManager', () => {
         }
       }
     };
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager
       .getKalturaThumbnailConfig()
-      .thumbsSprite.should.equals(`${fakeMediaConfig.sources.poster}/width/${fakeSeekbarConfig.thumbsWidth}/vid_slices/${fakeSeekbarConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`);
+      .thumbsSprite.should.equals(
+        `${fakeMediaConfig.sources.poster}/width/${fakeSeekbarConfig.thumbsWidth}/vid_slices/${fakeSeekbarConfig.thumbsSlices}/ks/${fakeMediaConfig.session.ks}`
+      );
   });
 
   it('should get empty thumbnail slices url for non string given', () => {
     fakeMediaConfig.sources.poster = null;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should get empty thumbnail slices url for non valid string given', () => {
-    fakeMediaConfig.sources.poster = '//my-thumb-service.com/p/1/entry_id/2/version/3';
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    fakeMediaConfig.sources.poster =
+      '//my-thumb-service.com/p/1/entry_id/2/version/3';
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should get empty thumbnail slices url for live content - 1', () => {
     fakeMediaConfig.sources.type = MediaType.LIVE;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should get empty thumbnail slices url for live content - 2', () => {
     fakeMediaConfig.sources.type = MediaType.LIVE;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should return kaltura thumbnail', () => {
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    const spy = sandbox.spy(thumbnailManager, '_convertKalturaThumbnailToThumbnailInfo');
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
+    const spy = sandbox.spy(
+      thumbnailManager,
+      '_convertKalturaThumbnailToThumbnailInfo'
+    );
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
   });
 
   it('should return thumbnail from core player', () => {
     fakeMediaConfig.sources.poster = null;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     const spy = sandbox.spy(fakePlayer._localPlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
     spy.should.calledOnce;
@@ -106,7 +149,11 @@ describe('ThumbnailManager', () => {
   it('should return thumbnail height from image sprite', () => {
     fakeMediaConfig.sources.poster = null;
     fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager._thumbsHeight = 999;
     const thumbInfo = thumbnailManager.getThumbnail(100);
     thumbInfo.height.should.equal(999);
@@ -114,7 +161,11 @@ describe('ThumbnailManager', () => {
 
   it('should set the configured thumbs sprite with default sizes', () => {
     fakePlayer.config.ui.components.seekbar.thumbsSprite = thumbsSprite;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager.getKalturaThumbnailConfig().should.deep.equal({
       thumbsSprite,
       ...DefaultThumbnailConfig
@@ -128,12 +179,22 @@ describe('ThumbnailManager', () => {
       thumbsWidth: 300
     };
     fakePlayer.config.ui.components.seekbar = seekbarConfig;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
-    thumbnailManager.getKalturaThumbnailConfig().should.deep.equal({ ...seekbarConfig, ...DefaultThumbnailConfig });
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
+    thumbnailManager
+      .getKalturaThumbnailConfig()
+      .should.deep.equal({ ...seekbarConfig, ...DefaultThumbnailConfig });
   });
 
   it('should set the backend thumbs sprite with default sizes', () => {
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     const config = thumbnailManager.getKalturaThumbnailConfig();
     config.thumbsSlices.should.equal(DefaultThumbnailConfig.thumbsSlices);
     config.thumbsWidth.should.equal(DefaultThumbnailConfig.thumbsWidth);
@@ -144,7 +205,11 @@ describe('ThumbnailManager', () => {
       thumbsSlices: 200,
       thumbsWidth: 300
     };
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     const config = thumbnailManager.getKalturaThumbnailConfig();
     config.thumbsSlices.should.equal(200);
     config.thumbsWidth.should.equal(300);
@@ -153,10 +218,16 @@ describe('ThumbnailManager', () => {
   it('should get thumbnail slices url without ks', () => {
     sandbox.stub(fakePlayer, 'shouldAddKs').returns(false);
     delete DefaultThumbnailConfig.thumbsSprite;
-    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+    thumbnailManager = new ThumbnailManager(
+      fakePlayer,
+      fakePlayer.config.ui,
+      fakeMediaConfig
+    );
     thumbnailManager
       .getKalturaThumbnailConfig()
-      .thumbsSprite.should.equals(`${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}`);
+      .thumbsSprite.should.equals(
+        `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}`
+      );
   });
 
   describe('Poster Integration', () => {

@@ -13,9 +13,14 @@ class TextStyleConverter {
     if (window.chrome && window.chrome.cast) {
       const textTrackStyle = new window.chrome.cast.media.TextTrackStyle();
       textTrackStyle.fontFamily = playerTextStyle.fontFamily;
-      textTrackStyle.backgroundColor = TextStyleConverter.rgbToHex(playerTextStyle.backgroundColor);
-      textTrackStyle.foregroundColor = TextStyleConverter.rgbToHex(playerTextStyle.fontColor);
-      textTrackStyle.fontScale = Number.parseFloat(playerTextStyle.fontSize) / 100;
+      textTrackStyle.backgroundColor = TextStyleConverter.rgbToHex(
+        playerTextStyle.backgroundColor
+      );
+      textTrackStyle.foregroundColor = TextStyleConverter.rgbToHex(
+        playerTextStyle.fontColor
+      );
+      textTrackStyle.fontScale =
+        Number.parseFloat(playerTextStyle.fontSize) / 100;
       return textTrackStyle;
     }
     return {};
@@ -25,8 +30,12 @@ class TextStyleConverter {
     const textStyle = new TextStyle();
     textStyle.fontFamily = castTextStyle.fontFamily;
     textStyle.fontSize = castTextStyle.fontScale * 100 + '%';
-    textStyle.fontColor = TextStyleConverter.hexToRGB(castTextStyle.foregroundColor);
-    textStyle.backgroundColor = TextStyleConverter.hexToRGB(castTextStyle.backgroundColor);
+    textStyle.fontColor = TextStyleConverter.hexToRGB(
+      castTextStyle.foregroundColor
+    );
+    textStyle.backgroundColor = TextStyleConverter.hexToRGB(
+      castTextStyle.backgroundColor
+    );
     return textStyle;
   }
 
@@ -54,7 +63,11 @@ class TextStyleConverter {
   }
 
   public static hexToRGB(hex: string): [number, number, number] {
-    const rgb: [number, number, number] = [] as unknown as [number, number, number];
+    const rgb: [number, number, number] = [] as unknown as [
+      number,
+      number,
+      number
+    ];
     hex = hex.slice(1);
     const channels = hex.match(/.{1,2}/g);
     for (let i = 0; i < 3; i++) {

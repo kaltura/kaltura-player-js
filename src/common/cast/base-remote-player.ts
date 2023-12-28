@@ -1,4 +1,11 @@
-import { EventManager, FakeEventTarget, TextStyle, Track, Utils, getLogger } from '@playkit-js/playkit-js';
+import {
+  EventManager,
+  FakeEventTarget,
+  TextStyle,
+  Track,
+  Utils,
+  getLogger
+} from '@playkit-js/playkit-js';
 import { RemoteControl } from './remote-control';
 import { RemoteSession } from './remote-session';
 import { IRemotePlayer } from './remote-player';
@@ -60,9 +67,13 @@ class BaseRemotePlayer extends FakeEventTarget implements IRemotePlayer {
     this._playerConfig = {};
     BaseRemotePlayer._logger = getLogger(name);
     this._remoteControl = remoteControl;
-    // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this._castConfig = Utils.Object.mergeDeep({}, this.constructor.defaultConfig, castConfig);
+    this._castConfig = Utils.Object.mergeDeep(
+      {},
+      // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.constructor.defaultConfig,
+      castConfig
+    );
     this._eventManager = new EventManager();
     BaseRemotePlayer._logger.debug('Initialized');
   }

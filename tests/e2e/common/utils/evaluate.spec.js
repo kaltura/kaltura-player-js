@@ -13,7 +13,10 @@ describe('evaluate', () => {
   };
   const template = JSON.stringify(dataObject);
   const model = { token1: 1, token2: 2 };
-  const modelWithDoubleQuotes = { token1: 'my expression with "double quotes"', token2: 2 };
+  const modelWithDoubleQuotes = {
+    token1: 'my expression with "double quotes"',
+    token2: 2
+  };
 
   it('should evaluate and replace template tokens which have model values', () => {
     const evaluatedTemplate = evaluate(template, model);

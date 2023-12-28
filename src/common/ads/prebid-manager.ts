@@ -39,7 +39,9 @@ class PrebidManager {
 
   constructor(config?: KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
-    this._loadPromise.catch(() => PrebidManager._logger.warn('Prebid SDK failed to load'));
+    this._loadPromise.catch(() =>
+      PrebidManager._logger.warn('Prebid SDK failed to load')
+    );
     if (config) {
       this._config = config;
       this._loadPrebidSDKLib(this._config.libUrl)
@@ -64,14 +66,19 @@ class PrebidManager {
   }
 
   private _loadPrebidSDKLib(libUrl: string): Promise<any> {
-    return this._isPrebidSDKLibLoaded() ? Promise.resolve() : Utils.Dom.loadScriptAsync(libUrl);
+    return this._isPrebidSDKLibLoaded()
+      ? Promise.resolve()
+      : Utils.Dom.loadScriptAsync(libUrl);
   }
 
   private _load(config: KPAdPrebidConfig): Promise<any> {
     return new Promise((resolve, reject) => {
       this._loadPromise
         .then(() => {
-          const loadAdTagTimer = setTimeout(reject, config.timeout || AD_REQUEST_TIMEOUT);
+          const loadAdTagTimer = setTimeout(
+            reject,
+            config.timeout || AD_REQUEST_TIMEOUT
+          );
           this._prebid.que.push(() => {
             this._prebid.addAdUnits(config.adUnit);
             if (config.options) {
@@ -87,7 +94,8 @@ class PrebidManager {
                     requestParams.adUnit = config.adUnit;
                   }
                   requestParams.params = config.params;
-                  const VASTUrl = this._prebid.adServers.dfp.buildVideoUrl(requestParams);
+                  const VASTUrl =
+                    this._prebid.adServers.dfp.buildVideoUrl(requestParams);
                   resolve([{ vastUrl: VASTUrl }]);
                 } else {
                   try {
