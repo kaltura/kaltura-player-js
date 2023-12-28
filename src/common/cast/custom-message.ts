@@ -1,4 +1,3 @@
-// @flow
 const CustomMessageType: { [type: string]: string } = {
   ACTION: 'action',
   EVENT: 'event'

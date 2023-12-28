@@ -534,17 +534,17 @@ describe('PlaylistManager', () => {
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         eventCounter++;
         switch (eventCounter) {
-        case 0: {
-          playlistManager.playNext();
-          break;
-        }
-        case 1: {
-          playlistManager.playPrev();
-          break;
-        }
-        case 2: {
-          done();
-        }
+          case 0: {
+            playlistManager.playNext();
+            break;
+          }
+          case 1: {
+            playlistManager.playPrev();
+            break;
+          }
+          case 2: {
+            done();
+          }
         }
       });
     });
@@ -571,17 +571,17 @@ describe('PlaylistManager', () => {
       kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
         eventCounter++;
         switch (eventCounter) {
-        case 0: {
-          playlistManager.playItem(1);
-          break;
-        }
-        case 1: {
-          playlistManager.playItem(0);
-          break;
-        }
-        case 2: {
-          done();
-        }
+          case 0: {
+            playlistManager.playItem(1);
+            break;
+          }
+          case 1: {
+            playlistManager.playItem(0);
+            break;
+          }
+          case 2: {
+            done();
+          }
         }
       });
     });

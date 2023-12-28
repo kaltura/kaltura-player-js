@@ -37,7 +37,7 @@ describe('StorageManager', (): any => {
   });
 
   it('should return it has no storage', () => {
-    StorageWrapper._testForLocalStorage = (): any  => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'getStorageSize').returns(0);
     LocalStorageManager.hasStorage().should.be.false;
   });
@@ -49,7 +49,7 @@ describe('StorageManager', (): any => {
   });
 
   it('should return config for volume', () => {
-    StorageWrapper._testForLocalStorage = (): any  => (StorageWrapper._isLocalStorageAvailable = true);
+    StorageWrapper._testForLocalStorage = (): any => (StorageWrapper._isLocalStorageAvailable = true);
     sandbox.stub(StorageWrapper, 'getStorageSize').returns(1);
     sandbox.stub(StorageWrapper, 'getItem').withArgs('volume').returns(1);
     LocalStorageManager.getStorageConfig().should.deep.equal({

@@ -1,15 +1,13 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  "plugins": ["@typescript-eslint"],
-  //  "plugins": ["prettier", "@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+  "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
-    "indent": ["error", 2],
     "react/prefer-stateless-function": "off",
     "max-len": ["warn", { "code": 200 }],
     "eol-last": "off",
-    //    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": "error",

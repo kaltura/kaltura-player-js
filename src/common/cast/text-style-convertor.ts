@@ -1,4 +1,3 @@
-// @flow
 import { TextStyle } from '@playkit-js/playkit-js';
 
 declare global {

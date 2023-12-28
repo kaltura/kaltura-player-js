@@ -3,8 +3,7 @@ import evaluate from '../utils/evaluate';
 import { getReferrer } from '../utils/kaltura-params';
 import { Utils, getLogger } from '@playkit-js/playkit-js';
 import { getServerUIConf } from '../utils/setup-helpers';
-import { KalturaPlayerConfig } from '../../types/kaltura-player-options';
-import { PluginsConfig } from '../../types/plugins-config';
+import { KalturaPlayerConfig, PluginsConfig } from "../../types";
 
 const logger = getLogger('PluginsConfig');
 

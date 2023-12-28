@@ -1,8 +1,5 @@
-// @flow
 import { Utils } from '@playkit-js/playkit-js';
-import { PluginsConfig } from '../../types/plugins-config';
-import { SourcesConfig } from '../../types/sources-config';
-import { KPPlaylistItemConfigObject } from '../../types/playlist/playlist-item-config';
+import { PluginsConfig, SourcesConfig, KPPlaylistItemConfigObject } from "../../types";
 const formats = ['hls', 'dash', 'progressive', 'image'];
 /**
  * @class PlaylistItem

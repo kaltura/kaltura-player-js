@@ -47,6 +47,7 @@ import { TrackType } from '@playkit-js/playkit-js';
 import { TrackTypes } from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
 import { UIEventType } from '@playkit-js/playkit-js-ui';
+import { UIOptionsObject } from '@playkit-js/playkit-js-ui';
 
 // @public
 export class Ad {
@@ -672,7 +673,7 @@ export type KPThumbnailConfig = {
 // @public (undocumented)
 export interface KPUIAddComponent extends KPUIComponentOptions {
     // (undocumented)
-    get: () => any;
+    get: (() => any) | string;
     // (undocumented)
     props?: {};
 }
@@ -943,7 +944,7 @@ export type SupportedOptionsType = {
 export { ui }
 
 // @public (undocumented)
-export interface UiConfig {
+export interface UiConfig extends UIOptionsObject {
     // (undocumented)
     css?: string;
     // (undocumented)
@@ -953,8 +954,6 @@ export interface UiConfig {
     }[];
     // (undocumented)
     disable?: boolean;
-    // (undocumented)
-    targetId: string;
 }
 
 // @public (undocumented)

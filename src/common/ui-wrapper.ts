@@ -1,10 +1,8 @@
 import { UIManager, Components } from '@playkit-js/playkit-js-ui';
 import { Env, getLogger, Utils } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../kaltura-player';
-import { UiConfig } from '../types/ui-config';
-import { KalturaPlayerConfig } from '../types/kaltura-player-options';
-import { KPUIAddComponent, KPUIRemoveComponent } from '../types/ui-component';
-import { PluginsConfig } from '../types/plugins-config';
+import { UiConfig } from "../types";
+import { KalturaPlayerConfig, KPUIAddComponent, KPUIRemoveComponent, PluginsConfig } from "../types";
 
 /**
  * The logger of the UIWrapper class.
@@ -13,7 +11,7 @@ import { PluginsConfig } from '../types/plugins-config';
  */
 class UIWrapper {
   private static _logger = getLogger('UIWrapper');
-  private _uiManager: UIManager;
+  private _uiManager!: UIManager;
   private readonly _disabled: boolean = false;
   private _player: KalturaPlayer;
 

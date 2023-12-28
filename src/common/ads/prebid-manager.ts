@@ -1,6 +1,5 @@
 import { getLogger, Utils } from '@playkit-js/playkit-js';
-import { KPAdPrebidConfig, KPPrebidConfig } from '../../types/ads/prebid-config';
-import { DeferredPromise } from '../../types/utils/deferred-promise';
+import { KPAdPrebidConfig, KPPrebidConfig, DeferredPromise } from "../../types";
 
 const AD_REQUEST_TIMEOUT = 4000;
 

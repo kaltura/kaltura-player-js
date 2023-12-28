@@ -87,15 +87,15 @@ export default class StorageWrapper {
     if (e) {
       if (e.code) {
         switch (e.code) {
-        case 22:
-          quotaExceeded = true;
-          break;
-        case 1014:
-          // Firefox
-          if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+          case 22:
             quotaExceeded = true;
-          }
-          break;
+            break;
+          case 1014:
+            // Firefox
+            if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+              quotaExceeded = true;
+            }
+            break;
         }
         // Internet Explorer 8
       } else if (e.number === -2147024882) {

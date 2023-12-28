@@ -1,10 +1,7 @@
-import { PlaylistItem } from './playlist-item';
 import { Utils } from '@playkit-js/playkit-js';
-import { MediaSourceOptionsObject } from '../../types';
-import { KPPlaylistObject } from '../../types';
-import { SourcesConfig } from '../../types';
-import { PluginsConfig } from '../../types';
 import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers';
+import { PlaylistItem } from './playlist-item';
+import { KPPlaylistObject, SourcesConfig, PluginsConfig, MediaSourceOptionsObject } from '../../types';
 
 class Playlist {
   private _id: string;

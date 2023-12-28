@@ -8725,7 +8725,7 @@
             {
               "kind": "Reference",
               "text": "UIEventType",
-              "canonicalReference": "!unknown:member"
+              "canonicalReference": "@playkit-js/playkit-js-ui!UIEventType:var"
             },
             {
               "kind": "Content",
@@ -9155,7 +9155,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "() => any"
+                  "text": "(() => any) | string"
                 },
                 {
                   "kind": "Content",
@@ -11959,7 +11959,16 @@
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export interface UiConfig "
+              "text": "export interface UiConfig extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "UIOptionsObject",
+              "canonicalReference": "@playkit-js/playkit-js-ui!UIOptionsObject:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
             }
           ],
           "fileUrlPath": "src/types/ui-config.ts",
@@ -12047,36 +12056,14 @@
                 "startIndex": 1,
                 "endIndex": 2
               }
-            },
-            {
-              "kind": "PropertySignature",
-              "canonicalReference": "@playkit-js/kaltura-player-js!UiConfig#targetId:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "targetId: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "targetId",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              }
             }
           ],
-          "extendsTokenRanges": []
+          "extendsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 2
+            }
+          ]
         },
         {
           "kind": "Variable",

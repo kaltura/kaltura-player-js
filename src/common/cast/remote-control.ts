@@ -1,11 +1,10 @@
+import { EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils, getLogger } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PlayerSnapshot } from './player-snapshot';
 import { CastEventType } from './cast-event-type';
-import { EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils, getLogger } from '@playkit-js/playkit-js';
 import { RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload } from './remote-payload';
 import { UIWrapper } from '../ui-wrapper';
-import { SourcesConfig } from '../../types/sources-config';
-import { PlaybackConfig } from '../../types/playback-config';
+import { SourcesConfig, PlaybackConfig } from "../../types";
 
 /**
  * @class RemoteControl

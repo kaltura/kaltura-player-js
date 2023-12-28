@@ -1,5 +1,5 @@
 import { EventManager, Utils } from '@playkit-js/playkit-js';
-import { ViewabilityConfig } from '../../types/visibility-config';
+import { ViewabilityConfig } from "../../types";
 
 /**
  * A service class to observe viewability of elements in the view port.

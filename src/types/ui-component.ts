@@ -1,7 +1,7 @@
 import { KPUIComponentOptions } from './ui-component-options';
 
 export interface KPUIAddComponent extends KPUIComponentOptions {
-  get: () => any;
+  get: (() => any) | string;
   props?: {};
 }
 

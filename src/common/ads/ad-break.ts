@@ -2,7 +2,7 @@
  * @class AdBreak
  * @param {PKAdBreakOptions} options - Ad break data options.
  */
-import { PKAdBreakOptions } from '../../types/ads/ad-break-options';
+import { PKAdBreakOptions } from "../../types";
 
 class AdBreak {
   private readonly _type: string | undefined;

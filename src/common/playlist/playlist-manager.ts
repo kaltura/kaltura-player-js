@@ -1,16 +1,11 @@
-import { KalturaPlayer } from '../../kaltura-player';
 import { FakeEvent, Utils, EventManager, getLogger } from '@playkit-js/playkit-js';
+import { ProviderEntryListObject, ProviderMediaInfoObject, ProviderPlaylistMetadataObject, ProviderPlaylistObject } from '@playkit-js/playkit-js-providers';
+import { KalturaPlayer } from '../../kaltura-player';
 import { PlaylistEventType } from './playlist-event-type';
 import { Playlist } from './playlist';
 import { PlaylistItem } from './playlist-item';
 import { mergeProviderPluginsConfig } from '../utils/setup-helpers';
-import { PlaylistOptions } from '../../types';
-import { PlaylistCountdownOptions } from '../../types';
-import { KalturaPlayerConfig } from '../../types';
-import { PluginsConfig } from '../../types';
-import { KPPlaylistObject } from '../../types';
-import { PlaylistConfigObject } from '../../types';
-import { ProviderEntryListObject, ProviderMediaInfoObject, ProviderPlaylistMetadataObject, ProviderPlaylistObject } from '@playkit-js/playkit-js-providers';
+import { PlaylistOptions, PlaylistCountdownOptions, KalturaPlayerConfig, PluginsConfig,KPPlaylistObject, PlaylistConfigObject } from '../../types';
 
 /**
  * @class PlaylistManager

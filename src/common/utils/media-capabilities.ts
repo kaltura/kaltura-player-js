@@ -1,5 +1,5 @@
 import { getLogger } from '@playkit-js/playkit-js';
-import { DRMSupportedObject, HEVCConfigObject, HEVCSupportedObject, MediaCapabilitiesObject, SupportedOptionsType } from '../../types/media-capabilities';
+import { DRMSupportedObject, HEVCConfigObject, HEVCSupportedObject, MediaCapabilitiesObject, SupportedOptionsType } from "../../types";
 
 const CONTENT_TYPE_AVC_CODEC: string = 'video/mp4;codecs="avc1.42E01E"';
 const DRM_SCHEME_LIST: Array<[string, string]> = [

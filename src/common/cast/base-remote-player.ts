@@ -1,7 +1,7 @@
-import { IRemotePlayer } from './remote-player';
 import { EventManager, FakeEventTarget, TextStyle, Track, Utils, getLogger } from '@playkit-js/playkit-js';
 import { RemoteControl } from './remote-control';
 import { RemoteSession } from './remote-session';
+import { IRemotePlayer } from './remote-player';
 
 /**
  * Basic remote player.

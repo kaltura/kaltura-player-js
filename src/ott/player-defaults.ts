@@ -1,6 +1,6 @@
 import { Utils } from '@playkit-js/playkit-js';
 import { getRedirectExternalStreamsHandler } from '../common/utils/external-stream-redirect-helper';
-import { KalturaPlayerConfig } from '../types/kaltura-player-options';
+import { KalturaPlayerConfig } from "../types";
 
 /**
  * Sets the default analytics plugin for the ott player.

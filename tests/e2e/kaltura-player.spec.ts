@@ -68,9 +68,9 @@ describe('kaltura player api', () => {
           return id
             ? Promise.resolve(MediaMockData.MediaConfig[id])
             : Promise.reject({
-              success: false,
-              data: 'Missing mandatory parameter'
-            });
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
         });
       });
 
@@ -300,9 +300,9 @@ describe('kaltura player api', () => {
           return id
             ? Promise.resolve(MediaMockData.MediaConfig[id])
             : Promise.reject({
-              success: false,
-              data: 'Missing mandatory parameter'
-            });
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
         });
       });
 
@@ -1145,9 +1145,9 @@ describe('kaltura player api', () => {
           return id
             ? Promise.resolve(MediaMockData.MediaConfig[id])
             : Promise.reject({
-              success: false,
-              data: 'Missing mandatory parameter'
-            });
+                success: false,
+                data: 'Missing mandatory parameter'
+              });
         });
       });
 

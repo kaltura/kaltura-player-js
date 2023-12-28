@@ -1,4 +1,4 @@
-import { PKAdOptions } from '../../types/ads/ad-options';
+import { PKAdOptions } from "../../types";
 
 /**
  * @class Ad

@@ -13,6 +13,7 @@ import {
   ILogLevel,
   PKSourcesConfigObject
 } from '@playkit-js/playkit-js';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
 import { ValidationErrorType } from './validation-error';
 import LocalStorageManager from '../storage/local-storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
@@ -20,9 +21,8 @@ import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-param
 import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
 import SessionStorageManager from '../storage/session-storage-manager';
 import { BaseStorageManager } from '../storage/base-storage-manager';
-import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, PlaybackConfig } from '../../types';
-import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
 import { BasePlugin } from '../plugins';
+import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, PlaybackConfig } from '../../types';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';

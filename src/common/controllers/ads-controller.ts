@@ -1,4 +1,3 @@
-//@flow
 import { KalturaPlayer as Player } from '../../kaltura-player';
 import { Ad } from '../ads';
 import { AdBreak } from '../ads';
@@ -203,9 +202,9 @@ class AdsController extends FakeEventTarget implements IAdsController {
       this._eventManager.listenOnce(this._player, Html5EventType.DURATION_CHANGE, () => {
         this._player.isLive()
           ? this._eventManager.listenOnce(this._player, Html5EventType.SEEKING, () => {
-            this._pushNextAdsForLive(this._configAdBreaks, (adBreak) => this._player.currentTime + adBreak.every);
-            this._attachLiveSeekedHandler();
-          })
+              this._pushNextAdsForLive(this._configAdBreaks, (adBreak) => this._player.currentTime + adBreak.every);
+              this._attachLiveSeekedHandler();
+            })
           : this._handleEveryAndPercentage();
         this._configAdBreaks.sort((a, b) => a.position - b.position);
         if (this._configAdBreaks.some((adBreak) => adBreak.position > 0)) {
