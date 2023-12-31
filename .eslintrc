@@ -9,7 +9,17 @@
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     "react/prefer-stateless-function": "off",
-    "max-len": ["warn", { "code": 200 }],
+    "max-len": [
+      "error",
+      {
+        "code": 80,
+        "ignoreComments": true,
+        "ignoreStrings": true,
+        "ignoreUrls": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
     "eol-last": "off",
     "prettier/prettier": "warn",
     "@typescript-eslint/explicit-function-return-type": "warn",
@@ -38,28 +48,12 @@
     "prefer-const": "error",
     "prefer-arrow-callback": "error",
     "no-trailing-spaces": "error",
-    "quotes": ["warn", "single", { "avoidEscape": true }],
-    "no-restricted-properties": [
-      "error",
-      {
-        "object": "describe",
-        "property": "only"
-      },
-      {
-        "object": "it",
-        "property": "only"
-      }
-    ]
+    "quotes": ["warn", "single", { "avoidEscape": true }]
   },
   "overrides": [],
-  "settings": {
-    "jest": {
-      "version": 26
-    }
-  },
+  "settings": {},
   "env": {
     "browser": true,
-    "commonjs": true,
     "es6": true
   }
 }
