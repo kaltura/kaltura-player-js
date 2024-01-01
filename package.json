@@ -16,7 +16,6 @@
   },
   "license": "AGPL-3.0",
   "main": "./dist/kaltura-ovp-player.js",
-  "module": "./dist/kaltura-ovp-player.mjs",
   "types": "./dist/kaltura-player-js.d.ts",
   "files": [
     "dist/**/*",
