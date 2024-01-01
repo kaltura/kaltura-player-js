@@ -7,6 +7,8 @@ const chalk = require('chalk');
 
 module.exports = (env, { mode }) => {
   const { playerType } = env;
+  const playerFileType = playerType === 'ovp' ? 'ovp' : 'tv';
+
   console.log(
     chalk.blue.bold('Player Type:') +
       ' ' +
@@ -23,10 +25,7 @@ module.exports = (env, { mode }) => {
   );
   return {
     target: 'web',
-    entry: {
-      [`kaltura-${playerType}-player.js`]: './src/index.ts',
-      [`kaltura-${playerType}-player.mjs`]: './src/index.ts'
-    },
+    entry: './src/index.ts',
     devtool: 'source-map',
     module: {
       rules: [
@@ -75,7 +74,7 @@ module.exports = (env, { mode }) => {
       }
     },
     output: {
-      filename: '[name]',
+      filename: `kaltura-${playerFileType}-player.js`,
       path: path.resolve(__dirname, 'dist'),
       library: {
         name: 'KalturaPlayer',
