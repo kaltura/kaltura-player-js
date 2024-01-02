@@ -1,5 +1,6 @@
 dist
 lib/
+demo/
 api-extractor/report/
 api-extractor/report-temp/
 api-extractor/kaltura-player-js.api.json
