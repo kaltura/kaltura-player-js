@@ -1,4 +1,4 @@
-import { UIEventType } from '@playkit-js/playkit-js-ui';
+import {EventType as UIEventType} from '@playkit-js/playkit-js-ui';
 import {
   AdEventType,
   AutoPlayType,

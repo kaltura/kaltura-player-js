@@ -53,7 +53,7 @@
     "@playkit-js/playkit-js-dash": "canary",
     "@playkit-js/playkit-js-hls": "canary",
     "@playkit-js/playkit-js-providers": "canary",
-    "@playkit-js/playkit-js-ui": "canary",
+    "@playkit-js/playkit-js-ui": "latest",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
   },
@@ -96,6 +96,9 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
+  "browserslist": [
+    "extends @playkit-js/browserslist-config"
+  ],
   "standard-version": {
     "scripts": {
       "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott)"
