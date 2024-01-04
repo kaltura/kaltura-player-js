@@ -86,8 +86,14 @@ class PlaylistManager {
         this._addBindings();
         const startPlaylistAtEntryId = config.options?.startAtEntryId;
         let wasEntryIdSet = false;
-        if (startPlaylistAtEntryId && typeof startPlaylistAtEntryId === 'string') {
-          const entryToPlay: PlaylistItem | undefined = this._playlist.items.find((item: PlaylistItem) => item.sources.id === startPlaylistAtEntryId);
+        if (
+          startPlaylistAtEntryId &&
+          typeof startPlaylistAtEntryId === 'string'
+        ) {
+          const entryToPlay: PlaylistItem | undefined =
+            this._playlist.items.find(
+              (item: PlaylistItem) => item.sources.id === startPlaylistAtEntryId
+            );
           if (entryToPlay) {
             wasEntryIdSet = true;
             this.playItem(entryToPlay.index);
