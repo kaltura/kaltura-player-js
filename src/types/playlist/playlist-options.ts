@@ -8,5 +8,5 @@ export interface PlaylistOptions {
   autoContinue: boolean;
   loop: boolean;
   imageDuration: number;
-  startAtEntryId: string
+  startAtEntryId?: string
 }
