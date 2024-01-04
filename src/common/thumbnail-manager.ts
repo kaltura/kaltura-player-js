@@ -122,10 +122,10 @@ class ThumbnailManager {
       'clipTo'
     );
     let url = baseUrl;
-    if (seekFromConfig && typeof seekFromConfig === 'number') {
+    if (typeof seekFromConfig === 'number') {
       url += `/start_sec/${seekFromConfig}`;
     }
-    if (clipToConfig && typeof clipToConfig === 'number') {
+    if (typeof clipToConfig === 'number') {
       url += `/end_sec/${clipToConfig}`;
     }
     return url;
