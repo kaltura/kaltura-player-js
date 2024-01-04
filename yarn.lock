@@ -1187,13 +1187,13 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.84.1":
-  version "0.84.1"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.1.tgz#7fa443b167434e9e9b10e52668fbc44de0a343dd"
-  integrity sha512-b/I2cmOMWGDNfVCoWU2ezbPLP34Nfs71iVIBKJsiZGiPr8MmNi4uWKJefZeO8/N1wTRKGly9A0AMHxvDcA+KLg==
+"@playkit-js/playkit-js@0.84.2-canary.0-3af100c":
+  version "0.84.2-canary.0-3af100c"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.2-canary.0-3af100c.tgz#dff868feac37173fcebaa452d3363883eb4b6be7"
+  integrity sha512-EbixIgo5OEkgnD4kBiX6dk8Syo4Yx8x5Xs/8XeeMaPPuTjOcZoUzierqYLuuzFpxTC/9dCr44VWQNY57TptY4A==
   dependencies:
     js-logger "^1.6.0"
-    ua-parser-js "1.0.2"
+    ua-parser-js "^1.0.36"
 
 "@rushstack/node-core-library@3.62.0":
   version "3.62.0"
@@ -5754,15 +5754,15 @@ typescript@5.3.3, typescript@^5.2.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
   integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
-ua-parser-js@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.2.tgz#e2976c34dbfb30b15d2c300b2a53eac87c57a775"
-  integrity sha512-00y/AXhx0/SsnI51fTc0rLRmafiGOM4/O+ny10Ps7f+j/b8p/ZY11ytMgznXkOVo4GQ+KwQG5UQLkLGirsACRg==
-
 ua-parser-js@^0.7.30:
   version "0.7.37"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.37.tgz#e464e66dac2d33a7a1251d7d7a99d6157ec27832"
   integrity sha512-xV8kqRKM+jhMvcHWUKthV9fNebIzrNy//2O9ZwWcfiBFR5f25XVZPLlEajk/sf3Ra15V92isyQqnIEXRDaZWEA==
+
+ua-parser-js@^1.0.36:
+  version "1.0.37"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.37.tgz#b5dc7b163a5c1f0c510b08446aed4da92c46373f"
+  integrity sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==
 
 uglify-js@^3.1.4:
   version "3.17.4"
