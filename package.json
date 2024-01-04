@@ -49,7 +49,7 @@
     "release": "standard-version"
   },
   "dependencies": {
-   "@playkit-js/playkit-js": "0.84.1",
+    "@playkit-js/playkit-js": "0.84.2-canary.0-3af100c",
     "@playkit-js/playkit-js-dash": "1.36.0",
     "@playkit-js/playkit-js-hls": "1.32.9",
     "@playkit-js/playkit-js-providers": "2.40.1",
