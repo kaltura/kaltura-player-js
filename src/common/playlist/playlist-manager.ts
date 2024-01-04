@@ -84,7 +84,18 @@ class PlaylistManager {
           new FakeEvent(PlaylistEventType.PLAYLIST_LOADED, { playlist: this })
         );
         this._addBindings();
-        this.playNext();
+        const startPlaylistAtEntryId = config.options?.startAtEntryId;
+        let wasEntryIdSet = false;
+        if (startPlaylistAtEntryId && typeof startPlaylistAtEntryId === 'string') {
+          const entryToPlay: PlaylistItem | undefined = this._playlist.items.find((item: PlaylistItem) => item.sources.id === startPlaylistAtEntryId);
+          if (entryToPlay) {
+            wasEntryIdSet = true;
+            this.playItem(entryToPlay.index);
+          }
+        }
+        if (!wasEntryIdSet) {
+          this.playNext();
+        }
       }
     }
   }
