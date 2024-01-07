@@ -51,7 +51,7 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.2",
+    "@playkit-js/playkit-js": "0.84.3",
     "@playkit-js/playkit-js-dash": "1.36.1",
     "@playkit-js/playkit-js-hls": "1.32.10",
     "@playkit-js/playkit-js-providers": "2.40.2",
