@@ -49,10 +49,10 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.2-canary.0-3af100c",
-    "@playkit-js/playkit-js-dash": "1.36.0",
-    "@playkit-js/playkit-js-hls": "1.32.9",
-    "@playkit-js/playkit-js-providers": "2.40.1",
+    "@playkit-js/playkit-js": "0.84.2",
+    "@playkit-js/playkit-js-dash": "1.36.1",
+    "@playkit-js/playkit-js-hls": "1.32.10",
+    "@playkit-js/playkit-js-providers": "2.40.2",
     "@playkit-js/playkit-js-ui": "0.77.13",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
