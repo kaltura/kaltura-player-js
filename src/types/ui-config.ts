@@ -1,4 +1,3 @@
-// TODO extends UIOptionsObject {
 import { UIOptionsObject } from '@playkit-js/playkit-js-ui';
 
 export interface UiConfig extends UIOptionsObject {
