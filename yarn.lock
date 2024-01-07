@@ -1187,10 +1187,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@0.84.2":
-  version "0.84.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.2.tgz#20a4042d82406b32b4885da995c7386ffaa22f56"
-  integrity sha512-y5cLmPT0tXkdhe9P3IQHVWxMc+h+3aFURJkyaBCdAcl5CUqgV3EgONwQlkCNpjusLy5tbsSjxTatFUMXFeDwng==
+"@playkit-js/playkit-js@0.84.3":
+  version "0.84.3"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.3.tgz#ab99f509daf911d09adbc760c757065049655f55"
+  integrity sha512-B4SxVqML+6PSLUHuMAB21aEHjyI4DZahSoe/8tkwYBoSmjQ3cpUnB7SEoiCqiGvk6KYkxxAPbSgOvJiUKwaUew==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^1.0.36"
