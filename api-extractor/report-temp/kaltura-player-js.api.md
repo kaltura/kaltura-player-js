@@ -48,6 +48,7 @@ import { TrackTypes } from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
 import { UIEventType } from '@playkit-js/playkit-js-ui';
 import { UIOptionsObject } from '@playkit-js/playkit-js-ui';
+import { UIPreset } from '@playkit-js/playkit-js-ui';
 
 // @public
 export class Ad {
@@ -193,14 +194,6 @@ export interface CuePoint {
     // (undocumented)
     startTime: number;
 }
-
-// @public (undocumented)
-export type DeferredPromise = {
-    resolve: (value?: any | PromiseLike<any>) => void;
-    reject: (reason?: any) => void;
-    catch: (param: () => any) => void;
-    then(param: () => void): any;
-};
 
 // @public
 export type DRMSupportedObject = {
@@ -897,6 +890,8 @@ export interface PlaylistOptions {
     imageDuration: number;
     // (undocumented)
     loop: boolean;
+    // (undocumented)
+    startAtEntryId?: string;
 }
 
 // @public (undocumented)
@@ -954,6 +949,8 @@ export interface UiConfig extends UIOptionsObject {
     }[];
     // (undocumented)
     disable?: boolean;
+    // (undocumented)
+    targetId: string;
 }
 
 // @public (undocumented)
@@ -969,19 +966,19 @@ export interface ViewabilityConfig {
 
 // Warnings were encountered during analysis:
 //
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemotePlayerManager" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "PlayerSnapshot" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteControl" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteSession" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "BaseRemotePlayer" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteConnectedPayload" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteDisconnectedPayload" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemoteAvailablePayload" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "RemotePlayerUI" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "TextStyleConverter" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomEventMessage" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomActionMessage" needs to be exported by the entry point index.d.ts
-// src/common/cast/index.ts:13:11 - (ae-forgotten-export) The symbol "CustomMessage" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemotePlayerManager" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "PlayerSnapshot" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemoteControl" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemoteSession" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "BaseRemotePlayer" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemoteConnectedPayload" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemoteDisconnectedPayload" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemoteAvailablePayload" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "RemotePlayerUI" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "TextStyleConverter" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "CustomEventMessage" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "CustomActionMessage" needs to be exported by the entry point index.d.ts
+// src/common/cast/index.ts:23:11 - (ae-forgotten-export) The symbol "CustomMessage" needs to be exported by the entry point index.d.ts
 // src/types/events/event-types.ts:9:3 - (ae-forgotten-export) The symbol "CastEventType" needs to be exported by the entry point index.d.ts
 // src/types/events/event-types.ts:10:3 - (ae-forgotten-export) The symbol "PlaylistEventType" needs to be exported by the entry point index.d.ts
 
