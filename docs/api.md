@@ -573,6 +573,7 @@ Type: [Object][473]
 
 - `autoContinue` **[boolean][476]?** Determines whether to continue to the next item automatically.
 - `loop` **[boolean][476]?** Determines whether to play the playlist in a loop. When selected, the playlist will play automatically even if autoContinue is set to false.
+- `startAtEntryId` **[string][475]?** Sets the entry id to start playing the playlist from.
 
 ## KPPlaylistCountdownOptions
 
