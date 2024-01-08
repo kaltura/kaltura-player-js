@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/kaltura-player-js",
-  "version": "3.17.4",
+  "version": "3.17.7",
   "keywords": [
     "kaltura",
     "player",
@@ -30,10 +30,12 @@
     "ovp:watch": "webpack --watch --mode development --env playerType=ovp",
     "ovp:build:dev": "webpack --mode development --env playerType=ovp",
     "ovp:build:prod": "webpack --mode production --env playerType=ovp",
+    "build:ovp": "webpack --mode production --env playerType=ovp",
     "ott:serve": "webpack serve --open --mode development --env playerType=ott",
     "ott:watch": "webpack --watch --mode development --env playerType=ott",
     "ott:build:dev": "webpack --mode development --env playerType=ott",
     "ott:build:prod": "webpack --mode production --env playerType=ott",
+    "build:ott": "webpack --mode production --env playerType=ott",
     "clean": "rm -rf dist/*",
     "build": "yarn run clean && yarn run ovp:build:prod && yarn run ott:build:prod && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
