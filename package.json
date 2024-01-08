@@ -30,12 +30,12 @@
     "ovp:watch": "webpack --watch --mode development --env playerType=ovp",
     "ovp:build:dev": "webpack --mode development --env playerType=ovp",
     "ovp:build:prod": "webpack --mode production --env playerType=ovp",
-    "build:ovp": "webpack --mode production --env playerType=ovp",
+    "build:ovp": "yarn run ovp:build:prod",
     "ott:serve": "webpack serve --open --mode development --env playerType=ott",
     "ott:watch": "webpack --watch --mode development --env playerType=ott",
     "ott:build:dev": "webpack --mode development --env playerType=ott",
     "ott:build:prod": "webpack --mode production --env playerType=ott",
-    "build:ott": "webpack --mode production --env playerType=ott",
+    "build:ott": "yarn run ott:build:prod",
     "clean": "rm -rf dist/*",
     "build": "yarn run clean && yarn run ovp:build:prod && yarn run ott:build:prod && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
@@ -48,14 +48,15 @@
     "lint:fix": "yarn run lint -- --fix",
     "prettier": "prettier --write .",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
-    "release": "standard-version"
+    "release": "standard-version",
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
     "@playkit-js/playkit-js": "^0.84.3-canary.0-22c594e",
     "@playkit-js/playkit-js-dash": "^1.36.1-canary.0-9f58c2a",
     "@playkit-js/playkit-js-hls": "^1.32.10-canary.0-0fe6f51",
     "@playkit-js/playkit-js-providers": "^2.40.2-canary.0-45b4098",
-    "@playkit-js/playkit-js-ui": "^0.78.0-canary.0-20f8b3d",
+    "@playkit-js/playkit-js-ui": "^0.77.14-canary.0-8ddc9e5",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
   },
