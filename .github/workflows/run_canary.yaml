@@ -7,6 +7,13 @@ on:
     branches:
       - master
 
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'branch name'     
+        required: false
+        default: 'master'
+
 jobs:
   canary:
     uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
