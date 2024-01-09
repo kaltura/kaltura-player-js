@@ -5,6 +5,5 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["src/**/*", "./src/types/global/*.d.ts"],
-  "exclude": ["node_modules", "dist/**/*", "demo/libs/**/*"]
+  "include": ["src/**/*"]
 }
