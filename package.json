@@ -42,9 +42,9 @@
     "test:debug": "DEBUG_UNIT_TESTS=1 karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
     "test:watch": "karma start karma.conf.js --auto-watch --no-single-run",
     "lint": "eslint src/ tests/ --ext .js --ext .ts",
-    "lint:fix": "yarn run lint -- --fix",
+    "lint:fix": "yarn run lint --fix",
     "prettier": "prettier --write .",
-    "clean": "rm -rf dist/*",
+    "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
     "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"

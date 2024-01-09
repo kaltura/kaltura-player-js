@@ -1,11 +1,13 @@
-import { UIManager, Components, KPUIAddComponent, KPUIRemoveComponent } from "@playkit-js/playkit-js-ui";
+import {
+  UIManager,
+  Components,
+  KPUIAddComponent,
+  KPUIRemoveComponent
+} from '@playkit-js/playkit-js-ui';
 import { Env, getLogger, Utils } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../kaltura-player';
 import { UiConfig } from '../types';
-import {
-  KalturaPlayerConfig,
-  PluginsConfig
-} from '../types';
+import { KalturaPlayerConfig, PluginsConfig } from '../types';
 
 /**
  * The logger of the UIWrapper class.
