@@ -20,7 +20,8 @@
   "files": [
     "dist/**/*",
     "src/**/*",
-    "flow-typed/**/*"
+    "flow-typed/**/*",
+    "ts-typed/**/*"
   ],
   "publishConfig": {
     "access": "public"
