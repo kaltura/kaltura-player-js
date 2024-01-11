@@ -7,15 +7,12 @@ import {
 } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 
-// TODO - should be taken from plugin repo
-interface IPlugin {}
-
 /** The BasePlugin responsible to implement the plugin interface.
  * Contains several default implementations.
  * Other plugins should extend this class.
  * @classdesc
  */
-export class BasePlugin<ConfigType> implements IPlugin {
+export class BasePlugin<ConfigType> {
   protected logger: any;
   /**
    * The runtime configuration of the plugin.
@@ -92,7 +89,7 @@ export class BasePlugin<ConfigType> implements IPlugin {
    * @constructor
    * @private
    */
-  constructor(name: string, player: KalturaPlayer, config: ConfigType) {
+  constructor(name: string, player: KalturaPlayer, config?: ConfigType) {
     this.name = name;
     this.player = player;
     this.eventManager = new EventManager();
@@ -179,10 +176,8 @@ export class BasePlugin<ConfigType> implements IPlugin {
    * @param {any} payload - The event payload.
    * @returns {void}
    */
-  public dispatchEvent(name: string, payload: any): void {
+  public dispatchEvent(name: string, payload?: any): void {
     this.logger.debug('Fire event: ' + name, payload);
-    // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     this.player.dispatchEvent(new FakeEvent(name, payload));
   }
 }
