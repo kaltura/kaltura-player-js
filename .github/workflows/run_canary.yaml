@@ -7,14 +7,14 @@ on:
     branches:
       - master
       - patch-version
-      
+
   workflow_dispatch:
     inputs:
       branch:
-        description: 'branch name'     
+        description: 'branch name'
         required: false
         default: 'master'
-        
+
 jobs:
   canary:
     uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
@@ -24,4 +24,4 @@ jobs:
       player-type: "ovp tv"
       schema-type: "playerV3Versions"
       tests-yarn-run-to-execute: 'build lint type-check test'
-      yarn-upgrade-list: "@playkit-js/playkit-js@canary @playkit-js/playkit-js-dash@canary @playkit-js/playkit-js-hls@canary @playkit-js/playkit-js-ui@canary @playkit-js/playkit-js-providers@canary"
+      yarn-upgrade-list: "@playkit-js/playkit-js@0.84.4-canary.0-99e0ee9 @playkit-js/playkit-js-dash@canary @playkit-js/playkit-js-hls@canary @playkit-js/playkit-js-ui@canary @playkit-js/playkit-js-providers@canary"
