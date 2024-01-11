@@ -983,8 +983,8 @@ function mergeProviderPluginsConfig(
   Utils.Object.isObject(providerPluginsConfig) &&
     Object.entries(providerPluginsConfig).forEach(
       ([pluginName, pluginConfig]: [string, any]) => {
-        mergePluginConfig[pluginName] = {} as BasePlugin;
-        respectiveAppPluginsConfig[pluginName] = {} as BasePlugin;
+        mergePluginConfig[pluginName] = {} as BasePlugin<any>;
+        respectiveAppPluginsConfig[pluginName] = {} as BasePlugin<any>;
         Object.entries(pluginConfig).forEach(([key, providerValue]) => {
           const appValue = Utils.Object.getPropertyPath(
             appPluginsConfig[pluginName],

@@ -15,13 +15,13 @@ interface IPlugin {}
  * Other plugins should extend this class.
  * @classdesc
  */
-export class BasePlugin implements IPlugin {
+export class BasePlugin<ConfigType> implements IPlugin {
   protected logger: any;
   /**
    * The runtime configuration of the plugin.
    * @member
    */
-  protected config: any;
+  protected config: ConfigType;
   /**
    * The name of the plugin.
    * @member
@@ -63,7 +63,7 @@ export class BasePlugin implements IPlugin {
     name: string,
     player: KalturaPlayer,
     config: any = {}
-  ): BasePlugin {
+  ): BasePlugin<any> {
     return new this(name, player, config);
   }
 
@@ -92,12 +92,12 @@ export class BasePlugin implements IPlugin {
    * @constructor
    * @private
    */
-  constructor(name: string, player: KalturaPlayer, config: any) {
+  constructor(name: string, player: KalturaPlayer, config: ConfigType) {
     this.name = name;
     this.player = player;
     this.eventManager = new EventManager();
     this.logger = getLogger(Utils.String.capitlize(this.name));
-    this.config = {};
+    this.config = {} as ConfigType;
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
     Utils.Object.mergeDeep(this.config, this.constructor.defaultConfig, config);

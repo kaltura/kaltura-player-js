@@ -1,5 +1,7 @@
 import { BasePlugin } from './index';
 import { Error, getLogger } from '@playkit-js/playkit-js';
+import { KalturaPlayer } from "../../kaltura-player";
+import config from "../../../../kux-html/src/config";
 
 /**
  * The logger of the PluginManager class.
@@ -26,7 +28,7 @@ export class PluginManager {
    * @type {Object}
    * @private
    */
-  private _plugins: { [name: string]: BasePlugin } = {};
+  private _plugins: { [name: string]: BasePlugin<any> } = {};
   /**
    * Is disabled plugin map.
    * Maps plugin's name to a boolean.
@@ -45,10 +47,10 @@ export class PluginManager {
    * @static
    * @public
    */
-  public static register(name: string, handler: () => any): boolean {
+  public static register<PluginClass extends BasePlugin<configType>, configType>(name: string, pluginClass: { new (name: string, player: KalturaPlayer, config?: any): PluginClass }): boolean {
     if (
-      typeof handler !== 'function' ||
-      handler.prototype instanceof BasePlugin === false
+      typeof pluginClass !== 'function' ||
+      pluginClass.prototype instanceof BasePlugin === false
     ) {
       PluginManager._logger.error(
         `Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`
@@ -56,7 +58,7 @@ export class PluginManager {
       return false;
     }
     if (!PluginManager._registry.has(name)) {
-      PluginManager._registry.set(name, handler);
+      PluginManager._registry.set(name, pluginClass);
       PluginManager._logger.debug(
         `Plugin <${name}> has been registered successfully`
       );
@@ -165,7 +167,7 @@ export class PluginManager {
    * @returns {BasePlugin} - The plugin instance.
    * @public
    */
-  public get(name: string): BasePlugin | undefined {
+  public get(name: string): BasePlugin<any> | undefined {
     return this._plugins[name];
   }
 
@@ -174,7 +176,7 @@ export class PluginManager {
    * @returns {Object} - All plugins.
    * @public
    */
-  public getAll(): { [name: string]: BasePlugin } {
+  public getAll(): { [name: string]: BasePlugin<any> } {
     return this._plugins;
   }
 }
@@ -184,5 +186,10 @@ export class PluginManager {
  * @type {function}
  * @constant
  */
-const registerPlugin = PluginManager.register;
+
+
+// Extract the register method from PluginManager
+const { register: registerPlugin } = PluginManager;
+
+// Export the register method as registerPlugin
 export { registerPlugin };

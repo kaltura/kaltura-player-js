@@ -601,7 +601,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public toggleVrStereoMode(): void {
-    const vrPlugin: BasePlugin | undefined = this._pluginManager.get('vr');
+    const vrPlugin: BasePlugin<any> | undefined = this._pluginManager.get('vr');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (vrPlugin && typeof vrPlugin.toggleVrStereoMode === 'function') {
@@ -612,7 +612,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public isInVrStereoMode(): boolean {
-    const vrPlugin: BasePlugin | undefined = this._pluginManager.get('vr');
+    const vrPlugin: BasePlugin<any> | undefined = this._pluginManager.get('vr');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (vrPlugin && typeof vrPlugin.isInStereoMode === 'function') {
@@ -826,7 +826,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._adsController;
   }
 
-  public get plugins(): { [name: string]: BasePlugin } {
+  public get plugins(): { [name: string]: BasePlugin<any> } {
     return this._pluginManager.getAll();
   }
 
