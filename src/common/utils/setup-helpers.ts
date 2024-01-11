@@ -889,6 +889,9 @@ function maybeSetStreamPriority(
   if (sources && hasImageSource(sources)) {
     return addEngineToStreamPriority(player, 'image', 'image');
   }
+  if (sources && hasDocSource(sources)) {
+    return addEngineToStreamPriority(player, 'doc', 'doc');
+  }
   return null;
 }
 
@@ -911,6 +914,16 @@ function hasImageSource(sources: PKSourcesConfigObject): boolean {
   // const IMAGE_MIME_TYPES = /(^image)(\/)[a-zA-Z0-9_]*/;
   const source = sources && sources.image;
   // return !!(source && source[0] && source[0].mimetype.match(IMAGE_MIME_TYPES));
+  return !!(source && source[0]);
+}
+
+/**
+ * returns true if sources contain doc source
+ * @param {PKSourcesConfigObject} sources - thr sources object
+ * @returns {boolean} - true if sources contain doc source
+ */
+function hasDocSource(sources: PKSourcesConfigObject): boolean {
+  const source = sources && sources.doc;
   return !!(source && source[0]);
 }
 
@@ -1018,6 +1031,7 @@ export {
   maybeSetStreamPriority,
   hasYoutubeSource,
   hasImageSource,
+  hasDocSource,
   mergeProviderPluginsConfig,
   getServerUIConf,
   initializeStorageManagers,

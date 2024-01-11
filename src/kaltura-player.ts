@@ -60,6 +60,7 @@ import { PlaylistManager } from './common/playlist/playlist-manager';
 import { RemotePlayerManager } from './common/cast/remote-player-manager';
 import {
   hasImageSource,
+  hasDocSource,
   hasYoutubeSource,
   maybeSetStreamPriority,
   mergeProviderPluginsConfig,
@@ -229,7 +230,11 @@ export class KalturaPlayer extends FakeEventTarget {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     this.configure({ session: mediaConfig.session });
-    if (!hasYoutubeSource(sources) && !hasImageSource(sources)) {
+    if (
+      !hasYoutubeSource(sources) &&
+      !hasImageSource(sources) &&
+      !hasDocSource(sources)
+    ) {
       this._thumbnailManager = new ThumbnailManager(
         this,
         this.config.ui,
@@ -472,6 +477,10 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public isImage(): boolean {
     return hasImageSource(this.sources);
+  }
+
+  public isDoc(): boolean {
+    return hasDocSource(this.sources);
   }
 
   public isAudio(): boolean {

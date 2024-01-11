@@ -2592,6 +2592,10 @@ Returns **[boolean][476]** true if sources contain youtube source
 
 returns true if sources contain image source
 
+## hasDocSource
+
+returns true if sources contain document source
+
 ### Parameters
 
 - `sources` **PKSourcesConfigObject** thr sources object
