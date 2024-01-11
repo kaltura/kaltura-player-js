@@ -1,7 +1,6 @@
 import { BasePlugin } from './index';
 import { Error, getLogger } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from "../../kaltura-player";
-import config from "../../../../kux-html/src/config";
 
 /**
  * The logger of the PluginManager class.
