@@ -1173,9 +1173,10 @@
     react-redux "^7.2.0"
     redux "^4.0.5"
 
-"@playkit-js/playkit-js@https://github.com/kaltura/playkit-js#2611fb78a7c6d229ed7f858ca4cd7e34b5c96a2c":
-  version "0.82.5"
-  resolved "https://github.com/kaltura/playkit-js#2611fb78a7c6d229ed7f858ca4cd7e34b5c96a2c"
+"@playkit-js/playkit-js@0.82.6-canary.0-f9fd0e4":
+  version "0.82.6-canary.0-f9fd0e4"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.82.6-canary.0-f9fd0e4.tgz#5ed4e9025d68c4c63d039d15bc7562ed9df73d85"
+  integrity sha512-6VnZhBv8f2ixyOG0W7kQQZ900yLBPFSqziTnlDbxUH4RBHr4ztBOIf6g9yTblM26TC2YJWt/Zc38U8Y7VeGhKw==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "1.0.2"
@@ -9416,9 +9417,9 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-"shaka-player@https://github.com/SivanA-Kaltura/shaka-player#4d60824b0ea71628c695352a6366b7356e8d9eb3":
-  version "4.3.0"
-  resolved "https://github.com/SivanA-Kaltura/shaka-player#4d60824b0ea71628c695352a6366b7356e8d9eb3"
+"shaka-player@https://github.com/kaltura/shaka-player#f67a2ac332cc4402d3306ca3578e86b352c95b1f":
+  version "4.7.0"
+  resolved "https://github.com/kaltura/shaka-player#f67a2ac332cc4402d3306ca3578e86b352c95b1f"
   dependencies:
     eme-encryption-scheme-polyfill "^2.1.1"
 
