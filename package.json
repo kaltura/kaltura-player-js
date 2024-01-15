@@ -36,8 +36,8 @@
     "prebuild": "npm run clean",
     "precommit": "lint-staged",
     "prettier:fix": "prettier --write .",
-    "pushTaggedRelease": "git push --follow-tags --no-verify origin kux-patch-new-2",
-    "release": "standard-version --prerelease kux-patch-new-2",
+    "pushTaggedRelease": "git push --follow-tags --no-verify origin patch-version",
+    "release": "standard-version",
     "test": "NODE_ENV=testing karma start --color --mode development",
     "watch:ott": "sh ./scripts/job.sh watch ott",
     "watch:ovp": "sh ./scripts/job.sh watch ovp"
