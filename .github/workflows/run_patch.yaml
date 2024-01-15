@@ -1,8 +1,8 @@
 
 
-## Side Beanch
-name: Side Branch
-run-name: Side Branch
+## Patch
+name: Patch
+run-name: Patch
 
 on:
   workflow_dispatch:
