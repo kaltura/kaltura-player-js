@@ -1,0 +1,29 @@
+## Canary CI/CD
+name: Canary
+run-name: Canary
+
+on:
+  push:
+    branches:
+      - master
+      - patch-version
+    paths-ignore:
+      - '.github/workflows/**'
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'branch name'
+        required: false
+        default: 'master'
+
+jobs:
+  canary:
+    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
+    secrets: inherit
+    with:
+      node-version: "20.x"
+      player-type: "ovp tv"
+      schema-type: "playerV3Versions"
+      tests-yarn-run-to-execute: 'build lint type-check test'
+      yarn-upgrade-list: ""
