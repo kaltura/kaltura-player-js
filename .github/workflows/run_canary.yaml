@@ -6,6 +6,16 @@ on:
   push:
     branches:
       - master
+      - patch-version
+    paths-ignore:
+      - '.github/workflows/**'
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'branch name'
+        required: false
+        default: 'master'
 
 jobs:
   canary:
