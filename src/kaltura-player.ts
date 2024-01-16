@@ -231,17 +231,17 @@ export class KalturaPlayer extends FakeEventTarget {
     });
     this.configure({ session: mediaConfig.session });
     if (
-      !hasYoutubeSource(sources) &&
-      !hasImageSource(sources) &&
-      !hasDocSource(sources)
+      hasYoutubeSource(sources) ||
+      hasImageSource(sources) ||
+      hasDocSource(sources)
     ) {
+      this._thumbnailManager = null;
+    } else {
       this._thumbnailManager = new ThumbnailManager(
         this,
         this.config.ui,
         mediaConfig
       );
-    } else {
-      this._thumbnailManager = null;
     }
     this.updateKalturaPoster(
       sources,
