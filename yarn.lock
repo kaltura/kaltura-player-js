@@ -9417,9 +9417,9 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-"shaka-player@https://github.com/kaltura/shaka-player#f67a2ac332cc4402d3306ca3578e86b352c95b1f":
-  version "4.7.0"
-  resolved "https://github.com/kaltura/shaka-player#f67a2ac332cc4402d3306ca3578e86b352c95b1f"
+"shaka-player@https://github.com/kaltura/shaka-player#v3.4.0-KUX-Patch":
+  version "4.3.0"
+  resolved "https://github.com/kaltura/shaka-player#04f244e30d07f5f5ecf821f4bdc1e38b7f67a028"
   dependencies:
     eme-encryption-scheme-polyfill "^2.1.1"
 
