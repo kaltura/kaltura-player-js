@@ -28,13 +28,11 @@
   },
   "scripts": {
     "serve:ovp": "webpack serve --open --mode development --env playerType=ovp",
-    "watch:ovp": "webpack --watch --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
-    "build-dev:ovp": "webpack --mode development --env playerType=ovp",
+    "watch:ovp": "webpack --mode development --watch --env playerType=ovp",
     "serve:ott": "webpack serve --open --mode development --env playerType=ott",
-    "watch:ott": "webpack --watch --mode development --env playerType=ott",
     "build:ott": "webpack --mode production --env playerType=ott",
-    "build-dev:ott": "webpack --mode development --env playerType=ott",
+    "watch:ott": "webpack --mode development --watch --env playerType=ott",
     "build": "yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
     "type-check": "tsc --noEmit",
@@ -48,7 +46,8 @@
     "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
-    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint",
+    "runn": "cp -Rf dist ../playkit-js-plugin-example/node_modules/@playkit-js/kaltura-player-js"
   },
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.4-canary.0-99e0ee9",

@@ -48,23 +48,6 @@ export class BasePlugin<ConfigType> {
   protected static defaultConfig: any = {};
 
   /**
-   * Factory method to create the actual plugin.
-   * @param {string} name - The plugin name
-   * @param {Object} player - The player reference
-   * @param {Object} config - The plugin configuration
-   * @returns {BasePlugin} - New runtime plugin instance
-   * @static
-   * @public
-   */
-  public static createPlugin(
-    name: string,
-    player: KalturaPlayer,
-    config: any = {}
-  ): BasePlugin<any> {
-    return new this(name, player, config);
-  }
-
-  /**
    * Returns under what conditions the plugin is valid.
    * Plugin must implement this method.
    * @returns {boolean} - Whether the plugin is valid and can be initiated. Default implementation is true
@@ -72,7 +55,7 @@ export class BasePlugin<ConfigType> {
    * @public
    * @abstract
    */
-  protected static isValid(): boolean {
+  public static isValid(): boolean {
     throw new Error(
       Error.Severity.CRITICAL,
       Error.Category.PLAYER,
@@ -89,15 +72,14 @@ export class BasePlugin<ConfigType> {
    * @constructor
    * @private
    */
-  constructor(name: string, player: KalturaPlayer, config?: ConfigType) {
+  constructor(name: string, player: KalturaPlayer, config: ConfigType = {} as ConfigType) {
     this.name = name;
     this.player = player;
     this.eventManager = new EventManager();
     this.logger = getLogger(Utils.String.capitlize(this.name));
-    this.config = {} as ConfigType;
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    Utils.Object.mergeDeep(this.config, this.constructor.defaultConfig, config);
+    this.config = { ...this.constructor.defaultConfig, ...config };
   }
 
   /**

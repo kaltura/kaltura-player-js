@@ -1,6 +1,6 @@
 import { BasePlugin } from './index';
 import { Error, getLogger } from '@playkit-js/playkit-js';
-import { KalturaPlayer } from "../../kaltura-player";
+import { PluginClassType } from "../../types";
 
 /**
  * The logger of the PluginManager class.
@@ -20,7 +20,7 @@ export class PluginManager {
    * @static
    * @private
    */
-  private static _registry: Map<string, any> = new Map();
+  private static _registry: Map<string, PluginClassType> = new Map();
   /**
    * The active plugins in the player.
    * Maps plugin's name to his instance.
@@ -41,23 +41,18 @@ export class PluginManager {
    * Writes the plugin in the registry.
    * Maps: plugin name -> plugin class.
    * @param {string} name - The plugin name
-   * @param {Function} handler - The plugin class
+   * @param PluginClass
    * @returns {boolean} - If the registration request succeeded
    * @static
    * @public
    */
-  public static register<PluginClass extends BasePlugin<configType>, configType>(name: string, pluginClass: { new (name: string, player: KalturaPlayer, config?: any): PluginClass }): boolean {
-    if (
-      typeof pluginClass !== 'function' ||
-      pluginClass.prototype instanceof BasePlugin === false
-    ) {
-      PluginManager._logger.error(
-        `Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`
-      );
+  public static register(name: string, PluginClass: PluginClassType): boolean {
+    if (!(typeof PluginClass === 'function' && PluginClass.prototype instanceof BasePlugin)) {
+      PluginManager._logger.error(`Plugin <${name}> registration failed, plugin is not an instance of BasePlugin`);
       return false;
     }
     if (!PluginManager._registry.has(name)) {
-      PluginManager._registry.set(name, pluginClass);
+      PluginManager._registry.set(name, PluginClass);
       PluginManager._logger.debug(
         `Plugin <${name}> has been registered successfully`
       );
@@ -103,15 +98,15 @@ export class PluginManager {
         name
       );
     }
-    const pluginClass = PluginManager._registry.get(name);
+    const PluginClass = PluginManager._registry.get(name)!;
     if (typeof config.disable === 'boolean') {
       this._isDisabledPluginMap.set(name, config.disable);
     }
     const isDisablePlugin = !!this._isDisabledPluginMap.get(name);
-    const isValidPlugin = pluginClass ? pluginClass.isValid() : false;
-    if (pluginClass && isValidPlugin && !isDisablePlugin) {
+    const isValidPlugin = PluginClass ? PluginClass.isValid() : false;
+    if (PluginClass && isValidPlugin && !isDisablePlugin) {
       try {
-        this._plugins[name] = pluginClass.createPlugin(name, player, config);
+        this._plugins[name] = new PluginClass(name, player, config);
       } catch (e) {
         throw new Error(
           Error.Severity.RECOVERABLE,
@@ -185,7 +180,6 @@ export class PluginManager {
  * @type {function}
  * @constant
  */
-
 
 // Extract the register method from PluginManager
 const { register: registerPlugin } = PluginManager;
