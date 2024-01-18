@@ -3,12 +3,12 @@ name: Canary
 run-name: Canary
 
 on:
-  push:
-    branches:
-      - master
-      - patch-version
-    paths-ignore:
-      - '.github/workflows/**'
+#  push:
+#    branches:
+#      - master
+#      - patch-version
+#    paths-ignore:
+#      - '.github/workflows/**'
 
   workflow_dispatch:
     inputs:
@@ -16,14 +16,36 @@ on:
         description: 'branch name'
         required: false
         default: 'master'
+      scripts-to-execute:
+        description: 'scripts to execute'
+        required: false
+        type: string
+        default: 'build lint type-check test'
+      is-patch-version:
+        description: "patch version"
+        required: true
+        type: boolean
+        default: false
+
 
 jobs:
   canary:
-    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
-    secrets: inherit
-    with:
-      node-version: "20.x"
-      player-type: "ovp tv"
-      schema-type: "playerV3Versions"
-      tests-yarn-run-to-execute: 'build lint type-check test'
-      yarn-upgrade-list: ""
+    steps:
+      - name: Set stage environment variable based on is-patch-version input
+        run: |
+          if [[ "${{ inputs.is-patch-version }}" == "true" ]]; then
+            echo "STAGE_VALUE=patch" >> $GITHUB_ENV
+          else
+            echo "STAGE_VALUE=canary" >> $GITHUB_ENV
+          fi
+      - name: Run canary
+        uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
+        secrets: inherit
+        with:
+          node-version: "20.x"
+          player-type: "ovp tv"
+          schema-type: "playerV3Versions"
+          tests-yarn-run-to-execute: ${{ inputs.scripts-to-execute }}
+          yarn-upgrade-list: ""
+#         is-patch-version: ${{ inputs.is-patch-version }}
+          stage: $STAGE_VALUE
