@@ -48,7 +48,7 @@ class PlaylistManager {
       autoContinue: true,
       loop: false,
       imageDuration: 5,
-      docDuration: 5
+      documentDuration: 5
     };
     this._countdown = { duration: 10, showing: true };
     this._mediaInfoList = [];
@@ -353,9 +353,9 @@ class PlaylistManager {
       this._player.configure({
         sources: { duration: this._options.imageDuration }
       });
-    } else if (this._player.isDoc()) {
+    } else if (this._player.isDocument()) {
       this._player.configure({
-        sources: { duration: this._options.docDuration }
+        sources: { duration: this._options.documentDuration }
       });
     }
   }

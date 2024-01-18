@@ -7,5 +7,5 @@ export interface PlaylistOptions {
   autoContinue: boolean;
   loop: boolean;
   imageDuration: number;
-  docDuration: number;
+  documentDuration: number;
 }
