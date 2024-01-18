@@ -36,15 +36,15 @@ jobs:
       value: ${{ steps.stage.outputs.stage }}
     steps:
       - name: Output stage
-          id: stage
-          run: |
-            if [[ "${{ inputs.is-patch-version }}" == "true" ]]; then
-              stage="patch"
-            else
-              stage="canary"
-            fi
-            echo $stage
-            echo "stage=${stage}" >> $GITHUB_OUTPUT
+        id: stage
+        run: |
+          if [[ "${{ inputs.is-patch-version }}" == "true" ]]; then
+            stage="patch"
+          else
+            stage="canary"
+          fi
+          echo $stage
+          echo "stage=${stage}" >> $GITHUB_OUTPUT
   canary:
     uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
     secrets: inherit
