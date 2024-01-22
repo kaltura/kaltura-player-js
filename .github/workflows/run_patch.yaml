@@ -3,14 +3,11 @@ name: Canary
 run-name: Canary
 
 on:
-  #  push:
-  #    branches:
-  #      - master
-  #      - patch-version
-  #    paths-ignore:
-  #      - '.github/workflows/**'
+    push:
+      branches:
+        - *
 
-  workflow_dispatch:
+#  workflow_dispatch:
 #    inputs:
 #      branch:
 #        description: 'branch name'
