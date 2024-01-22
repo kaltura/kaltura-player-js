@@ -1,6 +1,6 @@
 ## Canary CI/CD
-name: Canary
-run-name: Canary
+name: Patch
+run-name: Patch
 
 on:
   push:
