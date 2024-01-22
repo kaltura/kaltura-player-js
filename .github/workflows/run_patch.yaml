@@ -3,11 +3,12 @@ name: Patch
 run-name: Patch
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - '*'
 
-  workflow_dispatch:
+#  workflow_dispatch:
 #    inputs:
 #      branch:
 #        description: 'branch name'
