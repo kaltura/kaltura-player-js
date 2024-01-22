@@ -7,7 +7,7 @@ on:
     branches:
       - '*'
 
-#  workflow_dispatch:
+  workflow_dispatch:
 #    inputs:
 #      branch:
 #        description: 'branch name'
@@ -26,22 +26,22 @@ on:
 
 
 jobs:
-  set_stage_variable:
-    runs-on: ubuntu-latest
-    outputs:
-      id: stage
-      value: ${{ steps.stage.outputs.stage }}
-    steps:
-      - name: Output stage
-        id: stage
-        run: |
-          if [[ "${{ inputs.is-patch-version }}" == "true" ]]; then
-            stage="patch"
-          else
-            stage="canary"
-          fi
-          echo $stage
-          echo "stage=${stage}" >> $GITHUB_OUTPUT
+#  set_stage_variable:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      id: stage
+#      value: ${{ steps.stage.outputs.stage }}
+#    steps:
+#      - name: Output stage
+#        id: stage
+#        run: |
+#          if [[ "${{ inputs.is-patch-version }}" == "true" ]]; then
+#            stage="patch"
+#          else
+#            stage="canary"
+#          fi
+#          echo $stage
+#          echo "stage=${stage}" >> $GITHUB_OUTPUT
   get_branch_name:
     runs-on: ubuntu-latest
     outputs:
@@ -51,7 +51,7 @@ jobs:
       - name: Output branch name
         id: name
         run: |
-          name=$(echo ${GITHUB_REF#refs/heads/})
+          name=${GITHUB_REF#refs/heads/}
           echo $name
           echo "name=${name}" >> $GITHUB_OUTPUT
 #  canary:
