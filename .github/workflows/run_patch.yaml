@@ -3,12 +3,16 @@ name: Patch
 run-name: Patch
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - '*'
 
-#  workflow_dispatch:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Optional description for the input'
+        required: false
+        default: 'default_value'
 #    inputs:
 #      branch:
 #        description: 'branch name'
