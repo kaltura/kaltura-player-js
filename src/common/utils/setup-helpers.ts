@@ -409,7 +409,9 @@ function getDefaultOptions(
 
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
-  if(process.env.NODE_ENV === 'production') setDefaultAnalyticsPlugin(defaultOptions);
+  if (process.env.NODE_ENV === 'production') {
+    setDefaultAnalyticsPlugin(defaultOptions);
+  }
   configureSmartTVDefaultOptions(defaultOptions);
   configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
@@ -983,8 +985,8 @@ function mergeProviderPluginsConfig(
   Utils.Object.isObject(providerPluginsConfig) &&
     Object.entries(providerPluginsConfig).forEach(
       ([pluginName, pluginConfig]: [string, any]) => {
-        mergePluginConfig[pluginName] = {} as BasePlugin<any>;
-        respectiveAppPluginsConfig[pluginName] = {} as BasePlugin<any>;
+        mergePluginConfig[pluginName] = {} as BasePlugin;
+        respectiveAppPluginsConfig[pluginName] = {} as BasePlugin;
         Object.entries(pluginConfig).forEach(([key, providerValue]) => {
           const appValue = Utils.Object.getPropertyPath(
             appPluginsConfig[pluginName],

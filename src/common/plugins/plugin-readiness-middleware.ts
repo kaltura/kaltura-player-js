@@ -1,11 +1,11 @@
 import { BaseMiddleware, getLogger } from '@playkit-js/playkit-js';
 import { BasePlugin } from './base-plugin';
 class PluginReadinessMiddleware extends BaseMiddleware {
-  private readonly _plugins: Array<BasePlugin<any>>;
+  private readonly _plugins: Array<BasePlugin>;
   public id: string = 'PluginReadinessMiddleware';
   private static _logger = getLogger('PluginReadinessMiddleware');
 
-  constructor(plugins: Array<BasePlugin<any>>) {
+  constructor(plugins: Array<BasePlugin>) {
     super();
     this._plugins = plugins;
     PluginReadinessMiddleware._logger.debug('plugins readiness', this._plugins);

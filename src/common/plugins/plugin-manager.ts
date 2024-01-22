@@ -1,6 +1,6 @@
 import { BasePlugin } from './index';
 import { Error, getLogger } from '@playkit-js/playkit-js';
-import { PluginClassType } from "../../types";
+import { PluginClassType } from '../../types';
 
 /**
  * The logger of the PluginManager class.
@@ -27,7 +27,7 @@ export class PluginManager {
    * @type {Object}
    * @private
    */
-  private _plugins: { [name: string]: BasePlugin<any> } = {};
+  private _plugins: { [name: string]: BasePlugin } = {};
   /**
    * Is disabled plugin map.
    * Maps plugin's name to a boolean.
@@ -47,8 +47,15 @@ export class PluginManager {
    * @public
    */
   public static register(name: string, PluginClass: PluginClassType): boolean {
-    if (!(typeof PluginClass === 'function' && PluginClass.prototype instanceof BasePlugin)) {
-      PluginManager._logger.error(`Plugin <${name}> registration failed, plugin is not an instance of BasePlugin`);
+    if (
+      !(
+        typeof PluginClass === 'function' &&
+        PluginClass.prototype instanceof BasePlugin
+      )
+    ) {
+      PluginManager._logger.error(
+        `Plugin <${name}> registration failed, plugin is not an instance of BasePlugin`
+      );
       return false;
     }
     if (!PluginManager._registry.has(name)) {
@@ -161,7 +168,7 @@ export class PluginManager {
    * @returns {BasePlugin} - The plugin instance.
    * @public
    */
-  public get(name: string): BasePlugin<any> | undefined {
+  public get(name: string): BasePlugin | undefined {
     return this._plugins[name];
   }
 
@@ -170,7 +177,7 @@ export class PluginManager {
    * @returns {Object} - All plugins.
    * @public
    */
-  public getAll(): { [name: string]: BasePlugin<any> } {
+  public getAll(): { [name: string]: BasePlugin } {
     return this._plugins;
   }
 }

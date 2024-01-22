@@ -12,13 +12,13 @@ import { KalturaPlayer } from '../../kaltura-player';
  * Other plugins should extend this class.
  * @classdesc
  */
-export class BasePlugin<ConfigType> {
+export class BasePlugin {
   protected logger: any;
   /**
    * The runtime configuration of the plugin.
    * @member
    */
-  protected config: ConfigType;
+  protected config: any;
   /**
    * The name of the plugin.
    * @member
@@ -72,7 +72,7 @@ export class BasePlugin<ConfigType> {
    * @constructor
    * @private
    */
-  constructor(name: string, player: KalturaPlayer, config: ConfigType = {} as ConfigType) {
+  constructor(name: string, player: KalturaPlayer, config: any = {}) {
     this.name = name;
     this.player = player;
     this.eventManager = new EventManager();
