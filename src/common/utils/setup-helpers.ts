@@ -409,7 +409,7 @@ function getDefaultOptions(
 
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
-  setDefaultAnalyticsPlugin(defaultOptions);
+  if(process.env.NODE_ENV === 'production') setDefaultAnalyticsPlugin(defaultOptions);
   configureSmartTVDefaultOptions(defaultOptions);
   configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
