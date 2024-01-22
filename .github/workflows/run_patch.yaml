@@ -3,9 +3,9 @@ name: Canary
 run-name: Canary
 
 on:
-    push:
-      branches:
-        *
+  push:
+    branches:
+      - *
 
 #  workflow_dispatch:
 #    inputs:
