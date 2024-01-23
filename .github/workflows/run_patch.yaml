@@ -54,6 +54,8 @@ jobs:
           name=${GITHUB_REF#refs/heads/}
           echo $name
           echo "name=${name}" >> $GITHUB_OUTPUT
+          echo "github.ref ---->"
+          echo ${{ github.token }}
   checkout_code:
     runs-on: ubuntu-latest
     steps:
@@ -61,7 +63,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
-          ref: $ {{ needs.branch-name.outputs.branch-name }}
+          ref: ${{ needs.branch-name.outputs.branch-name }}
 #  canary:
 #    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
 #    secrets: inherit
