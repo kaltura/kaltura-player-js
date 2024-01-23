@@ -46,15 +46,14 @@
     "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
-    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint",
-    "runn": "cp -Rf dist ../playkit-js-plugin-example/node_modules/@playkit-js/kaltura-player-js"
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
     "@playkit-js/playkit-js": "latest",
     "@playkit-js/playkit-js-dash": "latest",
     "@playkit-js/playkit-js-hls": "latest",
-    "@playkit-js/playkit-js-providers": "latest",
-    "@playkit-js/playkit-js-ui": "latest",
+    "@playkit-js/playkit-js-providers": "canary",
+    "@playkit-js/playkit-js-ui": "canary",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
   },
