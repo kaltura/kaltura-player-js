@@ -4,7 +4,7 @@ import {
   SourcesConfig,
   KPPlaylistItemConfigObject
 } from '../../types';
-const formats = ['hls', 'dash', 'progressive', 'image', 'document'];
+const formats = ['hls', 'dash', 'progressive', 'image'];
 /**
  * @class PlaylistItem
  * @param {PKSourcesConfigObject} [sources] - The item sources
