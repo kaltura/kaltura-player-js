@@ -26,27 +26,12 @@ export function setDefaultAnalyticsPlugin(options: KalturaPlayerConfig): void {
  * @param {KalturaPlayerConfig} mediaOptions - The media config.
  * @returns {Object} - config object
  */
-export function getDefaultRedirectOptions(
-  playerOptions: Partial<KalturaPlayerConfig>,
-  mediaOptions?: KalturaPlayerConfig
-): any {
+export function getDefaultRedirectOptions(playerOptions: Partial<KalturaPlayerConfig>, mediaOptions?: KalturaPlayerConfig): any {
   const configObj = {};
-  if (
-    mediaOptions?.sources?.type === MediaType.LIVE &&
-    (Env.browser.name === 'IE' || Env.device.model === 'Chromecast')
-  ) {
-    const playerForceRedirectExternalStreams = Utils.Object.getPropertyPath(
-      playerOptions,
-      'sources.options.forceRedirectExternalStreams'
-    );
-    const mediaForceRedirectExternalStreams = Utils.Object.getPropertyPath(
-      mediaOptions,
-      'sources.options.forceRedirectExternalStreams'
-    );
-    if (
-      typeof playerForceRedirectExternalStreams !== 'boolean' &&
-      typeof mediaForceRedirectExternalStreams !== 'boolean'
-    ) {
+  if (mediaOptions?.sources?.type === MediaType.LIVE && (Env.browser.name === 'IE' || Env.device.model === 'Chromecast')) {
+    const playerForceRedirectExternalStreams = Utils.Object.getPropertyPath(playerOptions, 'sources.options.forceRedirectExternalStreams');
+    const mediaForceRedirectExternalStreams = Utils.Object.getPropertyPath(mediaOptions, 'sources.options.forceRedirectExternalStreams');
+    if (typeof playerForceRedirectExternalStreams !== 'boolean' && typeof mediaForceRedirectExternalStreams !== 'boolean') {
       Utils.Object.mergeDeep(configObj, {
         sources: {
           options: {
@@ -56,8 +41,5 @@ export function getDefaultRedirectOptions(
       });
     }
   }
-  return Utils.Object.mergeDeep(
-    configObj,
-    getRedirectExternalStreamsHandler(playerOptions, mediaOptions)
-  );
+  return Utils.Object.mergeDeep(configObj, getRedirectExternalStreamsHandler(playerOptions, mediaOptions));
 }

@@ -22,11 +22,7 @@ function getPlayer(id: string): KalturaPlayer | null {
   return null;
 }
 
-const proxyIgnoredProps: string[] = [
-  '_remotePlayer',
-  '_listeners',
-  '_uiWrapper'
-];
+const proxyIgnoredProps: string[] = ['_remotePlayer', '_listeners', '_uiWrapper'];
 const proxyHandler: any = {
   get(kp: KalturaPlayer, prop: string) {
     if (prop === 'destroy') {

@@ -45,15 +45,13 @@ export class BaseStorageManager {
    * @returns {void}
    */
   public static attachAll(player: KalturaPlayer): void {
-    BaseStorageHelper.getInstance().storageManagers.forEach(
-      (manager: BaseStorageManager) => {
+    BaseStorageHelper.getInstance().storageManagers.forEach((manager: BaseStorageManager) => {
+      // @ts-expect-error // does not exist on type - does not exist on type, Did you mean to access the static member 'BaseStorageManager.attach' instead?
+      if (manager.isStorageAvailable()) {
         // @ts-expect-error // does not exist on type - does not exist on type, Did you mean to access the static member 'BaseStorageManager.attach' instead?
-        if (manager.isStorageAvailable()) {
-          // @ts-expect-error // does not exist on type - does not exist on type, Did you mean to access the static member 'BaseStorageManager.attach' instead?
-          manager.attach(player);
-        }
+        manager.attach(player);
       }
-    );
+    });
   }
 
   /**
@@ -187,12 +185,7 @@ export class BaseStorageManager {
    * @return {Object} - The storage object.
    */
   public static getStorageObject(): any {
-    throw new Error(
-      Error.Severity.CRITICAL,
-      Error.Category.PLAYER,
-      Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED,
-      'getStorageObject()'
-    );
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'getStorageObject()');
   }
 
   /**
@@ -203,12 +196,7 @@ export class BaseStorageManager {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public static attach(player: KalturaPlayer): void {
-    throw new Error(
-      Error.Severity.CRITICAL,
-      Error.Category.PLAYER,
-      Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED,
-      'attach()'
-    );
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'attach()');
   }
 
   /**
@@ -218,11 +206,6 @@ export class BaseStorageManager {
    * @return {void}
    */
   public static initialize(): void {
-    throw new Error(
-      Error.Severity.CRITICAL,
-      Error.Category.PLAYER,
-      Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED,
-      'initialize()'
-    );
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'initialize()');
   }
 }

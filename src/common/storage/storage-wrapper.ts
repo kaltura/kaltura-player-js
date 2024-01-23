@@ -33,8 +33,7 @@ export default class StorageWrapper {
    * @return {number} - The number of keys in the storage started with wanted prefix.
    */
   public static getStorageSize(storage: any): number {
-    return Object.keys(storage).filter((key) => key.startsWith(STORAGE_PREFIX))
-      .length;
+    return Object.keys(storage).filter((key) => key.startsWith(STORAGE_PREFIX)).length;
   }
 
   /**

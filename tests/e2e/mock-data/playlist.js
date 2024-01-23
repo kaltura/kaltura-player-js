@@ -4,8 +4,7 @@ const playlistByID = {
     name: 'Playlist_VOD_Only',
     description: ''
   },
-  poster:
-    'http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162',
+  poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162',
   items: [
     {
       sources: {
@@ -15,8 +14,7 @@ const playlistByID = {
         id: '0_fu4ifhie',
         duration: 596,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002',
         dvr: false,
         vr: null,
         metadata: {
@@ -34,8 +32,7 @@ const playlistByID = {
         id: '0_15xrxwvo',
         duration: 141,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_15xrxwvo/version/100002',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_15xrxwvo/version/100002',
         dvr: false,
         vr: null,
         metadata: {
@@ -53,8 +50,7 @@ const playlistByID = {
         id: '0_p8aigvgu',
         duration: 320,
         type: 'Audio',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_p8aigvgu/version/100022',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_p8aigvgu/version/100022',
         dvr: false,
         vr: null,
         metadata: {
@@ -72,8 +68,7 @@ const playlistByID = {
         id: '0_ttfy4uu0',
         duration: 734,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_ttfy4uu0/version/100032',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_ttfy4uu0/version/100032',
         dvr: false,
         vr: null,
         metadata: {
@@ -91,8 +86,7 @@ const playlistByID = {
         id: '0_df8g87v8',
         duration: 741,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_df8g87v8/version/100032',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_df8g87v8/version/100032',
         dvr: false,
         vr: null,
         metadata: {
@@ -110,8 +104,7 @@ const playlistByID = {
         id: '0_hut6q26s',
         duration: 739,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_hut6q26s/version/100002',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_hut6q26s/version/100002',
         dvr: false,
         vr: null,
         metadata: {
@@ -129,8 +122,7 @@ const playlistByID = {
         id: '0_x8n0mub7',
         duration: 128,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_x8n0mub7/version/100002',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_x8n0mub7/version/100002',
         dvr: false,
         vr: null,
         metadata: {
@@ -148,8 +140,7 @@ const playlistByID = {
         id: '0_4ktof5po',
         duration: 9868,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_4ktof5po/version/100000',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_4ktof5po/version/100000',
         dvr: false,
         vr: null,
         metadata: {
@@ -178,8 +169,7 @@ const playlistByEntryList = {
         id: '0_nwkp7jtx',
         duration: 86406,
         type: 'Live',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
         dvr: true,
         vr: null,
         metadata: {
@@ -197,8 +187,7 @@ const playlistByEntryList = {
         id: '0_wifqaipd',
         duration: 741,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
         dvr: false,
         vr: null,
         metadata: {
@@ -227,8 +216,7 @@ const playlistByEntryListWithPlugins = {
         id: '0_nwkp7jtx',
         duration: 86406,
         type: 'Live',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
         dvr: true,
         vr: null,
         metadata: {
@@ -246,8 +234,7 @@ const playlistByEntryListWithPlugins = {
         id: '0_nwkpghdf',
         duration: 741,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
         dvr: false,
         vr: null,
         metadata: {
@@ -265,8 +252,7 @@ const playlistByEntryListWithPlugins = {
         id: '0_wifqaipd',
         duration: 741,
         type: 'Vod',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
         dvr: false,
         vr: null,
         metadata: {
@@ -285,14 +271,12 @@ const playlistByConfig = {
     name: 'my playlist name',
     description: 'my playlist desc'
   },
-  poster:
-    'http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162',
+  poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/0/thumbnail/entry_id/0_wckoqjnn/version/100162',
   items: [
     {
       sources: {
         id: 'id1',
-        poster:
-          'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002/height/360/width/640',
+        poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_fu4ifhie/version/100002/height/360/width/640',
         hls: [
           {
             mimetype: 'application/x-mpegURL',
@@ -335,9 +319,4 @@ const playlistByConfig = {
   }
 };
 
-export {
-  playlistByID,
-  playlistByEntryList,
-  playlistByEntryListWithPlugins,
-  playlistByConfig
-};
+export { playlistByID, playlistByEntryList, playlistByEntryListWithPlugins, playlistByConfig };

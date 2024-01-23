@@ -42,17 +42,13 @@ import {
   ProviderMediaInfoObject,
   ProviderPlaylistInfoObject,
   ProviderPlaylistObject
-} from '@playkit-js/playkit-js-providers';
+} from '@playkit-js/playkit-js-providers/ovp-provider';
 import { UIWrapper } from './common/ui-wrapper';
 import { AdsController, ControllerProvider } from './common/controllers';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';
 import { BasePlugin, ConfigEvaluator, PluginManager } from './common/plugins';
 import { PluginReadinessMiddleware } from './common/plugins/plugin-readiness-middleware';
-import {
-  ViewabilityManager,
-  ViewabilityType,
-  VISIBILITY_CHANGE
-} from './common/utils/viewability-manager';
+import { ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE } from './common/utils/viewability-manager';
 import { ThumbnailManager } from './common/thumbnail-manager';
 import { CuePointManager } from './common/cuepoint/cuepoint-manager';
 import { ServiceProvider } from './common/service-provider';
@@ -84,13 +80,9 @@ import {
 } from './types';
 
 export class KalturaPlayer extends FakeEventTarget {
-  private static _logger: any = getLogger(
-    'KalturaPlayer' + Utils.Generator.uniqueId(5)
-  );
+  private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
   private _localPlayer: Player;
-  private _provider: BaseProvider<
-    OVPProviderMediaInfoObject | OTTProviderMediaInfoObject
-  >;
+  private _provider: BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject>;
   private _uiWrapper: UIWrapper;
   private _controllerProvider: ControllerProvider;
   private _adsController: AdsController | undefined;
@@ -143,11 +135,7 @@ export class KalturaPlayer extends FakeEventTarget {
       __VERSION__
     );
     this._playlistManager = new PlaylistManager(this, options);
-    Object.values(CoreEventType).forEach((coreEvent) =>
-      this._eventManager.listen(this._localPlayer, coreEvent, (e) =>
-        this.dispatchEvent(e)
-      )
-    );
+    Object.values(CoreEventType).forEach((coreEvent) => this._eventManager.listen(this._localPlayer, coreEvent, (e) => this.dispatchEvent(e)));
 
     this._addBindings();
     const playlistConfig = Utils.Object.mergeDeep({}, options.playlist, {
@@ -164,47 +152,28 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setSources(sources || {});
   }
 
-  public async loadMedia(
-    mediaInfo: ProviderMediaInfoObject,
-    mediaOptions?: SourcesConfig
-  ): Promise<any> {
+  public async loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any> {
     KalturaPlayer._logger.debug('loadMedia', mediaInfo);
     this._mediaInfo = mediaInfo;
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
     try {
-      const providerMediaConfig: ProviderMediaConfigObject =
-        await this._provider.getMediaConfig(mediaInfo);
+      const providerMediaConfig: ProviderMediaConfigObject = await this._provider.getMediaConfig(mediaInfo);
       const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
       if (mediaOptions) {
         mediaConfig.sources = mediaConfig.sources || {};
-        mediaConfig.sources = Utils.Object.mergeDeep(
-          mediaConfig.sources,
-          mediaOptions
-        );
+        mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
       }
-      const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(
-        mediaConfig.plugins,
-        this.config.plugins
-      );
+      const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
       mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
-      this.configure(
-        getDefaultRedirectOptions({ sources: this.sources }, mediaConfig)
-      );
+      this.configure(getDefaultRedirectOptions({ sources: this.sources }, mediaConfig));
       this.setMedia(mediaConfig);
       return mediaConfig;
     } catch (e) {
-      const error = new Error(
-        Error.Severity.CRITICAL,
-        Error.Category.PLAYER,
-        Error.Code.LOAD_FAILED,
-        e
-      );
-      this._localPlayer.dispatchEvent(
-        new FakeEvent(CoreEventType.ERROR, error)
-      );
+      const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+      this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
       throw e;
     }
   }
@@ -214,35 +183,20 @@ export class KalturaPlayer extends FakeEventTarget {
     this.reset(true);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     //merge the current sources from player to keep the sources passed from constructor earlier
-    const sources = Utils.Object.mergeDeep(
-      {},
-      playerConfig.sources,
-      this._localPlayer.sources
-    );
+    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
     delete playerConfig.sources;
-    Utils.Object.mergeDeep(
-      playerConfig.session,
-      this._localPlayer.config.session
-    );
+    Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
     playerConfig.plugins = playerConfig.plugins || {};
     Object.keys(this._pluginsConfig).forEach((name) => {
       playerConfig.plugins[name] = playerConfig.plugins[name] || {};
     });
     this.configure({ session: mediaConfig.session });
     if (!hasYoutubeSource(sources) && !hasImageSource(sources)) {
-      this._thumbnailManager = new ThumbnailManager(
-        this,
-        this.config.ui,
-        mediaConfig
-      );
+      this._thumbnailManager = new ThumbnailManager(this, this.config.ui, mediaConfig);
     } else {
       this._thumbnailManager = null;
     }
-    this.updateKalturaPoster(
-      sources,
-      mediaConfig.sources,
-      this._localPlayer.dimensions
-    );
+    this.updateKalturaPoster(sources, mediaConfig.sources, this._localPlayer.dimensions);
     addKalturaParams(this, { ...playerConfig, sources });
     const playback = maybeSetStreamPriority(this, sources);
     if (playback) {
@@ -251,10 +205,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this.configure({ ...playerConfig, sources });
   }
 
-  public async loadPlaylist(
-    playlistInfo: ProviderPlaylistInfoObject,
-    playlistConfig: PlaylistConfigObject
-  ): Promise<ProviderPlaylistObject> {
+  public async loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject> {
     KalturaPlayer._logger.debug('loadPlaylist', playlistInfo);
     this._uiWrapper.setLoadingSpinnerState(true);
     try {
@@ -263,23 +214,13 @@ export class KalturaPlayer extends FakeEventTarget {
       this.setPlaylist(playlistData, playlistConfig);
       return playlistData;
     } catch (e) {
-      const error = new Error(
-        Error.Severity.CRITICAL,
-        Error.Category.PLAYER,
-        Error.Code.LOAD_FAILED,
-        e
-      );
-      this._localPlayer.dispatchEvent(
-        new FakeEvent(CoreEventType.ERROR, error)
-      );
+      const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+      this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
       throw e;
     }
   }
 
-  public async loadPlaylistByEntryList(
-    entryList: ProviderEntryListObject,
-    playlistConfig: PlaylistConfigObject
-  ): Promise<ProviderPlaylistObject> {
+  public async loadPlaylistByEntryList(entryList: ProviderEntryListObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject> {
     KalturaPlayer._logger.debug('loadPlaylistByEntryList', entryList);
     this._uiWrapper.setLoadingSpinnerState(true);
     try {
@@ -287,24 +228,13 @@ export class KalturaPlayer extends FakeEventTarget {
       this.setPlaylist(playlistData, playlistConfig, entryList);
       return playlistData;
     } catch (e) {
-      const error = new Error(
-        Error.Severity.CRITICAL,
-        Error.Category.PLAYER,
-        Error.Code.LOAD_FAILED,
-        e
-      );
-      this._localPlayer.dispatchEvent(
-        new FakeEvent(CoreEventType.ERROR, error)
-      );
+      const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+      this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
       throw e;
     }
   }
 
-  public setPlaylist(
-    playlistData: ProviderPlaylistObject,
-    playlistConfig: PlaylistConfigObject,
-    entryList?: ProviderEntryListObject
-  ): void {
+  public setPlaylist(playlistData: ProviderPlaylistObject, playlistConfig: PlaylistConfigObject, entryList?: ProviderEntryListObject): void {
     KalturaPlayer._logger.debug('setPlaylist', playlistData);
     const config = { playlist: playlistData, plugins: {} };
     Object.keys(this._pluginsConfig).forEach((name) => {
@@ -322,10 +252,7 @@ export class KalturaPlayer extends FakeEventTarget {
     // @ts-ignore
     config = supportLegacyOptions(config);
     const configDictionary = Utils.Object.mergeDeep({}, this.config, config);
-    this._configEvaluator.evaluatePluginsConfig(
-      config.plugins,
-      configDictionary
-    );
+    this._configEvaluator.evaluatePluginsConfig(config.plugins, configDictionary);
     this._configureOrLoadPlugins(config.plugins);
     const localPlayerConfig = Utils.Object.mergeDeep({}, config);
     delete localPlayerConfig.plugins;
@@ -351,19 +278,11 @@ export class KalturaPlayer extends FakeEventTarget {
     mediaSources: ProviderMediaConfigSourcesObject,
     dimensions: PKPlayerDimensions
   ): void {
-    addKalturaPoster(
-      playerSources,
-      mediaSources,
-      dimensions,
-      this.shouldAddKs() ? this.config?.session?.ks : ''
-    );
+    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.config?.session?.ks : '');
   }
 
   public shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
-    return !!(
-      this.config?.provider?.loadThumbnailWithKs &&
-      (mediaConfig || this.config)?.session?.isAnonymous === false
-    );
+    return !!(this.config?.provider?.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.isAnonymous === false);
   }
 
   public getMediaInfo(): ProviderMediaInfoObject {
@@ -461,13 +380,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public isUntimedImg(): boolean {
-    return (
-      hasImageSource(this.sources) &&
-      !(
-        typeof this.config.sources.duration === 'number' &&
-        this.config.sources.duration > 0
-      )
-    );
+    return hasImageSource(this.sources) && !(typeof this.config.sources.duration === 'number' && this.config.sources.duration > 0);
   }
 
   public isImage(): boolean {
@@ -535,9 +448,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public enterFullscreen(fullScreenElementId?: string): void {
-    const elementId = fullScreenElementId
-      ? fullScreenElementId
-      : this.config.ui.targetId;
+    const elementId = fullScreenElementId ? fullScreenElementId : this.config.ui.targetId;
     this._localPlayer.enterFullscreen(elementId);
   }
 
@@ -683,9 +594,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * @param {Number} to - The number to set in seconds (from 0 to the normalized duration).
    */
   public set normalizedCurrentTime(to: number) {
-    this.isLive()
-      ? (this.currentTime = to + this.getStartTimeOfDvrWindow())
-      : (this.currentTime = to);
+    this.isLive() ? (this.currentTime = to + this.getStartTimeOfDvrWindow()) : (this.currentTime = to);
   }
 
   /**
@@ -694,9 +603,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * This getter is useful to display a seekbar presents the available seek range only.
    */
   public get normalizedCurrentTime(): number | null {
-    return this.isLive()
-      ? this.currentTime! - this.getStartTimeOfDvrWindow()
-      : this.currentTime;
+    return this.isLive() ? this.currentTime! - this.getStartTimeOfDvrWindow() : this.currentTime;
   }
 
   /**
@@ -705,9 +612,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * This getter is useful to display a seekbar presents the available seek range only.
    */
   public get normalizedDuration(): number | null {
-    return this.isLive()
-      ? this.liveDuration! - this.getStartTimeOfDvrWindow()
-      : this.duration;
+    return this.isLive() ? this.liveDuration! - this.getStartTimeOfDvrWindow() : this.duration;
   }
 
   public set volume(vol: number) {
@@ -830,9 +735,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  public get provider(): BaseProvider<
-    OVPProviderMediaInfoObject | OTTProviderMediaInfoObject
-  > {
+  public get provider(): BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject> {
     return this._provider;
   }
 
@@ -909,78 +812,33 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private _addBindings(): void {
-    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () =>
-      this._onChangeSourceStarted()
-    );
-    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_ENDED, () =>
-      this._onChangeSourceEnded()
-    );
-    this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () =>
-      this._onPlayerReset()
-    );
+    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_STARTED, () => this._onChangeSourceStarted());
+    this._eventManager.listen(this, CoreEventType.CHANGE_SOURCE_ENDED, () => this._onChangeSourceEnded());
+    this._eventManager.listen(this, CoreEventType.PLAYER_RESET, () => this._onPlayerReset());
     this._eventManager.listen(this, CoreEventType.ENDED, () => this._onEnded());
-    this._eventManager.listen(
-      this,
-      CoreEventType.FIRST_PLAY,
-      () => (this._firstPlay = false)
-    );
-    this._eventManager.listen(
-      this,
-      CoreEventType.SOURCE_SELECTED,
-      (event: FakeEvent) =>
-        (this._sourceSelected = event.payload.selectedSource[0])
-    );
-    this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () =>
-      this._onPlaybackEnded()
-    );
+    this._eventManager.listen(this, CoreEventType.FIRST_PLAY, () => (this._firstPlay = false));
+    this._eventManager.listen(this, CoreEventType.SOURCE_SELECTED, (event: FakeEvent) => (this._sourceSelected = event.payload.selectedSource[0]));
+    this._eventManager.listen(this, CoreEventType.PLAYBACK_ENDED, () => this._onPlaybackEnded());
     this._eventManager.listen(this, CoreEventType.PLAYBACK_START, () => {
       this._playbackStart = true;
     });
-    this._eventManager.listen(
-      this,
-      AdEventType.AD_AUTOPLAY_FAILED,
-      (event: FakeEvent) => this._onAdAutoplayFailed(event)
-    );
-    this._eventManager.listen(this, AdEventType.AD_STARTED, () =>
-      this._onAdStarted()
-    );
+    this._eventManager.listen(this, AdEventType.AD_AUTOPLAY_FAILED, (event: FakeEvent) => this._onAdAutoplayFailed(event));
+    this._eventManager.listen(this, AdEventType.AD_STARTED, () => this._onAdStarted());
     if (this.config.playback.playAdsWithMSE) {
       this._attachEventManager = new EventManager();
-      this._eventManager.listen(
-        this,
-        AdEventType.AD_LOADED,
-        (event: FakeEvent) => {
-          const {
-            payload: { ad }
-          } = event;
-          // source set only after media loaded
-          if (
-            ad &&
-            ad.linear &&
-            ad.position === 1 &&
-            !ad.inStream &&
-            this.src
-          ) {
-            this._attachEventManager.listenOnce(
-              this,
-              AdEventType.AD_BREAK_START,
-              () => this.detachMediaSource()
-            );
-            this._attachEventManager.listenOnce(
-              this,
-              AdEventType.AD_BREAK_END,
-              () => this.attachMediaSource()
-            );
-            this._attachEventManager.listenOnce(
-              this,
-              AdEventType.AD_ERROR,
-              () => this.attachMediaSource()
-            );
-          } else {
-            this._attachEventManager.removeAll();
-          }
+      this._eventManager.listen(this, AdEventType.AD_LOADED, (event: FakeEvent) => {
+        const {
+          payload: { ad }
+        } = event;
+        // source set only after media loaded
+        if (ad && ad.linear && ad.position === 1 && !ad.inStream && this.src) {
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_START, () => this.detachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_BREAK_END, () => this.attachMediaSource());
+          this._attachEventManager.listenOnce(this, AdEventType.AD_ERROR, () => this.attachMediaSource());
+        } else {
+          this._attachEventManager.removeAll();
         }
-      );
+      });
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
       if (event.payload.severity === Error.Severity.CRITICAL) {
@@ -991,24 +849,16 @@ export class KalturaPlayer extends FakeEventTarget {
 
   private _onChangeSourceEnded(): void {
     if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
-      this._viewabilityManager.observe(
-        document.getElementById(this.config.ui.targetId)!,
-        this._handleVisibilityChange.bind(this)
-      );
+      this._viewabilityManager.observe(document.getElementById(this.config.ui.targetId)!, this._handleVisibilityChange.bind(this));
     } else {
-      KalturaPlayer._logger.warn(
-        'Cannot observe visibility change without config.ui.targetId'
-      );
+      KalturaPlayer._logger.warn('Cannot observe visibility change without config.ui.targetId');
     }
   }
 
   private _onPlayerReset(): void {
     this._playbackStart = false;
     if (Utils.Object.getPropertyPath(this.config, 'ui.targetId')) {
-      this._viewabilityManager.unObserve(
-        document.getElementById(this.config.ui.targetId)!,
-        this._handleVisibilityChange.bind(this)
-      );
+      this._viewabilityManager.unObserve(document.getElementById(this.config.ui.targetId)!, this._handleVisibilityChange.bind(this));
     }
   }
 
@@ -1023,13 +873,9 @@ export class KalturaPlayer extends FakeEventTarget {
     // Make sure the all ENDED listeners have been invoked
     setTimeout(() => {
       if (this._adsController && !this._adsController.allAdsCompleted) {
-        this._eventManager.listenOnce(
-          this._adsController,
-          AdEventType.ALL_ADS_COMPLETED,
-          () => {
-            this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
-          }
-        );
+        this._eventManager.listenOnce(this._adsController, AdEventType.ALL_ADS_COMPLETED, () => {
+          this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
+        });
       } else {
         this.dispatchEvent(new FakeEvent(CoreEventType.PLAYBACK_ENDED));
       }
@@ -1053,9 +899,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _onAdAutoplayFailed(event: FakeEvent): void {
     if (this._firstPlay && this.config.playback.autoplay) {
       this._localPlayer.posterManager.show();
-      this.dispatchEvent(
-        new FakeEvent(CoreEventType.AUTOPLAY_FAILED, event.payload)
-      );
+      this.dispatchEvent(new FakeEvent(CoreEventType.AUTOPLAY_FAILED, event.payload));
     }
   }
 
@@ -1104,11 +948,7 @@ export class KalturaPlayer extends FakeEventTarget {
               uiComponents.push(...(plugin.getUIComponents() || []));
             }
             if (typeof plugin['getEngineDecorator'] === 'function') {
-              this._localPlayer.registerEngineDecoratorProvider(
-                new EngineDecoratorProvider(
-                  plugin as unknown as IEngineDecoratorProvider
-                )
-              );
+              this._localPlayer.registerEngineDecoratorProvider(new EngineDecoratorProvider(plugin as unknown as IEngineDecoratorProvider));
             }
           }
         } else {
@@ -1116,18 +956,14 @@ export class KalturaPlayer extends FakeEventTarget {
         }
       }
     });
-    uiComponents.forEach((component) =>
-      this._uiWrapper.addComponent(component)
-    );
+    uiComponents.forEach((component) => this._uiWrapper.addComponent(component));
     // First in the middleware chain is the plugin readiness to insure plugins are ready before load / play
     if (!this._pluginReadinessMiddleware) {
       this._pluginReadinessMiddleware = new PluginReadinessMiddleware(plugins);
       this._localPlayer.playbackMiddleware.use(this._pluginReadinessMiddleware);
     }
     this._maybeCreateAdsController();
-    middlewares.forEach((middleware) =>
-      this._localPlayer.playbackMiddleware.use(middleware)
-    );
+    middlewares.forEach((middleware) => this._localPlayer.playbackMiddleware.use(middleware));
     Utils.Object.mergeDeep(this._pluginsConfig, pluginsConfig);
   }
 
@@ -1136,16 +972,10 @@ export class KalturaPlayer extends FakeEventTarget {
       const adsPluginControllers = this._controllerProvider.getAdsControllers();
       if (adsPluginControllers.length) {
         this._adsController = new AdsController(this, adsPluginControllers);
-        this._localPlayer.playbackMiddleware.use(
-          this._adsController.getMiddleware()
-        );
-        this._eventManager.listen(
-          this._adsController,
-          AdEventType.ALL_ADS_COMPLETED,
-          (event) => {
-            this.dispatchEvent(event);
-          }
-        );
+        this._localPlayer.playbackMiddleware.use(this._adsController.getMiddleware());
+        this._eventManager.listen(this._adsController, AdEventType.ALL_ADS_COMPLETED, (event) => {
+          this.dispatchEvent(event);
+        });
       }
     }
   }
@@ -1201,9 +1031,7 @@ export class KalturaPlayer extends FakeEventTarget {
 
   private _handleVisibilityChange(visible: boolean): void {
     this._isVisible = visible;
-    this.dispatchEvent(
-      new FakeEvent(VISIBILITY_CHANGE, { visible: this._isVisible })
-    );
+    this.dispatchEvent(new FakeEvent(VISIBILITY_CHANGE, { visible: this._isVisible }));
     if (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -1219,13 +1047,8 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private _handleAutoPause(visible: boolean): void {
-    const isPlayingPlaybackOrAd =
-      !this.paused ||
-      (this._adsController && this._adsController.isAdPlaying());
-    const shouldAutoPause =
-      !this.isInPictureInPicture() &&
-      this._playbackStart &&
-      isPlayingPlaybackOrAd;
+    const isPlayingPlaybackOrAd = !this.paused || (this._adsController && this._adsController.isAdPlaying());
+    const shouldAutoPause = !this.isInPictureInPicture() && this._playbackStart && isPlayingPlaybackOrAd;
     if (!visible) {
       if (shouldAutoPause) {
         this.pause();
@@ -1278,10 +1101,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * @returns {?TextTrack} - A TextTrack Object, which represents the new text track.
    * @public
    */
-  public addTextTrack(
-    kind: TextTrackKind,
-    label?: string
-  ): TextTrack | undefined {
+  public addTextTrack(kind: TextTrackKind, label?: string): TextTrack | undefined {
     return this._localPlayer.addTextTrack(kind, label);
   }
 
@@ -1306,9 +1126,7 @@ export class KalturaPlayer extends FakeEventTarget {
    * @returns {Promise<MediaCapabilitiesObject>} - The media capabilities object.
    * @public
    */
-  public async getMediaCapabilities(
-    hevcConfig?: HEVCConfigObject
-  ): Promise<MediaCapabilitiesObject> {
+  public async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
     return getMediaCapabilities(hevcConfig);
   }
 }

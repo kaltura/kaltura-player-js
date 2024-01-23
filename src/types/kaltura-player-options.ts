@@ -6,7 +6,7 @@ import { UiConfig } from './ui-config';
 import { ViewabilityConfig } from './visibility-config';
 import { NetworkConfig } from './network-config';
 import { PluginsConfig } from './plugins';
-import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/ovp-provider';
 import {
   PKAbrConfigObject,
   PKDimensionsConfig,

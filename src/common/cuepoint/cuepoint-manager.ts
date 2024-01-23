@@ -1,11 +1,4 @@
-import {
-  FakeEvent,
-  PKTextTrack,
-  EventType,
-  TimedMetadata,
-  createTextTrackCue,
-  createTimedMetadata
-} from '@playkit-js/playkit-js';
+import { FakeEvent, PKTextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 import { CuePoint } from '../../types';
 import { PKTextTrackCue } from '@playkit-js/playkit-js';
@@ -20,18 +13,11 @@ export class CuePointManager {
   }
 
   private _addTextTrack(): void {
-    this._textTrack = this._player.addTextTrack(
-      PKTextTrack.KIND.METADATA,
-      CUE_POINTS_TEXT_TRACK
-    );
+    this._textTrack = this._player.addTextTrack(PKTextTrack.KIND.METADATA, CUE_POINTS_TEXT_TRACK);
   }
 
   private _getMetadataTracks(): Array<TextTrack> {
-    return this._player
-      .getNativeTextTracks()
-      .filter(
-        (track) => track.kind === PKTextTrack.KIND.METADATA && track.cues
-      );
+    return this._player.getNativeTextTracks().filter((track) => track.kind === PKTextTrack.KIND.METADATA && track.cues);
   }
 
   private _createTextTrackCue(data: CuePoint): PKTextTrackCue | null {
@@ -53,12 +39,7 @@ export class CuePointManager {
     const metadataTracks = this._getMetadataTracks();
     return metadataTracks
       .reduce(
-        (cues, track) =>
-          cues.concat(
-            Array.from(track.cues!).map<TimedMetadata>(
-              (cue) => createTimedMetadata(cue) as TimedMetadata
-            )
-          ),
+        (cues, track) => cues.concat(Array.from(track.cues!).map<TimedMetadata>((cue) => createTimedMetadata(cue) as TimedMetadata)),
         [] as TimedMetadata[]
       )
       .sort(this._cuesSorter);
@@ -68,12 +49,7 @@ export class CuePointManager {
     const metadataTracks = this._getMetadataTracks();
     return metadataTracks
       .reduce(
-        (cues, track) =>
-          cues.concat(
-            Array.from(track.activeCues!).map<TimedMetadata>(
-              (cue) => createTimedMetadata(cue) as TimedMetadata
-            )
-          ),
+        (cues, track) => cues.concat(Array.from(track.activeCues!).map<TimedMetadata>((cue) => createTimedMetadata(cue) as TimedMetadata)),
         [] as TimedMetadata[]
       )
       .sort(this._cuesSorter);

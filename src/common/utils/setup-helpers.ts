@@ -13,29 +13,16 @@ import {
   ILogLevel,
   PKSourcesConfigObject
 } from '@playkit-js/playkit-js';
-import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { ValidationErrorType } from './validation-error';
 import LocalStorageManager from '../storage/local-storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';
-import {
-  addClientTag,
-  addReferrer,
-  updateSessionIdInUrl
-} from './kaltura-params';
-import {
-  DEFAULT_OBSERVED_THRESHOLDS,
-  DEFAULT_PLAYER_THRESHOLD
-} from './viewability-manager';
+import { addClientTag, addReferrer, updateSessionIdInUrl } from './kaltura-params';
+import { DEFAULT_OBSERVED_THRESHOLDS, DEFAULT_PLAYER_THRESHOLD } from './viewability-manager';
 import SessionStorageManager from '../storage/session-storage-manager';
 import { BaseStorageManager } from '../storage/base-storage-manager';
 import { BasePlugin } from '../plugins';
-import {
-  KalturaPlayerConfig,
-  LegacyPartialKPOptionsObject,
-  PartialKPOptionsObject,
-  PluginsConfig,
-  PlaybackConfig
-} from '../../types';
+import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, PlaybackConfig } from '../../types';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -74,9 +61,7 @@ function validateTargetId(targetId: string): void {
   }
   const targetIdElement = document.getElementById(targetId);
   if (!targetIdElement) {
-    throw new Error(
-      ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId
-    );
+    throw new Error(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + targetId);
   }
   if (targetIdElement.getElementsByClassName(CONTAINER_CLASS_NAME).length > 0) {
     throw new Error(ValidationErrorType.TARGET_ID_ALREADY_USED + targetId);
@@ -103,13 +88,9 @@ function addProductVersion(url: string, productVersion?: string): string {
  * @returns {void}
  */
 function validateProviderConfig(options: KalturaPlayerConfig): void {
-  const { provider: providerOptions }: { provider: ProviderOptionsObject } =
-    options;
+  const { provider: providerOptions }: { provider: ProviderOptionsObject } = options;
   const productVersion: string = getServerUIConf()?.productVersion;
-  if (
-    !providerOptions.partnerId ||
-    providerOptions.partnerId === KAVA_DEFAULT_PARTNER
-  ) {
+  if (!providerOptions.partnerId || providerOptions.partnerId === KAVA_DEFAULT_PARTNER) {
     //create source object as a 'hack' to be able to use utility functions on url
     const source = {
       url: KAVA_DEFAULT_IMPRESSION,
@@ -118,10 +99,7 @@ function validateProviderConfig(options: KalturaPlayerConfig): void {
     source.url = addProductVersion(source.url, productVersion);
     source.url = addReferrer(source.url);
     source.url = addClientTag(source.url, productVersion);
-    source.url = updateSessionIdInUrl(
-      source.url,
-      Utils.Generator.guid() + ':' + Utils.Generator.guid()
-    );
+    source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
 }
@@ -183,10 +161,7 @@ function applyStorageSupport(player: KalturaPlayer): void {
  * @param {KalturaPlayer} player - The Kaltura player.
  * @returns {void}
  */
-function applyCastSupport(
-  defaultOptions: KalturaPlayerConfig,
-  player: KalturaPlayer
-): void {
+function applyCastSupport(defaultOptions: KalturaPlayerConfig, player: KalturaPlayer): void {
   if (defaultOptions.cast) {
     player.remotePlayerManager.load(defaultOptions.cast, player);
   }
@@ -199,10 +174,7 @@ function applyCastSupport(
  * @returns {void}
  */
 function setStorageTextStyle(player: KalturaPlayer): void {
-  if (
-    !player.config.disableUserCache &&
-    LocalStorageManager.isStorageAvailable()
-  ) {
+  if (!player.config.disableUserCache && LocalStorageManager.isStorageAvailable()) {
     const textStyleObj = LocalStorageManager.getPlayerTextStyle();
     if (textStyleObj) {
       player.textStyle = Utils.Object.mergeDeep(new TextStyle(), textStyleObj);
@@ -263,9 +235,7 @@ function isDebugMode(): boolean {
  * @returns {void}
  */
 function maybeApplyStartTimeQueryParam(options: KalturaPlayerConfig): void {
-  const startTime = parseFloat(
-    <string>getUrlParameter(KALTURA_PLAYER_START_TIME_QS)
-  );
+  const startTime = parseFloat(<string>getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
   if (!isNaN(startTime)) {
     Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
   }
@@ -278,9 +248,7 @@ function maybeApplyStartTimeQueryParam(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
-  const seekFrom = parseFloat(
-    getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS)!
-  );
+  const seekFrom = parseFloat(getUrlParameter(KALTURA_PLAYER_CLIP_START_TIME_QS)!);
   if (!isNaN(seekFrom)) {
     Utils.Object.createPropertyPath(options, 'sources.seekFrom', seekFrom);
   }
@@ -340,11 +308,7 @@ function getUrlParameter(name: string): string | null {
     const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     const results = regex.exec(location.search);
     const isExist = location.search.indexOf(name) > -1;
-    return results === null
-      ? isExist
-        ? ''
-        : null
-      : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    return results === null ? (isExist ? '' : null) : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
   let value;
   if (window.URLSearchParams) {
@@ -371,9 +335,7 @@ function getServerUIConf(): any {
  * @param {PartialKPOptionsObject} options - partial user kaltura player options.
  * @returns {KalturaPlayerConfig} - default kaltura player options.
  */
-function getDefaultOptions(
-  options: PartialKPOptionsObject
-): KalturaPlayerConfig {
+function getDefaultOptions(options: PartialKPOptionsObject): KalturaPlayerConfig {
   const targetId = createKalturaPlayerContainer(options.targetId);
   // TODO - fix all KalturaPlayerConfig and Partial relationships
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -400,11 +362,7 @@ function getDefaultOptions(
   if (!options.provider.ignoreServerConfig) {
     const serverUIConf = Utils.Object.copyDeep(getServerUIConf());
     delete serverUIConf.productVersion;
-    defaultOptions = Utils.Object.mergeDeep(
-      {},
-      supportLegacyOptions(serverUIConf),
-      defaultOptions
-    );
+    defaultOptions = Utils.Object.mergeDeep({}, supportLegacyOptions(serverUIConf), defaultOptions);
   }
 
   checkNativeHlsSupport(defaultOptions);
@@ -430,10 +388,7 @@ function getDefaultOptions(
  */
 function checkNativeHlsSupport(options: KalturaPlayerConfig): void {
   if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
-    const preferNativeHlsValue = Utils.Object.getPropertyPath(
-      options,
-      'playback.preferNative.hls'
-    );
+    const preferNativeHlsValue = Utils.Object.getPropertyPath(options, 'playback.preferNative.hls');
     if (typeof preferNativeHlsValue !== 'boolean') {
       Utils.Object.mergeDeep(options, {
         playback: {
@@ -454,10 +409,7 @@ function checkNativeHlsSupport(options: KalturaPlayerConfig): void {
  */
 function checkNativeTextTracksSupport(options: KalturaPlayerConfig): void {
   if ((Env.isMacOS && Env.isSafari) || Env.isIOS) {
-    const useNativeTextTrack = Utils.Object.getPropertyPath(
-      options,
-      'text.useNativeTextTrack'
-    );
+    const useNativeTextTrack = Utils.Object.getPropertyPath(options, 'text.useNativeTextTrack');
     if (typeof useNativeTextTrack !== 'boolean') {
       Utils.Object.mergeDeep(options, {
         text: {
@@ -475,47 +427,18 @@ function checkNativeTextTracksSupport(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function _configureAdsWithMSE(options: KalturaPlayerConfig): void {
-  const playAdsWithMSE = Utils.Object.getPropertyPath(
-    options,
-    'playback.playAdsWithMSE'
-  );
+  const playAdsWithMSE = Utils.Object.getPropertyPath(options, 'playback.playAdsWithMSE');
   if (typeof playAdsWithMSE !== 'boolean') {
-    options = Utils.Object.createPropertyPath(
-      options,
-      'playback.playAdsWithMSE',
-      true
-    );
+    options = Utils.Object.createPropertyPath(options, 'playback.playAdsWithMSE', true);
   }
-  const disableMediaPreloadIma = Utils.Object.getPropertyPath(
-    options,
-    'plugins.ima.disableMediaPreload'
-  );
-  const disableMediaPreloadBumper = Utils.Object.getPropertyPath(
-    options,
-    'plugins.bumper.disableMediaPreload'
-  );
+  const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
+  const disableMediaPreloadBumper = Utils.Object.getPropertyPath(options, 'plugins.bumper.disableMediaPreload');
 
-  if (
-    options.plugins &&
-    options.plugins.ima &&
-    typeof disableMediaPreloadIma !== 'boolean'
-  ) {
-    options = Utils.Object.createPropertyPath(
-      options,
-      'plugins.ima.disableMediaPreload',
-      true
-    );
+  if (options.plugins && options.plugins.ima && typeof disableMediaPreloadIma !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
   }
-  if (
-    options.plugins &&
-    options.plugins.bumper &&
-    typeof disableMediaPreloadBumper !== 'boolean'
-  ) {
-    options = Utils.Object.createPropertyPath(
-      options,
-      'plugins.bumper.disableMediaPreload',
-      true
-    );
+  if (options.plugins && options.plugins.bumper && typeof disableMediaPreloadBumper !== 'boolean') {
+    options = Utils.Object.createPropertyPath(options, 'plugins.bumper.disableMediaPreload', true);
   }
 }
 
@@ -526,17 +449,10 @@ function _configureAdsWithMSE(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function _configureLGSDK2HlsLiveConfig(options: KalturaPlayerConfig): void {
-  const hlsLiveConfig = Utils.Object.getPropertyPath(
-    options,
-    'playback.options.html5.hls.liveSyncDurationCount'
-  );
+  const hlsLiveConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount');
   //webos SDK 2 and less detect as safari browser greater version is chrome
   if (typeof hlsLiveConfig !== 'boolean' && Env.isSafari) {
-    options = Utils.Object.createPropertyPath(
-      options,
-      'playback.options.html5.hls.liveSyncDurationCount',
-      2
-    );
+    options = Utils.Object.createPropertyPath(options, 'playback.options.html5.hls.liveSyncDurationCount', 2);
   }
 }
 
@@ -553,53 +469,25 @@ function configureSmartTVDefaultOptions(options: KalturaPlayerConfig): void {
     _configureAdsWithMSE(options);
     _configureLGSDK2HlsLiveConfig(options);
     if (options.plugins && options.plugins.ima) {
-      const imaForceReload = Utils.Object.getPropertyPath(
-        options,
-        'plugins.ima.forceReloadMediaAfterAds'
-      );
-      const delayUntilSourceSelected = Utils.Object.getPropertyPath(
-        options,
-        'plugins.ima.delayInitUntilSourceSelected'
-      );
+      const imaForceReload = Utils.Object.getPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds');
+      const delayUntilSourceSelected = Utils.Object.getPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected');
 
       if (typeof imaForceReload !== 'boolean') {
-        options = Utils.Object.createPropertyPath(
-          options,
-          'plugins.ima.forceReloadMediaAfterAds',
-          true
-        );
+        options = Utils.Object.createPropertyPath(options, 'plugins.ima.forceReloadMediaAfterAds', true);
       }
       if (typeof delayUntilSourceSelected !== 'boolean') {
-        options = Utils.Object.createPropertyPath(
-          options,
-          'plugins.ima.delayInitUntilSourceSelected',
-          true
-        );
+        options = Utils.Object.createPropertyPath(options, 'plugins.ima.delayInitUntilSourceSelected', true);
       }
     }
     if (options.plugins && options.plugins.youbora) {
-      const playheadMonitorInterval = Utils.Object.getPropertyPath(
-        options,
-        'plugins.youbora.playheadMonitorInterval'
-      );
+      const playheadMonitorInterval = Utils.Object.getPropertyPath(options, 'plugins.youbora.playheadMonitorInterval');
       if (typeof playheadMonitorInterval !== 'number') {
-        options = Utils.Object.createPropertyPath(
-          options,
-          'plugins.youbora.playheadMonitorInterval',
-          2000
-        );
+        options = Utils.Object.createPropertyPath(options, 'plugins.youbora.playheadMonitorInterval', 2000);
       }
     }
-    const lowLatencyMode = Utils.Object.getPropertyPath(
-      options,
-      'streaming.lowLatencyMode'
-    );
+    const lowLatencyMode = Utils.Object.getPropertyPath(options, 'streaming.lowLatencyMode');
     if (typeof lowLatencyMode !== 'boolean') {
-      options = Utils.Object.createPropertyPath(
-        options,
-        'streaming.lowLatencyMode',
-        false
-      );
+      options = Utils.Object.createPropertyPath(options, 'streaming.lowLatencyMode', false);
     }
   }
 }
@@ -615,17 +503,9 @@ function configureEdgeDRMDefaultOptions(options: KalturaPlayerConfig): void {
     const keySystem = Utils.Object.getPropertyPath(options, 'drm.keySystem');
     if (!keySystem) {
       if (Env.os.name === 'Windows') {
-        options = Utils.Object.createPropertyPath(
-          options,
-          'drm.keySystem',
-          DrmScheme.PLAYREADY
-        );
+        options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.PLAYREADY);
       } else {
-        options = Utils.Object.createPropertyPath(
-          options,
-          'drm.keySystem',
-          DrmScheme.WIDEVINE
-        );
+        options = Utils.Object.createPropertyPath(options, 'drm.keySystem', DrmScheme.WIDEVINE);
       }
     }
   }
@@ -638,26 +518,11 @@ function configureEdgeDRMDefaultOptions(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function configureIMADefaultOptions(options: KalturaPlayerConfig): void {
-  if (
-    Env.isIOS &&
-    options.plugins &&
-    options.plugins.ima &&
-    !options.plugins.ima['disable']
-  ) {
-    const playsinline = Utils.Object.getPropertyPath(
-      options,
-      'playback.playsinline'
-    );
-    const disableMediaPreloadIma = Utils.Object.getPropertyPath(
-      options,
-      'plugins.ima.disableMediaPreload'
-    );
+  if (Env.isIOS && options.plugins && options.plugins.ima && !options.plugins.ima['disable']) {
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const disableMediaPreloadIma = Utils.Object.getPropertyPath(options, 'plugins.ima.disableMediaPreload');
     if (playsinline === false && typeof disableMediaPreloadIma !== 'boolean') {
-      Utils.Object.createPropertyPath(
-        options,
-        'plugins.ima.disableMediaPreload',
-        true
-      );
+      Utils.Object.createPropertyPath(options, 'plugins.ima.disableMediaPreload', true);
     }
   }
 }
@@ -669,15 +534,8 @@ function configureIMADefaultOptions(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function configureDAIDefaultOptions(options: KalturaPlayerConfig): void {
-  if (
-    options.plugins &&
-    options.plugins.imadai &&
-    !options.plugins.imadai['disable']
-  ) {
-    const autoStartLoadConfig = Utils.Object.getPropertyPath(
-      options,
-      'playback.options.html5.hls.autoStartLoad'
-    );
+  if (options.plugins && options.plugins.imadai && !options.plugins.imadai['disable']) {
+    const autoStartLoadConfig = Utils.Object.getPropertyPath(options, 'playback.options.html5.hls.autoStartLoad');
     if (typeof autoStartLoadConfig !== 'boolean') {
       Utils.Object.mergeDeep(options, {
         playback: {
@@ -707,10 +565,7 @@ function configureBumperDefaultOptions(options: KalturaPlayerConfig): void {
     const newBumperConfig: any = {};
     if (
       typeof bumperConfig.playOnMainVideoTag !== 'boolean' &&
-      (Env.isSmartTV ||
-        (Env.isIOS &&
-          options.playback &&
-          options.playback.playsinline === false))
+      (Env.isSmartTV || (Env.isIOS && options.playback && options.playback.playsinline === false))
     ) {
       newBumperConfig['playOnMainVideoTag'] = true;
     }
@@ -736,23 +591,12 @@ function configureBumperDefaultOptions(options: KalturaPlayerConfig): void {
  * @param {KalturaPlayerConfig} options - kaltura player options
  * @returns {void}
  */
-function printKalturaPlayerVersionToLog(
-  options: PartialKPOptionsObject | LegacyPartialKPOptionsObject
-): void {
-  const playerVersion = Utils.Object.getPropertyPath(
-    options,
-    'log.playerVersion'
-  );
+function printKalturaPlayerVersionToLog(options: PartialKPOptionsObject | LegacyPartialKPOptionsObject): void {
+  const playerVersion = Utils.Object.getPropertyPath(options, 'log.playerVersion');
   if (playerVersion !== false) {
     _setLogLevel(LogLevel.INFO);
-    getLogger().log(
-      `%c ${__NAME__} ${__VERSION__}`,
-      'color: #ff98f9;  font-size: large'
-    );
-    getLogger().log(
-      `%c For more details see ${__PACKAGE_URL__}`,
-      'color: #ff98f9;'
-    );
+    getLogger().log(`%c ${__NAME__} ${__VERSION__}`, 'color: #ff98f9;  font-size: large');
+    getLogger().log(`%c For more details see ${__PACKAGE_URL__}`, 'color: #ff98f9;');
   }
 }
 
@@ -762,9 +606,7 @@ function printKalturaPlayerVersionToLog(
  * @param {Object} options - The options with the legacy structure.
  * @return {PartialKPOptionsObject} - Partial options with the expected structure.
  */
-function supportLegacyOptions(
-  options: LegacyPartialKPOptionsObject
-): PartialKPOptionsObject {
+function supportLegacyOptions(options: LegacyPartialKPOptionsObject): PartialKPOptionsObject {
   const removePlayerEntry = (): void => {
     if (options.player) {
       setupMessages.push({
@@ -784,11 +626,7 @@ function supportLegacyOptions(
       });
       if (!Utils.Object.hasPropertyPath(options, targetPath)) {
         const propValue = Utils.Object.getPropertyPath(options, propPath);
-        const propObj = Utils.Object.createPropertyPath(
-          {},
-          targetPath,
-          propValue
-        );
+        const propObj = Utils.Object.createPropertyPath({}, targetPath, propValue);
         Utils.Object.mergeDeep(options, propObj);
         Utils.Object.deletePropertyPath(options, propPath);
       } else {
@@ -805,26 +643,14 @@ function supportLegacyOptions(
     ['metadata.poster', 'sources.poster'],
     ['metadata', 'sources.metadata'],
     ['logLevel', 'log.level'],
-    [
-      'ui.components.fullscreen.inBrowserFullscreenForIOS',
-      'playback.inBrowserFullscreen'
-    ],
+    ['ui.components.fullscreen.inBrowserFullscreenForIOS', 'playback.inBrowserFullscreen'],
     ['playback.enableCEA708Captions', 'text.enableCEA708Captions'],
     ['playback.useNativeTextTrack', 'text.useNativeTextTrack'],
-    [
-      'playback.options.html5.dash.useShakaTextTrackDisplay',
-      'text.useShakaTextTrackDisplay'
-    ],
+    ['playback.options.html5.dash.useShakaTextTrackDisplay', 'text.useShakaTextTrackDisplay'],
     ['playback.captionsTextTrack1Label', 'text.captionsTextTrack1Label'],
-    [
-      'playback.captionsTextTrack1LanguageCode',
-      'text.captionsTextTrack1LanguageCode'
-    ],
+    ['playback.captionsTextTrack1LanguageCode', 'text.captionsTextTrack1LanguageCode'],
     ['playback.captionsTextTrack2Label', 'text.captionsTextTrack2Label'],
-    [
-      'playback.captionsTextTrack2LanguageCode',
-      'text.captionsTextTrack2LanguageCode'
-    ],
+    ['playback.captionsTextTrack2LanguageCode', 'text.captionsTextTrack2LanguageCode'],
     ['plugins.visibility.threshold', 'viewability.playerThreshold'],
     ['plugins.visibility.floating', 'plugins.floating'],
     ['playback.startTime', 'sources.startTime']
@@ -840,9 +666,7 @@ function supportLegacyOptions(
  * @returns {void}
  */
 function printSetupMessages(): void {
-  setupMessages.forEach((msgObj) =>
-    getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg)
-  );
+  setupMessages.forEach((msgObj) => getLogger('KalturaPlayer:Setup')[msgObj.level](msgObj.msg));
 }
 
 /**
@@ -853,11 +677,7 @@ function printSetupMessages(): void {
  * @param {string} format - The player engine format.
  * @returns {PKPlaybackConfigObject} - The playback config.
  */
-function addEngineToStreamPriority(
-  player: KalturaPlayer,
-  engine: string,
-  format: string
-): PlaybackConfig {
+function addEngineToStreamPriority(player: KalturaPlayer, engine: string, format: string): PlaybackConfig {
   const playbackConfig = player.config.playback;
   let hasYoutube = false;
   playbackConfig.streamPriority.forEach((sp) => {
@@ -881,10 +701,7 @@ function addEngineToStreamPriority(
  * @param {PKSourcesConfigObject} sources - sources
  * @return {void}
  */
-function maybeSetStreamPriority(
-  player: KalturaPlayer,
-  sources: PKSourcesConfigObject
-): PlaybackConfig | null {
+function maybeSetStreamPriority(player: KalturaPlayer, sources: PKSourcesConfigObject): PlaybackConfig | null {
   if (sources && hasYoutubeSource(sources)) {
     return addEngineToStreamPriority(player, 'youtube', 'progressive');
   }
@@ -925,10 +742,7 @@ function hasImageSource(sources: PKSourcesConfigObject): boolean {
 function maybeSetFullScreenConfig(options: KalturaPlayerConfig): void {
   const vrPlugin = Utils.Object.getPropertyPath(options, 'plugins.vr');
   if (vrPlugin && !vrPlugin.disable) {
-    const fullscreenConfig = Utils.Object.getPropertyPath(
-      options,
-      'playback.inBrowserFullscreen'
-    );
+    const fullscreenConfig = Utils.Object.getPropertyPath(options, 'playback.inBrowserFullscreen');
     if (typeof fullscreenConfig !== 'boolean') {
       Utils.Object.mergeDeep(options, {
         playback: {
@@ -947,14 +761,8 @@ function maybeSetFullScreenConfig(options: KalturaPlayerConfig): void {
  */
 function maybeSetCapabilitiesForIos(options: KalturaPlayerConfig): void {
   if (Env.isIOS) {
-    const playsinline = Utils.Object.getPropertyPath(
-      options,
-      'playback.playsinline'
-    );
-    const isAirPlayConfigured = Utils.Object.hasPropertyPath(
-      options,
-      'plugins.airplay'
-    );
+    const playsinline = Utils.Object.getPropertyPath(options, 'playback.playsinline');
+    const isAirPlayConfigured = Utils.Object.hasPropertyPath(options, 'plugins.airplay');
     const isPlaysinline = playsinline !== false;
     if (isAirPlayConfigured) {
       setCapabilities(EngineType.HTML5, {
@@ -976,27 +784,19 @@ function maybeSetCapabilitiesForIos(options: KalturaPlayerConfig): void {
  * @param {KalturaPlayerConfig} appPluginsConfig - the entire app plugins config
  * @returns {Array<PluginsConfig>} - the merged plugins config and the partial respective app plugins config
  */
-function mergeProviderPluginsConfig(
-  providerPluginsConfig: PluginsConfig,
-  appPluginsConfig: PluginsConfig
-): Array<PluginsConfig> {
+function mergeProviderPluginsConfig(providerPluginsConfig: PluginsConfig, appPluginsConfig: PluginsConfig): Array<PluginsConfig> {
   const mergePluginConfig: PluginsConfig = {};
   const respectiveAppPluginsConfig: PluginsConfig = {};
   Utils.Object.isObject(providerPluginsConfig) &&
-    Object.entries(providerPluginsConfig).forEach(
-      ([pluginName, pluginConfig]: [string, any]) => {
-        mergePluginConfig[pluginName] = {} as BasePlugin;
-        respectiveAppPluginsConfig[pluginName] = {} as BasePlugin;
-        Object.entries(pluginConfig).forEach(([key, providerValue]) => {
-          const appValue = Utils.Object.getPropertyPath(
-            appPluginsConfig[pluginName],
-            key
-          );
-          mergePluginConfig[pluginName][key] = appValue || providerValue;
-          respectiveAppPluginsConfig[pluginName][key] = appValue;
-        });
-      }
-    );
+    Object.entries(providerPluginsConfig).forEach(([pluginName, pluginConfig]: [string, any]) => {
+      mergePluginConfig[pluginName] = {} as BasePlugin;
+      respectiveAppPluginsConfig[pluginName] = {} as BasePlugin;
+      Object.entries(pluginConfig).forEach(([key, providerValue]) => {
+        const appValue = Utils.Object.getPropertyPath(appPluginsConfig[pluginName], key);
+        mergePluginConfig[pluginName][key] = appValue || providerValue;
+        respectiveAppPluginsConfig[pluginName][key] = appValue;
+      });
+    });
   return [mergePluginConfig, respectiveAppPluginsConfig];
 }
 

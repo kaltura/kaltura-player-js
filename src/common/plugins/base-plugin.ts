@@ -1,10 +1,4 @@
-import {
-  Error,
-  EventManager,
-  FakeEvent,
-  Utils,
-  getLogger
-} from '@playkit-js/playkit-js';
+import { Error, EventManager, FakeEvent, Utils, getLogger } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 
 /** The BasePlugin responsible to implement the plugin interface.
@@ -56,12 +50,7 @@ export class BasePlugin {
    * @abstract
    */
   public static isValid(): boolean {
-    throw new Error(
-      Error.Severity.CRITICAL,
-      Error.Category.PLAYER,
-      Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED,
-      'isValid()'
-    );
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'isValid()');
   }
 
   /**
