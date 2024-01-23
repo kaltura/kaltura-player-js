@@ -1,6 +1,6 @@
 import { Utils } from '@playkit-js/playkit-js';
 import { PluginsConfig, SourcesConfig, KPPlaylistItemConfigObject } from '../../types';
-const formats = ['hls', 'dash', 'progressive', 'image'];
+const formats = ['hls', 'dash', 'progressive', 'image', 'document'];
 /**
  * @class PlaylistItem
  * @param {PKSourcesConfigObject} [sources] - The item sources

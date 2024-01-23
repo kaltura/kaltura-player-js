@@ -706,6 +706,9 @@ function maybeSetStreamPriority(player: KalturaPlayer, sources: PKSourcesConfigO
   if (sources && hasImageSource(sources)) {
     return addEngineToStreamPriority(player, 'image', 'image');
   }
+  if (sources && hasDocumentSource(sources)) {
+    return addEngineToStreamPriority(player, 'document', 'document');
+  }
   return null;
 }
 
@@ -728,6 +731,18 @@ function hasImageSource(sources: PKSourcesConfigObject): boolean {
   // const IMAGE_MIME_TYPES = /(^image)(\/)[a-zA-Z0-9_]*/;
   const source = sources && sources.image;
   // return !!(source && source[0] && source[0].mimetype.match(IMAGE_MIME_TYPES));
+  return !!(source && source[0]);
+}
+
+/**
+ * returns true if sources contain document source
+ * @param {PKSourcesConfigObject} sources - thr sources object
+ * @returns {boolean} - true if sources contain document source
+ */
+function hasDocumentSource(sources: PKSourcesConfigObject): boolean {
+  // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const source = sources && sources.document;
   return !!(source && source[0]);
 }
 
@@ -818,6 +833,7 @@ export {
   maybeSetStreamPriority,
   hasYoutubeSource,
   hasImageSource,
+  hasDocumentSource,
   mergeProviderPluginsConfig,
   getServerUIConf,
   initializeStorageManagers,

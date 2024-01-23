@@ -32,7 +32,12 @@ class PlaylistManager {
     this._player = player;
     this._eventManager = new EventManager();
     this._playlist = new Playlist();
-    this._options = { autoContinue: true, loop: false, imageDuration: 5 };
+    this._options = {
+      autoContinue: true,
+      loop: false,
+      imageDuration: 5,
+      documentDuration: 5
+    };
     this._countdown = { duration: 10, showing: true };
     this._mediaInfoList = [];
     this._playerOptions = options;
@@ -245,6 +250,8 @@ class PlaylistManager {
       // @ts-ignore
       items: playlistData.items.map((item, index) => {
         const itemData = Utils.Object.copyDeep(item);
+        // keep original media source data
+        itemData.sources.mediaEntryType = item?.sources?.type;
         ['sources.dvr', 'sources.type'].forEach((omitKey) => {
           // use medias source data instead of playlist source data
           Utils.Object.deletePropertyPath(itemData, omitKey);
@@ -290,6 +297,12 @@ class PlaylistManager {
         // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
         // @ts-ignore
         sources: { duration: this._options.imageDuration }
+      });
+    } else if (this._player.isDocument()) {
+      this._player.configure({
+        // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        sources: { duration: this._options.documentDuration }
       });
     }
   }
