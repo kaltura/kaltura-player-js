@@ -64,6 +64,14 @@ jobs:
         with:
           token: ${{ secrets.PLAYER_GITHUB_BOT_TOKEN }}
           ref: ${{ needs.branch-name.outputs.branch-name }}
+      - name: Verify Checked-Out Branch
+        run: |
+          checked_out_branch=$(git rev-parse --abbrev-ref HEAD)
+          echo "checked out branch --->"
+          echo $checked_out_branch
+          if [ "$checked_out_branch" != "${GITHUB_REF#refs/heads/}" ]; then
+            echo "Error: Checked out branch ($checked_out_branch) does not match the workflow branch (${GITHUB_REF#refs/heads/})"
+          fi
 #  canary:
 #    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
 #    secrets: inherit
