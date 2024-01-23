@@ -111,10 +111,19 @@ describe('PlaylistManager', () => {
 
     it('should play next on ended when auto continue is true', (done) => {
       let eventCounter = 0;
-      kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
-        eventCounter++;
-        if (eventCounter === 2) {
-          done();
+      kalturaPlayer._eventManager.listen(
+        kalturaPlayer,
+        kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED,
+        () => {
+          eventCounter++;
+          if (eventCounter === 2) {
+            return done();
+          }
+          playlistManager._options.autoContinue = true;
+          playlistManager._playerOptions.ui.disable = true;
+          kalturaPlayer.dispatchEvent(
+            new FakeEvent(kalturaPlayer.Event.Core.PLAYBACK_ENDED)
+          );
         }
         playlistManager._options.autoContinue = true;
         playlistManager._playerOptions.ui.disable = true;
@@ -125,10 +134,20 @@ describe('PlaylistManager', () => {
 
     it('should play next on ended when loop is true', (done) => {
       let eventCounter = 0;
-      kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
-        eventCounter++;
-        if (eventCounter === 2) {
-          done();
+      kalturaPlayer._eventManager.listen(
+        kalturaPlayer,
+        kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED,
+        () => {
+          eventCounter++;
+          if (eventCounter === 2) {
+            return done();
+          }
+          playlistManager._options.autoContinue = false;
+          playlistManager._options.loop = true;
+          playlistManager._playerOptions.ui.disable = true;
+          kalturaPlayer.dispatchEvent(
+            new FakeEvent(kalturaPlayer.Event.Core.PLAYBACK_ENDED)
+          );
         }
         playlistManager._options.autoContinue = false;
         playlistManager._options.loop = true;
@@ -162,10 +181,21 @@ describe('PlaylistManager', () => {
 
     it('should play next on ended when ui is enabled but countdown is hidden', (done) => {
       let eventCounter = 0;
-      kalturaPlayer._eventManager.listen(kalturaPlayer, kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED, () => {
-        eventCounter++;
-        if (eventCounter === 2) {
-          done();
+      kalturaPlayer._eventManager.listen(
+        kalturaPlayer,
+        kalturaPlayer.Event.Playlist.PLAYLIST_ITEM_CHANGED,
+        () => {
+          eventCounter++;
+          if (eventCounter === 2) {
+            return done();
+          }
+          playlistManager._options.autoContinue = true;
+          playlistManager._options.loop = true;
+          playlistManager._playerOptions.ui.disable = false;
+          playlistManager._countdown.showing = false;
+          kalturaPlayer.dispatchEvent(
+            new FakeEvent(kalturaPlayer.Event.Core.PLAYBACK_ENDED)
+          );
         }
         playlistManager._options.autoContinue = true;
         playlistManager._options.loop = true;
@@ -528,9 +558,15 @@ describe('PlaylistManager', () => {
 
     it.skip('should call playNext programmatically', (done) => {
       let eventCounter = 0;
-      kalturaPlayer._eventManager.listen(kalturaPlayer, PlaylistEventType.PLAYLIST_ITEM_CHANGED, () => {
-        if (eventCounter === 2) {
-          done();
+      kalturaPlayer._eventManager.listen(
+        kalturaPlayer,
+        PlaylistEventType.PLAYLIST_ITEM_CHANGED,
+        () => {
+          if (eventCounter === 2) {
+            return done();
+          }
+          eventCounter++;
+          playlistManager.playNext();
         }
         eventCounter++;
         playlistManager.playNext();
