@@ -384,6 +384,10 @@ export class KalturaPlayer extends FakeEventTarget {
     return hasImageSource(this.sources) && !(typeof this.config.sources.duration === 'number' && this.config.sources.duration > 0);
   }
 
+  public isUntimedDocument(): boolean {
+    return hasDocumentSource(this.sources) && !(typeof this.config.sources.duration === 'number' && this.config.sources.duration > 0);
+  }
+
   public isImage(): boolean {
     return hasImageSource(this.sources);
   }
