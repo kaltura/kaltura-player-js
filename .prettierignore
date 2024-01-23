@@ -11,4 +11,6 @@ yarn-error.log
 LICENSE
 README.md
 ts-typed/
+webpack.config.js
+tsconfig.json
 
