@@ -12,7 +12,7 @@ import SourcesConfig from './configs/sources.json';
 import { EventType as CoreEventType, FakeEvent, Utils, EventManager } from '@playkit-js/playkit-js';
 import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugin';
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
-import { Provider } from '@playkit-js/playkit-js-providers';
+import { Provider } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { Images } from './mock-data/images';
 
 const targetId = 'player-placeholder_kaltura-player.spec';

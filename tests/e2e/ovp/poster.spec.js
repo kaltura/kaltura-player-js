@@ -1,7 +1,7 @@
 import { addKalturaPoster } from '../../../src/ovp/poster';
 import * as TestUtils from '../../utils/test-utils';
 import { setup } from '../../../src';
-import { Provider } from '@playkit-js/playkit-js-providers';
+import { Provider } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { Images } from '../mock-data/images';
 
 const targetId = 'player-placeholder_ovp/poster.spec';
