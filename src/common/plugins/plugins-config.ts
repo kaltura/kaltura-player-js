@@ -27,10 +27,7 @@ const isValueEvaluated = (value: any): boolean =>
  * @param {*} value - the value to be checked
  * @returns {boolean} - whether the value is a simple object or not
  */
-const isSimpleObject = (value: any): boolean =>
-  Utils.Object.isObject(value) &&
-  typeof value !== 'function' &&
-  !Utils.Object.isClassInstance(value);
+const isSimpleObject = (value: any): boolean => Utils.Object.isObject(value) && typeof value !== 'function' && !Utils.Object.isClassInstance(value);
 
 /**
  * filters out unevaluated expressions in an array
@@ -38,9 +35,7 @@ const isSimpleObject = (value: any): boolean =>
  * @param {Array} value - the array to be checked
  * @returns {Array} - the array with unevaluated expressions filtered out
  */
-const filterUnevaluatedExpressions = (
-  value: ReadonlyArray<any>
-): ReadonlyArray<any> => {
+const filterUnevaluatedExpressions = (value: ReadonlyArray<any>): ReadonlyArray<any> => {
   return value
     .map((item) => {
       if (isSimpleObject(item)) {
@@ -90,13 +85,9 @@ const getModel = (options: Partial<KalturaPlayerConfig>): any => {
   if (options.provider && options.provider.env) {
     dataModel['serviceUrl'] = options.provider.env.serviceUrl;
 
-    const analyticsServiceUrl = Utils.Object.getPropertyPath(
-      options,
-      'provider.env.analyticsServiceUrl'
-    );
+    const analyticsServiceUrl = Utils.Object.getPropertyPath(options, 'provider.env.analyticsServiceUrl');
     if (analyticsServiceUrl) {
-      dataModel['analyticsServiceUrl'] =
-        `${analyticsServiceUrl}/api_v3/index.php`;
+      dataModel['analyticsServiceUrl'] = `${analyticsServiceUrl}/api_v3/index.php`;
     }
     if (dataModel['serviceUrl']) {
       dataModel['embedBaseUrl'] = dataModel['serviceUrl'].replace('api_v3', '');
@@ -213,11 +204,7 @@ function _mergeConfig(data: any, evaluatedConfig: any): void {
   if (cleanData && evaluatedCleanConfig) {
     Object.keys(data).forEach((pluginName) => {
       if (data && data[pluginName]) {
-        data[pluginName] = Utils.Object.mergeDeep(
-          {},
-          evaluatedCleanConfig[pluginName],
-          cleanData[pluginName]
-        );
+        data[pluginName] = Utils.Object.mergeDeep({}, evaluatedCleanConfig[pluginName], cleanData[pluginName]);
       }
     });
   }
@@ -238,21 +225,12 @@ class ConfigEvaluator {
    * @param {KPOptionsObject} config - player config
    * @return {void}
    */
-  public evaluatePluginsConfig(
-    options: PluginsConfig | undefined,
-    config: Partial<KalturaPlayerConfig>
-  ): void {
+  public evaluatePluginsConfig(options: PluginsConfig | undefined, config: Partial<KalturaPlayerConfig>): void {
     if (options) {
       this._pluginConfigStore.set(options);
       const dataModel = getModel(config);
-      const mergedConfig = Utils.Object.mergeDeep(
-        {},
-        this._pluginConfigStore.get(),
-        options
-      );
-      const evaluatedConfig = _formatConfigString(
-        evaluate(JSON.stringify(mergedConfig), dataModel)
-      );
+      const mergedConfig = Utils.Object.mergeDeep({}, this._pluginConfigStore.get(), options);
+      const evaluatedConfig = _formatConfigString(evaluate(JSON.stringify(mergedConfig), dataModel));
       _mergeConfig(options, evaluatedConfig);
     }
   }

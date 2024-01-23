@@ -4,12 +4,12 @@
   "bundledPackages": [],
   "compiler": {},
   "apiReport": {
-    "enabled": true,
+    "enabled": false,
     "reportFolder": "<projectFolder>/api-extractor/report",
     "reportTempFolder": "<projectFolder>/api-extractor/report-temp"
   },
   "docModel": {
-    "enabled": true,
+    "enabled": false,
     "apiJsonFilePath": "<projectFolder>/api-extractor/<unscopedPackageName>.api.json"
   },
   "dtsRollup": {

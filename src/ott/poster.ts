@@ -1,9 +1,6 @@
-import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers';
-import {
-  PKDimensionsConfig,
-  PKSourcesConfigObject
-} from '@playkit-js/playkit-js';
-import { Poster } from '@playkit-js/playkit-js-providers';
+import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers/ott-provider';
+import { PKDimensionsConfig, PKSourcesConfigObject } from '@playkit-js/playkit-js';
+import { Poster } from '@playkit-js/playkit-js-providers/ott-provider';
 
 /**
  * Add poster with player dimensions.
@@ -25,21 +22,12 @@ function addKalturaPoster(
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
   if (typeof playerPoster === 'string' && playerPoster === mediaConfigPoster) {
-    const regex =
-      /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
+    const regex = /.*\/thumbnail\/.*(?:width|height)\/\d+\/(?:height|width)\/\d+/;
     if (regex.test(playerPoster)) {
-      playerSources.poster = setPlayerDimensionsOnPoster(
-        playerPoster,
-        playerWidth,
-        playerHeight
-      );
+      playerSources.poster = setPlayerDimensionsOnPoster(playerPoster, playerWidth, playerHeight);
     }
   } else if (Array.isArray(playerPoster)) {
-    playerSources.poster = selectPosterByPlayerDimensions(
-      playerPoster,
-      playerWidth,
-      playerHeight
-    );
+    playerSources.poster = selectPosterByPlayerDimensions(playerPoster, playerWidth, playerHeight);
   }
   mediaSources.poster = playerSources.poster || '';
 }
@@ -52,11 +40,7 @@ function addKalturaPoster(
  * @private
  * @return {string} - The new poster url including the player dimensions.
  */
-function setPlayerDimensionsOnPoster(
-  poster: string,
-  playerWidth: number,
-  playerHeight: number
-): string {
+function setPlayerDimensionsOnPoster(poster: string, playerWidth: number, playerHeight: number): string {
   const widthMatch = poster.match(/width\/(\d+)/);
   const heightMatch = poster.match(/height\/(\d+)/);
   if (Array.isArray(widthMatch)) {
@@ -76,11 +60,7 @@ function setPlayerDimensionsOnPoster(
  * @private
  * @return {string} - The poster url.
  */
-function selectPosterByPlayerDimensions(
-  posters: Poster[],
-  playerWidth: number,
-  playerHeight: number
-): string {
+function selectPosterByPlayerDimensions(posters: Poster[], playerWidth: number, playerHeight: number): string {
   let min = Infinity;
   let url = '';
   posters.forEach((picture) => {

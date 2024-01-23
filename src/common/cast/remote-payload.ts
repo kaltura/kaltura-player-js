@@ -36,11 +36,7 @@ class RemoteConnectedPayload extends RemotePayload {
   private _ui: RemotePlayerUI | undefined;
   private _session: RemoteSession;
 
-  constructor(
-    player: BaseRemotePlayer,
-    session: RemoteSession,
-    ui?: RemotePlayerUI
-  ) {
+  constructor(player: BaseRemotePlayer, session: RemoteSession, ui?: RemotePlayerUI) {
     super(player);
     this._session = session;
     if (ui) {
@@ -119,9 +115,4 @@ class RemoteAvailablePayload extends RemotePayload {
   }
 }
 
-export {
-  RemotePayload,
-  RemoteConnectedPayload,
-  RemoteDisconnectedPayload,
-  RemoteAvailablePayload
-};
+export { RemotePayload, RemoteConnectedPayload, RemoteDisconnectedPayload, RemoteAvailablePayload };

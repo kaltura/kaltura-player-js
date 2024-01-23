@@ -89,9 +89,7 @@ describe('addKalturaParams', () => {
   it('should add session id, referrer and client tag for PLAYMANIFEST source and session id, referrer, client tag and uiconfid to udrm license', () => {
     const source1 = {
       url: 'a/b/c/PLAYMANIFEST/source',
-      drmData: [
-        { licenseUrl: 'udrm.kaltura.com?custom_data=someData&signature=Sig' }
-      ]
+      drmData: [{ licenseUrl: 'udrm.kaltura.com?custom_data=someData&signature=Sig' }]
     };
     player.config = {
       provider: { uiConfId: 123 },
@@ -121,9 +119,7 @@ describe('addKalturaParams', () => {
   it('should not add session id, referrer, client tag and uiconfid to  other drm system - 1', () => {
     const source1 = {
       url: 'a/b/c/PLAYMANIFEST/source',
-      drmData: [
-        { licenseUrl: 'udrm.other.com?custom_data=someData&signature=Sig' }
-      ]
+      drmData: [{ licenseUrl: 'udrm.other.com?custom_data=someData&signature=Sig' }]
     };
     player.config = {
       provider: { uiConfId: 123 },
@@ -131,17 +127,13 @@ describe('addKalturaParams', () => {
     };
     addKalturaParams(player, player.config);
 
-    source1.drmData[0].licenseUrl.should.be.equal(
-      'udrm.other.com?custom_data=someData&signature=Sig'
-    );
+    source1.drmData[0].licenseUrl.should.be.equal('udrm.other.com?custom_data=someData&signature=Sig');
   });
 
   it('should not add session id, referrer, client tag and uiconfid to  other drm system - 2', () => {
     const source1 = {
       url: 'a/b/c/PLAYMANIFEST/source',
-      drmData: [
-        { licenseUrl: 'udrm.kaltura.com?custommm_data=someData&signature=Sig' }
-      ]
+      drmData: [{ licenseUrl: 'udrm.kaltura.com?custommm_data=someData&signature=Sig' }]
     };
     player.config = {
       provider: { uiConfId: 123 },
@@ -149,9 +141,7 @@ describe('addKalturaParams', () => {
     };
     addKalturaParams(player, player.config);
 
-    source1.drmData[0].licenseUrl.should.be.equal(
-      'udrm.kaltura.com?custommm_data=someData&signature=Sig'
-    );
+    source1.drmData[0].licenseUrl.should.be.equal('udrm.kaltura.com?custommm_data=someData&signature=Sig');
   });
 });
 
@@ -171,15 +161,8 @@ describe('handleSessionId', () => {
     };
     handleSessionId(player, player.config);
     sessionIdRegex.test(player.config.session.id).should.be.true;
-    (
-      player.config.session.id.indexOf(
-        '5cc03aa6-c58f-3220-b548-2a698aa54830:'
-      ) > -1
-    ).should.be.true;
-    (
-      player.config.session.id.indexOf('33e6d80e-63b3-108a-091d-ccc15998f85b') >
-      -1
-    ).should.be.false;
+    (player.config.session.id.indexOf('5cc03aa6-c58f-3220-b548-2a698aa54830:') > -1).should.be.true;
+    (player.config.session.id.indexOf('33e6d80e-63b3-108a-091d-ccc15998f85b') > -1).should.be.false;
   });
 });
 
@@ -192,9 +175,7 @@ describe('updateSessionIdInUrl', () => {
       }
     };
     source.url = updateSessionIdInUrl(source.url, player.config.session.id);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?playSessionId=' + player.config.session.id
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id);
   });
 
   it('should add session id to URL as second param', () => {
@@ -205,9 +186,7 @@ describe('updateSessionIdInUrl', () => {
       }
     };
     source.url = updateSessionIdInUrl(source.url, player.config.session.id);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?a&playSessionId=' + player.config.session.id
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?a&playSessionId=' + player.config.session.id);
   });
 
   it('should update session id in URL as first param', () => {
@@ -220,9 +199,7 @@ describe('updateSessionIdInUrl', () => {
       }
     };
     source.url = updateSessionIdInUrl(source.url, player.config.session.id);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?playSessionId=' + player.config.session.id
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id);
   });
 
   it('should update session id in URL as second param', () => {
@@ -235,9 +212,7 @@ describe('updateSessionIdInUrl', () => {
       }
     };
     source.url = updateSessionIdInUrl(source.url, player.config.session.id);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?a&playSessionId=' + player.config.session.id
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?a&playSessionId=' + player.config.session.id);
   });
 
   it('should update session id in URL with param different than playSessionId', () => {
@@ -249,14 +224,8 @@ describe('updateSessionIdInUrl', () => {
         id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
       }
     };
-    source.url = updateSessionIdInUrl(
-      source.url,
-      player.config.session.id,
-      'testId='
-    );
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?testId=' + player.config.session.id
-    );
+    source.url = updateSessionIdInUrl(source.url, player.config.session.id, 'testId=');
+    source.url.should.be.equal('a/b/c/playmanifest/source?testId=' + player.config.session.id);
   });
 });
 
@@ -265,20 +234,14 @@ describe('addReferrer', () => {
     const source = { url: 'a/b/c/playmanifest/source' };
     player.config = { session: {} };
     source.url = addReferrer(source.url);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?referrer=' +
-        btoa(getReferrer().substr(0, 1000))
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?referrer=' + btoa(getReferrer().substr(0, 1000)));
   });
 
   it('should add referrer as second param', () => {
     const source = { url: 'a/b/c/playmanifest/source?a' };
     player.config = { session: {} };
     source.url = addReferrer(source.url);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?a&referrer=' +
-        btoa(getReferrer().substr(0, 1000))
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?a&referrer=' + btoa(getReferrer().substr(0, 1000)));
   });
 });
 
@@ -304,17 +267,13 @@ describe('addClientTag', () => {
     const productVersion = '7.37';
     player.config = { session: {} };
     source.url = addClientTag(source.url, productVersion);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?clientTag=html5:v' + productVersion
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?clientTag=html5:v' + productVersion);
   });
 
   it('should add client tag as second param', () => {
     const source = { url: 'a/b/c/playmanifest/source?a' };
     player.config = { session: {} };
     source.url = addClientTag(source.url);
-    source.url.should.be.equal(
-      'a/b/c/playmanifest/source?a&clientTag=html5:v' + __VERSION__
-    );
+    source.url.should.be.equal('a/b/c/playmanifest/source?a&clientTag=html5:v' + __VERSION__);
   });
 });

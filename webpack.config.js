@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const packageData = require('./package.json');
-const TerserPlugin = require('terser-webpack-plugin');
 const chalk = require('chalk');
 
 module.exports = (env, { mode }) => {
@@ -62,14 +61,10 @@ module.exports = (env, { mode }) => {
     resolve: {
       extensions: ['.ts', '.js'],
       alias: {
-        '@playkit-js/playkit-js-providers': path.resolve(
-          `./node_modules/@playkit-js/playkit-js-providers/dist/playkit-${playerType}-provider`
-        ),
+        '@playkit-js/playkit-js-providers/ovp-provider': path.resolve(`./node_modules/@playkit-js/playkit-js-providers/dist/playkit-${playerType}-provider`),
         'player-defaults': path.resolve(`./src/${playerType}/player-defaults`),
         poster: path.resolve(`./src/${playerType}/poster`),
-        'plugins-config-store': path.resolve(
-          `./src/${playerType}/plugins/plugins-config-store`
-        ),
+        'plugins-config-store': path.resolve(`./src/${playerType}/plugins/plugins-config-store`),
         'hls.js': path.resolve(__dirname, 'node_modules/hls.js/dist/hls.min.js')
       }
     },
@@ -96,9 +91,7 @@ module.exports = (env, { mode }) => {
         __VERSION__: JSON.stringify(packageData.version),
         __NAME__: JSON.stringify(packageData.name),
         __PACKAGE_URL__: JSON.stringify(packageData.repository.url),
-        __CONFIG_DOCS_URL__: JSON.stringify(
-          `${packageData.repository.url}/blob/master/docs/configuration.md`
-        )
+        __CONFIG_DOCS_URL__: JSON.stringify(`${packageData.repository.url}/blob/master/docs/configuration.md`)
       }),
       new CopyPlugin({
         patterns: [

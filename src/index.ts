@@ -1,7 +1,7 @@
 import '../assets/style.css';
 import * as core from '@playkit-js/playkit-js';
 import * as ui from '@playkit-js/playkit-js-ui';
-import * as providers from '@playkit-js/playkit-js-providers';
+import * as providers from '@playkit-js/playkit-js-providers/ovp-provider';
 // Import media source adapters
 import '@playkit-js/playkit-js-hls';
 import '@playkit-js/playkit-js-dash';
