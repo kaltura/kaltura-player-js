@@ -351,10 +351,14 @@ class PlaylistManager {
   private _onChangeSourceStarted(): void {
     if (this._player.isImage()) {
       this._player.configure({
+        // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         sources: { duration: this._options.imageDuration }
       });
     } else if (this._player.isDocument()) {
       this._player.configure({
+        // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         sources: { duration: this._options.documentDuration }
       });
     }

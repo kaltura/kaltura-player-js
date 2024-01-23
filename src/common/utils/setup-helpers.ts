@@ -923,6 +923,8 @@ function hasImageSource(sources: PKSourcesConfigObject): boolean {
  * @returns {boolean} - true if sources contain document source
  */
 function hasDocumentSource(sources: PKSourcesConfigObject): boolean {
+  // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const source = sources && sources.document;
   return !!(source && source[0]);
 }
