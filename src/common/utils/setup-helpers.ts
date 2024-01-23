@@ -367,9 +367,7 @@ function getDefaultOptions(options: PartialKPOptionsObject): KalturaPlayerConfig
 
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
-  if (process.env.NODE_ENV === 'production') {
-    setDefaultAnalyticsPlugin(defaultOptions);
-  }
+  setDefaultAnalyticsPlugin(defaultOptions);
   configureSmartTVDefaultOptions(defaultOptions);
   configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
