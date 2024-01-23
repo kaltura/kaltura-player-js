@@ -437,7 +437,7 @@ describe('kaltura player api', () => {
         kalturaPlayer.destroy();
       });
 
-      it('should set the playlist and evaluate the plugins - without config and entry list', () => {
+      it('should set the playlist and evaluate the plugins - without config and entry list ', () => {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList);
         kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
