@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/kaltura-player-js",
-  "version": "3.17.7",
+  "version": "3.17.8",
   "keywords": [
     "kaltura",
     "player",
@@ -20,24 +20,22 @@
   "files": [
     "dist/**/*",
     "src/**/*",
-    "flow-typed/**/*"
+    "flow-typed/**/*",
+    "ts-typed/**/*"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "ovp:serve": "webpack serve --open --mode development --env playerType=ovp",
-    "ovp:watch": "webpack --watch --mode development --env playerType=ovp",
-    "ovp:build:dev": "webpack --mode development --env playerType=ovp",
-    "ovp:build:prod": "webpack --mode production --env playerType=ovp",
+    "serve:ovp": "webpack serve --open --mode development --env playerType=ovp",
+    "watch:ovp": "webpack --watch --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
-    "ott:serve": "webpack serve --open --mode development --env playerType=ott",
-    "ott:watch": "webpack --watch --mode development --env playerType=ott",
-    "ott:build:dev": "webpack --mode development --env playerType=ott",
-    "ott:build:prod": "webpack --mode production --env playerType=ott",
+    "build-dev:ovp": "webpack --mode development --env playerType=ovp",
+    "serve:ott": "webpack serve --open --mode development --env playerType=ott",
+    "watch:ott": "webpack --watch --mode development --env playerType=ott",
     "build:ott": "webpack --mode production --env playerType=ott",
-    "clean": "rm -rf dist/*",
-    "build": "yarn run clean && yarn run ovp:build:prod && yarn run ott:build:prod && yarn run build:types",
+    "build-dev:ott": "webpack --mode development --env playerType=ott",
+    "build": "yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn run type-check -- --watch",
@@ -45,17 +43,19 @@
     "test:debug": "DEBUG_UNIT_TESTS=1 karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
     "test:watch": "karma start karma.conf.js --auto-watch --no-single-run",
     "lint": "eslint src/ tests/ --ext .js --ext .ts",
-    "lint:fix": "yarn run lint -- --fix",
+    "lint:fix": "yarn run lint --fix",
     "prettier": "prettier --write .",
+    "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
-    "release": "standard-version"
+    "release": "standard-version",
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.3",
+    "@playkit-js/playkit-js": "0.84.4",
     "@playkit-js/playkit-js-dash": "1.36.1",
     "@playkit-js/playkit-js-hls": "1.32.10",
     "@playkit-js/playkit-js-providers": "2.40.2",
-    "@playkit-js/playkit-js-ui": "0.77.13",
+    "@playkit-js/playkit-js-ui": "0.77.15",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
   },

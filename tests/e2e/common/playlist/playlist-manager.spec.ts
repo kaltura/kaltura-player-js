@@ -133,7 +133,7 @@ describe('PlaylistManager', () => {
         () => {
           eventCounter++;
           if (eventCounter === 2) {
-            done();
+            return done();
           }
           playlistManager._options.autoContinue = true;
           playlistManager._playerOptions.ui.disable = true;
@@ -153,7 +153,7 @@ describe('PlaylistManager', () => {
         () => {
           eventCounter++;
           if (eventCounter === 2) {
-            done();
+            return done();
           }
           playlistManager._options.autoContinue = false;
           playlistManager._options.loop = true;
@@ -208,7 +208,7 @@ describe('PlaylistManager', () => {
         () => {
           eventCounter++;
           if (eventCounter === 2) {
-            done();
+            return done();
           }
           playlistManager._options.autoContinue = true;
           playlistManager._options.loop = true;
@@ -659,7 +659,7 @@ describe('PlaylistManager', () => {
         PlaylistEventType.PLAYLIST_ITEM_CHANGED,
         () => {
           if (eventCounter === 2) {
-            done();
+            return done();
           }
           eventCounter++;
           playlistManager.playNext();

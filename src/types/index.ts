@@ -18,7 +18,5 @@ export * from './plugins-config';
 export * from './prebid-config';
 export * from './sources-config';
 export * from './thumbnail-config';
-export * from './ui-component';
-export * from './ui-component-options';
 export * from './ui-config';
 export * from './visibility-config';

@@ -78,7 +78,7 @@ module.exports = (env, { mode }) => {
       path: path.resolve(__dirname, 'dist'),
       library: {
         name: 'KalturaPlayer',
-        type: 'var'
+        type: 'umd'
       },
       clean: mode === 'development'
     },
