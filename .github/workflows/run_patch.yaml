@@ -7,12 +7,12 @@ on:
     branches:
       - '*'
 
-#  workflow_dispatch:
-#    inputs:
-#      branch:
-#        description: 'branch name'
-#        required: false
-#        default: 'master'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'branch name'
+        required: false
+        default: 'master'
 #      scripts-to-execute:
 #        description: 'scripts to execute'
 #        required: false
@@ -72,15 +72,15 @@ jobs:
           if [ "$checked_out_branch" != "${GITHUB_REF#refs/heads/}" ]; then
             echo "Error: Checked out branch ($checked_out_branch) does not match the workflow branch (${GITHUB_REF#refs/heads/})"
           fi
-#  canary:
-#    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@master
-#    secrets: inherit
-#    with:
-#      node-version: "20.x"
-#      player-type: "ovp tv"
-#      schema-type: "playerV3Versions"
-#      tests-yarn-run-to-execute: ${{ inputs.scripts-to-execute }}
-#      yarn-upgrade-list: ""
+  canary:
+    uses: kaltura/playkit-js-common/.github/workflows/canary_player.yaml@lian-test-canary
+    secrets: inherit
+    with:
+      node-version: "20.x"
+      player-type: "ovp tv"
+      schema-type: "playerV3Versions"
+      tests-yarn-run-to-execute: 'build lint type-check test'
+      yarn-upgrade-list: ""
 #      is-patch-version: ${{ inputs.is-patch-version }}
 #      stage: $STAGE_VALUE
 #      stage: ${{ needs.set_stage_variable.outputs.stage }}
