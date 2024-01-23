@@ -1,21 +1,12 @@
-import {
-  Error,
-  EventManager,
-  FakeEvent,
-  Utils,
-  getLogger
-} from '@playkit-js/playkit-js';
+import { Error, EventManager, FakeEvent, Utils, getLogger } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
-
-// TODO - should be taken from plugin repo
-interface IPlugin {}
 
 /** The BasePlugin responsible to implement the plugin interface.
  * Contains several default implementations.
  * Other plugins should extend this class.
  * @classdesc
  */
-export class BasePlugin implements IPlugin {
+export class BasePlugin {
   protected logger: any;
   /**
    * The runtime configuration of the plugin.
@@ -51,23 +42,6 @@ export class BasePlugin implements IPlugin {
   protected static defaultConfig: any = {};
 
   /**
-   * Factory method to create the actual plugin.
-   * @param {string} name - The plugin name
-   * @param {Object} player - The player reference
-   * @param {Object} config - The plugin configuration
-   * @returns {BasePlugin} - New runtime plugin instance
-   * @static
-   * @public
-   */
-  public static createPlugin(
-    name: string,
-    player: KalturaPlayer,
-    config: any = {}
-  ): BasePlugin {
-    return new this(name, player, config);
-  }
-
-  /**
    * Returns under what conditions the plugin is valid.
    * Plugin must implement this method.
    * @returns {boolean} - Whether the plugin is valid and can be initiated. Default implementation is true
@@ -75,13 +49,8 @@ export class BasePlugin implements IPlugin {
    * @public
    * @abstract
    */
-  protected static isValid(): boolean {
-    throw new Error(
-      Error.Severity.CRITICAL,
-      Error.Category.PLAYER,
-      Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED,
-      'isValid()'
-    );
+  public static isValid(): boolean {
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'isValid()');
   }
 
   /**
@@ -92,15 +61,14 @@ export class BasePlugin implements IPlugin {
    * @constructor
    * @private
    */
-  constructor(name: string, player: KalturaPlayer, config: any) {
+  constructor(name: string, player: KalturaPlayer, config: any = {}) {
     this.name = name;
     this.player = player;
     this.eventManager = new EventManager();
     this.logger = getLogger(Utils.String.capitlize(this.name));
-    this.config = {};
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    Utils.Object.mergeDeep(this.config, this.constructor.defaultConfig, config);
+    this.config = { ...this.constructor.defaultConfig, ...config };
   }
 
   /**
@@ -179,10 +147,8 @@ export class BasePlugin implements IPlugin {
    * @param {any} payload - The event payload.
    * @returns {void}
    */
-  public dispatchEvent(name: string, payload: any): void {
+  public dispatchEvent(name: string, payload?: any): void {
     this.logger.debug('Fire event: ' + name, payload);
-    // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     this.player.dispatchEvent(new FakeEvent(name, payload));
   }
 }

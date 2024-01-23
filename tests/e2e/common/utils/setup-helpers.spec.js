@@ -30,10 +30,7 @@ describe('error handling', () => {
     try {
       SetupHelpers.validateConfig({ targetId: 'my-player-div' });
     } catch (e) {
-      e.message.should.equal(
-        ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED +
-          'my-player-div'
-      );
+      e.message.should.equal(ValidationErrorType.DOM_ELEMENT_WITH_TARGET_ID_REQUIRED + 'my-player-div');
       done();
     }
   });
@@ -211,13 +208,9 @@ describe('setStorageConfig', () => {
         audioLanguage: 'fra'
       }
     };
-    sandbox
-      .stub(LocalStorageManager, 'isStorageAvailable')
-      .callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').callsFake(() => true);
     sandbox.stub(LocalStorageManager, 'hasStorage').callsFake(() => true);
-    sandbox
-      .stub(LocalStorageManager, 'getStorageConfig')
-      .callsFake(() => storageConfig);
+    sandbox.stub(LocalStorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     SetupHelpers.setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');
@@ -231,13 +224,9 @@ describe('setStorageConfig', () => {
         audioLanguage: 'fra'
       }
     };
-    sandbox
-      .stub(LocalStorageManager, 'isStorageAvailable')
-      .callsFake(() => true);
+    sandbox.stub(LocalStorageManager, 'isStorageAvailable').callsFake(() => true);
     sandbox.stub(LocalStorageManager, 'hasStorage').callsFake(() => true);
-    sandbox
-      .stub(LocalStorageManager, 'getStorageConfig')
-      .callsFake(() => storageConfig);
+    sandbox.stub(LocalStorageManager, 'getStorageConfig').callsFake(() => storageConfig);
     SetupHelpers.setStorageConfig(config);
     config.playback.textLanguage.should.equal('eng');
     config.playback.audioLanguage.should.equal('fra');

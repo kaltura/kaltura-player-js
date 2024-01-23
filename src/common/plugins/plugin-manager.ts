@@ -1,5 +1,6 @@
 import { BasePlugin } from './index';
 import { Error, getLogger } from '@playkit-js/playkit-js';
+import { PluginClassType } from '../../types';
 
 /**
  * The logger of the PluginManager class.
@@ -19,7 +20,7 @@ export class PluginManager {
    * @static
    * @private
    */
-  private static _registry: Map<string, any> = new Map();
+  private static _registry: Map<string, PluginClassType> = new Map();
   /**
    * The active plugins in the player.
    * Maps plugin's name to his instance.
@@ -40,31 +41,22 @@ export class PluginManager {
    * Writes the plugin in the registry.
    * Maps: plugin name -> plugin class.
    * @param {string} name - The plugin name
-   * @param {Function} handler - The plugin class
+   * @param PluginClass
    * @returns {boolean} - If the registration request succeeded
    * @static
    * @public
    */
-  public static register(name: string, handler: () => any): boolean {
-    if (
-      typeof handler !== 'function' ||
-      handler.prototype instanceof BasePlugin === false
-    ) {
-      PluginManager._logger.error(
-        `Plugin <${name}> registration failed, either plugin is not an instance of BasePlugin or plugin handler is not a function`
-      );
+  public static register(name: string, PluginClass: PluginClassType): boolean {
+    if (!(typeof PluginClass === 'function' && PluginClass.prototype instanceof BasePlugin)) {
+      PluginManager._logger.error(`Plugin <${name}> registration failed, plugin is not an instance of BasePlugin`);
       return false;
     }
     if (!PluginManager._registry.has(name)) {
-      PluginManager._registry.set(name, handler);
-      PluginManager._logger.debug(
-        `Plugin <${name}> has been registered successfully`
-      );
+      PluginManager._registry.set(name, PluginClass);
+      PluginManager._logger.debug(`Plugin <${name}> has been registered successfully`);
       return true;
     }
-    PluginManager._logger.debug(
-      `Plugin <${name}> is already registered, do not register again`
-    );
+    PluginManager._logger.debug(`Plugin <${name}> is already registered, do not register again`);
     return false;
   }
 
@@ -92,40 +84,26 @@ export class PluginManager {
    */
   public load(name: string, player: any, config: any = {}): boolean {
     if (!PluginManager._registry.has(name)) {
-      PluginManager._logger.warn(
-        `Plugin <${name}> loading failed, plugin is not registered`
-      );
-      throw new Error(
-        Error.Severity.RECOVERABLE,
-        Error.Category.PLAYER,
-        Error.Code.RUNTIME_ERROR_NOT_REGISTERED_PLUGIN,
-        name
-      );
+      PluginManager._logger.warn(`Plugin <${name}> loading failed, plugin is not registered`);
+      throw new Error(Error.Severity.RECOVERABLE, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_NOT_REGISTERED_PLUGIN, name);
     }
-    const pluginClass = PluginManager._registry.get(name);
+    const PluginClass = PluginManager._registry.get(name)!;
     if (typeof config.disable === 'boolean') {
       this._isDisabledPluginMap.set(name, config.disable);
     }
     const isDisablePlugin = !!this._isDisabledPluginMap.get(name);
-    const isValidPlugin = pluginClass ? pluginClass.isValid() : false;
-    if (pluginClass && isValidPlugin && !isDisablePlugin) {
+    const isValidPlugin = PluginClass ? PluginClass.isValid() : false;
+    if (PluginClass && isValidPlugin && !isDisablePlugin) {
       try {
-        this._plugins[name] = pluginClass.createPlugin(name, player, config);
+        this._plugins[name] = new PluginClass(name, player, config);
       } catch (e) {
-        throw new Error(
-          Error.Severity.RECOVERABLE,
-          Error.Category.PLAYER,
-          Error.Code.PLUGIN_LOAD_FAILED,
-          e
-        );
+        throw new Error(Error.Severity.RECOVERABLE, Error.Category.PLAYER, Error.Code.PLUGIN_LOAD_FAILED, e);
       }
       this._isDisabledPluginMap.set(name, false);
       PluginManager._logger.debug(`Plugin <${name}> has been loaded`);
       return true;
     }
-    PluginManager._logger.debug(
-      `Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`
-    );
+    PluginManager._logger.debug(`Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`);
     return false;
   }
 
@@ -184,5 +162,9 @@ export class PluginManager {
  * @type {function}
  * @constant
  */
-const registerPlugin = PluginManager.register;
+
+// Extract the register method from PluginManager
+const { register: registerPlugin } = PluginManager;
+
+// Export the register method as registerPlugin
 export { registerPlugin };

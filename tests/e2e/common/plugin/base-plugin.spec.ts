@@ -7,7 +7,7 @@ describe('BasePlugin', () => {
   beforeEach(() => {
     // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    basePlugin = BasePlugin.createPlugin('basePlugin', {}, config);
+    basePlugin = new BasePlugin('basePlugin', {}, config);
   });
 
   afterEach(() => {

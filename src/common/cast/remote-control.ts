@@ -1,19 +1,8 @@
-import {
-  EventType as CoreEventType,
-  FakeEvent,
-  loadPlayer,
-  TrackType,
-  Utils,
-  getLogger
-} from '@playkit-js/playkit-js';
+import { EventType as CoreEventType, FakeEvent, loadPlayer, TrackType, Utils, getLogger } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PlayerSnapshot } from './player-snapshot';
 import { CastEventType } from './cast-event-type';
-import {
-  RemoteAvailablePayload,
-  RemoteConnectedPayload,
-  RemoteDisconnectedPayload
-} from './remote-payload';
+import { RemoteAvailablePayload, RemoteConnectedPayload, RemoteDisconnectedPayload } from './remote-payload';
 import { UIWrapper } from '../ui-wrapper';
 import { SourcesConfig, PlaybackConfig } from '../../types';
 
@@ -106,9 +95,7 @@ function onRemoteDeviceConnected(payload: RemoteConnectedPayload): void {
   const { player, ui, session } = payload;
   // After remote player is connected, clean all listeners and bounce the remote player events forward
   this._eventManager.removeAll();
-  Object.values(CoreEventType).forEach((coreEvent) =>
-    this._eventManager.listen(player, coreEvent, (e) => this.dispatchEvent(e))
-  );
+  Object.values(CoreEventType).forEach((coreEvent) => this._eventManager.listen(player, coreEvent, (e) => this.dispatchEvent(e)));
   // Use the current config with the remote player presets on the new ui wrapper
   const config = this.config;
   if (ui) {
@@ -153,13 +140,9 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       const mediaConfig = snapshot.mediaConfig;
       snapshot.config.playback.autoplay = true;
       configurePlayback.call(this, snapshot.config);
-      this._eventManager.listenOnce(
-        this,
-        this.Event.Core.CHANGE_SOURCE_ENDED,
-        () => {
-          configureTracks.call(this, snapshot.config.sources);
-        }
-      );
+      this._eventManager.listenOnce(this, this.Event.Core.CHANGE_SOURCE_ENDED, () => {
+        configureTracks.call(this, snapshot.config.sources);
+      });
       let mediaPromise;
       if (mediaInfo) {
         mediaPromise = this.loadMedia(mediaInfo);
@@ -169,18 +152,14 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       }
       mediaPromise &&
         mediaPromise.then(() => {
-          this._eventManager.listenOnce(
-            this,
-            this.Event.Core.FIRST_PLAYING,
-            () => {
-              this.textStyle = snapshot.textStyle;
-              configurePlayback.call(this, originConfig);
-              setInitialTracks.call(this, snapshot.config.playback);
-              if (shouldPause) {
-                this.pause();
-              }
+          this._eventManager.listenOnce(this, this.Event.Core.FIRST_PLAYING, () => {
+            this.textStyle = snapshot.textStyle;
+            configurePlayback.call(this, originConfig);
+            setInitialTracks.call(this, snapshot.config.playback);
+            if (shouldPause) {
+              this.pause();
             }
-          );
+          });
         });
     }
   }
@@ -227,9 +206,7 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
         imaConfig = {
           adTagUrl: ''
         };
-        this._eventManager.listen(this, CoreEventType.FIRST_PLAYING, () =>
-          this.configure({ plugins: { ima: { adTagUrl: adTagUrl } } })
-        );
+        this._eventManager.listen(this, CoreEventType.FIRST_PLAYING, () => this.configure({ plugins: { ima: { adTagUrl: adTagUrl } } }));
       }
     } else {
       imaConfig = {
@@ -246,17 +223,10 @@ function reconstructPlayerComponents(snapshot: PlayerSnapshot): void {
     this._remotePlayer = null;
   }
   // Listen on the local player events and bounce its events forward
-  Object.values(CoreEventType).forEach((coreEvent) =>
-    this._eventManager.listen(this._localPlayer, coreEvent, (e) =>
-      this.dispatchEvent(e)
-    )
-  );
+  Object.values(CoreEventType).forEach((coreEvent) => this._eventManager.listen(this._localPlayer, coreEvent, (e) => this.dispatchEvent(e)));
   // Create new ui wrapper with an updated state for the isCastAvailable prop
   this._uiWrapper = new UIWrapper(this, this.config);
-  this._uiWrapper.setConfig(
-    { isCastAvailable: this.isCastAvailable() },
-    'engine'
-  );
+  this._uiWrapper.setConfig({ isCastAvailable: this.isCastAvailable() }, 'engine');
 }
 
 function configurePlayback(config: any): void {
@@ -285,15 +255,11 @@ function configureTracks(sourcesConfig: SourcesConfig): void {
 
 function setInitialTracks(playbackConfig: PlaybackConfig): void {
   if (playbackConfig.audioLanguage) {
-    const audioTrack = this.getTracks(TrackType.AUDIO).find(
-      (t) => t.language === playbackConfig.audioLanguage
-    );
+    const audioTrack = this.getTracks(TrackType.AUDIO).find((t) => t.language === playbackConfig.audioLanguage);
     this.selectTrack(audioTrack);
   }
   if (playbackConfig.textLanguage) {
-    const textTrack = this.getTracks(TrackType.TEXT).find(
-      (t) => t.language === playbackConfig.textLanguage
-    );
+    const textTrack = this.getTracks(TrackType.TEXT).find((t) => t.language === playbackConfig.textLanguage);
     this.selectTrack(textTrack);
   }
 }

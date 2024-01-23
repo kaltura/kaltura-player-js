@@ -40,15 +40,11 @@ class PluginReadinessMiddleware extends BaseMiddleware {
       : Promise.resolve();
     readyPromise
       .then(() => {
-        PluginReadinessMiddleware._logger.debug(
-          `plugin ${this._plugins[index].name} ready promise resolved`
-        );
+        PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise resolved`);
         this._checkNextSettle(index + 1, next);
       })
       .catch(() => {
-        PluginReadinessMiddleware._logger.debug(
-          `plugin ${this._plugins[index].name} ready promise rejected`
-        );
+        PluginReadinessMiddleware._logger.debug(`plugin ${this._plugins[index].name} ready promise rejected`);
         this._checkNextSettle(index + 1, next);
       });
   }

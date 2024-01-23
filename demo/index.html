@@ -1,8 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Kaltura Player Demo Page"/>
+    <title>Player</title>
     <link rel="stylesheet" type="text/css" href="./style.css" />
     <script src="./kaltura-ovp-player.js" type="text/javascript"></script>
   </head>
@@ -15,16 +18,16 @@
         },
         targetId: 'player-placeholder',
         provider: {
-          partnerId: 1091,
+          partnerId: 242,
           env: {
-            cdnUrl: 'https://qa-apache-php7.dev.kaltura.com/',
-            serviceUrl: 'https://qa-apache-php7.dev.kaltura.com/api_v3'
+            serviceUrl: 'https://api.nvq2.ovp.kaltura.com/api_v3',
+            cdnUrl: 'https://api.nvq2.ovp.kaltura.com',
           }
-        }
+        },
       };
 
       const player = KalturaPlayer.setup(config);
-      player.loadMedia({ entryId: '0_wifqaipd' });
+      player.loadMedia({ entryId: '0_vry5u8hk' });
     </script>
   </body>
 </html>

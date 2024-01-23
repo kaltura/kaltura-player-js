@@ -71,8 +71,7 @@ const MediaConfig = {
       id: '0_wifqaipd',
       duration: 741,
       type: 'Vod',
-      poster:
-        'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
+      poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_wifqaipd/version/100042',
       dvr: false,
       vr: null,
       metadata: {
@@ -110,8 +109,7 @@ const MediaConfig = {
       id: '0_nwkp7jtx',
       duration: 86089,
       type: 'Live',
-      poster:
-        'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
+      poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
       dvr: true,
       vr: null,
       metadata: {
@@ -147,8 +145,7 @@ const MediaConfig = {
       id: '0_nwkpghdf',
       duration: 86089,
       type: 'Live',
-      poster:
-        'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
+      poster: 'http://cdntesting.qa.mkaltura.com/p/1091/sp/109100/thumbnail/entry_id/0_nwkp7jtx/version/0',
       dvr: true,
       vr: null,
       metadata: {
@@ -185,8 +182,7 @@ const MediaConfig = {
       id: '0_wifqaipd',
       duration: 741,
       type: 'Vod',
-      poster:
-        'http://cdntesting.qa.mkaltura.com/p/1234/sp/123400/thumbnail/entry_id/1111/version/100042',
+      poster: 'http://cdntesting.qa.mkaltura.com/p/1234/sp/123400/thumbnail/entry_id/1111/version/100042',
       dvr: false,
       vr: null,
       metadata: {

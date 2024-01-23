@@ -1,9 +1,6 @@
 import { THUMBNAIL_REGEX } from '../common/thumbnail-manager';
-import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers';
-import {
-  PKDimensionsConfig,
-  PKSourcesConfigObject
-} from '@playkit-js/playkit-js';
+import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { PKDimensionsConfig, PKSourcesConfigObject } from '@playkit-js/playkit-js';
 
 /**
  * Add poster with player dimensions to thumbnail API call
@@ -24,14 +21,8 @@ function addKalturaPoster(
   const mediaConfigPoster = mediaSources.poster;
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
-  if (
-    typeof playerPoster === 'string' &&
-    THUMBNAIL_REGEX.test(playerPoster) &&
-    playerPoster === mediaConfigPoster
-  ) {
-    playerSources.poster = `${playerPoster}/height/${playerHeight}/width/${playerWidth}${
-      ks ? `/ks/${ks}` : ''
-    }`;
+  if (typeof playerPoster === 'string' && THUMBNAIL_REGEX.test(playerPoster) && playerPoster === mediaConfigPoster) {
+    playerSources.poster = `${playerPoster}/height/${playerHeight}/width/${playerWidth}${ks ? `/ks/${ks}` : ''}`;
   }
   mediaSources.poster = playerSources.poster || '';
 }

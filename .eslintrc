@@ -1,22 +1,26 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "extends": [
-    "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["plugin:prettier/recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
-    "react/prefer-stateless-function": "off",
-    "max-len": ["warn", { "code": 200 }],
+    "max-len": [
+      "error",
+      {
+        "code": 150,
+        "ignoreComments": true,
+        "ignoreStrings": true,
+        "ignoreUrls": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
     "eol-last": "off",
     "prettier/prettier": "warn",
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    //    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/explicit-member-accessibility": [
       "error",
       {
@@ -38,28 +42,19 @@
     "prefer-const": "error",
     "prefer-arrow-callback": "error",
     "no-trailing-spaces": "error",
-    "quotes": ["warn", "single", { "avoidEscape": true }],
-    "no-restricted-properties": [
-      "error",
-      {
-        "object": "describe",
-        "property": "only"
-      },
-      {
-        "object": "it",
-        "property": "only"
+    "quotes": ["warn", "single", { "avoidEscape": true }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.json"],
+      "rules": {
+        "max-len": ["error", { "code": 60 }]
       }
-    ]
-  },
-  "overrides": [],
-  "settings": {
-    "jest": {
-      "version": 26
     }
-  },
+  ],
+  "settings": {},
   "env": {
     "browser": true,
-    "commonjs": true,
     "es6": true
   }
 }

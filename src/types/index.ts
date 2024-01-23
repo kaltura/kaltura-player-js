@@ -14,7 +14,7 @@ export * from './media-capabilities';
 export * from './network-config';
 export * from './playback-config';
 export * from './playlist-object';
-export * from './plugins-config';
+export * from './plugins';
 export * from './prebid-config';
 export * from './sources-config';
 export * from './thumbnail-config';

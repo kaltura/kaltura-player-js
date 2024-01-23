@@ -48,75 +48,46 @@ export default class LocalStorageManager extends BaseStorageManager {
       }
     });
 
-    eventManager.listen(
-      player,
-      player.Event.UI.USER_SELECTED_AUDIO_TRACK,
-      (event) => {
-        const audioTrack = event.payload.audioTrack;
-        this.setItem(this.StorageKeys.AUDIO_LANG, audioTrack.language);
-      }
-    );
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_AUDIO_TRACK, (event) => {
+      const audioTrack = event.payload.audioTrack;
+      this.setItem(this.StorageKeys.AUDIO_LANG, audioTrack.language);
+    });
 
-    eventManager.listen(
-      player,
-      player.Event.UI.USER_SELECTED_CAPTION_TRACK,
-      (event) => {
-        const textTrack = event.payload.captionTrack;
-        if (textTrack.language !== 'off') {
-          this.setItem(this.StorageKeys.TEXT_LANG, textTrack.language);
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, (event) => {
+      const textTrack = event.payload.captionTrack;
+      if (textTrack.language !== 'off') {
+        this.setItem(this.StorageKeys.TEXT_LANG, textTrack.language);
+        this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
+      } else {
+        this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
+      }
+    });
+
+    const onToggleCaptions = (): any => {
+      eventManager.listenOnce(player, player.Event.Core.TEXT_TRACK_CHANGED, (event) => {
+        const { selectedTextTrack } = event.payload;
+        if (selectedTextTrack.language !== 'off') {
+          this.setItem(this.StorageKeys.TEXT_LANG, selectedTextTrack.language);
           this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
         } else {
           this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
         }
-      }
-    );
-
-    const onToggleCaptions = (): any => {
-      eventManager.listenOnce(
-        player,
-        player.Event.Core.TEXT_TRACK_CHANGED,
-        (event) => {
-          const { selectedTextTrack } = event.payload;
-          if (selectedTextTrack.language !== 'off') {
-            this.setItem(
-              this.StorageKeys.TEXT_LANG,
-              selectedTextTrack.language
-            );
-            this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
-          } else {
-            this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
-          }
-        }
-      );
+      });
     };
 
-    eventManager.listen(
-      player,
-      player.Event.UI.USER_SHOWED_CAPTIONS,
-      onToggleCaptions
-    );
-    eventManager.listen(
-      player,
-      player.Event.UI.USER_HID_CAPTIONS,
-      onToggleCaptions
-    );
+    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, onToggleCaptions);
+    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, onToggleCaptions);
 
-    eventManager.listen(
-      player,
-      player.Event.UI.USER_SELECTED_CAPTIONS_STYLE,
-      (event) => {
-        try {
-          const textStyle = JSON.stringify(event.payload.captionsStyle);
-          this.setItem(this.StorageKeys.TEXT_STYLE, textStyle);
-        } catch (e) {
-          this._logger.error(e.message);
-        }
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
+      try {
+        const textStyle = JSON.stringify(event.payload.captionsStyle);
+        this.setItem(this.StorageKeys.TEXT_STYLE, textStyle);
+      } catch (e) {
+        this._logger.error(e.message);
       }
-    );
+    });
 
-    eventManager.listen(player, player.Event.Core.PLAYER_DESTROY, () =>
-      eventManager.destroy()
-    );
+    eventManager.listen(player, player.Event.Core.PLAYER_DESTROY, () => eventManager.destroy());
   }
 
   /**

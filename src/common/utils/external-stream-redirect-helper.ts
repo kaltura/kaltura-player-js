@@ -44,23 +44,11 @@ function getDirectManifestUri(data: any, uri: string): string {
  * @param {KPOptionsObject} mediaOptions - The media config.
  * @returns {void}
  */
-function getRedirectExternalStreamsHandler(
-  playerOptions: Partial<KalturaPlayerConfig>,
-  mediaOptions: KalturaPlayerConfig | any = {}
-): any {
+function getRedirectExternalStreamsHandler(playerOptions: Partial<KalturaPlayerConfig>, mediaOptions: KalturaPlayerConfig | any = {}): any {
   const configObj = {};
-  const playerRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(
-    playerOptions,
-    'sources.options.redirectExternalStreamsHandler'
-  );
-  const mediaRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(
-    mediaOptions,
-    'sources.options.redirectExternalStreamsHandler'
-  );
-  if (
-    typeof playerRedirectExternalStreamsHandler !== 'function' &&
-    typeof mediaRedirectExternalStreamsHandler !== 'function'
-  ) {
+  const playerRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(playerOptions, 'sources.options.redirectExternalStreamsHandler');
+  const mediaRedirectExternalStreamsHandler = Utils.Object.getPropertyPath(mediaOptions, 'sources.options.redirectExternalStreamsHandler');
+  if (typeof playerRedirectExternalStreamsHandler !== 'function' && typeof mediaRedirectExternalStreamsHandler !== 'function') {
     Utils.Object.mergeDeep(configObj, {
       sources: {
         options: {

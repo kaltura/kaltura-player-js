@@ -2,7 +2,7 @@ import { PlaybackConfig } from './playback-config';
 import {
   ProviderMediaConfigSessionObject,
   ProviderMediaConfigSourcesObject
-} from '@playkit-js/playkit-js-providers';
+} from '@playkit-js/playkit-js-providers/ovp-provider';
 
 /**
  * @typedef {Object} KPMediaConfig

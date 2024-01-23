@@ -1,11 +1,4 @@
-import {
-  EventManager,
-  FakeEventTarget,
-  TextStyle,
-  Track,
-  Utils,
-  getLogger
-} from '@playkit-js/playkit-js';
+import { EventManager, FakeEventTarget, TextStyle, Track, Utils, getLogger } from '@playkit-js/playkit-js';
 import { RemoteControl } from './remote-control';
 import { RemoteSession } from './remote-session';
 import { IRemotePlayer } from './remote-player';

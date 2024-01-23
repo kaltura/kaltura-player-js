@@ -4,6 +4,6 @@ body {
 
 #player-placeholder {
   margin: 100px auto;
-  width: 640px;
-  height: 360px;
+  max-width: 640px;
+  aspect-ratio: 10 / 5.62;
 }

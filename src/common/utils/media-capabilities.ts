@@ -1,11 +1,5 @@
 import { getLogger } from '@playkit-js/playkit-js';
-import {
-  DRMSupportedObject,
-  HEVCConfigObject,
-  HEVCSupportedObject,
-  MediaCapabilitiesObject,
-  SupportedOptionsType
-} from '../../types';
+import { DRMSupportedObject, HEVCConfigObject, HEVCSupportedObject, MediaCapabilitiesObject, SupportedOptionsType } from '../../types';
 
 const CONTENT_TYPE_AVC_CODEC: string = 'video/mp4;codecs="avc1.42E01E"';
 const DRM_SCHEME_LIST: Array<[string, string]> = [
@@ -39,9 +33,7 @@ const SupportedOptions: SupportedOptionsType = {
  * @returns {Promise<MediaCapabilitiesObject>} - The media capabilities object.
  * @public
  */
-async function getMediaCapabilities(
-  hevcConfig?: HEVCConfigObject
-): Promise<MediaCapabilitiesObject> {
+async function getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
   let mediaCapabilities;
   try {
     _logger.debug('Starting to get media capabilities...');
@@ -53,10 +45,7 @@ async function getMediaCapabilities(
     });
     return mediaCapabilities;
   } catch (ex) {
-    _logger.debug(
-      'There was a problem with getting the media capabilities, ',
-      ex.message
-    );
+    _logger.debug('There was a problem with getting the media capabilities, ', ex.message);
     mediaCapabilities = {
       isHEVCSupported: SupportedOptions.NOT_SUPPORTED,
       isPowerEfficient: SupportedOptions.NOT_SUPPORTED,
@@ -104,16 +93,11 @@ async function _checkDRMSupported(): Promise<DRMSupportedObject> {
       await navigator.requestMediaKeySystemAccess(keySys, keySysConfig);
       drmSupportedRes.supportedDRMs.push(drm);
     } catch (ex) {
-      _logger.debug(
-        keySys + ' not supported (' + ex.name + ': ' + ex.message + ').'
-      );
+      _logger.debug(keySys + ' not supported (' + ex.name + ': ' + ex.message + ').');
     }
   }
 
-  drmSupportedRes.isDRMSupported =
-    drmSupportedRes.supportedDRMs.length > 0
-      ? SupportedOptions.SUPPORTED
-      : SupportedOptions.NOT_SUPPORTED;
+  drmSupportedRes.isDRMSupported = drmSupportedRes.supportedDRMs.length > 0 ? SupportedOptions.SUPPORTED : SupportedOptions.NOT_SUPPORTED;
   return drmSupportedRes;
 }
 
@@ -124,18 +108,13 @@ async function _checkDRMSupported(): Promise<DRMSupportedObject> {
  * @returns {Promise<HEVCSupportedObject>} - The HEVC supported object.
  * @private
  */
-async function _checkHEVCSupported(
-  hevcConfig?: HEVCConfigObject
-): Promise<HEVCSupportedObject> {
+async function _checkHEVCSupported(hevcConfig?: HEVCConfigObject): Promise<HEVCSupportedObject> {
   const hevcSupportedRes: HEVCSupportedObject = {
     isHEVCSupported: SupportedOptions.MAYBE_SUPPORTED,
     isPowerEfficient: SupportedOptions.MAYBE_SUPPORTED
   };
 
-  if (
-    !navigator.mediaCapabilities ||
-    !navigator.mediaCapabilities.decodingInfo
-  ) {
+  if (!navigator.mediaCapabilities || !navigator.mediaCapabilities.decodingInfo) {
     return hevcSupportedRes;
   }
 
@@ -151,22 +130,11 @@ async function _checkHEVCSupported(
   };
 
   try {
-    const mediaCapRes =
-      await navigator.mediaCapabilities.decodingInfo(configHvc);
-    hevcSupportedRes.isHEVCSupported = mediaCapRes.supported
-      ? SupportedOptions.SUPPORTED
-      : SupportedOptions.NOT_SUPPORTED;
-    hevcSupportedRes.isPowerEfficient = mediaCapRes.powerEfficient
-      ? SupportedOptions.SUPPORTED
-      : SupportedOptions.NOT_SUPPORTED;
+    const mediaCapRes = await navigator.mediaCapabilities.decodingInfo(configHvc);
+    hevcSupportedRes.isHEVCSupported = mediaCapRes.supported ? SupportedOptions.SUPPORTED : SupportedOptions.NOT_SUPPORTED;
+    hevcSupportedRes.isPowerEfficient = mediaCapRes.powerEfficient ? SupportedOptions.SUPPORTED : SupportedOptions.NOT_SUPPORTED;
   } catch (ex) {
-    _logger.debug(
-      'Failed to get the media capabilities from navigator. (' +
-        ex.name +
-        ': ' +
-        ex.message +
-        ').'
-    );
+    _logger.debug('Failed to get the media capabilities from navigator. (' + ex.name + ': ' + ex.message + ').');
     hevcSupportedRes.isHEVCSupported = SupportedOptions.MAYBE_SUPPORTED;
     hevcSupportedRes.isPowerEfficient = SupportedOptions.MAYBE_SUPPORTED;
   }

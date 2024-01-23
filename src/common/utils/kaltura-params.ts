@@ -1,9 +1,4 @@
-import {
-  PKSourcesConfigObject,
-  PlayerStreamTypes,
-  StreamType,
-  Utils
-} from '@playkit-js/playkit-js';
+import { PKSourcesConfigObject, PlayerStreamTypes, StreamType, Utils } from '@playkit-js/playkit-js';
 import { getServerUIConf } from './setup-helpers';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PartialKPOptionsObject } from '../../types';
@@ -26,10 +21,7 @@ const CLIP_TO = 'clipTo=';
  * @return {void}
  * @private
  */
-function handleSessionId(
-  player: KalturaPlayer,
-  playerConfig: PartialKPOptionsObject
-): void {
+function handleSessionId(player: KalturaPlayer, playerConfig: PartialKPOptionsObject): void {
   if (player.config.session && player.config.session.id) {
     // on change media
     updateSessionId(player, playerConfig);
@@ -56,10 +48,7 @@ function addSessionId(playerConfig: PartialKPOptionsObject): void {
  * @return {void}
  * @private
  */
-function updateSessionId(
-  player: KalturaPlayer,
-  playerConfig: PartialKPOptionsObject
-): void {
+function updateSessionId(player: KalturaPlayer, playerConfig: PartialKPOptionsObject): void {
   const secondGuidInSessionIdRegex = /:((?:[a-z0-9]|-)*)/i;
   const secondGuidInSessionId = secondGuidInSessionIdRegex.exec(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -71,10 +60,7 @@ function updateSessionId(
       playerConfig,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      player.config.session.id.replace(
-        secondGuidInSessionId[1],
-        Utils.Generator.guid()
-      )
+      player.config.session.id.replace(secondGuidInSessionId[1], Utils.Generator.guid())
     );
   }
 }
@@ -85,10 +71,7 @@ function updateSessionId(
  * @return {void}
  * @private
  */
-function setSessionId(
-  playerConfig: PartialKPOptionsObject,
-  sessionId: string
-): void {
+function setSessionId(playerConfig: PartialKPOptionsObject, sessionId: string): void {
   playerConfig.session = playerConfig.session || {};
   playerConfig.session.id = sessionId;
 }
@@ -100,16 +83,9 @@ function setSessionId(
  * @return {string} - the url with the new sessionId
  * @private
  */
-function updateSessionIdInUrl(
-  url: string,
-  sessionId?: string,
-  paramName: string = PLAY_SESSION_ID
-): string {
+function updateSessionIdInUrl(url: string, sessionId?: string, paramName: string = PLAY_SESSION_ID): string {
   if (sessionId) {
-    const sessionIdInUrlRegex = new RegExp(
-      paramName + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)',
-      'i'
-    );
+    const sessionIdInUrlRegex = new RegExp(paramName + '((?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*)', 'i');
     const sessionIdInUrl = sessionIdInUrlRegex.exec(url);
     if (sessionIdInUrl && sessionIdInUrl[1]) {
       // this url has session id (has already been played)
@@ -155,14 +131,8 @@ function addReferrer(url: string): string {
  * @return {string} - the url with the uiconf id appended in the query params
  * @private
  */
-function addUIConfId(
-  url: string,
-  playerConfig: PartialKPOptionsObject
-): string {
-  const uiConfId = Utils.Object.getPropertyPath(
-    playerConfig,
-    'provider.uiConfId'
-  );
+function addUIConfId(url: string, playerConfig: PartialKPOptionsObject): string {
+  const uiConfId = Utils.Object.getPropertyPath(playerConfig, 'provider.uiConfId');
   if (url.indexOf(UICONF_ID) === -1 && typeof uiConfId === 'number') {
     url += getQueryStringParamDelimiter(url) + UICONF_ID + uiConfId;
   }
@@ -186,10 +156,7 @@ function getQueryStringParamDelimiter(url: string): string {
  */
 function addClientTag(url: string, productVersion?: string): string {
   if (url.indexOf(CLIENT_TAG) === -1) {
-    url +=
-      getQueryStringParamDelimiter(url) +
-      CLIENT_TAG +
-      (productVersion || __VERSION__);
+    url += getQueryStringParamDelimiter(url) + CLIENT_TAG + (productVersion || __VERSION__);
   }
   return url;
 }
@@ -200,10 +167,7 @@ function addClientTag(url: string, productVersion?: string): string {
  * @return {string} - the url with the seekFrom and clipTo appended in the query params
  * @private
  */
-function addStartAndEndTime(
-  url: string,
-  sources: PKSourcesConfigObject
-): string {
+function addStartAndEndTime(url: string, sources: PKSourcesConfigObject): string {
   const seekFrom = Utils.Object.getPropertyPath(sources, 'seekFrom');
   const clipTo = Utils.Object.getPropertyPath(sources, 'clipTo');
   if (typeof seekFrom === 'number' && url.indexOf(SEEK_FROM) === -1) {
@@ -222,10 +186,7 @@ function addStartAndEndTime(
  * @return {void}
  * @private
  */
-function addKalturaParams(
-  player: KalturaPlayer,
-  playerConfig: PartialKPOptionsObject
-): void {
+function addKalturaParams(player: KalturaPlayer, playerConfig: PartialKPOptionsObject): void {
   handleSessionId(player, playerConfig);
   const sources: PKSourcesConfigObject = playerConfig.sources!;
   const sessionId = playerConfig.session && playerConfig.session.id;
@@ -247,26 +208,11 @@ function addKalturaParams(
         }
         if (source['drmData'] && source['drmData'].length) {
           source['drmData'].forEach((drmData) => {
-            if (
-              typeof drmData.licenseUrl === 'string' &&
-              [UDRM_DOMAIN, CUSTOM_DATA, SIGNATURE].every((t) =>
-                drmData.licenseUrl.includes(t)
-              )
-            ) {
-              drmData.licenseUrl = updateSessionIdInUrl(
-                drmData.licenseUrl,
-                sessionId,
-                DRM_SESSION_ID
-              );
-              drmData.licenseUrl = addClientTag(
-                drmData.licenseUrl,
-                productVersion
-              );
+            if (typeof drmData.licenseUrl === 'string' && [UDRM_DOMAIN, CUSTOM_DATA, SIGNATURE].every((t) => drmData.licenseUrl.includes(t))) {
+              drmData.licenseUrl = updateSessionIdInUrl(drmData.licenseUrl, sessionId, DRM_SESSION_ID);
+              drmData.licenseUrl = addClientTag(drmData.licenseUrl, productVersion);
               drmData.licenseUrl = addReferrer(drmData.licenseUrl);
-              drmData.licenseUrl = addUIConfId(
-                drmData.licenseUrl,
-                playerConfig
-              );
+              drmData.licenseUrl = addUIConfId(drmData.licenseUrl, playerConfig);
             }
           });
         }
@@ -275,12 +221,4 @@ function addKalturaParams(
   });
 }
 
-export {
-  addKalturaParams,
-  handleSessionId,
-  updateSessionIdInUrl,
-  getReferrer,
-  addReferrer,
-  addClientTag,
-  addUIConfId
-};
+export { addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId };
