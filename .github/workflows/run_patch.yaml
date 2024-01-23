@@ -55,7 +55,7 @@ jobs:
           echo $name
           echo "name=${name}" >> $GITHUB_OUTPUT
           echo "github.ref ---->"
-          echo ${{ github.token }}
+          echo ${{ github.ref }}
   checkout_code:
     runs-on: ubuntu-latest
     steps:
