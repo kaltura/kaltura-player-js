@@ -86,6 +86,32 @@ For all playlist options, see [`KPPlaylistObject`](./api.md#kpplaylistobject).
 
 ## Configure the Playlist
 
+### StartAtEntryId
+
+By default, a playlist starts playing from the first entry.
+<br>To change this behavior, configure the [`options`](./api.md#kpplaylistoptions) under [`KPPlaylistConfigObject`](./api.md#kpplaylistconfigobject) using one of the following methods:
+<br>Via the API:
+
+```javascript
+kalturaPlayer.loadPlaylist({playlistId: '123456'}, {options: {startAtEntryId: '1_xxxxxx'}});
+```
+
+```javascript
+kalturaPlayer.loadPlaylistByEntryList({entries: [{entryId: '01234'}, {entryId: '56789'}]}, {options: {startAtEntryId: '1_xxxxxx'}});
+```
+
+By configuration:
+
+```javascript
+kalturaPlayer.configure({
+  playlist: {
+    options: {startAtEntryId: '1_xxxxxx'}
+  }
+});
+```
+
+For full playlist options see [`KPPlaylistOptions`](./api.md#kpplaylistoptions).
+
 ### Auto Continue
 
 By default, once the current item is ended, the playlist continues to the next item automatically.
@@ -230,4 +256,4 @@ kalturaPlayer.loadPlaylist({playlistId: '56789'}, {options: {autoContinue: true}
 
 ## Error Handling
 
-Error handling is based on player errors which may result from Kaltura api requests or media issues 
+Error handling is based on player errors which may result from Kaltura api requests or media issues
