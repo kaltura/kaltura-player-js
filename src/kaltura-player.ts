@@ -32,8 +32,6 @@ import {
   LoggerLevels
 } from '@playkit-js/playkit-js';
 import {
-  OTTProviderMediaInfoObject,
-  OVPProviderMediaInfoObject,
   ProviderEntryListObject,
   ProviderMediaConfigObject,
   ProviderMediaConfigSourcesObject,
@@ -41,7 +39,7 @@ import {
   ProviderPlaylistInfoObject,
   ProviderPlaylistObject
 } from '@playkit-js/playkit-js-providers/types';
-import { Provider, } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { Provider } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { UIWrapper } from './common/ui-wrapper';
 import { AdsController, ControllerProvider } from './common/controllers';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';

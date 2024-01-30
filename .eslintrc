@@ -1,7 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "extends": ["plugin:prettier/recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+  "extends": ["plugin:prettier/recommended", "prettier", "plugin:@typescript-eslint/recommended"],
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     "max-len": [
@@ -16,11 +16,11 @@
       }
     ],
     "eol-last": "off",
-    "prettier/prettier": "warn",
+    "prettier/prettier": "error",
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-member-accessibility": [
       "error",
       {
