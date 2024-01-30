@@ -32,17 +32,16 @@ import {
   LoggerLevels
 } from '@playkit-js/playkit-js';
 import {
-  BaseProvider,
   OTTProviderMediaInfoObject,
   OVPProviderMediaInfoObject,
-  Provider,
   ProviderEntryListObject,
   ProviderMediaConfigObject,
   ProviderMediaConfigSourcesObject,
   ProviderMediaInfoObject,
   ProviderPlaylistInfoObject,
   ProviderPlaylistObject
-} from '@playkit-js/playkit-js-providers/ovp-provider';
+} from '@playkit-js/playkit-js-providers/types';
+import { Provider, } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { UIWrapper } from './common/ui-wrapper';
 import { AdsController, ControllerProvider } from './common/controllers';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';
@@ -83,7 +82,7 @@ import {
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
   private _localPlayer: Player;
-  private _provider: BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject>;
+  private _provider: Provider;
   private _uiWrapper: UIWrapper;
   private _controllerProvider: ControllerProvider;
   private _adsController: AdsController | undefined;
@@ -744,7 +743,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._pluginManager.getAll();
   }
 
-  public get provider(): BaseProvider<OVPProviderMediaInfoObject | OTTProviderMediaInfoObject> {
+  public get provider(): Provider {
     return this._provider;
   }
 

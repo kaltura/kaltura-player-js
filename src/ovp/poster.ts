@@ -1,6 +1,6 @@
 import { THUMBNAIL_REGEX } from '../common/thumbnail-manager';
-import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { PKDimensionsConfig, PKSourcesConfigObject } from '@playkit-js/playkit-js';
+import { ProviderMediaConfigSourcesObject } from "@playkit-js/playkit-js-providers/types";
 
 /**
  * Add poster with player dimensions to thumbnail API call

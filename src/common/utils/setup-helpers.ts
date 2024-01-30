@@ -13,7 +13,7 @@ import {
   ILogLevel,
   PKSourcesConfigObject
 } from '@playkit-js/playkit-js';
-import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/types';
 import { ValidationErrorType } from './validation-error';
 import LocalStorageManager from '../storage/local-storage-manager';
 import { KalturaPlayer } from '../../kaltura-player';

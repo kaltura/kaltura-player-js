@@ -4,7 +4,7 @@ import {
   ProviderMediaInfoObject,
   ProviderPlaylistMetadataObject,
   ProviderPlaylistObject
-} from '@playkit-js/playkit-js-providers/ovp-provider';
+} from '@playkit-js/playkit-js-providers/types';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PlaylistEventType } from './playlist-event-type';
 import { Playlist } from './playlist';

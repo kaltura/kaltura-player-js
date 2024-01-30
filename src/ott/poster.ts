@@ -1,6 +1,5 @@
-import { ProviderMediaConfigSourcesObject } from '@playkit-js/playkit-js-providers/ott-provider';
 import { PKDimensionsConfig, PKSourcesConfigObject } from '@playkit-js/playkit-js';
-import { Poster } from '@playkit-js/playkit-js-providers/ott-provider';
+import { Poster, ProviderMediaConfigSourcesObject } from "@playkit-js/playkit-js-providers/types";
 
 /**
  * Add poster with player dimensions.

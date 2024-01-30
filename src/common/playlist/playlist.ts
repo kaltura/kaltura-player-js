@@ -1,5 +1,5 @@
 import { Utils } from '@playkit-js/playkit-js';
-import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers/types';
 import { PlaylistItem } from './playlist-item';
 import { KPPlaylistObject, SourcesConfig, PluginsConfig, MediaSourceOptionsObject } from '../../types';
 

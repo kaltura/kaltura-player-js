@@ -1,7 +1,7 @@
 import { PlaylistOptions } from './playlist';
 import { PlaylistCountdownOptions } from './playlist';
 import { PlaylistItem } from '../common/playlist/playlist-item';
-import { ProviderPlaylistMetadataObject } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { ProviderPlaylistMetadataObject } from "@playkit-js/playkit-js-providers/types";
 
 export interface PlaylistConfig {
   id: string;
