@@ -73,6 +73,14 @@ class RemoteControl {
    */
   public onRemoteDeviceConnectFailed: () => void;
 
+  /**
+   * Gets the player source selected.
+   * @returns {object} - player source.
+   * @memberof RemoteControl
+   * @instance
+   */
+  public getPlayerSelectedSource: () => void;
+
   constructor(player: KalturaPlayer) {
     this.getPlayerSnapshot = getPlayerSnapshot.bind(player);
     this.getUIWrapper = getUIWrapper.bind(player);
@@ -82,6 +90,7 @@ class RemoteControl {
     this.onRemoteDeviceConnecting = onRemoteDeviceConnecting.bind(player);
     this.onRemoteDeviceDisconnecting = onRemoteDeviceDisconnecting.bind(player);
     this.onRemoteDeviceConnectFailed = onRemoteDeviceConnectFailed.bind(player);
+    this.getPlayerSelectedSource = getPlayerSelectedSource.bind(player);
   }
 }
 
@@ -185,6 +194,12 @@ function getPlayerSnapshot(): PlayerSnapshot {
   const snapshot = new PlayerSnapshot(this);
   RemoteControl._logger.debug('getPlayerSnapshot', snapshot);
   return snapshot;
+}
+
+function getPlayerSelectedSource(): PlayerSnapshot {
+  const source = this._sourceSelected;
+  RemoteControl._logger.debug('getPlayerSelectedSource', source);
+  return source;
 }
 
 function getUIWrapper(): UIWrapper {
