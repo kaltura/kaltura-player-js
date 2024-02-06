@@ -14,6 +14,8 @@ import { playlist } from './common/playlist';
 import { KALTURA_PLAYER_START_TIME_QS } from './common/utils/setup-helpers';
 import { Ad, AdBreak } from './common/ads';
 import { BasePlugin, registerPlugin } from './common/plugins';
+import SessionStorageManager from './common/storage/session-storage-manager';
+import LocalStorageManager from './common/storage/local-storage-manager';
 
 core['Ad'] = Ad;
 core['AdBreak'] = AdBreak;
@@ -43,5 +45,7 @@ export {
   PLAYER_TYPE,
   VERSION,
   PLAYER_NAME,
-  KALTURA_PLAYER_START_TIME_QS
+  KALTURA_PLAYER_START_TIME_QS,
+  LocalStorageManager,
+  SessionStorageManager
 };
