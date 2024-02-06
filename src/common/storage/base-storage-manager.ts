@@ -116,7 +116,7 @@ export class BaseStorageManager {
    * @returns {any} - The item value
    */
   public static getItem(key: string): any {
-    StorageWrapper.getItem(key, this.getStorageObject());
+    return StorageWrapper.getItem(key, this.getStorageObject());
   }
 
   /**
@@ -152,7 +152,7 @@ export class BaseStorageManager {
     const obj = {};
     Object.keys(this.StorageKeys).forEach((key) => {
       const value = this.StorageKeys[key];
-      const item = StorageWrapper.getItem(value, this.getStorageObject());
+      const item = this.getItem(value);
       // dont change to !==, it effects the logic
       // eslint-disable-next-line
       if (item != null) {
