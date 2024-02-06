@@ -36,7 +36,7 @@ class PlaylistManager {
       autoContinue: true,
       loop: false,
       imageDuration: 5,
-      documentDuration: 5
+      documentDuration: 10
     };
     this._countdown = { duration: 10, showing: true };
     this._mediaInfoList = [];
