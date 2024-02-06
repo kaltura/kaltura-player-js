@@ -27,10 +27,10 @@
     "access": "public"
   },
   "scripts": {
-    "serve:ovp": "webpack serve --open --mode development --env playerType=ovp",
+    "serve:ovp": "webpack serve --open /player-ovp.html --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
     "watch:ovp": "webpack --mode development --watch --env playerType=ovp",
-    "serve:ott": "webpack serve --open --mode development --env playerType=ott",
+    "serve:ott": "webpack serve --open /player-ott.html --mode development --env playerType=ott",
     "build:ott": "webpack --mode production --env playerType=ott",
     "watch:ott": "webpack --mode development --watch --env playerType=ott",
     "build": "yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
@@ -52,8 +52,8 @@
     "@playkit-js/playkit-js": "0.84.5",
     "@playkit-js/playkit-js-dash": "1.36.2",
     "@playkit-js/playkit-js-hls": "1.32.11",
-    "@playkit-js/playkit-js-providers": "2.40.3",
-    "@playkit-js/playkit-js-ui": "0.78.1-canary.0-3e307cf",
+    "@playkit-js/playkit-js-providers": "2.40.4-canary.0-b3e5269",
+    "@playkit-js/playkit-js-ui": "0.78.1-canary.0-6f60446",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
   },

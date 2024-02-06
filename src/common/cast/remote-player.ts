@@ -1,5 +1,5 @@
 import { FakeEvent, TextStyle, Track } from '@playkit-js/playkit-js';
-import { ProviderMediaInfoObject } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { ProviderMediaInfoObject } from '@playkit-js/playkit-js-providers/types';
 import { RemoteSession } from './remote-session';
 import { KPMediaConfig } from '../../types';
 

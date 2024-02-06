@@ -1,5 +1,5 @@
 import { Utils, ThumbnailInfo, MediaType, EventManager } from '@playkit-js/playkit-js';
-import { Poster } from '@playkit-js/playkit-js-providers/ovp-provider';
+import { Poster } from '@playkit-js/playkit-js-providers/types';
 import evaluate from './utils/evaluate';
 import { KalturaPlayer } from '../kaltura-player';
 import { KPThumbnailConfig, UiConfig, KPMediaConfig } from '../types';
