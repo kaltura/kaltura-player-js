@@ -154,7 +154,6 @@ function onRemoteDeviceDisconnected(payload: RemoteDisconnectedPayload): void {
       });
       let mediaPromise;
       if (mediaInfo) {
-        this._reset = true;
         mediaPromise = this.loadMedia(mediaInfo);
       } else if (mediaConfig) {
         mediaPromise = Promise.resolve();
