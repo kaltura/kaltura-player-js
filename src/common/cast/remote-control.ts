@@ -198,9 +198,11 @@ function getPlayerSnapshot(): PlayerSnapshot {
 }
 
 function getPlayerSelectedSource(): PlayerSnapshot {
-  const source = this._sourceSelected;
-  RemoteControl._logger.debug('getPlayerSelectedSource', source);
-  return source;
+  const sourceSelected = this._sourceSelected;
+  const sourceUrl = sourceSelected && sourceSelected.url ? sourceSelected.url : localStorage.getItem('sourceUrl');
+  localStorage.setItem('sourceUrl', sourceUrl);
+  RemoteControl._logger.debug('getPlayerSelectedSource', sourceUrl);
+  return sourceUrl;
 }
 
 function getUIWrapper(): UIWrapper {
