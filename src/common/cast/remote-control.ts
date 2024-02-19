@@ -198,8 +198,8 @@ function getPlayerSnapshot(): PlayerSnapshot {
 
 function getPlayerSelectedSource(): PlayerSnapshot {
   const sourceSelected = this._sourceSelected;
-  const sourceUrl = sourceSelected && sourceSelected.url ? sourceSelected.url : localStorage.getItem('sourceUrl');
-  localStorage.setItem('sourceUrl', sourceUrl);
+  const sourceUrl = sourceSelected?.url ? sourceSelected.url : window.sessionStorage.getItem('sourceUrl');
+  window.sessionStorage.setItem('sourceUrl', sourceUrl);
   RemoteControl._logger.debug('getPlayerSelectedSource', sourceUrl);
   return sourceUrl;
 }
