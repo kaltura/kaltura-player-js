@@ -182,7 +182,7 @@ export class KalturaPlayer extends FakeEventTarget {
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
     //merge the current sources from player to keep the sources passed from constructor earlier
     const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
-    if (playerConfig.sources.type === MediaType.VOD && this._localPlayer.sources.mediaEntryType === MediaType.LIVE) {
+    if (playerConfig.sources.type === MediaType.VOD && this._localPlayer.sources.mediaEntryType?.toString() === MediaType.LIVE) {
       sources.id = playerConfig.sources.id;
     }
     delete playerConfig.sources;
