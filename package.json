@@ -102,6 +102,6 @@
   "standard-version": {
     "scripts": {
       "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott)"
-    }
+    },
   }
 }
