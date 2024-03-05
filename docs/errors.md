@@ -16,9 +16,9 @@ Errors are used to notify a user when a critical issue has occurred or to log re
 
 You'll find the full lists of errors here:
 
-- [Error Severity List](https://github.com/kaltura/playkit-js/blob/master/src/error/severity.js)
-- [Error Category List](https://github.com/kaltura/playkit-js/blob/master/src/error/category.js)
-- [Error Code List](https://github.com/kaltura/playkit-js/blob/master/src/error/code.js)
+- [Error Severity List](https://github.com/kaltura/playkit-js/blob/master/src/error/severity.ts)
+- [Error Category List](https://github.com/kaltura/playkit-js/blob/master/src/error/category.ts)
+- [Error Code List](https://github.com/kaltura/playkit-js/blob/master/src/error/code.ts)
 
 ## Listening to an Error Event
 
