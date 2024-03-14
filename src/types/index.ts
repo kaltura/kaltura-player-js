@@ -20,4 +20,3 @@ export * from './sources-config';
 export * from './thumbnail-config';
 export * from './ui-config';
 export * from './visibility-config';
-export * from './prevent-seek-options';

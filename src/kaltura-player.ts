@@ -74,8 +74,7 @@ import {
   SourcesConfig,
   KPEventTypes,
   HEVCConfigObject,
-  MediaCapabilitiesObject,
-  PreventSeekOptions
+  MediaCapabilitiesObject
 } from './types';
 
 export class KalturaPlayer extends FakeEventTarget {
@@ -106,10 +105,6 @@ export class KalturaPlayer extends FakeEventTarget {
   private _serviceProvider: ServiceProvider;
   private _isVisible: boolean = false;
   private _autoPaused: boolean = false;
-  private _preventSeekOptions: PreventSeekOptions = {
-    isActive: false,
-    canSeek: true
-  };
 
   constructor(options: KalturaPlayerConfig) {
     super();
@@ -859,10 +854,6 @@ export class KalturaPlayer extends FakeEventTarget {
         this._reset = false;
       }
     });
-    this._eventManager.listen(this, 'prevent_seek', (e: FakeEvent) => {
-      this._preventSeekOptions.isActive = true;
-      this._preventSeekOptions.canSeek = e.payload?.canSeek;
-    });
   }
 
   private _onChangeSourceEnded(): void {
@@ -1009,14 +1000,6 @@ export class KalturaPlayer extends FakeEventTarget {
   private _resetProviderPluginsConfig(): void {
     this.configure({ plugins: this._appPluginConfig });
     this._appPluginConfig = {};
-  }
-
-  /**
-   * Get prevent seek options.
-   * @returns {PreventSeekOptions}
-   */
-  public get preventSeekOptions(): PreventSeekOptions {
-    return this._preventSeekOptions;
   }
 
   /**
