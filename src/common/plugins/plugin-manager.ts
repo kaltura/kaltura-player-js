@@ -2,6 +2,8 @@ import { BasePlugin } from './index';
 import { Error, getLogger } from '@playkit-js/playkit-js';
 import { PluginClassType } from '../../types';
 
+export const REGISTERED_PLUGINS_LIST_EVENT = 'registeredpluginslistevent';
+
 /**
  * The logger of the PluginManager class.
  * @private
@@ -105,6 +107,10 @@ export class PluginManager {
     }
     PluginManager._logger.debug(`Plugin <${name}> isn't loaded, isValid()=${isValidPlugin.toString()}, disabled=${isDisablePlugin.toString()}`);
     return false;
+  }
+
+  public getRegisterdPluginsList(): string[] {
+    return Array.from(PluginManager._registry.keys());
   }
 
   /**
