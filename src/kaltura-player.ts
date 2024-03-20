@@ -877,7 +877,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._pluginManager.loadMedia();
     this._reset = false;
-    this.dispatchEvent(new FakeEvent(REGISTERED_PLUGINS_LIST_EVENT, this._pluginManager.getRegisterdPluginsList().join(',')));
+    this.dispatchEvent(new FakeEvent(REGISTERED_PLUGINS_LIST_EVENT, this._pluginManager.getRegisterdPluginsList()));
   }
 
   private _onEnded(): void {
