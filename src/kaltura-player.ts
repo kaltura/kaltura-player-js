@@ -43,7 +43,7 @@ import { Provider } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { UIWrapper } from './common/ui-wrapper';
 import { AdsController, ControllerProvider } from './common/controllers';
 import { BaseRemotePlayer } from './common/cast/base-remote-player';
-import { BasePlugin, ConfigEvaluator, PluginManager } from './common/plugins';
+import { BasePlugin, ConfigEvaluator, PluginManager, REGISTERED_PLUGINS_LIST_EVENT } from './common/plugins';
 import { PluginReadinessMiddleware } from './common/plugins/plugin-readiness-middleware';
 import { ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE } from './common/utils/viewability-manager';
 import { ThumbnailManager } from './common/thumbnail-manager';
@@ -770,9 +770,10 @@ export class KalturaPlayer extends FakeEventTarget {
       Core: CoreEventType,
       Playlist: PlaylistEventType,
       UI: UIEventType,
+      VISIBILITY_CHANGE,
+      REGISTERED_PLUGINS_LIST_EVENT,
       // For backward compatibility
-      ...CoreEventType,
-      VISIBILITY_CHANGE
+      ...CoreEventType
     };
   }
 
@@ -876,6 +877,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._pluginManager.loadMedia();
     this._reset = false;
+    this.dispatchEvent(new FakeEvent(REGISTERED_PLUGINS_LIST_EVENT, this._pluginManager.getRegisterdPluginsList()));
   }
 
   private _onEnded(): void {

@@ -9,4 +9,5 @@ export type KPEventTypes = {
   Cast: typeof CastEventType;
   Playlist: typeof PlaylistEventType;
   VISIBILITY_CHANGE: 'visibilitychange';
+  REGISTERED_PLUGINS_LIST_EVENT: 'registeredpluginslistevent';
 };
