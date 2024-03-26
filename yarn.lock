@@ -1187,10 +1187,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.40.4.tgz#181651986ab484c202f0f7805bc301b6e11df6d5"
   integrity sha512-nnBaWjNvPcg6jRyEsuNJrKK0HWaKm46onqXV/HBesbwxJT/u/l01h3oJl7VkUB6hmZOMQuWGg3/QCdvswwQsRg==
 
-"@playkit-js/playkit-js-ui@0.78.3-canary.0-dbecd05":
-  version "0.78.3-canary.0-dbecd05"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.78.3-canary.0-dbecd05.tgz#0cc229127251c2f473a0cc1c3b1ac864778bd1bb"
-  integrity sha512-R1RSPYREbvyPhnh9Lmtni3s7ylY5fUyz5vzouuJu+GImQ/MYV/78WB3dfJyzbeD+jMI0DAs2h0KsC86v59KKGA==
+"@playkit-js/playkit-js-ui@0.78.3-canary.0-e4a0726":
+  version "0.78.3-canary.0-e4a0726"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.78.3-canary.0-e4a0726.tgz#a36cfff8b635d349acf007231d77f67763e14cdf"
+  integrity sha512-Lyg6D82vO7BuWZ/3VJl99UED1shNuVnVOv4fexkcv/IY1jaPFlKgySDixkdjRsTKVh/1eGlynWibLRPTq4KUfw==
   dependencies:
     preact "10.4.6"
     preact-i18n "2.0.0-preactx.2"
