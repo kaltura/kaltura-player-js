@@ -10,7 +10,7 @@ const isSessionRestrictedError = (error: Error): boolean => isBackEndError(error
 const isGeolocationError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isGeolocationRestricted(error);
 const isMediaNotReadyError = (error: Error): boolean => isBackEndError(error) && isMediaNotReady(error);
 
-const conditionsToErrors = [
+const conditionsToErrors: any[] = [
   [isSessionRestrictedError, Error.Category.MEDIA_UNAVAILABLE],
   [isGeolocationError, Error.Category.GEO_LOCATION],
   [isMediaNotReadyError, Error.Category.MEDIA_NOT_READY]
