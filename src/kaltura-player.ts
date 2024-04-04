@@ -76,6 +76,7 @@ import {
   HEVCConfigObject,
   MediaCapabilitiesObject
 } from './types';
+import getErrorCategory from './common/utils/error-helper';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -170,7 +171,8 @@ export class KalturaPlayer extends FakeEventTarget {
       this.setMedia(mediaConfig);
       return mediaConfig;
     } catch (e) {
-      const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+      const category = getErrorCategory(e);
+      const error = new Error(Error.Severity.CRITICAL, category, Error.Code.LOAD_FAILED, e);
       this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
       throw e;
     }
