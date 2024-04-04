@@ -178,8 +178,10 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private _getErrorCategory(error: Error): number {
-    if (error.category === 2) { // category is Service from provider - BE issue
-      if (error.code === 2001) { // block action
+    if (error.category === 2) {
+      // category is Service from provider - BE issue
+      if (error.code === 2001) {
+        // block action
         const code = error.data?.messages ? error.data?.messages[0].code : '';
         if (code === 'SESSION_RESTRICTED') {
           return Error.Category.MEDIA_UNAVAILABLE;
@@ -188,7 +190,8 @@ export class KalturaPlayer extends FakeEventTarget {
           return Error.Category.GEO_LOCATION;
         }
       }
-      if (error.code === 2002) { // media is not ready
+      if (error.code === 2002) {
+        // media is not ready
         return Error.Category.MEDIA_NOT_READY;
       }
     }
