@@ -170,10 +170,29 @@ export class KalturaPlayer extends FakeEventTarget {
       this.setMedia(mediaConfig);
       return mediaConfig;
     } catch (e) {
-      const error = new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.LOAD_FAILED, e);
+      const category = this._getErrorCategory(e);
+      const error = new Error(Error.Severity.CRITICAL, category, Error.Code.LOAD_FAILED, e);
       this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.ERROR, error));
       throw e;
     }
+  }
+
+  private _getErrorCategory(error: Error): number {
+    if (error.category === 2) { // category is Service from provider - BE issue
+      if (error.code === 2001) { // block action
+        const code = error.data?.messages ? error.data?.messages[0].code : '';
+        if (code === 'SESSION_RESTRICTED') {
+          return Error.Category.MEDIA_UNAVAILABLE;
+        }
+        if (code === 'COUNTRY_RESTRICTED') {
+          return Error.Category.GEO_LOCATION;
+        }
+      }
+      if (error.code === 2002) { // media is not ready
+        return Error.Category.MEDIA_NOT_READY;
+      }
+    }
+    return Error.Category.PLAYER;
   }
 
   public setMedia(mediaConfig: KPMediaConfig): void {
