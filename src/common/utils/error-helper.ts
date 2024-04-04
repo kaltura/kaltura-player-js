@@ -17,7 +17,8 @@ const conditionsToErrors = [
 ];
 
 function getErrorCategory(error: Error): number {
-  return conditionsToErrors.find((condition) => condition[0](error) === true) ? [1] : Error.Category.PLAYER;
+  const [, errorCategory] = conditionsToErrors.find((errorCondition) => errorCondition[0](error) === true) || [];
+  return errorCategory || Error.Category.PLAYER;
 }
 
 export default getErrorCategory;
