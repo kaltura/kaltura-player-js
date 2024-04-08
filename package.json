@@ -50,11 +50,11 @@
     "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.8-canary.0-03d99c3",
+    "@playkit-js/playkit-js": "0.84.8-canary.0-55c5aca",
     "@playkit-js/playkit-js-dash": "1.37.0",
     "@playkit-js/playkit-js-hls": "1.32.11",
     "@playkit-js/playkit-js-providers": "2.40.4",
-    "@playkit-js/playkit-js-ui": "0.79.0-canary.0-54f7a91",
+    "@playkit-js/playkit-js-ui": "0.79.0-canary.0-e1a6d98",
     "hls.js": "1.4.11",
     "shaka-player": "4.7.0"
   },
