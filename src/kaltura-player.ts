@@ -826,9 +826,12 @@ export class KalturaPlayer extends FakeEventTarget {
 
   private _configureMediaMetadata(mediaConfig: KPMediaConfig): void {
     // here we can provide information about the media, to a device that is playing it
-    // set the media metadata title to the name of the entry
-    if (navigator.mediaSession) {
-      navigator.mediaSession.metadata = new MediaMetadata({ title: mediaConfig.sources.metadata?.name });
+    // set the media metadata title to the name of the entry, if exists
+    const mediaName = mediaConfig.sources.metadata?.name;
+    if (navigator.mediaSession && mediaName) {
+      navigator.mediaSession.metadata = new MediaMetadata({ title: mediaName });
+    } else if (navigator.mediaSession?.metadata) {
+      navigator.mediaSession.metadata = null;
     }
   }
 
