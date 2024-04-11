@@ -169,7 +169,6 @@ export class KalturaPlayer extends FakeEventTarget {
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
       this.configure(getDefaultRedirectOptions({ sources: this.sources }, mediaConfig));
       this.setMedia(mediaConfig);
-      this._configureMediaMetadata(mediaConfig);
       return mediaConfig;
     } catch (e) {
       const category = getErrorCategory(e);
@@ -207,6 +206,7 @@ export class KalturaPlayer extends FakeEventTarget {
       playerConfig.playback = playback;
     }
     this.configure({ ...playerConfig, sources });
+    this._configureMediaMetadata(mediaConfig);
   }
 
   public async loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject> {
@@ -824,7 +824,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  private _configureMediaMetadata(mediaConfig: ProviderMediaConfigObject): void {
+  private _configureMediaMetadata(mediaConfig: KPMediaConfig): void {
     // here we can provide information about the media, to a device that is playing it
     // set the media metadata title to the name of the entry
     if (navigator.mediaSession) {
