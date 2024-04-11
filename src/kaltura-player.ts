@@ -169,6 +169,7 @@ export class KalturaPlayer extends FakeEventTarget {
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
       this.configure(getDefaultRedirectOptions({ sources: this.sources }, mediaConfig));
       this.setMedia(mediaConfig);
+      this._configureMediaMetadata(mediaConfig);
       return mediaConfig;
     } catch (e) {
       const category = getErrorCategory(e);
@@ -821,6 +822,12 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  private _configureMediaMetadata(mediaConfig: ProviderMediaConfigObject): void {
+    // here we can provide information about the media, to a device that is playing it
+    // set the media metadata title to the name of the entry
+    navigator.mediaSession.metadata = new MediaMetadata({title: mediaConfig.sources.metadata.name});
   }
 
   private _addBindings(): void {
