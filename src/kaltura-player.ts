@@ -206,7 +206,7 @@ export class KalturaPlayer extends FakeEventTarget {
       playerConfig.playback = playback;
     }
     this.configure({ ...playerConfig, sources });
-    this._configureMediaMetadata(mediaConfig);
+    this._configureInformationForDevice(mediaConfig);
   }
 
   public async loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject> {
@@ -824,14 +824,26 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  private _configureMediaMetadata(mediaConfig: KPMediaConfig): void {
+  private _configureInformationForDevice(mediaConfig: KPMediaConfig): void {
     // here we can provide information about the media, to a device that is playing it
     // set the media metadata title to the name of the entry, if exists
-    const mediaName = mediaConfig.sources.metadata?.name;
-    if (navigator.mediaSession && mediaName) {
-      navigator.mediaSession.metadata = new MediaMetadata({ title: mediaName });
-    } else if (navigator.mediaSession?.metadata) {
-      navigator.mediaSession.metadata = null;
+    // set the media thumbnail to appear as the background of a native device's player, if exists
+    const getMediaThumbnail = (poster: any): string => {
+      if (typeof poster === 'string') {
+        return poster;
+      }
+      if (Array.isArray(poster) && poster.length >= 1) {
+        return poster[0];
+      }
+      return '';
+    };
+
+    if (navigator.mediaSession) {
+      const mediaThumbnail = getMediaThumbnail(mediaConfig.sources.poster);
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: mediaConfig.sources.metadata?.name || '',
+        artwork: mediaThumbnail ? [{ src: mediaThumbnail }] : []
+      });
     }
   }
 
