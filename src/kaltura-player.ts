@@ -832,7 +832,7 @@ export class KalturaPlayer extends FakeEventTarget {
       if (typeof poster === 'string') {
         return poster;
       }
-      if (Array.isArray(poster) && poster.length >= 1) {
+      if (Array.isArray(poster) && poster.length > 0) {
         return poster[0];
       }
       return '';
