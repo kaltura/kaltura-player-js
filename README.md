@@ -79,7 +79,6 @@ Tests can be run locally via [Karma], which will run on Chrome, Firefox and Safa
 yarn run test
 ```
 
-
 You can test individual browsers:
 
 ```
