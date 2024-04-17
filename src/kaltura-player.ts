@@ -206,6 +206,7 @@ export class KalturaPlayer extends FakeEventTarget {
       playerConfig.playback = playback;
     }
     this.configure({ ...playerConfig, sources });
+    this._configureInformationForDevice(mediaConfig);
   }
 
   public async loadPlaylist(playlistInfo: ProviderPlaylistInfoObject, playlistConfig: PlaylistConfigObject): Promise<ProviderPlaylistObject> {
@@ -821,6 +822,29 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  private _configureInformationForDevice(mediaConfig: KPMediaConfig): void {
+    // here we can provide information about the media, to a device that is playing it
+    // set the media metadata title to the name of the entry, if exists
+    // set the media thumbnail to appear as the background of a native device's player, if exists
+    const getMediaThumbnail = (poster: any): string => {
+      if (typeof poster === 'string') {
+        return poster;
+      }
+      if (Array.isArray(poster) && poster.length > 0) {
+        return poster[0];
+      }
+      return '';
+    };
+
+    if (navigator.mediaSession) {
+      const mediaThumbnail = getMediaThumbnail(mediaConfig.sources.poster);
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: mediaConfig.sources.metadata?.name || '',
+        artwork: mediaThumbnail ? [{ src: mediaThumbnail }] : []
+      });
+    }
   }
 
   private _addBindings(): void {
