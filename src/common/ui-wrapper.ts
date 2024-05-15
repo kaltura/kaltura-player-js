@@ -26,8 +26,8 @@ class UIWrapper {
       }
     } else {
       this._uiManager = new UIManager(player, config);
-      if (config.customPreset) {
-        this._uiManager.buildCustomUI(config.customPreset);
+      if (config.customPreset || window.kalturaCustomPreset) {
+        this._uiManager.buildCustomUI(config.customPreset || window.kalturaCustomPreset);
       } else {
         this._uiManager.buildDefaultUI();
       }

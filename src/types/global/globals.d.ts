@@ -1,5 +1,6 @@
 // globals.d.ts
 declare var __kalturaplayerdata: any;
+declare var kalturaCustomPreset: any;
 declare var DEBUG_KALTURA_PLAYER: boolean;
 declare var __NAME__: string;
 declare var __VERSION__: string;
