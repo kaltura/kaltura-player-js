@@ -3,6 +3,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const packageData = require('./package.json');
 const chalk = require('chalk');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, { mode }) => {
   const { playerType } = env;
@@ -26,6 +27,10 @@ module.exports = (env, { mode }) => {
     target: 'web',
     entry: './src/index.ts',
     devtool: 'source-map',
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin({terserOptions: {mangle: {reserved: ['module']}}})],
+    },
     module: {
       rules: [
         {
@@ -104,10 +109,6 @@ module.exports = (env, { mode }) => {
             transform: function (content) {
               return JSON.stringify(JSON.parse(content));
             }
-          },
-          {
-            from: 'node_modules/hls.js/dist/hls.worker.js',
-            to: 'hls.worker.js'
           }
         ]
       })
