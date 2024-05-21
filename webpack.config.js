@@ -104,6 +104,10 @@ module.exports = (env, { mode }) => {
             transform: function (content) {
               return JSON.stringify(JSON.parse(content));
             }
+          },
+          {
+            from: 'node_modules/hls.js/dist/hls.worker.js',
+            to: 'hls.worker.js'
           }
         ]
       })
