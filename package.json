@@ -91,7 +91,7 @@
     "source-map-loader": "^4.0.1",
     "standard-version": "^9.5.0",
     "style-loader": "3.3.3",
-    "terser-webpack-plugin": "^5.3.9",
+    "terser-webpack-plugin": "^5.3.10",
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
