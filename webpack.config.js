@@ -28,7 +28,6 @@ module.exports = (env, { mode }) => {
     entry: './src/index.ts',
     devtool: 'source-map',
     optimization: {
-      minimize: true,
       minimizer: [new TerserPlugin({terserOptions: {mangle: {reserved: ['module']}}})],
     },
     module: {
