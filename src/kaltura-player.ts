@@ -57,7 +57,8 @@ import {
   hasYoutubeSource,
   maybeSetStreamPriority,
   mergeProviderPluginsConfig,
-  supportLegacyOptions
+  supportLegacyOptions,
+  getServerUIConf
 } from './common/utils/setup-helpers';
 import { getDefaultRedirectOptions } from 'player-defaults';
 import { addKalturaParams } from './common/utils/kaltura-params';
@@ -149,6 +150,10 @@ export class KalturaPlayer extends FakeEventTarget {
     this._remotePlayerManager = new RemotePlayerManager();
     // "@ts-expect-error - ???
     this._localPlayer.setSources(sources || {});
+  }
+
+  public getUIConfData(): any {
+    return getServerUIConf().uiConfData || {};
   }
 
   public async loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any> {
