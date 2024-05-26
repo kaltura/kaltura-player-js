@@ -35,6 +35,7 @@ export interface KalturaPlayerConfig {
   viewability: ViewabilityConfig;
   network?: NetworkConfig;
   abr?: PKAbrConfigObject;
+  uiConfData?: UIConfDataObject;
 }
 
 export type PartialKPOptionsObject = Omit<
@@ -51,4 +52,10 @@ export interface LegacyPartialKPOptionsObject {
   player?: any;
   provider: ProviderOptionsObject;
   ui?: UiConfig;
+}
+
+export interface UIConfDataObject {
+  width?: string;
+  height?: string;
+  name?: string;
 }

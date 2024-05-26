@@ -52,7 +52,9 @@ const defaultConfig: dataStoreType = {
     partnerId: '{{partnerId}}',
     uiConfId: '{{uiConfId}}',
     entryId: '{{entryId}}',
-    embedBaseUrl: '{{embedBaseUrl}}'
+    embedBaseUrl: '{{embedBaseUrl}}',
+    embedWidth: '{{embedWidth}}',
+    embedHeight: '{{embedHeight}}'
   }
 };
 
