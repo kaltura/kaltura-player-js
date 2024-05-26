@@ -132,7 +132,7 @@ const getModel = (options: Partial<KalturaPlayerConfig>): any => {
   });
   Utils.Object.mergeDeep(dataModel, entryDataModel);
 
-  const {uiConfData} = options;
+  const { uiConfData } = options;
   if (uiConfData) {
     dataModel['embedWidth'] = uiConfData.width;
     dataModel['embedHeight'] = uiConfData.height;
