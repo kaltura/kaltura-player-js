@@ -9,6 +9,7 @@ import {
   handleSessionId,
   updateSessionIdInUrl
 } from '../../../../src/common/utils/kaltura-params';
+import { SessionIdGenerator } from '../../../../src/common/utils/session-id-generator';
 
 class Player {
   public set sessionId(s) {
@@ -154,15 +155,15 @@ describe('handleSessionId', () => {
   });
 
   it('should update the player session id', () => {
+    SessionIdGenerator.next = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
     player.config = {
       session: {
-        id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
+        id: ''
       }
     };
+    sessionIdRegex.test(player.config.session.id).should.be.false;
     handleSessionId(player, player.config);
     sessionIdRegex.test(player.config.session.id).should.be.true;
-    (player.config.session.id.indexOf('5cc03aa6-c58f-3220-b548-2a698aa54830:') > -1).should.be.true;
-    (player.config.session.id.indexOf('33e6d80e-63b3-108a-091d-ccc15998f85b') > -1).should.be.false;
   });
 });
 
@@ -174,7 +175,7 @@ describe('updateSessionIdInUrl', () => {
         id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
       }
     };
-    source.url = updateSessionIdInUrl(source.url, player.config.session.id);
+    source.url = updateSessionIdInUrl(null, source.url, player.config.session.id);
     source.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id);
   });
 
@@ -185,7 +186,7 @@ describe('updateSessionIdInUrl', () => {
         id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
       }
     };
-    source.url = updateSessionIdInUrl(source.url, player.config.session.id);
+    source.url = updateSessionIdInUrl(null, source.url, player.config.session.id);
     source.url.should.be.equal('a/b/c/playmanifest/source?a&playSessionId=' + player.config.session.id);
   });
 
@@ -198,7 +199,7 @@ describe('updateSessionIdInUrl', () => {
         id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
       }
     };
-    source.url = updateSessionIdInUrl(source.url, player.config.session.id);
+    source.url = updateSessionIdInUrl(null, source.url, player.config.session.id);
     source.url.should.be.equal('a/b/c/playmanifest/source?playSessionId=' + player.config.session.id);
   });
 
@@ -211,7 +212,7 @@ describe('updateSessionIdInUrl', () => {
         id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
       }
     };
-    source.url = updateSessionIdInUrl(source.url, player.config.session.id);
+    source.url = updateSessionIdInUrl(null, source.url, player.config.session.id);
     source.url.should.be.equal('a/b/c/playmanifest/source?a&playSessionId=' + player.config.session.id);
   });
 
@@ -224,7 +225,7 @@ describe('updateSessionIdInUrl', () => {
         id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
       }
     };
-    source.url = updateSessionIdInUrl(source.url, player.config.session.id, 'testId=');
+    source.url = updateSessionIdInUrl(null, source.url, player.config.session.id, 'testId=');
     source.url.should.be.equal('a/b/c/playmanifest/source?testId=' + player.config.session.id);
   });
 });

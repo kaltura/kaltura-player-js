@@ -23,6 +23,7 @@ import SessionStorageManager from '../storage/session-storage-manager';
 import { BaseStorageManager } from '../storage/base-storage-manager';
 import { BasePlugin } from '../plugins';
 import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, PlaybackConfig } from '../../types';
+import { SessionIdGenerator } from './session-id-generator';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -99,7 +100,7 @@ function validateProviderConfig(options: KalturaPlayerConfig): void {
     source.url = addProductVersion(source.url, productVersion);
     source.url = addReferrer(source.url);
     source.url = addClientTag(source.url, productVersion);
-    source.url = updateSessionIdInUrl(source.url, Utils.Generator.guid() + ':' + Utils.Generator.guid());
+    source.url = updateSessionIdInUrl(null, source.url, SessionIdGenerator.get());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
 }
