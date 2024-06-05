@@ -30,7 +30,7 @@ function handleSessionId(player: KalturaPlayer, playerConfig: PartialKPOptionsOb
     // on first playback
     addSessionId(playerConfig);
     if (player?.playlist?.items?.length) {
-      player.sessionIdCache?.set(playerConfig.sources.id, playerConfig.session.id);
+      player.sessionIdCache?.set(playerConfig.sources.id, playerConfig.session!.id);
     }
   }
 }
