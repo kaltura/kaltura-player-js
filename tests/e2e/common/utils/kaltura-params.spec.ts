@@ -148,22 +148,104 @@ describe('addKalturaParams', () => {
 
 describe('handleSessionId', () => {
   const sessionIdRegex = /(?:[a-z0-9]|-)*:(?:[a-z0-9]|-)*/i;
-  it('should add the player session id', () => {
-    player.config = { session: {} };
-    handleSessionId(player, player.config);
-    sessionIdRegex.test(player.config.session.id).should.be.true;
-  });
 
-  it('should update the player session id', () => {
-    SessionIdGenerator.next = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+  it('should generate add a new session id', () => {
+    const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+    SessionIdGenerator.next = nextSessionId;
     player.config = {
       session: {
         id: ''
       }
     };
+    player.playlist = {
+      items: []
+    };
     sessionIdRegex.test(player.config.session.id).should.be.false;
     handleSessionId(player, player.config);
     sessionIdRegex.test(player.config.session.id).should.be.true;
+    expect(player.config.session.id).to.equal(nextSessionId);
+  });
+
+  it('should update existing session id if not in playlist mode and there is no active source', () => {
+    const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+    SessionIdGenerator.next = nextSessionId;
+    player.config = {
+      session: {
+        id: 'abc'
+      }
+    };
+    player.playlist = {
+      items: []
+    };
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+    handleSessionId(player, player.config);
+    sessionIdRegex.test(player.config.session.id).should.be.true;
+    expect(player.config.session.id).to.equal(nextSessionId);
+  });
+
+  it('should not update session id if in playlist mode and there is no active entry', () => {
+    SessionIdGenerator.next = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+    player.config = {
+      session: {
+        id: 'abc'
+      }
+    };
+    player.playlist = {
+      items: [1]
+    };
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+    handleSessionId(player, player.config);
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+  });
+  it('should cache session id when generating a new id in playlist mode', () => {
+    const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+    SessionIdGenerator.next = nextSessionId;
+    player.config = {
+      session: {
+        id: ''
+      },
+      sources: {
+        id: '123'
+      }
+    };
+    player.playlist = {
+      items: [1]
+    };
+    player.sessionIdCache = new Map();
+
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+    handleSessionId(player, player.config);
+    sessionIdRegex.test(player.config.session.id).should.be.true;
+    player.config.session.id = 'abc';
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+    handleSessionId(player, player.config);
+    sessionIdRegex.test(player.config.session.id).should.be.true;
+    expect(player.config.session.id).to.equal(nextSessionId);
+  });
+  it('should cache session id if in playlist mode and there is an active entry', () => {
+    const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+    SessionIdGenerator.next = nextSessionId;
+    player.config = {
+      session: {
+        id: 'abc'
+      },
+      sources: {
+        id: '123'
+      }
+    };
+    player.playlist = {
+      items: [1]
+    };
+    player.sessionIdCache = new Map();
+
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+    handleSessionId(player, player.config);
+    sessionIdRegex.test(player.config.session.id).should.be.true;
+    player.config.session.id = 'def';
+    sessionIdRegex.test(player.config.session.id).should.be.false;
+    handleSessionId(player, player.config);
+    sessionIdRegex.test(player.config.session.id).should.be.true;
+    expect(player.config.session.id).to.equal(nextSessionId);
   });
 });
 
@@ -227,6 +309,23 @@ describe('updateSessionIdInUrl', () => {
     };
     source.url = updateSessionIdInUrl(null, source.url, player.config.session.id, 'testId=');
     source.url.should.be.equal('a/b/c/playmanifest/source?testId=' + player.config.session.id);
+  });
+  it('should not update session id in url if we are in playlist mode', () => {
+    const source = {
+      url: 'a/b/c/playmanifest/source?a&playSessionId=5cc03aa6-c58f-3220-b548-2a698aa54830:b5391ed8-be5d-3a71-e157-f23a1b434121'
+    };
+    player.config = {
+      session: {
+        id: '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b'
+      }
+    };
+    const playerMock = {
+      playlist: {
+        items: [1]
+      }
+    };
+    source.url = updateSessionIdInUrl(playerMock, source.url, player.config.session.id, 'testId=');
+    source.url.should.not.be.equal('a/b/c/playmanifest/source?testId=' + player.config.session.id);
   });
 });
 

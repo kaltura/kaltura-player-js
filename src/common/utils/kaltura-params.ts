@@ -54,14 +54,16 @@ function addSessionId(playerConfig: PartialKPOptionsObject): void {
 function updateSessionId(player: KalturaPlayer, playerConfig: PartialKPOptionsObject): void {
   const entryId = playerConfig.sources?.id;
 
-  if (!player?.playlist?.items?.length || !entryId) {
+  if (!player?.playlist?.items?.length) {
     setSessionId(playerConfig, SessionIdGenerator.get());
-  } else if (player.sessionIdCache?.get(entryId)) {
-    setSessionId(playerConfig, player.sessionIdCache?.get(entryId));
-  } else {
-    const sessionId = SessionIdGenerator.get();
-    player.sessionIdCache?.set(entryId, sessionId);
-    setSessionId(playerConfig, sessionId);
+  } else if (entryId) {
+    if (player.sessionIdCache?.get(entryId)) {
+      setSessionId(playerConfig, player.sessionIdCache?.get(entryId));
+    } else {
+      const sessionId = SessionIdGenerator.get();
+      player.sessionIdCache?.set(entryId, sessionId);
+      setSessionId(playerConfig, sessionId);
+    }
   }
 }
 
