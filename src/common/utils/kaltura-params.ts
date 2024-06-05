@@ -3,7 +3,6 @@ import { getServerUIConf } from './setup-helpers';
 import { KalturaPlayer } from '../../kaltura-player';
 import { PartialKPOptionsObject } from '../../types';
 import { SessionIdGenerator } from './session-id-generator';
-import { SessionIdCache } from './session-id-cache';
 
 const PLAY_MANIFEST = 'playmanifest/';
 const PLAY_SESSION_ID = 'playSessionId=';
