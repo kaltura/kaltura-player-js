@@ -67,13 +67,16 @@ export class CuePointManager {
 
   private _removeTextTrackCue(cue: TextTrackCue): void {
     const metadataTracks = this._getMetadataTracks();
-    metadataTracks.forEach((track) => {
+    for (const track in metadataTracks) {
       try {
-        track.removeCue(cue);
+        if (track.cues!.getCueById(cue.id)) {
+          track.removeCue(cue);
+          return;
+        }
       } catch {
         // do nothing
       }
-    });
+    }
   }
 
   public addCuePoints(data: CuePoint[]): void {
