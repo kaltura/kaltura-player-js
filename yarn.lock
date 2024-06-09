@@ -1172,15 +1172,13 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/browserslist-config/-/browserslist-config-1.0.8.tgz#735256ba560063d397d4b8776acb865e8697a287"
   integrity sha512-BeiDM72c6GP8dZ6b2qScEpxT4sGECIJzjVGsanaTvXeFOkw3MoplAyz6HPKdrcLmidcinSl4yna5Yc9/ObwZow==
 
-"@playkit-js/playkit-js-dash@1.37.0":
+"@playkit-js/playkit-js-dash@https://github.com/kaltura/playkit-js-dash#a10314e76b5757605a6fa0fbd2a0b2542acacaf8":
   version "1.37.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.37.0.tgz#d189543f3084469061ac9a71660d0dbc3af48a01"
-  integrity sha512-7g28jlPJftJXQhssfhS7+uK2sb/PhgfGu5pR2GN+sk1evNhMHWHJj/utIyRqv6z5hjlLTUq50A51BWTFUL3/aQ==
+  resolved "https://github.com/kaltura/playkit-js-dash#a10314e76b5757605a6fa0fbd2a0b2542acacaf8"
 
-"@playkit-js/playkit-js-hls@1.32.13-canary.0-d080c4f":
-  version "1.32.13-canary.0-d080c4f"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.13-canary.0-d080c4f.tgz#3e66c5bf86248553ff1828b528fc0b01b36e9101"
-  integrity sha512-gh3v512KElzw6bRJlac83lYZNYGaCoesd2MFg5JzrN0QRoBtvHTqfINwC9dphIi8M3UIaOCrnNRDXmvLibqzEw==
+"@playkit-js/playkit-js-hls@https://github.com/kaltura/playkit-js-hls#308ef8af62b08a762bfd461a8da234d7f1973144":
+  version "1.32.12"
+  resolved "https://github.com/kaltura/playkit-js-hls#308ef8af62b08a762bfd461a8da234d7f1973144"
 
 "@playkit-js/playkit-js-providers@2.40.6":
   version "2.40.6"

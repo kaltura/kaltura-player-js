@@ -51,8 +51,8 @@
   },
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.9",
-    "@playkit-js/playkit-js-dash": "1.37.0",
-    "@playkit-js/playkit-js-hls": "1.32.13-canary.0-d080c4f",
+    "@playkit-js/playkit-js-dash": "https://github.com/kaltura/playkit-js-dash#a10314e76b5757605a6fa0fbd2a0b2542acacaf8",
+    "@playkit-js/playkit-js-hls": "https://github.com/kaltura/playkit-js-hls#308ef8af62b08a762bfd461a8da234d7f1973144",
     "@playkit-js/playkit-js-providers": "2.40.6",
     "@playkit-js/playkit-js-ui": "0.79.2",
     "hls.js": "^1.5.8",
