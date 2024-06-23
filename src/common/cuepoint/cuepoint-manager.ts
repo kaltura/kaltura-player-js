@@ -69,10 +69,8 @@ export class CuePointManager {
     const metadataTracks = this._getMetadataTracks();
     metadataTracks.some((track) => {
       try {
-        if (track.cues!.getCueById(cue.id)) {
-          track.removeCue(cue);
-          return true;
-        }
+        track.removeCue(cue);
+        return true;
       } catch {
         // do nothing
       }
@@ -86,13 +84,15 @@ export class CuePointManager {
       }
       const timedMetadataArr: Array<TimedMetadata> = [];
       data.forEach((cuePoint: CuePoint) => {
-        const textTrackCue = this._createTextTrackCue(cuePoint);
-        const exisedCue = this._getTextTrackCueById(cuePoint.id);
-        if (exisedCue) {
-          this._removeTextTrackCue(exisedCue);
+        if (cuePoint.id) {
+          const textTrackCue = this._createTextTrackCue(cuePoint);
+          const exisedCue = this._getTextTrackCueById(cuePoint.id);
+          if (exisedCue) {
+            this._removeTextTrackCue(exisedCue);
+          }
+          this._textTrack?.addCue(textTrackCue!);
+          timedMetadataArr.push(createTimedMetadata(textTrackCue!)!);
         }
-        this._textTrack?.addCue(textTrackCue!);
-        timedMetadataArr.push(createTimedMetadata(textTrackCue!)!);
       });
 
       this._player.dispatchEvent(
