@@ -113,10 +113,7 @@ function getReferrer(): string {
     referrer = window.parent.document.URL;
   } catch (e) {
     // unfriendly iframe
-
-    // try to get it from originalReferrer supplied by backend
-    // or fallback to document referrer
-    referrer = window.originalRequestReferrer || document.referrer;
+    referrer = document.referrer;
   }
   return referrer;
 }
