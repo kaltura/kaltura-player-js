@@ -77,6 +77,7 @@ import {
   MediaCapabilitiesObject
 } from './types';
 import getErrorCategory from './common/utils/error-helper';
+import { SessionIdCache } from './common/utils/session-id-cache';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -106,10 +107,12 @@ export class KalturaPlayer extends FakeEventTarget {
   private _serviceProvider: ServiceProvider;
   private _isVisible: boolean = false;
   private _autoPaused: boolean = false;
+  private _sessionIdCache: SessionIdCache | null = null;
 
   constructor(options: KalturaPlayerConfig) {
     super();
     const { sources, plugins } = options;
+    this._sessionIdCache = new SessionIdCache();
     this._configEvaluator = new ConfigEvaluator();
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
     this._playbackStart = false;
@@ -369,6 +372,7 @@ export class KalturaPlayer extends FakeEventTarget {
     if (targetContainer && targetContainer.parentNode) {
       Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
     }
+    this._sessionIdCache?.clear();
   }
 
   public isLive(): boolean {
@@ -1165,5 +1169,13 @@ export class KalturaPlayer extends FakeEventTarget {
    */
   public async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
     return getMediaCapabilities(hevcConfig);
+  }
+
+  public setCachedUrls(urls: string[]) {
+    this._localPlayer.setCachedUrls(urls);
+  }
+
+  public get sessionIdCache() {
+    return this._sessionIdCache;
   }
 }
