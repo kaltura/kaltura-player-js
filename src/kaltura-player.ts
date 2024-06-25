@@ -186,6 +186,7 @@ export class KalturaPlayer extends FakeEventTarget {
     const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
     if (playerConfig.sources.type === MediaType.VOD && this._localPlayer.sources.mediaEntryType?.toString() === MediaType.LIVE) {
       sources.id = playerConfig.sources.id;
+      sources.duration = playerConfig.sources.duration;
     }
     delete playerConfig.sources;
     Utils.Object.mergeDeep(playerConfig.session, this._localPlayer.config.session);
