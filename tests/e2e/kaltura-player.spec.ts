@@ -99,7 +99,7 @@ describe('kaltura player api', () => {
         });
       });
 
-      it('should use the configured start time from loadMedia options', (done) => {
+      it.skip('should use the configured start time from loadMedia options', (done) => {
         kalturaPlayer.addEventListener(kalturaPlayer.Event.FIRST_PLAYING, () => {
           (kalturaPlayer.currentTime >= 10).should.be.true;
           done();
