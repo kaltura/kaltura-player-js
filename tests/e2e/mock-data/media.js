@@ -23,58 +23,58 @@ const MediaConfig = {
       ],
       progressive: [
         {
-          "id": "0_hra0fffk1029,url",
-          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_hra0fffk/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
-          "mimetype": "video/mp4",
-          "bandwidth": 465920,
-          "width": 480,
-          "height": 270,
-          "label": "Undefined"
+          id: '0_hra0fffk1029,url',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_hra0fffk/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17',
+          mimetype: 'video/mp4',
+          bandwidth: 465920,
+          width: 480,
+          height: 270,
+          label: 'Undefined'
         },
         {
-          "id": "0_ybfqp05w1029,url",
-          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_ybfqp05w/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
-          "mimetype": "video/mp4",
-          "bandwidth": 636928,
-          "width": 640,
-          "height": 360,
-          "label": "Undefined"
+          id: '0_ybfqp05w1029,url',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_ybfqp05w/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17',
+          mimetype: 'video/mp4',
+          bandwidth: 636928,
+          width: 640,
+          height: 360,
+          label: 'Undefined'
         },
         {
-          "id": "0_brk83nfi1029,url",
-          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_brk83nfi/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
-          "mimetype": "video/mp4",
-          "bandwidth": 893952,
-          "width": 640,
-          "height": 360,
-          "label": "Undefined"
+          id: '0_brk83nfi1029,url',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_brk83nfi/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17',
+          mimetype: 'video/mp4',
+          bandwidth: 893952,
+          width: 640,
+          height: 360,
+          label: 'Undefined'
         },
         {
-          "id": "0_s57k35k01029,url",
-          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_s57k35k0/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
-          "mimetype": "video/mp4",
-          "bandwidth": 1506304,
-          "width": 1280,
-          "height": 720,
-          "label": "Undefined"
+          id: '0_s57k35k01029,url',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_s57k35k0/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17',
+          mimetype: 'video/mp4',
+          bandwidth: 1506304,
+          width: 1280,
+          height: 720,
+          label: 'Undefined'
         },
         {
-          "id": "0_qd0hcags1029,url",
-          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_qd0hcags/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
-          "mimetype": "video/mp4",
-          "bandwidth": 1813504,
-          "width": 1280,
-          "height": 720,
-          "label": "Undefined"
+          id: '0_qd0hcags1029,url',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_qd0hcags/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17',
+          mimetype: 'video/mp4',
+          bandwidth: 1813504,
+          width: 1280,
+          height: 720,
+          label: 'Undefined'
         },
         {
-          "id": "0_ntuoep7s1029,url",
-          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_ntuoep7s/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
-          "mimetype": "video/mp4",
-          "bandwidth": 2020352,
-          "width": 1280,
-          "height": 720,
-          "label": "Undefined"
+          id: '0_ntuoep7s1029,url',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_ntuoep7s/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17',
+          mimetype: 'video/mp4',
+          bandwidth: 2020352,
+          width: 1280,
+          height: 720,
+          label: 'Undefined'
         }
       ],
       id: '0_wifqaipd',
