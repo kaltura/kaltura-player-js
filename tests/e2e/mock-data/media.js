@@ -10,62 +10,71 @@ const MediaConfig = {
       hls: [
         {
           id: '0_wifqaipd_861,applehttp',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/applehttp/flavorIds/0_h65mfj7f,0_3flmvnwc,0_m131krws,0_5407xm9j,0_xcrwyk2n/a.m3u8?uiConfId=15215933',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/applehttp/flavorIds/0_hra0fffk,0_ybfqp05w,0_brk83nfi,0_s57k35k0,0_qd0hcags,0_ntuoep7s/a.m3u8?uiConfId=2351552',
           mimetype: 'application/x-mpegURL'
         }
       ],
       dash: [
         {
           id: '0_wifqaipd_911,mpegdash',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/mpegdash/flavorIds/0_m131krws,0_5407xm9j,0_xcrwyk2n/a.mpd?uiConfId=15215933',
+          url: 'https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/mpegdash/flavorIds/0_hra0fffk,0_ybfqp05w,0_brk83nfi,0_s57k35k0,0_qd0hcags,0_ntuoep7s/a.mpd?uiConfId=23515522',
           mimetype: 'application/dash+xml'
         }
       ],
       progressive: [
         {
-          id: '0_h65mfj7f261,url',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_h65mfj7f/a.mp4?uiConfId=15215933',
-          mimetype: 'video/mp4',
-          bandwidth: 480256,
-          width: 480,
-          height: 272,
-          label: 'Undefined'
+          "id": "0_hra0fffk1029,url",
+          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_hra0fffk/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
+          "mimetype": "video/mp4",
+          "bandwidth": 465920,
+          "width": 480,
+          "height": 270,
+          "label": "Undefined"
         },
         {
-          id: '0_3flmvnwc261,url',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_3flmvnwc/a.mp4?uiConfId=15215933',
-          mimetype: 'video/mp4',
-          bandwidth: 686080,
-          width: 640,
-          height: 360,
-          label: 'Undefined'
+          "id": "0_ybfqp05w1029,url",
+          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_ybfqp05w/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
+          "mimetype": "video/mp4",
+          "bandwidth": 636928,
+          "width": 640,
+          "height": 360,
+          "label": "Undefined"
         },
         {
-          id: '0_m131krws261,url',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_m131krws/a.mp4?uiConfId=15215933',
-          mimetype: 'video/mp4',
-          bandwidth: 987136,
-          width: 640,
-          height: 360,
-          label: 'Undefined'
+          "id": "0_brk83nfi1029,url",
+          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_brk83nfi/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
+          "mimetype": "video/mp4",
+          "bandwidth": 893952,
+          "width": 640,
+          "height": 360,
+          "label": "Undefined"
         },
         {
-          id: '0_5407xm9j261,url',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_5407xm9j/a.mp4?uiConfId=15215933',
-          mimetype: 'video/mp4',
-          bandwidth: 1667072,
-          width: 1280,
-          height: 720,
-          label: 'Undefined'
+          "id": "0_s57k35k01029,url",
+          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_s57k35k0/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
+          "mimetype": "video/mp4",
+          "bandwidth": 1506304,
+          "width": 1280,
+          "height": 720,
+          "label": "Undefined"
         },
         {
-          id: '0_xcrwyk2n261,url',
-          url: 'http://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/url/flavorIds/0_xcrwyk2n/a.mp4?uiConfId=15215933',
-          mimetype: 'video/mp4',
-          bandwidth: 2691072,
-          width: 1280,
-          height: 720,
-          label: 'Undefined'
+          "id": "0_qd0hcags1029,url",
+          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_qd0hcags/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
+          "mimetype": "video/mp4",
+          "bandwidth": 1813504,
+          "width": 1280,
+          "height": 720,
+          "label": "Undefined"
+        },
+        {
+          "id": "0_ntuoep7s1029,url",
+          "url": "https://api.nvq2.ovp.kaltura.com/p/242/sp/24200/playManifest/entryId/0_lb78dwcy/protocol/https/format/url/flavorIds/0_ntuoep7s/a.mp4?uiConfId=23476949&playSessionId=60c40abf-e20e-7a89-5cf4-711c869771f5:dc4111ee-7a61-1cd0-42d9-ff979ef98bf1&referrer=aHR0cHM6Ly9hcGkubnZxMi5vdnAua2FsdHVyYS5jb20vaW5kZXgucGhwL2V4dHdpZGdldC9wcmV2aWV3L3BhcnRuZXJfaWQvMjQyL3VpY29uZl9pZC8yMzQ3Njk0OS9lbnRyeV9pZC8wX2JmajhsZzBmL2VtYmVkL2R5bmFtaWM=&clientTag=html5:v3.17.17",
+          "mimetype": "video/mp4",
+          "bandwidth": 2020352,
+          "width": 1280,
+          "height": 720,
+          "label": "Undefined"
         }
       ],
       id: '0_wifqaipd',
