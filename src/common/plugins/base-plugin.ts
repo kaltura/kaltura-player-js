@@ -158,7 +158,7 @@ export class BasePlugin {
    * @virtual
    * @returns {void}
    */
-  public showOverlay(): void {
+  public open(): void {
     throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'showOverlay()');
   }
 
