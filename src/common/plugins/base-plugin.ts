@@ -129,30 +129,6 @@ export class BasePlugin {
   public loadMedia(): void {}
 
   /**
-   * returns weather or not the plugins is supported for current entry.
-   * should to overridden by a plugin whose activity depends on entry data
-   * @public
-   * @virtual
-   * @default true
-   * @returns {boolean}
-   */
-  public isEntrySupported(): boolean {
-    return true;
-  }
-
-  /**
-   * returns weather or not is Audio Player supported by the plugin.
-   * should to overridden by a plugin whose activity depends on entry data
-   * @public
-   * @virtual
-   * @default false
-   * @returns {boolean}
-   */
-  public isAudioPlayerSupported(): boolean {
-    return false;
-  }
-
-  /**
    * should to overridden by a plugin which open overlay once activated
    * @public
    * @virtual
