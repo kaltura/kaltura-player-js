@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/kaltura-player-js",
-  "version": "3.17.17",
+  "version": "3.17.20",
   "keywords": [
     "kaltura",
     "player",
@@ -50,11 +50,11 @@
     "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.10-canary.0-16e2d47",
+    "@playkit-js/playkit-js": "0.84.11",
     "@playkit-js/playkit-js-dash": "1.37.0",
     "@playkit-js/playkit-js-hls": "1.32.13",
     "@playkit-js/playkit-js-providers": "2.40.6",
-    "@playkit-js/playkit-js-ui": "0.79.3-canary.0-97b1aa4",
+    "@playkit-js/playkit-js-ui": "0.79.5",
     "hls.js": "^1.5.8",
     "shaka-player": "4.7.0"
   },
