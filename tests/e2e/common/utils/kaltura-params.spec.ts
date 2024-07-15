@@ -151,7 +151,7 @@ describe('handleSessionId', () => {
 
   it('should generate add a new session id', () => {
     const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
-    SessionIdGenerator.next = nextSessionId;
+    SessionIdGenerator._value = nextSessionId;
     player.config = {
       session: {
         id: ''
@@ -168,7 +168,7 @@ describe('handleSessionId', () => {
 
   it('should update existing session id if not in playlist mode and there is no active source', () => {
     const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
-    SessionIdGenerator.next = nextSessionId;
+    SessionIdGenerator._value = nextSessionId;
     player.config = {
       session: {
         id: 'abc'
@@ -184,7 +184,7 @@ describe('handleSessionId', () => {
   });
 
   it('should not update session id if in playlist mode and there is no active entry', () => {
-    SessionIdGenerator.next = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
+    SessionIdGenerator._value = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
     player.config = {
       session: {
         id: 'abc'
@@ -199,7 +199,7 @@ describe('handleSessionId', () => {
   });
   it('should cache session id when generating a new id in playlist mode', () => {
     const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
-    SessionIdGenerator.next = nextSessionId;
+    SessionIdGenerator._value = nextSessionId;
     player.config = {
       session: {
         id: ''
@@ -224,7 +224,7 @@ describe('handleSessionId', () => {
   });
   it('should cache session id if in playlist mode and there is an active entry', () => {
     const nextSessionId = '5cc03aa6-c58f-3220-b548-2a698aa54830:33e6d80e-63b3-108a-091d-ccc15998f85b';
-    SessionIdGenerator.next = nextSessionId;
+    SessionIdGenerator._value = nextSessionId;
     player.config = {
       session: {
         id: 'abc'
