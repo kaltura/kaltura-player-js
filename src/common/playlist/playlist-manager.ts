@@ -389,7 +389,7 @@ class PlaylistManager {
 
           let sessionId = this._player.sessionIdCache?.get(mediaConfig.sources.id);
           if (!sessionId) {
-            sessionId = SessionIdGenerator.get();
+            sessionId = SessionIdGenerator.next();
             this._player.sessionIdCache?.set(mediaConfig.sources.id, sessionId);
           }
 
@@ -435,7 +435,7 @@ class PlaylistManager {
 
       let sessionId = this._player.sessionIdCache?.get(mediaConfig.sources.id);
       if (!sessionId) {
-        sessionId = SessionIdGenerator.get();
+        sessionId = SessionIdGenerator.next();
         this._player.sessionIdCache?.set(mediaConfig.sources.id, sessionId);
       }
 

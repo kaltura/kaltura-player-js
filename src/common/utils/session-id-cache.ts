@@ -1,7 +1,7 @@
 class SessionIdCache {
   private cache = new Map();
 
-  public set(key: string, value: string) {
+  public set(key: string, value: string): void {
     this.cache.set(key, value);
   }
 
@@ -9,7 +9,7 @@ class SessionIdCache {
     return this.cache.get(key);
   }
 
-  public clear() {
+  public clear(): void {
     this.cache.clear();
   }
 }

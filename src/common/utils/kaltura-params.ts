@@ -41,7 +41,7 @@ function handleSessionId(player: KalturaPlayer, playerConfig: PartialKPOptionsOb
  * @private
  */
 function addSessionId(playerConfig: PartialKPOptionsObject): void {
-  setSessionId(playerConfig, SessionIdGenerator.get());
+  setSessionId(playerConfig, SessionIdGenerator.next());
 }
 
 /**
@@ -54,12 +54,12 @@ function updateSessionId(player: KalturaPlayer, playerConfig: PartialKPOptionsOb
   const entryId = playerConfig.sources?.id;
 
   if (!player?.playlist?.items?.length) {
-    setSessionId(playerConfig, SessionIdGenerator.get());
+    setSessionId(playerConfig, SessionIdGenerator.next());
   } else if (entryId) {
     if (player.sessionIdCache?.get(entryId)) {
       setSessionId(playerConfig, player.sessionIdCache?.get(entryId));
     } else {
-      const sessionId = SessionIdGenerator.get();
+      const sessionId = SessionIdGenerator.next();
       player.sessionIdCache?.set(entryId, sessionId);
       setSessionId(playerConfig, sessionId);
     }

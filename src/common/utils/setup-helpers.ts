@@ -100,7 +100,7 @@ function validateProviderConfig(options: KalturaPlayerConfig): void {
     source.url = addProductVersion(source.url, productVersion);
     source.url = addReferrer(source.url);
     source.url = addClientTag(source.url, productVersion);
-    source.url = updateSessionIdInUrl(null, source.url, SessionIdGenerator.get());
+    source.url = updateSessionIdInUrl(null, source.url, SessionIdGenerator.next());
     navigator.sendBeacon && navigator.sendBeacon(source.url);
   }
 }
