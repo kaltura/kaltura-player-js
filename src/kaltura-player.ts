@@ -1171,11 +1171,11 @@ export class KalturaPlayer extends FakeEventTarget {
     return getMediaCapabilities(hevcConfig);
   }
 
-  public setCachedUrls(urls: string[]) {
+  public setCachedUrls(urls: string[]): void {
     this._localPlayer.setCachedUrls(urls);
   }
 
-  public get sessionIdCache() {
+  public get sessionIdCache(): SessionIdCache | null {
     return this._sessionIdCache;
   }
 }
