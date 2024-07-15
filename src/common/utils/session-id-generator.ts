@@ -8,7 +8,7 @@ class SessionIdGenerator {
   }
 
   public static next(): string {
-    if (!SessionIdGenerator.next) {
+    if (!SessionIdGenerator._value) {
       this.init();
       return SessionIdGenerator._value;
     }
