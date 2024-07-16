@@ -11,6 +11,8 @@ import { Playlist } from './playlist';
 import { PlaylistItem } from './playlist-item';
 import { mergeProviderPluginsConfig } from '../utils/setup-helpers';
 import { PlaylistOptions, PlaylistCountdownOptions, KalturaPlayerConfig, PluginsConfig, KPPlaylistObject, PlaylistConfigObject } from '../../types';
+import { addClientTag, addReferrer, addStartAndEndTime, updateSessionIdInUrl } from '../utils/kaltura-params';
+import { SessionIdGenerator } from '../utils/session-id-generator';
 
 /**
  * @class PlaylistManager
@@ -332,6 +334,25 @@ class PlaylistManager {
     }
     this._player.configure({ playback });
     this._playlist.activeItemIndex = index;
+
+    const promises: Promise<any>[] = [];
+
+    if (this._playlist.items[index - 1]) {
+      promises.push(this.prepareEntry(index - 1));
+    }
+    if (this._playlist.items[index + 1]) {
+      promises.push(this.prepareEntry(index + 1));
+    }
+
+    Promise.all(promises).then((mediaConfigs) => {
+      let cachedUrls = [];
+      for (const mediaConfig of mediaConfigs) {
+        cachedUrls = cachedUrls.concat(mediaConfig.sources.dash.map((dashSource) => dashSource.url));
+      }
+
+      this._player.setCachedUrls(cachedUrls);
+    });
+
     if (activeItem.isPlayable()) {
       this._resetProviderPluginsConfig();
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(activeItem.plugins, this._player.config.plugins);
@@ -365,6 +386,21 @@ class PlaylistManager {
         return this._player.loadMedia(this._mediaInfoList[index]).then((mediaConfig) => {
           this._playlist.updateItemSources(index, mediaConfig.sources);
           this._playlist.updateItemPlugins(index, mediaConfig.plugins);
+
+          let sessionId = this._player.sessionIdCache?.get(mediaConfig.sources.id);
+          if (!sessionId) {
+            sessionId = SessionIdGenerator.next();
+            this._player.sessionIdCache?.set(mediaConfig.sources.id, sessionId);
+          }
+
+          mediaConfig.sources.dash = mediaConfig.sources.dash.map((source) => {
+            source.url = updateSessionIdInUrl(this._player, source.url, sessionId);
+            source.url = addReferrer(source.url);
+            source.url = addClientTag(source.url, mediaConfig.productVersion);
+            source.url = addStartAndEndTime(source.url, mediaConfig.sources);
+            return source;
+          });
+
           // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
           // @ts-ignore
           this._player.dispatchEvent(
@@ -387,6 +423,32 @@ class PlaylistManager {
 
   public destroy(): void {
     this._eventManager.destroy();
+  }
+
+  private prepareEntry(index: number): Promise<any> {
+    if (this._playlist.items[index].isPlayable()) return Promise.resolve({ sources: this._playlist.items[index].sources });
+
+    return this._player.provider.getMediaConfig(this._mediaInfoList[index]).then((providerMediaConfig) => {
+      const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
+      this._playlist.updateItemSources(index, mediaConfig.sources);
+      this._playlist.updateItemPlugins(index, mediaConfig.plugins);
+
+      let sessionId = this._player.sessionIdCache?.get(mediaConfig.sources.id);
+      if (!sessionId) {
+        sessionId = SessionIdGenerator.next();
+        this._player.sessionIdCache?.set(mediaConfig.sources.id, sessionId);
+      }
+
+      mediaConfig.sources.dash = mediaConfig.sources.dash.map((source) => {
+        source.url = updateSessionIdInUrl(this._player, source.url, sessionId);
+        source.url = addReferrer(source.url);
+        source.url = addClientTag(source.url, mediaConfig.productVersion);
+        source.url = addStartAndEndTime(source.url, mediaConfig.sources);
+        return source;
+      });
+
+      return Promise.resolve(mediaConfig);
+    });
   }
 }
 
