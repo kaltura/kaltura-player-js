@@ -121,6 +121,15 @@ function getReferrer(): string {
   return referrer;
 }
 
+function isInUnfriendlyIframe() {
+  try {
+    window.parent.document.URL;
+    return false;
+  } catch {
+    return true;
+  }
+}
+
 /**
  * @param {string} url - url
  * @return {string} - the url with the referrer appended in the query params
@@ -230,4 +239,4 @@ function addKalturaParams(player: KalturaPlayer, playerConfig: PartialKPOptionsO
   });
 }
 
-export { addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId };
+export { addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId, isInUnfriendlyIframe };
