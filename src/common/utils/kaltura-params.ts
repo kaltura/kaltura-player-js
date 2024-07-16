@@ -243,4 +243,14 @@ function addKalturaParams(player: KalturaPlayer, playerConfig: PartialKPOptionsO
   });
 }
 
-export { addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId, isInUnfriendlyIframe, addStartAndEndTime };
+export {
+  addKalturaParams,
+  handleSessionId,
+  updateSessionIdInUrl,
+  getReferrer,
+  addReferrer,
+  addClientTag,
+  addUIConfId,
+  isInUnfriendlyIframe,
+  addStartAndEndTime
+};
