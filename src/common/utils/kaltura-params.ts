@@ -127,8 +127,7 @@ function getReferrer(): string {
 
 function isInUnfriendlyIframe(): boolean {
   try {
-    window.parent.document.URL;
-    return false;
+    return (window.parent.document.URL !== window.parent.document.URL);;
   } catch {
     return true;
   }
