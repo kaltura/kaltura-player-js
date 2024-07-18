@@ -125,6 +125,15 @@ function getReferrer(): string {
   return referrer;
 }
 
+function isInUnfriendlyIframe(): boolean {
+  try {
+    // window.parent.document.URL cannot be accessed in unfriendly iframe
+    return window.parent.document.URL !== window.parent.document.URL;
+  } catch {
+    return true;
+  }
+}
+
 /**
  * @param {string} url - url
  * @return {string} - the url with the referrer appended in the query params
@@ -234,4 +243,14 @@ function addKalturaParams(player: KalturaPlayer, playerConfig: PartialKPOptionsO
   });
 }
 
-export { addKalturaParams, handleSessionId, updateSessionIdInUrl, getReferrer, addReferrer, addClientTag, addUIConfId, addStartAndEndTime };
+export {
+  addKalturaParams,
+  handleSessionId,
+  updateSessionIdInUrl,
+  getReferrer,
+  addReferrer,
+  addClientTag,
+  addUIConfId,
+  isInUnfriendlyIframe,
+  addStartAndEndTime
+};
