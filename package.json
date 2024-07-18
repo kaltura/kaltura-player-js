@@ -51,12 +51,12 @@
   },
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.11",
-    "@playkit-js/playkit-js-dash": "1.37.0",
+    "@playkit-js/playkit-js-dash": "1.38.0-canary.0-6aa1864",
     "@playkit-js/playkit-js-hls": "1.32.13",
-    "@playkit-js/playkit-js-providers": "2.40.6",
-    "@playkit-js/playkit-js-ui": "0.79.5",
+    "@playkit-js/playkit-js-providers": "2.41.0-canary.0-3d6d02a",
+    "@playkit-js/playkit-js-ui": "0.79.6-canary.0-98ec49f",
     "hls.js": "^1.5.8",
-    "shaka-player": "4.7.0"
+    "shaka-player": "4.8.11"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",

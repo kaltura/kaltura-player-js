@@ -60,7 +60,7 @@ import {
   supportLegacyOptions
 } from './common/utils/setup-helpers';
 import { getDefaultRedirectOptions } from 'player-defaults';
-import { addKalturaParams } from './common/utils/kaltura-params';
+import { addKalturaParams, getReferrer, isInUnfriendlyIframe } from './common/utils/kaltura-params';
 import { addKalturaPoster } from 'poster';
 import { RemoteSession } from './common/cast/remote-session';
 import getMediaCapabilities from './common/utils/media-capabilities';
@@ -77,6 +77,7 @@ import {
   MediaCapabilitiesObject
 } from './types';
 import getErrorCategory from './common/utils/error-helper';
+import { SessionIdCache } from './common/utils/session-id-cache';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -106,10 +107,12 @@ export class KalturaPlayer extends FakeEventTarget {
   private _serviceProvider: ServiceProvider;
   private _isVisible: boolean = false;
   private _autoPaused: boolean = false;
+  private _sessionIdCache: SessionIdCache | null = null;
 
   constructor(options: KalturaPlayerConfig) {
     super();
     const { sources, plugins } = options;
+    this._sessionIdCache = new SessionIdCache();
     this._configEvaluator = new ConfigEvaluator();
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
     this._playbackStart = false;
@@ -127,9 +130,11 @@ export class KalturaPlayer extends FakeEventTarget {
     );
     this._serviceProvider = new ServiceProvider(this);
     this._cuepointManager = new CuePointManager(this);
+    const referrer = isInUnfriendlyIframe() ? getReferrer() : null;
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
-        logger: { getLogger, LogLevel }
+        logger: { getLogger, LogLevel },
+        referrer
       }),
       __VERSION__
     );
@@ -370,6 +375,7 @@ export class KalturaPlayer extends FakeEventTarget {
     if (targetContainer && targetContainer.parentNode) {
       Utils.Dom.removeChild(targetContainer.parentNode, targetContainer);
     }
+    this._sessionIdCache?.clear();
   }
 
   public isLive(): boolean {
@@ -1166,5 +1172,13 @@ export class KalturaPlayer extends FakeEventTarget {
    */
   public async getMediaCapabilities(hevcConfig?: HEVCConfigObject): Promise<MediaCapabilitiesObject> {
     return getMediaCapabilities(hevcConfig);
+  }
+
+  public setCachedUrls(urls: string[]): void {
+    this._localPlayer.setCachedUrls(urls);
+  }
+
+  public get sessionIdCache(): SessionIdCache | null {
+    return this._sessionIdCache;
   }
 }
