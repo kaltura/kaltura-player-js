@@ -55,7 +55,7 @@ export class BasePlugin {
    * @static
    * @member
    */
-  public symbol!: {svgUrl: string, viewBox: string};
+  public symbol!: { svgUrl: string; viewBox: string };
 
   /**
    * Returns under what conditions the plugin is valid.
@@ -137,7 +137,6 @@ export class BasePlugin {
   public open(): void {
     throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'showOverlay()');
   }
-
 
   /**
    * Runs the destroy logic of the plugin.
