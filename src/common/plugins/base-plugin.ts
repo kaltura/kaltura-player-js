@@ -40,6 +40,22 @@ export class BasePlugin {
    * @member
    */
   protected static defaultConfig: any = {};
+  /**
+   * The display name of the plugin.
+   * Inherited plugins should override this property.
+   * @type {string}
+   * @static
+   * @member
+   */
+  public displayName!: string;
+  /**
+   * The svg icon metadata of the plugin.
+   * Inherited plugins should override this property.
+   * @type {svgUrl: string, viewBox: string}
+   * @static
+   * @member
+   */
+  public symbol!: { svgUrl: string; viewBox: string };
 
   /**
    * Returns under what conditions the plugin is valid.
@@ -111,6 +127,16 @@ export class BasePlugin {
    * @returns {void}
    */
   public loadMedia(): void {}
+
+  /**
+   * should to overridden by a plugin which open overlay once activated
+   * @public
+   * @virtual
+   * @returns {void}
+   */
+  public open(): void {
+    throw new Error(Error.Severity.CRITICAL, Error.Category.PLAYER, Error.Code.RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED, 'showOverlay()');
+  }
 
   /**
    * Runs the destroy logic of the plugin.
