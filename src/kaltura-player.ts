@@ -60,7 +60,7 @@ import {
   supportLegacyOptions
 } from './common/utils/setup-helpers';
 import { getDefaultRedirectOptions } from 'player-defaults';
-import { addKalturaParams, getReferrer, isInUnfriendlyIframe } from './common/utils/kaltura-params';
+import { addKalturaParams, getOriginalRequestReferrer } from './common/utils/kaltura-params';
 import { addKalturaPoster } from 'poster';
 import { RemoteSession } from './common/cast/remote-session';
 import getMediaCapabilities from './common/utils/media-capabilities';
@@ -130,11 +130,10 @@ export class KalturaPlayer extends FakeEventTarget {
     );
     this._serviceProvider = new ServiceProvider(this);
     this._cuepointManager = new CuePointManager(this);
-    const referrer = isInUnfriendlyIframe() ? getReferrer() : null;
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: { getLogger, LogLevel },
-        referrer
+        referrer: getOriginalRequestReferrer()
       }),
       __VERSION__
     );
