@@ -125,13 +125,8 @@ function getReferrer(): string {
   return referrer;
 }
 
-function isInUnfriendlyIframe(): boolean {
-  try {
-    // window.parent.document.URL cannot be accessed in unfriendly iframe
-    return window.parent.document.URL !== window.parent.document.URL;
-  } catch {
-    return true;
-  }
+function getOriginalRequestReferrer(): string | undefined {
+  return window.originalRequestReferrer;
 }
 
 /**
@@ -251,6 +246,6 @@ export {
   addReferrer,
   addClientTag,
   addUIConfId,
-  isInUnfriendlyIframe,
+  getOriginalRequestReferrer,
   addStartAndEndTime
 };
