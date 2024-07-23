@@ -1,4 +1,4 @@
-import { FakeEvent, Utils, EventManager, getLogger } from '@playkit-js/playkit-js';
+import { FakeEvent, Utils, EventManager, getLogger, MediaType } from '@playkit-js/playkit-js';
 import {
   ProviderEntryListObject,
   ProviderMediaInfoObject,
@@ -337,17 +337,19 @@ class PlaylistManager {
 
     const promises: Promise<any>[] = [];
 
-    if (this._playlist.items[index - 1]) {
+    if (this._playlist.items[index - 1]?.sources.type === MediaType.VOD) {
       promises.push(this.prepareEntry(index - 1));
     }
-    if (this._playlist.items[index + 1]) {
+    if (this._playlist.items[index + 1]?.sources.type === MediaType.VOD) {
       promises.push(this.prepareEntry(index + 1));
     }
 
     Promise.all(promises).then((mediaConfigs) => {
       let cachedUrls = [];
       for (const mediaConfig of mediaConfigs) {
-        cachedUrls = cachedUrls.concat(mediaConfig.sources.dash.map((dashSource) => dashSource.url));
+        if (mediaConfig.sources.dash?.length) {
+          cachedUrls = cachedUrls.concat(mediaConfig.sources.dash.map((dashSource) => dashSource.url));
+        }
       }
 
       this._player.setCachedUrls(cachedUrls);
