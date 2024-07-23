@@ -337,10 +337,10 @@ class PlaylistManager {
 
     const promises: Promise<any>[] = [];
 
-    if (this._playlist.items[index - 1] && this._playlist.items[index - 1].sources.type === MediaType.VOD) {
+    if (this._playlist.items[index - 1]?.sources.type === MediaType.VOD) {
       promises.push(this.prepareEntry(index - 1));
     }
-    if (this._playlist.items[index + 1] && this._playlist.items[index + 1].sources.type === MediaType.VOD) {
+    if (this._playlist.items[index + 1]?.sources.type === MediaType.VOD) {
       promises.push(this.prepareEntry(index + 1));
     }
 
