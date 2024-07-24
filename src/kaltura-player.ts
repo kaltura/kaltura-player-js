@@ -1174,7 +1174,9 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public setCachedUrls(urls: string[]): void {
-    this._localPlayer.setCachedUrls(urls);
+    if (this.config.playback.enableCache) {
+      this._localPlayer.setCachedUrls(urls);
+    }
   }
 
   public get sessionIdCache(): SessionIdCache | null {
