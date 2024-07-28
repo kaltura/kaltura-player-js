@@ -320,6 +320,20 @@ class PlaylistManager {
     }
   }
 
+  private _getEntryPromises(indexes: number[]): Promise<any>[] {
+    const result: Promise<any>[] = [];
+    for (const index of indexes) {
+      const item = this._playlist.items[index];
+      // TODO
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (item?.sources.type === MediaType.VOD || item?.sources.mediaEntryType === MediaType.VOD) {
+        result.push(this.prepareEntry(index));
+      }
+    }
+    return result;
+  }
+
   private _setItem(activeItem: PlaylistItem): Promise<any> {
     const { index } = activeItem;
     PlaylistManager._logger.debug(`Playing item number ${index}`, activeItem);
@@ -335,16 +349,7 @@ class PlaylistManager {
     this._player.configure({ playback });
     this._playlist.activeItemIndex = index;
 
-    const promises: Promise<any>[] = [];
-
-    if (this._playlist.items[index - 1]?.sources.type === MediaType.VOD) {
-      promises.push(this.prepareEntry(index - 1));
-    }
-    if (this._playlist.items[index + 1]?.sources.type === MediaType.VOD) {
-      promises.push(this.prepareEntry(index + 1));
-    }
-
-    Promise.all(promises).then((mediaConfigs) => {
+    Promise.all(this._getEntryPromises([index - 1, index, index + 1])).then((mediaConfigs) => {
       let cachedUrls = [];
       for (const mediaConfig of mediaConfigs) {
         if (mediaConfig.sources.dash?.length) {
