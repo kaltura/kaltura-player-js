@@ -31,6 +31,7 @@ describe('ThumbnailManager', () => {
     fakeMediaConfig = {
       sources: {
         poster: '//my-thumb-service.com/p/1/thumbnail/entry_id/2/version/3',
+        rawThumbnailUrl: '//my-thumb-service.com/p/1/thumbnail/entry_id/2/version/3',
         type: MediaType.VOD
       },
       session: {
@@ -69,13 +70,13 @@ describe('ThumbnailManager', () => {
   });
 
   it('should get empty thumbnail slices url for non string given', () => {
-    fakeMediaConfig.sources.poster = null;
+    fakeMediaConfig.sources.rawThumbnailUrl = null;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
 
   it('should get empty thumbnail slices url for non valid string given', () => {
-    fakeMediaConfig.sources.poster = '//my-thumb-service.com/p/1/entry_id/2/version/3';
+    fakeMediaConfig.sources.rawThumbnailUrl = '//my-thumb-service.com/p/1/entry_id/2/version/3';
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     thumbnailManager.getKalturaThumbnailConfig().thumbsSprite.should.equals('');
   });
@@ -100,7 +101,7 @@ describe('ThumbnailManager', () => {
   });
 
   it('should return thumbnail from core player', () => {
-    fakeMediaConfig.sources.poster = null;
+    fakeMediaConfig.sources.rawThumbnailUrl = null;
     thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
     const spy = sandbox.spy(fakePlayer._localPlayer, 'getThumbnail');
     thumbnailManager.getThumbnail(100);
