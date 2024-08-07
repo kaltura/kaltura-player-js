@@ -122,13 +122,13 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer = loadPlayer(noSourcesOptions);
     this._controllerProvider = new ControllerProvider(this._pluginManager);
     this._viewabilityManager = new ViewabilityManager(this.config.viewability);
+    this._serviceProvider = new ServiceProvider(this);
     this._uiWrapper = new UIWrapper(
       this,
       Utils.Object.mergeDeep(options, {
         ui: { logger: { getLogger, LogLevel } }
       })
     );
-    this._serviceProvider = new ServiceProvider(this);
     this._cuepointManager = new CuePointManager(this);
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
