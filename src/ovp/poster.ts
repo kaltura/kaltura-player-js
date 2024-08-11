@@ -22,7 +22,12 @@ function addKalturaPoster(
   const playerWidth = dimensions.width;
   const playerHeight = dimensions.height;
   const rawThumbnailUrl = mediaSources.rawThumbnailUrl;
-  if (typeof playerPoster === 'string' && THUMBNAIL_REGEX.test(playerPoster) && playerPoster === mediaConfigPoster && typeof rawThumbnailUrl === 'string') {
+  if (
+    typeof playerPoster === 'string' &&
+    THUMBNAIL_REGEX.test(playerPoster) &&
+    playerPoster === mediaConfigPoster &&
+    typeof rawThumbnailUrl === 'string'
+  ) {
     playerSources.poster = `${rawThumbnailUrl}/height/${playerHeight}/width/${playerWidth}${ks ? `/ks/${ks}` : ''}`;
   }
   mediaSources.poster = playerSources.poster || '';
