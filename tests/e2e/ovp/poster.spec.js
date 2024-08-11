@@ -44,7 +44,7 @@ describe('addKalturaPoster', () => {
   });
 
   it('should append ks to kaltura poster', () => {
-    const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2', rawThumbnailUrl: '/p/1091/thumbnail/entry_id/0_wifqaipd/2'};
+    const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2', rawThumbnailUrl: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const playerSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const ks = '123';
     addKalturaPoster(playerSources, mediaSources, { width: 640, height: 360 }, ks);

@@ -71,8 +71,8 @@ class ThumbnailManager {
 
   private _buildKalturaThumbnailConfig = (uiConfig: UiConfig, mediaConfig: KPMediaConfig): KPThumbnailConfig => {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
-    const rawThumbnailUrl = mediaConfig.sources && mediaConfig.sources.rawThumbnailUrl;
-    const isVod = mediaConfig.sources && mediaConfig.sources.type === MediaType.VOD;
+    const rawThumbnailUrl = mediaConfig.sources?.rawThumbnailUrl;
+    const isVod = mediaConfig.sources?.type === MediaType.VOD;
     const ks = this._player.shouldAddKs(mediaConfig) ? mediaConfig.session?.ks : '';
     const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
     const thumbsSprite = isVod ? this._getThumbSlicesUrl(rawThumbnailUrl, ks, thumbnailConfig) : '';
