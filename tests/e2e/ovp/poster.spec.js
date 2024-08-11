@@ -8,7 +8,7 @@ const targetId = 'player-placeholder_ovp/poster.spec';
 
 describe('addKalturaPoster', () => {
   it('should append width and height to kaltura poster', () => {
-    const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
+    const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2', rawThumbnailUrl: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const playerSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     addKalturaPoster(playerSources, mediaSources, { width: 640, height: 360 });
     playerSources.poster.should.equal('/p/1091/thumbnail/entry_id/0_wifqaipd/2/height/360/width/640');
@@ -44,7 +44,7 @@ describe('addKalturaPoster', () => {
   });
 
   it('should append ks to kaltura poster', () => {
-    const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
+    const mediaSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2', rawThumbnailUrl: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const playerSources = { poster: '/p/1091/thumbnail/entry_id/0_wifqaipd/2' };
     const ks = '123';
     addKalturaPoster(playerSources, mediaSources, { width: 640, height: 360 }, ks);
