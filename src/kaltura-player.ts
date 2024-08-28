@@ -832,11 +832,11 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private _addAudioPreset(options: Partial<KalturaPlayerConfig>) {
-    if (options.plugins.audioPlayer) {
+    if (options.plugins?.audioPlayer) {
       if (!window.kalturaCustomPresetMap) {
         window.kalturaCustomPresetMap = {};
       }
-      window.kalturaCustomPresetMap[options.ui.targetId] = window.kalturaCustomPreset;
+      window.kalturaCustomPresetMap[options.ui?.targetId] = window.kalturaCustomPreset;
     }
   }
 
