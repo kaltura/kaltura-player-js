@@ -115,6 +115,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._sessionIdCache = new SessionIdCache();
     this._configEvaluator = new ConfigEvaluator();
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
+    this._addAudioPreset(options);
     this._playbackStart = false;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options);
     delete noSourcesOptions.plugins;
@@ -828,6 +829,15 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  private _addAudioPreset(options: Partial<KalturaPlayerConfig>) {
+    if (options.plugins.audioPlayer) {
+      if (!window.kalturaCustomPresetMap) {
+        window.kalturaCustomPresetMap = {};
+      }
+      window.kalturaCustomPresetMap[options.ui.targetId] = window.kalturaCustomPreset;
+    }
   }
 
   private _configureInformationForDevice(mediaConfig: KPMediaConfig): void {
