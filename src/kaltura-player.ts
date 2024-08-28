@@ -831,7 +831,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.Error;
   }
 
-  private _addAudioPreset(options: Partial<KalturaPlayerConfig>) {
+  private _addAudioPreset(options: Partial<KalturaPlayerConfig>): void {
     if (options.plugins?.audioPlayer) {
       if (!window.kalturaCustomPresetMap) {
         window.kalturaCustomPresetMap = {};
