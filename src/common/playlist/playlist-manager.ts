@@ -10,7 +10,15 @@ import { PlaylistEventType } from './playlist-event-type';
 import { Playlist } from './playlist';
 import { PlaylistItem } from './playlist-item';
 import { mergeProviderPluginsConfig } from '../utils/setup-helpers';
-import { PlaylistOptions, PlaylistCountdownOptions, KalturaPlayerConfig, PluginsConfig, KPPlaylistObject, PlaylistConfigObject } from '../../types';
+import {
+  PlaylistOptions,
+  PlaylistCountdownOptions,
+  KalturaPlayerConfig,
+  PluginsConfig,
+  KPPlaylistObject,
+  PlaylistConfigObject,
+  SourcesConfig
+} from '../../types';
 import { addClientTag, addReferrer, addStartAndEndTime, updateSessionIdInUrl } from '../utils/kaltura-params';
 import { SessionIdGenerator } from '../utils/session-id-generator';
 
@@ -329,22 +337,13 @@ class PlaylistManager {
         // from the second item onwards
         playback['autoplay'] = true;
       } else {
-        playback['autoplay'] = !!this._playerOptions.playback?.autoplay;
+        playback['autoplay'] = !!this._playerOptions.playback['autoplay'];
       }
     }
     this._player.configure({ playback });
     this._playlist.activeItemIndex = index;
 
-    const promises: Promise<any>[] = [];
-
-    if (this._playlist.items[index - 1]?.sources.type === MediaType.VOD) {
-      promises.push(this.prepareEntry(index - 1));
-    }
-    if (this._playlist.items[index + 1]?.sources.type === MediaType.VOD) {
-      promises.push(this.prepareEntry(index + 1));
-    }
-
-    Promise.all(promises).then((mediaConfigs) => {
+    Promise.all(this.getEntryPromises([index - 1, index + 1])).then((mediaConfigs) => {
       let cachedUrls = [];
       for (const mediaConfig of mediaConfigs) {
         if (mediaConfig.sources.dash?.length) {
@@ -427,7 +426,7 @@ class PlaylistManager {
     this._eventManager.destroy();
   }
 
-  private prepareEntry(index: number): Promise<any> {
+  private getEntryPromise(index: number): Promise<any> {
     if (this._playlist.items[index].isPlayable()) return Promise.resolve({ sources: this._playlist.items[index].sources });
 
     return this._player.provider.getMediaConfig(this._mediaInfoList[index]).then((providerMediaConfig) => {
@@ -451,6 +450,21 @@ class PlaylistManager {
 
       return Promise.resolve(mediaConfig);
     });
+  }
+
+  private getEntryPromises(indexes: number[]): Promise<any>[] {
+    const result: Promise<any>[] = [];
+    for (const index of indexes) {
+      const item = this._playlist.items[index];
+
+      if (!item?.sources) continue;
+
+      const { type, mediaEntryType } = item.sources as SourcesConfig & { mediaEntryType?: string };
+      if (type === MediaType.VOD || mediaEntryType === MediaType.VOD) {
+        result.push(this.getEntryPromise(index));
+      }
+    }
+    return result;
   }
 }
 
