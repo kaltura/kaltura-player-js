@@ -27,7 +27,7 @@ class UIWrapper {
     } else {
       this._uiManager = new UIManager(player, config);
       if (config.customPreset || (window.kalturaCustomPresetMap && window.kalturaCustomPresetMap[config.targetId])) {
-        this._uiManager.buildCustomUI(config.customPreset || window.kalturaCustomPresetMap[config.targetId]['audioPreset']);
+        this._uiManager.buildCustomUI(config.customPreset || window.kalturaCustomPresetMap[config.targetId]['audioPlayer']);
       } else {
         this._uiManager.buildDefaultUI();
       }
