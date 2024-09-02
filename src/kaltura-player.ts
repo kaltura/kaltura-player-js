@@ -426,10 +426,6 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.getActiveTracks();
   }
 
-  public changeChildQuality(track: any | string): void {
-    this._localPlayer.changeChildQuality(track);
-  }
-
   public selectTrack(track: Track): void {
     this._localPlayer.selectTrack(track);
   }
@@ -836,17 +832,19 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private _addAudioPreset(options: Partial<KalturaPlayerConfig>): void {
-    Object.keys(options.plugins).forEach((plugin) => {
-      if (window.kalturaCustomPreset[plugin]) {
-        if (!window.kalturaCustomPresetMap) {
-          window.kalturaCustomPresetMap = {};
+    if (options.plugins) {
+      Object.keys(options.plugins).forEach((plugin) => {
+        if (window.kalturaCustomPreset[plugin]) {
+          if (!window.kalturaCustomPresetMap) {
+            window.kalturaCustomPresetMap = {};
+          }
+          if (!window.kalturaCustomPresetMap[options.ui!.targetId]) {
+            window.kalturaCustomPresetMap[options.ui!.targetId] = {};
+          }
+          window.kalturaCustomPresetMap[options.ui!.targetId][plugin] = window.kalturaCustomPreset[plugin];
         }
-        if (!window.kalturaCustomPresetMap[options.ui!.targetId]) {
-          window.kalturaCustomPresetMap[options.ui!.targetId] = {};
-        }
-        window.kalturaCustomPresetMap[options.ui!.targetId][plugin] = window.kalturaCustomPreset[plugin];
-      }
-    });
+      });
+    }
   }
 
   private _configureInformationForDevice(mediaConfig: KPMediaConfig): void {
