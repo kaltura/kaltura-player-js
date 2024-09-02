@@ -836,7 +836,10 @@ export class KalturaPlayer extends FakeEventTarget {
       if (!window.kalturaCustomPresetMap) {
         window.kalturaCustomPresetMap = {};
       }
-      window.kalturaCustomPresetMap[options.ui!.targetId] = window.kalturaCustomPreset;
+      if (!window.kalturaCustomPresetMap[options.ui!.targetId]) {
+        window.kalturaCustomPresetMap[options.ui!.targetId] = {};
+      }
+      window.kalturaCustomPresetMap[options.ui!.targetId]['audioPreset'] = window.kalturaCustomPreset;
     }
   }
 
