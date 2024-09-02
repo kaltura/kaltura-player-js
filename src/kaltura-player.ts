@@ -834,7 +834,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _addCustomPreset(options: Partial<KalturaPlayerConfig>): void {
     if (options.plugins) {
       Object.keys(options.plugins).forEach((plugin) => {
-        if (window.kalturaCustomPreset[plugin]) {
+        if (window.kalturaCustomPreset && window.kalturaCustomPreset[plugin]) {
           window.kalturaCustomPresetMap[options.ui!.targetId] = window.kalturaCustomPresetMap[options.ui!.targetId] || {};
           window.kalturaCustomPresetMap[options.ui!.targetId][plugin] = window.kalturaCustomPreset[plugin];
         }
