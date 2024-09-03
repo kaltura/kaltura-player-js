@@ -835,7 +835,12 @@ export class KalturaPlayer extends FakeEventTarget {
     if (options.plugins) {
       Object.keys(options.plugins).forEach((plugin) => {
         if (window.kalturaCustomPreset && window.kalturaCustomPreset[plugin]) {
-          window.kalturaCustomPresetMap[options.ui!.targetId] = window.kalturaCustomPresetMap[options.ui!.targetId] || {};
+          if (!window.kalturaCustomPresetMap) {
+            window.kalturaCustomPresetMap = {};
+          }
+          if (!window.kalturaCustomPresetMap[options.ui!.targetId]) {
+            window.kalturaCustomPresetMap[options.ui!.targetId] = {};
+          }
           window.kalturaCustomPresetMap[options.ui!.targetId][plugin] = window.kalturaCustomPreset[plugin];
         }
       });
