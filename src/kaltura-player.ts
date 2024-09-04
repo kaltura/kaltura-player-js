@@ -115,6 +115,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._sessionIdCache = new SessionIdCache();
     this._configEvaluator = new ConfigEvaluator();
     this._configEvaluator.evaluatePluginsConfig(plugins, options);
+    this._addCustomPreset(options);
     this._playbackStart = false;
     const noSourcesOptions = Utils.Object.mergeDeep({}, options);
     delete noSourcesOptions.plugins;
@@ -828,6 +829,22 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get Error(): typeof Error {
     return this._localPlayer.Error;
+  }
+
+  private _addCustomPreset(options: Partial<KalturaPlayerConfig>): void {
+    if (options.plugins) {
+      Object.keys(options.plugins).forEach((plugin) => {
+        if (window.kalturaCustomPreset && window.kalturaCustomPreset[plugin]) {
+          if (!window.kalturaCustomPresetMap) {
+            window.kalturaCustomPresetMap = {};
+          }
+          if (!window.kalturaCustomPresetMap[options.ui!.targetId]) {
+            window.kalturaCustomPresetMap[options.ui!.targetId] = {};
+          }
+          window.kalturaCustomPresetMap[options.ui!.targetId][plugin] = window.kalturaCustomPreset[plugin];
+        }
+      });
+    }
   }
 
   private _configureInformationForDevice(mediaConfig: KPMediaConfig): void {
