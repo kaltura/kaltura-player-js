@@ -438,6 +438,10 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.showTextTrack();
   }
 
+  public changeQuality(track: any | string): void {
+    this._localPlayer.changeQuality(track);
+  }
+
   public enableAdaptiveBitrate(): void {
     this._localPlayer.enableAdaptiveBitrate();
   }
