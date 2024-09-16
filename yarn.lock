@@ -1187,20 +1187,20 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.40.8.tgz#c76f4da680e75f5f335835efaa4ad5d393d21aee"
   integrity sha512-GbLj1cpX2Y35YIz88FQrqWFNGeb/0ajr5TNmWC/WP50ArjlbnaMFMxBVHC7S/67WLTDqHHHekYeGjjejX86QSg==
 
-"@playkit-js/playkit-js-ui@0.79.10-canary.0-28805a8":
-  version "0.79.10-canary.0-28805a8"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.79.10-canary.0-28805a8.tgz#4f51358866737db7520f7cbf07cbcc189d48aee9"
-  integrity sha512-wn0u4DcTzV71djzDJR67Z8Hn/AxmLeVcUawCHztGa6q1JE8e6touK054X98PYCua1VkzO0/og8eP9FFGL0TkmQ==
+"@playkit-js/playkit-js-ui@0.79.10-canary.0-49557f0":
+  version "0.79.10-canary.0-49557f0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.79.10-canary.0-49557f0.tgz#773442f4e87af5067842122de56f3bb7eb4c118b"
+  integrity sha512-TOpYjhBGt8EirJh5baUdIvIDDh/pyYsYS1d2KaGuXNEnHoUSRQnRYgDkVqId/nWsNNuq2Oh1z5jWL6JUC6UpoQ==
   dependencies:
     preact "10.4.6"
     preact-i18n "2.0.0-preactx.2"
     react-redux "7.2.1"
     redux "4.0.5"
 
-"@playkit-js/playkit-js@0.84.15-canary.0-002d5a9":
-  version "0.84.15-canary.0-002d5a9"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.15-canary.0-002d5a9.tgz#a01f850508065a6ae9cd9ec0dd851440483a0954"
-  integrity sha512-A/DKndoO2E6H/Y9QR6MDTU9CGXmWL1HjD75GSEiCWOQe0Gu/IegG8QhB/PcEM5CGR18h1mKKSCHKZgTsMyUHjQ==
+"@playkit-js/playkit-js@0.84.15-canary.0-79975d9":
+  version "0.84.15-canary.0-79975d9"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.15-canary.0-79975d9.tgz#9cb44e40ad1c5ee68de9b76a7bb84a225922354a"
+  integrity sha512-M1yO7S74dpbnQc32SqtxcfI1DPx9XKJG8sA7aRaXdQ0XbcAjv6ve8B34CMmfsFPC8ZZLRxO0VYdfUa/rOdTAWA==
   dependencies:
     js-logger "^1.6.0"
     ua-parser-js "^1.0.36"
