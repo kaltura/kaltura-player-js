@@ -1,6 +1,6 @@
 # Kaltura Player JS Platform - Cloud TV and OVP Media Players Based on the [PlayKit JS Player]
 
-[![Build Status](https://github.com/kaltura/kaltura-player-js/actions/workflows/run_canary_full_flow.yaml/badge.svg)](https://github.com/kaltura/kaltura-player-js/actions/workflows/run_canary_full_flow.yaml)
+[![Build Status](https://github.com/kaltura/kaltura-player-js/actions/workflows/run_canary.yaml/badge.svg)](https://github.com/kaltura/kaltura-player-js/actions/workflows/run_canary.yaml)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![](https://img.shields.io/npm/v/@playkit-js/kaltura-player-js/latest.svg)](https://www.npmjs.com/package/@playkit-js/kaltura-player-js)
 [![](https://img.shields.io/npm/v/@playkit-js/kaltura-player-js/canary.svg)](https://www.npmjs.com/package/@playkit-js/kaltura-player-js/v/canary)
