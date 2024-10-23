@@ -115,6 +115,10 @@ function getReferrer(): string {
   let referrer;
   try {
     referrer = window.parent.document.URL;
+    //Ignore referrer from friendly iframe that contains kaltura.com
+    if (referrer.toLowerCase().includes('kaltura.com')) {
+      throw new Error('ignoring referrer:' + referrer);
+    }
   } catch (e) {
     // unfriendly iframe
 
