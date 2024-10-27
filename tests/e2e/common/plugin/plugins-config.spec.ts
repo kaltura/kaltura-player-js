@@ -149,6 +149,7 @@ describe('getEncodedReferrer', () => {
     sandbox.stub(window.parent.document, 'URL').get(() => {
       return 'http://localhost:3000/?debugKalturaPlayer';
     });
+    window.parent.document.URL.should.be.equal('http://localhost:3000/?debugKalturaPlayer');
     getEncodedReferrer().should.be.equal('http%3A%2F%2Flocalhost%3A3000%2F%3FdebugKalturaPlayer');
   });
 });
