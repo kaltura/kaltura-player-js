@@ -391,24 +391,32 @@ describe('testReferrerLogic', () => {
   });
 
   it('referrer on parent', () => {
-    sandbox.stub(window, 'parent').get(() => {return { document : {URL : 'parentRef'}}});
+    sandbox.stub(window, 'parent').get(() => {
+      return { document: { URL: 'parentRef' } };
+    });
     getReferrer().should.equal('parentRef');
   });
 
   it('no referrer on parent and backend supplied referrer', () => {
-    sandbox.stub(window, 'parent').get(() => {return { document : {URL : undefined}}});
-    sandbox.stub(window, 'originalRequestReferrer').get(() => "backendRef");
+    sandbox.stub(window, 'parent').get(() => {
+      return { document: { URL: undefined } };
+    });
+    sandbox.stub(window, 'originalRequestReferrer').get(() => 'backendRef');
     getReferrer().should.equal('backendRef');
   });
 
   it('if parent referrer contains kaltura.com and backend supplied referrer', () => {
-    sandbox.stub(window, 'parent').get(() => {return { document : {URL : 'bla.kaltura.com'}}});
-    sandbox.stub(window, 'originalRequestReferrer').get(() => "test-kaltura.com");
+    sandbox.stub(window, 'parent').get(() => {
+      return { document: { URL: 'bla.kaltura.com' } };
+    });
+    sandbox.stub(window, 'originalRequestReferrer').get(() => 'test-kaltura.com');
     getReferrer().should.equal('test-kaltura.com');
   });
 
   it('if parent referrer contains kaltura.com and backend does not supplied referrer', () => {
-    sandbox.stub(window, 'parent').get(() => {return { document : {URL : 'bla.kaltura.com'}}});
+    sandbox.stub(window, 'parent').get(() => {
+      return { document: { URL: 'bla.kaltura.com' } };
+    });
     sandbox.stub(document, 'referrer').get(() => 'localRef');
     sandbox.stub(window, 'originalRequestReferrer').get(() => undefined);
     getReferrer().should.equal('localRef');
