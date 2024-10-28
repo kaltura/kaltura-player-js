@@ -31,7 +31,7 @@ player.Event.Core.EVENT_NAME;
 
 #### Core Events List
 
-The full core events list can be found [here](https://github.com/kaltura/playkit-js/blob/master/src/event/event-type.js).
+The full core events list can be found [here](https://github.com/kaltura/playkit-js/blob/master/src/event/event-type.ts).
 
 ### 2. UI Events
 
