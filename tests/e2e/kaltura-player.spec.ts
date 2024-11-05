@@ -14,7 +14,6 @@ import AsyncResolvePlugin from './common/plugin/test-plugins/async-resolve-plugi
 import AsyncRejectPlugin from './common/plugin/test-plugins/async-reject-plugin';
 import { Provider } from '@playkit-js/playkit-js-providers/ovp-provider';
 import { Images } from './mock-data/images';
-
 const targetId = 'player-placeholder_kaltura-player.spec';
 
 describe('kaltura player api', () => {
