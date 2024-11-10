@@ -1207,7 +1207,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._sessionIdCache;
   }
 
-  private handleSourceTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined) {
+  private handleSourceTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined): void {
     let ignoreManifestTextTracks = false;
 
     if (typeof seekFrom === 'number') {
