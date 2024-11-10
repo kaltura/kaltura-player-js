@@ -1212,11 +1212,11 @@ export class KalturaPlayer extends FakeEventTarget {
 
     if (typeof seekFrom === 'number') {
       ignoreManifestTextTracks = true;
-      this._localPlayer.setCuesTimeRangeStart(seekFrom);
+      this._localPlayer.setSeekFrom(seekFrom);
     }
     if (typeof clipTo === 'number') {
       ignoreManifestTextTracks = true;
-      this._localPlayer.setCuesTimeRangeEnd(clipTo);
+      this._localPlayer.setClipTo(clipTo);
     }
     if (ignoreManifestTextTracks) {
       // TODO move this into adapters
