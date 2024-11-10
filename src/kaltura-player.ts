@@ -162,37 +162,8 @@ export class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-
-    let seekFrom, clipTo;
-
-    if (!isNaN(mediaOptions?.seekFrom)) {
-      seekFrom = mediaOptions.seekFrom;
-      this._localPlayer.setCuesTimeRangeStart(seekFrom);
-    }
-    if (!isNaN(mediaOptions?.clipTo)) {
-      clipTo = mediaOptions.clipTo;
-      this._localPlayer.setCuesTimeRangeEnd(clipTo);
-    }
-
-    if (seekFrom !== undefined || clipTo !== undefined) {
-      // TODO move this into adapters
-      this.configure({
-        playback: {
-          options: {
-            html5: {
-              hls: {
-                subtitleTrackController: null
-              },
-              dash: {
-                manifest: {
-                  disableText: true
-                }
-              }
-            }
-          }
-        }
-      } as any);
-    }
+    // TODO update sources config types in provider
+    this.handleSourceTimeRangeUpdate((mediaOptions as any)?.seekFrom, (mediaOptions as any)?.clipTo);
 
     try {
       const providerMediaConfig: ProviderMediaConfigObject = await this._provider.getMediaConfig(mediaInfo);
@@ -1234,5 +1205,37 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get sessionIdCache(): SessionIdCache | null {
     return this._sessionIdCache;
+  }
+
+  private handleSourceTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined) {
+    let ignoreManifestTextTracks = false;
+
+    if (typeof seekFrom === 'number') {
+      ignoreManifestTextTracks = true;
+      this._localPlayer.setCuesTimeRangeStart(seekFrom);
+    }
+    if (typeof clipTo === 'number') {
+      ignoreManifestTextTracks = true;
+      this._localPlayer.setCuesTimeRangeEnd(clipTo);
+    }
+    if (ignoreManifestTextTracks) {
+      // TODO move this into adapters
+      this.configure({
+        playback: {
+          options: {
+            html5: {
+              hls: {
+                subtitleTrackController: null
+              },
+              dash: {
+                manifest: {
+                  disableText: true
+                }
+              }
+            }
+          }
+        }
+      } as any);
+    }
   }
 }
