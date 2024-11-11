@@ -162,6 +162,9 @@ export class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
+    // TODO update sources config types in provider
+    this.handleSourceTimeRangeUpdate((mediaOptions as any)?.seekFrom, (mediaOptions as any)?.clipTo);
+
     try {
       const providerMediaConfig: ProviderMediaConfigObject = await this._provider.getMediaConfig(mediaInfo);
       const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
@@ -1202,5 +1205,37 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get sessionIdCache(): SessionIdCache | null {
     return this._sessionIdCache;
+  }
+
+  private handleSourceTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined): void {
+    let ignoreManifestTextTracks = false;
+
+    if (typeof seekFrom === 'number') {
+      ignoreManifestTextTracks = true;
+      this._localPlayer.setSeekFrom(seekFrom);
+    }
+    if (typeof clipTo === 'number') {
+      ignoreManifestTextTracks = true;
+      this._localPlayer.setClipTo(clipTo);
+    }
+    if (ignoreManifestTextTracks) {
+      // TODO move this into adapters
+      this.configure({
+        playback: {
+          options: {
+            html5: {
+              hls: {
+                subtitleTrackController: null
+              },
+              dash: {
+                manifest: {
+                  disableText: true
+                }
+              }
+            }
+          }
+        }
+      } as any);
+    }
   }
 }
