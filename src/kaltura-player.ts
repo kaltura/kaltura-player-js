@@ -162,9 +162,6 @@ export class KalturaPlayer extends FakeEventTarget {
     this.reset();
     this._localPlayer.loadingMedia = true;
     this._uiWrapper.setLoadingSpinnerState(true);
-    // TODO update sources config types in provider
-    this.handleSourceTimeRangeUpdate((mediaOptions as any)?.seekFrom, (mediaOptions as any)?.clipTo);
-
     try {
       const providerMediaConfig: ProviderMediaConfigObject = await this._provider.getMediaConfig(mediaInfo);
       const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
@@ -271,6 +268,7 @@ export class KalturaPlayer extends FakeEventTarget {
     delete localPlayerConfig.plugins;
     if (localPlayerConfig.sources) {
       const { sources } = localPlayerConfig;
+      this.handleSourcesTimeRangeUpdate(sources.seekFrom, sources.clipTo);
       delete localPlayerConfig.sources;
       this._localPlayer.configure(localPlayerConfig);
       this._localPlayer.setSources(sources || {});
@@ -1207,7 +1205,7 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._sessionIdCache;
   }
 
-  private handleSourceTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined): void {
+  private handleSourcesTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined): void {
     let ignoreManifestTextTracks = false;
 
     if (typeof seekFrom === 'number') {
