@@ -5,7 +5,6 @@
 [![](https://img.shields.io/npm/v/@playkit-js/kaltura-player-js/latest.svg)](https://www.npmjs.com/package/@playkit-js/kaltura-player-js)
 [![](https://img.shields.io/npm/v/@playkit-js/kaltura-player-js/canary.svg)](https://www.npmjs.com/package/@playkit-js/kaltura-player-js/v/canary)
 
-
 The Kaltura Player utilizes a highly modular approach for creating a powerful media player.
 Each functionality of the player is isolated into separate packages, which are designed to deliver a specific set of abilities.
 This approach enables extensibility, simplicity and easy maintenance.
