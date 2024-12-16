@@ -1,5 +1,7 @@
 // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+
+//Player auto tests
 import { setup } from '../../src';
 import * as TestUtils from '../utils/test-utils';
 import * as MediaMockData from './mock-data/media';
