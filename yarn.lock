@@ -1177,20 +1177,20 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.37.1.tgz#54a8257494673fb7326076a97341e90b8b6826a6"
   integrity sha512-o2MCET6EO1AH/eKI2USHM1QPInDqm2fTdWN9RuRDG0Tm4f3FH1Zalw2+o4jHdIRSoMaB5jBG64StxKmMID2Ysw==
 
-"@playkit-js/playkit-js-hls@1.32.15":
-  version "1.32.15"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.15.tgz#061dd9fa6427a1ba37f3cc66e7d44f039097ab7b"
-  integrity sha512-1ecyy0HnuxYc0dc8HFdCfqcHpG4HTs2qBadHh1bOivyI6n/tM2sX38Vm4fJdzUa1OUBBaCjEjm8UwUB4oxNHTA==
+"@playkit-js/playkit-js-hls@1.32.16-canary.0-2ad3ff0":
+  version "1.32.16-canary.0-2ad3ff0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.16-canary.0-2ad3ff0.tgz#63ba8a42c089aef90f39e3621edb427bbed7d39f"
+  integrity sha512-SboLPujghdhGxI1t6cbbI3Sb776wvf8wZPbjI30bsp+5ppqfcLU3nB8igfjlNKsMeFUrnKeogRizNStLP158Qw==
 
 "@playkit-js/playkit-js-providers@2.41.1-canary.0-0a77464":
   version "2.41.1-canary.0-0a77464"
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.41.1-canary.0-0a77464.tgz#44eaa212077f71390a08c745b1baa2a34673a113"
   integrity sha512-7ox6Zntm8Gq+PvEKI96Wi7l3XATs20GSodCzaBIEajXciFMHC8QgjB+vB47i3zKfFtpf9k/ohKtWHJ0Qt5MMug==
 
-"@playkit-js/playkit-js-ui@0.79.19-canary.0-0105bc7":
-  version "0.79.19-canary.0-0105bc7"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.79.19-canary.0-0105bc7.tgz#0985f98239d144f07c671237ab5cb7eb190bdac6"
-  integrity sha512-c2GeFHjs26OcfRa8Ngkhd28jthKnV8p5dkndgvl5kUd95+mmgBY4W08/zoRTlemhDCgmzGfe88RTH/im+f/90g==
+"@playkit-js/playkit-js-ui@0.79.19-canary.0-26f22f4":
+  version "0.79.19-canary.0-26f22f4"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.79.19-canary.0-26f22f4.tgz#fe2127c75a1d27e8e2ee8f88e1aa349c51e4594d"
+  integrity sha512-A2/OPtVqRaMbSsFWxYU4vEjloWbuYtlyAng8i2RNRIHmy4GeZNTQWzKl2FHu743qFC0CBaqqcH5wARvJXWhN0g==
   dependencies:
     preact "10.4.6"
     preact-i18n "2.0.0-preactx.2"
