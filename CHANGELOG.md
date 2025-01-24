@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.17.36 (2025-01-24)
+
+
+### Bug Fixes
+
+* **CR-259:** clipFrom and seekTo must be int ([#909](https://github.com/kaltura/kaltura-player-js/issues/909)) ([ba45f00](https://github.com/kaltura/kaltura-player-js/commit/ba45f004cb0f2a7c6071406f088426723997a9df))
+
 ### 3.17.35 (2025-01-24)
 
 ### 3.17.34 (2025-01-23)
