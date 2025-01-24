@@ -192,10 +192,10 @@ function addStartAndEndTime(url: string, sources: PKSourcesConfigObject): string
   const seekFrom = Utils.Object.getPropertyPath(sources, 'seekFrom');
   const clipTo = Utils.Object.getPropertyPath(sources, 'clipTo');
   if (typeof seekFrom === 'number' && url.indexOf(SEEK_FROM) === -1) {
-    url += getQueryStringParamDelimiter(url) + SEEK_FROM + seekFrom * 1000;
+    url += getQueryStringParamDelimiter(url) + SEEK_FROM + Math.floor(seekFrom * 1000);
   }
   if (typeof clipTo === 'number' && url.indexOf(CLIP_TO) === -1) {
-    url += getQueryStringParamDelimiter(url) + CLIP_TO + clipTo * 1000;
+    url += getQueryStringParamDelimiter(url) + CLIP_TO + Math.floor(clipTo * 1000);
   }
   return url;
 }
