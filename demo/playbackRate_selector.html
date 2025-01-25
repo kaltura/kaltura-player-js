@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>PlaybackRate Selector</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <div id="player-placeholder" style="width:560px; height:395px"></div>
+    <script type="text/javascript" src="https://qa-apache-php7.dev.kaltura.com/p/1091/embedPlaykitJs/uiconf_id/15225670"></script>
+    <script type="text/javascript">
+        try {
+            var kalturaPlayer = KalturaPlayer.setup({
+                "sources": {
+                    "options": {}
+                },
+                "targetId": "player-placeholder",
+                "ui": {
+                    "components": {}
+                },
+                "provider": {
+                    "partnerId": 1091,
+                    "uiConfId": 15225670
+                },
+                "playback": {
+                    "playbackRates": [
+                        0.25,
+                        0.5,
+                        0.75,
+                        1,
+                        1.25,
+                        1.5,
+                        1.75,
+                        2,
+                        4
+                    ],
+                    "autoplay": true,
+                    "allowMutedAutoPlay": true,
+                    "playsinline": true,
+                    "textLanguage": "default",
+                    "options": {
+                        "html5": {
+                            "hls": {},
+                            "dash": {}
+                        }
+                    },
+                    "streamPriority": [{
+                        "engine": "html5",
+                        "format": "hls"
+                    }, {
+                        "engine": "html5",
+                        "format": "dash"
+                    }, {
+                        "engine": "html5",
+                        "format": "progressive"
+                    }]
+                },
+                "plugins": {
+
+                },
+                "log": {
+                    "level": "DEBUG"
+                }
+            });
+            kalturaPlayer.loadMedia({
+                "entryId": "0_wifqaipd"
+            });
+        } catch (e) {
+            console.error(e.message)
+        }
+
+        //Adding event listeners
+        kalturaPlayer.addEventListener(kalturaPlayer.Event.Core.VOLUME_CHANGE, event =>
+            console.info(kalturaPlayer.volume)
+        );
+
+        const events = [
+
+            kalturaPlayer.Event.Core.RATE_CHANGE,
+            kalturaPlayer.Event.Core.PLAY,
+            kalturaPlayer.Event.Core.TRACKS_CHANGED,
+            kalturaPlayer.Event.Core.PAUSE
+        ];
+        events.forEach(eventName => {
+            kalturaPlayer.addEventListener(eventName, event => console.info('Event: ', event.type, " ", event.payload));
+        });
+    </script>
+</body>
+
+</html>
