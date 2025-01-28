@@ -131,12 +131,16 @@ export class KalturaPlayer extends FakeEventTarget {
       })
     );
     this._cuepointManager = new CuePointManager(this);
+
+    const vrTag = this.getVrTag(options.plugins);
+
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: { getLogger, LogLevel },
         referrer: getOriginalRequestReferrer()
       }),
-      __VERSION__
+      __VERSION__,
+      vrTag
     );
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach((coreEvent) => this._eventManager.listen(this._localPlayer, coreEvent, (e) => this.dispatchEvent(e)));
@@ -533,6 +537,14 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public isVr(): boolean {
     return this._localPlayer.isVr();
+  }
+
+  public getVrTag(config: PluginsConfig): string | null {
+    const vrPlugin = config['vr'];
+    if (vrPlugin) {
+      return vrPlugin.tag ?? '360';
+    }
+    return null;
   }
 
   public toggleVrStereoMode(): void {
