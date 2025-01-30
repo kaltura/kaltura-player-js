@@ -142,6 +142,7 @@ export class KalturaPlayer extends FakeEventTarget {
       __VERSION__,
       vrTag
     );
+
     this._playlistManager = new PlaylistManager(this, options);
     Object.values(CoreEventType).forEach((coreEvent) => this._eventManager.listen(this._localPlayer, coreEvent, (e) => this.dispatchEvent(e)));
 
@@ -494,6 +495,11 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public isInPictureInPicture(): boolean {
     return this._localPlayer.isInPictureInPicture();
+  }
+
+  public foo(playerConfig): void {
+    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
+    this._provider.setSourcesObject(sources, )
   }
 
   public isPictureInPictureSupported(): boolean {
