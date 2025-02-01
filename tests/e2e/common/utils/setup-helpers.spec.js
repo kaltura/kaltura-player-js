@@ -5,7 +5,9 @@ import * as SetupHelpers from '../../../../src/common/utils/setup-helpers';
 import { Env } from '@playkit-js/playkit-js';
 import { Images } from '../../mock-data/images';
 
-const targetId = 'player-placeholder_setup-helpers.spec';
+const options = {
+  targetId: 'player-placeholder_setup-helpers.spec'
+};
 
 describe('error handling', () => {
   it('should throw error because no config provided', (done) => {
@@ -100,15 +102,15 @@ describe('error handling', () => {
 
 describe('createKalturaPlayerContainer', () => {
   beforeEach(() => {
-    TestUtils.createElement('DIV', targetId);
+    TestUtils.createElement('DIV', options.targetId);
   });
 
   afterEach(() => {
-    TestUtils.removeElement(targetId);
+    TestUtils.removeElement(options.targetId);
   });
 
   it('should create kaltura player container', () => {
-    const containerId = SetupHelpers.createKalturaPlayerContainer(targetId);
+    const containerId = SetupHelpers.createKalturaPlayerContainer(options);
     const el = document.getElementById(containerId);
     el.should.exist;
     el.className.should.equal('kaltura-player-container');
