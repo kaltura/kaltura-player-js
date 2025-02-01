@@ -108,15 +108,15 @@ function validateProviderConfig(options: KalturaPlayerConfig): void {
 /**
  * Creates the player container dom element.
  * @private
- * @param {string} targetId - The div id which the player will append to.
  * @returns {string} - The player container id.
+ * @param options
  */
-function createKalturaPlayerContainer(targetId: string): string {
+function createKalturaPlayerContainer(options: PartialKPOptionsObject): string {
   const el = document.createElement('div');
-  el.id = Utils.Generator.uniqueId(5);
+  el.id = options?.ui['targetId'] || Utils.Generator.uniqueId(5);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
-  const parentNode = document.getElementById(targetId);
+  const parentNode = document.getElementById(options.targetId);
   if (parentNode && el) {
     parentNode.appendChild(el);
   }
@@ -337,7 +337,7 @@ function getServerUIConf(): any {
  * @returns {KalturaPlayerConfig} - default kaltura player options.
  */
 function getDefaultOptions(options: PartialKPOptionsObject): KalturaPlayerConfig {
-  const targetId = createKalturaPlayerContainer(options.targetId);
+  const targetId = createKalturaPlayerContainer(options);
   // TODO - fix all KalturaPlayerConfig and Partial relationships
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
