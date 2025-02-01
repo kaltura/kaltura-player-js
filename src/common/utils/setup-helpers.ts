@@ -113,7 +113,7 @@ function validateProviderConfig(options: KalturaPlayerConfig): void {
  */
 function createKalturaPlayerContainer(options: PartialKPOptionsObject): string {
   const el = document.createElement('div');
-  el.id = options?.ui['targetId'] || Utils.Generator.uniqueId(5);
+  el.id = options?.ui?.targetId || Utils.Generator.uniqueId(5);
   el.className = CONTAINER_CLASS_NAME;
   el.setAttribute('tabindex', '-1');
   const parentNode = document.getElementById(options.targetId);
