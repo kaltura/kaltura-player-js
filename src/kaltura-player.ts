@@ -132,15 +132,12 @@ export class KalturaPlayer extends FakeEventTarget {
     );
     this._cuepointManager = new CuePointManager(this);
 
-    const vrTag = this.getVrTag(options.plugins);
-
     this._provider = new Provider(
       Utils.Object.mergeDeep(options.provider, {
         logger: { getLogger, LogLevel },
         referrer: getOriginalRequestReferrer()
       }),
-      __VERSION__,
-      vrTag
+      __VERSION__
     );
 
     this._playlistManager = new PlaylistManager(this, options);
@@ -497,9 +494,8 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.isInPictureInPicture();
   }
 
-  public foo(playerConfig): void {
-    const sources = Utils.Object.mergeDeep({}, playerConfig.sources, this._localPlayer.sources);
-    this._provider.setSourcesObject(sources, )
+  public _updatePlayerVrPluginIsOn(vrTag: string): void {
+    this._provider._updatePlayerVrPluginIsOn(vrTag);
   }
 
   public isPictureInPictureSupported(): boolean {
@@ -543,14 +539,6 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public isVr(): boolean {
     return this._localPlayer.isVr();
-  }
-
-  public getVrTag(config: PluginsConfig): string | null {
-    const vrPlugin = config['vr'];
-    if (vrPlugin) {
-      return vrPlugin.tag ?? '360';
-    }
-    return null;
   }
 
   public toggleVrStereoMode(): void {
