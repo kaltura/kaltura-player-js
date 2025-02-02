@@ -492,10 +492,9 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.isInPictureInPicture();
   }
 
-  public _updatePlayerVrPluginIsOn(vrTag: string): void {
-    this._provider._updatePlayerVrPluginIsOn(vrTag);
+  public setVrTag(vrTag: string): void {
+    this._provider.setVrTag(vrTag);
   }
-
   public isPictureInPictureSupported(): boolean {
     return this._localPlayer.isPictureInPictureSupported();
   }
