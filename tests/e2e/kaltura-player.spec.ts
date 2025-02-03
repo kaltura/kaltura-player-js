@@ -251,14 +251,24 @@ describe('kaltura player api', () => {
               kalturaPlayer.shouldAddKs().should.equals(false);
             });
           });
-          describe('anonymous session', () => {
-            it('should return false for anonymous session when called without mediaConfig parameter', () => {
+          describe('session without ks', () => {
+            it('should return false for session without ks when called without mediaConfig parameter', () => {
               kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_wifqaipd']);
               kalturaPlayer.shouldAddKs().should.equals(false);
             });
-            it('should return false for anonymous session when called with mediaConfig parameter', () => {
+            it('should return false for session without ks when called with mediaConfig parameter', () => {
               kalturaPlayer.setMedia(mediaWithUserSession);
               kalturaPlayer.shouldAddKs(MediaMockData.MediaConfig['0_wifqaipd']).should.equals(false);
+            });
+          });
+          describe('session with ks', () => {
+            it('should return true for session with ks when called without mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(MediaMockData.MediaConfig['0_nwkp7jtx']);
+              kalturaPlayer.shouldAddKs().should.equals(true);
+            });
+            it('should return true for session with ks when called with mediaConfig parameter', () => {
+              kalturaPlayer.setMedia(mediaWithUserSession);
+              kalturaPlayer.shouldAddKs(MediaMockData.MediaConfig['0_nwkp7jtx']).should.equals(true);
             });
           });
           describe('user session', () => {

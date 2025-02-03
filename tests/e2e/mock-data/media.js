@@ -4,7 +4,7 @@ const MediaConfig = {
       isAnonymous: true,
       partnerId: 1091,
       uiConfId: 15215933,
-      ks: 'OGViNDhkZGI4ZTM1ODAzYWVhYTk0OTZlMzcwMmZmZjUzMjZkNGFkMnwxMDkxOzEwOTE7MTU0NDY5MTMwODswOzE1NDQ2MDQ5MDguNTg4NDswO3ZpZXc6Kix3aWRnZXQ6MTs7'
+      ks: ''
     },
     sources: {
       hls: [
