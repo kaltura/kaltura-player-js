@@ -293,7 +293,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
-    return !!(this.config?.provider?.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.isAnonymous === false);
+    return !!(this.config?.provider?.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.ks);
   }
 
   public getMediaInfo(): ProviderMediaInfoObject {
