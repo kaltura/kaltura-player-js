@@ -62,7 +62,7 @@
     "@babel/core": "^7.22.20",
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-typescript": "^7.22.15",
-    "@microsoft/api-extractor": "^7.38.0",
+    "@microsoft/api-extractor": "7.51.1",
     "@playkit-js/browserslist-config": "1.0.8",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
