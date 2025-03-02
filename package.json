@@ -54,7 +54,7 @@
     "@playkit-js/playkit-js-dash": "1.37.2-canary.0-e95bdb4",
     "@playkit-js/playkit-js-hls": "1.32.16",
     "@playkit-js/playkit-js-providers": "2.41.4",
-    "@playkit-js/playkit-js-ui": "0.80.3-canary.0-a94acd0",
+    "@playkit-js/playkit-js-ui": "0.80.3-canary.0-8543bf6",
     "hls.js": "^1.5.8",
     "shaka-player": "4.8.11"
   },
@@ -62,7 +62,7 @@
     "@babel/core": "^7.22.20",
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-typescript": "^7.22.15",
-    "@microsoft/api-extractor": "^7.38.0",
+    "@microsoft/api-extractor": "7.39.1",
     "@playkit-js/browserslist-config": "1.0.8",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",

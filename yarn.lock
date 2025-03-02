@@ -1108,7 +1108,7 @@
     "@microsoft/tsdoc-config" "~0.16.1"
     "@rushstack/node-core-library" "3.63.0"
 
-"@microsoft/api-extractor@^7.38.0":
+"@microsoft/api-extractor@7.39.1":
   version "7.39.1"
   resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.39.1.tgz#af14418c9ae26afa13fa79e4a3c6bded51f7d8e0"
   integrity sha512-V0HtCufWa8hZZvSmlEzQZfINcJkHAU/bmpyJQj6w+zpI87EkR8DuBOW6RWrO9c7mUYFZoDaNgUTyKo83ytv+QQ==
@@ -1187,10 +1187,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.41.4.tgz#2a87010175a900a619738dde39f844c4e887ae27"
   integrity sha512-XQYjk984/ch7ltU99VKV1/pXdZyzpM4uQTmaxrIp5ykWV+In9ouVEbCQ+95CrP6eAp7S/zjuCgrW58VxWD4pIA==
 
-"@playkit-js/playkit-js-ui@0.80.3-canary.0-a94acd0":
-  version "0.80.3-canary.0-a94acd0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.80.3-canary.0-a94acd0.tgz#62427c754b3e6d28136e005562620a0789555aee"
-  integrity sha512-5XYeXlX6p5m6uLvQWhBs82haIEeramDmRIqo8/gmVEKjoO+vdksQXHOfwBZWUTl5vUc4nEsWZ65RNVYWBic+5w==
+"@playkit-js/playkit-js-ui@0.80.3-canary.0-8543bf6":
+  version "0.80.3-canary.0-8543bf6"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.80.3-canary.0-8543bf6.tgz#67f2a6bcbc7b8c208964b3cb236c2d01ecc38b8c"
+  integrity sha512-v/Tv1SMB0LSNIPeaXjwVCwDoU31Zv9PyoVy9nQCsVs2jmKbBD4Z5w9B+pbScPOBy8RdinGP/wyvd/RWpxtTkVA==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.1-canary.0-fc299af"
     preact "10.4.6"
