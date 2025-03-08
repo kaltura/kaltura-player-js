@@ -15,7 +15,8 @@ import {
   setStorageTextStyle,
   supportLegacyOptions,
   validateConfig,
-  validateProviderConfig, maybeLoadInitialServerResponse
+  validateProviderConfig,
+  maybeLoadInitialServerResponse
 } from './common/utils/setup-helpers';
 import { PartialKPOptionsObject } from './types';
 
