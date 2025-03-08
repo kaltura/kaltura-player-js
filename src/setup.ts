@@ -32,8 +32,6 @@ function setup(options: PartialKPOptionsObject): KalturaPlayer {
   const defaultOptions = getDefaultOptions(options);
   validateProviderConfig(defaultOptions);
   setLogOptions(defaultOptions);
-  //add function that gets server version based on service admin action version
-
   maybeApplyStartTimeQueryParam(defaultOptions);
   maybeApplyClipQueryParams(defaultOptions);
   printSetupMessages();
