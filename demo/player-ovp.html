@@ -22,18 +22,8 @@
           env: {
             cdnUrl: 'https://cfvod.nvq2.ovp.kaltura.com',
             serviceUrl: 'https://api.nvq2.ovp.kaltura.com/api_v3',
-            overrideServiceUrl : 'https://cfvod.nvq2.ovp.kaltura.com/api_v3',
-            initCallToServer:    "/service/system/action/getversion"
           }
-        },
-        ui :{
-          hoverTimeout :777
-        },
-        playback: {
-          autoplay: true,
-          preload: "auto",
         }
-
       };
 
       const player = KalturaPlayer.setup(config);
