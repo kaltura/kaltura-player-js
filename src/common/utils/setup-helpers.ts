@@ -814,6 +814,19 @@ function mergeProviderPluginsConfig(providerPluginsConfig: PluginsConfig, appPlu
   return [mergePluginConfig, respectiveAppPluginsConfig];
 }
 
+function maybeLoadInitialServerResponse(player: KalturaPlayer): void {
+  const { serviceUrl, initCallToServer } = player.provider.env;
+  if (initCallToServer) {
+    const url = serviceUrl + initCallToServer + '/format/1';
+    fetch(url).then((response) => {
+      response.json().then((data) => {
+        getLogger().log(`Initial server response: ${data}`);
+      });
+    });
+  }
+  return;
+}
+
 export {
   printSetupMessages,
   supportLegacyOptions,
@@ -838,5 +851,6 @@ export {
   mergeProviderPluginsConfig,
   getServerUIConf,
   initializeStorageManagers,
+  maybeLoadInitialServerResponse,
   KALTURA_PLAYER_START_TIME_QS
 };
