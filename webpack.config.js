@@ -4,6 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const packageData = require('./package.json');
 const chalk = require('chalk');
 const TerserPlugin = require('terser-webpack-plugin');
+const {insertStylesWithNonce} = require('@playkit-js/webpack-common');
 
 module.exports = (env, { mode }) => {
   const { playerType } = env;
@@ -58,7 +59,20 @@ module.exports = (env, { mode }) => {
         },
         {
           test: /\.css$/i,
-          use: ['style-loader', 'css-loader']
+          use: [
+            {
+              loader: "style-loader",
+              options: {
+                attributes: {
+                  id: `${packageData.name}`
+                },
+                insert: insertStylesWithNonce
+              }
+            },
+            {
+              loader: "css-loader",
+            },
+          ]
         }
       ]
     },
