@@ -15,7 +15,8 @@ import {
   setStorageTextStyle,
   supportLegacyOptions,
   validateConfig,
-  validateProviderConfig
+  validateProviderConfig,
+  maybeLoadInitialServerResponse
 } from './common/utils/setup-helpers';
 import { PartialKPOptionsObject } from './types';
 
@@ -38,6 +39,7 @@ function setup(options: PartialKPOptionsObject): KalturaPlayer {
   initializeStorageManagers();
   setStorageConfig(defaultOptions);
   const player = getPlayerProxy(defaultOptions);
+  maybeLoadInitialServerResponse(player);
   setStorageTextStyle(player);
   applyStorageSupport(player);
   applyCastSupport(defaultOptions, player);
