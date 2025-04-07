@@ -41,9 +41,7 @@ class ThumbnailManager {
 
   private _buildClipData(mediaConfig: KPMediaConfig): ClipData {
     return {
-      // @ts-expect-error - seekFrom does not exist on KPMediaConfig
       seekFrom: mediaConfig.sources.seekFrom || Utils.Object.getPropertyPath(this._player.config.sources, 'seekFrom'),
-      // @ts-expect-error - clipTo does not exist on KPMediaConfig
       clipTo: mediaConfig.sources.clipTo || Utils.Object.getPropertyPath(this._player.config.sources, 'clipTo')
     };
   }
