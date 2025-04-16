@@ -6,6 +6,7 @@ import {
   attachToFirstClick,
   getDefaultOptions,
   maybeApplyStartTimeQueryParam,
+  maybeApplyEndTimeQueryParam,
   maybeApplyClipQueryParams,
   printKalturaPlayerVersionToLog,
   printSetupMessages,
@@ -34,6 +35,7 @@ function setup(options: PartialKPOptionsObject): KalturaPlayer {
   validateProviderConfig(defaultOptions);
   setLogOptions(defaultOptions);
   maybeApplyStartTimeQueryParam(defaultOptions);
+  maybeApplyEndTimeQueryParam(defaultOptions);
   maybeApplyClipQueryParams(defaultOptions);
   printSetupMessages();
   initializeStorageManagers();
