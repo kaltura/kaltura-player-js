@@ -1206,8 +1206,6 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._sessionIdCache;
   }
 
-  private _debugInfo = {};
-
   public get debugInfo(): any {
     const log = getLogBuffer();
     const referrer = getReferrer();
