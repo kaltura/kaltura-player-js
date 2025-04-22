@@ -11,7 +11,8 @@ import {
   setLogHandler,
   setLogLevel as _setLogLevel,
   ILogLevel,
-  PKSourcesConfigObject
+  PKSourcesConfigObject,
+  ILogHandler
 } from '@playkit-js/playkit-js';
 import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/types';
 import { ValidationErrorType } from './validation-error';
@@ -273,6 +274,15 @@ function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
   }
 }
 
+const logHandlers: Array<(messages: any[], context: object) => void> = [];
+let logBuffer = ''; //new Map<string, string>();
+
+const logHandler = (messages: any[], ctx: { name: string }) => {
+  logHandlers.forEach((handler: ILogHandler): void => {
+    handler(messages, { ...ctx, level: LogLevel.INFO });
+  });
+};
+
 /**
  * set the logger
  * @private
@@ -290,12 +300,28 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     Utils.Object.createPropertyPath(options, 'log', {});
   }
 
-  if (options.log && typeof options.log.handler === 'function') {
-    setLogHandler(options.log.handler);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    options.ui.log.handler = options.provider.log.handler = options.log.handler;
+  if (options.log && options.log.useDebugInfo) {
+    // log handler - console and buffer
+    logHandlers.push((messages, ctx) => {
+      const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
+      // when we use a handler, we have to explicitly print the message to console
+      console.log(message);
+
+      logBuffer += `${new Date().toLocaleString()} ${message} \n`;
+    });
   }
+
+  // log handler - custom
+  if (options.log && typeof options.log.handler === 'function') {
+    logHandlers.push(options.log.handler);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  setLogHandler(logHandler);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  options.ui.log.handler = options.provider.log.handler = logHandler;
 
   let logLevelObj: ILogLevel = LogLevel.ERROR;
   if (options.log && isDebugMode()) {
@@ -841,6 +867,10 @@ function maybeLoadInitialServerResponse(player: KalturaPlayer): void {
   return;
 }
 
+function getLogBuffer(): string {
+  return logBuffer;
+}
+
 export {
   printSetupMessages,
   supportLegacyOptions,
@@ -867,5 +897,6 @@ export {
   getServerUIConf,
   initializeStorageManagers,
   maybeLoadInitialServerResponse,
-  KALTURA_PLAYER_START_TIME_QS
+  KALTURA_PLAYER_START_TIME_QS,
+  getLogBuffer
 };
