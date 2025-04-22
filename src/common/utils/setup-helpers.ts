@@ -300,10 +300,11 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     Utils.Object.createPropertyPath(options, 'log', {});
   }
 
-  if (options.log && options.log.useDebugInfo) {
+  if (options.log && (options.log as any).useDebugInfo) {
     logHandlers.push((messages, ctx) => {
       const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
       // when we use a handler, we have to explicitly print the message to console
+      // eslint-disable-next-line no-console
       console.log(message);
 
       logBuffer += `${new Date().toLocaleString()} ${message} \n`;
