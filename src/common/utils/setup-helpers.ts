@@ -275,7 +275,7 @@ function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
 }
 
 const logHandlers: Array<(messages: any[], context: object) => void> = [];
-let logBuffer = ''; //new Map<string, string>();
+let logBuffer = '';
 
 const logHandler = (messages: any[], ctx: { name: string }) => {
   logHandlers.forEach((handler: ILogHandler): void => {
@@ -301,7 +301,6 @@ function setLogOptions(options: KalturaPlayerConfig): void {
   }
 
   if (options.log && options.log.useDebugInfo) {
-    // log handler - console and buffer
     logHandlers.push((messages, ctx) => {
       const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
       // when we use a handler, we have to explicitly print the message to console
@@ -311,7 +310,7 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     });
   }
 
-  // log handler - custom
+  // add custom log handlers
   if (options.log && typeof options.log.handler === 'function') {
     logHandlers.push(options.log.handler);
   }
