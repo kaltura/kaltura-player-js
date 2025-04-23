@@ -275,7 +275,8 @@ function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
 }
 
 const logHandlers: Array<(messages: any[], context: object) => void> = [];
-let logBuffer = '';
+const LOG_BUFFER_SIZE = 1000;
+const logBuffer: string[] = [];
 
 const logHandler = (messages: any[], ctx: { name: string }) => {
   logHandlers.forEach((handler: ILogHandler): void => {
@@ -307,7 +308,11 @@ function setLogOptions(options: KalturaPlayerConfig): void {
       // eslint-disable-next-line no-console
       console.log(message);
 
-      logBuffer += `${new Date().toLocaleString()} ${message} \n`;
+      if (logBuffer.length === LOG_BUFFER_SIZE) {
+        logBuffer.shift();
+      }
+
+      logBuffer.push(`${new Date().toLocaleString()} ${message} \n`);
     });
   }
 
@@ -868,7 +873,7 @@ function maybeLoadInitialServerResponse(player: KalturaPlayer): void {
 }
 
 function getLogBuffer(): string {
-  return logBuffer;
+  return logBuffer.join('');
 }
 
 export {
