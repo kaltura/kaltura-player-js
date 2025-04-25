@@ -10,6 +10,11 @@ const DefaultThumbnailConfig: any = {
   thumbsSlices: 100
 };
 
+type ClipData = {
+  seekFrom: number | undefined;
+  clipTo: number | undefined;
+};
+
 const THUMBNAIL_REGEX = /.*\/p\/\d+\/(?:[a-zA-Z]+\/\d+\/)*thumbnail\/entry_id\/\w+\/.*\d+/;
 const THUMBNAIL_SERVICE_TEMPLATE: string = '{{thumbnailUrl}}/width/{{thumbsWidth}}/vid_slices/{{thumbsSlices}}';
 
@@ -18,9 +23,11 @@ class ThumbnailManager {
   private _thumbnailConfig: KPThumbnailConfig;
   private _eventManager: EventManager;
   private _thumbsHeight!: number;
+  private _clipData: ClipData;
 
   constructor(player: KalturaPlayer, uiConfig: UiConfig, mediaConfig: KPMediaConfig) {
     this._player = player;
+    this._clipData = this._buildClipData(mediaConfig);
     this._thumbnailConfig = this._buildKalturaThumbnailConfig(uiConfig, mediaConfig);
     this._eventManager = new EventManager();
     if (this._isUsingKalturaThumbnail()) {
@@ -30,6 +37,13 @@ class ThumbnailManager {
       });
       img.src = this._thumbnailConfig?.thumbsSprite || '';
     }
+  }
+
+  private _buildClipData(mediaConfig: KPMediaConfig): ClipData {
+    return {
+      seekFrom: mediaConfig.sources.seekFrom || Utils.Object.getPropertyPath(this._player.config.sources, 'seekFrom'),
+      clipTo: mediaConfig.sources.clipTo || Utils.Object.getPropertyPath(this._player.config.sources, 'clipTo')
+    };
   }
 
   public destroy(): void {
@@ -83,14 +97,13 @@ class ThumbnailManager {
   };
 
   private _maybeCutThumbnail = (baseUrl: string): string => {
-    const seekFromConfig = Utils.Object.getPropertyPath(this._player.config.sources, 'seekFrom');
-    const clipToConfig = Utils.Object.getPropertyPath(this._player.config.sources, 'clipTo');
+    const { seekFrom, clipTo } = this._clipData;
     let url = baseUrl;
-    if (typeof seekFromConfig === 'number') {
-      url += `/start_sec/${seekFromConfig}`;
+    if (typeof seekFrom === 'number') {
+      url += `/start_sec/${seekFrom}`;
     }
-    if (typeof clipToConfig === 'number') {
-      url += `/end_sec/${clipToConfig}`;
+    if (typeof clipTo === 'number') {
+      url += `/end_sec/${clipTo}`;
     }
     return url;
   };

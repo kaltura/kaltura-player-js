@@ -29,6 +29,7 @@ const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
 const KALTURA_PLAYER_DEBUG_QS: string = 'debugKalturaPlayer';
 const KALTURA_PLAYER_START_TIME_QS: string = 'kalturaStartTime';
+const KALTURA_PLAYER_END_TIME_QS: string = 'kalturaEndTime';
 const KALTURA_PLAYER_CLIP_START_TIME_QS: string = 'kalturaSeekFrom';
 const KALTURA_PLAYER_CLIP_END_TIME_QS: string = 'kalturaClipTo';
 const KAVA_DEFAULT_PARTNER = 2504201;
@@ -239,6 +240,19 @@ function maybeApplyStartTimeQueryParam(options: KalturaPlayerConfig): void {
   const startTime = parseFloat(<string>getUrlParameter(KALTURA_PLAYER_START_TIME_QS));
   if (!isNaN(startTime)) {
     Utils.Object.createPropertyPath(options, 'sources.startTime', startTime);
+  }
+}
+
+/**
+ * get the parameter for end time
+ * @private
+ * @param {KalturaPlayerConfig} options - kaltura player options
+ * @returns {void}
+ */
+function maybeApplyEndTimeQueryParam(options: KalturaPlayerConfig): void {
+  const endTime = parseFloat(<string>getUrlParameter(KALTURA_PLAYER_END_TIME_QS));
+  if (!isNaN(endTime)) {
+    Utils.Object.createPropertyPath(options, 'sources.endTime', endTime);
   }
 }
 
@@ -840,6 +854,7 @@ export {
   validateProviderConfig,
   setLogOptions,
   maybeApplyStartTimeQueryParam,
+  maybeApplyEndTimeQueryParam,
   maybeApplyClipQueryParams,
   createKalturaPlayerContainer,
   checkNativeHlsSupport,
