@@ -9,7 +9,7 @@ const isSessionRestricted = (error: Error): boolean => error.data?.messages && e
 const isIPRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'IP_RESTRICTED';
 const isSitedRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SITE_RESTRICTED';
 const isScheduledRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SCHEDULED_RESTRICTED';
-const isAccessControlRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 14
+const isAccessControlRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 14;
 
 const isSessionRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSessionRestricted(error);
 const isGeolocationError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isGeolocationRestricted(error);
