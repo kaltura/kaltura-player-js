@@ -9,11 +9,13 @@ const isSessionRestricted = (error: Error): boolean => error.data?.messages && e
 const isIPRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'IP_RESTRICTED';
 const isSitedRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SITE_RESTRICTED';
 const isScheduledRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SCHEDULED_RESTRICTED';
+const isAccessControlRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 14
 
 const isSessionRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSessionRestricted(error);
 const isGeolocationError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isGeolocationRestricted(error);
 const isMediaNotReadyError = (error: Error): boolean => isBackEndError(error) && isMediaNotReady(error);
 const isIPRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isIPRestricted(error);
+const isAccessControlRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isAccessControlRestricted(error)
 const isSitedRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSitedRestricted(error);
 const isScheduledRestrictedError = (error: Error): boolean =>
   isBackEndError(error) && isScheduledRestrictedCode(error) && isScheduledRestricted(error);
@@ -24,7 +26,8 @@ const conditionsToErrors: any[] = [
   [isMediaNotReadyError, Error.Category.MEDIA_NOT_READY],
   [isIPRestrictedError, Error.Category.IP_RESTRICTED],
   [isScheduledRestrictedError, Error.Category.SCHEDULED_RESTRICTED],
-  [isSitedRestrictedError, Error.Category.SITE_RESTRICTED]
+  [isSitedRestrictedError, Error.Category.SITE_RESTRICTED],
+  [isAccessControlRestrictedError, Error.Category.ACCESS_CONTROL_BLOCKED]
 ];
 
 function getErrorCategory(error: Error): number {
