@@ -258,9 +258,9 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public clearReset() {
-    this._localPlayer._reset = false;
+    this._localPlayer.clearReset();
   }
-  
+
   public configure(config: Partial<KalturaPlayerConfig> = {}): void {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
