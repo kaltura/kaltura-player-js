@@ -127,7 +127,7 @@ class PlaylistManager {
    */
   public playNext(playlistGotError: Boolean = false): void {
     if(playlistGotError) {
-      this._player.setLocalPlayerReset(false);
+      this._player.clearReset()
     }
     PlaylistManager._logger.debug('playNext');
     const next = this._playlist.getNext(true);
