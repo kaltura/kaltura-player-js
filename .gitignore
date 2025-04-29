@@ -1,6 +1,5 @@
 dist
 lib/
-demo/
 node_modules
 *.log
 types/
