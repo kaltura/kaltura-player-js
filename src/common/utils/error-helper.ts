@@ -15,7 +15,7 @@ const isSessionRestrictedError = (error: Error): boolean => isBackEndError(error
 const isGeolocationError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isGeolocationRestricted(error);
 const isMediaNotReadyError = (error: Error): boolean => isBackEndError(error) && isMediaNotReady(error);
 const isIPRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isIPRestricted(error);
-const isAccessControlRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isAccessControlRestricted(error)
+const isAccessControlRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isAccessControlRestricted(error);
 const isSitedRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSitedRestricted(error);
 const isScheduledRestrictedError = (error: Error): boolean =>
   isBackEndError(error) && isScheduledRestrictedCode(error) && isScheduledRestricted(error);
