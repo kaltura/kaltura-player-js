@@ -1172,10 +1172,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/browserslist-config/-/browserslist-config-1.0.8.tgz#735256ba560063d397d4b8776acb865e8697a287"
   integrity sha512-BeiDM72c6GP8dZ6b2qScEpxT4sGECIJzjVGsanaTvXeFOkw3MoplAyz6HPKdrcLmidcinSl4yna5Yc9/ObwZow==
 
-"@playkit-js/playkit-js-dash@1.39.0-canary.0-6f31c93":
-  version "1.39.0-canary.0-6f31c93"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.39.0-canary.0-6f31c93.tgz#561f910eb5fe9df979451fd1f1d583bb110bb39f"
-  integrity sha512-eniQNB8BFOis+HyClw7KokF24TRrJtqY1E6SwCceBe1CmT33tBeZpVLNazPuPioiWImqHNsqQQEcthBDUuUleA==
+"@playkit-js/playkit-js-dash@1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.38.0.tgz#ea380e7ba486c013f9a694407a47d17fe4b3aaca"
+  integrity sha512-zpqUnsoNkyQjv3xQWMKFZUvLCZ4zfCEwx8uVwoovwAP58YFV1PY2qWeo1Vj/ulfXdMPWkMmACKWEManBz1HVZg==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.3"
 
@@ -1189,10 +1189,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.42.1-canary.0-476be37.tgz#f2155d6f8a3bbbace97566ea2280db0241a13a4d"
   integrity sha512-TwhMXZ5SMj3l2ZQrow7cnetT/v0C9omzzLGaGrTtWILO1oLWo1E+++4MlkxIQAiPKl7srUP0IoyOq7XDDfiHmA==
 
-"@playkit-js/playkit-js-ui@0.81.4-canary.0-ef15c02":
-  version "0.81.4-canary.0-ef15c02"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.81.4-canary.0-ef15c02.tgz#796fd2d57052dec458d997e000f8b5b6b0057dd4"
-  integrity sha512-Pd8H3WEV4qts1EVva2PIP5yRTH7bW/gnBPuh7dehzCHeIyMBr5ouchzlIW1bisUiV1AvEsmNrLZZFrfIvg9bIA==
+"@playkit-js/playkit-js-ui@^0.82.0-canary.0-69e8555":
+  version "0.82.0-canary.0-69e8555"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.82.0-canary.0-69e8555.tgz#21e25a025ff933a01e02ed7924f4ba241d463325"
+  integrity sha512-8AvCoqNVZlGJpW4zf8A2E/vfr+a2qoqowmZWo7RG63ut/O8VHwG3Id0k9jgiyInvbIzVl1PRbY7ytE7s5LIoEg==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.1-canary.0-dfd24a9"
     preact "10.4.6"
