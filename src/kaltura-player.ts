@@ -1207,7 +1207,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public get debugInfo(): any {
-    if (!this.config.log?.useDebugInfo) return null;
+    if (this.config.log?.useDebugInfo === false) return null;
 
     const log = getLogBuffer();
     const referrer = getReferrer();

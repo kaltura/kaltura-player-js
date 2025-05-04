@@ -301,7 +301,7 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     Utils.Object.createPropertyPath(options, 'log', {});
   }
 
-  if (options.log && (options.log as any).useDebugInfo) {
+  if (!options.log || (options.log as any).useDebugInfo !== false) {
     logHandlers.push((messages, ctx) => {
       const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
       // when we use a handler, we have to explicitly print the message to console
