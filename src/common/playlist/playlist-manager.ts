@@ -125,7 +125,7 @@ class PlaylistManager {
    * @instance
    * @memberof PlaylistManager
    */
-  public playNext(playlistGotError: Boolean = false): void {
+  public playNext(playlistGotError: boolean = false): void {
     if (playlistGotError) {
       this._player.clearReset();
     }

@@ -257,7 +257,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
-  public clearReset() {
+  public clearReset(): void {
     this._localPlayer.clearReset();
   }
 
