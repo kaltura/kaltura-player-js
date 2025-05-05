@@ -258,6 +258,10 @@ export class KalturaPlayer extends FakeEventTarget {
     this._playlistManager.load(playlistData, playlistConfig, entryList);
   }
 
+  public clearReset(): void {
+    this._localPlayer.clearReset();
+  }
+
   public configure(config: Partial<KalturaPlayerConfig> = {}): void {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

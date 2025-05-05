@@ -125,7 +125,10 @@ class PlaylistManager {
    * @instance
    * @memberof PlaylistManager
    */
-  public playNext(): void {
+  public playNext(playlistGotError: boolean = false): void {
+    if (playlistGotError) {
+      this._player.clearReset();
+    }
     PlaylistManager._logger.debug('playNext');
     const next = this._playlist.getNext(true);
     if (next) {
