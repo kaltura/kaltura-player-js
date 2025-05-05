@@ -57,10 +57,11 @@ import {
   hasYoutubeSource,
   maybeSetStreamPriority,
   mergeProviderPluginsConfig,
-  supportLegacyOptions
+  supportLegacyOptions,
+  getLogBuffer
 } from './common/utils/setup-helpers';
 import { getDefaultRedirectOptions } from 'player-defaults';
-import { addKalturaParams, getOriginalRequestReferrer } from './common/utils/kaltura-params';
+import { addKalturaParams, getOriginalRequestReferrer, getReferrer } from './common/utils/kaltura-params';
 import { addKalturaPoster } from 'poster';
 import { RemoteSession } from './common/cast/remote-session';
 import getMediaCapabilities from './common/utils/media-capabilities';
@@ -1207,6 +1208,27 @@ export class KalturaPlayer extends FakeEventTarget {
 
   public get sessionIdCache(): SessionIdCache | null {
     return this._sessionIdCache;
+  }
+
+  public get debugInfo(): any {
+    if (!this.config.log?.useDebugInfo) return null;
+
+    const log = getLogBuffer();
+    const referrer = getReferrer();
+
+    return {
+      embedUrl: window.location.href,
+      userAgent: navigator.userAgent,
+      referrer,
+      targetId: this.config.targetId,
+      playerVersion: (window as any).KalturaPlayer?.VERSION,
+      partnerId: this.config.provider?.partnerId,
+      entryId: this.sources.id,
+      playlistId: this.playlist?.id,
+      manifestUrl: this.selectedSource?.url,
+      plugins: [...Object.keys(this.plugins)],
+      log
+    };
   }
 
   private handleSourcesTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined): void {
