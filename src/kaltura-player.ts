@@ -109,6 +109,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _isVisible: boolean = false;
   private _autoPaused: boolean = false;
   private _sessionIdCache: SessionIdCache | null = null;
+  private _isV2ToV7Redirected: boolean = false;
 
   constructor(options: KalturaPlayerConfig) {
     super();
@@ -1229,6 +1230,14 @@ export class KalturaPlayer extends FakeEventTarget {
       plugins: [...Object.keys(this.plugins)],
       log
     };
+  }
+
+  public get isV2ToV7Redirected(): boolean {
+    return this._isV2ToV7Redirected;
+  }
+
+  public set isV2ToV7Redirected(isV2ToV7Redirected: boolean) {
+    this._isV2ToV7Redirected = isV2ToV7Redirected;
   }
 
   private handleSourcesTimeRangeUpdate(seekFrom: number | undefined, clipTo: number | undefined): void {
