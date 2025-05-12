@@ -291,6 +291,21 @@ const logHandler = (messages: any[], ctx: { name: string }) => {
  * @returns {void}
  */
 function setLogOptions(options: KalturaPlayerConfig): void {
+  function getFormattedMessage(messages: any[], ctx: any): string {
+    const messagesStr = [...messages]
+      .map((msg) => {
+        try {
+          // stringify objects, but protect against circular references errors
+          return typeof msg === 'string' ? msg : JSON.stringify(msg);
+        } catch (e) {
+          return msg;
+        }
+      })
+      .join(' ');
+
+    return `[${(ctx as { name: string }).name}] ${messagesStr}`;
+  }
+
   if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
     Utils.Object.createPropertyPath(options, 'ui.log', {});
   }
@@ -302,15 +317,14 @@ function setLogOptions(options: KalturaPlayerConfig): void {
   }
 
   logHandlers.push((messages, ctx) => {
-    const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
     // when we use a handler, we have to explicitly print the message to console
     // eslint-disable-next-line no-console
-    console.log(message);
+    console.log(getFormattedMessage(messages, ctx));
   });
 
   if (options.log && (options.log as any).useDebugInfo) {
     logHandlers.push((messages, ctx) => {
-      const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
+      const message = getFormattedMessage(messages, ctx);
 
       if (logBuffer.length === LOG_BUFFER_SIZE) {
         logBuffer.shift();
