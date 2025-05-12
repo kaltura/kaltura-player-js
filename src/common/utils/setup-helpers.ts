@@ -295,7 +295,7 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     const messagesStr = [...messages]
       .map((msg) => {
         try {
-          // stringify objects, but protect against circular reference errors
+          // stringify objects, but protect against errors (e.g. circular references)
           return typeof msg === 'string' ? msg : JSON.stringify(msg);
         } catch (e) {
           return msg;
