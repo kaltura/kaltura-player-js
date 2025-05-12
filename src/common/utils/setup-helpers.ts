@@ -301,12 +301,16 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     Utils.Object.createPropertyPath(options, 'log', {});
   }
 
+  logHandlers.push((messages, ctx) => {
+    const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
+    // when we use a handler, we have to explicitly print the message to console
+    // eslint-disable-next-line no-console
+    console.log(message);
+  });
+
   if (options.log && (options.log as any).useDebugInfo) {
     logHandlers.push((messages, ctx) => {
       const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
-      // when we use a handler, we have to explicitly print the message to console
-      // eslint-disable-next-line no-console
-      console.log(message);
 
       if (logBuffer.length === LOG_BUFFER_SIZE) {
         logBuffer.shift();
@@ -314,15 +318,7 @@ function setLogOptions(options: KalturaPlayerConfig): void {
 
       logBuffer.push(`${new Date().toLocaleString()} ${message} \n`);
     });
-  } else {
-    logHandlers.push((messages, ctx) => {
-      const message = `[${(ctx as { name: string }).name}] ${[...messages].join(' ')}`;
-      // when we use a handler, we have to explicitly print the message to console
-      // eslint-disable-next-line no-console
-      console.log(message);
-    });
   }
-
   // add custom log handlers
   if (options.log && typeof options.log.handler === 'function') {
     logHandlers.push(options.log.handler);
