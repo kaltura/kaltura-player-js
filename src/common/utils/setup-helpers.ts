@@ -11,8 +11,7 @@ import {
   setLogHandler,
   setLogLevel as _setLogLevel,
   ILogLevel,
-  PKSourcesConfigObject,
-  ILogHandler
+  PKSourcesConfigObject
 } from '@playkit-js/playkit-js';
 import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/types';
 import { ValidationErrorType } from './validation-error';
@@ -274,16 +273,6 @@ function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
   }
 }
 
-const logHandlers: Array<(messages: any[], context: object) => void> = [];
-const LOG_BUFFER_SIZE = 1000;
-const logBuffer: string[] = [];
-
-const logHandler = (messages: any[], ctx: { name: string }) => {
-  logHandlers.forEach((handler: ILogHandler): void => {
-    handler(messages, { ...ctx, level: LogLevel.INFO });
-  });
-};
-
 /**
  * set the logger
  * @private
@@ -291,21 +280,6 @@ const logHandler = (messages: any[], ctx: { name: string }) => {
  * @returns {void}
  */
 function setLogOptions(options: KalturaPlayerConfig): void {
-  function getFormattedMessage(messages: any[], ctx: any): string {
-    const messagesStr = [...messages]
-      .map((msg) => {
-        try {
-          // stringify objects, but protect against errors (e.g. circular references)
-          return typeof msg === 'string' ? msg : JSON.stringify(msg);
-        } catch (e) {
-          return msg;
-        }
-      })
-      .join(' ');
-
-    return `[${(ctx as { name: string }).name}] ${messagesStr}`;
-  }
-
   if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
     Utils.Object.createPropertyPath(options, 'ui.log', {});
   }
@@ -316,34 +290,12 @@ function setLogOptions(options: KalturaPlayerConfig): void {
     Utils.Object.createPropertyPath(options, 'log', {});
   }
 
-  logHandlers.push((messages, ctx) => {
-    // when we use a handler, we have to explicitly print the message to console
-    // eslint-disable-next-line no-console
-    console.log(getFormattedMessage(messages, ctx));
-  });
-
-  if (options.log && (options.log as any).useDebugInfo) {
-    logHandlers.push((messages, ctx) => {
-      const message = getFormattedMessage(messages, ctx);
-
-      if (logBuffer.length === LOG_BUFFER_SIZE) {
-        logBuffer.shift();
-      }
-
-      logBuffer.push(`${new Date().toLocaleString()} ${message} \n`);
-    });
-  }
-  // add custom log handlers
   if (options.log && typeof options.log.handler === 'function') {
-    logHandlers.push(options.log.handler);
+    setLogHandler(options.log.handler);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    options.ui.log.handler = options.provider.log.handler = options.log.handler;
   }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  setLogHandler(logHandler);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  options.ui.log.handler = options.provider.log.handler = logHandler;
 
   let logLevelObj: ILogLevel = LogLevel.ERROR;
   if (options.log && isDebugMode()) {
@@ -890,7 +842,8 @@ function maybeLoadInitialServerResponse(player: KalturaPlayer): void {
 }
 
 function getLogBuffer(): string {
-  return logBuffer.join('');
+  // TODO restore later
+  return '';
 }
 
 export {
