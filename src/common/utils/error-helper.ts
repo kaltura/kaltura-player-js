@@ -17,15 +17,16 @@ const isIPRestrictedError = (error: Error): boolean => isBackEndError(error) && 
 const isSitedRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSitedRestricted(error);
 const isScheduledRestrictedError = (error: Error): boolean =>
   isBackEndError(error) && isScheduledRestrictedCode(error) && isScheduledRestricted(error);
-const isAccessControlRestrictedError = (error: Error): boolean => { return (
-  isBackEndError(error) &&
-  isBlockAction(error) &&
-  !isGeolocationRestricted(error) &&
-  !isSessionRestricted(error) &&
-  !isIPRestricted(error) &&
-  !isSitedRestricted(error) &&
-  !isScheduledRestricted(error)
-);
+const isAccessControlRestrictedError = (error: Error): boolean => {
+  return (
+    isBackEndError(error) &&
+    isBlockAction(error) &&
+    !isGeolocationRestricted(error) &&
+    !isSessionRestricted(error) &&
+    !isIPRestricted(error) &&
+    !isSitedRestricted(error) &&
+    !isScheduledRestricted(error)
+  );
 };
 
 const conditionsToErrors: any[] = [
