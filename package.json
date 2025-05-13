@@ -105,11 +105,5 @@
     "scripts": {
       "precommit": "tmp=$(yarn run build:ovp && yarn run build:ott)"
     }
-  },
-  "kaltura": {
-    "name": "kaltura-player-js",
-    "dependencies": {
-      "playkit-clip-to-parent": "0.0.2-canary.0-6db12d9"
-    }
   }
 }
