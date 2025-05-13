@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.17.47 (2025-05-13)
+
+
+### Bug Fixes
+
+* **FEC-14479:** Revert debugInfo log handler ([633bd76](https://github.com/kaltura/kaltura-player-js/commit/633bd76bdab022f06795ac4ecec77613bb5add4b)), closes [/github.com/kaltura/kaltura-player-js/commit/349a917df334e6c466a116c1b030c203dea62295#diff-512652c4c402aacf383ebc385a9f5685566ac2941bb611ae9761edc51c342e62L294](https://github.com/kaltura//github.com/kaltura/kaltura-player-js/commit/349a917df334e6c466a116c1b030c203dea62295/issues/diff-512652c4c402aacf383ebc385a9f5685566ac2941bb611ae9761edc51c342e62L294)
+
 ### 3.17.46 (2025-05-11)
 
 ### 3.17.45 (2025-04-24)
