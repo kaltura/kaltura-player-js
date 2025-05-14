@@ -11,6 +11,7 @@ import {
   setLogHandler,
   setLogLevel as _setLogLevel,
   ILogLevel,
+  ILogHandler,
   PKSourcesConfigObject
 } from '@playkit-js/playkit-js';
 import { ProviderOptionsObject } from '@playkit-js/playkit-js-providers/types';
@@ -37,6 +38,16 @@ const KAVA_DEFAULT_PARTNER = 2504201;
 const KAVA_DEFAULT_IMPRESSION = `https://analytics.kaltura.com/api_v3/index.php?service=analytics&action=trackEvent&apiVersion=3.3.0&format=1&eventType=1&partnerId=${KAVA_DEFAULT_PARTNER}&entryId=1_3bwzbc9o&&eventIndex=1&position=0`;
 
 declare let __CONFIG_DOCS_URL__: string;
+
+const logHandlers: Array<(messages: any[], context: object) => void> = [];
+const LOG_BUFFER_SIZE = 1000;
+const logBuffer: string[] = [];
+
+const logHandler = (messages: any[], ctx: { name: string }) => {
+  logHandlers.forEach((handler: ILogHandler): void => {
+    handler(messages, { ...ctx, level: LogLevel.INFO });
+  });
+};
 
 /**
  * Validate the initial user config.
@@ -280,6 +291,21 @@ function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function setLogOptions(options: KalturaPlayerConfig): void {
+  function getFormattedMessage(messages: any[], ctx: any): string {
+    const messagesStr = [...messages]
+      .map((msg) => {
+        try {
+          // stringify objects, but protect against errors (e.g. circular references)
+          return typeof msg === 'string' ? msg : JSON.stringify(msg);
+        } catch (e) {
+          return msg;
+        }
+      })
+      .join(' ');
+
+    return `[${(ctx as { name: string }).name}] ${messagesStr}`;
+  }
+
   if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
     Utils.Object.createPropertyPath(options, 'ui.log', {});
   }
@@ -289,13 +315,38 @@ function setLogOptions(options: KalturaPlayerConfig): void {
   if (!Utils.Object.getPropertyPath(options, 'log')) {
     Utils.Object.createPropertyPath(options, 'log', {});
   }
-
-  if (options.log && typeof options.log.handler === 'function') {
-    setLogHandler(options.log.handler);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    options.ui.log.handler = options.provider.log.handler = options.log.handler;
+  if (Utils.Object.getPropertyPath(options, 'log.useDebugInfo') === undefined) {
+    options.log!.useDebugInfo = true;
   }
+
+  logHandlers.push((messages, ctx) => {
+    // when we use a handler, we have to explicitly print the message to console
+    // eslint-disable-next-line no-console
+    console.log(getFormattedMessage(messages, ctx));
+  });
+
+  if (options.log && (options.log as any).useDebugInfo) {
+    logHandlers.push((messages, ctx) => {
+      const message = getFormattedMessage(messages, ctx);
+
+      if (logBuffer.length === LOG_BUFFER_SIZE) {
+        logBuffer.shift();
+      }
+
+      logBuffer.push(`${new Date().toLocaleString()} ${message} \n`);
+    });
+  }
+  // add custom log handlers
+  if (options.log && typeof options.log.handler === 'function') {
+    logHandlers.push(options.log.handler);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  setLogHandler(logHandler);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  options.ui.log.handler = options.provider.log.handler = logHandler;
 
   let logLevelObj: ILogLevel = LogLevel.ERROR;
   if (options.log && isDebugMode()) {
@@ -842,8 +893,7 @@ function maybeLoadInitialServerResponse(player: KalturaPlayer): void {
 }
 
 function getLogBuffer(): string {
-  // TODO restore later
-  return '';
+  return logBuffer.join('');
 }
 
 export {
