@@ -57,7 +57,7 @@
     "@playkit-js/playkit-js-ui": "0.81.5-canary.0-e0b73e3",
     "@playkit-js/webpack-common": "^1.0.3",
     "hls.js": "^1.5.8",
-    "shaka-player": "4.8.11"
+    "shaka-player": "4.14.9"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",
