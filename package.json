@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.27",
-    "@playkit-js/playkit-js-dash": "1.39.0",
+    "@playkit-js/playkit-js-dash": "^1.39.1-canary.0-86ce61b",
     "@playkit-js/playkit-js-hls": "1.32.17",
     "@playkit-js/playkit-js-providers": "2.43.0-canary.0-cd2217f",
     "@playkit-js/playkit-js-ui": "0.81.5-canary.0-e0b73e3",
