@@ -53,27 +53,18 @@ export default class LocalStorageManager extends BaseStorageManager {
       this.setItem(this.StorageKeys.AUDIO_LANG, audioTrack.language);
     });
 
-    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, (event) => {
-      const textTrack = event.payload.captionTrack;
-      if (textTrack.language !== 'off') {
-        this.setItem(this.StorageKeys.TEXT_LANG, textTrack.language);
-        this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
-      } else {
-        this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
-      }
-    });
-
-    const onToggleCaptions = (selectedTextTrack): any => {
-      if (selectedTextTrack.language !== 'off') {
-        this.setItem(this.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+    const onToggleCaptions = (language): any => {
+      if (language && language !== 'off') {
+        this.setItem(this.StorageKeys.TEXT_LANG, language);
         this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
       } else {
         this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
       }
     };
 
-    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, () => onToggleCaptions(player.getActiveTracks()[player.Track.TEXT]));
-    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, () => onToggleCaptions({ language: 'off' }));
+    eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTION_TRACK, ({ payload }) => onToggleCaptions(payload.captionTrack?.language));
+    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, ({ payload }) => onToggleCaptions(payload.language));
+    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, () => onToggleCaptions('off'));
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
       try {
