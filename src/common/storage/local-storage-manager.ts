@@ -63,20 +63,17 @@ export default class LocalStorageManager extends BaseStorageManager {
       }
     });
 
-    const onToggleCaptions = (): any => {
-      eventManager.listenOnce(player, player.Event.Core.TEXT_TRACK_CHANGED, (event) => {
-        const { selectedTextTrack } = event.payload;
-        if (selectedTextTrack.language !== 'off') {
-          this.setItem(this.StorageKeys.TEXT_LANG, selectedTextTrack.language);
-          this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
-        } else {
-          this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
-        }
-      });
+    const onToggleCaptions = (selectedTextTrack): any => {
+      if (selectedTextTrack.language !== 'off') {
+        this.setItem(this.StorageKeys.TEXT_LANG, selectedTextTrack.language);
+        this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, true);
+      } else {
+        this.setItem(this.StorageKeys.CAPTIONS_DISPLAY, false);
+      }
     };
 
-    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, onToggleCaptions);
-    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, onToggleCaptions);
+    eventManager.listen(player, player.Event.UI.USER_SHOWED_CAPTIONS, () => onToggleCaptions(player.getActiveTracks()[player.Track.TEXT]));
+    eventManager.listen(player, player.Event.UI.USER_HID_CAPTIONS, () => onToggleCaptions({ language: 'off' }));
 
     eventManager.listen(player, player.Event.UI.USER_SELECTED_CAPTIONS_STYLE, (event) => {
       try {
