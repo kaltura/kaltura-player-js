@@ -79,7 +79,7 @@ import {
 } from './types';
 import { getErrorCategory, isDRMError } from './common/utils/error-helper';
 import { SessionIdCache } from './common/utils/session-id-cache';
-import { FallbackSourceUtils } from './common/utils/fallback-sources-utils';
+import { FallbackSourcesUtils } from './common/utils/fallback-sources-utils';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -913,11 +913,10 @@ export class KalturaPlayer extends FakeEventTarget {
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
       if (isDRMError(event.payload)) {
-        //debugger;
         // TODO move this to setMedia probably, we want fallback sources to not be playable
-        const { fallbackSources } = FallbackSourceUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
+        const { fallbackSources } = FallbackSourcesUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
 
-        const matchingFallbackSources = FallbackSourceUtils.getMatchingFallbackSources(
+        const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
           this._sourceSelected,
           fallbackSources,
           this.config.playback.fallbackSourcesOptions
