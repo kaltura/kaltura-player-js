@@ -77,8 +77,9 @@ import {
   HEVCConfigObject,
   MediaCapabilitiesObject
 } from './types';
-import getErrorCategory from './common/utils/error-helper';
+import { getErrorCategory, isDRMError } from './common/utils/error-helper';
 import { SessionIdCache } from './common/utils/session-id-cache';
+import { FallbackSourcesUtils } from './common/utils/fallback-sources-utils';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -911,7 +912,30 @@ export class KalturaPlayer extends FakeEventTarget {
       });
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
-      if (event.payload.severity === Error.Severity.CRITICAL) {
+      if (isDRMError(event.payload)) {
+        // TODO move this to setMedia probably, we want fallback sources to not be playable
+        const { fallbackSources } = FallbackSourcesUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
+
+        const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
+          this._sourceSelected,
+          fallbackSources,
+          this.config.playback.fallbackSourcesOptions
+        );
+        if (matchingFallbackSources) {
+          this.reset();
+
+          // TODO what do we need to wait for ?
+          setTimeout(() => {
+            this.setMedia({
+              sources: matchingFallbackSources,
+              autopause: false,
+              loop: false,
+              enableCachedUrls: false
+            });
+            this.play();
+          }, 1000);
+        }
+      } else if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
       }
     });
