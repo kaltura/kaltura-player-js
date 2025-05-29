@@ -913,18 +913,22 @@ export class KalturaPlayer extends FakeEventTarget {
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
       if (isDRMError(event.payload)) {
-        const fallbackSource = FallbackSourceUtils.matchSourceToFallback(
+        //debugger;
+        // TODO move this to setMedia probably, we want fallback sources to not be playable
+        const { fallbackSources } = FallbackSourceUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
+
+        const matchingFallbackSources = FallbackSourceUtils.getMatchingFallbackSources(
           this._sourceSelected,
-          this.sources,
+          fallbackSources,
           this.config.playback.fallbackSourcesOptions
         );
-        if (fallbackSource) {
+        if (matchingFallbackSources) {
           this.reset();
 
           // TODO what do we need to wait for ?
           setTimeout(() => {
             this.setMedia({
-              sources: fallbackSource,
+              sources: matchingFallbackSources,
               autopause: false,
               loop: false,
               enableCachedUrls: false
