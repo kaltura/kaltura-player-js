@@ -932,6 +932,7 @@ export class KalturaPlayer extends FakeEventTarget {
               loop: false,
               enableCachedUrls: false
             });
+            this.play();
           }, 1000);
         }
       } else if (event.payload.severity === Error.Severity.CRITICAL) {
