@@ -77,8 +77,9 @@ import {
   HEVCConfigObject,
   MediaCapabilitiesObject
 } from './types';
-import getErrorCategory from './common/utils/error-helper';
+import { getErrorCategory, isDRMError } from './common/utils/error-helper';
 import { SessionIdCache } from './common/utils/session-id-cache';
+import { FallbackSourceUtils } from './common/utils/fallback-sources-utils';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -911,7 +912,26 @@ export class KalturaPlayer extends FakeEventTarget {
       });
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
-      if (event.payload.severity === Error.Severity.CRITICAL) {
+      if (isDRMError(event.payload)) {
+        const fallbackSource = FallbackSourceUtils.matchSourceToFallback(
+          this._sourceSelected,
+          this.sources,
+          this.config.playback.fallbackSourcesOptions
+        );
+        if (fallbackSource) {
+          this.reset();
+
+          // TODO what do we need to wait for ?
+          setTimeout(() => {
+            this.setMedia({
+              sources: fallbackSource,
+              autopause: false,
+              loop: false,
+              enableCachedUrls: false
+            });
+          }, 1000);
+        }
+      } else if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
       }
     });
