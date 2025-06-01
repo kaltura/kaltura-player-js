@@ -6,8 +6,8 @@ export interface FallbackSourceOption {
 }
 
 export interface PlaybackConfig extends PKPlaybackConfigObject {
-  autopause?: boolean;
-  loop?: boolean;
-  enableCachedUrls?: boolean;
+  autopause: boolean;
+  loop: boolean;
+  enableCachedUrls: boolean;
   fallbackSourcesOptions?: FallbackSourceOption[];
 }
