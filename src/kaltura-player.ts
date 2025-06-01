@@ -189,12 +189,15 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public setMedia(mediaConfig: KPMediaConfig): void {
-    const { fallbackSources, nonFallbackSources } = FallbackSourcesUtils.splitSources(
-      mediaConfig.sources,
-      this.config.playback.fallbackSourcesOptions
-    );
-    mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, nonFallbackSources);
-    this._fallbackSources = Utils.Object.mergeDeep(mediaConfig.sources, fallbackSources);
+    // TODO test config not being set
+    if (this.config.sources?.fallbackSourcesOptions) {
+      const { fallbackSources, nonFallbackSources } = FallbackSourcesUtils.splitSources(
+        mediaConfig.sources,
+        this.config.sources.fallbackSourcesOptions
+      );
+      mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, nonFallbackSources);
+      this._fallbackSources = Utils.Object.mergeDeep(mediaConfig.sources, fallbackSources);
+    }
 
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset(true);
@@ -926,7 +929,7 @@ export class KalturaPlayer extends FakeEventTarget {
         const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
           this._sourceSelected,
           this._fallbackSources,
-          this.config.playback.fallbackSourcesOptions
+          this.config.sources.fallbackSourcesOptions
         );
         if (matchingFallbackSources) {
           this.reset();
