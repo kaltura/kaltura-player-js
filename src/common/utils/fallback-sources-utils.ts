@@ -84,15 +84,19 @@ class FallbackSourcesUtils {
    * @returns The matching fallback source or null if none found.
    */
   public static getMatchingFallbackSources(selectedSource: any, fallbackSources: any, fallbackConfig: any = []): any | null {
+    const result = {};
+    for (const format in this.FORMATS) {
+      result[format] = [];
+    }
+
     for (const { fromSource, toSource } of fallbackConfig) {
       // Check if the from (current) source matches the condition
       if (fallbackSources[toSource.format] && this.sourceMatches(selectedSource, fromSource)) {
         for (const source of fallbackSources[toSource.format]) {
           // Check if the to (target) source matches the condition
           if (this.sourceMatches(source, toSource)) {
-            return {
-              [toSource.format]: [source]
-            };
+            result[toSource.format] = [source];
+            return result;
           }
         }
       }

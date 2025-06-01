@@ -189,14 +189,13 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public setMedia(mediaConfig: KPMediaConfig): void {
-    // TODO test config not being set
-    if (this.config.playback.fallbackSourcesOptions) {
+    if (this.config.playback.fallbackSourcesOptions?.length && !this._fallbackSources) {
       const { fallbackSources, nonFallbackSources } = FallbackSourcesUtils.splitSources(
         mediaConfig.sources,
         this.config.playback.fallbackSourcesOptions
       );
       mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, nonFallbackSources);
-      this._fallbackSources = Utils.Object.mergeDeep(mediaConfig.sources, fallbackSources);
+      this._fallbackSources = fallbackSources;
     }
 
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
@@ -926,26 +925,26 @@ export class KalturaPlayer extends FakeEventTarget {
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
       if (isDRMError(event.payload)) {
-        const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
-          this._sourceSelected,
-          this._fallbackSources,
-          this.config.playback.fallbackSourcesOptions
-        );
-        if (matchingFallbackSources) {
-          this.reset();
-
-          this.setMedia({
-            sources: matchingFallbackSources,
-            autopause: false,
-            loop: false,
-            enableCachedUrls: false
-          });
-          this.play();
-        }
+        this._loadFallbackSources();
       } else if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
       }
     });
+  }
+
+  private _loadFallbackSources(): void {
+    const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
+      this._sourceSelected,
+      this._fallbackSources,
+      this.config.playback.fallbackSourcesOptions
+    );
+    if (matchingFallbackSources) {
+      const sources = Utils.Object.mergeDeep({}, this._localPlayer.sources, matchingFallbackSources);
+      this.setMedia({
+        sources
+      });
+      this.play();
+    }
   }
 
   private _onChangeSourceEnded(): void {
