@@ -85,8 +85,10 @@ class FallbackSourcesUtils {
    */
   public static getMatchingFallbackSources(selectedSource: any, fallbackSources: any, fallbackConfig: any = []): any | null {
     for (const { fromSource, toSource } of fallbackConfig) {
+      // Check if the from (current) source matches the condition
       if (fallbackSources[toSource.format] && this.sourceMatches(selectedSource, fromSource)) {
         for (const source of fallbackSources[toSource.format]) {
+          // Check if the to (target) source matches the condition
           if (this.sourceMatches(source, toSource)) {
             return {
               [toSource.format]: [source]
