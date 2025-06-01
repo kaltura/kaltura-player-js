@@ -173,7 +173,6 @@ export class KalturaPlayer extends FakeEventTarget {
         mediaConfig.sources = mediaConfig.sources || {};
         mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
       }
-
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
       mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
