@@ -940,9 +940,8 @@ export class KalturaPlayer extends FakeEventTarget {
     );
     if (matchingFallbackSources) {
       const sources = Utils.Object.mergeDeep({}, this._localPlayer.sources, matchingFallbackSources);
-      this.setMedia({
-        sources
-      });
+      const mediaConfig: any = { sources };
+      this.setMedia(mediaConfig);
       this.play();
     }
   }
