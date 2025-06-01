@@ -931,15 +931,13 @@ export class KalturaPlayer extends FakeEventTarget {
         if (matchingFallbackSources) {
           this.reset();
 
-          setTimeout(() => {
-            this.setMedia({
-              sources: matchingFallbackSources,
-              autopause: false,
-              loop: false,
-              enableCachedUrls: false
-            });
-            this.play();
-          }, 1000);
+          this.setMedia({
+            sources: matchingFallbackSources,
+            autopause: false,
+            loop: false,
+            enableCachedUrls: false
+          });
+          this.play();
         }
       } else if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
