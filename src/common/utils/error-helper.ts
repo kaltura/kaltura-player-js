@@ -28,7 +28,7 @@ const isAccessControlRestrictedError = (error: Error): boolean => {
     !isScheduledRestricted(error)
   );
 };
-const isDRMError = (error: Error): boolean => error.code <= 7000 && error.code >= 6000;
+const isDRMError = (error: Error): boolean => error.code < 7000 && error.code >= 6000;
 
 const conditionsToErrors: any[] = [
   [isSessionRestrictedError, Error.Category.MEDIA_UNAVAILABLE],
