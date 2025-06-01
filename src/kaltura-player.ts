@@ -111,6 +111,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _autoPaused: boolean = false;
   private _sessionIdCache: SessionIdCache | null = null;
   private _isV2ToV7Redirected: boolean = false;
+  fallbackSources_: any;
 
   constructor(options: KalturaPlayerConfig) {
     super();
@@ -172,6 +173,14 @@ export class KalturaPlayer extends FakeEventTarget {
         mediaConfig.sources = mediaConfig.sources || {};
         mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
       }
+
+      const { fallbackSources, regularSources } = FallbackSourcesUtils.extractFallbackSources(
+        mediaConfig.sources,
+        this.config.playback.fallbackSourcesOptions
+      );
+      mediaConfig.sources = regularSources;
+      this.fallbackSources_ = fallbackSources;
+
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
       mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
@@ -914,11 +923,11 @@ export class KalturaPlayer extends FakeEventTarget {
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
       if (isDRMError(event.payload)) {
         // TODO move this to setMedia probably, we want fallback sources to not be playable
-        const { fallbackSources } = FallbackSourcesUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
+        // const { fallbackSources } = FallbackSourcesUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
 
         const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
           this._sourceSelected,
-          fallbackSources,
+          this.fallbackSources_,
           this.config.playback.fallbackSourcesOptions
         );
         if (matchingFallbackSources) {
