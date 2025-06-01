@@ -37,19 +37,19 @@ class FallbackSourcesUtils {
 
   /**
    * Extracts fallback sources from the provided sources based on the fallback configuration.
-   * @param allSources The complete set of sources categorized by format.
+   * @param allSources The complete set of sources.
    * @param fallbackConfig The configuration for fallback sources.
-   * @returns An object containing regular and fallback sources categorized by format.
+   * @returns An object containing fallback and non-fallback sources.
    */
-  public static extractFallbackSources(allSources: any, fallbackConfig: any = []): any {
-    const regularSources: any = {};
+  public static splitSources(allSources: any, fallbackConfig: any = []): any {
+    const nonFallbackSources: any = {};
     const fallbackSources: any = {};
 
     const fallbackOptionsByFormat = this.getFallbackOptionsByToSourceFormat(fallbackConfig);
 
     for (const format in this.FORMATS) {
       const formatSources = allSources[format];
-      regularSources[format] = [];
+      nonFallbackSources[format] = [];
       fallbackSources[format] = [];
 
       for (const source of formatSources) {
@@ -63,7 +63,7 @@ class FallbackSourcesUtils {
         }
 
         if (!isFallbackSource) {
-          regularSources[format].push(source);
+          nonFallbackSources[format].push(source);
         } else {
           fallbackSources[format].push(source);
         }
@@ -72,7 +72,7 @@ class FallbackSourcesUtils {
 
     return {
       fallbackSources,
-      regularSources
+      nonFallbackSources
     };
   }
 

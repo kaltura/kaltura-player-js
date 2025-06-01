@@ -111,7 +111,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _autoPaused: boolean = false;
   private _sessionIdCache: SessionIdCache | null = null;
   private _isV2ToV7Redirected: boolean = false;
-  fallbackSources_: any;
+  private _fallbackSources: any;
 
   constructor(options: KalturaPlayerConfig) {
     super();
@@ -174,13 +174,6 @@ export class KalturaPlayer extends FakeEventTarget {
         mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, mediaOptions);
       }
 
-      const { fallbackSources, regularSources } = FallbackSourcesUtils.extractFallbackSources(
-        mediaConfig.sources,
-        this.config.playback.fallbackSourcesOptions
-      );
-      mediaConfig.sources = regularSources;
-      this.fallbackSources_ = fallbackSources;
-
       const mergedPluginsConfigAndFromApp = mergeProviderPluginsConfig(mediaConfig.plugins, this.config.plugins);
       mediaConfig.plugins = mergedPluginsConfigAndFromApp[0];
       this._appPluginConfig = mergedPluginsConfigAndFromApp[1];
@@ -196,6 +189,13 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public setMedia(mediaConfig: KPMediaConfig): void {
+    const { fallbackSources, nonFallbackSources } = FallbackSourcesUtils.splitSources(
+      mediaConfig.sources,
+      this.config.playback.fallbackSourcesOptions
+    );
+    mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, nonFallbackSources);
+    this._fallbackSources = Utils.Object.mergeDeep(mediaConfig.sources, fallbackSources);
+
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset(true);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
@@ -361,6 +361,7 @@ export class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._sourceSelected = null;
+      this._fallbackSources = null;
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
@@ -922,24 +923,23 @@ export class KalturaPlayer extends FakeEventTarget {
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
       if (isDRMError(event.payload)) {
-        // TODO move this to setMedia probably, we want fallback sources to not be playable
-        // const { fallbackSources } = FallbackSourcesUtils.extractFallbackSources(this.sources, this.config.playback.fallbackSourcesOptions);
-
         const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
           this._sourceSelected,
-          this.fallbackSources_,
+          this._fallbackSources,
           this.config.playback.fallbackSourcesOptions
         );
         if (matchingFallbackSources) {
           this.reset();
 
-          this.setMedia({
-            sources: matchingFallbackSources,
-            autopause: false,
-            loop: false,
-            enableCachedUrls: false
-          });
-          this.play();
+          setTimeout(() => {
+            this.setMedia({
+              sources: matchingFallbackSources,
+              autopause: false,
+              loop: false,
+              enableCachedUrls: false
+            });
+            this.play();
+          }, 1000);
         }
       } else if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
