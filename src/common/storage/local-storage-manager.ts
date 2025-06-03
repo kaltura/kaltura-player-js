@@ -79,10 +79,10 @@ export default class LocalStorageManager extends BaseStorageManager {
     eventManager.listen(player, player.Event.Core.PLAYER_DESTROY, () => eventManager.destroy());
 
     eventManager.listen(player, player.Event.UI.USER_CLICKED_ADVANCED_AUDIO_DESCRIPTION, (event) => {
-        const checked = event.payload.checked;
-         this.setItem(this.StorageKeys.ADVANCED_AUDIO_DESCRIPTION, checked);
-      });
-    }
+      const checked = event.payload.checked;
+      this.setItem(this.StorageKeys.ADVANCED_AUDIO_DESCRIPTION, checked);
+    });
+  }
 
   /**
    * Gets the player text style from storage.
