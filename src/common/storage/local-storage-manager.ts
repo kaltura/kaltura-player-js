@@ -9,7 +9,8 @@ export default class LocalStorageManager extends BaseStorageManager {
     AUDIO_LANG: 'audioLanguage',
     TEXT_LANG: 'textLanguage',
     CAPTIONS_DISPLAY: 'captionsDisplay',
-    TEXT_STYLE: 'textStyle'
+    TEXT_STYLE: 'textStyle',
+    ADVANCED_AUDIO_DESCRIPTION: 'advancedAudioDescription'
   };
 
   public static initialize(): void {
@@ -76,6 +77,11 @@ export default class LocalStorageManager extends BaseStorageManager {
     });
 
     eventManager.listen(player, player.Event.Core.PLAYER_DESTROY, () => eventManager.destroy());
+
+    eventManager.listen(player, player.Event.UI.USER_CLICKED_ADVANCED_AUDIO_DESCRIPTION, (event) => {
+      const checked = event.payload.checked;
+      this.setItem(this.StorageKeys.ADVANCED_AUDIO_DESCRIPTION, checked);
+    });
   }
 
   /**
