@@ -43,7 +43,7 @@ const logHandlers: Array<(messages: any[], context: object) => void> = [];
 const LOG_BUFFER_SIZE = 1000;
 const logBuffer: string[] = [];
 
-const logHandler = (messages: any[], ctx: { name: string }) => {
+const logHandler = (messages: any[], ctx: { name: string }): void => {
   logHandlers.forEach((handler: ILogHandler): void => {
     handler(messages, { ...ctx, level: LogLevel.INFO });
   });
