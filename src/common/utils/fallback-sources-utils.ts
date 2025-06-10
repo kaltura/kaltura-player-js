@@ -48,7 +48,7 @@ class FallbackSourcesUtils {
     const fallbackOptionsByFormat = this.getFallbackOptionsByToSourceFormat(fallbackConfig);
 
     for (const format in this.FORMATS) {
-      const formatSources = allSources[format];
+      const formatSources = allSources[format] || [];
       nonFallbackSources[format] = [];
       fallbackSources[format] = [];
 
