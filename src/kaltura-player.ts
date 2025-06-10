@@ -77,8 +77,9 @@ import {
   HEVCConfigObject,
   MediaCapabilitiesObject
 } from './types';
-import getErrorCategory from './common/utils/error-helper';
+import { getErrorCategory, isDRMError } from './common/utils/error-helper';
 import { SessionIdCache } from './common/utils/session-id-cache';
+import { FallbackSourcesUtils } from './common/utils/fallback-sources-utils';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -110,6 +111,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _autoPaused: boolean = false;
   private _sessionIdCache: SessionIdCache | null = null;
   private _isV2ToV7Redirected: boolean = false;
+  private _fallbackSources: any;
 
   constructor(options: KalturaPlayerConfig) {
     super();
@@ -186,6 +188,15 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public setMedia(mediaConfig: KPMediaConfig): void {
+    if (this.config.playback.fallbackSourcesOptions?.length && !this._fallbackSources) {
+      const { fallbackSources, nonFallbackSources } = FallbackSourcesUtils.splitSources(
+        mediaConfig.sources,
+        this.config.playback.fallbackSourcesOptions
+      );
+      mediaConfig.sources = Utils.Object.mergeDeep(mediaConfig.sources, nonFallbackSources);
+      this._fallbackSources = fallbackSources;
+    }
+
     KalturaPlayer._logger.debug('setMedia', mediaConfig);
     this.reset(true);
     const playerConfig = Utils.Object.copyDeep(mediaConfig);
@@ -351,6 +362,7 @@ export class KalturaPlayer extends FakeEventTarget {
       this._reset = true;
       this._firstPlay = true;
       this._sourceSelected = null;
+      this._fallbackSources = null;
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
@@ -911,10 +923,26 @@ export class KalturaPlayer extends FakeEventTarget {
       });
     }
     this._eventManager.listen(this, CoreEventType.ERROR, (event: FakeEvent) => {
-      if (event.payload.severity === Error.Severity.CRITICAL) {
+      if (isDRMError(event.payload)) {
+        this._loadFallbackSources();
+      } else if (event.payload.severity === Error.Severity.CRITICAL) {
         this._reset = false;
       }
     });
+  }
+
+  private _loadFallbackSources(): void {
+    const matchingFallbackSources = FallbackSourcesUtils.getMatchingFallbackSources(
+      this._sourceSelected,
+      this._fallbackSources,
+      this.config.playback.fallbackSourcesOptions
+    );
+    if (matchingFallbackSources) {
+      const sources = Utils.Object.mergeDeep({}, this._localPlayer.sources, matchingFallbackSources);
+      const mediaConfig: any = { sources };
+      this.setMedia(mediaConfig);
+      this.play();
+    }
   }
 
   private _onChangeSourceEnded(): void {
