@@ -25,6 +25,7 @@ import { BaseStorageManager } from '../storage/base-storage-manager';
 import { BasePlugin } from '../plugins';
 import { KalturaPlayerConfig, LegacyPartialKPOptionsObject, PartialKPOptionsObject, PluginsConfig, PlaybackConfig } from '../../types';
 import { SessionIdGenerator } from './session-id-generator';
+import { UiConfIdSingleton } from './ui-conf-id-singleton';
 
 const setupMessages: Array<any> = [];
 const CONTAINER_CLASS_NAME: string = 'kaltura-player-container';
@@ -392,7 +393,24 @@ function getUrlParameter(name: string): string | null {
  * @returns {Object} - The server UIConf
  */
 function getServerUIConf(): any {
+  const uiConfId = UiConfIdSingleton.getInstance().getUiConfId();
+  if (uiConfId !== '' && window.KalturaPlayers && window.KalturaPlayers[uiConfId]?.config) {
+    return window.KalturaPlayers[uiConfId].config;
+  }
   return window.__kalturaplayerdata || {};
+}
+
+/**
+ * set the UIConfId if exists
+ * @private
+ * @param {PartialKPOptionsObject} options - partial user kaltura player options.
+ * @returns {void}
+ */
+function setUIConfId(options: PartialKPOptionsObject): void {
+  // Store uiConfId if it exists in options
+  if (options.provider && options.provider.uiConfId) {
+    UiConfIdSingleton.getInstance().setUiConfId(options.provider.uiConfId.toString());
+  }
 }
 
 /**
@@ -923,5 +941,6 @@ export {
   initializeStorageManagers,
   maybeLoadInitialServerResponse,
   KALTURA_PLAYER_START_TIME_QS,
-  getLogBuffer
+  getLogBuffer,
+  setUIConfId
 };

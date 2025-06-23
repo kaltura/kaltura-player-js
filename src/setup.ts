@@ -17,7 +17,8 @@ import {
   supportLegacyOptions,
   validateConfig,
   validateProviderConfig,
-  maybeLoadInitialServerResponse
+  maybeLoadInitialServerResponse,
+  setUIConfId
 } from './common/utils/setup-helpers';
 import { PartialKPOptionsObject } from './types';
 
@@ -31,6 +32,7 @@ function setup(options: PartialKPOptionsObject): KalturaPlayer {
   printKalturaPlayerVersionToLog(options);
   options = supportLegacyOptions(options);
   validateConfig(options);
+  setUIConfId(options);
   const defaultOptions = getDefaultOptions(options);
   validateProviderConfig(defaultOptions);
   setLogOptions(defaultOptions);
