@@ -87,20 +87,22 @@ class ViewabilityManager {
     if (!this._observer) return;
     const threshold = typeof optionalThreshold === 'number' ? optionalThreshold : this._config.playerThreshold;
     const newTargetObservedBinding = new _TargetObserveredBinding(threshold / 100, listener);
-    if (!this._targetsObserved.has(target)) {
-      this._observer.observe(target);
-    } else {
-      const lastIntersectionRatio = this._targetsObserved.get(target)[0].lastIntersectionRatio;
-      // if observer has already fired the initial callback due to previous observing then we need to invoke it to the new observer manually
-      if (lastIntersectionRatio !== undefined) {
-        newTargetObservedBinding.lastIntersectionRatio = lastIntersectionRatio;
-        newTargetObservedBinding.listener(
-          this._isTabVisible && lastIntersectionRatio >= newTargetObservedBinding.threshold,
-          ViewabilityType.VIEWPORT
-        );
+    if (target) {
+      if (!this._targetsObserved.has(target)) {
+        this._observer.observe(target);
+      } else {
+        const lastIntersectionRatio = this._targetsObserved.get(target)[0].lastIntersectionRatio;
+        // if observer has already fired the initial callback due to previous observing then we need to invoke it to the new observer manually
+        if (lastIntersectionRatio !== undefined) {
+          newTargetObservedBinding.lastIntersectionRatio = lastIntersectionRatio;
+          newTargetObservedBinding.listener(
+            this._isTabVisible && lastIntersectionRatio >= newTargetObservedBinding.threshold,
+            ViewabilityType.VIEWPORT
+          );
+        }
       }
+      this._targetsObserved.push(target, newTargetObservedBinding);
     }
-    this._targetsObserved.push(target, newTargetObservedBinding);
   }
 
   /**
