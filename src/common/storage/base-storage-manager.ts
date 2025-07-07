@@ -119,7 +119,6 @@ export class BaseStorageManager {
     return StorageWrapper.getItem(key, this.getStorageObject());
   }
 
-
   public static removeItem(key: string): any {
     return StorageWrapper.removeItem(key, this.getStorageObject());
   }

@@ -82,7 +82,7 @@ export default class StorageWrapper {
     }
   }
 
-  public static removeItem(key: string, storage: any){
+  public static removeItem(key: string, storage: any) {
     StorageWrapper._validateKey(key);
     try {
       StorageWrapper._logger.debug('Removes item for key: ' + key);
