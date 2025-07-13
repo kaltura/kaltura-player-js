@@ -140,7 +140,6 @@ export class BaseStorageManager {
     return StorageWrapper.getStorageItems(this.getStorageObject());
   }
 
-
   /**
    * Gets the storage in the structure of the player configuration.
    * @private
