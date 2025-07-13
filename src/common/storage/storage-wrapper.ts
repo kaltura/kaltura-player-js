@@ -82,16 +82,6 @@ export default class StorageWrapper {
     }
   }
 
-  public static removeItem(key: string, storage: any) {
-    StorageWrapper._validateKey(key);
-    try {
-      StorageWrapper._logger.debug('Removes item for key: ' + key);
-      storage.removeItem(key);
-    } catch (e) {
-      StorageWrapper._logger.error(e.message);
-    }
-  }
-
   public static _isQuotaExceeded(e: any): boolean {
     let quotaExceeded = false;
     if (e) {
