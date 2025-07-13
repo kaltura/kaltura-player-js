@@ -1257,7 +1257,7 @@ export class KalturaPlayer extends FakeEventTarget {
       playlistId: this.playlist?.id,
       manifestUrl: this.selectedSource?.url,
       plugins: [...Object.keys(this.plugins)],
-      localStorage: LocalStorageManager.getStorageObject(),
+      localStorage: LocalStorageManager.getStorageItems(),
       log
     };
   }

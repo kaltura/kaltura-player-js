@@ -37,6 +37,24 @@ export default class StorageWrapper {
   }
 
   /**
+   * Gets storage items
+   * @param {Object} storage - The storage object to use.
+   * @static
+   * @private
+   * @return {object} - The items that their keys in the storage starts with wanted prefix.
+   */
+  public static getStorageItems(storage: any): number {
+    //given storage object filer all items thats with STORAGE_PREFIX
+    const items: any = {};
+    Object.keys(storage).forEach((key) => {
+      if (key.startsWith(STORAGE_PREFIX)) {
+        items[key] = storage.getItem(key);
+      }
+    });
+    return items;
+  }
+
+  /**
    * Sets an item in the storage.
    * @param {string} key - The key of the item.
    * @param {any} item - The value of the item.
