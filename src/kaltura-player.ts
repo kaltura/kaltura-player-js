@@ -80,6 +80,7 @@ import {
 import { getErrorCategory, isDRMError } from './common/utils/error-helper';
 import { SessionIdCache } from './common/utils/session-id-cache';
 import { FallbackSourcesUtils } from './common/utils/fallback-sources-utils';
+import LocalStorageManager from './common/storage/local-storage-manager';
 
 export class KalturaPlayer extends FakeEventTarget {
   private static _logger: any = getLogger('KalturaPlayer' + Utils.Generator.uniqueId(5));
@@ -1256,6 +1257,7 @@ export class KalturaPlayer extends FakeEventTarget {
       playlistId: this.playlist?.id,
       manifestUrl: this.selectedSource?.url,
       plugins: [...Object.keys(this.plugins)],
+      localStorage: LocalStorageManager.getStorageItems(),
       log
     };
   }

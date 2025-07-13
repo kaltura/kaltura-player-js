@@ -130,6 +130,17 @@ export class BaseStorageManager {
   }
 
   /**
+   * Gets storage items
+   * @param {Object} storage - The storage object to use.
+   * @static
+   * @private
+   * @return {object} - The items that their keys in the storage starts with wanted prefix.
+   */
+  public static getStorageItems(): number {
+    return StorageWrapper.getStorageItems(this.getStorageObject());
+  }
+
+  /**
    * Gets the storage in the structure of the player configuration.
    * @private
    * @static
