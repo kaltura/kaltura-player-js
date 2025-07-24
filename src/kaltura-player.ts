@@ -941,8 +941,14 @@ export class KalturaPlayer extends FakeEventTarget {
     if (matchingFallbackSources) {
       const sources = Utils.Object.mergeDeep({}, this._localPlayer.sources, matchingFallbackSources);
       const mediaConfig: any = { sources };
+      // if play was triggered for the original source, firstPlay will be false
+      const shouldPlay = !this._firstPlay;
+
       this.setMedia(mediaConfig);
-      this.play();
+
+      if (shouldPlay) {
+        this.play();
+      }
     }
   }
 
