@@ -4,7 +4,6 @@ const isBackEndError = (error: Error): boolean => error.category === 2;
 const isBlockAction = (error: Error): boolean => error.code === 2001;
 const isMediaNotReady = (error: Error): boolean => error.code === 2002;
 const isScheduledRestrictedCode = (error: Error): boolean => error.code === 2003;
-const isModerationRestrictedCode = (error: Error): boolean => error.code === 2004;
 const isGeolocationRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'COUNTRY_RESTRICTED';
 const isSessionRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SESSION_RESTRICTED';
 const isIPRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'IP_RESTRICTED';
@@ -18,7 +17,6 @@ const isIPRestrictedError = (error: Error): boolean => isBackEndError(error) && 
 const isSitedRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSitedRestricted(error);
 const isScheduledRestrictedError = (error: Error): boolean =>
   isBackEndError(error) && isScheduledRestrictedCode(error) && isScheduledRestricted(error);
-const isModerationRestrictedError = (error: Error): boolean => isBackEndError(error) && isModerationRestrictedCode(error);
 const isAccessControlRestrictedError = (error: Error): boolean => {
   return (
     isBackEndError(error) &&
@@ -27,8 +25,7 @@ const isAccessControlRestrictedError = (error: Error): boolean => {
     !isSessionRestricted(error) &&
     !isIPRestricted(error) &&
     !isSitedRestricted(error) &&
-    !isScheduledRestricted(error) &&
-    !isModerationRestrictedError(error)
+    !isScheduledRestricted(error)
   );
 };
 const isDRMError = (error: Error): boolean => error.code < 7000 && error.code >= 6000;
@@ -40,8 +37,7 @@ const conditionsToErrors: any[] = [
   [isIPRestrictedError, Error.Category.IP_RESTRICTED],
   [isScheduledRestrictedError, Error.Category.SCHEDULED_RESTRICTED],
   [isSitedRestrictedError, Error.Category.SITE_RESTRICTED],
-  [isAccessControlRestrictedError, Error.Category.ACCESS_CONTROL_BLOCKED],
-  [isModerationRestrictedError, Error.Category.MODERATION_RESTRICTED]
+  [isAccessControlRestrictedError, Error.Category.ACCESS_CONTROL_BLOCKED]
 ];
 
 function getErrorCategory(error: Error): number {
