@@ -52,9 +52,9 @@
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.30",
     "@playkit-js/playkit-js-dash": "1.39.1",
-    "@playkit-js/playkit-js-hls": "1.32.19-canary.0-79b1fd0",
+    "@playkit-js/playkit-js-hls": "1.32.19",
     "@playkit-js/playkit-js-providers": "^2.44.0-canary.0-a2d1ace",
-    "@playkit-js/playkit-js-ui": "0.82.5-canary.0-cc8b51e",
+    "@playkit-js/playkit-js-ui": "0.82.5",
     "@playkit-js/webpack-common": "^1.0.3",
     "hls.js": "1.6.0",
     "shaka-player": "4.14.9"
