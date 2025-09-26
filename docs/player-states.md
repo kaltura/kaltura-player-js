@@ -4,10 +4,12 @@ The player supports life cycle states (or statuses), which are based on HTML5 vi
 
 ## Table of Contents
 
-- [Registering to State Changes](#registering-to-state-changed)
+- [Registering to State Changes](#registering-to-state-changes)
 - [State API](#state-api)
-- [Available State Types](#state-types)
-- [Transitioning Between States](#transitions-between-states)
+- [Available State Types](#available-state-types)
+- [Transitioning Between States](#transitioning-between-states)
+- [Player State Machine](#player-state-machine)
+- [Example of State Changes](#example-of-state-changes)
 
 ## Registering to State Changes
 
