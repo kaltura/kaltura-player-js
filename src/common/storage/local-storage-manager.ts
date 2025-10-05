@@ -80,8 +80,8 @@ export default class LocalStorageManager extends BaseStorageManager {
 
     // TODO use ui type
     eventManager.listen(player, 'playkit-ui-userclickedaudiodescription', (event) => {
-      const { enabledState } = event.payload;
-      this.setItem(this.StorageKeys.AUDIO_DESCRIPTION, JSON.stringify({ enabledState }));
+      const { isEnabled, selectedType } = event.payload;
+      this.setItem(this.StorageKeys.AUDIO_DESCRIPTION, JSON.stringify({ isEnabled, selectedType }));
     });
   }
 
