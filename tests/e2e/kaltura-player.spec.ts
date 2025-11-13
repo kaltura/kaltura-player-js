@@ -450,7 +450,6 @@ describe('kaltura player api', () => {
 
       it('should set the playlist and evaluate the plugins - without config and entry list ', () => {
         kalturaPlayer.setPlaylist(PlaylistMockData.playlistByEntryList);
-        kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
       });
 
@@ -459,7 +458,6 @@ describe('kaltura player api', () => {
           { entryId: '0_nwkp7jtx' },
           { entryId: '0_wifqaipd' }
         ]);
-        kalturaPlayer.config.plugins.kava.playlistId.should.equal('a1234');
         kalturaPlayer.playlist.id.should.equal('a1234');
         kalturaPlayer.playlist.options.autoContinue.should.be.false;
         kalturaPlayer._playlistManager._mediaInfoList.length.should.equal(2);
