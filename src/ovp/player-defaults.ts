@@ -3,23 +3,6 @@ import { getRedirectExternalStreamsHandler } from '../common/utils/external-stre
 import { KalturaPlayerConfig } from '../types';
 
 /**
- * Sets the default analytics plugin for the ovp player.
- * @param {KalturaPlayerConfig} options - The player config.
- * @private
- * @returns {void}
- */
-export function setDefaultAnalyticsPlugin(options: KalturaPlayerConfig): void {
-  let kavaPlugin = Utils.Object.getPropertyPath(options, 'plugins.kava');
-  if (!kavaPlugin) {
-    kavaPlugin = Utils.Object.mergeDeep(options, {
-      plugins: {
-        kava: {}
-      }
-    });
-  }
-}
-
-/**
  * get the default config for forcing external stream redirect.
  * @public
  * @param {KalturaPlayerConfig} playerOptions - The player config.
