@@ -1,4 +1,3 @@
-import { setDefaultAnalyticsPlugin } from 'player-defaults';
 import {
   Env,
   TextStyle,
@@ -451,7 +450,6 @@ function getDefaultOptions(options: PartialKPOptionsObject): KalturaPlayerConfig
 
   checkNativeHlsSupport(defaultOptions);
   checkNativeTextTracksSupport(defaultOptions);
-  setDefaultAnalyticsPlugin(defaultOptions);
   configureSmartTVDefaultOptions(defaultOptions);
   configureEdgeDRMDefaultOptions(defaultOptions);
   configureIMADefaultOptions(defaultOptions);
