@@ -28,6 +28,7 @@
     "access": "public"
   },
   "scripts": {
+    "check": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools@latest kaltura-tools check --root=.",
     "serve:ovp": "webpack serve --open /player-ovp.html --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
     "watch:ovp": "webpack --mode development --watch --env playerType=ovp",
@@ -47,8 +48,7 @@
     "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
-    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint",
-    "prepareInstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools kaltura-tools check --root=."
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
     "@playkit-js/playkit-js": "^0.84.33-canary.0-4132a7a",

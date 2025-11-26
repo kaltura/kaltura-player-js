@@ -4,4 +4,3 @@ demo/
 node_modules
 *.log
 types/
-.npmrc
