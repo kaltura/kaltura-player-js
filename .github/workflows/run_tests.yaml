@@ -18,26 +18,31 @@ jobs:
         env:
           GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build:
+    needs: preinstall
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'
       yarn-run-to-execute: 'build'
   test:
+    needs: preinstall
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'
       yarn-run-to-execute: 'test'
   type-check:
+    needs: preinstall
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'
       yarn-run-to-execute: 'type-check'
   build-types:
+    needs: preinstall
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'
       yarn-run-to-execute: 'build:types'
   lint:
+    needs: preinstall
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'
