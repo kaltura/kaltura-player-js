@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
-    secrets: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
     with:
       node-version: '20.x'
       yarn-run-to-execute: 'build'
