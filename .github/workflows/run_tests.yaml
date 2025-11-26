@@ -18,8 +18,6 @@ jobs:
         env:
           GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build:
-    env:
-      GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'
