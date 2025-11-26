@@ -27,3 +27,7 @@ jobs:
       schema-type: "playerV3Versions"
       tests-yarn-run-to-execute: 'build lint type-check test'
       yarn-upgrade-list: ""
+      git-token: ${{ secrets.GITHUB_TOKEN }}
+      
+
+
