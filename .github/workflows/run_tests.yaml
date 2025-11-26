@@ -18,7 +18,7 @@ jobs:
           echo "@kaltura:registry=https://npm.pkg.github.com" > .npmrc
           echo "//npm.pkg.github.com/:_authToken=\${GIT_TOKEN}" >> .npmrc
       - name: Preinstall
-        run: yarn preinstall
+        run: yarn prepareInstall
         env:
           GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Remove temporary .npmrc
