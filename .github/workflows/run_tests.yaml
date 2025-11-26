@@ -8,7 +8,18 @@ on:
       - "*"
 
 jobs:
+  preinstall:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Preinstall
+        run: yarn preinstall
+        env:
+          GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build:
+    env:
+      GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
       node-version: '20.x'

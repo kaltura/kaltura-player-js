@@ -47,7 +47,8 @@
     "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
-    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint",
+    "preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools kaltura-tools check --root=."
   },
   "dependencies": {
     "@playkit-js/playkit-js": "^0.84.33-canary.0-4132a7a",
