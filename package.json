@@ -28,6 +28,7 @@
     "access": "public"
   },
   "scripts": {
+    "preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools@latest kaltura-tools check --root=.",
     "serve:ovp": "webpack serve --open /player-ovp.html --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
     "watch:ovp": "webpack --mode development --watch --env playerType=ovp",
