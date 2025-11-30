@@ -161,6 +161,11 @@ jobs:
       - name: Remove temporary .npmrc
         run: rm -f .npmrc
 
+      - name: Recreate original .npmrc
+        run: |
+          echo "@kaltura:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=\${GIT_TOKEN}" >> .npmrc
+
       - name: Commit changes
         if: env.COMMIT_REQUIRED == 'true'
         uses: peter-evans/create-pull-request@v5
