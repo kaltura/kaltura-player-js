@@ -145,6 +145,9 @@ jobs:
             checkAndUpdateDependency "$dependencyName" "$packageName"
           done
 
+        env:
+          GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Commit changes
         if: env.COMMIT_REQUIRED == 'true'
         uses: peter-evans/create-pull-request@v5
