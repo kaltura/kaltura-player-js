@@ -74,16 +74,6 @@ jobs:
         with:
           node-version: '16.x'
 
-      # - name: Create temporary .npmrc
-      #   run: |
-      #     echo "@kaltura:registry=https://npm.pkg.github.com" > .npmrc
-      #     echo "//npm.pkg.github.com/:_authToken=\${GIT_TOKEN}" >> .npmrc
-          
-      # - name: Preinstall
-      #   run: npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools@latest kaltura-tools check --root=.
-      #   env:
-      #     GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Check updates Kaltura dependencies (branch - ${{ github.ref_name }})
         run: |
           # Define dependencies
@@ -157,14 +147,6 @@ jobs:
 
         env:
           GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Remove temporary .npmrc
-      #   run: rm -f .npmrc
-
-      # - name: Recreate original .npmrc
-      #   run: |
-      #     echo "@kaltura:registry=https://npm.pkg.github.com" > .npmrc
-      #     echo "//npm.pkg.github.com/:_authToken=\${GIT_TOKEN}" >> .npmrc
 
       - name: Commit changes
         if: env.COMMIT_REQUIRED == 'true'
