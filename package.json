@@ -52,8 +52,8 @@
   },
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.35-canary.0-7e1a1cf",
-    "@playkit-js/playkit-js-dash": "1.39.2",
-    "@playkit-js/playkit-js-hls": "1.32.21",
+    "@playkit-js/playkit-js-dash": "1.39.3-canary.0-4019154",
+    "@playkit-js/playkit-js-hls": "1.32.22-canary.0-71d563b",
     "@playkit-js/playkit-js-providers": "^2.44.1-canary.0-8701707",
     "@playkit-js/playkit-js-ui": "^0.82.12-canary.0-aeb387a",
     "@playkit-js/webpack-common": "^1.0.3",
@@ -88,6 +88,7 @@
     "karma-webpack": "^5.0.0",
     "mocha": "^10.0.0",
     "prettier": "^3.0.3",
+    "react": "^16.8.3",
     "sinon": "^14.0.0",
     "sinon-chai": "3.7.0",
     "source-map-loader": "^4.0.1",

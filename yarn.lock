@@ -1172,17 +1172,17 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/browserslist-config/-/browserslist-config-1.0.8.tgz#735256ba560063d397d4b8776acb865e8697a287"
   integrity sha512-BeiDM72c6GP8dZ6b2qScEpxT4sGECIJzjVGsanaTvXeFOkw3MoplAyz6HPKdrcLmidcinSl4yna5Yc9/ObwZow==
 
-"@playkit-js/playkit-js-dash@1.39.2":
-  version "1.39.2"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.39.2.tgz#bb8fe0b8c0b7db4f75165560ee36aeb4e857df76"
-  integrity sha512-Wm3Wk9DpADBEz0DGjeiSnuZEfuHwDMK+6Ud49766nxke4WNo+zdArYmEwoYqWKwxkHsFtrpABuw4QmasF32aNg==
+"@playkit-js/playkit-js-dash@1.39.3-canary.0-4019154":
+  version "1.39.3-canary.0-4019154"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.39.3-canary.0-4019154.tgz#68b072d845bfcc63293cacbcecde458485b29875"
+  integrity sha512-TPy/gCmfTskxs10jkL0AA0thi1ckb3iIPh8Syfg8UbHIjDTlP7M5gM9OfpN3LCv2b3iGyNmVBdC+WulWUFTZMg==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.3"
 
-"@playkit-js/playkit-js-hls@1.32.21":
-  version "1.32.21"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.21.tgz#daff0b41095290bd5bd1c963f6b9404682c30739"
-  integrity sha512-Y6OD0rNOBP0LZ2qpf7BzsSuf5OWTznE9RXVCqQyMPG0HIJKD8EbkYk0ny1v30fxL797vspJRzHkoe0hrtqMJ4w==
+"@playkit-js/playkit-js-hls@1.32.22-canary.0-71d563b":
+  version "1.32.22-canary.0-71d563b"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.22-canary.0-71d563b.tgz#6aab077b14c022afe6fea8b61c06b174ebb087a2"
+  integrity sha512-h3OE8g9FJIqiVMOJV4TCsgIYVQrBJTqDXptcYlG9hjmfTbF1SDUxuShO0EKbVxp3Zs666TnQ493cYysJcF0Yqg==
 
 "@playkit-js/playkit-js-providers@^2.44.1-canary.0-8701707":
   version "2.44.1-canary.0-8701707"
@@ -4096,7 +4096,7 @@ log4js@^6.4.1:
     rfdc "^1.3.0"
     streamroller "^3.1.5"
 
-loose-envify@^1.4.0:
+loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -4758,7 +4758,7 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
-prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -4859,6 +4859,15 @@ react-redux@7.2.1:
     loose-envify "^1.4.0"
     prop-types "^15.7.2"
     react-is "^16.9.0"
+
+react@^16.8.3:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 read-pkg-up@^3.0.0:
   version "3.0.0"
