@@ -1,6 +1,6 @@
 {
   "name": "@playkit-js/kaltura-player-js",
-  "version": "3.17.61",
+  "version": "3.17.63",
   "keywords": [
     "kaltura",
     "player",
@@ -28,6 +28,7 @@
     "access": "public"
   },
   "scripts": {
+    "preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools@latest kaltura-tools check --root=.",
     "serve:ovp": "webpack serve --open /player-ovp.html --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
     "watch:ovp": "webpack --mode development --watch --env playerType=ovp",
@@ -51,13 +52,13 @@
     "preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools kaltura-tools check --root=."
 },
   "dependencies": {
-    "@playkit-js/playkit-js": "^0.84.33-canary.0-4132a7a",
-    "@playkit-js/playkit-js-dash": "1.40.0-canary.0-d30e664",
-    "@playkit-js/playkit-js-hls": "1.32.21-canary.0-0b0b851",
-    "@playkit-js/playkit-js-providers": "2.44.0",
-    "@playkit-js/playkit-js-ui": "^0.82.10-canary.0-718b8d0",
+    "@playkit-js/playkit-js": "0.84.35-canary.0-7e1a1cf",
+    "@playkit-js/playkit-js-dash": "1.39.2",
+    "@playkit-js/playkit-js-hls": "1.32.21",
+    "@playkit-js/playkit-js-providers": "^2.44.1-canary.0-8701707",
+    "@playkit-js/playkit-js-ui": "^0.82.12-canary.0-aeb387a",
     "@playkit-js/webpack-common": "^1.0.3",
-    "hls.js": "1.6.15",
+    "hls.js": "1.6.12",
     "shaka-player": "4.14.9"
   },
   "devDependencies": {

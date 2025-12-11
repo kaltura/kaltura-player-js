@@ -1172,27 +1172,27 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/browserslist-config/-/browserslist-config-1.0.8.tgz#735256ba560063d397d4b8776acb865e8697a287"
   integrity sha512-BeiDM72c6GP8dZ6b2qScEpxT4sGECIJzjVGsanaTvXeFOkw3MoplAyz6HPKdrcLmidcinSl4yna5Yc9/ObwZow==
 
-"@playkit-js/playkit-js-dash@1.40.0-canary.0-d30e664":
-  version "1.40.0-canary.0-d30e664"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.40.0-canary.0-d30e664.tgz#45b85c52288b42891b766bf923c4bde394965c6f"
-  integrity sha512-JjSFl2CSaRckET4c7jE6D9ONqaZA1aWyvFA8wSL6jREZJt6CBHorPnhtYPvXAIuZnod3zxIM5sL8pgVe9Y68iQ==
+"@playkit-js/playkit-js-dash@1.39.2":
+  version "1.39.2"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-dash/-/playkit-js-dash-1.39.2.tgz#bb8fe0b8c0b7db4f75165560ee36aeb4e857df76"
+  integrity sha512-Wm3Wk9DpADBEz0DGjeiSnuZEfuHwDMK+6Ud49766nxke4WNo+zdArYmEwoYqWKwxkHsFtrpABuw4QmasF32aNg==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.3"
 
-"@playkit-js/playkit-js-hls@1.32.21-canary.0-0b0b851":
-  version "1.32.21-canary.0-0b0b851"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.21-canary.0-0b0b851.tgz#2352989af851f784743c87c558fe967d4950b550"
-  integrity sha512-ORTcNBidEXaJNswwH3DGTuSUOjmbIuUqFQpIcu7WtwNk/BPc2WGqWbOPNXe03ukqjpLhAM2I/tbMdLhmw1tAWg==
+"@playkit-js/playkit-js-hls@1.32.21":
+  version "1.32.21"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.21.tgz#daff0b41095290bd5bd1c963f6b9404682c30739"
+  integrity sha512-Y6OD0rNOBP0LZ2qpf7BzsSuf5OWTznE9RXVCqQyMPG0HIJKD8EbkYk0ny1v30fxL797vspJRzHkoe0hrtqMJ4w==
 
-"@playkit-js/playkit-js-providers@2.44.0":
-  version "2.44.0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.44.0.tgz#ff9dcb934169549ec28c740c45136c49fbac7477"
-  integrity sha512-N9wKyCqVBtR5wQn0JHVjpWsT/dsangjoRqvU9vefnS6nEfgOrdddhi9B4W9EMNu89sXEFBHqQ3TwSI/ISOw1Mg==
+"@playkit-js/playkit-js-providers@^2.44.1-canary.0-8701707":
+  version "2.44.1-canary.0-8701707"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.44.1-canary.0-8701707.tgz#be0be16958e90c45f903170caf4cee83ca751f0c"
+  integrity sha512-c00icKSZ6Auckz/SlIBx0h90U6lC/+fOubLpClq2ROHoUdlamBrlcjsRFx0ppkdPjQEwRiJr2eWMxTMRhJkJ/Q==
 
-"@playkit-js/playkit-js-ui@^0.82.10-canary.0-718b8d0":
-  version "0.82.10-canary.0-718b8d0"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.82.10-canary.0-718b8d0.tgz#afd74909cd9db76f72a77e056d0a64224b776aab"
-  integrity sha512-23T02Ek6ONgAfr/ID2tfN1CgDDNclfdXSGdVZ2WBu1oMwNNWn45euq5OKl+Qm9uNbOoAqieO70xTjRXOS4GfOw==
+"@playkit-js/playkit-js-ui@^0.82.12-canary.0-aeb387a":
+  version "0.82.12-canary.0-aeb387a"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.82.12-canary.0-aeb387a.tgz#fc9c8c9b8b4b5e91939c55a1b24495f44dec8b03"
+  integrity sha512-MfFLWMHeuahdOz9s/HcJwfdmzbRVV3mFtytOgaWDkWxYgT9mC9EO7QuCq7TGWBiZ8ZWWnBu+XhxAveXCqo1KTQ==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.1-canary.0-dfd24a9"
     preact "10.4.6"
@@ -1200,10 +1200,10 @@
     react-redux "7.2.1"
     redux "4.0.5"
 
-"@playkit-js/playkit-js@^0.84.33-canary.0-4132a7a":
-  version "0.84.33-canary.0-4132a7a"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.33-canary.0-4132a7a.tgz#61dab4ffeeca5e9070f7c014b08ea96b304c42fa"
-  integrity sha512-/pw+hcx+ZTE5If0WVzPW+TCM6bBWtHvFftTNObZy49x8JDTAX6YtOfAO+V20kEjQtk2mtN3+VF1M285jamnVrA==
+"@playkit-js/playkit-js@0.84.35-canary.0-7e1a1cf":
+  version "0.84.35-canary.0-7e1a1cf"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js/-/playkit-js-0.84.35-canary.0-7e1a1cf.tgz#09cf2c73f0a65bb08c326186c6579cd0710595f3"
+  integrity sha512-GCIpJhUWkOySxC3Sk4DEzG12jZ7f3mlX++A+n/qj+awKTL16EeUJYOeX7FmqgTgAXzsn+uLmtc0OKxnR9/kgvw==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.3"
     js-logger "^1.6.0"
@@ -3483,10 +3483,10 @@ he@1.2.0:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-hls.js@1.6.15:
-  version "1.6.15"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.6.15.tgz#9ce13080d143a9bc9b903fb43f081e335b8321e5"
-  integrity sha512-E3a5VwgXimGHwpRGV+WxRTKeSp2DW5DI5MWv34ulL3t5UNmyJWCQ1KmLEHbYzcfThfXG8amBL+fCYPneGHC4VA==
+hls.js@1.6.12:
+  version "1.6.12"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.6.12.tgz#a130d2b902bd1e1a30b4d9db9676f3dba3187629"
+  integrity sha512-Pz+7IzvkbAht/zXvwLzA/stUHNqztqKvlLbfpq6ZYU68+gZ+CZMlsbQBPUviRap+3IQ41E39ke7Ia+yvhsehEQ==
 
 hoist-non-react-statics@^3.3.0:
   version "3.3.2"
