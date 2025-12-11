@@ -124,7 +124,7 @@ jobs:
                 # Update the package.json file only if the version has changed
                 if [[ "$currentVersion" != "$latestVersion" ]]; then
                   echo "Update $packageName from $currentVersion to version $latestVersion"
-                  yarn add $packageName@$latestVersion --silent
+                  yarn add $packageName@$latestVersion --verbose
                   echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
                 else
                   echo "Dependency $packageName already has same version: $latestVersion"
@@ -133,7 +133,7 @@ jobs:
               else
                 echo "Update of depencency $dependencyName skiped (checkbox unchecked)"
               fi
-              
+
             else
               echo "No $packageName dependency found in package.json"
             fi
