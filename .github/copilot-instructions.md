@@ -245,3 +245,57 @@ GIT_TOKEN=dummy yarn run clean        # Removes dist/* directory
 - **Type safety:** TypeScript strict null checks are enabled; handle nullability carefully
 - **No Flow:** Despite Flow types in dependencies, this project uses TypeScript
 - **Clean builds:** If encountering strange errors, try `yarn run clean` then rebuild
+
+## Common PR Review Feedback & Best Practices
+
+Based on review patterns in this repository, avoid these common issues:
+
+### Code Quality
+- **Don't introduce console.log statements** - ESLint will fail. Use proper logging mechanisms
+- **Always run prettier before committing** - Code formatting must be consistent
+- **Type annotations are required** - Add explicit return types to public methods
+- **Avoid `any` types** - Use proper TypeScript typing or `unknown` with type guards
+- **Handle null/undefined explicitly** - Strict null checks are enabled, don't assume values exist
+
+### Testing
+- **Write tests for new features** - Don't skip test coverage for new functionality
+- **Don't break existing tests** - Run full test suite before submitting
+- **Test both player variants** - If changes affect shared code, test OVP and OTT builds
+- **Mock external dependencies** - Don't make real API calls in unit tests
+
+### Build & Dependencies
+- **Don't commit dist/ or node_modules/** - These are gitignored for a reason
+- **Update package.json and yarn.lock together** - Run `yarn install` after dependency changes
+- **Test the full build locally** - Don't rely solely on CI to catch build issues
+- **Check bundle size impact** - Large increases in bundle size need justification
+
+### Code Organization
+- **Follow existing patterns** - Match the architecture of surrounding code
+- **Keep changes focused** - Don't mix refactoring with feature additions
+- **Update documentation** - If changing public APIs, update TSDoc comments
+- **Maintain backward compatibility** - Breaking changes require major version bumps
+
+### Git Hygiene
+- **Write descriptive commit messages** - Explain what and why, not just what
+- **Keep commits atomic** - One logical change per commit
+- **Reference issue numbers** - Use "Resolves FEC-XXXX" format when applicable
+- **Rebase on latest master** - Keep your branch up to date before submitting
+
+### Common Mistakes to Avoid
+- **Forgetting GIT_TOKEN prefix** - Will cause "Failed to replace env in config" errors
+- **Not running lint before push** - CI will reject PRs with linting errors
+- **Assuming browser APIs** - Code runs in player context, not standalone browser
+- **Breaking IE11 compatibility** - Check Babel transpilation for ES5 compatibility
+- **Hardcoding environment values** - Use configuration objects and player setup
+
+### Performance Considerations
+- **Avoid synchronous operations in playback path** - Keep video playback smooth
+- **Debounce/throttle event handlers** - Don't overwhelm the event loop
+- **Clean up event listeners** - Prevent memory leaks by removing listeners on destroy
+- **Lazy load when possible** - Don't load everything upfront
+
+### Security Best Practices
+- **Sanitize user input** - Especially in configuration and plugin options
+- **Validate external data** - Don't trust API responses blindly
+- **Avoid inline event handlers** - Use addEventListener instead
+- **No credentials in code** - Use environment variables or configuration
