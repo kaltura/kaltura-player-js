@@ -46,7 +46,7 @@
     "lint:fix": "yarn run lint --fix",
     "prettier": "prettier --write .",
     "clean": "rimraf dist/*",
-    "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
+    "pushTaggedRelease": "git push --follow-tags --no-verify origin hotfix-25-12-25",
     "release": "standard-version",
     "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
