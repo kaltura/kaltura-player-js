@@ -176,31 +176,6 @@ The build uses **webpack path aliases** that resolve differently based on `playe
 
 **Critical:** Changes to shared interfaces may require updates to both OVP and OTT implementations.
 
-## Code Style & Linting Rules
-
-**ESLint Configuration:**
-- TypeScript ESLint parser with Prettier integration
-- Max line length: 150 characters (except JSON: 60)
-- Explicit member accessibility required (public/private/protected)
-- No console statements allowed (use appropriate logging)
-- Prefer `const` over `let`, never use `var`
-- Single quotes for strings, trailing commas avoided
-- Arrow functions preferred over function expressions
-
-**Prettier Settings:**
-- Print width: 150
-- Tab width: 2 spaces
-- Single quotes: true
-- Trailing commas: none
-- Arrow parens: always
-
-**EditorConfig:**
-- Charset: UTF-8
-- Indent: 2 spaces
-- Line endings: LF
-- Insert final newline: true
-- Trim trailing whitespace: true
-
 ## Common Development Tasks
 
 ### Making Code Changes
