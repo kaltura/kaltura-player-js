@@ -100,7 +100,13 @@ GIT_TOKEN=dummy yarn run watch:ott     # Watch mode for OTT
    DEBUG_UNIT_TESTS=1 GIT_TOKEN=dummy yarn run test:debug
    ```
 
-4. **Code Formatting:**
+4. **Validate Logic:**
+   - **Review code logic manually** - Check for edge cases, race conditions, and error handling
+   - **Verify state management** - Ensure proper cleanup and prevent memory leaks
+   - **Test error paths** - Validate that error cases are handled gracefully
+   - **Check async operations** - Verify promises resolve/reject correctly and async flows work as expected
+
+5. **Code Formatting:**
    ```bash
    GIT_TOKEN=dummy yarn run prettier      # Auto-format code with Prettier
    ```
