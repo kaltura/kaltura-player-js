@@ -286,6 +286,9 @@ export class KalturaPlayer extends FakeEventTarget {
     delete localPlayerConfig.plugins;
     if (localPlayerConfig.sources) {
       const { sources } = localPlayerConfig;
+      if (sources?.metadata) {
+        sources.metadata = this._processMetadataFields(sources.metadata);
+      }
       this.handleSourcesTimeRangeUpdate(sources.seekFrom, sources.clipTo);
       delete localPlayerConfig.sources;
       this._localPlayer.configure(localPlayerConfig);
@@ -300,6 +303,70 @@ export class KalturaPlayer extends FakeEventTarget {
     if (config.playlist) {
       this._playlistManager.configure(config.playlist);
     }
+  }
+
+  /**
+   * Utility function to handle string or array format for metadata fields
+   * If the field is an array, it first tries to find an item with English language, otherwise it extracts the first item's value property
+   * @param {string | Array<{value: string; language?: string}>} field - The field that can be string or array
+   * @returns {string} - The extracted string value
+   */
+  private extractMetadataStringValue = (field: string | Array<{ value: string; language?: string }> | undefined): string => {
+    if (!field) {
+      return '';
+    }
+    if (typeof field === 'string') {
+      return field;
+    }
+    if (Array.isArray(field) && field.length > 0) {
+      // prioritize item with locale language
+      const localeItem = field.find((item) => item.language?.toLowerCase() === this?.config?.ui?.locale);
+      if (localeItem?.value) {
+        return localeItem.value;
+      }
+      // if no locale language or locale language does not included in the array - prioritize item with 'en' language
+      const englishItem = field.find((item) => item.language?.toLowerCase() === 'en');
+      if (englishItem?.value) {
+        return englishItem.value;
+      }
+      // fallback to the first item with a value
+      if (field[0].value) {
+        return field[0].value;
+      }
+    }
+    return '';
+  };
+
+  /**
+   * Process expected metadata string fields that might be an array/object
+   * @param {PKMetadataConfigObject} metadata - The metadata to process
+   * @returns {PKMetadataConfigObject} - The processed metadata
+   * @private
+   */
+  private _processMetadataFields(metadata: PKMetadataConfigObject): PKMetadataConfigObject {
+    if (!metadata) {
+      return metadata;
+    }
+
+    const processedMetadata = { ...metadata };
+
+    if (metadata.name !== undefined) {
+      // store the original value
+      processedMetadata.multiLingualName = metadata.name;
+      processedMetadata.name = this.extractMetadataStringValue(metadata.name);
+    }
+    if (metadata.description !== undefined) {
+      // store the original value
+      processedMetadata.multiLingualDescription = metadata.description;
+      processedMetadata.description = this.extractMetadataStringValue(metadata.description);
+    }
+    if (metadata.tags !== undefined) {
+      // store the original value
+      processedMetadata.multiLingualTags = metadata.tags;
+      processedMetadata.tags = this.extractMetadataStringValue(metadata.tags);
+    }
+
+    return processedMetadata;
   }
 
   public updateKalturaPoster(
