@@ -35,7 +35,7 @@
     "serve:ott": "webpack serve --open /player-ott.html --mode development --env playerType=ott",
     "build:ott": "webpack --mode production --env playerType=ott",
     "watch:ott": "webpack --mode development --watch --env playerType=ott",
-    "build": "yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
+    "build": "yarn run preinstall && yarn run clean && yarn run build:ovp && yarn run build:ott && yarn run build:types",
     "build:types": "tsc --build tsconfig-lib.json && mkdir -p lib && api-extractor run --local",
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn run type-check -- --watch",
@@ -48,8 +48,9 @@
     "clean": "rimraf dist/*",
     "pushTaggedRelease": "git push --follow-tags --no-verify origin master",
     "release": "standard-version",
-    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
-  },
+    "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint",
+    "preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools kaltura-tools check --root=."
+},
   "dependencies": {
     "@playkit-js/playkit-js": "0.84.37-canary.0-249bede",
     "@playkit-js/playkit-js-dash": "1.39.2",
