@@ -55,7 +55,7 @@
     "@playkit-js/playkit-js-dash": "1.39.2",
     "@playkit-js/playkit-js-hls": "1.32.21",
     "@playkit-js/playkit-js-providers": "2.44.1",
-    "@playkit-js/playkit-js-ui": "0.82.14-canary.0-34f2c93",
+    "@playkit-js/playkit-js-ui": "0.82.14-canary.0-467adba",
     "@playkit-js/webpack-common": "^1.0.3",
     "hls.js": "1.6.12",
     "shaka-player": "4.14.9"
