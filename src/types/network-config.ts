@@ -1,5 +1,5 @@
 export interface NetworkConfig {
-  requestFilter?: () => void;
-  responseFilter?: () => void;
+  requestFilter?: (type: number, request: any) => void;
+  responseFilter?: (type: number, response: any) => void;
   maxStaleLevelReloads: number;
 }

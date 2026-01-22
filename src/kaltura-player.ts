@@ -29,7 +29,8 @@ import {
   PKPlayerDimensions,
   TrackType,
   StateType,
-  LoggerLevels
+  LoggerLevels,
+  RequestType
 } from '@playkit-js/playkit-js';
 import {
   ProviderEntryListObject,
@@ -159,6 +160,21 @@ export class KalturaPlayer extends FakeEventTarget {
     this._remotePlayerManager = new RemotePlayerManager();
     // "@ts-expect-error - ???
     this._localPlayer.setSources(sources || {});
+
+    if (options.provider?.useHeaderForKs) {
+      const networkConfig = this.config.network!;
+      const requestFilter = networkConfig.requestFilter;
+      networkConfig.requestFilter = (type, request): void => {
+        if (requestFilter) {
+          requestFilter(type, request);
+        }
+        if (type === RequestType.MANIFEST && this.config?.session?.ks) {
+          request.headers['X-Kaltura-Ks'] = this.config.session.ks;
+        }
+      };
+
+      this.configure({ network: networkConfig });
+    }
   }
 
   public async loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any> {
