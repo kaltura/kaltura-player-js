@@ -164,7 +164,7 @@ export class KalturaPlayer extends FakeEventTarget {
     if (options.provider?.useHeaderForKs) {
       const networkConfig = this.config.network!;
       const requestFilter = networkConfig.requestFilter;
-      networkConfig.requestFilter = (type, request) => {
+      networkConfig.requestFilter = (type, request): void => {
         if (requestFilter) {
           requestFilter(type, request);
         }
