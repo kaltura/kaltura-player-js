@@ -28,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "disabled-preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools@latest kaltura-tools check --root=.",
+    "preinstall": "npx --yes --prefer-online --registry=https://npm.pkg.github.com --package @kaltura/kaltura-tools@latest kaltura-tools check --root=.",
     "serve:ovp": "webpack serve --open /player-ovp.html --mode development --env playerType=ovp",
     "build:ovp": "webpack --mode production --env playerType=ovp",
     "watch:ovp": "webpack --mode development --watch --env playerType=ovp",
@@ -57,7 +57,7 @@
     "@playkit-js/playkit-js-providers": "2.45.0",
     "@playkit-js/playkit-js-ui": "0.83.0",
     "@playkit-js/webpack-common": "^1.0.3",
-    "hls.js": "1.6.12",
+    "hls.js": "1.6.15",
     "shaka-player": "4.14.9"
   },
   "devDependencies": {
