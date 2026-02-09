@@ -166,6 +166,38 @@ describe('ThumbnailManager', () => {
       );
   });
 
+  it('should include KS in thumbnail URL for playlist entries when session.ks is set', () => {
+    const playlistEntryKs = 'playlist-entry-ks-abc123';
+
+    fakeMediaConfig.sources = {
+      poster: '//my-thumb-service.com/p/1091/thumbnail/entry_id/0_playlistentry/version/100001',
+      rawThumbnailUrl: '//my-thumb-service.com/p/1091/thumbnail/entry_id/0_playlistentry/version/100001',
+      type: MediaType.VOD
+    };
+
+    // Player should add KS (loadThumbnailWithKs is true)
+    fakePlayer.config.provider = {
+      loadThumbnailWithKs: true,
+      ks: playlistEntryKs
+    };
+    fakeMediaConfig.session = null;
+    sandbox.stub(fakePlayer, 'shouldAddKs').returns(true);
+
+    // Create ThumbnailManager - this calls _buildKalturaThumbnailConfig which reads from mediaConfig.session.ks
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+
+    // Get the thumbnail config
+    const thumbnailConfig = thumbnailManager.getKalturaThumbnailConfig();
+
+    // CRITICAL: Verify that the URL includes the KS from session
+    // If you comment out line 90 (const configKs = mediaConfig.session?.ks), this test will FAIL
+    thumbnailConfig.thumbsSprite.should.contain('/ks/');
+    thumbnailConfig.thumbsSprite.should.contain(playlistEntryKs);
+    thumbnailConfig.thumbsSprite.should.equal(
+      `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${playlistEntryKs}`
+    );
+  });
+
   describe('Poster Integration', () => {
     const targetId = 'player-placeholder_ovp/thumbnail.spec';
 
