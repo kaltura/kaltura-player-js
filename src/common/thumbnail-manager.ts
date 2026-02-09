@@ -87,7 +87,8 @@ class ThumbnailManager {
     const seekbarConfig = Utils.Object.getPropertyPath(uiConfig, 'components.seekbar');
     const rawThumbnailUrl = mediaConfig.sources?.rawThumbnailUrl;
     const isVod = mediaConfig.sources?.type === MediaType.VOD;
-    const ks = this._player.shouldAddKs(mediaConfig) ? mediaConfig.session?.ks : '';
+    const configKs = mediaConfig.session?.ks || this._player.config.provider?.ks;
+    const ks = this._player.shouldAddKs(mediaConfig) ? configKs : '';
     const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
     const thumbsSprite = isVod ? this._getThumbSlicesUrl(rawThumbnailUrl, ks, thumbnailConfig) : '';
     return {
