@@ -287,7 +287,7 @@ class PlaylistManager {
         if (Array.isArray(itemData.sources.poster)) {
           this._player.updateKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
         } else if (this._player.shouldAddKs() && typeof itemData.sources.poster === 'string' && this._player.getKs()) {
-          itemData.sources.poster = itemData.sources.poster + `/ks/${this._player.getKs()}`;
+          itemData.sources.poster += `/ks/${this._player.getKs()}`;
         }
 
         return {
