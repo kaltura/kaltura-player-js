@@ -1,4 +1,4 @@
-import { FakeEvent, PKTextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata } from '@playkit-js/playkit-js';
+import { FakeEvent, PKTextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata, EngineType } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 import { CuePoint } from '../../types';
 import { PKTextTrackCue } from '@playkit-js/playkit-js';
@@ -73,9 +73,20 @@ export class CuePointManager {
     }
   }
 
+  private _shouldAddTextTrack(): boolean {
+    if (!this._textTrack) {
+      return true;
+    } else if (this._player.engineType === EngineType.YOUTUBE){
+      return true;
+    } else if (!(this._textTrack instanceof TextTrack)) {
+      return true;
+    }
+    return false;
+  }
+
   public addCuePoints(data: CuePoint[]): void {
     this._player.ready().then(() => {
-      if (!this._textTrack) {
+      if (this._shouldAddTextTrack()) {
         this._addTextTrack();
       }
       const timedMetadataArr: Array<TimedMetadata> = [];
