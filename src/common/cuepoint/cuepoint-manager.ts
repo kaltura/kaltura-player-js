@@ -76,7 +76,7 @@ export class CuePointManager {
   private _shouldAddTextTrack(): boolean {
     if (!this._textTrack) {
       return true;
-    } else if (this._player.engineType === EngineType.YOUTUBE){
+    } else if (this._player.engineType === EngineType.YOUTUBE) {
       return true;
     } else if (!(this._textTrack instanceof TextTrack)) {
       return true;
