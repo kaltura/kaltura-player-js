@@ -318,16 +318,20 @@ export class KalturaPlayer extends FakeEventTarget {
     }
   }
 
+  public getKs(): string {
+    return this.config?.session?.ks || this.config?.provider?.ks || '';
+  }
+
   public updateKalturaPoster(
     playerSources: PKSourcesConfigObject,
     mediaSources: ProviderMediaConfigSourcesObject,
     dimensions: PKPlayerDimensions
   ): void {
-    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.config?.session?.ks : '');
+    addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.getKs() : '');
   }
 
   public shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
-    return !!(this.config?.provider?.loadThumbnailWithKs && (mediaConfig || this.config)?.session?.ks);
+    return !!(this.config?.provider?.loadThumbnailWithKs && ((mediaConfig || this.config)?.session?.ks || this.config.provider.ks));
   }
 
   public getMediaInfo(): ProviderMediaInfoObject {

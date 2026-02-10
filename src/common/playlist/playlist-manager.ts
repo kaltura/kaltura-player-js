@@ -286,7 +286,10 @@ class PlaylistManager {
         );
         if (Array.isArray(itemData.sources.poster)) {
           this._player.updateKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
+        } else if (this._player.shouldAddKs() && typeof itemData.sources.poster === 'string' && this._player.getKs()) {
+          itemData.sources.poster = itemData.sources.poster + `/ks/${this._player.getKs()}`;
         }
+
         return {
           sources: itemData.sources,
           config: playlistConfig && playlistConfig.items && playlistConfig.items[index] && playlistConfig.items[index].config
@@ -433,6 +436,9 @@ class PlaylistManager {
     if (this._playlist.items[index].isPlayable()) return Promise.resolve({ sources: this._playlist.items[index].sources });
 
     return this._player.provider.getMediaConfig(this._mediaInfoList[index]).then((providerMediaConfig) => {
+      if (this._player.shouldAddKs() && this._player.getKs()) {
+        providerMediaConfig.sources.poster += `/ks/${this._player.getKs()}`;
+      }
       const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
       this._playlist.updateItemSources(index, mediaConfig.sources);
       this._playlist.updateItemPlugins(index, mediaConfig.plugins);
