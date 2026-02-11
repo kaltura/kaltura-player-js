@@ -437,7 +437,10 @@ class PlaylistManager {
 
     return this._player.provider.getMediaConfig(this._mediaInfoList[index]).then((providerMediaConfig) => {
       if (this._player.shouldAddKs() && this._player.getKs()) {
-        providerMediaConfig.sources.poster += `/ks/${this._player.getKs()}`;
+        const poster = providerMediaConfig.sources.poster;
+        if (typeof poster === 'string') {
+          providerMediaConfig.sources.poster = `${poster}/ks/${this._player.getKs()}`;
+        }
       }
       const mediaConfig = Utils.Object.copyDeep(providerMediaConfig);
       this._playlist.updateItemSources(index, mediaConfig.sources);
