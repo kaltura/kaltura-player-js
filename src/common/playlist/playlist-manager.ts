@@ -287,7 +287,11 @@ class PlaylistManager {
         if (Array.isArray(itemData.sources.poster)) {
           this._player.updateKalturaPoster(itemData.sources, item.sources, this._player.dimensions);
         } else if (this._player.shouldAddKs() && typeof itemData.sources.poster === 'string' && this._player.getKs()) {
-          itemData.sources.poster += `/ks/${this._player.getKs()}`;
+          const ksSegment = `/ks/${this._player.getKs()}`;
+          // Avoid appending KS multiple times if this mapping runs more than once
+          if (!itemData.sources.poster.includes('/ks/')) {
+            itemData.sources.poster += ksSegment;
+          }
         }
 
         return {
