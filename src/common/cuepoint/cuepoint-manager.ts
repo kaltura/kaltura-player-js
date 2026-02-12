@@ -1,4 +1,4 @@
-import { FakeEvent, PKTextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata, EngineType } from '@playkit-js/playkit-js';
+import { FakeEvent, PKTextTrack, EventType, TimedMetadata, createTextTrackCue, createTimedMetadata } from '@playkit-js/playkit-js';
 import { KalturaPlayer } from '../../kaltura-player';
 import { CuePoint } from '../../types';
 import { PKTextTrackCue } from '@playkit-js/playkit-js';
