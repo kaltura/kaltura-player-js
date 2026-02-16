@@ -73,9 +73,20 @@ export class CuePointManager {
     }
   }
 
+  private _shouldAddTextTrack(): boolean {
+    if (!this._textTrack) {
+      return true;
+    } else if (this._player.shouldAddTextTrack()) {
+      return true;
+    } else if (!(this._textTrack instanceof TextTrack)) {
+      return true;
+    }
+    return false;
+  }
+
   public addCuePoints(data: CuePoint[]): void {
     this._player.ready().then(() => {
-      if (!this._textTrack) {
+      if (this._shouldAddTextTrack()) {
         this._addTextTrack();
       }
       const timedMetadataArr: Array<TimedMetadata> = [];
