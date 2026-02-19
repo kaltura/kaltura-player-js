@@ -291,6 +291,38 @@ function maybeApplyClipQueryParams(options: KalturaPlayerConfig): void {
  * @returns {void}
  */
 function setLogOptions(options: KalturaPlayerConfig): void {
+  if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
+    Utils.Object.createPropertyPath(options, 'ui.log', {});
+  }
+  if (!Utils.Object.getPropertyPath(options, 'provider.log')) {
+    Utils.Object.createPropertyPath(options, 'provider.log', {});
+  }
+  if (!Utils.Object.getPropertyPath(options, 'log')) {
+    Utils.Object.createPropertyPath(options, 'log', {});
+  }
+  if (Utils.Object.getPropertyPath(options, 'log.useDebugInfo') === undefined) {
+    options.log!.useDebugInfo = true;
+  }
+
+  setLogHandlers(options);
+
+  let logLevelObj: ILogLevel = LogLevel.ERROR;
+  if (options.log && isDebugMode()) {
+    logLevelObj = LogLevel.DEBUG;
+    options.log.level = LogLevel.DEBUG.name;
+  } else if (options.log && options.log.level && LogLevel[options.log.level]) {
+    logLevelObj = LogLevel[options.log.level];
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  options.ui.log.level = options.provider.log.level = logLevelObj.name;
+  _setLogLevel(logLevelObj);
+}
+
+function setLogHandlers(options) {
+  if (options.log && !options.log.handler && !options.log.useDebugInfo) return;
+
   function getFormattedMessage(messages: any[], ctx: any): string {
     const messagesStr = [...messages]
       .map((msg) => {
@@ -304,19 +336,6 @@ function setLogOptions(options: KalturaPlayerConfig): void {
       .join(' ');
 
     return `[${(ctx as { name: string }).name}] ${messagesStr}`;
-  }
-
-  if (!Utils.Object.getPropertyPath(options, 'ui.log')) {
-    Utils.Object.createPropertyPath(options, 'ui.log', {});
-  }
-  if (!Utils.Object.getPropertyPath(options, 'provider.log')) {
-    Utils.Object.createPropertyPath(options, 'provider.log', {});
-  }
-  if (!Utils.Object.getPropertyPath(options, 'log')) {
-    Utils.Object.createPropertyPath(options, 'log', {});
-  }
-  if (Utils.Object.getPropertyPath(options, 'log.useDebugInfo') === undefined) {
-    options.log!.useDebugInfo = true;
   }
 
   logHandlers.push((messages, ctx) => {
@@ -347,19 +366,6 @@ function setLogOptions(options: KalturaPlayerConfig): void {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   options.ui.log.handler = options.provider.log.handler = logHandler;
-
-  let logLevelObj: ILogLevel = LogLevel.ERROR;
-  if (options.log && isDebugMode()) {
-    logLevelObj = LogLevel.DEBUG;
-    options.log.level = LogLevel.DEBUG.name;
-  } else if (options.log && options.log.level && LogLevel[options.log.level]) {
-    logLevelObj = LogLevel[options.log.level];
-  }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  options.ui.log.level = options.provider.log.level = logLevelObj.name;
-  _setLogLevel(logLevelObj);
 }
 
 /**
