@@ -320,7 +320,7 @@ function setLogOptions(options: KalturaPlayerConfig): void {
   _setLogLevel(logLevelObj);
 }
 
-function setLogHandlers(options) {
+function setLogHandlers(options: KalturaPlayerConfig): void {
   if (options.log && !options.log.handler && !options.log.useDebugInfo) return;
 
   function getFormattedMessage(messages: any[], ctx: any): string {
