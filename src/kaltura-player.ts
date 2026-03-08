@@ -330,6 +330,10 @@ export class KalturaPlayer extends FakeEventTarget {
     addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.getKs() : '');
   }
 
+  public updateKs(newKs: string): void {
+    this._thumbnailManager?.updateThumbnailKs(newKs);
+  }
+
   public shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
     return !!(this.config?.provider?.loadThumbnailWithKs && ((mediaConfig || this.config)?.session?.ks || this.config.provider.ks));
   }
@@ -1230,6 +1234,7 @@ export class KalturaPlayer extends FakeEventTarget {
   public addTextTrack(kind: TextTrackKind, label?: string): TextTrack | undefined {
     return this._localPlayer.addTextTrack(kind, label);
   }
+
 
   public shouldAddTextTrack(): boolean {
     return this._localPlayer.shouldAddTextTrack();
