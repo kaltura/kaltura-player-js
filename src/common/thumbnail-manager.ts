@@ -55,10 +55,9 @@ class ThumbnailManager {
   }
 
   public updateThumbnailKs(newKs: string): void {
-    if (!this._mediaConfig.session) {
-      this._mediaConfig.session = {};
+    if (this._mediaConfig.session) {
+      this._mediaConfig.session.ks = newKs;
     }
-    this._mediaConfig.session.ks = newKs;
     this._thumbnailConfig = this._buildKalturaThumbnailConfig();
     this._loadThumbnailImage();
   }

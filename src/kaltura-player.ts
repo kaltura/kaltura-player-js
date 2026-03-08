@@ -1235,7 +1235,6 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._localPlayer.addTextTrack(kind, label);
   }
 
-
   public shouldAddTextTrack(): boolean {
     return this._localPlayer.shouldAddTextTrack();
   }
