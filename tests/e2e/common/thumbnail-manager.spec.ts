@@ -26,7 +26,8 @@ describe('ThumbnailManager', () => {
       _localPlayer: {
         getThumbnail: (): any => {}
       },
-      shouldAddKs: (): any => true
+      shouldAddKs: (): any => true,
+      getUpdatedKs: (): any => null
     };
     fakeMediaConfig = {
       sources: {
@@ -196,6 +197,55 @@ describe('ThumbnailManager', () => {
     thumbnailConfig.thumbsSprite.should.equal(
       `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${playlistEntryKs}`
     );
+  });
+
+  it('should use updated KS from player stash when available', () => {
+    const originalKs = 'original-ks';
+    const updatedKs = 'updated-ks-xyz789';
+
+    fakeMediaConfig.session = {
+      ks: originalKs
+    };
+
+    // Mock getUpdatedKs to return the updated KS
+    sandbox.stub(fakePlayer, 'getUpdatedKs').returns(updatedKs);
+
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+
+    const thumbnailConfig = thumbnailManager.getKalturaThumbnailConfig();
+
+    // Should use the updated KS from player stash, not the original one
+    thumbnailConfig.thumbsSprite.should.contain(updatedKs);
+    thumbnailConfig.thumbsSprite.should.not.contain(originalKs);
+    thumbnailConfig.thumbsSprite.should.equal(
+      `${fakeMediaConfig.sources.poster}/width/${DefaultThumbnailConfig.thumbsWidth}/vid_slices/${DefaultThumbnailConfig.thumbsSlices}/ks/${updatedKs}`
+    );
+  });
+
+  it('should update thumbnail when updateThumbnailKs is called', () => {
+    const originalKs = 'original-ks';
+    const updatedKs = 'updated-ks-new123';
+
+    fakeMediaConfig.session = {
+      ks: originalKs
+    };
+
+    thumbnailManager = new ThumbnailManager(fakePlayer, fakePlayer.config.ui, fakeMediaConfig);
+
+    // Initial state - should use original KS
+    let thumbnailConfig = thumbnailManager.getKalturaThumbnailConfig();
+    thumbnailConfig.thumbsSprite.should.contain(originalKs);
+
+    // Update the mock to return updated KS
+    sandbox.stub(fakePlayer, 'getUpdatedKs').returns(updatedKs);
+
+    // Call updateThumbnailKs to rebuild config
+    thumbnailManager.updateThumbnailKs();
+
+    // After update - should use updated KS
+    thumbnailConfig = thumbnailManager.getKalturaThumbnailConfig();
+    thumbnailConfig.thumbsSprite.should.contain(updatedKs);
+    thumbnailConfig.thumbsSprite.should.not.contain(originalKs);
   });
 
   describe('Poster Integration', () => {
