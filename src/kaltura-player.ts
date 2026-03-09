@@ -331,6 +331,7 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   public updateKs(newKs: string): void {
+    this.configure({ session: { ...this.config.session, ks: newKs } });
     this._thumbnailManager?.updateThumbnailKs(newKs);
   }
 

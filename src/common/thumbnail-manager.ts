@@ -26,6 +26,7 @@ class ThumbnailManager {
   private _clipData: ClipData;
   private _uiConfig: UiConfig;
   private _mediaConfig: KPMediaConfig;
+  private _ks?: string;
 
   constructor(player: KalturaPlayer, uiConfig: UiConfig, mediaConfig: KPMediaConfig) {
     this._player = player;
@@ -55,9 +56,10 @@ class ThumbnailManager {
   }
 
   public updateThumbnailKs(newKs: string): void {
-    if (this._mediaConfig.session) {
-      this._mediaConfig.session.ks = newKs;
-    }
+    // if (this._mediaConfig.session) {
+    //   this._mediaConfig.session.ks = newKs;
+    // }
+    this._ks = newKs;
     this._thumbnailConfig = this._buildKalturaThumbnailConfig();
     this._loadThumbnailImage();
   }
@@ -103,7 +105,7 @@ class ThumbnailManager {
     const seekbarConfig = Utils.Object.getPropertyPath(this._uiConfig, 'components.seekbar');
     const rawThumbnailUrl = this._mediaConfig.sources?.rawThumbnailUrl;
     const isVod = this._mediaConfig.sources?.type === MediaType.VOD;
-    const configKs = this._mediaConfig.session?.ks || this._player.config.provider?.ks;
+    const configKs = this._ks || this._player.config.session?.ks || this._mediaConfig.session?.ks || this._player.config.provider?.ks;
     const ks = this._player.shouldAddKs(this._mediaConfig) ? configKs : '';
     const thumbnailConfig = Utils.Object.mergeDeep(DefaultThumbnailConfig, seekbarConfig);
     const thumbsSprite = isVod ? this._getThumbSlicesUrl(rawThumbnailUrl, ks, thumbnailConfig) : '';
