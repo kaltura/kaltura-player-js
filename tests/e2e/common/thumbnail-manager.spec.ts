@@ -27,7 +27,7 @@ describe('ThumbnailManager', () => {
         getThumbnail: (): any => {}
       },
       shouldAddKs: (): any => true,
-      getUpdatedKs: (): any => null
+      getUpdatedThumbnailKs: (): any => null
     };
     fakeMediaConfig = {
       sources: {

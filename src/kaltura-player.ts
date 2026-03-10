@@ -331,12 +331,12 @@ export class KalturaPlayer extends FakeEventTarget {
     addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.getKs() : '');
   }
 
-  public updateKs(newKs: string): void {
+  public updateThumbnailKs(newKs: string): void {
     this._thumbnailUpdatedKs = newKs;
     this._thumbnailManager?.updateThumbnailKs();
   }
 
-  public getUpdatedKs(): string | null {
+  public getUpdatedThumbnailKs(): string | null {
     return this._thumbnailUpdatedKs;
   }
 
