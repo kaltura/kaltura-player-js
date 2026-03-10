@@ -114,6 +114,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _sessionIdCache: SessionIdCache | null = null;
   private _isV2ToV7Redirected: boolean = false;
   private _fallbackSources: any;
+  private _thumbnailUpdatedKs: string | null = null;
 
   constructor(options: KalturaPlayerConfig) {
     super();
@@ -330,6 +331,15 @@ export class KalturaPlayer extends FakeEventTarget {
     addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.getKs() : '');
   }
 
+  public updateThumbnailKs(newKs: string): void {
+    this._thumbnailUpdatedKs = newKs;
+    this._thumbnailManager?.updateThumbnailKs();
+  }
+
+  public getUpdatedThumbnailKs(): string | null {
+    return this._thumbnailUpdatedKs;
+  }
+
   public shouldAddKs(mediaConfig?: KPMediaConfig): boolean {
     return !!(this.config?.provider?.loadThumbnailWithKs && ((mediaConfig || this.config)?.session?.ks || this.config.provider.ks));
   }
@@ -401,6 +411,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._reset = true;
     this._playbackStart = false;
     this._firstPlay = true;
+    this._thumbnailUpdatedKs = null;
     this._uiWrapper.destroy();
     this._pluginManager.destroy();
     this._cuepointManager.destroy();

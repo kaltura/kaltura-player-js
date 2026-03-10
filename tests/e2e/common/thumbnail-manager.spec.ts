@@ -26,7 +26,8 @@ describe('ThumbnailManager', () => {
       _localPlayer: {
         getThumbnail: (): any => {}
       },
-      shouldAddKs: (): any => true
+      shouldAddKs: (): any => true,
+      getUpdatedThumbnailKs: (): any => null
     };
     fakeMediaConfig = {
       sources: {
