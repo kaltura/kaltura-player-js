@@ -47,7 +47,7 @@ import { BaseRemotePlayer } from './common/cast/base-remote-player';
 import { BasePlugin, ConfigEvaluator, PluginManager, REGISTERED_PLUGINS_LIST_EVENT } from './common/plugins';
 import { PluginReadinessMiddleware } from './common/plugins/plugin-readiness-middleware';
 import { ViewabilityManager, ViewabilityType, VISIBILITY_CHANGE } from './common/utils/viewability-manager';
-import { ThumbnailManager } from './common/thumbnail-manager';
+import { ThumbnailManager, THUMBNAIL_KS_UPDATED } from './common/thumbnail-manager';
 import { CuePointManager } from './common/cuepoint/cuepoint-manager';
 import { ServiceProvider } from './common/service-provider';
 import { PlaylistManager } from './common/playlist/playlist-manager';
@@ -334,6 +334,7 @@ export class KalturaPlayer extends FakeEventTarget {
   public updateThumbnailKs(newKs: string): void {
     this._thumbnailUpdatedKs = newKs;
     this._thumbnailManager?.updateThumbnailKs();
+    this.dispatchEvent(new FakeEvent(THUMBNAIL_KS_UPDATED, { ks: newKs }));
   }
 
   public getUpdatedThumbnailKs(): string | null {
@@ -837,6 +838,7 @@ export class KalturaPlayer extends FakeEventTarget {
       UI: UIEventType,
       VISIBILITY_CHANGE,
       REGISTERED_PLUGINS_LIST_EVENT,
+      THUMBNAIL_KS_UPDATED,
       // For backward compatibility
       ...CoreEventType
     };

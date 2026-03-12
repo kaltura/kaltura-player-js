@@ -142,4 +142,6 @@ class ThumbnailManager {
   };
 }
 
-export { ThumbnailManager, THUMBNAIL_REGEX, DefaultThumbnailConfig };
+const THUMBNAIL_KS_UPDATED = 'thumbnailksupdated';
+
+export { ThumbnailManager, THUMBNAIL_REGEX, DefaultThumbnailConfig, THUMBNAIL_KS_UPDATED };

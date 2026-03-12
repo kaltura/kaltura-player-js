@@ -10,4 +10,5 @@ export type KPEventTypes = {
   Playlist: typeof PlaylistEventType;
   VISIBILITY_CHANGE: 'visibilitychange';
   REGISTERED_PLUGINS_LIST_EVENT: 'registeredpluginslistevent';
+  THUMBNAIL_KS_UPDATED: 'thumbnailksupdated';
 };
