@@ -335,7 +335,7 @@ export class KalturaPlayer extends FakeEventTarget {
     this._thumbnailUpdatedKs = newKs;
     this._thumbnailManager?.updateThumbnailKs();
     if (sendEvent) {
-      // @ts-expect-error
+      // @ts-expect-error - event should be added under KPEventTypes
       this.dispatchEvent(new FakeEvent(CoreEventType.THUMBNAIL_KS_UPDATED, { newKs }));
     }
   }
