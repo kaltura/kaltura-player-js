@@ -335,8 +335,8 @@ export class KalturaPlayer extends FakeEventTarget {
     this._thumbnailUpdatedKs = newKs;
     this._thumbnailManager?.updateThumbnailKs();
     if (sendEvent) {
-      // @ts-expect-error - internal event, not typed
-      this._localPlayer.dispatchEvent(new FakeEvent(CoreEventType.THUMBNAIL_KS_UPDATED, { newKs }));
+      // @ts-expect-error
+      this.dispatchEvent(new FakeEvent(CoreEventType.THUMBNAIL_KS_UPDATED, { newKs }));
     }
   }
 
