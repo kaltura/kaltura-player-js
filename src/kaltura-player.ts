@@ -331,9 +331,13 @@ export class KalturaPlayer extends FakeEventTarget {
     addKalturaPoster(playerSources, mediaSources, dimensions, this.shouldAddKs() ? this.getKs() : '');
   }
 
-  public updateThumbnailKs(newKs: string): void {
+  public updateThumbnailKs(newKs: string, sendEvent: boolean = true): void {
     this._thumbnailUpdatedKs = newKs;
     this._thumbnailManager?.updateThumbnailKs();
+    if (sendEvent) {
+      // @ts-expect-error - event should be added under KPEventTypes
+      this.dispatchEvent(new FakeEvent(CoreEventType.THUMBNAIL_KS_UPDATED, { newKs }));
+    }
   }
 
   public getUpdatedThumbnailKs(): string | null {
