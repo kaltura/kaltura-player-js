@@ -51,10 +51,10 @@
     "precommit": "yarn run build && yarn run type-check && yarn run test && yarn run lint"
   },
   "dependencies": {
-    "@playkit-js/playkit-js": "0.84.42-canary.0-2bb707f",
+    "@playkit-js/playkit-js": "0.84.42",
     "@playkit-js/playkit-js-dash": "1.39.2",
-    "@playkit-js/playkit-js-hls": "1.32.23-canary.0-f034a48",
-    "@playkit-js/playkit-js-providers": "2.45.1-canary.0-8b2eb42",
+    "@playkit-js/playkit-js-hls": "1.32.23",
+    "@playkit-js/playkit-js-providers": "2.45.2",
     "@playkit-js/playkit-js-ui": "0.83.3",
     "@playkit-js/webpack-common": "^1.0.3",
     "hls.js": "1.6.15",
