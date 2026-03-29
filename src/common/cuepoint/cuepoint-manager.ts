@@ -84,7 +84,7 @@ export class CuePointManager {
     return false;
   }
 
-  public addCuePoints(data: CuePoint[]): void {
+  public addCuePoints(data: CuePoint[], isExternal?: boolean): void {
     this._player.ready().then(() => {
       if (this._shouldAddTextTrack()) {
         this._addTextTrack();
@@ -99,11 +99,14 @@ export class CuePointManager {
         this._textTrack?.addCue(textTrackCue!);
         timedMetadataArr.push(createTimedMetadata(textTrackCue!)!);
       });
+      let eventPayload = {cues: timedMetadataArr}
+      if (isExternal){
+        //@ts-ignore
+        eventPayload = {...eventPayload, isExternal: true}
+      }
 
       this._player.dispatchEvent(
-        new FakeEvent(EventType.TIMED_METADATA_ADDED, {
-          cues: timedMetadataArr
-        })
+        new FakeEvent(EventType.TIMED_METADATA_ADDED, eventPayload)
       );
     });
   }
