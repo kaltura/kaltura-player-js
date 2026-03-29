@@ -99,15 +99,13 @@ export class CuePointManager {
         this._textTrack?.addCue(textTrackCue!);
         timedMetadataArr.push(createTimedMetadata(textTrackCue!)!);
       });
-      let eventPayload = {cues: timedMetadataArr}
-      if (isExternal){
-        //@ts-ignore
-        eventPayload = {...eventPayload, isExternal: true}
+      let eventPayload = { cues: timedMetadataArr };
+      if (isExternal) {
+        //@ts-expect-error - add to TimedMetadata
+        eventPayload = { ...eventPayload, isExternal: true };
       }
 
-      this._player.dispatchEvent(
-        new FakeEvent(EventType.TIMED_METADATA_ADDED, eventPayload)
-      );
+      this._player.dispatchEvent(new FakeEvent(EventType.TIMED_METADATA_ADDED, eventPayload));
     });
   }
 
