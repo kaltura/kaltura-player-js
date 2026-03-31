@@ -1297,6 +1297,7 @@ export class KalturaPlayer extends FakeEventTarget {
       targetId: this.config.targetId,
       playerVersion: (window as any).KalturaPlayer?.VERSION,
       partnerId: this.config.provider?.partnerId,
+      uiConfId: this.config.provider?.uiConfId,
       entryId: this.sources.id,
       playlistId: this.playlist?.id,
       manifestUrl: this.selectedSource?.url,
