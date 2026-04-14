@@ -54,7 +54,7 @@
     "@playkit-js/playkit-js": "0.84.43",
     "@playkit-js/playkit-js-dash": "1.39.2",
     "@playkit-js/playkit-js-hls": "1.32.23",
-    "@playkit-js/playkit-js-providers": "2.45.2",
+    "@playkit-js/playkit-js-providers": "2.46.0-canary.0-899b804",
     "@playkit-js/playkit-js-ui": "0.83.3",
     "@playkit-js/webpack-common": "^1.0.3",
     "hls.js": "1.6.15",
