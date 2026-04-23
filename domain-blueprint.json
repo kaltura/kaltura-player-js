@@ -1,0 +1,205 @@
+{
+  "repositoryName": "kaltura-player-js",
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-23",
+  "coreResponsibility": {
+    "summary": "The Kaltura Player JS is the unified JavaScript media player platform that integrates the PlayKit core engine, UI framework, and provider backends to deliver OVP (Online Video Platform) and Cloud TV (OTT) video playback experiences for Kaltura customers.",
+    "type": "Core Playback Platform / Player Orchestration Layer"
+  },
+  "domainAndLogicOwnership": {
+    "featureOwnership": [
+      "Player setup and initialization (KalturaPlayer.setup())",
+      "Media loading from OVP/OTT providers (loadMedia, setMedia)",
+      "Playlist management and playback (PlaylistManager)",
+      "Plugin system orchestration (PluginManager, BasePlugin)",
+      "Advertising framework and ad break coordination (AdsController, Ad, AdBreak)",
+      "Cast/Remote playback support (RemotePlayerManager, BaseRemotePlayer)",
+      "Cue point management (CuePointManager)",
+      "Thumbnail management and scrubbing previews (ThumbnailManager)",
+      "User preferences and storage management (LocalStorageManager, SessionStorageManager)",
+      "Viewability tracking and auto-play/pause behavior (ViewabilityManager)",
+      "Service provider registry for plugin services (ServiceProvider)",
+      "UI wrapper integration with playkit-js-ui (UIWrapper)",
+      "Configuration merging and validation (setup-helpers)",
+      "Kaltura-specific URL parameters and poster handling"
+    ],
+    "dataHandling": [
+      "Player state machine (play, pause, seek, volume, fullscreen, PiP)",
+      "Media sources configuration (HLS, DASH, progressive)",
+      "Plugin configuration store and evaluation (PluginsConfigStore, ConfigEvaluator)",
+      "Session management (KS tokens, session IDs)",
+      "Provider media config objects (ProviderMediaConfigObject)",
+      "Playlist items and playlist configuration",
+      "Ad break layout and ad data objects",
+      "Thumbnail sprite/VTT data",
+      "User preferences (volume, muted, captions, language)",
+      "Remote/Cast session state"
+    ]
+  },
+  "integrationPoints": {
+    "upstream": [
+      {
+        "name": "playkit-js-providers",
+        "description": "OVP and OTT backend providers that fetch media entries, playlists, and session data from Kaltura BE services"
+      },
+      {
+        "name": "Kaltura Backend Services",
+        "description": "Media entry APIs, entitlement/KS services, uiConf configuration"
+      }
+    ],
+    "downstream": [
+      {
+        "name": "Web Applications",
+        "description": "Customer websites and applications embedding the Kaltura Player"
+      },
+      {
+        "name": "Player Studio / KMC",
+        "description": "Kaltura Management Console player embed generation"
+      },
+      {
+        "name": "Player Plugins",
+        "description": "All PlayKit plugins (IMA, Youbora, KAVA, Chromecast, VR, etc.)"
+      }
+    ],
+    "externalApis": [
+      {
+        "name": "Shaka Player",
+        "version": "4.14.9",
+        "purpose": "DASH playback engine"
+      },
+      {
+        "name": "hls.js",
+        "version": "1.6.15",
+        "purpose": "HLS playback engine"
+      },
+      {
+        "name": "playkit-js",
+        "version": "0.84.43",
+        "purpose": "Core playback engine and state machine"
+      },
+      {
+        "name": "playkit-js-ui",
+        "version": "0.83.4",
+        "purpose": "Player UI framework and components"
+      },
+      {
+        "name": "playkit-js-providers",
+        "version": "2.46.0",
+        "purpose": "OVP/OTT backend media providers"
+      },
+      {
+        "name": "playkit-js-dash",
+        "version": "1.39.2",
+        "purpose": "DASH MSE adapter"
+      },
+      {
+        "name": "playkit-js-hls",
+        "version": "1.32.23",
+        "purpose": "HLS MSE adapter"
+      },
+      {
+        "name": "Google IMA SDK (via plugin)",
+        "purpose": "Client-side ad insertion"
+      },
+      {
+        "name": "Chromecast SDK (via plugin)",
+        "purpose": "Cast sender functionality"
+      },
+      {
+        "name": "Youbora SDK (via plugin)",
+        "purpose": "Analytics tracking"
+      }
+    ]
+  },
+  "technicalStack": {
+    "primaryLanguages": ["TypeScript", "JavaScript"],
+    "frameworks": ["Webpack", "Babel"],
+    "buildTools": ["yarn", "webpack-cli", "api-extractor"],
+    "testingFrameworks": ["Karma", "Mocha", "Chai", "Sinon"],
+    "entryPoints": [
+      {
+        "file": "src/index.ts",
+        "description": "Main module export - exports KalturaPlayer, setup, core, ui, providers, and plugin utilities"
+      },
+      {
+        "file": "src/kaltura-player.ts",
+        "description": "KalturaPlayer class - the main player class orchestrating all player functionality"
+      },
+      {
+        "file": "src/setup.ts",
+        "description": "setup() function - entry point for creating player instances"
+      },
+      {
+        "file": "src/common/plugins/base-plugin.ts",
+        "description": "BasePlugin class - base class for all player plugins"
+      },
+      {
+        "file": "webpack.config.js",
+        "description": "Build configuration for OVP and OTT player variants"
+      }
+    ],
+    "outputArtifacts": [
+      "dist/kaltura-ovp-player.js",
+      "dist/kaltura-tv-player.js",
+      "dist/kaltura-player-js.d.ts"
+    ]
+  },
+  "triageKeywords": [
+    "KalturaPlayer",
+    "kaltura-player-js",
+    "playkit",
+    "loadMedia",
+    "setMedia",
+    "player.setup",
+    "KalturaPlayer.setup",
+    "OVP player",
+    "OTT player",
+    "Cloud TV player",
+    "plugin not loading",
+    "BasePlugin",
+    "registerPlugin",
+    "playlist.playNext",
+    "ads.getAdBreak",
+    "AdsController",
+    "player.configure",
+    "provider.getMediaConfig",
+    "viewability",
+    "autopause",
+    "autoplay inview",
+    "RemotePlayerManager",
+    "cast not working",
+    "thumbnails not showing",
+    "ThumbnailManager",
+    "cuepoint",
+    "LOAD_FAILED",
+    "CHANGE_SOURCE_STARTED",
+    "PLAYBACK_ENDED",
+    "uiConfId",
+    "ks token",
+    "session expired"
+  ],
+  "errorPatterns": [
+    "Error.Code.LOAD_FAILED",
+    "Error.Category.PLAYER",
+    "Error.Category.NETWORK",
+    "HTTP_ERROR",
+    "RUNTIME_ERROR_METHOD_NOT_IMPLEMENTED",
+    "plugin isValid failed",
+    "Cannot read property of undefined (reading 'setup')",
+    "targetId not found",
+    "provider configuration missing",
+    "partnerId is required"
+  ],
+  "relatedRepositories": [
+    "kaltura/playkit-js",
+    "kaltura/playkit-js-ui",
+    "kaltura/playkit-js-providers",
+    "kaltura/playkit-js-hls",
+    "kaltura/playkit-js-dash",
+    "kaltura/playkit-js-ima",
+    "kaltura/playkit-js-youbora",
+    "kaltura/playkit-js-kava",
+    "kaltura/playkit-js-ott-analytics",
+    "kaltura/playkit-js-cast-sender"
+  ]
+}
