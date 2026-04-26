@@ -1348,7 +1348,7 @@ export class KalturaPlayer extends FakeEventTarget {
     }
   }
 
-  private async _configureUiComponentsUrls() {
+  private async _configureUiComponentsUrls(): Promise<void> {
     const components = [
       { name: 'logo', configKey: 'img' },
       { name: 'watermark', configKey: 'img' },
@@ -1363,11 +1363,11 @@ export class KalturaPlayer extends FakeEventTarget {
         const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
         if (mediaConfig?.sources?.downloadUrl) {
           this.configure({
-            ui: { 
-              components: { 
-                [name]: { 
-                  [configKey]: mediaConfig.sources.downloadUrl 
-                } 
+            ui: {
+              components: {
+                [name]: {
+                  [configKey]: mediaConfig.sources.downloadUrl
+                }
               }
             }
           });
