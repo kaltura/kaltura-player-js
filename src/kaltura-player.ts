@@ -76,8 +76,7 @@ import {
   SourcesConfig,
   KPEventTypes,
   HEVCConfigObject,
-  MediaCapabilitiesObject,
-  UiConfig
+  MediaCapabilitiesObject
 } from './types';
 import { getErrorCategory, isDRMError } from './common/utils/error-helper';
 import { SessionIdCache } from './common/utils/session-id-cache';
@@ -1373,7 +1372,7 @@ export class KalturaPlayer extends FakeEventTarget {
             } as any
           });
         }
-      } catch{
+      } catch {
         KalturaPlayer._logger.warn(`Cannot resolve entryId ${entryId} for UI component ${name}`);
       }
     }
