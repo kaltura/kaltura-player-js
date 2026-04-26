@@ -176,6 +176,7 @@ export class KalturaPlayer extends FakeEventTarget {
 
       this.configure({ network: networkConfig });
     }
+    this._configureUiComponentsUrls();
   }
 
   public async loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any> {
@@ -1344,6 +1345,36 @@ export class KalturaPlayer extends FakeEventTarget {
           }
         }
       } as any);
+    }
+  }
+
+  private async _configureUiComponentsUrls() {
+    const components = [
+      { name: 'logo', configKey: 'img' },
+      { name: 'watermark', configKey: 'img' },
+      { name: 'errorOverlay', configKey: 'backgroundUrl' }
+    ];
+
+    for (const { name, configKey } of components) {
+      const entryId = this.config.ui.components?.[name]?.entryId;
+      if (!entryId) continue;
+
+      try {
+        const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
+        if (mediaConfig?.sources?.downloadUrl) {
+          this.configure({
+            ui: { 
+              components: { 
+                [name]: { 
+                  [configKey]: mediaConfig.sources.downloadUrl 
+                } 
+              }
+            }
+          });
+        }
+      } catch (error) {
+        this.dispatchEvent(new FakeEvent(Error.Code.ERROR, error));
+      }
     }
   }
 }
