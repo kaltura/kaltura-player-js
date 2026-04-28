@@ -1359,7 +1359,7 @@ export class KalturaPlayer extends FakeEventTarget {
     try {
       const promises = Object.entries(entriesForUiComponents).map(async ([fieldName, entryId]) => {
         try {
-          const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId as string});
+          const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId as string });
           if (mediaConfig?.sources?.downloadUrl) {
             data[fieldName] = mediaConfig.sources.downloadUrl;
           }
