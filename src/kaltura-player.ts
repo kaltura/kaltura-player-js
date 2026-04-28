@@ -1351,7 +1351,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private async _configureUiComponentsUrls(): Promise<void> {
     //@ts-expect-error - entriesForUiComponents
     const entriesForUiComponents = this.config.playback?.entriesForUiComponents;
-    const data: Record<string, string> = {};
+    const data: Record<string, any> = {};
 
     if (!entriesForUiComponents) {
       return;
@@ -1361,7 +1361,7 @@ export class KalturaPlayer extends FakeEventTarget {
         try {
           const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
           if (mediaConfig?.sources?.downloadUrl) {
-            data[fieldName] = mediaConfig.sources.downloadUrl as string;
+            data[fieldName] = mediaConfig.sources.downloadUrl;
           }
         } catch (error) {
           KalturaPlayer._logger.warn(`Cannot resolve entryId ${entryId} for UI component ${fieldName}`);
