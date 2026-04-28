@@ -1370,10 +1370,11 @@ export class KalturaPlayer extends FakeEventTarget {
       await Promise.all(promises);
 
       if (Object.keys(data).length > 0) {
+        //@ts-expect-error - COMPONENTS_URLS_LOADED event
         this.dispatchEvent(new FakeEvent(CoreEventType.COMPONENTS_URLS_LOADED, { data }));
       }
-    } catch (error) {
-      KalturaPlayer._logger.error('Error configuring UI component URLs', error);
+    } catch {
+      KalturaPlayer._logger.error('Error configuring UI component URLs');
     }
   }
 }
