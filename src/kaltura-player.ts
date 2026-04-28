@@ -1351,7 +1351,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private async _configureUiComponentsUrls(): Promise<void> {
     //@ts-expect-error - entriesForUiComponents
     const entriesForUiComponents = this.config.playback?.entriesForUiComponents;
-    const data: Record<string, any> = {};
+    const data: Record<string, string> = {};
 
     if (!entriesForUiComponents) {
       return;
@@ -1359,7 +1359,7 @@ export class KalturaPlayer extends FakeEventTarget {
     try {
       const promises = Object.entries(entriesForUiComponents).map(async ([fieldName, entryId]) => {
         try {
-          const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
+          const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId as string});
           if (mediaConfig?.sources?.downloadUrl) {
             data[fieldName] = mediaConfig.sources.downloadUrl;
           }
