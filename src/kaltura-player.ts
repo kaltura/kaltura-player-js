@@ -176,6 +176,7 @@ export class KalturaPlayer extends FakeEventTarget {
 
       this.configure({ network: networkConfig });
     }
+    this._configureUiComponentsUrls();
   }
 
   public async loadMedia(mediaInfo: ProviderMediaInfoObject, mediaOptions?: SourcesConfig): Promise<any> {
@@ -1344,6 +1345,35 @@ export class KalturaPlayer extends FakeEventTarget {
           }
         }
       } as any);
+    }
+  }
+
+  private async _configureUiComponentsUrls(): Promise<void> {
+    //@ts-expect-error - remove the ts expect error after type is updated
+    const uiComponentData = this.config?.uiComponentData;
+    const data: Record<string, string> = {};
+
+    if (!uiComponentData) {
+      return;
+    }
+    try {
+      const promises = Object.entries(uiComponentData).map(async ([fieldName, entryId]) => {
+        try {
+          const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId as string });
+          if (mediaConfig?.sources?.downloadUrl) {
+            data[fieldName] = mediaConfig.sources.downloadUrl;
+          }
+        } catch (error) {
+          KalturaPlayer._logger.warn(`Cannot resolve entryId ${entryId} for UI component ${fieldName}`);
+        }
+      });
+      await Promise.all(promises);
+
+      if (Object.keys(data).length > 0) {
+        this.dispatchEvent(new FakeEvent('componentdataupdated', { data }));
+      }
+    } catch {
+      KalturaPlayer._logger.error('Error configuring UI component URLs');
     }
   }
 }
