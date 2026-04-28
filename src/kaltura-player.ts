@@ -1349,32 +1349,31 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private async _configureUiComponentsUrls(): Promise<void> {
-    const components = [
-      { name: 'logo', configKey: 'img' },
-      { name: 'watermark', configKey: 'img' },
-      { name: 'errorOverlay', configKey: 'backgroundUrl' }
-    ];
+    //@ts-expect-error - entriesForUiComponents
+    const entriesForUiComponents = this.config.playback?.entriesForUiComponents;
+    const data: Record<string, string> = {};
 
-    for (const { name, configKey } of components) {
-      const entryId = this.config.ui.components?.[name]?.entryId;
-      if (!entryId) continue;
-
-      try {
-        const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
-        if (mediaConfig?.sources?.downloadUrl) {
-          this.configure({
-            ui: {
-              components: {
-                [name]: {
-                  [configKey]: mediaConfig.sources.downloadUrl
-                }
-              }
-            } as any
-          });
+    if (!entriesForUiComponents) {
+      return;
+    }
+    try {
+      const promises = Object.entries(entriesForUiComponents).map(async ([fieldName, entryId]) => {
+        try {
+          const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
+          if (mediaConfig?.sources?.downloadUrl) {
+            data[fieldName] = mediaConfig.sources.downloadUrl;
+          }
+        } catch (error) {
+          KalturaPlayer._logger.warn(`Cannot resolve entryId ${entryId} for UI component ${fieldName}`);
         }
-      } catch {
-        KalturaPlayer._logger.warn(`Cannot resolve entryId ${entryId} for UI component ${name}`);
+      });
+      await Promise.all(promises);
+
+      if (Object.keys(data).length > 0) {
+        this.dispatchEvent(new FakeEvent(CoreEventType.COMPONENTS_URLS_LOADED, { data }));
       }
+    } catch (error) {
+      KalturaPlayer._logger.error('Error configuring UI component URLs', error);
     }
   }
 }
