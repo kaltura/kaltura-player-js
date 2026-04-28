@@ -1361,7 +1361,7 @@ export class KalturaPlayer extends FakeEventTarget {
         try {
           const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId });
           if (mediaConfig?.sources?.downloadUrl) {
-            data[fieldName] = mediaConfig.sources.downloadUrl;
+            data[fieldName] = mediaConfig.sources.downloadUrl as string;
           }
         } catch (error) {
           KalturaPlayer._logger.warn(`Cannot resolve entryId ${entryId} for UI component ${fieldName}`);
