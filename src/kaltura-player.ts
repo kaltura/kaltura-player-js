@@ -1349,15 +1349,15 @@ export class KalturaPlayer extends FakeEventTarget {
   }
 
   private async _configureUiComponentsUrls(): Promise<void> {
-    //@ts-expect-error - entriesForUiComponents
-    const entriesForUiComponents = this.config.playback?.entriesForUiComponents;
+    //@ts-expect-error - remove the ts expect error after type is updated
+    const uiComponentData = this.config?.uiComponentData;
     const data: Record<string, string> = {};
 
-    if (!entriesForUiComponents) {
+    if (!uiComponentData) {
       return;
     }
     try {
-      const promises = Object.entries(entriesForUiComponents).map(async ([fieldName, entryId]) => {
+      const promises = Object.entries(uiComponentData).map(async ([fieldName, entryId]) => {
         try {
           const mediaConfig = await this._provider.getMediaConfig({ entryId: entryId as string });
           if (mediaConfig?.sources?.downloadUrl) {
@@ -1370,8 +1370,7 @@ export class KalturaPlayer extends FakeEventTarget {
       await Promise.all(promises);
 
       if (Object.keys(data).length > 0) {
-        //@ts-expect-error - COMPONENTS_URLS_LOADED event
-        this.dispatchEvent(new FakeEvent(CoreEventType.COMPONENTS_URLS_LOADED, { data }));
+        this.dispatchEvent(new FakeEvent('componentdataupdated', { data }));
       }
     } catch {
       KalturaPlayer._logger.error('Error configuring UI component URLs');
