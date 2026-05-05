@@ -1179,10 +1179,10 @@
   dependencies:
     "@playkit-js/webpack-common" "^1.0.3"
 
-"@playkit-js/playkit-js-hls@1.32.24-canary.0-fa09077":
-  version "1.32.24-canary.0-fa09077"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.24-canary.0-fa09077.tgz#5a592d893cac367d538e3626bd5fdaf97c3007ec"
-  integrity sha512-007eOpE1oQy5zcDWip3FJIuKw7xiwkb9DzvyFVtmjZDVnSaXyxRJqqH3y507jbuequEmxMFJDvlnP269zf5qFQ==
+"@playkit-js/playkit-js-hls@1.32.24-canary.0-cd9d957":
+  version "1.32.24-canary.0-cd9d957"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-hls/-/playkit-js-hls-1.32.24-canary.0-cd9d957.tgz#59b87f082b3c674da2a33f32fdf7676888c222ea"
+  integrity sha512-sxcSj4E4X/YmFaqQoYkSOXIDJanUd1QGrd1+DbWLk1V8OpVMsmKhclPsMflnFNkw5vWdpZW+/+EAGsNsbnsCzA==
 
 "@playkit-js/playkit-js-providers@2.46.0":
   version "2.46.0"
