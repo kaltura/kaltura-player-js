@@ -395,6 +395,7 @@ class PlaylistManager {
         // @ts-ignore
         this._player.setMedia(media);
         return this._player.loadMedia(this._mediaInfoList[index]).then((mediaConfig) => {
+          delete mediaConfig.sources.startTime;
           this._playlist.updateItemSources(index, mediaConfig.sources);
           this._playlist.updateItemPlugins(index, mediaConfig.plugins);
 
