@@ -149,6 +149,7 @@ declare namespace KalturaPlayerTypes {
     hls?: Dash[];
     dash?: Dash[];
     progressive?: Progressive[];
+    image?: Dash[];
     id: string;
     duration?: number;
     type: EntryTypes;
