@@ -127,7 +127,6 @@ function createKalturaPlayerContainer(targetId: string): string {
   const el = document.createElement('div');
   el.id = Utils.Generator.uniqueId(5);
   el.className = CONTAINER_CLASS_NAME;
-  el.setAttribute('tabindex', '-1');
   const parentNode = document.getElementById(targetId);
   if (parentNode && el) {
     parentNode.appendChild(el);
