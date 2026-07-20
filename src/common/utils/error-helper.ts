@@ -5,11 +5,11 @@ const isBlockAction = (error: Error): boolean => error.code === 2001;
 const isMediaNotReady = (error: Error): boolean => error.code === 2002;
 const isScheduledRestrictedCode = (error: Error): boolean => error.code === 2003;
 const isDeletedEntryCode = (error: Error): boolean => error.code === 2004;
-const isGeolocationRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'COUNTRY_RESTRICTED';
-const isSessionRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SESSION_RESTRICTED';
-const isIPRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'IP_RESTRICTED';
-const isSitedRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SITE_RESTRICTED';
-const isScheduledRestricted = (error: Error): boolean => error.data?.messages && error.data?.messages[0].code === 'SCHEDULED_RESTRICTED';
+const isGeolocationRestricted = (error: Error): boolean => error.data?.messages?.[0]?.code === 'COUNTRY_RESTRICTED';
+const isSessionRestricted = (error: Error): boolean => error.data?.messages?.[0]?.code === 'SESSION_RESTRICTED';
+const isIPRestricted = (error: Error): boolean => error.data?.messages?.[0]?.code === 'IP_RESTRICTED';
+const isSitedRestricted = (error: Error): boolean => error.data?.messages?.[0]?.code === 'SITE_RESTRICTED';
+const isScheduledRestricted = (error: Error): boolean => error.data?.messages?.[0]?.code === 'SCHEDULED_RESTRICTED';
 
 const isSessionRestrictedError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isSessionRestricted(error);
 const isGeolocationError = (error: Error): boolean => isBackEndError(error) && isBlockAction(error) && isGeolocationRestricted(error);
