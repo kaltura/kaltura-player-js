@@ -114,6 +114,7 @@ export class KalturaPlayer extends FakeEventTarget {
   private _sessionIdCache: SessionIdCache | null = null;
   private _isV2ToV7Redirected: boolean = false;
   private _fallbackSources: any;
+  private _isOnFallbackSource: boolean = false;
   private _thumbnailUpdatedKs: string | null = null;
 
   constructor(options: KalturaPlayerConfig) {
@@ -398,6 +399,7 @@ export class KalturaPlayer extends FakeEventTarget {
       this._firstPlay = true;
       this._sourceSelected = null;
       this._fallbackSources = null;
+      this._isOnFallbackSource = false;
       if (this._attachEventManager) {
         this._attachEventManager.removeAll();
       }
@@ -785,6 +787,10 @@ export class KalturaPlayer extends FakeEventTarget {
     return this._sourceSelected;
   }
 
+  public get isOnFallbackSource(): boolean {
+    return this._isOnFallbackSource;
+  }
+
   public get sources(): PKSourcesConfigObject {
     return { ...this._localPlayer.sources };
   }
@@ -974,6 +980,7 @@ export class KalturaPlayer extends FakeEventTarget {
       this.config.playback.fallbackSourcesOptions
     );
     if (matchingFallbackSources) {
+      this._isOnFallbackSource = true;
       const sources = Utils.Object.mergeDeep({}, this._localPlayer.sources, matchingFallbackSources);
       const mediaConfig: any = { sources, session: this.config.session };
       // if play was triggered for the original source, firstPlay will be false
