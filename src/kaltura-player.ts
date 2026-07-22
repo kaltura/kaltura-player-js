@@ -368,6 +368,10 @@ export class KalturaPlayer extends FakeEventTarget {
     this._localPlayer.setSourcesMetadata(sourcesMetadata);
   }
 
+  public getLiveEntryStValue(): string {
+    return this._localPlayer.getLiveEntryStValue();
+  }
+
   public ready(): Promise<void> {
     return this._localPlayer.ready();
   }
