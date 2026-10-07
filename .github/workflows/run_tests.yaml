@@ -8,6 +8,12 @@ on:
       - "*"
 
 jobs:
+  preinstall:
+    uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
+    with:
+      node-version: '20.x'
+      yarn-run-to-execute: 'preinstall'
+      git-token: ${{ secrets.GITHUB_TOKEN }}
   build:
     uses: kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@master
     with:
