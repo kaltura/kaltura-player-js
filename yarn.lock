@@ -1189,10 +1189,10 @@
   resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-providers/-/playkit-js-providers-2.47.0-canary.0-9c90994.tgz#59482494e77086184727a12435ac0f2c7888757d"
   integrity sha512-38dj7NH4oU2LMsbTujS0gLRRHsSaQoUjhgVtlcIMidw7dtafwyrksDaxZUSRNThuwbNR/kNrfJlM/0ZcaIeHFg==
 
-"@playkit-js/playkit-js-ui@0.84.0-canary.0-9d4fe34":
-  version "0.84.0-canary.0-9d4fe34"
-  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.84.0-canary.0-9d4fe34.tgz#19af79d21501d8b377a907ffe44f0d4ceeef6974"
-  integrity sha512-Se9pQeeEKjknmmDE3l/jCcD1xRWWUaxyY17Tzf/jDZtA/cdnVDq9ru1L2LLOK5M+krmMOVxGhwehDufxNBUnqQ==
+"@playkit-js/playkit-js-ui@0.83.24-canary.0-6f80910":
+  version "0.83.24-canary.0-6f80910"
+  resolved "https://registry.yarnpkg.com/@playkit-js/playkit-js-ui/-/playkit-js-ui-0.83.24-canary.0-6f80910.tgz#97780d79ca099e756672f2a06f0e3508aaaea5fb"
+  integrity sha512-NA4CE2YMRNnO4UV40SMJbhMHmidoBLmI6NzBFf7t/bQ8CEZetqMW89vpepxm/uqP3d4F1XCFbRNF2OvNB/aVzg==
   dependencies:
     "@playkit-js/webpack-common" "^1.0.3"
     preact "10.4.6"
