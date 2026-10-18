@@ -827,7 +827,7 @@ describe('AdsController', () => {
     before(() => {
       config = Utils.Object.mergeDeep({}, getConfigStructure(), {
         advertising: {
-          prebid: { libUrl: 'dummyUrl' }
+          prebid: {}
         },
         plugins: {
           ima: {}
@@ -887,13 +887,6 @@ describe('AdsController', () => {
       });
       sandbox.stub(player._adsController._prebidManager, '_isPrebidSDKLibLoaded').callsFake(() => {
         return true;
-      });
-      sandbox.stub(player._adsController._prebidManager, '_loadPrebidSDKLib').callsFake(() => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve([{ vastUrl: 'PREBID_PRE_ROLL' }]);
-          }, 3000);
-        });
       });
       sandbox.stub(player._adsController._prebidManager, 'load').callsFake(() => {
         return Promise.resolve([{ vastUrl: 'PREBID_PRE_ROLL' }]);
