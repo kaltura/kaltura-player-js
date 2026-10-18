@@ -40,10 +40,15 @@ class PrebidManager {
   constructor(config?: KPPrebidConfig) {
     this._loadPromise = Utils.Object.defer();
     this._loadPromise.catch(() => PrebidManager._logger.warn('Prebid SDK failed to load'));
-    if (config && this._isPrebidSDKLibLoaded()) {
-      this._config = config;
-      this._prebid = window.pbjs;
-      this._loadPromise.resolve();
+    if (config) {
+      if (this._isPrebidSDKLibLoaded()) {
+        this._config = config;
+        this._prebid = window.pbjs;
+        this._loadPromise.resolve();
+      } else {
+        PrebidManager._logger.warn('window.pbjs not found. Prebid.js must be loaded on the page before the player is created.');
+        this._loadPromise.reject();
+      }
     } else {
       this._loadPromise.reject();
     }
