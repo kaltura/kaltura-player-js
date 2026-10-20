@@ -41,19 +41,14 @@ class PrebidManager {
     this._loadPromise = Utils.Object.defer();
     this._loadPromise.catch(() => PrebidManager._logger.warn('Prebid SDK failed to load'));
     if (config) {
-      this._config = config;
-      this._loadPrebidSDKLib(this._config.libUrl)
-        .then(() => {
-          if (this._isPrebidSDKLibLoaded()) {
-            this._prebid = window.pbjs;
-            this._loadPromise.resolve();
-          } else {
-            this._loadPromise.reject();
-          }
-        })
-        .catch(() => {
-          this._loadPromise.reject();
-        });
+      if (this._isPrebidSDKLibLoaded()) {
+        this._config = config;
+        this._prebid = window.pbjs;
+        this._loadPromise.resolve();
+      } else {
+        PrebidManager._logger.warn('window.pbjs not found. Prebid.js must be loaded on the page before the player is created.');
+        this._loadPromise.reject();
+      }
     } else {
       this._loadPromise.reject();
     }
@@ -61,10 +56,6 @@ class PrebidManager {
 
   private _isPrebidSDKLibLoaded(): boolean {
     return window.pbjs && window.pbjs.que;
-  }
-
-  private _loadPrebidSDKLib(libUrl: string): Promise<any> {
-    return this._isPrebidSDKLibLoaded() ? Promise.resolve() : Utils.Dom.loadScriptAsync(libUrl);
   }
 
   private _load(config: KPAdPrebidConfig): Promise<any> {

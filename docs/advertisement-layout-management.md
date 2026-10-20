@@ -351,9 +351,7 @@ const config = {
     ima: {}
   },
   advertising: {
-    prebid:{
-      libUrl: 'https://acdn.adnxs.com/prebid/not-for-prod/3/prebid.js',
-    }
+    prebid: {}
   }
 }
 const kalturaPlayer = KalturaPlayer.setup(config);
@@ -434,7 +432,9 @@ const config = {
 
 For prebid configuration there are two places to config:
 
-1. top level config - set the general configuration for prebid - libUrl/timeout, also configure adUnit/params/options could be relevant for all prebid ads like same cache url for or same mediaTypes setting.
+The Prebid.js library must already be loaded on the page (`window.pbjs`) before the player is created.
+
+1. top level config - set the general configuration for prebid - timeout, also configure adUnit/params/options could be relevant for all prebid ads like same cache url for or same mediaTypes setting.
 2. ad level config - adUnit/params/options for ad configuration, timeout could be set different value per an ad.
 
 Prebid can use as pre-roll/mid-roll/post-roll return list of ads and use as waterfall
@@ -447,9 +447,7 @@ const config = {
     ima: {}
   },
   advertising: {
-    prebid:{
-      libUrl: 'https://acdn.adnxs.com/prebid/not-for-prod/3/prebid.js',
-    }
+    prebid: {},
     adBreaks: [{
       position: 60,
       ads: [{

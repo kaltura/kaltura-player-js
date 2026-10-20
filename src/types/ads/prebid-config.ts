@@ -5,6 +5,4 @@ export interface KPAdPrebidConfig {
   timeout: number;
 }
 
-export interface KPPrebidConfig extends KPAdPrebidConfig {
-  libUrl: string;
-}
+export type KPPrebidConfig = KPAdPrebidConfig;

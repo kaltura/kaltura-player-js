@@ -7,6 +7,4 @@ declare type KPAdPrebidConfig = {
   timeout: number
 };
 
-declare type KPPrebidConfig = KPAdPrebidConfig & {
-  libUrl: string
-};
+declare type KPPrebidConfig = KPAdPrebidConfig;

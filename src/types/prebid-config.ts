@@ -5,6 +5,4 @@ export interface AdPrebidConfig {
   timeout: number;
 }
 
-export interface PrebidConfig extends AdPrebidConfig {
-  libUrl: string;
-}
+export type PrebidConfig = AdPrebidConfig;
