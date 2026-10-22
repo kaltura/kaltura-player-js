@@ -5205,7 +5205,7 @@ setprototypeof@1.2.0:
 
 shaka-player@5.2.14:
   version "5.2.14"
-  resolved "https://registry.npmjs.org/shaka-player/-/shaka-player-5.2.14.tgz#15c384fdb5782a873bdfe4236c2d46b6ebd93ee1"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-5.2.14.tgz#15c384fdb5782a873bdfe4236c2d46b6ebd93ee1"
   integrity sha512-yRYXJgSRXibj5ds2r4Pt9d9S015Qi9vLYUZpfSm70bwCCSQsrIJNeC/2+J0I+D3+mFrMLjVaIwx4u9BNvllDWw==
 
 shallow-clone@^3.0.0:
