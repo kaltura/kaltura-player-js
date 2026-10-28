@@ -52,6 +52,11 @@ export default class LocalStorageManager extends BaseStorageManager {
     eventManager.listen(player, player.Event.UI.USER_SELECTED_AUDIO_TRACK, (event) => {
       const audioTrack = event.payload.audioTrack;
       this.setItem(this.StorageKeys.AUDIO_LANG, audioTrack.language);
+
+      // Sync AD storage value with redux values
+      const adState = player.ui.store.getState().audioDescription;
+      const { isEnabled, selectedType } = adState;
+      this.setItem(this.StorageKeys.AUDIO_DESCRIPTION, JSON.stringify({ isEnabled, selectedType }));
     });
 
     const onToggleCaptions = (language): any => {
